@@ -1,0 +1,23 @@
+{% load modeldiff_tags %}
+<style>
+  .deleted {
+    text-decoration: line-through;
+  }
+  .diff_inserted {
+    background: #af6;
+  }
+  
+  table {
+    border: 1px solid;
+  }
+  
+  table td {
+    border: 1px solid;
+  }
+</style>
+<table>
+  {% diff page2 page1 as page_diff %}
+  {% for i, d in page_diff.get_diff.items %}
+    {{ d }}
+  {% endfor %}  
+</table>

@@ -1,0 +1,15 @@
+{% spaceless %}
+<tr><td colspan="2">
+{% for change in diff %}
+  {% if change.equal %}
+  <span class="diff_equal">{{ change.equal }}</span>
+  {% endif %}
+  {% if change.deleted %}
+  <span class="deleted">{{ change.deleted }}</span>
+  {% endif %}
+  {% if change.inserted %}
+  <span class="diff_inserted">{{ change.inserted }}</span>
+  {% endif %}
+{% endfor %}
+</td></tr>
+{% endspaceless %}
