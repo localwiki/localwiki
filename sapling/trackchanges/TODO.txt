@@ -1,0 +1,253 @@
+= Notes =
+
+== FileFields ==
+  * Right now we simply block delete() on FileFields.  Django's default behavior
+    is to never override a file -- it simply renames it whatever_2.txt. This
+    will work for us, for now.
+
+      * This will work for our (localwiki) purposes because we'll probably
+        have a separate model for the actual file and we can have a long
+        name attribute on it to mask the lame_name_45.jpg from the end user.
+
+  * MAYBE: We may want to create a custom storage system that does other nice
+    things like creates magic nested directories to hold files to avoid
+    having 400,000 files in a single directory.  So when we deal with
+    this we can look at doing fancy things.
+
+    But with modern filesystems (e.g. ext4) the number of files per
+    directory -- as long as they're accessed directly -- may not be a concern.
+
+    So our dumb approach will probably work!
+
+---------------
+
+DELETE THIS ALL AFTER TESTS
+
+= Notes =
+can be handled by a decorator in sapling code.
+e.g. how @AuthUser works in re.la?
+
+    o.history.save_with(
+        comment="first post!",
+        user=User(...),
+    )
+    o.save()
+
+    old_version = o.history.most_recent()
+
+    # then we can get meta info on this version by using history_meta
+    date = old_version.history_meta.date
+    user = old_version.history_meta.user
+    comment = old_version.history_meta.comment
+
+= Todo =
+
+0. Full API like modelhistory has.
+   X * option to not track change for save
+       o.history.track_changes = False
+   * revert to version - directly implement?
+
+    v = o.history.filter(..)
+    m = v.history_meta.object
+    m.save()
+
+    let's do: 
+    v.revert_to()
+
+  [later] * we should log a revert differently than
+     a delete, a change, an addition.
+
+   X * revert to and delete newer versions:
+
+      v = o.history.filter(...)
+      v.revert_to(delete_newer_versions=True)
+
+      * delete newer versions:
+
+            delete newer versions w/o logging:
+            3  | [3, 2, 1]  ->  2 | [2 , 1]
+
+            with logging:
+            3  | [3, 2, 1]  ->  2 | [2, 2, 1]
+
+      * delete_newer_versions
+      * delete_all - no need to implement this here, done by doing
+        simple for v in o.history.all(): delete v
+        
+      * track_changes = False is 'dont log'
+        -- so we manage this at the implementation level
+
+      * don't log current save (?) ('dont log in RC')
+      * delete all in-between
+
+   X * get version number of an object
+        v.history_meta.version_number
+
+        to get version by #:
+
+            try:
+                v.history.all()[n]
+            except IndexError:
+                ...
+
+        v.history_meta.get_version_number()
+
+   X * as_of by version number
+
+   !!!
+     * think about diff method (notes in moleskin)
+     * each model has a different type of diff, merge, etc.
+     @classmethod
+     def diff(m1, m2):
+        ...
+     so this'd live at Page.diff?
+
+
+!!!!!!! DO THIS !!!!!!!!!!!!
+============================
+    CHECK OUT django-moderation's admin.py and diff.py for ideas.
+============================
+!!!!!!! DO THIS !!!!!!!!!!!!
+
+     ...but we really, probably, want a diff of two models
+        on a field-by-field basis!
+          * diff of CharField, TextField,...
+          * so maybe we define a diff on the basis of what type of field there is?
+          * and we allow people to define a custom diff for a given field, somehow.
+            * maybe we have a Diff object and allow them to make MyDiff(Diff) and over-ride
+              the diff of a particular field there.  and then register MyDiff as the diff
+              for their model?
+              - also allow them to specify a set of fields to track diffs on (e.g. just 
+                body text)
+
+         --> really, we may want to break this out into its own separate django app
+             for just 'diff'
+              - then for sapling we would ask for the diff between two versions of the same model
+              - and we can test, dev this totally separately
+              - like to make it easy to add a /diff/ into a url somewhere and allow for easy
+                diffing of someone's models.  like, a view that they pass in: model, lookup function
+                 -- and then extend this, make a super-generic one based on primary key attributes of models as lookup (default)
+                    e.g. /diff/pagename/pagename2
+                    --- using some kind of default / generic lookup method
+                 -- this is a good way to see if the thing's working
+                 -- check out the way he's doing templates in django-moderation
+
+     older thoughts:
+         and we have functions that act generically here:
+
+         view_diff(m1, m2):
+            m1.__class__.diff(m1, m2) ...
+
+    /pagename/diff/<v1>/<v3>
+    /pagename/files/diff/<v1>/<v3>
+    --------------------
+
+   * How do we get a list of ALL pages with history ordered by xyz?
+     -- Page.history.all()
+
+     -- we should emphasize in the docs the two different ways to interact with trackchanges - via an instance or via the class itself
+
+==================================
+==================================
+
+0. docstrings say "history.get()- what do i mean here"
+
+ - malcolm says: managers good place for 'all objects / model as object rather than instance of object'
+                 object methods good for acting on individual objects
+
+
+0.5.  track_changes = False should be allowed to be sent in at the history = TrackChanges(auto_track=False) level.
+
+1. Tests.
+  * we need to create models for our tests.  how do we do this?
+
+2. How will we handle FileFields?  Copy what django-reversion does?
+--- django-reversion has a wrapper around FileFields that simply prevents
+    file objects being deleted on disk:
+
+            for field in local_fields:
+            if isinstance(field, models.FileField) and field.name in fields:
+                field.storage = VersionFileStorageWrapper(field.storage)
+                file_fields.append(field)
+
+and then has storage.py prevent the delete.  Let's just do the same thing.
+
+general cleanup - '-' / '+' / '~' should be named and set as choices a'la modelhistory
+
+ * how do we handle foreignkeys?
+   * NOTE * this is for following relationships - a lookup.  We shouldn't automatically
+            track changes on related models, at least not now.  In the future maybe we'll
+            allow a follow flag.
+
+    * The version datetime will suffice for tying versioned models together.
+       -- XXX TODO: add a unique_together field to the historical model that
+                    includes the history_date to ensure consistency here.
+
+  -- i think we should have a nice way of dealing w/ foreignkeys when the key'ed object is also a versionedmodel
+  -- otherwise we can't do much
+  -- when it is versioned?:
+
+    Imagine a Page-- it will have a page.files
+
+      which is either File: .. ForeignKey(Page)..
+                   or Page: ... files = ManyToManyField(Files)
+
+    obviously, this can all be handled by hand by looking up the version of the 
+    foreignkey object that's nearest (date wise) to the object at hand.
+
+      * can automate (on/off via a flag) -- maybe m.history.auto_foreign_key...
+
+     --- investigate and implement this
+
+     check out what django-reversion does w/ follow_relationships()
+
+
+document fully.  explain how to over-ride get_extra_fields (p 284 prodjango).
+   * also make sure to explain that many of the methods are for convience
+     - almost everything can be done via query sets!  m.history.filter()...
+   * write sphinx documentation?
+
+tests!
+   * test saves, etc
+   * test full api
+   * test reviving a deleted model
+     - via primary key
+     - via unique field
+     - via unique_together field
+
+* setuptools install thing
+
+-------
+FOR OUR REAL TODO FILE (e.g. AFTER OUR INITIAL DEV):
+
+1. Generic 'diff' of two trackedchanges models.  What's the best way to do this?
+
+2. Can't figure out how to add an __init__ method (via an attribute, or a signal) to
+   the history model.  As soon as I add one the querysets return [].  Did some brief
+   investigation but haven't been able to figure this out.  If we can implement an 
+   __init__ method then we can clean up some code.
+3. admin interface - wait on this (after basic release). just leave it as a todo.
+   ** VERY IMPORTANT ** SHOULD DO
+   - look at how other similar projects are doing admin integration
+   - we need to grab the current user, ip, etc
+     - don't use currentuserfield() approach - instead find a way to patch
+       the admin directly
+         ( this is what django-reversion does )
+   - we can mostly study the django-reversion code here
+   - two sides:
+      * logging info for actions taken via admin
+      * viewing all changes for tracked-changes models in admin
+   - look at django 1.1 change history thing in admin - a "History" button appears when viewing a model
+      - called the django admin log
+      - http://127.0.0.1:8000/admin/pagecms/page/11/history/
+      - we should probably just over-ride this / hook into this on trackchanges models
+
+4. flag reverts differently than normal changes.  keep track of the version
+   from which we reverted -- by revision id (? - global or per-page ) or 
+   date?
+
+= Uninteresting developer notes =
+  * If we wanted to support something like real time editing with logging of all
+    the incremental edits, we could form a "bundle" of these real-time edits
+    that exists between concrete saves.  We could create a new model to store
+    real-time only data and attach it to each concrete save.
