@@ -103,8 +103,6 @@ class TrackChanges(object):
         # TODO
         # Add AutoUserField here and make sure we can over-ride it
         # Similarly, make a AutoIPAddressField
-        # XXX
-        rel_nm = '_%s_history' % model._meta.object_name.lower()
 
         fields = {
             'history_id': models.AutoField(primary_key=True),
@@ -117,18 +115,15 @@ class TrackChanges(object):
             'history_comment': models.CharField(max_length=200, blank=True,
                                                 null=True
             ),
-            'history_user': AutoUserField(related_name=rel_nm),
-            #'history_user_ip': AutoIPAddressField,
-            #'history_user': models.ForeignKey(User, null=True),
-            #'history_user_ip': models.IPAddressField(null=True, blank=True),
+            'history_user': AutoUserField(null=True),
+            'history_user_ip': AutoIPAddressField(null=True),
             'history_object': HistoricalObjectDescriptor(model),
             'history_get_version_number': version_number_of,
             '__unicode__': lambda self: u'%s as of %s' % (self.history_object,
                                                           self.history_date)
         }
-        # lookup function for cleaniness.
-        # h.history_ip_address - we instead write
-        # h.history_meta.ip_address
+        # lookup function for cleaniness. Instead of doing
+        # h.history_ip_address we can write h.history_meta.ip_address
         fields['history_meta'] = HistoricalMetaInfo()
 
         return fields
@@ -189,9 +184,15 @@ class TrackChanges(object):
 
 class AutoUserField(models.ForeignKey):
     def __init__(self, **kws):
-        super(AutoUserField, self).__init__(User, null=True, **kws)
+        super(AutoUserField, self).__init__(User, **kws)
 
     def contribute_to_class(self, cls, name):
         super(AutoUserField, self).contribute_to_class(cls, name)
-        registry = FieldRegistry()
+        registry = FieldRegistry('user')
+        registry.add_field(cls, self)
+
+class AutoIPAddressField(models.IPAddressField):
+    def contribute_to_class(self, cls, name):
+        super(AutoIPAddressField, self).contribute_to_class(cls, name)
+        registry = FieldRegistry('ip')
         registry.add_field(cls, self)
