@@ -23,6 +23,15 @@ class HistoricalMetaInfo(object):
         except AttributeError, s:
             raise AttributeError("history_info has no attribute %s" % name)
 
+    def __setattr__(self, name, val):
+        if name == 'instance':
+            self.__dict__['instance'] = val
+            return
+        try:
+            self.__dict__['instance'].__setattr__('history_%s' % name, val)
+        except AttributeError, s:
+            raise AttributeError("history_info has no attribute %s" % name)
+
 def revert_to(hm, delete_newer_versions=False):
     """
     This is used on a *historical instance* - e.g. something you get
@@ -43,6 +52,9 @@ def revert_to(hm, delete_newer_versions=False):
         for v in newer:
             v.delete()
     m.save()
+
+def no_attribute_setting(o, x):
+    raise TypeError("You can't set this attribute!")
 
 def version_number_of(hm):
     """

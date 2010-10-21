@@ -267,7 +267,7 @@ class TrackChangesTest(TestCase):
         for i in range(1, 100):
             v_cur = m.history.most_recent()
             date = v_cur.history_info.date
-            self.assertEqual(v_cur.history_info.get_version_number(), i)
+            self.assertEqual(v_cur.history_info.version_number, i)
             m.b += "."
             m.save()
 
@@ -303,6 +303,23 @@ class TrackChangesTest(TestCase):
             self.assertEqual(m_old.c, i)
 
     def test_revert_to(self):
+        m = M2(a="Sup", b="Dude", c=0)
+        m.save()
+
+        for i in range(1, 20):
+            m.c = i
+            m.save() 
+
+        m_old = m.history.filter(c=4)[0]
+        m_old.revert_to()
+
+        m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
+        self.assertEqual(m_cur.c, 4)
+
+        # version before most recent is what we expect
+        self.assertEqual(m_cur.history.all()[1].c, 19)
+
+    def test_revert_to_delete_newer(self):
         m = M2(a="Sup", b="Dude", c=0)
         m.save()
 

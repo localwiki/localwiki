@@ -21,8 +21,8 @@
 
 = Todo =
 
--2: revert, delete in between, no revision tests
-----------------
+-2: revert, delete in between, no revision tests.  reverts should be logged differently than ~
+
 -1: ForeignKey lookup stuff.  maybe like:
 
  - ONLY figure it out on a lookup.

@@ -121,7 +121,7 @@ class TrackChanges(object):
             'history_id': models.AutoField(primary_key=True),
             'history_object': HistoricalObjectDescriptor(model),
             'history_date': models.DateTimeField(default=datetime.datetime.now),
-            'history_get_version_number': version_number_of,
+            'history_version_number': property(version_number_of, no_attribute_setting),
             'history_type': models.CharField(max_length=1, choices=(
                 ('+', 'Created'),
                 ('~', 'Changed'),
