@@ -95,15 +95,15 @@ class HistoryManager(models.Manager):
         @param delete_newer_versions: if True, delete all versions in the
                history newer than this version.
         """
-        if not self.instance and not hasattr(self.instance, 'history_meta'):
+        if not self.instance or not hasattr(self.instance, 'history_info'):
             raise TypeError("revert_to() must be called via a history object. "
                             "You can get a history object by doing something "
                             "like m.history.get(...)"
             )
         # the model instance
-        m = self.instance.history_meta.object
+        m = self.instance.history_info.object
         if delete_newer_versions:
-            newer = m.history.filter(date__gt=self.instance.history_meta.date)
+            newer = m.history.filter(date__gt=self.instance.history_info.date)
             for v in newer:
                 v.delete()
         m.save()

@@ -49,7 +49,8 @@ class TrackChanges(object):
         @returns: Class representing the historical version of the model.
         """
         attrs = self.copy_fields(model)
-        attrs.update(self.get_extra_fields(model))
+        attrs.update(self._get_history_fields(model))
+        attrs.update(self.get_extra_history_fields(model))
         attrs.update(Meta=type('Meta', (), self.get_meta_options(model)))
         name = '%s_history' % model._meta.object_name
         return type(name, (models.Model,), attrs)
@@ -91,40 +92,46 @@ class TrackChanges(object):
 
         return fields
 
-    def get_extra_fields(self, model):
+    def get_extra_history_fields(self, model):
         """
-        Returns a dictionary of fields that will be added to the historical
-        record model, in addition to the ones returned by copy_fields below.
+        Returns a dictionary of the non-essential fields that will be added to
+        the historical record model.
 
         If you subclass TrackChanges this is a good method to over-ride --
         simply add your own values to the fields for custom fields.
         """
-        # XXX
-        # TODO
-        # Add AutoUserField here and make sure we can over-ride it
-        # Similarly, make a AutoIPAddressField
-
         fields = {
-            'history_id': models.AutoField(primary_key=True),
-            'history_date': models.DateTimeField(default=datetime.datetime.now),
-            'history_type': models.CharField(max_length=1, choices=(
-                ('+', 'Created'),
-                ('~', 'Changed'),
-                ('-', 'Deleted'),
-            )),
             'history_comment': models.CharField(max_length=200, blank=True,
                                                 null=True
             ),
             'history_user': AutoUserField(null=True),
             'history_user_ip': AutoIPAddressField(null=True),
-            'history_object': HistoricalObjectDescriptor(model),
-            'history_get_version_number': version_number_of,
             '__unicode__': lambda self: u'%s as of %s' % (self.history_object,
                                                           self.history_date)
         }
-        # lookup function for cleaniness. Instead of doing
-        # h.history_ip_address we can write h.history_meta.ip_address
-        fields['history_meta'] = HistoricalMetaInfo()
+
+        return fields
+
+    def _get_history_fields(self, model):
+        """
+        Returns a dictionary of the essential fields that will be added to the
+        historical record model, in addition to the ones returned by copy_fields.
+        """
+        fields = {
+            'history_id': models.AutoField(primary_key=True),
+            'history_object': HistoricalObjectDescriptor(model),
+            'history_date': models.DateTimeField(default=datetime.datetime.now),
+            'history_get_version_number': version_number_of,
+            'history_type': models.CharField(max_length=1, choices=(
+                ('+', 'Created'),
+                ('~', 'Changed'),
+                ('-', 'Deleted'),
+            )),
+            # lookup function for cleaniness. Instead of doing
+            # h.history_ip_address we can write h.history_info.ip_address
+            'history_info': HistoricalMetaInfo(),
+            'revert_to': revert_to,
+        }
 
         return fields
 

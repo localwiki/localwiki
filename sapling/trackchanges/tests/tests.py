@@ -140,9 +140,9 @@ class TrackChangesTest(TestCase):
         self.assertEqual(m.history.most_recent().b, "Bnew!")
         self.assertEqual(m.history.most_recent().c, m_old.c)
         self.assertEqual(m.history.most_recent().d, m_old.d)
-        self.assertEqual(m.history.most_recent().history_meta.object.b, "Bnew!")
+        self.assertEqual(m.history.most_recent().history_info.object.b, "Bnew!")
 
-        recent_obj = m.history.most_recent().history_meta.object
+        recent_obj = m.history.most_recent().history_info.object
         vals_recent = [ getattr(recent_obj, field)
                         for field in recent_obj._meta.get_all_field_names()
         ]
@@ -166,9 +166,9 @@ class TrackChangesTest(TestCase):
         m = M16Unique.objects.get(a="What")
         m.delete()
         del_m = m.history.most_recent()
-        del_m_obj = del_m.history_meta.object
+        del_m_obj = del_m.history_info.object
 
-        self.assertEqual(del_m.history_meta.type, '-')
+        self.assertEqual(del_m.history_info.type, '-')
         self.assertEqual(del_m_obj.a, m.a)
         self.assertEqual(del_m_obj.b, m.b)
         self.assertEqual(del_m_obj.c, m.c)
@@ -185,7 +185,7 @@ class TrackChangesTest(TestCase):
 
         # A filter on the unique field should do the trick
         history_entries = M16Unique.history.filter(a="What")
-        m = history_entries[0].history_meta.object
+        m = history_entries[0].history_info.object
         self.assertEqual(m.a, "What")
         self.assertEqual(m.b, "This is the new long text")
         del m
@@ -266,8 +266,8 @@ class TrackChangesTest(TestCase):
         m.save()
         for i in range(1, 100):
             v_cur = m.history.most_recent()
-            date = v_cur.history_meta.date
-            self.assertEqual(v_cur.history_meta.get_version_number(), i)
+            date = v_cur.history_info.date
+            self.assertEqual(v_cur.history_info.get_version_number(), i)
             m.b += "."
             m.save()
 
@@ -301,3 +301,20 @@ class TrackChangesTest(TestCase):
         for i in range(1, 20):
             m_old = m.history.as_of(date=datetime.datetime(2010, 10, i, 10))
             self.assertEqual(m_old.c, i)
+
+    def test_revert_to(self):
+        m = M2(a="Sup", b="Dude", c=0)
+        m.save()
+
+        for i in range(1, 20):
+            m.c = i
+            m.save() 
+
+        m_old = m.history.filter(c=4)[0]
+        m_old.revert_to()
+
+        m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
+        self.assertEqual(m_cur.c, 4)
+
+        # version before most recent is what we expect
+        self.assertEqual(m_cur.history.all()[1].c, 19)
