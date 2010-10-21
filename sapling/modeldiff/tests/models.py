@@ -12,6 +12,12 @@ class M1(models.Model):
     b = models.TextField()
     c = models.DateTimeField()
     d = models.IntegerField()
+    
+class M1Diff(modeldiff.BaseModelDiff):
+    fields = ('d', 'c', 'b', 'a',)
+    
+class M1FieldDiff(modeldiff.BaseFieldDiff):
+    pass
 
 class M2(models.Model):
     a = models.CharField(max_length=200)

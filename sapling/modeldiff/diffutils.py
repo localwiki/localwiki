@@ -131,6 +131,9 @@ class BaseModelDiff(object):
     
 class TextFieldDiff(BaseFieldDiff):
     def as_html(self):
+        d = self.get_diff()
+        if d is None:
+            return '<tr><td colspan="2">(No differences found)</td></tr>'
         return render_to_string('modeldiff/text_diff.html', {'diff': self.get_diff()})
     
     def get_diff(self):
