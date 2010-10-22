@@ -96,8 +96,7 @@ class DiffRegistryTest(TestCase):
         r = self.registry
         for t in TEST_MODELS:
             d = r.get_diff_util(t)
-            self.assertTrue(issubclass(d, BaseModelDiff))
-            
+            self.assertTrue(issubclass(d, BaseModelDiff))          
             
     def test_register_model(self):
         '''
@@ -112,3 +111,10 @@ class DiffRegistryTest(TestCase):
         '''
         self.registry.register(db.models.CharField, M1FieldDiff)
         self.failUnlessEqual(self.registry.get_diff_util(db.models.CharField), M1FieldDiff)
+        
+    def test_cannot_diff_something_random(self):
+        '''
+        If we try to diff something that is neither a model nor a field, raise exception.
+        '''
+        self.failUnlessRaises(modeldiff.diffutils.DiffUtilNotFound, self.registry.get_diff_util, DiffRegistryTest)
+    

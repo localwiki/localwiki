@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.utils.safestring import SafeString, mark_safe
 
 
-class DiffUtilNotFound(object):
+class DiffUtilNotFound(Exception):
     '''
     No appropriate diff util registered for this object
     '''
