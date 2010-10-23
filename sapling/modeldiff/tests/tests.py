@@ -17,7 +17,8 @@ from utils import TestSettingsManager
 from models import M1, M1Diff, M1FieldDiff, M2, TEST_MODELS
 
 import modeldiff
-from modeldiff.diffutils import Registry, BaseFieldDiff, BaseModelDiff, TextFieldDiff
+from modeldiff.diffutils import Registry, BaseFieldDiff, BaseModelDiff
+from modeldiff.diffutils import TextFieldDiff, FileFieldDiff
 
 mgr = TestSettingsManager()
 INSTALLED_APPS=list(settings.INSTALLED_APPS)
@@ -70,6 +71,8 @@ class BaseFieldDiffTest(TestCase):
 class TextFieldDiffTest(BaseFieldDiffTest):
     test_class = TextFieldDiff
     
+class FileFieldDiffTest(BaseFieldDiffTest):
+    test_class = FileFieldDiff
         
 class DiffRegistryTest(TestCase):
     

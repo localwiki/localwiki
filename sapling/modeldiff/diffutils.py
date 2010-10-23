@@ -138,7 +138,22 @@ class TextFieldDiff(BaseFieldDiff):
     
     def get_diff(self):
         return get_diff_operations(self.field1, self.field2)
-
+    
+class FileFieldDiff(BaseFieldDiff):
+    
+    def get_diff(self):
+        '''
+        Returns a dictionary of all the file attributes or None if it's the same file
+        '''
+        if self.field1 == self.field2:
+            return None
+        
+        diff = {
+                'name': { 'deleted': self.field1.name, 'inserted': self.field2.name },
+               }
+        return diff
+        
+        
 def get_diff_operations(a, b):
     if a == b:
         return None
@@ -186,3 +201,4 @@ def diff(object1, object2):
 
 register(models.CharField, TextFieldDiff)
 register(models.TextField, TextFieldDiff)
+register(models.FileField, FileFieldDiff)
