@@ -32,7 +32,7 @@ class ModelDiffTest(TestCase):
     def tearDown(self):
         pass
     
-    def test_identical_models(self):
+    def test_identical(self):
         '''
         The diff between two identical models, or a model and itself should be None
         '''
@@ -45,6 +45,17 @@ class ModelDiffTest(TestCase):
         
         d = modeldiff.diff(m1, m2).as_dict()
         self.assertEqual(d, None)
+    
+    def test_nearly_identical(self):
+        '''
+        The diff between models should consist of only the fields that are different
+        '''
+        vals = { 'a': 'Lorem', 'b': 'Ipsum', 'c': datetime.datetime.now(), 'd': 123}
+        m1 = M1.objects.create(**vals)
+        vals['a'] = 'Ipsum'
+        m2 = M1.objects.create(**vals)
+        d = modeldiff.diff(m1, m2).as_dict()
+        self.assertTrue(len(d) == 1)
 
 class BaseFieldDiffTest(TestCase):
     test_class = BaseFieldDiff
@@ -67,9 +78,30 @@ class BaseFieldDiffTest(TestCase):
         d = self.test_class(a, a).as_html()
         self.assertTrue("No differences" in d)
         
+    def test_deleted_inserted(self):
+        a = 123
+        b = 456
+        d = self.test_class(a, b).as_dict()
+        self.assertTrue(d['deleted'] == a)
+        self.assertTrue(d['inserted'] == b)
+        
 class TextFieldDiffTest(BaseFieldDiffTest):
     test_class = TextFieldDiff
     
+    def test_deleted_inserted(self):
+        a = 'abc'
+        b = 'def'
+        d = self.test_class(a, b).as_dict()
+        self.assertTrue(len(d) == 1)
+        self.assertTrue(d[0]['deleted'] == a)
+        self.assertTrue(d[0]['inserted'] == b)
+    
+    def test_equal(self):
+        a = 'abcdef'
+        b = 'abcghi'
+        d = self.test_class(a, b).as_dict()
+        self.assertTrue(len(d) == 2)
+        self.assertTrue(d[0]['equal'] == 'abc')
         
 class DiffRegistryTest(TestCase):
     

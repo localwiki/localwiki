@@ -25,7 +25,7 @@ class BaseFieldDiff():
     def get_diff(self):
         if self.field1 == self.field2:
             return None
-        return { "deleted": self.field1, "inserted": self.field2 }
+        return { 'deleted': self.field1, 'inserted': self.field2 }
     
     def as_dict(self):
         '''
