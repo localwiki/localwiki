@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.utils.safestring import SafeString, mark_safe
 
 
-class DiffUtilNotFound(object):
+class DiffUtilNotFound(Exception):
     '''
     No appropriate diff util registered for this object
     '''
@@ -25,7 +25,7 @@ class BaseFieldDiff():
     def get_diff(self):
         if self.field1 == self.field2:
             return None
-        return { "deleted": self.field1, "inserted": self.field2 }
+        return { 'deleted': self.field1, 'inserted': self.field2 }
     
     def as_dict(self):
         '''
@@ -131,11 +131,42 @@ class BaseModelDiff(object):
     
 class TextFieldDiff(BaseFieldDiff):
     def as_html(self):
-        return render_to_string('modeldiff/text_diff.html', {'diff': self.get_diff()})
+        d = self.get_diff()
+        if d is None:
+            return '<tr><td colspan="2">(No differences found)</td></tr>'
+        return render_to_string('modeldiff/text_diff.html', {'diff': d})
     
     def get_diff(self):
         return get_diff_operations(self.field1, self.field2)
+    
+class FileFieldDiff(BaseFieldDiff):
+    
+    def get_diff(self):
+        '''
+        Returns a dictionary of all the file attributes or None if it's the same file
+        '''
+        if self.field1 == self.field2:
+            return None
+        
+        diff = {
+                'name': { 'deleted': self.field1.name, 'inserted': self.field2.name },
+                'url': { 'deleted': self.field1.url, 'inserted': self.field2.url },
+               }
+        return diff
+    
+    def as_html(self):
+        d = self.get_diff()
+        if d is None:
+            return '<tr><td colspan="2">(No differences found)</td></tr>'
+        return render_to_string('modeldiff/file_diff.html', {'diff': d})
 
+class ImageFieldDiff(FileFieldDiff):
+    def as_html(self):
+        d = self.get_diff()
+        if d is None:
+            return '<tr><td colspan="2">(No differences found)</td></tr>'
+        return render_to_string('modeldiff/image_diff.html', {'diff': d})
+        
 def get_diff_operations(a, b):
     if a == b:
         return None
@@ -162,14 +193,19 @@ class Registry(object):
     def register(self, model_or_field, diff_util):
         self._registry[model_or_field] = diff_util
         
+        
     def get_diff_util(self, model_or_field):
         if model_or_field in self._registry:
             return self._registry[model_or_field]
-        # unregistered, return generic diff for now
-        if issubclass(model_or_field, models.Model):
+        
+        if model_or_field is models.Model:
             return BaseModelDiff
-        if issubclass(model_or_field, models.Field):
+        if model_or_field is models.Field:
             return BaseFieldDiff
+        # unregistered, try the base class
+        if model_or_field.__base__ is not object:
+            return self.get_diff_util(model_or_field.__base__)
+        
         raise DiffUtilNotFound
         
 registry = Registry()
@@ -183,3 +219,5 @@ def diff(object1, object2):
 
 register(models.CharField, TextFieldDiff)
 register(models.TextField, TextFieldDiff)
+register(models.FileField, FileFieldDiff)
+register(models.ImageField, ImageFieldDiff)
