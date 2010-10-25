@@ -1,0 +1,8 @@
+{% spaceless %}
+{% for field, del_ins in diff.items %}
+  <tr>
+  <td>{{ del_ins.deleted }}</td>
+  <td>{{ del_ins.inserted }}</td>
+  </tr>
+{% endfor %}
+{% endspaceless %}

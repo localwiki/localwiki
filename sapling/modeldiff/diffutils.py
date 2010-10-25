@@ -134,7 +134,7 @@ class TextFieldDiff(BaseFieldDiff):
         d = self.get_diff()
         if d is None:
             return '<tr><td colspan="2">(No differences found)</td></tr>'
-        return render_to_string('modeldiff/text_diff.html', {'diff': self.get_diff()})
+        return render_to_string('modeldiff/text_diff.html', {'diff': d})
     
     def get_diff(self):
         return get_diff_operations(self.field1, self.field2)
@@ -150,9 +150,22 @@ class FileFieldDiff(BaseFieldDiff):
         
         diff = {
                 'name': { 'deleted': self.field1.name, 'inserted': self.field2.name },
+                'url': { 'deleted': self.field1.url, 'inserted': self.field2.url },
                }
         return diff
-        
+    
+    def as_html(self):
+        d = self.get_diff()
+        if d is None:
+            return '<tr><td colspan="2">(No differences found)</td></tr>'
+        return render_to_string('modeldiff/file_diff.html', {'diff': d})
+
+class ImageFieldDiff(FileFieldDiff):
+    def as_html(self):
+        d = self.get_diff()
+        if d is None:
+            return '<tr><td colspan="2">(No differences found)</td></tr>'
+        return render_to_string('modeldiff/image_diff.html', {'diff': d})
         
 def get_diff_operations(a, b):
     if a == b:
@@ -207,3 +220,4 @@ def diff(object1, object2):
 register(models.CharField, TextFieldDiff)
 register(models.TextField, TextFieldDiff)
 register(models.FileField, FileFieldDiff)
+register(models.ImageField, ImageFieldDiff)

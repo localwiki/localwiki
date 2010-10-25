@@ -14,11 +14,11 @@ from django.core.files.storage import default_storage
 from django import db
 
 from utils import TestSettingsManager
-from models import M1, M1Diff, M1FieldDiff, M2, TEST_MODELS
+from models import M1, M1Diff, M1FieldDiff, M2, M3, TEST_MODELS
 
 import modeldiff
 from modeldiff.diffutils import Registry, BaseFieldDiff, BaseModelDiff
-from modeldiff.diffutils import TextFieldDiff, FileFieldDiff
+from modeldiff.diffutils import TextFieldDiff, FileFieldDiff, ImageFieldDiff
 
 mgr = TestSettingsManager()
 INSTALLED_APPS=list(settings.INSTALLED_APPS)
@@ -120,6 +120,9 @@ class FileFieldDiffTest(BaseFieldDiffTest):
         
         m1.a.delete()
         m2.a.delete()
+
+class ImageFieldDiffTest(FileFieldDiffTest):
+    test_class = ImageFieldDiff
         
 class DiffRegistryTest(TestCase):
     

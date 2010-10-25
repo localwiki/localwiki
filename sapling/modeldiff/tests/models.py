@@ -22,6 +22,9 @@ class M1FieldDiff(modeldiff.BaseFieldDiff):
 class M2(models.Model):
     a = models.FileField(upload_to='test_modeldiff_uploads')
 
+class M3(models.Model):
+    a = models.ImageField(upload_to='test_modeldiff_uploads')
+
 #class M3BigInteger(models.Model):
 #    a = models.CharField(max_length=200)
 #    b = models.BooleanField(default=False)
