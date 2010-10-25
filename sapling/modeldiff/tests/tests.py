@@ -147,7 +147,18 @@ class DiffRegistryTest(TestCase):
         for t in TEST_MODELS:
             d = r.get_diff_util(t)
             self.assertTrue(issubclass(d, BaseModelDiff))          
-            
+    
+    def test_fallback_diff(self):
+        class AwesomeImageField(db.models.ImageField):
+            pass
+        '''
+        If we don't have a diff util for the exact field type, we should fall back to the
+        diff util for the base class, until we find a registered util
+        '''
+        self.registry.register(db.models.FileField, FileFieldDiff)
+        d = self.registry.get_diff_util(AwesomeImageField)
+        self.assertTrue(issubclass(d, FileFieldDiff))
+        
     def test_register_model(self):
         '''
         If we register a modeldiff for a model, we should get that and not BaseModelDiff

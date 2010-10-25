@@ -180,14 +180,19 @@ class Registry(object):
     def register(self, model_or_field, diff_util):
         self._registry[model_or_field] = diff_util
         
+        
     def get_diff_util(self, model_or_field):
         if model_or_field in self._registry:
             return self._registry[model_or_field]
-        # unregistered, return generic diff for now
-        if issubclass(model_or_field, models.Model):
+        
+        if model_or_field is models.Model:
             return BaseModelDiff
-        if issubclass(model_or_field, models.Field):
+        if model_or_field is models.Field:
             return BaseFieldDiff
+        # unregistered, try the base class
+        if model_or_field.__base__ is not object:
+            return self.get_diff_util(model_or_field.__base__)
+        
         raise DiffUtilNotFound
         
 registry = Registry()
