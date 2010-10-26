@@ -24,6 +24,9 @@ class M2(models.Model):
 
 class M3(models.Model):
     a = models.ImageField(upload_to='test_modeldiff_uploads')
+    
+class M4ForeignKey(models.Model):
+    a = models.ForeignKey('M1')
 
 #class M3BigInteger(models.Model):
 #    a = models.CharField(max_length=200)

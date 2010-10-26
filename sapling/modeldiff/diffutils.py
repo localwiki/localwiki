@@ -100,8 +100,8 @@ class BaseModelDiff(object):
         if self.fields:
             diff_fields = self.fields
         else:
-            diff_fields = self.model1._meta.get_all_field_names()
-            
+            diff_fields = [ f.name for f in self.model1._meta.fields ]
+
         for name in diff_fields:
             if isinstance(name, basestring):
                 field = self.model1._meta.get_field(name)
@@ -214,7 +214,8 @@ class Registry(object):
     def get_diff_util(self, model_or_field):
         if model_or_field in self._registry:
             return self._registry[model_or_field]
-        
+        if model_or_field is models.ForeignKey:
+            return BaseModelDiff
         if model_or_field is models.Model:
             return BaseModelDiff
         if model_or_field is models.Field:

@@ -14,7 +14,7 @@ from django.core.files.storage import default_storage
 from django import db
 
 from utils import TestSettingsManager
-from models import M1, M1Diff, M1FieldDiff, M2, M3, TEST_MODELS
+from models import M1, M1Diff, M1FieldDiff, M2, M3, M4ForeignKey, TEST_MODELS
 
 import modeldiff
 from modeldiff.diffutils import Registry, BaseFieldDiff, BaseModelDiff
@@ -57,6 +57,39 @@ class ModelDiffTest(TestCase):
         m2 = M1.objects.create(**vals)
         d = modeldiff.diff(m1, m2).as_dict()
         self.assertTrue(len(d) == 1)
+    
+    def test_foreign_key_identical(self):
+        '''
+        The diff between two ForeignKey fields to the same object should be None
+        '''
+        vals = { 'a': 'Lorem', 'b': 'Ipsum', 'c': datetime.datetime.now(), 'd': 123}
+        m1 = M1.objects.create(**vals)
+        
+        m3 = M4ForeignKey.objects.create(a=m1)
+        m4 = M4ForeignKey.objects.create(a=m1)
+        
+        d = modeldiff.diff(m3, m4).as_dict()
+        self.assertTrue(d is None)
+    
+    def test_foreign_key(self):
+        '''
+        The diff between two ForeignKey fields should be the same as the diff
+        between the two objects referenced by the fields
+        '''
+        vals = { 'a': 'Lorem', 'b': 'Ipsum', 'c': datetime.datetime.now(), 'd': 123}
+        m1 = M1.objects.create(**vals)
+        vals = { 'a': 'Dolor', 'b': 'Ipsum', 'c': datetime.datetime.now(), 'd': 123}
+        m2 = M1.objects.create(**vals)
+        
+        m3 = M4ForeignKey.objects.create(a=m1)
+        m4 = M4ForeignKey.objects.create(a=m2)
+        
+        d1 = modeldiff.diff(m3, m4).as_dict()
+        self.assertTrue(d1['a'])
+        
+        d2 = modeldiff.diff(m1, m2).as_dict()
+        
+        self.assertEqual(d1['a'], d2)
 
 class BaseFieldDiffTest(TestCase):
     test_class = BaseFieldDiff
@@ -181,4 +214,3 @@ class DiffRegistryTest(TestCase):
         If we try to diff something that is neither a model nor a field, raise exception.
         '''
         self.failUnlessRaises(modeldiff.diffutils.DiffUtilNotFound, self.registry.get_diff_util, DiffRegistryTest)
-    
