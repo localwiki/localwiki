@@ -93,15 +93,15 @@ class TextFieldDiffTest(BaseFieldDiffTest):
         a = 'abc'
         b = 'def'
         d = self.test_class(a, b).as_dict()
-        self.assertTrue(len(d) == 1)
+        self.assertTrue(len(d) == 2)
         self.assertTrue(d[0]['deleted'] == a)
-        self.assertTrue(d[0]['inserted'] == b)
+        self.assertTrue(d[1]['inserted'] == b)
     
     def test_equal(self):
         a = 'abcdef'
         b = 'abcghi'
         d = self.test_class(a, b).as_dict()
-        self.assertTrue(len(d) == 2)
+        self.assertTrue(len(d) == 3)
         self.assertTrue(d[0]['equal'] == 'abc')
 
 class FileFieldDiffTest(BaseFieldDiffTest):

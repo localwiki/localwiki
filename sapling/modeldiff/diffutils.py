@@ -4,6 +4,8 @@ from django.db import models
 from django.template.loader import render_to_string
 from django.utils.safestring import SafeString, mark_safe
 
+import diff_match_patch
+
 
 class DiffUtilNotFound(Exception):
     '''
@@ -137,7 +139,7 @@ class TextFieldDiff(BaseFieldDiff):
         return render_to_string('modeldiff/text_diff.html', {'diff': d})
     
     def get_diff(self):
-        return get_diff_operations(self.field1, self.field2)
+        return get_diff_operations_clean(self.field1, self.field2)
     
 class FileFieldDiff(BaseFieldDiff):
     
@@ -184,6 +186,21 @@ def get_diff_operations(a, b):
             operations.append({ 'deleted': deleted,
                                 'inserted': inserted })
     return operations
+
+def get_diff_operations_clean(a, b):
+    if a == b:
+        return None
+    dmp = diff_match_patch.diff_match_patch()
+    dmp.Diff_Timeout = 0.01
+    dmp.Diff_EditCost = 4
+    
+    diff = dmp.diff_main(a, b, False)
+    dmp.diff_cleanupSemantic(diff)
+    op_map = { diff_match_patch.diff_match_patch.DIFF_DELETE: 'deleted',
+               diff_match_patch.diff_match_patch.DIFF_EQUAL: 'equal',
+               diff_match_patch.diff_match_patch.DIFF_INSERT: 'inserted'
+              }
+    return [ { op_map[op]: data } for op, data in diff ]
     
 class Registry(object):
     
