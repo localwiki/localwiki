@@ -27,7 +27,6 @@ class TestSettingsManager(object):
 
     def syncdb(self):
         loading.cache.loaded = False
-        call_command('syncdb', verbosity=0)
 
     def revert(self):
         for k,v in self._original_settings.iteritems():
@@ -38,20 +37,3 @@ class TestSettingsManager(object):
         if 'INSTALLED_APPS' in self._original_settings:
             self.syncdb()
         self._original_settings = {}
-
-
-class SettingsTestCase(TestCase):
-    """
-    A subclass of the Django TestCase with a settings_manager
-    attribute which is an instance of TestSettingsManager.
-
-    Comes with a tearDown() method that calls
-    self.settings_manager.revert().
-
-    """
-    def __init__(self, *args, **kwargs):
-        super(SettingsTestCase, self).__init__(*args, **kwargs)
-        self.settings_manager = TestSettingsManager()
-    
-    def tearDown(self):
-        self.settings_manager.revert()
