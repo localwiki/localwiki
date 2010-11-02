@@ -16,6 +16,7 @@
 package org.outerj.daisy.diff.output;
 
 import org.outerj.daisy.diff.html.HtmlSaxDiffOutput;
+import org.outerj.daisy.diff.html.dom.BodyNode;
 import org.outerj.daisy.diff.html.dom.TagNode;
 import org.xml.sax.SAXException;
 
@@ -35,4 +36,6 @@ public interface DiffOutput {
 	 * @throws SAXException something went wrong with parsing.
 	 */
 	void generateOutput(TagNode node) throws SAXException;
+
+	void generateSideBySideOutput(TagNode nodeLeft, TagNode nodeRight) throws SAXException;
 }

@@ -299,16 +299,17 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
                     .getLastCommonParentDepth()) {
 
                 // Inserting at the front
-                if (prevResult.isSplittingNeeded()) {
+                /*if (prevResult.isSplittingNeeded()) {
                     prevLeaf.getParent().splitUntill(
                             prevResult.getLastCommonParent(), prevLeaf,
                             true);
-                }
-                prevLeaf = deletedNodes.remove(0).copyTree();
-                prevLeaf.setParent(prevResult.getLastCommonParent());
-                prevResult.getLastCommonParent().addChild(
-                        prevResult.getIndexInLastCommonParent() + 1,
-                        prevLeaf);
+                }*/
+                deletedNodes.remove(0);
+               // prevLeaf = deletedNodes.remove(0).copyTree();
+              //  prevLeaf.setParent(prevResult.getLastCommonParent());
+               // prevResult.getLastCommonParent().addChild(
+                //        prevResult.getIndexInLastCommonParent() + 1,
+                //        prevLeaf);
 
             } else if (prevResult.getLastCommonParentDepth() < nextResult
                     .getLastCommonParentDepth()) {
@@ -325,11 +326,12 @@ public class TextNodeComparator implements IRangeComparator, Iterable<TextNode> 
                                 .getIndexInLastCommonParent() + 1);
                     }
                 }
-                nextLeaf = deletedNodes.remove(deletedNodes.size() - 1)
-                .copyTree();
-                nextLeaf.setParent(nextResult.getLastCommonParent());
-                nextResult.getLastCommonParent().addChild(
-                        nextResult.getIndexInLastCommonParent(), nextLeaf);
+                deletedNodes.remove(deletedNodes.size() - 1);
+               // nextLeaf = deletedNodes.remove(deletedNodes.size() - 1)
+               // .copyTree();
+               // nextLeaf.setParent(nextResult.getLastCommonParent());
+               // nextResult.getLastCommonParent().addChild(
+               //         nextResult.getIndexInLastCommonParent(), nextLeaf);
             } else
                 throw new IllegalStateException();
 

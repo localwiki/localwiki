@@ -39,6 +39,25 @@ public class HtmlSaxDiffOutput implements DiffOutput{
         this.handler = handler;
         this.prefix = name;
     }
+    
+    public void generateSideBySideOutput(TagNode nodeLeft, TagNode nodeRight)
+		throws SAXException {
+    	AttributesImpl attrs = new AttributesImpl();
+    	attrs.addAttribute("", "width", "width", "CDATA", "100%");
+    	handler.startElement("", "table", "table", attrs);
+    	handler.startElement("", "tr", "tr", new AttributesImpl());
+    	attrs = new AttributesImpl();
+    	//attrs.addAttribute("", "max-width", "max-width", "CDATA", "50%");
+    	
+    	handler.startElement("", "td", "td", attrs);
+    	generateOutput(nodeLeft);
+    	handler.endElement("", "td", "td");
+    	handler.startElement("", "td", "td", attrs);
+    	generateOutput(nodeRight);
+    	handler.endElement("", "td", "td");
+    	handler.endElement("", "tr", "tr");
+    	handler.endElement("", "table", "table");
+	}
 
     /**
      * {@inheritDoc}

@@ -16,6 +16,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.outerj.daisy.diff.html.HTMLDiffer;
 import org.outerj.daisy.diff.html.HtmlSaxDiffOutput;
+import org.outerj.daisy.diff.html.SideBySideHTMLDiffer;
 import org.outerj.daisy.diff.html.TextNodeComparator;
 import org.outerj.daisy.diff.html.dom.DomTreeBuilder;
 import org.xml.sax.ContentHandler;
@@ -147,7 +148,7 @@ public class Main {
                 HtmlSaxDiffOutput output = new HtmlSaxDiffOutput(postProcess,
                         prefix);
                 
-                HTMLDiffer differ = new HTMLDiffer(output);
+                SideBySideHTMLDiffer differ = new SideBySideHTMLDiffer(output);
                 differ.diff(leftComparator, rightComparator);
                 System.out.print(".");
                 postProcess.endElement("", "diff", "diff");
