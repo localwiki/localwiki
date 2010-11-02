@@ -19,6 +19,7 @@ from models import M1, M1Diff, M1FieldDiff, M2, M3, M4ForeignKey, TEST_MODELS
 import modeldiff
 from modeldiff.diffutils import Registry, BaseFieldDiff, BaseModelDiff
 from modeldiff.diffutils import TextFieldDiff, FileFieldDiff, ImageFieldDiff
+from modeldiff.diffutils import HtmlFieldDiff
 
 mgr = TestSettingsManager()
 INSTALLED_APPS=list(settings.INSTALLED_APPS)
@@ -137,6 +138,9 @@ class TextFieldDiffTest(BaseFieldDiffTest):
         self.assertTrue(len(d) == 3)
         self.assertTrue(d[0]['equal'] == 'abc')
 
+class HtmlFieldDiffTest(BaseFieldDiffTest):
+    test_class = HtmlFieldDiff
+    
 class FileFieldDiffTest(BaseFieldDiffTest):
     test_class = FileFieldDiff
     

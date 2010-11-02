@@ -10,7 +10,7 @@ class Page(models.Model):
 
 class PageDiff(modeldiff.BaseModelDiff):
     fields = ( 'name', 
-              'content',
+              ('content', modeldiff.diffutils.HtmlFieldDiff),
               'date',
               'img'
              )

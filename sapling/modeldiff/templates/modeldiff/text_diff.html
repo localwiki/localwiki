@@ -5,10 +5,10 @@
   <span class="diff_equal">{{ change.equal }}</span>
   {% endif %}
   {% if change.deleted %}
-  <span class="deleted">{{ change.deleted }}</span>
+  <del>{{ change.deleted }}</del>
   {% endif %}
   {% if change.inserted %}
-  <span class="diff_inserted">{{ change.inserted }}</span>
+  <ins>{{ change.inserted }}</ins>
   {% endif %}
 {% endfor %}
 </td></tr>

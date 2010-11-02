@@ -141,6 +141,16 @@ class TextFieldDiff(BaseFieldDiff):
     def get_diff(self):
         return get_diff_operations_clean(self.field1, self.field2)
     
+class HtmlFieldDiff(BaseFieldDiff):
+    def as_html(self):
+        d = self.get_diff()
+        if d is None:
+            return '<tr><td colspan="2">(No differences found)</td></tr>'
+        return render_to_string('modeldiff/text_diff.html', {'diff': d})
+    
+    def get_diff(self):
+        return get_diff_operations_html(self.field1, self.field2)
+    
 class FileFieldDiff(BaseFieldDiff):
     
     def get_diff(self):
@@ -202,6 +212,21 @@ def get_diff_operations_clean(a, b):
               }
     return [ { op_map[op]: data } for op, data in diff ]
     
+def get_diff_operations_html(a, b):
+    if a == b:
+        return None
+    dmp = diff_match_patch.diff_match_patch()
+    dmp.Diff_Timeout = 0.1
+    dmp.Diff_EditCost = 4
+    
+    diff = dmp.diff_main(a, b, True)
+    dmp.diff_cleanupSemantic(diff)
+    op_map = { diff_match_patch.diff_match_patch.DIFF_DELETE: 'deleted',
+               diff_match_patch.diff_match_patch.DIFF_EQUAL: 'equal',
+               diff_match_patch.diff_match_patch.DIFF_INSERT: 'inserted'
+              }
+    return [ { op_map[op]: mark_safe(data) } for op, data in diff ]
+
 class Registry(object):
     
     def __init__(self):
