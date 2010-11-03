@@ -1,0 +1,15 @@
+#diff-table td {
+	vertical-align: top;
+	width: 50%;
+}
+
+del.diff-html-removed {
+	background-color: pink;
+}
+
+ins.diff-html-added {
+	background-color: lightgreen;
+}
+
+span.diff-html-changed {
+}

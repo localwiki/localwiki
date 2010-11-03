@@ -44,10 +44,10 @@ public class HtmlSaxDiffOutput implements DiffOutput{
 		throws SAXException {
     	AttributesImpl attrs = new AttributesImpl();
     	attrs.addAttribute("", "width", "width", "CDATA", "100%");
+    	attrs.addAttribute("", "id", "id", "CDATA", "diff-table");
     	handler.startElement("", "table", "table", attrs);
     	handler.startElement("", "tr", "tr", new AttributesImpl());
     	attrs = new AttributesImpl();
-    	//attrs.addAttribute("", "max-width", "max-width", "CDATA", "50%");
     	
     	handler.startElement("", "td", "td", attrs);
     	generateOutput(nodeLeft);

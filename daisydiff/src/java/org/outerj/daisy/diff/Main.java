@@ -34,6 +34,8 @@ public class Main {
 
         boolean htmlDiff = true;
         boolean htmlOut = true;
+        boolean sideBySide = false;
+        
         String outputFile = "daisydiff.htm";
         String[] css = new String[]{};
         
@@ -51,6 +53,8 @@ public class Main {
                 } else if (split[0].equalsIgnoreCase("--output")) {
                     if (split[1].equalsIgnoreCase("xml")) {
                         htmlOut = false;
+                    } else if (split[1].equalsIgnoreCase("sidebyside")) {
+                    	sideBySide = true;
                     }
                 } else if (split[0].equals("--q")){
                   quietMode = true;
@@ -115,9 +119,15 @@ public class Main {
             XslFilter filter = new XslFilter();
 
             if (htmlDiff) {
-
-                ContentHandler postProcess = htmlOut? filter.xsl(result,
-                        "org/outerj/daisy/diff/htmlheader.xsl"):result;
+            	
+            	String xsl = null;
+            	if(htmlOut)
+            	{
+            		xsl = sideBySide? "org/outerj/daisy/diff/sidebyside.xsl" : 
+            								 "org/outerj/daisy/diff/htmlheader.xsl";
+            	}
+                ContentHandler postProcess = htmlOut ? filter.xsl(result,
+                        xsl):result;
 
                 Locale locale = Locale.getDefault();
                 String prefix = "diff";
