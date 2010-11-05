@@ -11,29 +11,36 @@ function addHandlers()
 
 function showChanges(elem)
 {
-	$(elem).addClass("diff-highlight");
-	//console.log($(elem).attr("class"));
 }
 
 function alignChanges(elem)
 {
 	var left = $("#diff-table tr").children()[0];
 	var right = $("#diff-table tr").children()[1];
-	var scanline = 0;
-	$(left).find("p").each(function(index){
-		align(this, $(right).find("p")[index]);
+	var leftParagraphs = paragraphs(left);
+	var rightParagraphs = paragraphs(right);
+	leftParagraphs.each(function(index){
+		align(this, rightParagraphs[index]);
 	});
 }
 
-function align(left, right)
+function paragraphs(scope)
 {
-	var leftPos = $(left).position().top;
-	var rightPos = $(right).position().top;
-	if(leftPos < rightPos)
-	{
-		$(left).css('padding-top', rightPos - leftPos);
-	} else
-	{
-		$(right).css('padding-top', leftPos - rightPos);
-	}
+	// get paragraphs that exist on both sides
+	return $(scope).find("p").filter(function (){
+		return $(this).contents().filter(function (){
+			if(this.nodeType == 3)
+				return $.trim(this.nodeValue) != '';
+			var tag = this.tagName.toUpperCase();
+			return tag != "DEL" && tag != "INS";
+		}).length > 0;
+	});
+}
+
+function align(a, b)
+{
+	var aPos = $(a).position().top;
+	var bPos = $(b).position().top;
+	var higher = aPos < bPos ? a : b;
+	$(higher).css('padding-top', Math.abs(aPos - bPos));
 }
