@@ -213,19 +213,8 @@ def get_diff_operations_clean(a, b):
     return [ { op_map[op]: data } for op, data in diff ]
     
 def get_diff_operations_html(a, b):
-    if a == b:
-        return None
-    dmp = diff_match_patch.diff_match_patch()
-    dmp.Diff_Timeout = 0.1
-    dmp.Diff_EditCost = 4
-    
-    diff = dmp.diff_main(a, b, True)
-    dmp.diff_cleanupSemantic(diff)
-    op_map = { diff_match_patch.diff_match_patch.DIFF_DELETE: 'deleted',
-               diff_match_patch.diff_match_patch.DIFF_EQUAL: 'equal',
-               diff_match_patch.diff_match_patch.DIFF_INSERT: 'inserted'
-              }
-    return [ { op_map[op]: mark_safe(data) } for op, data in diff ]
+    # This doesn't do anything yet
+    return { 'deleted': a, 'inserted': b }
 
 class Registry(object):
     

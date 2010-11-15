@@ -137,9 +137,7 @@ class TextFieldDiffTest(BaseFieldDiffTest):
         d = self.test_class(a, b).as_dict()
         self.assertTrue(len(d) == 3)
         self.assertTrue(d[0]['equal'] == 'abc')
-
-class HtmlFieldDiffTest(BaseFieldDiffTest):
-    test_class = HtmlFieldDiff
+    
     
 class FileFieldDiffTest(BaseFieldDiffTest):
     test_class = FileFieldDiff
