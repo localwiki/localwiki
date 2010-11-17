@@ -3,13 +3,6 @@
     <element name="title"><text/></element>
   </element>
   <element name="body">
-    <element name="a">
-      <attribute name="href">
-        <data type="anyURI">
-          <param name="pattern">http://[a-zA-Z0-9\.]+</param>
-        </data>
-      </attribute>
-      <text/>
-    </element>
+    <text/>
   </element>
 </element>
