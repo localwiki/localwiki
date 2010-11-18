@@ -7,6 +7,7 @@ from django.db import models
 from django.core import exceptions
 from django.utils.translation import ugettext_lazy as _
 from StringIO import StringIO
+import widgets
 
 class XMLValidator(object):
     def __init__(self, schema_path):
@@ -22,6 +23,9 @@ class XMLValidator(object):
         except:
             pass
         raise exceptions.ValidationError('This field contains invalid data.')
+    
+class MySanitizer(sanitizer.HTMLSanitizer):
+    allowed_elements = ['p', 'a']
 
 def sanitize_html(unsafe):
     p = html5lib.HTMLParser(tokenizer=sanitizer.HTMLSanitizer)
@@ -29,7 +33,7 @@ def sanitize_html(unsafe):
     return tree.toxml()
 
 def sanitize_html_fragment(unsafe):
-    p = html5lib.HTMLParser(tokenizer=sanitizer.HTMLSanitizer)
+    p = html5lib.HTMLParser(tokenizer=MySanitizer)
     tree = p.parseFragment(unsafe)
     return tree.toxml()
 
@@ -70,3 +74,8 @@ class HTML5FragmentField(models.TextField):
     def clean(self, value, model_instance):
         super(HTML5FragmentField, self).clean(value, model_instance)
         return sanitize_html_fragment(value)
+    
+    def formfield(self, **kwargs):
+        defaults = {'widget' : widgets.CKEditor}
+        defaults.update(kwargs)
+        return super(HTML5FragmentField, self).formfield(**defaults)
