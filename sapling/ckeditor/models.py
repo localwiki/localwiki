@@ -23,17 +23,21 @@ class XMLValidator(object):
         except:
             pass
         raise exceptions.ValidationError('This field contains invalid data.')
-    
-class MySanitizer(sanitizer.HTMLSanitizer):
-    allowed_elements = ['p', 'a']
+
+def custom_sanitizer(allowed_elements):
+    return type("CustomSanitizer", (sanitizer.HTMLSanitizer,), 
+                { 'allowed_elements' : allowed_elements }
+               )
 
 def sanitize_html(unsafe):
     p = html5lib.HTMLParser(tokenizer=sanitizer.HTMLSanitizer)
     tree = p.parse(unsafe)
     return tree.toxml()
 
-def sanitize_html_fragment(unsafe):
-    p = html5lib.HTMLParser(tokenizer=MySanitizer)
+def sanitize_html_fragment(unsafe, allowed_elements=None):
+    if not allowed_elements:
+        allowed_elements = sanitizer.HTMLSanitizer.allowed_elements
+    p = html5lib.HTMLParser(tokenizer=custom_sanitizer(allowed_elements))
     tree = p.parseFragment(unsafe)
     return tree.toxml()
 
@@ -58,7 +62,7 @@ class XHTMLField(XMLField):
 class HTML5Field(models.TextField):
     description = _("HTML5 text")
     
-    def __init(self, verbose_name=None, name=None, **kwargs):
+    def __init__(self, verbose_name=None, name=None, **kwargs):
         models.Field.__init__(self, verbose_name, name, **kwargs)
         
     def clean(self, value, model_instance):
@@ -68,12 +72,13 @@ class HTML5Field(models.TextField):
 class HTML5FragmentField(models.TextField):
     description = _("HTML5 fragment text")
     
-    def __init(self, verbose_name=None, name=None, **kwargs):
+    def __init__(self, verbose_name=None, name=None, allowed_elements=None, **kwargs):
         models.Field.__init__(self, verbose_name, name, **kwargs)
+        self.allowed_elements = allowed_elements
         
     def clean(self, value, model_instance):
         super(HTML5FragmentField, self).clean(value, model_instance)
-        return sanitize_html_fragment(value)
+        return sanitize_html_fragment(value, self.allowed_elements)
     
     def formfield(self, **kwargs):
         defaults = {'widget' : widgets.CKEditor}
