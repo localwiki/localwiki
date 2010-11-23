@@ -19,28 +19,15 @@
 
     So our dumb approach will probably work!
 
----------------
-
-DELETE THIS ALL AFTER TESTS
-
-= Notes =
-can be handled by a decorator in sapling code.
-e.g. how @AuthUser works in re.la?
-
-    o.history.save_with(
-        comment="first post!",
-        user=User(...),
-    )
-    o.save()
-
-    old_version = o.history.most_recent()
-
-    # then we can get meta info on this version by using history_meta
-    date = old_version.history_meta.date
-    user = old_version.history_meta.user
-    comment = old_version.history_meta.comment
-
 = Todo =
+
+-1: ForeignKey lookup stuff.  maybe like:
+
+ - ONLY figure it out on a lookup.
+ - flag in TrackChanges() constructor.  default is on.
+ - h.history_meta.object should return something that o.user is the old user on
+ - if this is annoying down the road, change it.  for now it's a sane default.
+----------------
 
 0. Full API like modelhistory has.
    X * option to not track change for save
@@ -94,59 +81,6 @@ e.g. how @AuthUser works in re.la?
 
    X * as_of by version number
 
-   !!!
-     * think about diff method (notes in moleskin)
-     * each model has a different type of diff, merge, etc.
-     @classmethod
-     def diff(m1, m2):
-        ...
-     so this'd live at Page.diff?
-
-
-!!!!!!! DO THIS !!!!!!!!!!!!
-============================
-    CHECK OUT django-moderation's admin.py and diff.py for ideas.
-============================
-!!!!!!! DO THIS !!!!!!!!!!!!
-
-     ...but we really, probably, want a diff of two models
-        on a field-by-field basis!
-          * diff of CharField, TextField,...
-          * so maybe we define a diff on the basis of what type of field there is?
-          * and we allow people to define a custom diff for a given field, somehow.
-            * maybe we have a Diff object and allow them to make MyDiff(Diff) and over-ride
-              the diff of a particular field there.  and then register MyDiff as the diff
-              for their model?
-              - also allow them to specify a set of fields to track diffs on (e.g. just 
-                body text)
-
-         --> really, we may want to break this out into its own separate django app
-             for just 'diff'
-              - then for sapling we would ask for the diff between two versions of the same model
-              - and we can test, dev this totally separately
-              - like to make it easy to add a /diff/ into a url somewhere and allow for easy
-                diffing of someone's models.  like, a view that they pass in: model, lookup function
-                 -- and then extend this, make a super-generic one based on primary key attributes of models as lookup (default)
-                    e.g. /diff/pagename/pagename2
-                    --- using some kind of default / generic lookup method
-                 -- this is a good way to see if the thing's working
-                 -- check out the way he's doing templates in django-moderation
-
-     older thoughts:
-         and we have functions that act generically here:
-
-         view_diff(m1, m2):
-            m1.__class__.diff(m1, m2) ...
-
-    /pagename/diff/<v1>/<v3>
-    /pagename/files/diff/<v1>/<v3>
-    --------------------
-
-   * How do we get a list of ALL pages with history ordered by xyz?
-     -- Page.history.all()
-
-     -- we should emphasize in the docs the two different ways to interact with trackchanges - via an instance or via the class itself
-
 ==================================
 ==================================
 
@@ -157,20 +91,6 @@ e.g. how @AuthUser works in re.la?
 
 
 0.5.  track_changes = False should be allowed to be sent in at the history = TrackChanges(auto_track=False) level.
-
-1. Tests.
-  * we need to create models for our tests.  how do we do this?
-
-2. How will we handle FileFields?  Copy what django-reversion does?
---- django-reversion has a wrapper around FileFields that simply prevents
-    file objects being deleted on disk:
-
-            for field in local_fields:
-            if isinstance(field, models.FileField) and field.name in fields:
-                field.storage = VersionFileStorageWrapper(field.storage)
-                file_fields.append(field)
-
-and then has storage.py prevent the delete.  Let's just do the same thing.
 
 general cleanup - '-' / '+' / '~' should be named and set as choices a'la modelhistory
 
@@ -207,25 +127,9 @@ document fully.  explain how to over-ride get_extra_fields (p 284 prodjango).
      - almost everything can be done via query sets!  m.history.filter()...
    * write sphinx documentation?
 
-tests!
-   * test saves, etc
-   * test full api
-   * test reviving a deleted model
-     - via primary key
-     - via unique field
-     - via unique_together field
-
-* setuptools install thing
-
 -------
 FOR OUR REAL TODO FILE (e.g. AFTER OUR INITIAL DEV):
 
-1. Generic 'diff' of two trackedchanges models.  What's the best way to do this?
-
-2. Can't figure out how to add an __init__ method (via an attribute, or a signal) to
-   the history model.  As soon as I add one the querysets return [].  Did some brief
-   investigation but haven't been able to figure this out.  If we can implement an 
-   __init__ method then we can clean up some code.
 3. admin interface - wait on this (after basic release). just leave it as a todo.
    ** VERY IMPORTANT ** SHOULD DO
    - look at how other similar projects are doing admin integration

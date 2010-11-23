@@ -14,11 +14,12 @@ from django.core.files.storage import default_storage
 
 from utils import TestSettingsManager
 from models import *
+from trackchanges.constants import *
 
 mgr = TestSettingsManager()
 INSTALLED_APPS=list(settings.INSTALLED_APPS)
 INSTALLED_APPS.append('trackchanges.tests')
-mgr.set(INSTALLED_APPS=INSTALLED_APPS)
+mgr.set(INSTALLED_APPS=INSTALLED_APPS) 
 
 class TrackChangesTest(TestCase):
     def _create_test_models(self):
@@ -109,9 +110,7 @@ class TrackChangesTest(TestCase):
                 # clear out existing history
                 for entry in m.history.all():
                     entry.delete()
-                m.history.track_changes = False
-                m.delete()
-                m.history.track_changes = True
+                m.delete(track_changes=False)
         self._cleanup_file_environment()
 
     def test_new_save(self):
@@ -140,9 +139,8 @@ class TrackChangesTest(TestCase):
         self.assertEqual(m.history.most_recent().b, "Bnew!")
         self.assertEqual(m.history.most_recent().c, m_old.c)
         self.assertEqual(m.history.most_recent().d, m_old.d)
-        self.assertEqual(m.history.most_recent().history_meta.object.b, "Bnew!")
 
-        recent_obj = m.history.most_recent().history_meta.object
+        recent_obj = m.history.most_recent().history_info._object
         vals_recent = [ getattr(recent_obj, field)
                         for field in recent_obj._meta.get_all_field_names()
         ]
@@ -166,9 +164,9 @@ class TrackChangesTest(TestCase):
         m = M16Unique.objects.get(a="What")
         m.delete()
         del_m = m.history.most_recent()
-        del_m_obj = del_m.history_meta.object
+        del_m_obj = del_m.history_info._object
 
-        self.assertEqual(del_m.history_meta.type, '-')
+        self.assertEqual(del_m.history_info.type, TYPE_DELETED)
         self.assertEqual(del_m_obj.a, m.a)
         self.assertEqual(del_m_obj.b, m.b)
         self.assertEqual(del_m_obj.c, m.c)
@@ -185,7 +183,7 @@ class TrackChangesTest(TestCase):
 
         # A filter on the unique field should do the trick
         history_entries = M16Unique.history.filter(a="What")
-        m = history_entries[0].history_meta.object
+        m = history_entries[0]
         self.assertEqual(m.a, "What")
         self.assertEqual(m.b, "This is the new long text")
         del m
@@ -266,8 +264,8 @@ class TrackChangesTest(TestCase):
         m.save()
         for i in range(1, 100):
             v_cur = m.history.most_recent()
-            date = v_cur.history_meta.date
-            self.assertEqual(v_cur.history_meta.get_version_number(), i)
+            date = v_cur.history_info.date
+            self.assertEqual(v_cur.history_info.version_number(), i)
             m.b += "."
             m.save()
 
@@ -289,8 +287,7 @@ class TrackChangesTest(TestCase):
         for i in range(1, 20):
             # day of month should line up with m.c value now
             m.c = i
-            m.history.save_with(date=datetime.datetime(2010, 10, i))
-            m.save()
+            m.save(date=datetime.datetime(2010, 10, i))
 
         # exact dates
         for i in range(1, 20):
@@ -301,3 +298,186 @@ class TrackChangesTest(TestCase):
         for i in range(1, 20):
             m_old = m.history.as_of(date=datetime.datetime(2010, 10, i, 10))
             self.assertEqual(m_old.c, i)
+
+    def test_revert_to(self):
+        m = M2(a="Sup", b="Dude", c=0)
+        m.save()
+
+        for i in range(1, 20):
+            m.c = i
+            m.save() 
+
+        m_old = m.history.filter(c=4)[0]
+        m_old.revert_to()
+
+        m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
+        self.assertEqual(m_cur.c, 4)
+
+        # version before most recent is what we expect
+        self.assertEqual(m_cur.history.all()[1].c, 19)
+
+    def test_revert_to_delete_newer(self):
+        m = M2(a="Sup", b="Dude", c=0)
+        m.save()
+
+        for i in range(1, 20):
+            m.c = i
+            m.save() 
+
+        # should be:
+        # c=19, 18, 17, .. 5, 4, 3, 2 1, 0
+        m_old = m.history.filter(c=4)[0]
+        m_old.revert_to(delete_newer_versions=True)
+
+        m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
+        self.assertEqual([4, 4, 3, 2, 1, 0],
+                         [obj.c for obj in m_cur.history.all()]
+        )
+
+        m_old = m_cur.history.filter(c=1)[0]
+        m_old.revert_to(delete_newer_versions=True)
+
+        m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
+        self.assertEqual([1, 1, 0],
+                         [obj.c for obj in m_cur.history.all()]
+        )
+
+        m_old = m_cur.history.filter(c=0)[0]
+        m_old.revert_to(delete_newer_versions=True)
+
+        m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
+        self.assertEqual([0, 0],
+                         [obj.c for obj in m_cur.history.all()]
+        )
+
+    def test_trackchanges_off(self):
+        m = M2(a="LOL", b="WHATTHE", c=10)
+        m.save()
+
+        m.c = 11
+        m.save(track_changes=False)
+        self.assertEqual(len(m.history.all()), 1)
+
+        mh = m.history.all()[0]
+        mh.revert_to(track_changes=False)
+        self.assertEqual(len(m.history.all()), 1)
+
+    def test_revert_to_delete_newer_no_record(self):
+        m = M2(a="Sup", b="Dude", c=0)
+        m.save()
+
+        for i in range(1, 20):
+            m.c = i
+            m.save() 
+
+        # should be:
+        # c=19, 18, 17, .. 5, 4, 3, 2 1, 0
+        m.history.track_changes = False
+        m_old = m.history.filter(c=4)[0]
+        m_old.revert_to(delete_newer_versions=True)
+
+        m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
+        self.assertEqual([4, 4, 3, 2, 1, 0],
+                         [obj.c for obj in m_cur.history.all()]
+        )
+
+        m_old = m_cur.history.filter(c=1)[0]
+        m_old.revert_to(delete_newer_versions=True)
+
+        m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
+        self.assertEqual([1, 1, 0],
+                         [obj.c for obj in m_cur.history.all()]
+        )
+
+        m_old = m_cur.history.filter(c=0)[0]
+        m_old.revert_to(delete_newer_versions=True)
+
+        m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
+        self.assertEqual([0, 0],
+                         [obj.c for obj in m_cur.history.all()]
+        )
+
+    def test_revert_to_once_deleted(self):
+        m = M16Unique(a="Me me!", b="I am older", c=0)
+        m.save()
+
+        m.delete()
+
+        # re-creating the object will create a new pk in the DB
+        m = M16Unique(a="Me me!", b="I am newer", c=0)
+        m.save()
+
+        mh = m.history.filter(a="Me me!", b="I am older")[1]
+
+        # so if we attempt a revert_to() on this older version
+        # we shouldn't get a uniqueness error and it should exist only
+        # once.
+
+        mh.revert_to()
+
+        self.assertEqual(len(M16Unique.objects.filter(a="Me me!")), 1)
+        self.assertEqual(M16Unique.objects.filter(a="Me me!")[0].b, "I am older")
+    
+    def test_revert_to_deleted_version(self):
+        # we test w/ an object w/ unique field in this case
+        # non-unique re-creation doesn't make sense
+        # because each time a model w/o a unique field is deleted
+        # it has a new history upon re-creation
+
+        m = M16Unique(a="Gonna get", b="deleted", c=0)
+        m.save()
+
+        m.delete()
+
+        # history record for deleted instance
+        mh = M16Unique.history.filter(a="Gonna get", b="deleted", c=0)[0]
+
+        # re-create the model
+        m = M16Unique(a="Gonna get", b="deleted", c=0)
+        m.save()
+
+        # reverting to a deleted version should:
+        # 1) delete the object
+        # 2) log this as a revert AND a delete
+
+        # revert to deleted version
+        mh.revert_to()
+
+        # object shouldn't exist
+        self.assertFalse(
+            M16Unique.objects.filter(
+                a="Gonna get", b="deleted", c=0).exists()
+        )
+
+        # latest version in the history should be logged as Reverted/Deleted
+        # entry.
+        mh = M16Unique.history.filter(a="Gonna get", b="deleted", c=0)[0]
+        self.assertEqual(mh.history_info.type, TYPE_REVERTED_DELETED)
+        
+        # ====================================================================
+        # Now with a revert when the object is also currently deleted
+        # ====================================================================
+
+        m = M16Unique(a="About to get", b="really deleted", c=0) 
+        m.save()
+
+        m.delete()
+
+        mh = M16Unique.history.filter(
+            a="About to get", b="really deleted", c=0
+        )[0]
+
+        mh.revert_to()
+
+        # object shouldn't exist
+        self.assertFalse(
+            M16Unique.objects.filter(
+                a="About to get", b="really deleted", c=0).exists()
+        )
+
+        # latest version in the history should be logged as a Reverted/Deleted
+        # entry.
+        mh = M16Unique.history.filter(
+            a="About to get", b="really deleted", c=0
+        )[0]
+        self.assertEqual(mh.history_info.type, TYPE_REVERTED_DELETED)

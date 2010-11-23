@@ -4,7 +4,7 @@ import datetime
 from trackchanges.models import TrackChanges
 
 class Page(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
     body = models.TextField()
 
     history = TrackChanges()
