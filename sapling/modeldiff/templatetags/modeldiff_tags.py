@@ -1,8 +1,8 @@
-'''
+"""
 Created on Oct 10, 2010
 
 @author: mivanov
-'''
+"""
 from django import template
 from modeldiff.diffutils import diff
 

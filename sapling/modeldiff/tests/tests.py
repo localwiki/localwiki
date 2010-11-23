@@ -35,9 +35,9 @@ class ModelDiffTest(TestCase):
         pass
     
     def test_identical(self):
-        '''
+        """
         The diff between two identical models, or a model and itself should be None
-        '''
+        """
         vals = { 'a': 'Lorem', 'b': 'Ipsum', 'c': datetime.datetime.now(), 'd': 123}
         m1 = M1.objects.create(**vals)
         m2 = M1.objects.create(**vals)
@@ -49,9 +49,9 @@ class ModelDiffTest(TestCase):
         self.assertEqual(d, None)
     
     def test_nearly_identical(self):
-        '''
+        """
         The diff between models should consist of only the fields that are different
-        '''
+        """
         vals = { 'a': 'Lorem', 'b': 'Ipsum', 'c': datetime.datetime.now(), 'd': 123}
         m1 = M1.objects.create(**vals)
         vals['a'] = 'Ipsum'
@@ -60,9 +60,9 @@ class ModelDiffTest(TestCase):
         self.assertTrue(len(d) == 1)
     
     def test_foreign_key_identical(self):
-        '''
+        """
         The diff between two ForeignKey fields to the same object should be None
-        '''
+        """
         vals = { 'a': 'Lorem', 'b': 'Ipsum', 'c': datetime.datetime.now(), 'd': 123}
         m1 = M1.objects.create(**vals)
         
@@ -73,10 +73,10 @@ class ModelDiffTest(TestCase):
         self.assertTrue(d is None)
     
     def test_foreign_key(self):
-        '''
+        """
         The diff between two ForeignKey fields should be the same as the diff
         between the two objects referenced by the fields
-        '''
+        """
         vals = { 'a': 'Lorem', 'b': 'Ipsum', 'c': datetime.datetime.now(), 'd': 123}
         m1 = M1.objects.create(**vals)
         vals = { 'a': 'Dolor', 'b': 'Ipsum', 'c': datetime.datetime.now(), 'd': 123}
@@ -96,9 +96,9 @@ class BaseFieldDiffTest(TestCase):
     test_class = BaseFieldDiff
     
     def test_identical_fields_dict(self):
-        '''
+        """
         The diff between two identical fields of any type should be None
-        '''
+        """
         vals = ['Lorem', 123, True, datetime.datetime.now()]
         for v in vals:
             d = self.test_class(v, v)
@@ -106,9 +106,9 @@ class BaseFieldDiffTest(TestCase):
 
         
     def test_identical_fields_html(self):
-        '''
+        """
         The html of the diff between two identical fields should be sensible message
-        '''
+        """
         a = 'Lorem'
         d = self.test_class(a, a).as_html()
         self.assertTrue("No differences" in d)
@@ -168,9 +168,9 @@ class DiffRegistryTest(TestCase):
         m1 = M1.objects.create(**vals)
     
     def test_can_handle_any_field(self):
-        '''
+        """
         Out of the box, the registry should offer diff utils for any field
-        '''
+        """
         r = self.registry
         field_types = [db.models.CharField, db.models.TextField, db.models.BooleanField]
         for t in field_types:
@@ -178,9 +178,9 @@ class DiffRegistryTest(TestCase):
             self.assertTrue(issubclass(d, BaseFieldDiff))
     
     def test_can_handle_any_model(self):
-        '''
+        """
         Out of the box, the registry should offer diff utils for any model
-        '''
+        """
         r = self.registry
         for t in TEST_MODELS:
             d = r.get_diff_util(t)
@@ -189,30 +189,30 @@ class DiffRegistryTest(TestCase):
     def test_fallback_diff(self):
         class AwesomeImageField(db.models.ImageField):
             pass
-        '''
+        """
         If we don't have a diff util for the exact field type, we should fall back to the
         diff util for the base class, until we find a registered util
-        '''
+        """
         self.registry.register(db.models.FileField, FileFieldDiff)
         d = self.registry.get_diff_util(AwesomeImageField)
         self.assertTrue(issubclass(d, FileFieldDiff))
         
     def test_register_model(self):
-        '''
+        """
         If we register a modeldiff for a model, we should get that and not BaseModelDiff
-        '''
+        """
         self.registry.register(M1, M1Diff)
         self.failUnlessEqual(self.registry.get_diff_util(M1), M1Diff)
     
     def test_register_field(self):
-        '''
+        """
         If we register a fielddiff for a model, we should get that and not BaseFieldDiff
-        '''
+        """
         self.registry.register(db.models.CharField, M1FieldDiff)
         self.failUnlessEqual(self.registry.get_diff_util(db.models.CharField), M1FieldDiff)
         
     def test_cannot_diff_something_random(self):
-        '''
+        """
         If we try to diff something that is neither a model nor a field, raise exception.
-        '''
+        """
         self.failUnlessRaises(modeldiff.diffutils.DiffUtilNotFound, self.registry.get_diff_util, DiffRegistryTest)

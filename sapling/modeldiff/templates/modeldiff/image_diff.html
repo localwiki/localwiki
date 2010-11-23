@@ -1,7 +1,7 @@
 {% spaceless %}
 <tr>
-<td><img src='{{ diff.url.deleted }}'/></td>
-<td><img src='{{ diff.url.inserted }}'/></td>
+<td><img src="{{ diff.url.deleted }}"/></td>
+<td><img src="{{ diff.url.inserted }}"/></td>
 </tr>
 {% for field, del_ins in diff.items %}
   {% if field != 'url' %}

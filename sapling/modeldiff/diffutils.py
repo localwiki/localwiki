@@ -2,22 +2,21 @@ import difflib
 
 from django.db import models
 from django.template.loader import render_to_string
-from django.utils.safestring import SafeString, mark_safe
+from django.utils.safestring import mark_safe
 
 import diff_match_patch
 
-
 class DiffUtilNotFound(Exception):
-    '''
-    No appropriate diff util registered for this object
-    '''
+    """
+    No appropriate diff util registered for this object.
+    """
     pass
 
 class BaseFieldDiff():
-    '''
+    """
     Simplest diff possible, used when no better option is available.
     Just shows two fields side-by-side, in the case of HTML output.
-    '''
+    """
     template = None
     
     def __init__(self, field1, field2):
@@ -30,16 +29,16 @@ class BaseFieldDiff():
         return { 'deleted': self.field1, 'inserted': self.field2 }
     
     def as_dict(self):
-        '''
-        Returns the diff as a dictionary or array of dictionaries
-        '''
+        """
+        Returns the diff as a dictionary or array of dictionaries.
+        """
         return self.get_diff()
     
     def as_html(self):
-        '''
+        """
         Returns a string of the diff between field1 and field2.  These are normally
         one row of an HTML table, with two cells in a side-by-side diff.
-        '''
+        """
         diff = self.as_dict()
         if self.template:
             return render_to_string(self.template, diff)
@@ -91,9 +90,9 @@ class BaseModelDiff(object):
         return '<tr><td colspan="2">No differences found</td></tr>'
             
     def get_diff(self):
-        '''
+        """
         Returns a dictionary that contains all field diffs, indexed by field name.
-        '''
+        """
         diff = {}
         diff_utils = {}
         
@@ -118,17 +117,20 @@ class BaseModelDiff(object):
                 if field.name in self.excludes:
                     continue
                 
-                field_values = [getattr(o, field.name) for o in (self.model1, self.model2)]
-                diff[field.name] = diff_class(field_values[0], field_values[1])
+                diff[field.name] = diff_class(
+                    getattr(self.model1, field.name),
+                    getattr(self.model2, field.name)
+                )
+
         return diff
         
     def __str__(self):
         return self.as_html()
     
     def __unicode__(self):
-        '''
+        """
         For use in templates, returns a safe string.
-        '''
+        """
         return mark_safe(unicode(self.__str__()))
     
 class TextFieldDiff(BaseFieldDiff):
@@ -152,11 +154,10 @@ class HtmlFieldDiff(BaseFieldDiff):
         return get_diff_operations_html(self.field1, self.field2)
     
 class FileFieldDiff(BaseFieldDiff):
-    
     def get_diff(self):
-        '''
+        """
         Returns a dictionary of all the file attributes or None if it's the same file
-        '''
+        """
         if self.field1 == self.field2:
             return None
         
@@ -217,13 +218,11 @@ def get_diff_operations_html(a, b):
     return { 'deleted': a, 'inserted': b }
 
 class Registry(object):
-    
     def __init__(self):
         self._registry = {}
         
     def register(self, model_or_field, diff_util):
         self._registry[model_or_field] = diff_util
-        
         
     def get_diff_util(self, model_or_field):
         if model_or_field in self._registry:
