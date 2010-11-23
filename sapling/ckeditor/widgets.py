@@ -1,3 +1,5 @@
+from urlparse import urljoin
+
 from django import forms
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -16,8 +18,7 @@ class CKEditor(forms.Textarea):
             'ckeditor/ckeditor_script.html', context
         ))
 
-
     class Media:
         js = (
-            settings.MEDIA_URL.rstrip('/') + '/js/ckeditor/ckeditor.js',
+            urljoin(settings.MEDIA_URL, '/js/ckeditor/ckeditor.js'),
         )

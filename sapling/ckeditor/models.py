@@ -1,4 +1,5 @@
 import os
+from StringIO import StringIO
 from lxml import etree
 import html5lib
 from html5lib import sanitizer
@@ -6,7 +7,7 @@ from html5lib import sanitizer
 from django.db import models
 from django.core import exceptions
 from django.utils.translation import ugettext_lazy as _
-from StringIO import StringIO
+
 import widgets
 
 class XMLValidator(object):
@@ -51,13 +52,14 @@ class XMLField(models.TextField):
     
     
 class XHTMLField(XMLField):
-    ''' Note: this needs a real schema document before it will work! '''
+    """Note: this needs a real schema document before it will work!"""
     description = _("XHTML text")
-    schema_path = os.path.join(os.path.dirname(__file__),'schema','html.ng')
+    schema_path = os.path.join(os.path.dirname(__file__), 'schema', 'html.ng')
     
     def __init__(self, verbose_name=None, name=None, **kwargs):
         super(XHTMLField, self).__init__(verbose_name, name, 
                                         self.schema_path, **kwargs)
+
 
 class HTML5Field(models.TextField):
     description = _("HTML5 text")
@@ -68,6 +70,7 @@ class HTML5Field(models.TextField):
     def clean(self, value, model_instance):
         super(HTML5Field, self).clean(value, model_instance)
         return sanitize_html(value)
+
     
 class HTML5FragmentField(models.TextField):
     description = _("HTML5 fragment text")

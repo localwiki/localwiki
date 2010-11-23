@@ -1,10 +1,11 @@
+import os
+
 from django.test import TestCase
 from django.db import models
 from django.core import exceptions
 
 from ckeditor.models import XHTMLField, XMLField, HTML5Field, HTML5FragmentField
 import xssattacks
-import os
 
 class XHTMLModel(models.Model):
     html = XHTMLField()
@@ -16,7 +17,6 @@ class HTML5FragmentModel(models.Model):
     html = HTML5FragmentField()
 
 class XHTMLFieldTest(TestCase):
-    
     def test_html_schema_set(self):
         html = XHTMLField()
         self.assertTrue(isinstance(html, XMLField))
