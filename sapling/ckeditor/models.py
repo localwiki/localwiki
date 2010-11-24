@@ -25,10 +25,11 @@ class XMLValidator(object):
             pass
         raise exceptions.ValidationError('This field contains invalid data.')
 
-def custom_sanitizer(allowed_elements):
-    return type("CustomSanitizer", (sanitizer.HTMLSanitizer,), 
-                { 'allowed_elements' : allowed_elements }
-               )
+def custom_sanitizer(allowed):
+    class CustomSanitizer(sanitizer.HTMLSanitizer):
+        allowed_elements = allowed
+        
+    return CustomSanitizer
 
 def sanitize_html(unsafe):
     p = html5lib.HTMLParser(tokenizer=sanitizer.HTMLSanitizer)
