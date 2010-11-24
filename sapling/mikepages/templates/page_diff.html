@@ -16,8 +16,6 @@
   }
 </style>
 <table>
-  {% diff page2 page1 as page_diff %}
-  {% for i, d in page_diff.get_diff.items %}
-    {{ d }}
-  {% endfor %}  
+  {% diff page1 page2 as page_diff %}
+  {{ page_diff }}
 </table>
