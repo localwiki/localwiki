@@ -86,9 +86,9 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     if hm.history_info.type == TYPE_DELETED:
         # We are reverting to a deleted version of the model
         # so..delete the model!
-        m.delete()
+        m.delete(reverted_to_version=hm)
     else:
-        m.save(**kws)
+        m.save(reverted_to_version=hm, **kws)
 
 def no_attribute_setting(o, x):
     raise TypeError("You can't set this attribute!")

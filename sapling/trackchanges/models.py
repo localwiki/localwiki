@@ -138,6 +138,11 @@ class TrackChanges(object):
             'history_date': models.DateTimeField(default=datetime.datetime.now),
             'history_version_number': version_number_of,
             'history_type': models.SmallIntegerField(choices=TYPE_CHOICES),
+            # If you want to display "Reverted to version N" in every change
+            # comment then you should stash that in the comment field
+            # directly rather than using
+            # reverted_to_version.version_number() on each display.
+            'history_reverted_to_version': models.ForeignKey('self', null=True),
             # lookup function for cleaniness. Instead of doing
             # h.history_ip_address we can write h.history_info.ip_address
             'history_info': HistoricalMetaInfo(),

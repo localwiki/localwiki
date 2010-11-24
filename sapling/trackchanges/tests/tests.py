@@ -1,16 +1,12 @@
 import os
 import copy
-import shutil
 import datetime
 from decimal import Decimal
-import cStringIO as StringIO
-from pprint import pprint
 
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.conf import settings
 from django.core.files import File
 from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
 
 from utils import TestSettingsManager
 from models import *
@@ -481,3 +477,17 @@ class TrackChangesTest(TestCase):
             a="About to get", b="really deleted", c=0
         )[0]
         self.assertEqual(mh.history_info.type, TYPE_REVERTED_DELETED)
+
+    def test_revert_grab_reverted_version(self):
+        m = M16Unique(a="Gonna get", b="reverted", c=0)
+        m.save()
+        m.b = "not yet!"
+        m.save()
+
+        mh = m.history.all()[1]
+        mh.revert_to()
+
+        m = M16Unique.objects.get(a="Gonna get")
+
+        r_m = m.history.most_recent().history_info.reverted_to_version
+        self.assertEqual(r_m, m.history.all()[2])
