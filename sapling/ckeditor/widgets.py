@@ -20,5 +20,5 @@ class CKEditor(forms.Textarea):
 
     class Media:
         js = (
-            urljoin(settings.MEDIA_URL, '/js/ckeditor/ckeditor.js'),
+            urljoin(settings.MEDIA_URL, 'js/ckeditor/ckeditor.js'),
         )
