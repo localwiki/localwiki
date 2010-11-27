@@ -23,3 +23,31 @@ class FilePage(models.Model):
 class DateTest(models.Model):
     date = models.DateTimeField(default=datetime.datetime.now)
     name = models.CharField(max_length=200)
+
+class Tag(models.Model):
+    name = models.CharField(max_length=200)
+
+    history = TrackChanges()
+
+class FK(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.ForeignKey(Tag, null=True)
+
+    history = TrackChanges()
+
+class FKM(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.ManyToManyField(Tag, null=True)
+
+    history = TrackChanges()
+
+
+from page.models import *
+
+t = Tag(name="alphaandomega6")
+t.save()
+
+fk = FK(a="needfood6", b=t)
+fk.save()
+
+

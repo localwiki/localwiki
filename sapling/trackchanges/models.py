@@ -1,5 +1,6 @@
 import copy
 import datetime
+from functools import partial
 
 from django.db import models
 from django.conf import settings
@@ -47,6 +48,8 @@ class TrackChanges(object):
 
         descriptor = manager.HistoryDescriptor(history_model)
         setattr(sender, self.manager_name, descriptor)
+        # being able to look this up is intensely helpful
+        setattr(sender, '_history_manager_name', self.manager_name)
 
     def create_history_model(self, model):
         """
@@ -70,7 +73,7 @@ class TrackChanges(object):
 
     def wrap_model_fields(self, model):
         """
-        Wrap some
+        Wrap some of the model's fields to add extra behavior.
         """
         for field in model._meta.fields:
             if isinstance(field, models.FileField):
@@ -149,6 +152,10 @@ class TrackChanges(object):
             'revert_to': revert_to,
             'save': save_with_arguments,
             'delete': delete_with_arguments,
+            '__init__': historical_record_init,
+            '__getattribute__':
+                # not sure why functools.partial doesn't work here
+                lambda m, name: historical_record_getattribute(model, m, name),
         }
 
         return fields

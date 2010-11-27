@@ -1,3 +1,8 @@
+from functools import partial
+
+from django.utils.functional import SimpleLazyObject
+from django.db import models
+
 from constants import *
 
 def save_with_arguments(m, force_insert=False, force_update=False, using=None,
@@ -22,6 +27,71 @@ class HistoricalObjectDescriptor(object):
         values = (getattr(instance, f.attname) for f in self.model._meta.fields)
         m = self.model(*values)
         return m
+
+def _wrapped_getattribute(m, name):
+    print "IN WRAPPED GETATTRIBUTE"
+    direct_val = m._direct_lookup_fields.get(name, None)
+    if direct_val is not None:
+        return direct_val
+    return m.__base_getattribute(m, name)
+
+def _wrap_foreign_keys(m):
+    """
+    Sets the foriegn key fields to the historical versions of the
+    foreign keys if the related objects are versioned.
+
+    Wraps these in SimpleLazyObjects so the lookup doesn't happen unless
+    the objects are used.
+
+    @param m: a historical record model
+    """
+    def _lookup_version(m, fk_obj):
+        history_manager = getattr(fk_obj, fk_obj._history_manager_name)
+        print "looking up as of..", m.history_info.date
+        return history_manager.as_of(date=m.history_info.date)
+
+    def _wrap_field(m, field):
+        fk_obj = getattr(m, field.name)
+        # if we have this attribute then the object is versioned
+        if hasattr(fk_obj, '_history_manager_name'):
+            print "HAS ATTR OF HISTORY MANAGER"
+            _lookup_proper_fk_version = partial(_lookup_version, m, fk_obj)
+            print "SET", field.name, "to lookup old fk version on", m
+            m._direct_lookup_fields[field.name] = SimpleLazyObject(
+                _lookup_proper_fk_version
+            )
+
+    m._direct_lookup_fields = {}
+    for field in m.history_info._object._meta.fields:
+        if isinstance(field, models.ForeignKey):
+            _wrap_field(m, field)
+    for field in m._meta.many_to_many:
+        _wrap_field(m, field)
+
+def historical_record_getattribute(model, m, name):
+    """
+    We have to define our own __getattribute__ because otherwise there's
+    no way to set our wrapped foreign key attributes.
+    
+    If we try and set
+    history_instance.att = SimpleLazyObject(_lookup_proper_fk_version)
+    we'll get an error because Django does an isinstance() check on
+    assignment to model fields.  Additionally, the __set__ method on
+    related fields will force evaluation due to equality checks.
+    """
+    basedict = model.__getattribute__(m, '__dict__')
+    direct_val = basedict.get('_direct_lookup_fields', {}).get(name)
+    if direct_val is not None:
+        return direct_val
+    return model.__getattribute__(m, name)
+
+def historical_record_init(m, *args, **kws):
+    """
+    This is the __init__ method of historical record instances.
+    """
+    retval = super(m.__class__, m).__init__(*args, **kws)
+    _wrap_foreign_keys(m)
+    return retval
 
 #########################################################
 #
