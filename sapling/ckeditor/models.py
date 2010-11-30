@@ -78,7 +78,7 @@ class HTML5FragmentField(models.TextField):
     Use this field in your models for storing user-editable HTML fragments.
     It provides the CKEditor widget by default and sanitizes user-submitted HTML
     before storing it using html5lib.
-    Any non-whitelisted elements, such as <script> will be escaped, and non-
+    Any non-whitelisted elements, such as <script>, will be escaped, and non-
     whitelisted attributes will be stripped.
     You can customize the whitelisted elements by setting the allowed_elements
     argument like this:
@@ -97,6 +97,6 @@ class HTML5FragmentField(models.TextField):
         return sanitize_html_fragment(value, self.allowed_elements)
     
     def formfield(self, **kwargs):
-        defaults = {'widget' : widgets.CKEditor}
+        defaults = {'widget' : widgets.CKEditor(attrs={'buttons': self.allowed_elements})}
         defaults.update(kwargs)
         return super(HTML5FragmentField, self).formfield(**defaults)
