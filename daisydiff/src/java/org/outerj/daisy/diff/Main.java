@@ -139,16 +139,19 @@ public class Main {
 
                 DomTreeBuilder oldHandler = new DomTreeBuilder();
                 cleaner.cleanAndParse(oldSource, oldHandler);
-                System.out.print(".");
+                if(!quietMode)
+                	System.out.print(".");
                 TextNodeComparator leftComparator = new TextNodeComparator(
                         oldHandler, locale);
 
                 DomTreeBuilder newHandler = new DomTreeBuilder();
                 cleaner.cleanAndParse(newSource, newHandler);
-                System.out.print(".");
+                if(!quietMode)
+                	System.out.print(".");
                 TextNodeComparator rightComparator = new TextNodeComparator(
                         newHandler, locale);
-
+                
+                
                 postProcess.startDocument();
                 postProcess.startElement("", "diffreport", "diffreport",
                         new AttributesImpl());
@@ -160,7 +163,8 @@ public class Main {
                 
                 SideBySideHTMLDiffer differ = new SideBySideHTMLDiffer(output);
                 differ.diff(leftComparator, rightComparator);
-                System.out.print(".");
+                if(!quietMode)
+                	System.out.print(".");
                 postProcess.endElement("", "diff", "diff");
                 postProcess.endElement("", "diffreport", "diffreport");
                 postProcess.endDocument();
@@ -169,16 +173,19 @@ public class Main {
 
                 ContentHandler postProcess = htmlOut? filter.xsl(result,
                         "org/outerj/daisy/diff/tagheader.xsl"):result;
+                
                 postProcess.startDocument();
                 postProcess.startElement("", "diffreport", "diffreport",
                         new AttributesImpl());
                 postProcess.startElement("", "diff", "diff",
                         new AttributesImpl());
-                System.out.print(".");
+                if(!quietMode)
+                	System.out.print(".");
                 DaisyDiff.diffTag(new BufferedReader(new InputStreamReader(
                         oldStream)), new BufferedReader(new InputStreamReader(
                         newStream)), postProcess);
-                System.out.print(".");
+                if(!quietMode)
+                	System.out.print(".");
                 postProcess.endElement("", "diff", "diff");
                 postProcess.endElement("", "diffreport", "diffreport");
                 postProcess.endDocument();
