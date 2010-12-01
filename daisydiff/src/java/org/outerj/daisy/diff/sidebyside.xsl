@@ -15,19 +15,10 @@
   limitations under the License.
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-<xsl:output method="html" indent="yes"/>
+<xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
 
 <xsl:template match="/">
-<html>
-<head>
-<script src="js/jquery/jquery-1.4.3.min.js"/>
-<script src="js/sapling-diff.js"/>
-<link href="css/sapling-diff.css" type="text/css" rel="stylesheet"/>
-</head>
-<body>
-	     <xsl:apply-templates select="diffreport/diff/node()"/>
-</body>
-</html>
+	<xsl:apply-templates select="diffreport/diff/node()"/>
 </xsl:template>
 
 <xsl:template match="@*|node()">

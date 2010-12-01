@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
 
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
@@ -63,6 +64,11 @@ public class Main {
                 }
 
             }
+            
+            // We can make this backward compatible later
+            // For now, let's just output side by side diffs
+            sideBySide = true;
+            
             if (!quietMode){
               System.out.println("            ______________");
               System.out.println("           /Daisy Diff 1.0\\");
@@ -99,7 +105,9 @@ public class Main {
                     .newInstance();
 
             TransformerHandler result = tf.newTransformerHandler();
-            result.setResult(new StreamResult(new File(outputFile)));
+            // Write to stdout for our convenience
+            result.setResult(new StreamResult(System.out));
+            //result.setResult(new StreamResult(new File(outputFile)));
             
             InputStream oldStream, newStream;
             
