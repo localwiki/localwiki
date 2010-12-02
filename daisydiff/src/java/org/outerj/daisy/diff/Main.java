@@ -3,6 +3,7 @@ package org.outerj.daisy.diff;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -28,7 +29,13 @@ import org.xml.sax.helpers.AttributesImpl;
 public class Main {
   static boolean quietMode = false;
   
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) throws URISyntaxException, IOException {
+    	
+    	if(args[0].equals("--server"))
+    	{
+    		DaisyDiffServer.main(args);
+    		return;
+    	}
 
         if (args.length < 2)
             help();

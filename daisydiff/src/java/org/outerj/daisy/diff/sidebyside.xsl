@@ -15,10 +15,15 @@
   limitations under the License.
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-<xsl:output method="xml" indent="yes" omit-xml-declaration="yes" />
+<xsl:output method="html" indent="yes"/>
 
 <xsl:template match="/">
+	<html>
+	<head></head>
+	<body>
 	<xsl:apply-templates select="diffreport/diff/node()"/>
+	</body>
+	</html>
 </xsl:template>
 
 <xsl:template match="@*|node()">
