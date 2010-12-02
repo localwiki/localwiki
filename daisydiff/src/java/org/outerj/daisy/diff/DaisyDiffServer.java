@@ -34,14 +34,14 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 public class DaisyDiffServer {
-	private static  int port = 8080;
+	private static int port = 8080;
 
 	public static void main(String[] args) throws IOException {
 		for (int i = 0; i < args.length; i++) {
-            String[] split = args[i].split("=");
-            if (split[0].equalsIgnoreCase("--port")) {
-                port = Integer.parseInt(split[1]);
-            }
+			String[] split = args[i].split("=");
+			if (split[0].equalsIgnoreCase("--port")) {
+				port = Integer.parseInt(split[1]);
+			}
 		}
 		InetSocketAddress addr = new InetSocketAddress(port);
 		HttpServer server = HttpServer.create(addr, 0);
@@ -57,13 +57,13 @@ class DaisyDiffHandler extends FormHandler {
 
 	public String doGet(HashMap<String, String> form) {
 		this.contentType = "text/plain";
-		
+
 		return "Server is up.  Use POST method to request a diff.";
 	}
 
 	public String doPost(HashMap<String, String> form) {
 		this.contentType = "text/html";
-		
+
 		StringBuffer response = new StringBuffer();
 
 		if (form.containsKey("field1") && form.containsKey("field2")) {
@@ -75,9 +75,8 @@ class DaisyDiffHandler extends FormHandler {
 		return response.toString();
 	}
 
-	private String diff(String left, String right)
-	{
-		try{
+	private String diff(String left, String right) {
+		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
@@ -91,7 +90,7 @@ class DaisyDiffHandler extends FormHandler {
 
 			XslFilter filter = new XslFilter();
 
-			String xsl = "org/outerj/daisy/diff/sidebyside.xsl"; 
+			String xsl = "org/outerj/daisy/diff/sidebyside.xsl";
 
 			ContentHandler postProcess = filter.xsl(result, xsl);
 
@@ -100,8 +99,10 @@ class DaisyDiffHandler extends FormHandler {
 
 			HtmlCleaner cleaner = new HtmlCleaner();
 
-			InputSource oldSource = new InputSource(new ByteArrayInputStream(left.getBytes()));
-			InputSource newSource = new InputSource(new ByteArrayInputStream(right.getBytes()));
+			InputSource oldSource = new InputSource(new ByteArrayInputStream(
+					left.getBytes()));
+			InputSource newSource = new InputSource(new ByteArrayInputStream(
+					right.getBytes()));
 
 			DomTreeBuilder oldHandler = new DomTreeBuilder();
 			cleaner.cleanAndParse(oldSource, oldHandler);
@@ -118,9 +119,8 @@ class DaisyDiffHandler extends FormHandler {
 			postProcess.startDocument();
 			postProcess.startElement("", "diffreport", "diffreport",
 					new AttributesImpl());
-			
-			postProcess.startElement("", "diff", "diff",
-					new AttributesImpl());
+
+			postProcess.startElement("", "diff", "diff", new AttributesImpl());
 			HtmlSaxDiffOutput output = new HtmlSaxDiffOutput(postProcess,
 					prefix);
 
@@ -132,7 +132,6 @@ class DaisyDiffHandler extends FormHandler {
 			postProcess.endDocument();
 
 			return out.toString();
-
 
 		} catch (Throwable e) {
 			return e.getMessage();
@@ -153,6 +152,7 @@ abstract class FormHandler implements HttpHandler {
 		while ((line = br.readLine()) != null) {
 			content.append(line);
 		}
+		br.close();
 
 		HashMap<String, String> form = parseForm(content.toString(), "UTF-8");
 
@@ -164,14 +164,13 @@ abstract class FormHandler implements HttpHandler {
 		} else if (requestMethod.equalsIgnoreCase("POST")) {
 			response = doPost(form);
 		} else {
-			response = "Method not supported";
+			response = "Method not supported: " + requestMethod;
 		}
-		
-		sendResponseHeaders(exchange);
+		sendResponseHeaders(exchange, response.length());
 		OutputStream responseBody = exchange.getResponseBody();
-		System.out.println(response.length() + " bytes sent in response");
 		responseBody.write(response.getBytes());
 		responseBody.close();
+		System.out.println(response.length() + " bytes sent in response");
 	}
 
 	private HashMap<String, String> parseForm(String raw, String encoding)
@@ -188,10 +187,11 @@ abstract class FormHandler implements HttpHandler {
 		return form;
 	}
 
-	private void sendResponseHeaders(HttpExchange exchange) throws IOException {
+	private void sendResponseHeaders(HttpExchange exchange, int length)
+	throws IOException {
 		Headers responseHeaders = exchange.getResponseHeaders();
 		responseHeaders.set("Content-Type", contentType);
-		exchange.sendResponseHeaders(200, 0);
+		exchange.sendResponseHeaders(200, length);
 	}
 
 	public abstract String doGet(HashMap<String, String> form);
