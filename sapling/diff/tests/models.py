@@ -1,6 +1,6 @@
 from django.db import models
 
-import modeldiff
+import diff
 
 """
 TODO: It would be cool to write a little thing to randomly generate
@@ -13,17 +13,17 @@ class M1(models.Model):
     c = models.DateTimeField()
     d = models.IntegerField()
     
-class M1Diff(modeldiff.BaseModelDiff):
+class M1Diff(diff.BaseModelDiff):
     fields = ('d', 'c', 'b', 'a',)
     
-class M1FieldDiff(modeldiff.BaseFieldDiff):
+class M1FieldDiff(diff.BaseFieldDiff):
     pass
 
 class M2(models.Model):
-    a = models.FileField(upload_to='test_modeldiff_uploads')
+    a = models.FileField(upload_to='test_diff_uploads')
 
 class M3(models.Model):
-    a = models.ImageField(upload_to='test_modeldiff_uploads')
+    a = models.ImageField(upload_to='test_diff_uploads')
     
 class M4ForeignKey(models.Model):
     a = models.ForeignKey('M1')

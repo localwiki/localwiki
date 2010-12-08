@@ -83,7 +83,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'trackchanges',
     'page',
-    'modeldiff',
+    'diff',
     'mikepages',
 )
 

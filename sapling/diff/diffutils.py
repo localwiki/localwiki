@@ -41,7 +41,7 @@ class BaseFieldDiff():
             return 'New value is smaller'
             Unchanged
             
-    modeldiff.register(models.IntegerField, MyIntegerDiff)
+    diff.register(models.IntegerField, MyIntegerDiff)
     """
     template = None
     
@@ -91,20 +91,20 @@ class BaseModelDiff(object):
     To customize which fields to compare, subclass BaseModelDiff, setting the
     'fields' or 'excludes' attributes like this:
     
-    class MyModelDiff(modeldiff.BaseModelDiff):
+    class MyModelDiff(diff.BaseModelDiff):
         fields =   ('name', 
                     'contents')
                     
     and then register it with your model like this:
     
-    modeldiff.register(MyModel, MyModelDiff)
+    diff.register(MyModel, MyModelDiff)
     
     You can also customize how each field is compared by using a tuple
     ('field_name', FieldDiff) instead of just the field names, like this:
     
-    class MyModelDiff(modeldiff.BaseModelDiff):
-        fields =   ( ('name', modeldiff.TextFieldDiff),
-                     ('contents', modeldiff.HtmlFieldDiff),
+    class MyModelDiff(diff.BaseModelDiff):
+        fields =   ( ('name', diff.TextFieldDiff),
+                     ('contents', diff.HtmlFieldDiff),
                    )
     """
     fields = None
@@ -198,7 +198,7 @@ class TextFieldDiff(BaseFieldDiff):
         d = self.get_diff()
         if d is None:
             return '<tr><td colspan="2">(No differences found)</td></tr>'
-        return render_to_string('modeldiff/text_diff.html', {'diff': d})
+        return render_to_string('diff/text_diff.html', {'diff': d})
     
     def get_diff(self):
         return get_diff_operations_clean(self.field1, self.field2)
@@ -208,7 +208,7 @@ class HtmlFieldDiff(BaseFieldDiff):
     Compares the fields as HTML and renders them side-by-side, with the
     deleted, inserted, and changed text and elements highlighted.
     To use for a field type, first register in your code like this:
-    modeldiff.register(MyHtmlField, modeldiff.HtmlFieldDiff)
+    diff.register(MyHtmlField, diff.HtmlFieldDiff)
     """
     DAISYDIFF_URL = getattr(settings, 'DAISYDIFF_URL', 'http://localhost:8080')
     
@@ -250,7 +250,7 @@ class FileFieldDiff(BaseFieldDiff):
         d = self.get_diff()
         if d is None:
             return '<tr><td colspan="2">(No differences found)</td></tr>'
-        return render_to_string('modeldiff/file_diff.html', {'diff': d})
+        return render_to_string('diff/file_diff.html', {'diff': d})
 
 class ImageFieldDiff(FileFieldDiff):
     """
@@ -260,7 +260,7 @@ class ImageFieldDiff(FileFieldDiff):
         d = self.get_diff()
         if d is None:
             return '<tr><td colspan="2">(No differences found)</td></tr>'
-        return render_to_string('modeldiff/image_diff.html', {'diff': d})
+        return render_to_string('diff/image_diff.html', {'diff': d})
         
 def get_diff_operations(a, b):
     if a == b:

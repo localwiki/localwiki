@@ -16,14 +16,14 @@ from django import db
 from utils import TestSettingsManager
 from models import M1, M1Diff, M1FieldDiff, M2, M3, M4ForeignKey, TEST_MODELS
 
-import modeldiff
-from modeldiff.diffutils import Registry, BaseFieldDiff, BaseModelDiff
-from modeldiff.diffutils import TextFieldDiff, FileFieldDiff, ImageFieldDiff
-from modeldiff.diffutils import HtmlFieldDiff
+import diff
+from diff.diffutils import Registry, BaseFieldDiff, BaseModelDiff
+from diff.diffutils import TextFieldDiff, FileFieldDiff, ImageFieldDiff
+from diff.diffutils import HtmlFieldDiff
 
 mgr = TestSettingsManager()
 INSTALLED_APPS=list(settings.INSTALLED_APPS)
-INSTALLED_APPS.append('modeldiff.tests')
+INSTALLED_APPS.append('diff.tests')
 mgr.set(INSTALLED_APPS=INSTALLED_APPS)
 
 class ModelDiffTest(TestCase):
@@ -42,10 +42,10 @@ class ModelDiffTest(TestCase):
         m1 = M1.objects.create(**vals)
         m2 = M1.objects.create(**vals)
     
-        d = modeldiff.diff(m1, m1).as_dict()
+        d = diff.diff(m1, m1).as_dict()
         self.assertEqual(d, None)
         
-        d = modeldiff.diff(m1, m2).as_dict()
+        d = diff.diff(m1, m2).as_dict()
         self.assertEqual(d, None)
     
     def test_nearly_identical(self):
@@ -56,7 +56,7 @@ class ModelDiffTest(TestCase):
         m1 = M1.objects.create(**vals)
         vals['a'] = 'Ipsum'
         m2 = M1.objects.create(**vals)
-        d = modeldiff.diff(m1, m2).as_dict()
+        d = diff.diff(m1, m2).as_dict()
         self.assertTrue(len(d) == 1)
     
     def test_foreign_key_identical(self):
@@ -69,7 +69,7 @@ class ModelDiffTest(TestCase):
         m3 = M4ForeignKey.objects.create(a=m1)
         m4 = M4ForeignKey.objects.create(a=m1)
         
-        d = modeldiff.diff(m3, m4).as_dict()
+        d = diff.diff(m3, m4).as_dict()
         self.assertTrue(d is None)
     
     def test_foreign_key(self):
@@ -85,10 +85,10 @@ class ModelDiffTest(TestCase):
         m3 = M4ForeignKey.objects.create(a=m1)
         m4 = M4ForeignKey.objects.create(a=m2)
         
-        d1 = modeldiff.diff(m3, m4).as_dict()
+        d1 = diff.diff(m3, m4).as_dict()
         self.assertTrue(d1['a'])
         
-        d2 = modeldiff.diff(m1, m2).as_dict()
+        d2 = diff.diff(m1, m2).as_dict()
         
         self.assertEqual(d1['a'], d2)
 
@@ -220,7 +220,7 @@ class DiffRegistryTest(TestCase):
         
     def test_register_model(self):
         """
-        If we register a modeldiff for a model, we should get that and not BaseModelDiff
+        If we register a diff for a model, we should get that and not BaseModelDiff
         """
         self.registry.register(M1, M1Diff)
         self.failUnlessEqual(self.registry.get_diff_util(M1), M1Diff)
@@ -236,4 +236,4 @@ class DiffRegistryTest(TestCase):
         """
         If we try to diff something that is neither a model nor a field, raise exception.
         """
-        self.failUnlessRaises(modeldiff.diffutils.DiffUtilNotFound, self.registry.get_diff_util, DiffRegistryTest)
+        self.failUnlessRaises(diff.diffutils.DiffUtilNotFound, self.registry.get_diff_util, DiffRegistryTest)
