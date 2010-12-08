@@ -3,8 +3,10 @@ import difflib
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
+from django.conf import settings
 
 import diff_match_patch
+import daisydiff
 
 class DiffUtilNotFound(Exception):
     """
@@ -144,14 +146,24 @@ class TextFieldDiff(BaseFieldDiff):
         return get_diff_operations_clean(self.field1, self.field2)
     
 class HtmlFieldDiff(BaseFieldDiff):
+    DAISYDIFF_URL = getattr(settings, 'DAISYDIFF_URL', 'http://localhost:8080')
+    
     def as_html(self):
         d = self.get_diff()
         if d is None:
             return '<tr><td colspan="2">(No differences found)</td></tr>'
-        return render_to_string('modeldiff/text_diff.html', {'diff': d})
+        try:
+            return daisydiff.daisydiff(d['deleted'], d['inserted'],
+                                       self.DAISYDIFF_URL)
+        except:
+            return TextFieldDiff(d['deleted'], d['inserted']).as_html()
     
     def get_diff(self):
-        return get_diff_operations_html(self.field1, self.field2)
+        if self.field1 == self.field2:
+            return None
+        return {'deleted': self.field1, 'inserted': self.field2}
+        
+    
     
 class FileFieldDiff(BaseFieldDiff):
     def get_diff(self):

@@ -104,7 +104,6 @@ class BaseFieldDiffTest(TestCase):
             d = self.test_class(v, v)
             self.assertEqual(d.as_dict(), None)
 
-        
     def test_identical_fields_html(self):
         """
         The html of the diff between two identical fields should be sensible message
@@ -158,6 +157,28 @@ class FileFieldDiffTest(BaseFieldDiffTest):
 
 class ImageFieldDiffTest(FileFieldDiffTest):
     test_class = ImageFieldDiff
+    
+class HtmlFieldTest(TestCase):
+    def test_identical_fields(self):
+        htmlDiff = HtmlFieldDiff('abc', 'abc')
+        self.assertEquals(htmlDiff.as_dict(), None)
+    
+    def test_deleted_inserted(self):
+        htmlDiff = HtmlFieldDiff('abc', 'def')
+        self.assertTrue('def</ins>' in htmlDiff.as_html())
+    
+    def test_daisydiff_broken_fallback(self):
+        """
+        In case something is wrong with the DaisyDiff service, fallback to
+        text-only diff
+        """
+        backup = HtmlFieldDiff.DAISYDIFF_URL
+        
+        HtmlFieldDiff.DAISYDIFF_URL = 'http://badurl'
+        htmlDiff = HtmlFieldDiff('abc', 'def')
+        self.assertTrue('<del>abc</del>' in htmlDiff.as_html())
+        
+        HtmlFieldDiff.DAISYDIFF_URL = backup
         
 class DiffRegistryTest(TestCase):
     
