@@ -1,5 +1,5 @@
 from django.db import models
-import modeldiff
+import diff
 
 class Page(models.Model):
     name = models.CharField(max_length=100)
@@ -8,11 +8,11 @@ class Page(models.Model):
     img = models.ImageField(upload_to='mikepages_uploads')
 
 
-class PageDiff(modeldiff.BaseModelDiff):
+class PageDiff(diff.BaseModelDiff):
     fields = ( 'name', 
-              'content',
+              ('content', diff.diffutils.HtmlFieldDiff),
               'date',
               'img'
              )
    
-modeldiff.register(Page, PageDiff)
+diff.register(Page, PageDiff)
