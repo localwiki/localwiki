@@ -21,7 +21,12 @@
 
 = Todo =
 
--2: revert, delete in between, no revision tests.  reverts should be logged differently than ~
+-2: "keep track of the version
+   from which we reverted -- by revision id (? - global or per-page ) or 
+   date?"
+
+we could add a bit to the historical model
+a foreignkey to self
 
 -1: ForeignKey lookup stuff.  maybe like:
 
@@ -29,72 +34,13 @@
  - flag in TrackChanges() constructor.  default is on.
  - h.history_meta.object should return something that o.user is the old user on
  - if this is annoying down the road, change it.  for now it's a sane default.
-----------------
 
-0. Full API like modelhistory has.
-   X * option to not track change for save
-       o.history.track_changes = False
-   * revert to version - directly implement?
-
-    v = o.history.filter(..)
-    m = v.history_meta.object
-    m.save()
-
-    let's do: 
-    v.revert_to()
-
-  [later] * we should log a revert differently than
-     a delete, a change, an addition.
-
-   X * revert to and delete newer versions:
-
-      v = o.history.filter(...)
-      v.revert_to(delete_newer_versions=True)
-
-      * delete newer versions:
-
-            delete newer versions w/o logging:
-            3  | [3, 2, 1]  ->  2 | [2 , 1]
-
-            with logging:
-            3  | [3, 2, 1]  ->  2 | [2, 2, 1]
-
-      * delete_newer_versions
-      * delete_all - no need to implement this here, done by doing
-        simple for v in o.history.all(): delete v
-        
-      * track_changes = False is 'dont log'
-        -- so we manage this at the implementation level
-
-      * don't log current save (?) ('dont log in RC')
-      * delete all in-between
-
-   X * get version number of an object
-        v.history_meta.version_number
-
-        to get version by #:
-
-            try:
-                v.history.all()[n]
-            except IndexError:
-                ...
-
-        v.history_meta.get_version_number()
-
-   X * as_of by version number
+0: admin integration
 
 ==================================
 ==================================
 
-0. docstrings say "history.get()- what do i mean here"
-
- - malcolm says: managers good place for 'all objects / model as object rather than instance of object'
-                 object methods good for acting on individual objects
-
-
-0.5.  track_changes = False should be allowed to be sent in at the history = TrackChanges(auto_track=False) level.
-
-general cleanup - '-' / '+' / '~' should be named and set as choices a'la modelhistory
+0.5.
 
  * how do we handle foreignkeys?
    * NOTE * this is for following relationships - a lookup.  We shouldn't automatically
@@ -135,10 +81,6 @@ FOR OUR REAL TODO FILE (e.g. AFTER OUR INITIAL DEV):
 3. admin interface - wait on this (after basic release). just leave it as a todo.
    ** VERY IMPORTANT ** SHOULD DO
    - look at how other similar projects are doing admin integration
-   - we need to grab the current user, ip, etc
-     - don't use currentuserfield() approach - instead find a way to patch
-       the admin directly
-         ( this is what django-reversion does )
    - we can mostly study the django-reversion code here
    - two sides:
       * logging info for actions taken via admin
@@ -147,10 +89,6 @@ FOR OUR REAL TODO FILE (e.g. AFTER OUR INITIAL DEV):
       - called the django admin log
       - http://127.0.0.1:8000/admin/pagecms/page/11/history/
       - we should probably just over-ride this / hook into this on trackchanges models
-
-4. flag reverts differently than normal changes.  keep track of the version
-   from which we reverted -- by revision id (? - global or per-page ) or 
-   date?
 
 = Uninteresting developer notes =
   * If we wanted to support something like real time editing with logging of all

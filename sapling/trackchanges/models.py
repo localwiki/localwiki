@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from utils import *
 from storage import *
 from registry import *
+from constants import *
 import manager
 
 class TrackChanges(object):
@@ -18,8 +19,20 @@ class TrackChanges(object):
     def finalize(self, sender, **kwargs):
         history_model = self.create_history_model(sender)
 
-        # The TrackChanges object will be discarded,
-        # so the signal handlers can't use weak references.
+        setattr(sender, '_track_changes', True)
+
+        # Over-ride the save, delete methods to allow arguments to be passed in
+        # such as comment="Made a small change."
+        setattr(sender, 'save', save_with_arguments)
+        setattr(sender, 'delete', delete_with_arguments)
+
+        # We also attach signal handlers to the save, delete methods.  It's
+        # easier to have two things going on (signal, and an overridden method)
+        # because the signal handlers tell us if the object is new or not.
+        # (Just checking object.pk is None is not enough!)
+
+        # The TrackChanges object will be discarded, so the signal handlers
+        # can't use weak references.
         models.signals.post_save.connect(
             self.post_save, sender=sender, weak=False
         )
@@ -59,7 +72,6 @@ class TrackChanges(object):
         """
         Wrap some
         """
-        pass
         for field in model._meta.fields:
             if isinstance(field, models.FileField):
                 field.storage = FileStorageWrapper(field.storage)
@@ -99,6 +111,9 @@ class TrackChanges(object):
 
         If you subclass TrackChanges this is a good method to over-ride --
         simply add your own values to the fields for custom fields.
+
+        NOTE: Your custom fields should start with history_ if you want them to
+              be looked up via hm.history_info.fieldname
         """
         fields = {
             'history_comment': models.CharField(max_length=200, blank=True,
@@ -106,7 +121,7 @@ class TrackChanges(object):
             ),
             'history_user': AutoUserField(null=True),
             'history_user_ip': AutoIPAddressField(null=True),
-            '__unicode__': lambda self: u'%s as of %s' % (self.history_object,
+            '__unicode__': lambda self: u'%s as of %s' % (self.history__object,
                                                           self.history_date)
         }
 
@@ -119,18 +134,21 @@ class TrackChanges(object):
         """
         fields = {
             'history_id': models.AutoField(primary_key=True),
-            'history_object': HistoricalObjectDescriptor(model),
+            'history__object': HistoricalObjectDescriptor(model),
             'history_date': models.DateTimeField(default=datetime.datetime.now),
-            'history_version_number': property(version_number_of, no_attribute_setting),
-            'history_type': models.CharField(max_length=1, choices=(
-                ('+', 'Created'),
-                ('~', 'Changed'),
-                ('-', 'Deleted'),
-            )),
+            'history_version_number': version_number_of,
+            'history_type': models.SmallIntegerField(choices=TYPE_CHOICES),
+            # If you want to display "Reverted to version N" in every change
+            # comment then you should stash that in the comment field
+            # directly rather than using
+            # reverted_to_version.version_number() on each display.
+            'history_reverted_to_version': models.ForeignKey('self', null=True),
             # lookup function for cleaniness. Instead of doing
             # h.history_ip_address we can write h.history_info.ip_address
             'history_info': HistoricalMetaInfo(),
             'revert_to': revert_to,
+            'save': save_with_arguments,
+            'delete': delete_with_arguments,
         }
 
         return fields
@@ -145,26 +163,45 @@ class TrackChanges(object):
         }
 
     def post_save(self, instance, created, **kwargs):
-        self.create_historical_record(instance, created and '+' or '~')
+        history_type = getattr(instance, '_history_type', None)
+        is_revert = history_type == TYPE_REVERTED
+        if created:
+            history_type = TYPE_REVERTED_ADDED if is_revert else TYPE_ADDED
+        else:
+            history_type = history_type or TYPE_UPDATED
+        self.create_historical_record(instance, history_type)
 
     def pre_delete(self, instance, **kwargs):
         self._pk_recycle_cleanup(instance)
 
     def post_delete(self, instance, **kwargs):
+        history_type = getattr(instance, '_history_type', None)
+        is_revert = history_type == TYPE_REVERTED
+        history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
         if not self._is_pk_recycle_a_problem(instance):
-            self.create_historical_record(instance, '-')
+            self.create_historical_record(instance, history_type)
 
     def create_historical_record(self, instance, type):
         manager = getattr(instance, self.manager_name)
         # if they set track_changes to False
         # then we don't auto-create a revision here
-        if not manager.track_changes:
+        if not instance._track_changes:
             return
         attrs = {}
         for field in instance._meta.fields:
             attrs[field.attname] = getattr(instance, field.attname)
-        attrs.update(manager._save_with)
+        attrs.update(self._get_save_with_attrs(instance))
         manager.create(history_type=type, **attrs)
+
+    def _get_save_with_attrs(self, instance):
+        """
+        Prefix all keys with 'history_' to save them into the history
+        model correctly.
+        """
+        d = {}
+        for k, v in getattr(instance, '_save_with', {}).iteritems():
+            d['history_%s' % k] = v
+        return d
 
     def _is_pk_recycle_a_problem(self, instance):
         manager = getattr(instance, self.manager_name)

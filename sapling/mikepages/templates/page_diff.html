@@ -1,9 +1,9 @@
-{% load modeldiff_tags %}
+{% load diff_tags %}
 <style>
-  .deleted {
+  del {
     text-decoration: line-through;
   }
-  .diff_inserted {
+  ins {
     background: #af6;
   }
   
@@ -17,5 +17,5 @@
 </style>
 <table>
   {% diff page1 page2 as page_diff %}
-  {{ page_diff }}
+  {{ page_diff }} 
 </table>
