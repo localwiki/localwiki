@@ -1,5 +1,17 @@
-<h1>{{ page.name }}</h1>
-<h4>{{ page.date }}</h4>
-<div id="content">
-  {{ page.content|safe }}
-</div>
+{% extends "mikepages/base.html" %}
+{% block title %}{{ page.name }}{% endblock %}
+{% block header %}{{ page.name }}{% endblock %}
+
+{% block main %}
+  <div>
+    {{ page.content|safe }}
+  </div>
+  
+  <p>Modified {{ page.history.most_recent.history_info.date|timesince }} ago</p>
+  
+  <p>
+    <a href="edit">Edit this page</a>
+  </p>
+{% endblock %}
+
+

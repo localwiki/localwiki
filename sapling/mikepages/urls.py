@@ -10,16 +10,11 @@ page_info = {
     'template_object_name': 'page',
 }
 
-pages = {
-    'queryset': Page.objects.all(),
-    'template_object_name': 'page',
-}
-
 urlpatterns = patterns('',
     # Example:
     # (r'^diffs/', include('diffs.foo.urls')),
     (r'^$', list_detail.object_list, page_info),
-    (r'^(?P<object_id>\d+)/$', list_detail.object_detail, pages),
-    (r'^(?P<object_id>\d+)/edit$', views.edit),
+    (r'^(?P<slug>[-\w]+)/$', views.show),
+    (r'^(?P<slug>[-\w]+)/edit$', views.edit),
     (r'^diff/$', views.diff),
 )

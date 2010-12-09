@@ -1,12 +1,14 @@
-<html>
-  <head>
-    <title>Edit</title>
-    {{ form.media }}
-  </head>
-  <body>
+{% extends "mikepages/base.html" %}
+{% block media %}{{ form.media }}{% endblock %}
+
+{% block title %}Editing page "{{ form.instance.name }}"{% endblock %}
+
+{% block header %}Editing page "{{ form.instance.name }}"{% endblock %}
+    
+{% block main %}
     <form method="post" action="">
       {{ form.as_ul }}
-      <input type="submit"/>
+      <input type="submit" value="Save"/>
+      <a href=".">Cancel</a>
     </form>
-  </body>
-</html>
+{% endblock %}
