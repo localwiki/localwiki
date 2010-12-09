@@ -6,7 +6,7 @@ from models import Page
 
 page_info = {
     'queryset': Page.objects.all(),
-    'template_name': 'page_list.html',
+    'template_name': 'mikepages/page_list.html',
     'template_object_name': 'page',
 }
 

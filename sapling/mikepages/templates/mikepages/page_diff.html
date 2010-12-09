@@ -1,0 +1,13 @@
+{% load diff_tags %}
+<style>
+  del {
+    background: #FDC6C6;
+  }
+  ins {
+    background: #AAFF66;
+  }
+</style>
+<table width="100%">
+  {% diff page1 page2 as page_diff %}
+  {{ page_diff }} 
+</table>
