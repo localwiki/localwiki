@@ -5,7 +5,7 @@ import diff
 
 class Page(models.Model):
     name = models.CharField(max_length=100)
-    content = HTML5FragmentField()
+    content = HTML5FragmentField(allowed_elements=['p', 'a', 'em', 'strong'])
     date = models.DateTimeField(auto_now=True)
     img = models.ImageField(upload_to='mikepages_uploads', null=True, blank=True)
 
