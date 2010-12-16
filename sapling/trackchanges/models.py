@@ -1,6 +1,4 @@
 import copy
-import datetime
-from functools import partial
 
 from django.db import models
 from django.conf import settings
@@ -10,6 +8,8 @@ from utils import *
 from storage import *
 from registry import *
 from constants import *
+from fields import *
+from history_model_methods import get_history_fields
 import manager
 
 class TrackChanges(object):
@@ -57,7 +57,7 @@ class TrackChanges(object):
 
         See http://code.djangoproject.com/wiki/DynamicModels
         Django 'sees' this new historical model class and actually creates a
-        new model in the database (on syncdb) named <originalmodel>_history.
+        new model in the database (on syncdb) named <originalmodel>_hist.
         This happens because the class that's returned is just like a normal
         model definition ('class MyModel(models.Model)') in the eyes of the
         Django machinery.
@@ -65,10 +65,10 @@ class TrackChanges(object):
         @returns: Class representing the historical version of the model.
         """
         attrs = self.copy_fields(model)
-        attrs.update(self._get_history_fields(model))
+        attrs.update(get_history_fields(self, model))
         attrs.update(self.get_extra_history_fields(model))
         attrs.update(Meta=type('Meta', (), self.get_meta_options(model)))
-        name = '%s_history' % model._meta.object_name
+        name = '%s_hist' % model._meta.object_name
         return type(name, (models.Model,), attrs)
 
     def wrap_model_fields(self, model):
@@ -89,7 +89,7 @@ class TrackChanges(object):
         fields = {'__module__': model.__module__}
 
         for field in model._meta.fields:
-            field = copy.copy(field)
+            field = copy.deepcopy(field)
 
             if isinstance(field, models.AutoField):
                 # The historical model gets its own AutoField, so any
@@ -103,8 +103,23 @@ class TrackChanges(object):
                 field.primary_key = False
                 field._unique = False
                 field.db_index = True
+
+            if isinstance(field, models.ForeignKey):
+                # If the related model is also versioned then we will
+                # use a custom IntegerField instead. This is to prevent
+                # deletion of a versioned model instance from cascading
+                # and deleting historical versions of related objects.
+                if is_versioned(field.related.parent_model):
+                    field = VersionedForeignKey(field)
+                else:
+                    if field.rel.related_name is not None:
+                        # custom related_name is set so we have to
+                        # rename it or we'll have a collision
+                        field.rel.related_name = "%s_hist" % field.rel.related_name
+                    
             fields[field.name] = field
 
+        print "FIELDS:", fields
         return fields
 
     def get_extra_history_fields(self, model):
@@ -126,36 +141,6 @@ class TrackChanges(object):
             'history_user_ip': AutoIPAddressField(null=True),
             '__unicode__': lambda self: u'%s as of %s' % (self.history__object,
                                                           self.history_date)
-        }
-
-        return fields
-
-    def _get_history_fields(self, model):
-        """
-        Returns a dictionary of the essential fields that will be added to the
-        historical record model, in addition to the ones returned by copy_fields.
-        """
-        fields = {
-            'history_id': models.AutoField(primary_key=True),
-            'history__object': HistoricalObjectDescriptor(model),
-            'history_date': models.DateTimeField(default=datetime.datetime.now),
-            'history_version_number': version_number_of,
-            'history_type': models.SmallIntegerField(choices=TYPE_CHOICES),
-            # If you want to display "Reverted to version N" in every change
-            # comment then you should stash that in the comment field
-            # directly rather than using
-            # reverted_to_version.version_number() on each display.
-            'history_reverted_to_version': models.ForeignKey('self', null=True),
-            # lookup function for cleaniness. Instead of doing
-            # h.history_ip_address we can write h.history_info.ip_address
-            'history_info': HistoricalMetaInfo(),
-            'revert_to': revert_to,
-            'save': save_with_arguments,
-            'delete': delete_with_arguments,
-            '__init__': historical_record_init,
-            '__getattribute__':
-                # not sure why functools.partial doesn't work here
-                lambda m, name: historical_record_getattribute(model, m, name),
         }
 
         return fields
@@ -182,6 +167,9 @@ class TrackChanges(object):
         self._pk_recycle_cleanup(instance)
 
     def post_delete(self, instance, **kwargs):
+        print "POSTDELETE-INSTANCE", instance
+        print "POSTDELETE-INSTANCEDETAIL", instance.__dict__
+        print "POSTDELETE-ID", id(instance)
         history_type = getattr(instance, '_history_type', None)
         is_revert = history_type == TYPE_REVERTED
         history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
@@ -211,9 +199,8 @@ class TrackChanges(object):
         return d
 
     def _is_pk_recycle_a_problem(self, instance):
-        manager = getattr(instance, self.manager_name)
         if (settings.DATABASE_ENGINE == 'sqlite3' and
-            not manager._instance_unique_fields()):
+            not unique_fields_of(instance)):
             return True
 
     def _pk_recycle_cleanup(self, instance):
@@ -233,6 +220,7 @@ class TrackChanges(object):
         for entry in manager.all():
             entry.delete()
 
+
 class AutoUserField(models.ForeignKey):
     def __init__(self, **kws):
         super(AutoUserField, self).__init__(User, **kws)
@@ -241,6 +229,7 @@ class AutoUserField(models.ForeignKey):
         super(AutoUserField, self).contribute_to_class(cls, name)
         registry = FieldRegistry('user')
         registry.add_field(cls, self)
+
 
 class AutoIPAddressField(models.IPAddressField):
     def contribute_to_class(self, cls, name):

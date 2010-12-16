@@ -41,13 +41,35 @@ class FKM(models.Model):
 
     history = TrackChanges()
 
+class OneToOne(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.OneToOneField(Page)
 
-from page.models import *
+    history = TrackChanges()
 
-t = Tag(name="alphaandomega6")
-t.save()
+class Person(models.Model):
+    name = models.CharField(max_length=200)
 
-fk = FK(a="needfood6", b=t)
-fk.save()
+class AnotherPage(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    body = models.TextField()
+    person = models.ForeignKey(Person)
 
+class YetAnotherPage(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    body = models.TextField()
+    person = models.ForeignKey(Person, related_name="otherpages")
 
+class NoFKConstraint(models.Model):
+    name = models.CharField(max_length=200)
+    tag = models.ForeignKey(Tag)
+
+#from page.models import *
+#
+#t = Tag(name="alphaandomega6")
+#t.save()
+#
+#fk = FK(a="needfood6", b=t)
+#fk.save()
+#
+#

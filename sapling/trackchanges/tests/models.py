@@ -74,8 +74,14 @@ class M11Image(models.Model):
 
     history = TrackChanges()
 
-class M12ForeignKeys(models.Model):
+class M12ForeignKey(models.Model):
     a = models.ForeignKey(M2)
+    b = models.CharField(max_length=200)
+
+    history = TrackChanges()
+
+class M12ForeignKeysRelatedSpecified(models.Model):
+    a = models.ForeignKey(M2, related_name="g")
     b = models.CharField(max_length=200)
 
     history = TrackChanges()
@@ -113,9 +119,21 @@ class M16Unique(models.Model):
 
     history = TrackChanges()
 
+class M17ForeignKeyVersioned(models.Model):
+    name = models.CharField(max_length=200)
+    m2 = models.ForeignKey(M2)
+
+    history = TrackChanges()
+
+class M18OneToOneFieldVersioned(models.Model):
+    name = models.CharField(max_length=200)
+    m2 = models.OneToOneField(M2)
+
+    history = TrackChanges()
+
 TEST_MODELS = [
     M1, M2, M3BigInteger, M4Date, M5Decimal, M6Email, M7Numbers,
-    M8Time, M9URL, M10File, M11Image, M12ForeignKeys, M13ForeignKeySelf,
-    M14ManyToMany, M15OneToOne
+    M8Time, M9URL, M10File, M11Image, M12ForeignKey, M13ForeignKeySelf,
+    M14ManyToMany, M15OneToOne, M16Unique, M17ForeignKeyVersioned,
+    M18OneToOneFieldVersioned, #M19ManyToManyFieldVersioned,
 ]
-    

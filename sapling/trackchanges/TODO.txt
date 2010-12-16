@@ -30,12 +30,22 @@ a foreignkey to self
 
 -1: ForeignKey lookup stuff.  maybe like:
 
+"both reverse and direct, e.g., ForeignKey, ManyToManyField, and reverse relationships those create." -- "reverse relationships those create" => make this work.
+
  - ONLY figure it out on a lookup.
  - flag in TrackChanges() constructor.  default is on.
  - h.history_meta.object should return something that o.user is the old user on
  - if this is annoying down the road, change it.  for now it's a sane default.
 
 0: admin integration
+
+before 'release':
+
+explain why to use.
+
+"Why not django-reversion or django-versions?"
+
+Both of these apps serialize models into blobs.  We believe that having the full power of the Django ORM available is the best way to do this.  For lots of reasons:  you have the full power of the orm, migrations are easier and it's possible to do the sort of things we want to do - sorting, displaying, limiting of revisions.
 
 ==================================
 ==================================
