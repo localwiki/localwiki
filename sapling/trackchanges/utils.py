@@ -3,7 +3,7 @@ def is_versioned(m):
     @param m: A model instance or class.
     @returns: True if the model has changes tracked.
     """
-    return (getattr(m, '_history_manager_name') is not None)
+    return (getattr(m, '_history_manager_name', None) is not None)
 
 def unique_fields_of(m):
     """
@@ -16,9 +16,6 @@ def unique_fields_of(m):
         if field.primary_key or field.auto_created: continue
         if not field.unique: continue
 
-        # related objects have attname set to something_id for some reason
-        if hasattr(field, 'related'):
-            return { field.name: getattr(m, field.name) }
         return { field.attname: getattr(m, field.attname) }
 
     if m._meta.unique_together:

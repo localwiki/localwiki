@@ -119,7 +119,6 @@ class TrackChanges(object):
                     
             fields[field.name] = field
 
-        print "FIELDS:", fields
         return fields
 
     def get_extra_history_fields(self, model):

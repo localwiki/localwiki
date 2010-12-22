@@ -25,7 +25,6 @@ class VersionedForeignKey(models.IntegerField):
         @param m_hist: A historical model instance.
         """
         def _lookup(m_hist, fk_class):
-            print "!!DOING LOOKUP"
             pk = getattr(m_hist, self.name)
             as_of = m_hist.history_info.date
             return fk_class.history.filter(id=pk, history_date__lte=as_of)[0]

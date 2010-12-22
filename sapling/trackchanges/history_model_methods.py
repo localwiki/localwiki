@@ -8,6 +8,7 @@ so we have the methods laid out flat here.
 import datetime
 
 from django.db import models
+from django.db.models import Max
 
 from fields import *
 from constants import *
@@ -47,11 +48,9 @@ def historical_record_init(m, *args, **kws):
     """
     This is the __init__ method of historical record instances.
     """
-    print kws
-    print m.__class__
-    print super(m.__class__, m)
     retval = super(m.__class__, m).__init__(*args, **kws)
     _wrap_foreign_keys(m)
+    _wrap_reverse_lookups(m)
     return retval
 
 def _wrap_foreign_keys(m):
@@ -89,8 +88,63 @@ def _wrap_foreign_keys(m):
     #    _wrap_field(m, field)
     for field in m._meta.fields:
         if isinstance(field, VersionedForeignKey):
-            print "SETTING", field._attribute_name, "on", m
             setattr(m, field._attribute_name, field.lookup_proper_version(m))
+
+def _wrap_reverse_lookups(m):
+    """
+    Make reverse foreign key lookups return historical versions
+    if the parent model is versioned.
+
+    @param m: a historical record model
+    """
+    def _reverse_set_lookup(m, rel_o):
+        attr = rel_o.field.attname
+        parent_model = rel_o.model
+        as_of = m.history_info.date
+        parent_pk_att = parent_model._meta.pk.attname
+
+        # We want to make sure our filter respects the fact that the
+        # pk of the model can cycle while the unique fields stay the
+        # same.
+
+        # Grab parent history objects that are less than the as_of date
+        qs = parent_model.history.filter(history_date__lte=as_of, **{attr:m.id})
+        # Then group by the parent_pk
+        qs = qs.order_by(parent_pk_att).values(parent_pk_att).distinct()
+        # then annotate the maximum history object id
+        #ids = qs.values('history_id').annotate(Max('history_id'))
+        ids = qs.annotate(Max('history_id'))
+        history_ids = [ v['history_id__max'] for v in ids ]
+
+        # return a QuerySet containing the proper history objects
+        return parent_model.history.filter(history_id__in=history_ids)
+
+    def _reverse_attr_lookup(m, rel_o):
+        parent_model = rel_o.model
+        # attname looks like 'b_id' here because this is a OneToOneField
+        attr = rel_o.field.attname
+        as_of = m.history_info.date
+
+        return parent_model.history.filter(
+            history_date__lte=as_of,
+            # we filter on something that looks like 'b_id' because we
+            # are using a VersionedForeignKey field on the parent model
+            **{attr:m.id}
+        )[0]
+
+    related_objects = m.history_info._object._meta.get_all_related_objects()
+    related_versioned = [ o for o in related_objects if is_versioned(o.model) ]
+    for rel_o in related_versioned:
+        # set the accessor to a lazy lookup function that, when
+        # accessed, looks up the proper related set
+        accessor = rel_o.get_accessor_name()
+        
+        if isinstance(rel_o.field, models.OneToOneField):
+            # OneToOneFields have a direct lookup (not a set)
+            _proper_reverse_lookup = partial(_reverse_attr_lookup, m, rel_o)
+        else:
+            _proper_reverse_lookup = partial(_reverse_set_lookup, m, rel_o)
+        setattr(m, accessor, SimpleLazyObject(_proper_reverse_lookup))
 
 #def historical_record_getattribute(model, m, name):
 #    """

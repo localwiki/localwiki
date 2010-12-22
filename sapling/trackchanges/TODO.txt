@@ -1,3 +1,10 @@
+ * get related stuff working for foreignkey
+ * onetoone fields
+ * manytomany
+ * wiki app using trackchanges
+ * documentation
+ * admin interface
+
 = Notes =
 
 == FileFields ==
@@ -19,14 +26,19 @@
 
     So our dumb approach will probably work!
 
+== Unique fields ==
+We try do our best to be smart about unique fields! For instance, if you delete and then recreate a model (so it has a new integer primary key), we'll still pull up the correct history of the model based on its unique fields.
+
+However, if you rename a unique field on a model you'll notice that it will clear out the history of the model unless there was a model with that same field in the past (in which case you'll see that model's history). If you'd like to rename all the historical versions' unique fields you'll want to do that by hand, kinda like this:
+
+# assume 'name' is a unique field
+p.name = "New name!"
+for p_h in p.history.all():
+    p_h.name = "New name!"
+    p_h.save(track_changes=False)
+p.save()
+
 = Todo =
-
--2: "keep track of the version
-   from which we reverted -- by revision id (? - global or per-page ) or 
-   date?"
-
-we could add a bit to the historical model
-a foreignkey to self
 
 -1: ForeignKey lookup stuff.  maybe like:
 

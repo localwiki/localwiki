@@ -47,6 +47,10 @@ class OneToOne(models.Model):
 
     history = TrackChanges()
 
+class OneToOneNotVersioned(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.OneToOneField(Page)
+
 class Person(models.Model):
     name = models.CharField(max_length=200)
 

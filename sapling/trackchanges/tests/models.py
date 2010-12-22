@@ -125,6 +125,12 @@ class M17ForeignKeyVersioned(models.Model):
 
     history = TrackChanges()
 
+class M17ForeignKeyVersionedCustom(models.Model):
+    name = models.CharField(max_length=200)
+    m2 = models.ForeignKey(M2)
+
+    history = TrackChanges()
+
 class M18OneToOneFieldVersioned(models.Model):
     name = models.CharField(max_length=200)
     m2 = models.OneToOneField(M2)
