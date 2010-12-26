@@ -89,6 +89,12 @@ def _wrap_foreign_keys(m):
     for field in m._meta.fields:
         if isinstance(field, VersionedForeignKey):
             setattr(m, field._attribute_name, field.lookup_proper_version(m))
+    #XXX
+    # AGhhh i think we need to use our custom __getattribute__, god
+    # damnit
+    for field in m._meta.many_to_many:
+        if is_versioned(field.related.parent_model):
+            setattr()
 
 def _wrap_reverse_lookups(m):
     """

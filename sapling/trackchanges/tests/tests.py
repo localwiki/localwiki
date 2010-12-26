@@ -502,7 +502,6 @@ class TrackChangesTest(TestCase):
         should pull up the correct version of the related object
         if the related object is versioned.
         """
-        return
         ###############################
         # ForeignKey attribute
         ###############################
@@ -570,6 +569,25 @@ class TrackChangesTest(TestCase):
 
         m18_h = m18.history.as_of(version=4)
         self.assertEqual(m18_h.m2.c, 3)
+
+        ###############################
+        # ManyToMany attribute
+        ###############################
+        t1 = LameTag(name="T1")
+        t1.save()
+        t2 = LameTag(name="T2")
+        t2.save()
+        m19 = M19ManyToManyFieldVersioned(a="m19 woo")
+        m19.save()
+        m19.tags.add(t1, t2)
+        t1.name += "!"
+        t1.save()
+        t2.name += "!"
+        t2.save()
+
+        m19_h = m19.history.most_recent()
+        tags = m19_h.tags.all()
+        self.assertEqual(set([t.name for t in tags]), set(["T1", "T2"]))
 
     def test_fk_reverse_no_interference(self):
         """
@@ -651,7 +669,54 @@ class TrackChangesTest(TestCase):
          self.assertEqual(child_h.m15onetoone.a, "i have a onetoone field")
 
     def test_manytomany_reverse_lookup(self):
-        pass
+        t1 = LameTag(name="lame1")
+        t1.save()
+        t2 = LameTag(name="lame2")
+        t2.save()
+        m19 = M19ManyToManyFieldVersioned(a="best m19")
+        m19.save()
+        m19.tags.add(t1, t2)
+
+        t1.name += "!"
+        t1.save()
+        t2.name += "!"
+        t2.save()
+
+        m19.a += "!"
+        m19.save()
+
+        t1.name += "!"
+        t1.save()
+        t2.name += "!"
+        t2.save()
+
+        # reverse set on these should be empty
+        t1_h = t1.history.all()[2]
+        t2_h = t2.history.all()[2]
+        reverse_set = t1_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 0))
+        reverse_set = t2_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 0))
+
+        # reverse set on these should be "best m19"
+        t1_h = t1.history.all()[1]
+        t2_h = t2.history.all()[1]
+        reverse_set = t1_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(reverse_set.all()[0].a, "best m19")
+        reverse_set = t2_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(reverse_set.all()[0].a, "best m19")
+
+        # reverse set on these should be "best m19!"
+        t1_h = t1.history.all()[0]
+        t2_h = t2.history.all()[0]
+        reverse_set = t1_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(reverse_set.all()[0].a, "best m19!")
+        reverse_set = t2_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(reverse_set.all()[0].a, "best m19!")
 
     def test_reverse_related_name(self):
         # custom ForeignKey related_name

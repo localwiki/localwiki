@@ -69,7 +69,7 @@ class TrackChanges(object):
         attrs.update(self.get_extra_history_fields(model))
         attrs.update(Meta=type('Meta', (), self.get_meta_options(model)))
         name = '%s_hist' % model._meta.object_name
-        return type(name, (models.Model,), attrs)
+        return type(name, (model,), attrs)
 
     def wrap_model_fields(self, model):
         """
@@ -88,7 +88,7 @@ class TrackChanges(object):
         # is required for a model to function properly.
         fields = {'__module__': model.__module__}
 
-        for field in model._meta.fields:
+        for field in (model._meta.fields + model._meta.many_to_many):
             field = copy.deepcopy(field)
 
             if isinstance(field, models.AutoField):
@@ -116,7 +116,10 @@ class TrackChanges(object):
                         # custom related_name is set so we have to
                         # rename it or we'll have a collision
                         field.rel.related_name = "%s_hist" % field.rel.related_name
-                    
+
+            if isinstance(field, models.ManyToManyField):
+                pass
+
             fields[field.name] = field
 
         return fields

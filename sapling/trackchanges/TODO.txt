@@ -1,6 +1,26 @@
- * get related stuff working for foreignkey
- * onetoone fields
+ * copy over model's Meta options.  looks like we want to ignore:
+   db_table, get_latest_by, managed, 
+ * copy over things like custom managers (objects = MyManger()), methods?  what
+   do we call this?  self.copy_other_members()  also any other custom methods
+   and attributes
+ * should pretend to be the non-historical class, too, for isinstance()
+   checks?
+
+maybe we can, in our queryset method, return instances of the original model with extra stuff set on it.
+and have an instance of the historical model around.
+m.history_info
+m.revert_to
+m.save
+m.delete
+
+i think this makes sense.
+
  * manytomany
+   * direct: fkm_h.b.all()
+   * reverse: t_h.fkm_set.all()
+   * concerns:
+      * custom intermediate models - should be fine. create a test,
+        though.
  * wiki app using trackchanges
  * documentation
  * admin interface
