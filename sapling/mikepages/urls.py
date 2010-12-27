@@ -13,8 +13,7 @@ page_info = {
 urlpatterns = patterns('',
     # Example:
     # (r'^diffs/', include('diffs.foo.urls')),
-    (r'^$', list_detail.object_list, page_info),
-    (r'^(?P<slug>[-\w]+)/$', views.show),
-    (r'^(?P<slug>[-\w]+)/edit$', views.edit),
-    (r'^diff/$', views.diff),
+    url(r'^$', list_detail.object_list, page_info, 'title-index'),
+    url(r'^(?P<slug>[-\w]+)$', views.show, name='show-page'),
+    url(r'^(?P<slug>[-\w]+)/edit$', views.edit, name='edit-page'),
 )

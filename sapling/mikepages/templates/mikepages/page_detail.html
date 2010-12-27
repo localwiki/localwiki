@@ -1,5 +1,5 @@
 {% extends "mikepages/base.html" %}
-{% block title %}{{ page.name }}{% endblock %}
+{% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
 {% block header %}{{ page.name }}{% endblock %}
 
 {% block main %}
@@ -7,10 +7,10 @@
     {{ page.content|safe }}
   </div>
   
-  <p>Modified {{ page.history.most_recent.history_info.date|timesince }} ago</p>
+  <p>Modified {{ page.date|timesince }} ago</p>
   
   <p>
-    <a href="edit">Edit this page</a>
+    <a href="{% url edit-page slug=page.slug %}">Edit this page</a>
   </p>
 {% endblock %}
 

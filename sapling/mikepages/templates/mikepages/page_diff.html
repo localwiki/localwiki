@@ -21,5 +21,5 @@
     {% diff page1 page2 as page_diff %}
     {{ page_diff }} 
   </table>
-  <a href="../{{ page2.slug }}">Looks good</a>
+  <a href="{% url show-page slug=page2.slug %}">Looks good</a>
 {% endblock %}
