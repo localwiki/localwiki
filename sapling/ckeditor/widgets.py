@@ -10,6 +10,10 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
+ckeditor_path = 'js/ckeditor/ckeditor.js'
+if settings.DEBUG:
+    ckeditor_path = 'js/ckeditor/ckeditor_source.js'
+
 class CKEditor(forms.Textarea):
     _button_map = (('Form', 'form'),
                    ('Checkbox', 'input'),
@@ -73,5 +77,5 @@ class CKEditor(forms.Textarea):
 
     class Media:
         js = (
-            urljoin(settings.MEDIA_URL, 'js/ckeditor/ckeditor.js'),
+                urljoin(settings.MEDIA_URL, ckeditor_path),  
         )
