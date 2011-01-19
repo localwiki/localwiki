@@ -28,61 +28,61 @@ import org.outerj.daisy.diff.html.dom.TagNode;
  */
 public class AncestorComparator implements IRangeComparator {
 
-    private List<TagNode> ancestors;
+	private List<TagNode> ancestors;
 
-    public AncestorComparator(List<TagNode> ancestors) {
-        this.ancestors = ancestors;
-    }
+	public AncestorComparator(List<TagNode> ancestors) {
+		this.ancestors = ancestors;
+	}
 
-    public int getRangeCount() {
-        return ancestors.size();
-    }
+	public int getRangeCount() {
+		return ancestors.size();
+	}
 
-    public boolean rangesEqual(int owni, IRangeComparator otherComp, int otheri) {
-        AncestorComparator other;
-        try {
-            other = (AncestorComparator) otherComp;
-        } catch (ClassCastException e) {
-            return false;
-        }
+	public boolean rangesEqual(int owni, IRangeComparator otherComp, int otheri) {
+		AncestorComparator other;
+		try {
+			other = (AncestorComparator) otherComp;
+		} catch (ClassCastException e) {
+			return false;
+		}
 
-        return other.getAncestor(otheri).isSameTag(getAncestor(owni));
-    }
+		return other.getAncestor(otheri).isSameTag(getAncestor(owni));
+	}
 
-    public boolean skipRangeComparison(int arg0, int arg1, IRangeComparator arg2) {
-        return false;
-    }
+	public boolean skipRangeComparison(int arg0, int arg1, IRangeComparator arg2) {
+		return false;
+	}
 
-    public TagNode getAncestor(int i) {
-        return ancestors.get(i);
-    }
+	public TagNode getAncestor(int i) {
+		return ancestors.get(i);
+	}
 
-    private String compareTxt = "";
+	private String compareTxt = "";
 
-    public String getCompareTxt() {
-        return compareTxt;
-    }
+	public String getCompareTxt() {
+		return compareTxt;
+	}
 
-    public AncestorComparatorResult getResult(AncestorComparator other,
-            Locale locale) {
+	public AncestorComparatorResult getResult(AncestorComparator other,
+			Locale locale) {
 
-        AncestorComparatorResult result = new AncestorComparatorResult();
+		AncestorComparatorResult result = new AncestorComparatorResult();
 
-        RangeDifference[] differences = RangeDifferencer.findDifferences(other,
-                this);
+		RangeDifference[] differences = RangeDifferencer.findDifferences(other,
+				this);
 
-        if (differences.length == 0)
-            return result;
+		if (differences.length == 0)
+			return result;
 
-        ChangeTextGenerator changeTxt = new ChangeTextGenerator(this, other,
-                locale);
+		ChangeTextGenerator changeTxt = new ChangeTextGenerator(this, other,
+				locale);
 
-        result.setChanged(true);
-        result.setChanges(changeTxt.getChanged(differences).toString());
-        result.setHtmlLayoutChanges(changeTxt.getHtmlLayoutChanges());
+		result.setChanged(true);
+		result.setChanges(changeTxt.getChanged(differences).toString());
+		result.setHtmlLayoutChanges(changeTxt.getHtmlLayoutChanges());
 
-        return result;
+		return result;
 
-    }
+	}
 
 }

@@ -19,29 +19,28 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-
 /**
  * Unit tests for handling long lines of HTML.
  * 
  * @author kapelonk
- *
+ * 
  */
 public class LongHtmlTest {
 
 	/**
 	 * Issue 20 Reported by Peter Dibble
-	 *  
-	 * @throws Exception something went wrong.
+	 * 
+	 * @throws Exception
+	 *             something went wrong.
 	 */
 	@Test
-	public void longHtml1() throws Exception
-	{
+	public void longHtml1() throws Exception {
 		String oldText = "<html> <body> <A HREF=\"../../javax/realtime/AsyncEventHandler.html#AsyncEventHandler(javax.realtime.SchedulingParameter, b)\">AsyncEventHandler</A> </body> </html>";
 		String newText = "<html> <body> <A HREF=\"../../javax/realtime/BsyncEventHandler.html#AsyncEventHandler(javax.realtime.SchedulingParameter, b)\">AsyncEventHandler</A> </body> </html>";
-		
+
 		String result = HtmlTestFixture.diff(oldText, newText);
-		assertTrue("Expected a change",result.indexOf("diff-html-changed") > -1);
+		assertTrue("Expected a change",
+				result.indexOf("diff-html-changed") > -1);
 	}
-	
-	
+
 }

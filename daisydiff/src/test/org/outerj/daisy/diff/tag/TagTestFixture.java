@@ -24,10 +24,10 @@ import org.outerj.daisy.diff.output.TextDiffOutput;
  * Minimal test case for Tag mode.
  * 
  * @author kapelonk
- *
+ * 
  */
 public class TagTestFixture {
-	
+
 	/** Type of changes as produced by the diff process */
 	private enum OperationType {
 		NO_CHANGE, ADD_TEXT, REMOVE_TEXT
@@ -35,116 +35,109 @@ public class TagTestFixture {
 
 	/** Keeps a copy of the original text */
 	private String oldText = null;
-	
+
 	/** Keeps a copy of the modified text */
 	private String newText = null;
-	
+
 	/** A list of text operations produced by the diff process */
 	private List<TextOperation> results = null;
-	
 
 	/**
 	 * Just empties the results;
 	 */
-	public TagTestFixture()
-	{
+	public TagTestFixture() {
 		results = new ArrayList<TextOperation>();
 	}
-	
+
 	/**
 	 * Performs a tag diff againts two html strings.
 	 * 
-	 * @param original html in its old state.
-	 * @param modified html in its present state.
+	 * @param original
+	 *            html in its old state.
+	 * @param modified
+	 *            html in its present state.
 	 * 
-	 * @throws Exception something went wrong.
+	 * @throws Exception
+	 *             something went wrong.
 	 */
-	public void performTagDiff(String original, String modified) throws Exception
-	{
+	public void performTagDiff(String original, String modified)
+			throws Exception {
 		oldText = original;
 		newText = modified;
-		
+
 		TagComparator oldComp = new TagComparator(oldText);
 		TagComparator newComp = new TagComparator(newText);
-        
-        DummyOutput output = new DummyOutput();
-        TagDiffer differ = new TagDiffer(output);
-        differ.diff(oldComp, newComp);
-        
+
+		DummyOutput output = new DummyOutput();
+		TagDiffer differ = new TagDiffer(output);
+		differ.diff(oldComp, newComp);
+
 	}
-	
+
 	/**
-	 * Attempts to re-construct the original text by looking 
-	 * at the diff result.
+	 * Attempts to re-construct the original text by looking at the diff result.
 	 * 
 	 * @return the sum of unchanged and removed text.
 	 */
-	public String getReconstructedOriginalText()
-	{
+	public String getReconstructedOriginalText() {
 		StringBuilder result = new StringBuilder();
-		
-		for(TextOperation operation:results)
-		{
-			if(operation.getType() == OperationType.ADD_TEXT)
-			{
+
+		for (TextOperation operation : results) {
+			if (operation.getType() == OperationType.ADD_TEXT) {
 				continue;
 			}
 			result.append(operation.getText());
 		}
 		return result.toString();
 	}
-	
+
 	/**
-	 * Attempts to re-construct the modified text by looking 
-	 * at the diff result.
+	 * Attempts to re-construct the modified text by looking at the diff result.
 	 * 
 	 * @return the sum of unchanged and added text.
 	 */
-	public String getReconstructedModifiedText()
-	{
+	public String getReconstructedModifiedText() {
 		StringBuilder result = new StringBuilder();
-		
-		for(TextOperation operation:results)
-		{
-			if(operation.getType() == OperationType.REMOVE_TEXT)
-			{
+
+		for (TextOperation operation : results) {
+			if (operation.getType() == OperationType.REMOVE_TEXT) {
 				continue;
 			}
 			result.append(operation.getText());
 		}
 		return result.toString();
 	}
-	
+
 	/**
 	 * Retuns a list of basic operations.
+	 * 
 	 * @return the results
 	 */
 	public List<TextOperation> getResults() {
 		return results;
 	}
 
-
-
-    /**
-     * Simple operation for test cases only.
-     * 
-     * @author kapelonk
-     *
-     */
-	private static class TextOperation
-	{
+	/**
+	 * Simple operation for test cases only.
+	 * 
+	 * @author kapelonk
+	 * 
+	 */
+	private static class TextOperation {
 		private String text = null;
 		private OperationType type = null;
-		
+
 		/**
-		 * @param text the text to set
+		 * @param text
+		 *            the text to set
 		 */
 		public void setText(String text) {
 			this.text = text;
 		}
 
 		/**
-		 * @param type the type to set
+		 * @param type
+		 *            the type to set
 		 */
 		public void setType(OperationType type) {
 			this.type = type;
@@ -156,24 +149,23 @@ public class TagTestFixture {
 		public String getText() {
 			return text;
 		}
-		
+
 		/**
 		 * @return the type
 		 */
 		public OperationType getType() {
 			return type;
 		}
-		
+
 	}
-	
-	/** 
+
+	/**
 	 * Dummy output that holds all results in a linear list.
 	 * 
 	 * @author kapelonk
-	 *
+	 * 
 	 */
-	private class DummyOutput implements TextDiffOutput
-	{
+	private class DummyOutput implements TextDiffOutput {
 
 		/**
 		 * {@inheritDoc}
@@ -183,7 +175,7 @@ public class TagTestFixture {
 			operation.setText(text);
 			operation.setType(OperationType.ADD_TEXT);
 			results.add(operation);
-			
+
 		}
 
 		/**
@@ -194,7 +186,7 @@ public class TagTestFixture {
 			operation.setText(text);
 			operation.setType(OperationType.NO_CHANGE);
 			results.add(operation);
-			
+
 		}
 
 		/**
@@ -205,10 +197,9 @@ public class TagTestFixture {
 			operation.setText(text);
 			operation.setType(OperationType.REMOVE_TEXT);
 			results.add(operation);
-			
+
 		}
-		
+
 	}
 
-	
 }

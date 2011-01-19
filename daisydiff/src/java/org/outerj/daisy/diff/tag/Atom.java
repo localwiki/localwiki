@@ -22,15 +22,15 @@ package org.outerj.daisy.diff.tag;
  */
 public interface Atom {
 
-    public String getIdentifier();
+	public String getIdentifier();
 
-    public boolean hasInternalIdentifiers();
+	public boolean hasInternalIdentifiers();
 
-    public String getInternalIdentifiers();
+	public String getInternalIdentifiers();
 
-    public String getFullText();
+	public String getFullText();
 
-    public boolean isValidAtom(String s);
+	public boolean isValidAtom(String s);
 
-    public boolean equalsIdentifier(Atom other);
+	public boolean equalsIdentifier(Atom other);
 }

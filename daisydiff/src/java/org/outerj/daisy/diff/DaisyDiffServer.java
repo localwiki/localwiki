@@ -80,7 +80,7 @@ class DaisyDiffHandler extends FormHandler {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
-			.newInstance();
+					.newInstance();
 
 			TransformerHandler result = tf.newTransformerHandler();
 
@@ -174,7 +174,7 @@ abstract class FormHandler implements HttpHandler {
 	}
 
 	private HashMap<String, String> parseForm(String raw, String encoding)
-	throws UnsupportedEncodingException {
+			throws UnsupportedEncodingException {
 		HashMap<String, String> form = new HashMap<String, String>();
 		StringTokenizer params = new StringTokenizer(raw, "&");
 
@@ -188,7 +188,7 @@ abstract class FormHandler implements HttpHandler {
 	}
 
 	private void sendResponseHeaders(HttpExchange exchange, int length)
-	throws IOException {
+			throws IOException {
 		Headers responseHeaders = exchange.getResponseHeaders();
 		responseHeaders.set("Content-Type", contentType);
 		exchange.sendResponseHeaders(200, length);

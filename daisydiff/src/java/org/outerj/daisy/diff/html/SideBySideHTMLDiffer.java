@@ -30,107 +30,108 @@ import org.xml.sax.SAXException;
  * between them, marks the changes, and outputs a merged tree to a
  * {@link HtmlSaxDiffOutput} instance.
  */
-public class SideBySideHTMLDiffer implements Differ{
-	
+public class SideBySideHTMLDiffer implements Differ {
+
 	private DiffOutput output;
 
-    public SideBySideHTMLDiffer(DiffOutput output) {
-    	this.output = output;   
-    }
+	public SideBySideHTMLDiffer(DiffOutput output) {
+		this.output = output;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public void diff(TextNodeComparator leftComparator,
-            TextNodeComparator rightComparator) throws SAXException {
-        LCSSettings settings = new LCSSettings();
-        settings.setUseGreedyMethod(false);
-        // settings.setPowLimit(1.5);
-        // settings.setTooLong(100000*100000);
+	/**
+	 * {@inheritDoc}
+	 */
+	public void diff(TextNodeComparator leftComparator,
+			TextNodeComparator rightComparator) throws SAXException {
+		LCSSettings settings = new LCSSettings();
+		settings.setUseGreedyMethod(false);
+		// settings.setPowLimit(1.5);
+		// settings.setTooLong(100000*100000);
 
-        RangeDifference[] differences = RangeDifferencer.findDifferences(
-                settings, leftComparator, rightComparator);
+		RangeDifference[] differences = RangeDifferencer.findDifferences(
+				settings, leftComparator, rightComparator);
 
-        List<RangeDifference> pdifferences = preProcess(differences);
+		List<RangeDifference> pdifferences = preProcess(differences);
 
-        int currentIndexLeft = 0;
-        int currentIndexRight = 0;
-        for (RangeDifference d : pdifferences) {
+		int currentIndexLeft = 0;
+		int currentIndexRight = 0;
+		for (RangeDifference d : pdifferences) {
 
-            if (d.leftStart() > currentIndexLeft) {
-                rightComparator.handlePossibleChangedPart(currentIndexLeft, d
-                        .leftStart(), currentIndexRight, d.rightStart(),
-                        leftComparator);
-            }
-            if (d.leftLength() > 0) {
-                rightComparator.markAsDeleted(d.leftStart(), d.leftEnd(),
-                        leftComparator, d.rightStart());
-            }
-            rightComparator.markAsNew(d.rightStart(), d.rightEnd());
+			if (d.leftStart() > currentIndexLeft) {
+				rightComparator.handlePossibleChangedPart(currentIndexLeft, d
+						.leftStart(), currentIndexRight, d.rightStart(),
+						leftComparator);
+			}
+			if (d.leftLength() > 0) {
+				rightComparator.markAsDeleted(d.leftStart(), d.leftEnd(),
+						leftComparator, d.rightStart());
+			}
+			rightComparator.markAsNew(d.rightStart(), d.rightEnd());
 
-            currentIndexLeft = d.leftEnd();
-            currentIndexRight = d.rightEnd();
-        }
-        if (currentIndexLeft < leftComparator.getRangeCount()) {
-            rightComparator.handlePossibleChangedPart(currentIndexLeft,
-                    leftComparator.getRangeCount(), currentIndexRight,
-                    rightComparator.getRangeCount(), leftComparator);
-        }
-        
-        
-        leftComparator.expandWhiteSpace();
-        rightComparator.expandWhiteSpace();
-        output.generateSideBySideOutput(leftComparator.getBodyNode(), rightComparator.getBodyNode());
-    }
+			currentIndexLeft = d.leftEnd();
+			currentIndexRight = d.rightEnd();
+		}
+		if (currentIndexLeft < leftComparator.getRangeCount()) {
+			rightComparator.handlePossibleChangedPart(currentIndexLeft,
+					leftComparator.getRangeCount(), currentIndexRight,
+					rightComparator.getRangeCount(), leftComparator);
+		}
 
-    private List<RangeDifference> preProcess(RangeDifference[] differences) {
+		leftComparator.expandWhiteSpace();
+		rightComparator.expandWhiteSpace();
+		output.generateSideBySideOutput(leftComparator.getBodyNode(),
+				rightComparator.getBodyNode());
+	}
 
-        List<RangeDifference> newRanges = new LinkedList<RangeDifference>();
+	private List<RangeDifference> preProcess(RangeDifference[] differences) {
 
-        for (int i = 0; i < differences.length; i++) {
+		List<RangeDifference> newRanges = new LinkedList<RangeDifference>();
 
-            int leftStart = differences[i].leftStart();
-            int leftEnd = differences[i].leftEnd();
-            int rightStart = differences[i].rightStart();
-            int rightEnd = differences[i].rightEnd();
-            int kind = differences[i].kind();
+		for (int i = 0; i < differences.length; i++) {
 
-            int leftLength = leftEnd - leftStart;
-            int rightLength = rightEnd - rightStart;
+			int leftStart = differences[i].leftStart();
+			int leftEnd = differences[i].leftEnd();
+			int rightStart = differences[i].rightStart();
+			int rightEnd = differences[i].rightEnd();
+			int kind = differences[i].kind();
 
-            while (i + 1 < differences.length
-                    && differences[i + 1].kind() == kind
-                    && score(leftLength, differences[i + 1].leftLength(),
-                            rightLength, differences[i + 1].rightLength()) > (differences[i + 1]
-                            .leftStart() - leftEnd)) {
-                leftEnd = differences[i + 1].leftEnd();
-                rightEnd = differences[i + 1].rightEnd();
-                leftLength = leftEnd - leftStart;
-                rightLength = rightEnd - rightStart;
-                i++;
-            }
+			int leftLength = leftEnd - leftStart;
+			int rightLength = rightEnd - rightStart;
 
-            newRanges.add(new RangeDifference(kind, rightStart, rightLength, leftStart, leftLength));
-        }
+			while (i + 1 < differences.length
+					&& differences[i + 1].kind() == kind
+					&& score(leftLength, differences[i + 1].leftLength(),
+							rightLength, differences[i + 1].rightLength()) > (differences[i + 1]
+							.leftStart() - leftEnd)) {
+				leftEnd = differences[i + 1].leftEnd();
+				rightEnd = differences[i + 1].rightEnd();
+				leftLength = leftEnd - leftStart;
+				rightLength = rightEnd - rightStart;
+				i++;
+			}
 
-        return newRanges;
-    }
+			newRanges.add(new RangeDifference(kind, rightStart, rightLength,
+					leftStart, leftLength));
+		}
 
-    public static double score(int... numbers) {
-        if ((numbers[0] == 0 && numbers[1] == 0)
-                || (numbers[2] == 0 && numbers[3] == 0))
-            return 0;
+		return newRanges;
+	}
 
-        double d = 0;
-        for (double number : numbers) {
-            while (number > 3) {
-                d += 3;
-                number -= 3;
-                number *= 0.5;
-            }
-            d += number;
+	public static double score(int... numbers) {
+		if ((numbers[0] == 0 && numbers[1] == 0)
+				|| (numbers[2] == 0 && numbers[3] == 0))
+			return 0;
 
-        }
-        return d / (1.5 * numbers.length);
-    }
+		double d = 0;
+		for (double number : numbers) {
+			while (number > 3) {
+				d += 3;
+				number -= 3;
+				number *= 0.5;
+			}
+			d += number;
+
+		}
+		return d / (1.5 * numbers.length);
+	}
 }
