@@ -198,7 +198,7 @@ public final class RangeDifferencer {
 					startThread = myIter;
 				else { // not at end of both scripts take the lowest range
 					if (myIter.fDifference.fLeftStart <= yourIter.fDifference.fLeftStart) // 2
-																							// ->
+						// ->
 						// common
 						// (Ancestor)
 						// change
