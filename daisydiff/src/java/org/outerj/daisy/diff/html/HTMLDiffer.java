@@ -21,13 +21,14 @@ import java.util.List;
 import org.eclipse.compare.internal.LCSSettings;
 import org.eclipse.compare.rangedifferencer.RangeDifference;
 import org.eclipse.compare.rangedifferencer.RangeDifferencer;
+import org.outerj.daisy.diff.html.modification.ModificationType;
 import org.outerj.daisy.diff.output.DiffOutput;
 import org.outerj.daisy.diff.output.Differ;
 import org.xml.sax.SAXException;
 
 /**
- * Takes two {@link TextNodeComparator} instances, computes the difference
- * between them, marks the changes, and outputs a merged tree to a
+ * Takes two or three {@link TextNodeComparator} instances, computes the
+ * difference between them, marks the changes, and outputs a merged tree to a
  * {@link HtmlSaxDiffOutput} instance.
  */
 public class HTMLDiffer implements Differ {
@@ -36,6 +37,97 @@ public class HTMLDiffer implements Differ {
 
 	public HTMLDiffer(DiffOutput dm) {
 		output = dm;
+	}
+
+	public void diff(TextNodeComparator ancestorComparator,
+			TextNodeComparator leftComparator,
+			TextNodeComparator rightComparator) throws SAXException {
+
+		LCSSettings settings = new LCSSettings();
+		settings.setUseGreedyMethod(false);
+		// settings.setPowLimit(1.5);
+		// settings.setTooLong(100000*100000);
+		org.eclipse.compare.rangedifferencer.RangeDifference[] differences = RangeDifferencer
+				.findDifferences(settings, ancestorComparator, leftComparator,
+						rightComparator);
+
+		List<RangeDifference> pdifferences = preProcess(differences);
+
+		int currentIndexAncestor = 0;
+		int currentIndexLeft = 0;
+		int currentIndexRight = 0;
+		for (RangeDifference d : pdifferences) {
+
+			int tempKind = d.kind();
+			if (tempKind == RangeDifference.ANCESTOR) {
+				System.out.println("ANCESTOR diff kind: ");
+				ancestorComparator.markAsDeleted(d.leftStart(), d.leftEnd(),
+						leftComparator, d.ancestorStart(),
+						ModificationType.NONE);
+			}
+
+			if (d.leftStart() > currentIndexLeft) {
+				ancestorComparator.handlePossibleChangedPart(currentIndexLeft,
+						d.leftStart(), currentIndexAncestor, d.ancestorStart(),
+						leftComparator);
+			}
+			if (d.rightStart() > currentIndexRight) {
+				ancestorComparator.handlePossibleChangedPart(currentIndexRight,
+						d.rightStart(), currentIndexAncestor,
+						d.ancestorStart(), rightComparator);
+			}
+
+			if (tempKind == RangeDifference.CONFLICT) {
+				if (d.leftLength() > 0) {
+					ancestorComparator.markAsDeleted(d.leftStart(),
+							d.leftEnd(), leftComparator, d.ancestorStart(),
+							ModificationType.CONFLICT);
+				}
+				if (d.rightLength() > 0) {
+					ancestorComparator.markAsDeleted(d.rightStart(), d
+							.rightEnd(), rightComparator, d.ancestorStart(),
+							ModificationType.CONFLICT);
+				}
+			}
+
+			if (tempKind == RangeDifference.LEFT) {
+				// conflicts and changes on the left side
+				if (d.leftLength() > 0) {
+					ancestorComparator.markAsDeleted(d.leftStart(),
+							d.leftEnd(), leftComparator, d.ancestorStart(),
+							ModificationType.NONE);
+				}
+			}
+
+			if (tempKind == RangeDifference.RIGHT) {
+				// conflicts and changes on the right side
+				if (d.rightLength() > 0) {
+					ancestorComparator.markAsDeleted(d.rightStart(), d
+							.rightEnd(), rightComparator, d.ancestorStart(),
+							ModificationType.NONE);
+				}
+			}
+
+			ancestorComparator.markAsNew(d.ancestorStart(), d.ancestorEnd(),
+					ModificationType.REMOVED);
+
+			currentIndexAncestor = d.ancestorEnd();
+			currentIndexLeft = d.leftEnd();
+			currentIndexRight = d.rightEnd();
+		}
+		if (currentIndexLeft < leftComparator.getRangeCount()) {
+			ancestorComparator.handlePossibleChangedPart(currentIndexLeft,
+					leftComparator.getRangeCount(), currentIndexAncestor,
+					ancestorComparator.getRangeCount(), leftComparator);
+		}
+		if (currentIndexRight < rightComparator.getRangeCount()) {
+			ancestorComparator.handlePossibleChangedPart(currentIndexRight,
+					rightComparator.getRangeCount(), currentIndexAncestor,
+					ancestorComparator.getRangeCount(), rightComparator);
+		}
+
+		ancestorComparator.expandWhiteSpace();
+		output.generateOutput(ancestorComparator.getBodyNode());
 	}
 
 	/**
@@ -87,12 +179,15 @@ public class HTMLDiffer implements Differ {
 
 		for (int i = 0; i < differences.length; i++) {
 
+			int ancestorStart = differences[i].ancestorStart();
+			int ancestorEnd = differences[i].ancestorEnd();
 			int leftStart = differences[i].leftStart();
 			int leftEnd = differences[i].leftEnd();
 			int rightStart = differences[i].rightStart();
 			int rightEnd = differences[i].rightEnd();
 			int kind = differences[i].kind();
 
+			int ancestorLength = ancestorEnd - ancestorStart;
 			int leftLength = leftEnd - leftStart;
 			int rightLength = rightEnd - rightStart;
 
@@ -103,13 +198,15 @@ public class HTMLDiffer implements Differ {
 							.leftStart() - leftEnd)) {
 				leftEnd = differences[i + 1].leftEnd();
 				rightEnd = differences[i + 1].rightEnd();
+				ancestorEnd = differences[i + 1].ancestorEnd();
 				leftLength = leftEnd - leftStart;
 				rightLength = rightEnd - rightStart;
+				ancestorLength = ancestorEnd - ancestorStart;
 				i++;
 			}
 
 			newRanges.add(new RangeDifference(kind, rightStart, rightLength,
-					leftStart, leftLength));
+					leftStart, leftLength, ancestorStart, ancestorLength));
 		}
 
 		return newRanges;

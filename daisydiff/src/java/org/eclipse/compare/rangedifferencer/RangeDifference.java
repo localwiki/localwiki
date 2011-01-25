@@ -128,7 +128,7 @@ public class RangeDifference {
 	 * @param ancestorLength
 	 *            number of entities on ancestor side
 	 */
-	/* package */RangeDifference(int kind, int rightStart, int rightLength,
+	public RangeDifference(int kind, int rightStart, int rightLength,
 			int leftStart, int leftLength, int ancestorStart, int ancestorLength) {
 		this(kind, rightStart, rightLength, leftStart, leftLength);
 		lAncestorStart = ancestorStart;

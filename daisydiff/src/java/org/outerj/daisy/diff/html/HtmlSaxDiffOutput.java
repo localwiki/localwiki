@@ -73,6 +73,7 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 		boolean newStarted = false;
 		boolean remStarted = false;
 		boolean changeStarted = false;
+		boolean conflictStarted = false;
 		String changeTXT = "";
 
 		for (Node child : node) {
@@ -86,6 +87,9 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 				} else if (remStarted) {
 					handler.endElement("", "span", "span");
 					remStarted = false;
+				} else if (conflictStarted) {
+					handler.endElement("", "span", "span");
+					conflictStarted = false;
 				}
 				generateOutput(((TagNode) child));
 			} else if (child instanceof TextNode) {
@@ -93,32 +97,38 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 				Modification mod = textChild.getModification();
 
 				if (newStarted
-						&& (mod.getType() != ModificationType.ADDED || mod
+						&& (mod.getOutputType() != ModificationType.ADDED || mod
 								.isFirstOfID())) {
 					handler.endElement("", "span", "span");
 					newStarted = false;
 				} else if (changeStarted
-						&& (mod.getType() != ModificationType.CHANGED
+						&& (mod.getOutputType() != ModificationType.CHANGED
 								|| !mod.getChanges().equals(changeTXT) || mod
 								.isFirstOfID())) {
 					handler.endElement("", "span", "span");
 					changeStarted = false;
 				} else if (remStarted
-						&& (mod.getType() != ModificationType.REMOVED || mod
+						&& (mod.getOutputType() != ModificationType.REMOVED || mod
 								.isFirstOfID())) {
 					handler.endElement("", "span", "span");
 					remStarted = false;
+				} else if (conflictStarted
+						&& (mod.getOutputType() != ModificationType.CONFLICT || mod
+								.isFirstOfID())) {
+					handler.endElement("", "span", "span");
+					conflictStarted = false;
 				}
 
 				// no else because a removed part can just be closed and a new
 				// part can start
-				if (!newStarted && mod.getType() == ModificationType.ADDED) {
+				if (!newStarted
+						&& mod.getOutputType() == ModificationType.ADDED) {
 					AttributesImpl attrs = new AttributesImpl();
 					attrs.addAttribute("", "class", "class", "CDATA",
 							"diff-html-added");
 					if (mod.isFirstOfID()) {
 						attrs.addAttribute("", "id", "id", "CDATA", mod
-								.getType()
+								.getOutputType()
 								+ "-" + prefix + "-" + mod.getID());
 					}
 
@@ -127,13 +137,13 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 					handler.startElement("", "span", "span", attrs);
 					newStarted = true;
 				} else if (!changeStarted
-						&& mod.getType() == ModificationType.CHANGED) {
+						&& mod.getOutputType() == ModificationType.CHANGED) {
 					AttributesImpl attrs = new AttributesImpl();
 					attrs.addAttribute("", "class", "class", "CDATA",
 							"diff-html-changed");
 					if (mod.isFirstOfID()) {
 						attrs.addAttribute("", "id", "id", "CDATA", mod
-								.getType()
+								.getOutputType()
 								+ "-" + prefix + "-" + mod.getID());
 					}
 
@@ -143,19 +153,33 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 					changeStarted = true;
 					changeTXT = mod.getChanges();
 				} else if (!remStarted
-						&& mod.getType() == ModificationType.REMOVED) {
+						&& mod.getOutputType() == ModificationType.REMOVED) {
 					AttributesImpl attrs = new AttributesImpl();
 					attrs.addAttribute("", "class", "class", "CDATA",
 							"diff-html-removed");
 					if (mod.isFirstOfID()) {
 						attrs.addAttribute("", "id", "id", "CDATA", mod
-								.getType()
+								.getOutputType()
 								+ "-" + prefix + "-" + mod.getID());
 					}
 					addAttributes(mod, attrs);
 
 					handler.startElement("", "span", "span", attrs);
 					remStarted = true;
+				} else if (!conflictStarted
+						&& mod.getOutputType() == ModificationType.CONFLICT) {
+					AttributesImpl attrs = new AttributesImpl();
+					attrs.addAttribute("", "class", "class", "CDATA",
+							"diff-html-conflict");
+					if (mod.isFirstOfID()) {
+						attrs.addAttribute("", "id", "id", "CDATA", mod
+								.getOutputType()
+								+ "-" + prefix + "-" + mod.getID());
+					}
+					addAttributes(mod, attrs);
+
+					handler.startElement("", "span", "span", attrs);
+					conflictStarted = true;
 				}
 
 				char[] chars = textChild.getText().toCharArray();
@@ -178,6 +202,9 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 		} else if (remStarted) {
 			handler.endElement("", "span", "span");
 			remStarted = false;
+		} else if (conflictStarted) {
+			handler.endElement("", "span", "span");
+			conflictStarted = false;
 		}
 
 		if (!node.getQName().equalsIgnoreCase("img")
@@ -188,19 +215,23 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 
 	private void writeImage(ImageNode imgNode) throws SAXException {
 		AttributesImpl attrs = imgNode.getAttributes();
-		if (imgNode.getModification().getType() == ModificationType.REMOVED)
+		if (imgNode.getModification().getOutputType() == ModificationType.REMOVED) {
 			attrs.addAttribute("", "changeType", "changeType", "CDATA",
 					"diff-removed-image");
-		else if (imgNode.getModification().getType() == ModificationType.ADDED)
+		} else if (imgNode.getModification().getOutputType() == ModificationType.ADDED) {
 			attrs.addAttribute("", "changeType", "changeType", "CDATA",
 					"diff-added-image");
+		} else if (imgNode.getModification().getOutputType() == ModificationType.CONFLICT) {
+			attrs.addAttribute("", "changeType", "changeType", "CDATA",
+					"diff-conflict-image");
+		}
 		handler.startElement("", "img", "img", attrs);
 		handler.endElement("", "img", "img");
 	}
 
 	private void addAttributes(Modification mod, AttributesImpl attrs) {
 
-		if (mod.getType() == ModificationType.CHANGED) {
+		if (mod.getOutputType() == ModificationType.CHANGED) {
 			String changes = mod.getChanges();
 			attrs.addAttribute("", "changes", "changes", "CDATA", changes);
 		}
@@ -209,19 +240,20 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 		if (mod.getPrevious() == null) {
 			previous = "first-" + prefix;
 		} else {
-			previous = mod.getPrevious().getType() + "-" + prefix + "-"
+			previous = mod.getPrevious().getOutputType() + "-" + prefix + "-"
 					+ mod.getPrevious().getID();
 		}
 		attrs.addAttribute("", "previous", "previous", "CDATA", previous);
 
-		String changeId = mod.getType() + "-" + prefix + "-" + mod.getID();
+		String changeId = mod.getOutputType() + "-" + prefix + "-"
+				+ mod.getID();
 		attrs.addAttribute("", "changeId", "changeId", "CDATA", changeId);
 
 		String next;
 		if (mod.getNext() == null) {
 			next = "last-" + prefix;
 		} else {
-			next = mod.getNext().getType() + "-" + prefix + "-"
+			next = mod.getNext().getOutputType() + "-" + prefix + "-"
 					+ mod.getNext().getID();
 		}
 		attrs.addAttribute("", "next", "next", "CDATA", next);

@@ -21,6 +21,8 @@ public class Modification implements Cloneable {
 
 	private ModificationType type;
 
+	private ModificationType outputType;
+
 	private long id = -1;
 
 	private Modification prevMod = null;
@@ -33,11 +35,17 @@ public class Modification implements Cloneable {
 
 	public Modification(ModificationType type) {
 		this.type = type;
+		this.outputType = type;
+	}
+
+	public Modification(ModificationType type, ModificationType outputType) {
+		this.type = type;
+		this.outputType = outputType;
 	}
 
 	@Override
 	public Modification clone() {
-		Modification newM = new Modification(this.getType());
+		Modification newM = new Modification(this.getType(), getOutputType());
 		newM.setID(getID());
 		newM.setChanges(getChanges());
 		newM.setHtmlLayoutChanges(getHtmlLayoutChanges());
@@ -49,6 +57,20 @@ public class Modification implements Cloneable {
 
 	public ModificationType getType() {
 		return type;
+	}
+
+	/**
+	 * Returns the type of this modification regarding output formatting (i.e.
+	 * in order to specify how this modification shall be formatted).
+	 * 
+	 * In three-way diffs we format "ADDED" modifications as REMOVED, and the
+	 * other way round, because the comparison is reversed, compared to a
+	 * two-way diff.
+	 * 
+	 * @return the way how this modification shall be formatted
+	 */
+	public ModificationType getOutputType() {
+		return outputType;
 	}
 
 	public void setID(long id) {

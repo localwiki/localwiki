@@ -38,11 +38,10 @@ public class ChangeTextGenerator {
 	private Locale locale;
 
 	private static final int MAX_OUTPUT_LINE_LENGTH = 55; // Lines won't go
-
-	// longer than this
-	// unless a single
-	// word it longer
-	// than this.
+															// longer than this
+															// unless a single
+															// word it longer
+															// than this.
 
 	public ChangeTextGenerator(AncestorComparator ancestorComparator,
 			AncestorComparator other, Locale locale) {

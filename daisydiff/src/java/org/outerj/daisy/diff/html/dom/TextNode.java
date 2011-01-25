@@ -32,7 +32,8 @@ public class TextNode extends Node implements Cloneable {
 
 	public TextNode(TagNode parent, String s) {
 		super(parent);
-		this.modification = new Modification(ModificationType.NONE);
+		this.modification = new Modification(ModificationType.NONE,
+				ModificationType.NONE);
 		this.s = s;
 	}
 
