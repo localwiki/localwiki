@@ -81,12 +81,12 @@ public class HTMLDiffer implements Differ {
 				if (d.leftLength() > 0) {
 					ancestorComparator.markAsDeleted(d.leftStart(),
 							d.leftEnd(), leftComparator, d.ancestorStart(),
-							ModificationType.CONFLICT);
+							ModificationType.CONFLICT_YOURS);
 				}
 				if (d.rightLength() > 0) {
 					ancestorComparator.markAsDeleted(d.rightStart(), d
 							.rightEnd(), rightComparator, d.ancestorStart(),
-							ModificationType.CONFLICT);
+							ModificationType.CONFLICT_THEIRS);
 				}
 			}
 

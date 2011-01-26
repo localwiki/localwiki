@@ -38,10 +38,17 @@ public enum ModificationType {
 		}
 	},
 
-	CONFLICT {
+	CONFLICT_YOURS {
 		@Override
 		public String toString() {
-			return "conflict";
+			return "conflict-yours";
+		}
+	},
+	
+	CONFLICT_THEIRS {
+		@Override
+		public String toString() {
+			return "conflict-theirs";
 		}
 	},
 
@@ -51,5 +58,9 @@ public enum ModificationType {
 			return "none";
 		}
 	};
-
+	
+	public boolean isConflict()
+	{
+		return this == CONFLICT_YOURS || this == CONFLICT_THEIRS;
+	}
 }

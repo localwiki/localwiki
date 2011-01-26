@@ -56,11 +56,14 @@
 <xsl:template match="span[@class='diff-html-removed']">
 </xsl:template>
 
-<xsl:template match="span[@class='diff-html-conflict']">
-<span>
-  <xsl:copy-of select="@*"/>
+<xsl:template match="span[@class='diff-html-conflict-yours']">
+  <strong class="editConflict">Edit conflict! Your version:</strong>
   <xsl:apply-templates select="node()"/>
-</span>
+</xsl:template>
+
+<xsl:template match="span[@class='diff-html-conflict-theirs']">
+  <strong class="editConflict">Edit conflict! Other version:</strong>
+  <xsl:apply-templates select="node()"/>
 </xsl:template>
 
 </xsl:stylesheet>

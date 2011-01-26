@@ -113,7 +113,7 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 					handler.endElement("", "span", "span");
 					remStarted = false;
 				} else if (conflictStarted
-						&& (mod.getOutputType() != ModificationType.CONFLICT || mod
+						&& (!mod.getOutputType().isConflict() || mod
 								.isFirstOfID())) {
 					handler.endElement("", "span", "span");
 					conflictStarted = false;
@@ -167,10 +167,11 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 					handler.startElement("", "span", "span", attrs);
 					remStarted = true;
 				} else if (!conflictStarted
-						&& mod.getOutputType() == ModificationType.CONFLICT) {
+						&& mod.getOutputType().isConflict()) {
 					AttributesImpl attrs = new AttributesImpl();
+					String yoursOrTheirs = mod.getOutputType() == ModificationType.CONFLICT_YOURS ? "yours" : "theirs";
 					attrs.addAttribute("", "class", "class", "CDATA",
-							"diff-html-conflict");
+							"diff-html-conflict-" + yoursOrTheirs);
 					if (mod.isFirstOfID()) {
 						attrs.addAttribute("", "id", "id", "CDATA", mod
 								.getOutputType()
@@ -221,7 +222,7 @@ public class HtmlSaxDiffOutput implements DiffOutput {
 		} else if (imgNode.getModification().getOutputType() == ModificationType.ADDED) {
 			attrs.addAttribute("", "changeType", "changeType", "CDATA",
 					"diff-added-image");
-		} else if (imgNode.getModification().getOutputType() == ModificationType.CONFLICT) {
+		} else if (imgNode.getModification().getOutputType().isConflict()) {
 			attrs.addAttribute("", "changeType", "changeType", "CDATA",
 					"diff-conflict-image");
 		}
