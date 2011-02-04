@@ -63,11 +63,12 @@ class DaisyDiffHandler extends FormHandler {
 	}
 
 	public String doPost(HashMap<String, String> form, String path) {
-		this.contentType = "text/html";
+		
 
 		StringBuffer response = new StringBuffer();
 		if (path.equals("/diff")) {
 			if (form.containsKey("field1") && form.containsKey("field2")) {
+				this.contentType = "text/html";
 				response.append(diff(form.get("field1"), form.get("field2")));
 			} else {
 				response.append("Required POST parameters: field1, field2");
@@ -75,6 +76,7 @@ class DaisyDiffHandler extends FormHandler {
 		} else if (path.equals("/merge")) {
 			if (form.containsKey("field1") && form.containsKey("field2")
 					&& form.containsKey("ancestor")) {
+				this.contentType = "text/xml";
 				response.append(merge(form.get("field1"), form.get("field2"),
 						form.get("ancestor")));
 			} else {
@@ -86,8 +88,7 @@ class DaisyDiffHandler extends FormHandler {
 	}
 
 	private String merge(String left, String right, String ancestor) {
-		try {
-
+		try {	
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
 					.newInstance();
@@ -250,8 +251,9 @@ abstract class FormHandler implements HttpHandler {
 		while (params.hasMoreTokens()) {
 			String p = params.nextToken();
 			String[] parts = p.split("=");
+			String value = parts.length > 1 ? parts[1] : "";
 			form.put(URLDecoder.decode(parts[0], encoding), URLDecoder.decode(
-					parts[1], encoding));
+					value, encoding));
 		}
 		return form;
 	}

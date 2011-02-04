@@ -15,16 +15,22 @@
   limitations under the License.
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
-<xsl:output method="html" indent="yes"/>
+<xsl:output method="xml" indent="yes"/>
 
 <xsl:template match="/">
-   <html>
-      <head>
-      </head>
+   <merge>
+   	  <xsl:choose>
+   	  	<xsl:when test="//span[contains(@class,'diff-html-conflict')]">
+      		<conflict>true</conflict>
+      	</xsl:when>
+      	<xsl:otherwise>
+      		<conflict>false</conflict>
+      	</xsl:otherwise>
+      </xsl:choose>
       <body>
 	     <xsl:apply-templates select="diffreport/diff/node()"/>
 	  </body>
-   </html>
+   </merge>
 </xsl:template>
 
 <xsl:template match="@*|node()">
@@ -57,12 +63,16 @@
 </xsl:template>
 
 <xsl:template match="span[@class='diff-html-conflict-yours']">
-  <strong class="editConflict">Edit conflict! Your version:</strong>
+  <xsl:if test="not(preceding::span[1][@class='diff-html-conflict-yours'])">
+  	<strong class="editConflict">Edit conflict! Your version:</strong>
+  </xsl:if>
   <xsl:apply-templates select="node()"/>
 </xsl:template>
 
 <xsl:template match="span[@class='diff-html-conflict-theirs']">
-  <strong class="editConflict">Edit conflict! Other version:</strong>
+  <xsl:if test="not(preceding::span[1][@class='diff-html-conflict-theirs'])">
+  	<strong class="editConflict">Edit conflict! Other version:</strong>
+  </xsl:if>
   <xsl:apply-templates select="node()"/>
 </xsl:template>
 

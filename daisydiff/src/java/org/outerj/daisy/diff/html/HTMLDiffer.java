@@ -60,7 +60,6 @@ public class HTMLDiffer implements Differ {
 
 			int tempKind = d.kind();
 			if (tempKind == RangeDifference.ANCESTOR) {
-				System.out.println("ANCESTOR diff kind: ");
 				ancestorComparator.markAsDeleted(d.leftStart(), d.leftEnd(),
 						leftComparator, d.ancestorStart(),
 						ModificationType.NONE);
