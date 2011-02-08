@@ -7,7 +7,7 @@ import diff
 class Page(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False, unique=True)
-    content = HTML5FragmentField(allowed_elements=['p', 'a', 'em', 'strong'])
+    content = HTML5FragmentField(allowed_elements=['p', 'a', 'em', 'strong', 'img'])
     date = models.DateTimeField(auto_now=True)
     
     def save(self, *args, **kwargs):

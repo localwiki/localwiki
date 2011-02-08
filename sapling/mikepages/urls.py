@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     # (r'^diffs/', include('diffs.foo.urls')),
     url(r'^$', list_detail.object_list, page_info, 'title-index'),
     url(r'^(?P<slug>[-\w]+)$', views.show, name='show-page'),
+    url(r'^(?P<slug>[-\w]+)/upload', views.upload, name='upload-image'),
     url(r'^(?P<slug>[-\w]+)/edit$', views.edit, name='edit-page'),
 )

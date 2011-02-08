@@ -4,6 +4,7 @@ from models import Page
 from forms import PageForm
 from django.views.generic.simple import direct_to_template
 from django.template.defaultfilters import slugify
+from ckeditor.views import ck_upload
 
 from django.db.models import AutoField
 from django.http import HttpResponse
@@ -19,6 +20,9 @@ def diff(request):
     page1 = pages[0]
     page2 = pages[1]
     return render_to_response('mikepages/page_diff.html', {'page1': page1, 'page2': page2})
+
+def upload(request, slug):
+    return ck_upload(request, 'ck_upload/')
 
 def show(request, slug):
     try:

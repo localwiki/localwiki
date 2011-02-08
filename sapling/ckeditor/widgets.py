@@ -15,7 +15,7 @@ if settings.DEBUG:
     ckeditor_path = 'js/ckeditor/ckeditor_source.js'
 
 class CKEditor(forms.Textarea):
-    _button_map = (('Form', 'form'),
+    _auto_button_map = (('Form', 'form'),
                    ('Checkbox', 'input'),
                    ('Radio', 'input'),
                    ('TextField', 'input'),
@@ -37,7 +37,7 @@ class CKEditor(forms.Textarea):
                    ('Link', 'a'),
                    ('Unlink', 'a'),
                    ('Anchor', 'a'),
-                   ('Image', 'img'),
+                   ('InsertImage', 'img'),
                    ('Flash', 'object'),
                    ('Table', 'table'),
                    ('HorizontalRule', 'hr'),
@@ -47,21 +47,21 @@ class CKEditor(forms.Textarea):
         super(CKEditor, self).__init__(*args, **kwargs)
         if 'attrs' in kwargs:
             attrs = kwargs['attrs']
-            if 'buttons' in attrs:
-                self.config = self.default_config(attrs['buttons'])
+            if 'allowed_tags' in attrs:
+                self.config = self.default_config(attrs['allowed_tags'])
                 
     def default_config(self, buttons = None):
         toolbar = []
         if buttons:
-            for name, tag in self._button_map:
+            for name, tag in self._auto_button_map:
                 if tag in buttons:
                     toolbar.append(name)
                     
-        return json.dumps({'toolbar': [toolbar]})
+        return json.dumps({'toolbar': [toolbar], 'filebrowserInsertimageUploadUrl':'upload', 'extraPlugins': 'insertimage'})
                 
     def button_for_tag(self, tag):
-        if tag in self._button_map:
-            return self._button_map[tag]
+        if tag in self._auto_button_map:
+            return self._auto_button_map[tag]
         else:
             return None
                 
