@@ -40,7 +40,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return {
 			title : 'Insert Image',
 			minWidth : 420,
-			minHeight : 200,
+			minHeight : 120,
 			onShow : function()
 			{
 				this.imageElement = false;
@@ -64,16 +64,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			},
 			onOk : function()
 			{
+			  // if there is a file to upload, do that first
+			  if(this.getContentElement('Upload', 'upload').getValue())
+			  {
+			    this.getContentElement('Upload', 'uploadButton').fire('click');
+			    return false;
+			  }
         this.imageElement = editor.document.createElement( 'img' );
-				this.imageElement.setAttribute( 'alt', '' );
-				this.commitContent( this.imageElement );
+        this.imageElement.setAttribute( 'alt', '' );
+        this.commitContent( this.imageElement );
 
-				// Remove empty style attribute.
-				if ( !this.imageElement.getAttribute( 'style' ) )
-					this.imageElement.removeAttribute( 'style' );
+        // Remove empty style attribute.
+        if ( !this.imageElement.getAttribute( 'style' ) )
+          this.imageElement.removeAttribute( 'style' );
 
-				// Insert a new Image.
-				editor.insertElement( this.imageElement );
+        // Insert a new Image.
+        editor.insertElement( this.imageElement );
+        this.hide()
 			},
 			onLoad : function()
 			{
@@ -82,6 +89,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			},
 			onHide : function()
 			{
+			  urlText = this.getContentElement('Upload', 'txtUrl');
+			  urlText.getElement().hide();
+			  
 				if ( this.originalElement )
 				{
 					this.originalElement.removeListener( 'load', onImgLoadEvent );
@@ -90,7 +100,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					this.originalElement.remove();
 					this.originalElement = false;		// Dialog is closed.
 				}
-
 				delete this.imageElement;
 			},
 			contents : [
@@ -98,22 +107,35 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					id : 'Upload',
 					hidden : false,
 					filebrowser : 'uploadButton',
-					label : editor.lang.image.upload,
+					label : 'Choose a file from your computer',
 					elements :
 					[
 						{
 							type : 'file',
 							id : 'upload',
-							label : editor.lang.image.btnUpload,
+							label : 'Choose a file from your computer',
 							style: 'height:40px',
-							size : 38
+							size : 34
 						},
 						{
 							type : 'fileButton',
 							id : 'uploadButton',
 							filebrowser : 'Upload:txtUrl',
+							style : 'display:none',
 							label : editor.lang.image.btnUpload,
 							'for' : [ 'Upload', 'upload' ]
+						},
+						{
+						  type : 'html',
+						  id : 'webImageHint',
+						  html : 'or <span style="color:blue;text-decoration:underline;cursor:pointer;">use an image from the web</span>',
+						  style : 'float:left;margin-top:10px',
+						  onClick : function()
+						          {
+						            urlText = this.getDialog().getContentElement('Upload', 'txtUrl');
+						            urlText.getElement().show();
+						            urlText.focus();
+						          }
 						},
 						{
               type : 'text',
@@ -121,6 +143,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
               label : 'Image URL',
               style: 'height:40px',
               size : 38,
+              hidden : true,
               required : true,
               onChange : function()
                       {
@@ -133,6 +156,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                           dialog = this.getDialog();
                           var original = dialog.originalElement;
                           original.setAttribute( 'src', newUrl );
+                          if(!this.isVisible())
+                          {
+                            // must be a file upload
+                            dialog.fire('ok');
+                          }
                         }
                       },
  
@@ -144,7 +172,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
   													element.setAttribute( 'src', decodeURI( this.getValue() ) );
   												}
   											},
-  						validate : CKEDITOR.dialog.validate.notEmpty( editor.lang.image.urlMissing )
+  						validate : function()
+        						    {
+            						  if(this.getValue().length > 0 || this.getDialog().getContentElement('Upload', 'upload').getValue().length > 0)
+            						    return true;
+            						  alert(editor.lang.image.urlMissing );
+            						  return false;
+            						}
   				  }
   				]
 				}
