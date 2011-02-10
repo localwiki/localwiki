@@ -71,8 +71,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			  }
         this.imageElement = editor.document.createElement( 'img' );
         this.imageElement.setAttribute( 'alt', '' );
-        this.commitContent( this.imageElement );
 
+        this.commitContent( this.imageElement );
+        
         // Remove empty style attribute.
         if ( !this.imageElement.getAttribute( 'style' ) )
           this.imageElement.removeAttribute( 'style' );
@@ -190,6 +191,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         {
                           dialog = this.getDialog();
                           var original = dialog.originalElement;
+                          original.setCustomData( 'isReady', 'false' );
+                          original.on( 'load', onImgLoadEvent, dialog );
                           original.setAttribute( 'src', newUrl );
                           if(!this.isVisible())
                           {

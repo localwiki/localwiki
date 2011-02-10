@@ -57,7 +57,7 @@ class CKEditor(forms.Textarea):
                 if tag in buttons:
                     toolbar.append(name)
                     
-        return json.dumps({'toolbar': [toolbar], 'filebrowserInsertimageUploadUrl':'upload', 'extraPlugins': 'insertimage'})
+        return json.dumps({'toolbar': [toolbar], 'filebrowserInsertimageUploadUrl':'upload', 'extraPlugins': 'insertimage,simpleimage'})
                 
     def button_for_tag(self, tag):
         if tag in self._auto_button_map:
