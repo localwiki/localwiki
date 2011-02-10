@@ -3,20 +3,18 @@ from django.db.models import signals
 
 from registry import FieldRegistry
 
-"""
-Right now this just interacts with the AutoUserField
-should be made to also work with like AutoIPAddressField
-"""
-
-# TODO: refactor this if we want to track more than ip, user.
-#       Could use a passed-in callable for logic.
-
 # Ignore auto-tracking of user info on these HTTP methods
 IGNORE_USER_INFO_METHODS = (
     'GET', 'HEAD', 'OPTIONS', 'TRACE'
 )
 
 class AutoTrackUserInfoMiddleware(object):
+    """
+    Optional middleware to automatically add the current request user's
+    information into the historical model as it's saved.
+    """
+    # TODO: refactor this if we want to track more than ip, user.
+    #       Could use a passed-in callable for logic.
     def process_request(self, request):
         if request.method in IGNORE_USER_INFO_METHODS:
             pass

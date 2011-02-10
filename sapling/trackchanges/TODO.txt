@@ -1,27 +1,67 @@
+class Tag(models.Model):
+    name = models.CharField(max_length=200)
+
+    history = TrackChanges()
+
+class FK(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.ForeignKey(Tag, null=True)
+
+    history = TrackChanges()
+
+FK.history.filter(b=t) gives "error..no such field. choices are a, b_id, .."
+
+Tag.history.filter(fk=fk) gives error, no listing of fk.
+
+both of these should totally work.
+
+IDEA:
+
+replace ForeignKey(Tag) with ForeignKey(Tag_hist), etc.
+--------
+THEN:
+
+ ** it seems like trackchanges=False isn't working on the parents of FK models.
+ tag.delete(track_changes=False) doesn't seem to work
+
+get manytomany working, first direct
+then get reverse m2m working
+THEN intermediate models. oh god.
+
+THEN:
+
  * copy over model's Meta options.  looks like we want to ignore:
    db_table, get_latest_by, managed, 
  * copy over things like custom managers (objects = MyManger()), methods?  what
-   do we call this?  self.copy_other_members()  also any other custom methods
+   do we call this?  self.get_other_members()  also any other custom methods
    and attributes
  * should pretend to be the non-historical class, too, for isinstance()
    checks?
+ * After M2M, other stuff working:
+    - Model inheritence should work.  Test it.
+        - abstract base model with history = TrackChanges()
+        - child model of abstract with history = TrackChanges()
+        - concrete models (multi-table inheritence)
+          - should check that the implicit OneToOneField lookup works
+            and respects historical good-ness
+        - proxy models. i guess it'd be cool if
+          ProxyModel.history.filter() returned ProxyModel instances :)
+        - multiple inheritence examples
 
-maybe we can, in our queryset method, return instances of the original model with extra stuff set on it.
-and have an instance of the historical model around.
-m.history_info
-m.revert_to
-m.save
-m.delete
 
-i think this makes sense.
 
- * manytomany
-   * direct: fkm_h.b.all()
-   * reverse: t_h.fkm_set.all()
-   * concerns:
-      * custom intermediate models - should be fine. create a test,
-        though.
- * wiki app using trackchanges
+
+
+
+
+
+
+
+
+
+
+
+-------
  * documentation
  * admin interface
 
@@ -58,18 +98,16 @@ for p_h in p.history.all():
     p_h.save(track_changes=False)
 p.save()
 
+== Bulk QuerySet update() / Admin bulk actions ==
+django-trackchanges works fine with QuerySet.delete() and the admin's bulk deleting.  However, at the moment there's no way to have it work with QuerySet.update().  We recommend not using QuerySet.update() on models you want to perserve versioning information on.
+
+Working around this is braindead-easy!  See http://code.trac.localwiki.org/ticket/33 for a workaround.  Issuing a QuerySet.update() won't break anything -- it just won't save a new version of the model in the history.
+
+For more information, see Django ticket #12184 (http://code.djangoproject.com/ticket/12184), #10754 (http://code.djangoproject.com/ticket/10754) and our ticket #33 (http://code.trac.localwiki.org/ticket/33).  Weigh in!
+
 = Todo =
 
--1: ForeignKey lookup stuff.  maybe like:
-
-"both reverse and direct, e.g., ForeignKey, ManyToManyField, and reverse relationships those create." -- "reverse relationships those create" => make this work.
-
- - ONLY figure it out on a lookup.
- - flag in TrackChanges() constructor.  default is on.
- - h.history_meta.object should return something that o.user is the old user on
- - if this is annoying down the road, change it.  for now it's a sane default.
-
-0: admin integration
+1: admin integration
 
 before 'release':
 
@@ -81,41 +119,6 @@ Both of these apps serialize models into blobs.  We believe that having the full
 
 ==================================
 ==================================
-
-0.5.
-
- * how do we handle foreignkeys?
-   * NOTE * this is for following relationships - a lookup.  We shouldn't automatically
-            track changes on related models, at least not now.  In the future maybe we'll
-            allow a follow flag.
-
-    * The version datetime will suffice for tying versioned models together.
-       -- XXX TODO: add a unique_together field to the historical model that
-                    includes the history_date to ensure consistency here.
-
-  -- i think we should have a nice way of dealing w/ foreignkeys when the key'ed object is also a versionedmodel
-  -- otherwise we can't do much
-  -- when it is versioned?:
-
-    Imagine a Page-- it will have a page.files
-
-      which is either File: .. ForeignKey(Page)..
-                   or Page: ... files = ManyToManyField(Files)
-
-    obviously, this can all be handled by hand by looking up the version of the 
-    foreignkey object that's nearest (date wise) to the object at hand.
-
-      * can automate (on/off via a flag) -- maybe m.history.auto_foreign_key...
-
-     --- investigate and implement this
-
-     check out what django-reversion does w/ follow_relationships()
-
-
-document fully.  explain how to over-ride get_extra_fields (p 284 prodjango).
-   * also make sure to explain that many of the methods are for convience
-     - almost everything can be done via query sets!  m.history.filter()...
-   * write sphinx documentation?
 
 -------
 FOR OUR REAL TODO FILE (e.g. AFTER OUR INITIAL DEV):

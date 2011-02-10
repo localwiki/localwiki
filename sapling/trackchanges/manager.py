@@ -45,22 +45,21 @@ class HistoryManager(models.Manager):
         super(HistoryManager, self).__init__()
         self.model = model
         self.instance = instance
-        # setting this to false turns off
-        # auto-generation of revisions in the history
-        # table on save.
-        self.track_changes = True
 
     def get_query_set(self):
         if self.instance is None:
             return HistoricalMetaInfoQuerySet(model=self.model)
         
-        # Note: We can't use Django 1.2's natural_key() method here because
-        # it doesn't necessarily return model attributes - it can literally
-        # return anything as long as that anything can be used by
-        # get_by_natural_key() to do a lookup. For instance, natural_key()
-        # could return values that are used by get_by_natural_key() to look
-        # up an object's pk in an external database.
-        unique_fields = unique_fields_of(self.instance)
+        # TODO: Explore using natural_key() here if it exists on the
+        # model. One idea: SHA-1 an escaped, string form of the
+        # natural_key() and store it as an indexed field in the
+        # historical model. This may make migrations more difficult, so
+        # we need to think this over. It may not be worth it, as telling
+        # people to use unique / unique_together on their models is
+        # reasonable and a good practice anyway.
+
+        unique_fields = unique_lookup_values_for(self.instance)
+        print "UNIQUE FIELDS:", unique_fields
         filter = unique_fields
         # We look up based on unique fields whenever possible
         # and, as a fallback, use the primary key. This is because we'd like

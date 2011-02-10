@@ -66,7 +66,7 @@ class TrackChangesTest(TestCase):
         m.save()
         m.b.add(category)
         m.save()
-
+        
         thing = LongerNameOfThing(a="long name")
         thing.save()
         m = M15OneToOne(a="m15 yay!", b=thing)
@@ -102,6 +102,7 @@ class TrackChangesTest(TestCase):
         Remove all created models and all model history.
         """
         for M in self.test_models:
+            print ">> M:", M
             print "M ALL", M.objects.all()
             for m in M.objects.all():
                 # clear out existing history
@@ -397,6 +398,27 @@ class TrackChangesTest(TestCase):
                          [obj.c for obj in m_cur.history.all()]
         )
 
+    def test_queryset_bulk(self):
+        m2 = M2(a="a oh a", b="b oh b", c=10)
+        m2.save()
+        m12 = M12ForeignKey(a=m2, b="ratatat")
+        m12.save()
+
+        # Bulk deletes should work
+        qs = M2.objects.filter(a="a oh a")
+        qs.delete()
+
+        h_objs = M2.history.filter(a="a oh a")
+        self.assertEqual(h_objs[0].history_info.type, TYPE_DELETED)
+        self.assertEqual(h_objs[1].history_info.type, TYPE_ADDED)
+
+        h_objs = M12ForeignKey.history.filter(b="ratatat")
+        self.assertEqual(h_objs[0].history_info.type, TYPE_DELETED)
+        self.assertEqual(h_objs[1].history_info.type, TYPE_ADDED)
+
+        # Bulk updates don't work yet and it's not clear
+        # they will unless Django fixes update behavior
+
     def test_revert_to_once_deleted(self):
         m = M16Unique(a="Me me!", b="I am older", c=0)
         m.save()
@@ -496,246 +518,299 @@ class TrackChangesTest(TestCase):
         r_m = m.history.most_recent().history_info.reverted_to_version
         self.assertEqual(r_m, m.history.all()[2])
 
-    def test_correct_fk_version_lookup(self):
-        """
-        grabbing a foreignkey attribute on a historical instance
-        should pull up the correct version of the related object
-        if the related object is versioned.
-        """
-        ###############################
-        # ForeignKey attribute
-        ###############################
-        m2 = M2(a="i am m2!", b="yay!", c=1)
-        m2.save()
-        
-        m17 = M17ForeignKeyVersioned(name="yayfk!", m2=m2)
-        m17.save()
+    #def test_correct_fk_version_lookup(self):
+    #    """
+    #    grabbing a foreignkey attribute on a historical instance
+    #    should pull up the correct version of the related object
+    #    if the related object is versioned.
+    #    """
+    #    ###############################
+    #    # ForeignKey attribute
+    #    ###############################
+    #    m2 = M2(a="i am m2!", b="yay!", c=1)
+    #    m2.save()
+    #    
+    #    m17 = M17ForeignKeyVersioned(name="yayfk!", m2=m2)
+    #    m17.save()
 
-        m17.name = m17.name + "!"
-        m17.save()
+    #    m17.name = m17.name + "!"
+    #    m17.save()
 
-        m2.c += 1
-        m2.save()
-        m17.name = m17.name + "!"
-        m17.save()
+    #    m2.c += 1
+    #    m2.save()
+    #    m17.name = m17.name + "!"
+    #    m17.save()
 
-        m2.c += 1
-        m2.save()
-        m17.name = m17.name + "!"
-        m17.save()
+    #    m2.c += 1
+    #    m2.save()
+    #    m17.name = m17.name + "!"
+    #    m17.save()
 
-        m17_h = m17.history.as_of(version=1)
-        self.assertEqual(m17_h.m2.c, 1)
+    #    m17_h = m17.history.as_of(version=1)
+    #    self.assertEqual(m17_h.m2.c, 1)
 
-        m17_h = m17.history.as_of(version=2)
-        self.assertEqual(m17_h.m2.c, 1)
+    #    m17_h = m17.history.as_of(version=2)
+    #    self.assertEqual(m17_h.m2.c, 1)
 
-        m17_h = m17.history.as_of(version=3)
-        self.assertEqual(m17_h.m2.c, 2)
+    #    m17_h = m17.history.as_of(version=3)
+    #    self.assertEqual(m17_h.m2.c, 2)
 
-        m17_h = m17.history.as_of(version=4)
-        self.assertEqual(m17_h.m2.c, 3)
+    #    m17_h = m17.history.as_of(version=4)
+    #    self.assertEqual(m17_h.m2.c, 3)
 
-        ###############################
-        # OneToOneField attribute
-        ###############################
-        m2 = M2(a="i am m2 for onetoone!", b="onetoone yay!", c=1)
-        m2.save()
-        
-        m18 = M18OneToOneFieldVersioned(name="i am the versioned thing!", m2=m2)
-        m18.save()
+    #    ###############################
+    #    # OneToOneField attribute
+    #    ###############################
+    #    m2 = M2(a="i am m2 for onetoone!", b="onetoone yay!", c=1)
+    #    m2.save()
+    #    
+    #    m18 = M18OneToOneFieldVersioned(name="i am the versioned thing!", m2=m2)
+    #    m18.save()
 
-        m18.name = m18.name + "!"
-        m18.save()
+    #    m18.name = m18.name + "!"
+    #    m18.save()
 
-        m2.c += 1
-        m2.save()
-        m18.name = m18.name + "!"
-        m18.save()
+    #    m2.c += 1
+    #    m2.save()
+    #    m18.name = m18.name + "!"
+    #    m18.save()
 
-        m2.c += 1
-        m2.save()
-        m18.name = m18.name + "!"
-        m18.save()
+    #    m2.c += 1
+    #    m2.save()
+    #    m18.name = m18.name + "!"
+    #    m18.save()
 
-        m18_h = m18.history.as_of(version=1)
-        self.assertEqual(m18_h.m2.c, 1)
+    #    m18_h = m18.history.as_of(version=1)
+    #    self.assertEqual(m18_h.m2.c, 1)
 
-        m18_h = m18.history.as_of(version=2)
-        self.assertEqual(m18_h.m2.c, 1)
+    #    m18_h = m18.history.as_of(version=2)
+    #    self.assertEqual(m18_h.m2.c, 1)
 
-        m18_h = m18.history.as_of(version=3)
-        self.assertEqual(m18_h.m2.c, 2)
+    #    m18_h = m18.history.as_of(version=3)
+    #    self.assertEqual(m18_h.m2.c, 2)
 
-        m18_h = m18.history.as_of(version=4)
-        self.assertEqual(m18_h.m2.c, 3)
+    #    m18_h = m18.history.as_of(version=4)
+    #    self.assertEqual(m18_h.m2.c, 3)
 
-        ###############################
-        # ManyToMany attribute
-        ###############################
-        t1 = LameTag(name="T1")
-        t1.save()
-        t2 = LameTag(name="T2")
-        t2.save()
-        m19 = M19ManyToManyFieldVersioned(a="m19 woo")
-        m19.save()
-        m19.tags.add(t1, t2)
-        t1.name += "!"
-        t1.save()
-        t2.name += "!"
-        t2.save()
+    #    ###############################
+    #    # ManyToMany attribute
+    #    ###############################
+    #    #t1 = LameTag(name="T1")
+    #    #t1.save()
+    #    #t2 = LameTag(name="T2")
+    #    #t2.save()
+    #    #m19 = M19ManyToManyFieldVersioned(a="m19 woo")
+    #    #m19.save()
+    #    #m19.tags.add(t1, t2)
+    #    #t1.name += "!"
+    #    #t1.save()
+    #    #t2.name += "!"
+    #    #t2.save()
 
-        m19_h = m19.history.most_recent()
-        tags = m19_h.tags.all()
-        self.assertEqual(set([t.name for t in tags]), set(["T1", "T2"]))
+    #    #m19_h = m19.history.most_recent()
+    #    #tags = m19_h.tags.all()
+    #    #self.assertEqual(set([t.name for t in tags]), set(["T1", "T2"]))
 
-    def test_fk_reverse_no_interference(self):
-        """
-        A reverse lookup of a foreignkey shouldn't return historical models' stuff.
-        """
-        m2 = M2(a="aaaa!", b="bbbb!", c=1)
-        m2.save()
-        m12 = M12ForeignKey(a=m2, b="what's up guys?")
-        m12.save()
-        # only 1 in set means it's just the normal model being reversed
-        self.assertEqual(len(m2.m12foreignkey_set.all()), 1)
-
-        # Test with a specified related_name
-        #m12related = M12ForeignKeyRelatedSpecified()
-
-    def test_fk_reverse_lookup(self):
-         # Reverse foreign key lookups on historical models should,
-         # if the parent model is versioned, return the related set
-         # as it was at the moment in time represented by the child
-         # model.
-         m2 = M2(a="relatedatest", b="relatedbtest", c=0)
-         m2.save()
-         m17 = M17ForeignKeyVersioned(name="relatedtest", m2=m2)
-         m17.save()
-
-         # because m2 was created before m17, the related set
-         # of the most recent historical version of m2 should be
-         # empty
-         m2_h = m2.history.most_recent()
-         self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 0)
-
-         m2.a += "!"
-         m2.save()
-         m17.name += "!"
-         m17.save()
-         # now the related set of the most recent entry should be the
-         # current m17
-         m2_h = m2.history.most_recent()
-         self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 1)
-         m17_h = m2_h.m17foreignkeyversioned_set.all()[0]
-         self.assertEqual(m17_h.name, "relatedtest")
-
-         m2.a += "!"
-         m2.save()
-
-         m2_h = m2.history.most_recent()
-         self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 1)
-         m17_h = m2_h.m17foreignkeyversioned_set.all()[0]
-         self.assertEqual(m17_h.name, "relatedtest!")
-
-         # let's have another model point at m2 
-         m17 = M17ForeignKeyVersioned(name="relatedtest2", m2=m2)
-         m17.save()
-
-         m2.a += "!"
-         m2.save()
-
-         m2_h = m2.history.most_recent()
-         related_set = m2_h.m17foreignkeyversioned_set
-         self.assertEqual(len(related_set.all()), 2)
-         self.assertEqual(len(related_set.filter(name="relatedtest2")), 1)
-         self.assertEqual(len(related_set.filter(name="relatedtest!")), 1)
-
-    def test_onetoone_reverse_lookup(self):
-         # Reverse onetoone field lookups on historical models should,
-         # if the corresponding model is versioned, return the related
-         # model as it was at the moment in time represented by the
-         # active model.
-         child = LongerNameOfThing(a="my name here")
-         child.save()
-         m15 = M15OneToOne(a="i have a onetoone field", b=child)
-         m15.save()
-         child.a += "!"
-         child.save()
-         m15.a += "!"
-         m15.save()
-
-         child_h = child.history.most_recent()
-         self.assertEqual(child_h.m15onetoone.a, "i have a onetoone field")
-
-    def test_manytomany_reverse_lookup(self):
-        t1 = LameTag(name="lame1")
-        t1.save()
-        t2 = LameTag(name="lame2")
-        t2.save()
-        m19 = M19ManyToManyFieldVersioned(a="best m19")
-        m19.save()
-        m19.tags.add(t1, t2)
-
-        t1.name += "!"
-        t1.save()
-        t2.name += "!"
-        t2.save()
-
-        m19.a += "!"
-        m19.save()
-
-        t1.name += "!"
-        t1.save()
-        t2.name += "!"
-        t2.save()
-
-        # reverse set on these should be empty
-        t1_h = t1.history.all()[2]
-        t2_h = t2.history.all()[2]
-        reverse_set = t1_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 0))
-        reverse_set = t2_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 0))
-
-        # reverse set on these should be "best m19"
-        t1_h = t1.history.all()[1]
-        t2_h = t2.history.all()[1]
-        reverse_set = t1_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 1))
-        self.assertEqual(reverse_set.all()[0].a, "best m19")
-        reverse_set = t2_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 1))
-        self.assertEqual(reverse_set.all()[0].a, "best m19")
-
-        # reverse set on these should be "best m19!"
-        t1_h = t1.history.all()[0]
-        t2_h = t2.history.all()[0]
-        reverse_set = t1_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 1))
-        self.assertEqual(reverse_set.all()[0].a, "best m19!")
-        reverse_set = t2_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 1))
-        self.assertEqual(reverse_set.all()[0].a, "best m19!")
-
-    def test_reverse_related_name(self):
-        # custom ForeignKey related_name
-
-        # custom OneToOneField related_name
-
-        # custom ManyToManyField related_name
-
-        pass
-
-#    def test_correct_fk_lookup_when_recreated(self):
-#        # If we have M.versioned_attribute and then we delete
-#        # versioned_attribute and then re-create it we should be able
-#        # to retrieve the right fk version, even so.
+#   # def test_fk_filters(self):
+#   #     m2 = M2(a="yes!", b="no!", c=1)
+#   #     m2.save()
+#   #     m12 = M12ForeignKey(a=m2, b="yay!")
+#   #     m12.save()
 #
-#        # This should work because we have the history record for M
-#        # storing the pk of versioned_attribute.  And because pks won't
-#        # be recycled (except in SQLite with the bug that will be fixed)
-#        # this shouldn't be a problem.
-#        pass
+#   #     self.assertEqual(len(M12ForeignKey.history.filter(a=m2)), 1)
+#   #     self.assertEqual(len(M2.history.filter(m12foreignkey=m12)), 1)
 #
+#   # def test_fk_reverse_no_interference(self):
+#   #     m2 = M2(a="aaaa!", b="bbbb!", c=1)
+#   #     m2.save()
+#   #     m12 = M12ForeignKey(a=m2, b="what's up guys?")
+#   #     m12.save()
+#   #     # only 1 in set means it's just the normal model being reversed
+#   #     self.assertEqual(len(m2.m12foreignkey_set.all()), 1)
+#
+#   #     # Test with a specified related_name
+#   #     #m12related = M12ForeignKeyRelatedSpecified()
+#
+    #def test_fk_reverse_lookup(self):
+    #     # Reverse foreign key lookups on historical models should,
+    #     # if the parent model is versioned, return the related set
+    #     # as it was at the moment in time represented by the child
+    #     # model.
+    #     m2 = M2(a="relatedatest", b="relatedbtest", c=0)
+    #     m2.save()
+    #     m17 = M17ForeignKeyVersioned(name="relatedtest", m2=m2)
+    #     m17.save()
 
+    #     # because m2 was created before m17, the related set
+    #     # of the most recent historical version of m2 should be
+    #     # empty
+    #     m2_h = m2.history.most_recent()
+    #     self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 0)
+
+    #     m2.a += "!"
+    #     m2.save()
+    #     m17.name += "!"
+    #     m17.save()
+    #     # now the related set of the most recent entry should be the
+    #     # current m17
+    #     m2_h = m2.history.most_recent()
+    #     self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 1)
+    #     m17_h = m2_h.m17foreignkeyversioned_set.all()[0]
+    #     self.assertEqual(m17_h.name, "relatedtest")
+
+    #     m2.a += "!"
+    #     m2.save()
+
+    #     m2_h = m2.history.most_recent()
+    #     self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 1)
+    #     m17_h = m2_h.m17foreignkeyversioned_set.all()[0]
+    #     self.assertEqual(m17_h.name, "relatedtest!")
+
+    #     # let's have another model point at m2 
+    #     m17 = M17ForeignKeyVersioned(name="relatedtest2", m2=m2)
+    #     m17.save()
+
+    #     m2.a += "!"
+    #     m2.save()
+
+    #     m2_h = m2.history.most_recent()
+    #     related_set = m2_h.m17foreignkeyversioned_set
+    #     self.assertEqual(len(related_set.all()), 2)
+    #     self.assertEqual(len(related_set.filter(name="relatedtest2")), 1)
+    #     self.assertEqual(len(related_set.filter(name="relatedtest!")), 1)
+
+    def test_fk_cascade(self):
+        child = M2(a="oh yes", b="uh huh", c=10)
+        child.save()
+        parent = M12ForeignKey(a=child, b="i am the parent")
+        parent.save()
+
+        child.delete(comment="the comment")
+        # delete comment should cascade to parent's delete
+        latest_m12 = M12ForeignKey.history.filter(b="i am the parent")[0]
+        self.assertEqual(latest_m12.history_info.comment, "the comment")
+
+        child = M2(a="oh yes 2", b="uh huh 2", c=10)
+        child.save()
+        parent = M12ForeignKey(a=child, b="i am the parent 2")
+        parent.save()
+
+        child.delete(track_changes=False)
+        # We shouldn't have a historical instance stored for the
+        # parent's delete.
+        latest_m12 = M12ForeignKey.history.filter(b="i am the parent 2")[0]
+        self.assertNotEqual(latest_m12.history_info.type, TYPE_DELETED)
+
+#    def test_fk_reverse_proper_instance(self):
+#        """
+#        If we have
+#
+#        fk_version2 --------------
+#                                 |
+#                                 v 
+#        fk_version1 ---------> m_version2
+#
+#        then doing a reverse lookup in m.history should only
+#        return a single historical fk instance - not two.
+#        """
+#        m2 = M2(a="aaaa!", b="bbbb!", c=1)
+#        m2.save()
+#        m12 = M12ForeignKey(a=m2, b="what's up guys?")
+#        m12.save()
+#        # save again to create a new version
+#        m12.b += "!"
+#        m12.save()
+#        m2.a += "!"
+#        m2.save()
+#
+#        m2_h = m2.history.most_recent()
+#        self.assertEqual(len(m2_h.m12foreignkey_set.all()), 1)
+#
+##    def test_onetoone_reverse_lookup(self):
+##         # Reverse onetoone field lookups on historical models should,
+##         # if the corresponding model is versioned, return the related
+##         # model as it was at the moment in time represented by the
+##         # active model.
+##         child = LongerNameOfThing(a="my name here")
+##         child.save()
+##         m15 = M15OneToOne(a="i have a onetoone field", b=child)
+##         m15.save()
+##         child.a += "!"
+##         child.save()
+##         m15.a += "!"
+##         m15.save()
+##
+##         child_h = child.history.most_recent()
+##         self.assertEqual(child_h.m15onetoone.a, "i have a onetoone field")
+##
+##    #def test_manytomany_reverse_lookup(self):
+##    #    t1 = LameTag(name="lame1")
+##    #    t1.save()
+##    #    t2 = LameTag(name="lame2")
+##    #    t2.save()
+##    #    m19 = M19ManyToManyFieldVersioned(a="best m19")
+##    #    m19.save()
+##    #    m19.tags.add(t1, t2)
+##
+##    #    t1.name += "!"
+##    #    t1.save()
+##    #    t2.name += "!"
+##    #    t2.save()
+##
+##    #    m19.a += "!"
+##    #    m19.save()
+##
+##    #    t1.name += "!"
+##    #    t1.save()
+##    #    t2.name += "!"
+##    #    t2.save()
+##
+##    #    # reverse set on these should be empty
+##    #    t1_h = t1.history.all()[2]
+##    #    t2_h = t2.history.all()[2]
+##    #    reverse_set = t1_h.m19manytomanyfieldversioned_set
+##    #    self.assertEqual(len(reverse_set.all(), 0))
+##    #    reverse_set = t2_h.m19manytomanyfieldversioned_set
+##    #    self.assertEqual(len(reverse_set.all(), 0))
+##
+##    #    # reverse set on these should be "best m19"
+##    #    t1_h = t1.history.all()[1]
+##    #    t2_h = t2.history.all()[1]
+##    #    reverse_set = t1_h.m19manytomanyfieldversioned_set
+##    #    self.assertEqual(len(reverse_set.all(), 1))
+##    #    self.assertEqual(reverse_set.all()[0].a, "best m19")
+##    #    reverse_set = t2_h.m19manytomanyfieldversioned_set
+##    #    self.assertEqual(len(reverse_set.all(), 1))
+##    #    self.assertEqual(reverse_set.all()[0].a, "best m19")
+##
+##    #    # reverse set on these should be "best m19!"
+##    #    t1_h = t1.history.all()[0]
+##    #    t2_h = t2.history.all()[0]
+##    #    reverse_set = t1_h.m19manytomanyfieldversioned_set
+##    #    self.assertEqual(len(reverse_set.all(), 1))
+##    #    self.assertEqual(reverse_set.all()[0].a, "best m19!")
+##    #    reverse_set = t2_h.m19manytomanyfieldversioned_set
+##    #    self.assertEqual(len(reverse_set.all(), 1))
+##    #    self.assertEqual(reverse_set.all()[0].a, "best m19!")
+##
+###    def test_reverse_related_name(self):
+###        # custom ForeignKey related_name
+###
+###        # custom OneToOneField related_name
+###
+###        # custom ManyToManyField related_name
+###
+###        pass
+###
+####    def test_correct_fk_lookup_when_recreated(self):
+####        # If we have M.versioned_attribute and then we delete
+####        # versioned_attribute and then re-create it we should be able
+####        # to retrieve the right fk version, even so.
+####
+####        # This should work because we have the history record for M
+####        # storing the pk of versioned_attribute.  And because pks won't
+####        # be recycled (except in SQLite with the bug that will be fixed)
+####        # this shouldn't be a problem.
+####        pass
+####
+###

@@ -98,7 +98,6 @@ INSTALLED_APPS = (
     'ckeditor',
 )
 
-
 try:
     from localsettings import *
 except:

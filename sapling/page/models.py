@@ -35,6 +35,15 @@ class FK(models.Model):
 
     history = TrackChanges()
 
+class TagNoVer(models.Model):
+    name = models.CharField(max_length=200)
+
+class FKNoVer(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.ForeignKey(TagNoVer, null=True)
+
+    history = TrackChanges()
+
 class FKM(models.Model):
     a = models.CharField(max_length=200)
     b = models.ManyToManyField(Tag, null=True)
@@ -67,6 +76,26 @@ class YetAnotherPage(models.Model):
 class NoFKConstraint(models.Model):
     name = models.CharField(max_length=200)
     tag = models.ForeignKey(Tag)
+
+class FKToSelf(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.ForeignKey('self', null=True)
+
+    history = TrackChanges()
+
+#class M2(models.Model):
+#    a = models.CharField(max_length=200)
+#    b = models.TextField()
+#    c = models.IntegerField()
+#
+#    history = TrackChanges()
+#
+#class M12ForeignKey(models.Model):
+#    a = models.ForeignKey(M2)
+#    b = models.CharField(max_length=200)
+#
+#    history = TrackChanges()
+
 
 #from page.models import *
 #

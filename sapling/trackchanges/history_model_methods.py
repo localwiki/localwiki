@@ -9,6 +9,7 @@ import datetime
 
 from django.db import models
 from django.db.models import Max
+from django.db.models.sql.constants import LOOKUP_SEP
 
 from fields import *
 from constants import *
@@ -17,7 +18,7 @@ from utils import *
 def get_history_fields(self, model):
     """
     Returns a dictionary of the essential fields that will be added to the
-    historical record model, in addition to the ones returned by models.copy_fields.
+    historical record model, in addition to the ones returned by models.get_fields.
     """
     fields = {
         'history_id': models.AutoField(primary_key=True),
@@ -37,9 +38,9 @@ def get_history_fields(self, model):
         'save': save_with_arguments,
         'delete': delete_with_arguments,
         '__init__': historical_record_init,
-        #'__getattribute__':
-        #    # not sure why functools.partial doesn't work here
-        #    lambda m, name: historical_record_getattribute(model, m, name),
+        '__getattribute__':
+            # not sure why functools.partial doesn't work here
+            lambda m, name: historical_record_getattribute(model, m, name),
     }
 
     return fields
@@ -49,8 +50,13 @@ def historical_record_init(m, *args, **kws):
     This is the __init__ method of historical record instances.
     """
     retval = super(m.__class__, m).__init__(*args, **kws)
-    _wrap_foreign_keys(m)
+    print "in historical_record_init"
+    print args
+    print kws
+    m._direct_lookup_fields = {}
+    #_wrap_foreign_keys(m)
     _wrap_reverse_lookups(m)
+    #_fix_reverse_lookups(m)
     return retval
 
 def _wrap_foreign_keys(m):
@@ -63,38 +69,83 @@ def _wrap_foreign_keys(m):
 
     @param m: a historical record model
     """
-    #def _lookup_version(m, fk_obj):
-    #    history_manager = getattr(fk_obj, fk_obj._history_manager_name)
-    #    print "looking up as of..", m.history_info.date
-    #    return history_manager.as_of(date=m.history_info.date)
+    def _lookup_version(m, fk_obj):
+        history_manager = getattr(fk_obj, fk_obj._history_manager_name)
+        print "looking up as of..", m.history_info.date
+        return history_manager.as_of(date=m.history_info.date)
 
-#    def _wrap_field(m, field):
-#        print "..ONONON:", m.__class__, "ENDON"
-#        print "fk obj getting:", field.name, "ENDGETPRINT"
-#        fk_obj = getattr(m, field.name)
-#        if is_versioned(fk_obj):
-#            print "HAS ATTR OF HISTORY MANAGER"
-#            _lookup_proper_fk_version = partial(_lookup_version, m, fk_obj)
-#            print "SET", field.name, "to lookup old fk version on", m
-#            #m._direct_lookup_fields[field.name] = SimpleLazyObject(
-#            #    _lookup_proper_fk_version
-#            #)
-#
-    #m._direct_lookup_fields = {}
+    def _wrap_field(m, field):
+        print "..ONONON:", m.__class__, "ENDON"
+        print "fk obj getting:", field.name, "ENDGETPRINT"
+        fk_obj = getattr(m, field.name)
+        if is_versioned(fk_obj):
+            print "HAS ATTR OF HISTORY MANAGER"
+            _lookup_proper_fk_version = partial(_lookup_version, m, fk_obj)
+            print "SET", field.name, "to lookup old fk version on", m
+            m._direct_lookup_fields[field.name] = SimpleLazyObject(
+                _lookup_proper_fk_version
+            )
+
+    m._direct_lookup_fields = {}
     #for field in m.history_info._object._meta.fields:
     #    if isinstance(field, models.ForeignKey):
-    #        _wrap_field(m, field)
-    #for field in m._meta.many_to_many:
-    #    _wrap_field(m, field)
     for field in m._meta.fields:
         if isinstance(field, VersionedForeignKey):
-            setattr(m, field._attribute_name, field.lookup_proper_version(m))
+            attname = field._attribute_name
+            m._direct_lookup_fields[attname] = field.lookup_proper_version(m)
+    #for field in m._meta.many_to_many:
+    #    if is_versioned(field.related.parent_model):
+    #        m._direct_lookup_fields[field.attname] = m2m_lookup_proper_version(m, field)
+
+
+    # WAS WORKING:
+    #for field in m._meta.fields:
+    #    if isinstance(field, VersionedForeignKey):
+    #        setattr(m, field._attribute_name, field.lookup_proper_version(m))
     #XXX
     # AGhhh i think we need to use our custom __getattribute__, god
     # damnit
-    for field in m._meta.many_to_many:
-        if is_versioned(field.related.parent_model):
-            setattr()
+    #for field in m._meta.many_to_many:
+    #    if is_versioned(field.related.parent_model):
+    #        setattr()
+
+def _fix_reverse_lookups(m):
+    def _reverse_set_lookup(m, rel_o):
+        attr = rel_o.field.attname
+        parent_model = rel_o.model
+        parent_pk_att = parent_model._meta.pk.attname
+
+        # Start with the reverse of the fks on the historical models.
+        qs = getattr(m, '%s_hist_set' % rel_o.var_name)
+
+        # Then grab only the most recent version of each history model.
+        # First, group by the parent_pk.
+        qs = qs.order_by(parent_pk_att).values(parent_pk_att).distinct()
+        # Then annotate the maximum history object id.
+        #ids = qs.values('history_id').annotate(Max('history_id'))
+        ids = qs.annotate(Max('history_id'))
+        history_ids = [ v['history_id__max'] for v in ids ]
+
+        # return a QuerySet containing the proper history objects
+        return parent_model.history.filter(history_id__in=history_ids)
+
+    related_objects = m.history_info._object._meta.get_all_related_objects()
+    related_versioned = [ o for o in related_objects if is_versioned(o.model) ]
+    for rel_o in related_versioned:
+        if isinstance(rel_o.field, models.OneToOneField):
+            # XXX
+            # XXX
+            # TODO MUST DO MUST CHECK
+            # OneToOneFields have a direct lookup (not a set)
+            #_proper_reverse_lookup = partial(_reverse_attr_lookup, m, rel_o)
+            pass
+        else:
+            _proper_reverse_lookup = partial(_reverse_set_lookup, m, rel_o)
+
+        # Set the accessor to a lazy lookup function that, when
+        # accessed, looks up the proper related set.
+        accessor = rel_o.get_accessor_name()
+        m._direct_lookup_fields[accessor] = SimpleLazyObject(_proper_reverse_lookup)
 
 def _wrap_reverse_lookups(m):
     """
@@ -104,38 +155,59 @@ def _wrap_reverse_lookups(m):
     @param m: a historical record model
     """
     def _reverse_set_lookup(m, rel_o):
-        attr = rel_o.field.attname
+        attr = rel_o.field.name
         parent_model = rel_o.model
         as_of = m.history_info.date
         parent_pk_att = parent_model._meta.pk.attname
 
-        # We want to make sure our filter respects the fact that the
-        # pk of the model can cycle while the unique fields stay the
-        # same.
+        # Find unique fields of the base (non-historical) model
+        # or use the pk.  We use unique fields, if available, because
+        # the underlying pk can change through delete -> recreation
+        # cycles while the unique fields stay the same.
+        unique_values = unique_lookup_values_for(m.history_info._object)
+        if not unique_values:
+            pk_att = m.history_info._object._meta.pk.attname
+            pk_val = getattr(m.history_info._object, pk_att)
+            unique_values = {pk_att:pk_val}
+
+        # Construct something like {'b__email':'a@example.org', ...}
+        # from the unique fields of the base model.
+        new_unique_values = {}
+        for k, v in unique_values.iteritems():
+            new_unique_values['%s%s%s' % (attr, LOOKUP_SEP, k)] = v
+
+        unique_values = new_unique_values
 
         # Grab parent history objects that are less than the as_of date
-        qs = parent_model.history.filter(history_date__lte=as_of, **{attr:m.id})
+        # that point at the base model.
+        qs = parent_model.history.filter(
+            history_date__lte=as_of,
+            #**{attr:m.history_info._object}
+            **unique_values
+        )
         # Then group by the parent_pk
         qs = qs.order_by(parent_pk_att).values(parent_pk_att).distinct()
         # then annotate the maximum history object id
         #ids = qs.values('history_id').annotate(Max('history_id'))
         ids = qs.annotate(Max('history_id'))
         history_ids = [ v['history_id__max'] for v in ids ]
-
         # return a QuerySet containing the proper history objects
         return parent_model.history.filter(history_id__in=history_ids)
 
     def _reverse_attr_lookup(m, rel_o):
         parent_model = rel_o.model
-        # attname looks like 'b_id' here because this is a OneToOneField
-        attr = rel_o.field.attname
         as_of = m.history_info.date
+
+        # Find unique values of the base (non-historical) model.
+        unique_values = unique_lookup_values_for(m.history_info._object)
+        if not unique_values:
+            pk_att = m.history_info._object._meta.pk.attname
+            pk_val = getattr(m.history_info._object, pk_att)
+            unique_values = {pk_att:pk_val}
 
         return parent_model.history.filter(
             history_date__lte=as_of,
-            # we filter on something that looks like 'b_id' because we
-            # are using a VersionedForeignKey field on the parent model
-            **{attr:m.id}
+            **unique_values
         )[0]
 
     related_objects = m.history_info._object._meta.get_all_related_objects()
@@ -150,27 +222,27 @@ def _wrap_reverse_lookups(m):
             _proper_reverse_lookup = partial(_reverse_attr_lookup, m, rel_o)
         else:
             _proper_reverse_lookup = partial(_reverse_set_lookup, m, rel_o)
-        setattr(m, accessor, SimpleLazyObject(_proper_reverse_lookup))
+        m._direct_lookup_fields[accessor] = SimpleLazyObject(_proper_reverse_lookup)
 
-#def historical_record_getattribute(model, m, name):
-#    """
-#    We have to define our own __getattribute__ because otherwise there's
-#    no way to set our wrapped foreign key attributes.
-#    
-#    If we try and set
-#    history_instance.att = SimpleLazyObject(_lookup_proper_fk_version)
-#    we'll get an error because Django does an isinstance() check on
-#    assignment to model fields.  Additionally, the __set__ method on
-#    related fields will force evaluation due to equality checks.
-#    """
-#    basedict = model.__getattribute__(m, '__dict__')
-#    direct_val = basedict.get('_direct_lookup_fields', {}).get(name)
-#    if direct_val is not None:
-#        return direct_val
-#    print "BASEDICT", basedict
-#    print "name:", name
-#    print "  result:", model.__getattribute__(m, name)
-#    return model.__getattribute__(m, name)
+def historical_record_getattribute(model, m, name):
+    """
+    We have to define our own __getattribute__ because otherwise there's
+    no way to set our wrapped foreign key attributes.
+    
+    If we try and set
+    history_instance.att = SimpleLazyObject(_lookup_proper_fk_version)
+    we'll get an error because Django does an isinstance() check on
+    assignment to model fields. Additionally, the __set__ method on
+    related fields will force evaluation due to equality checks.
+    """
+    basedict = model.__getattribute__(m, '__dict__')
+    direct_val = basedict.get('_direct_lookup_fields', {}).get(name)
+    if direct_val is not None:
+        return direct_val
+    #print "BASEDICT", basedict
+    #print "name:", name
+    #print "  result:", model.__getattribute__(m, name)
+    return model.__getattribute__(m, name)
 
 def revert_to(hm, delete_newer_versions=False, **kws):
     """
@@ -200,9 +272,9 @@ def revert_to(hm, delete_newer_versions=False, **kws):
 
     # Get the current model instance if it exists and set the pk
     # accordingly.
-    unique_fields = unique_fields_of(m)
-    if unique_fields:
-        ms = m.__class__.objects.filter(**unique_fields)
+    unique_values = unique_lookup_values_for(m)
+    if unique_values:
+        ms = m.__class__.objects.filter(**unique_values)
         if ms:
             # keep the primary key unique
             m.pk = ms[0].pk
