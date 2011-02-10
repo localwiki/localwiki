@@ -60,7 +60,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				this.originalElement.setCustomData( 'isReady', 'false' );
 
 				this.imageElement =  editor.document.createElement( 'img' );
-
 			},
 			onOk : function()
 			{
@@ -115,7 +114,43 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							id : 'upload',
 							label : 'Choose a file from your computer',
 							style: 'height:40px',
-							size : 34
+							size : 34,
+							validate : function ()
+                {
+                  if(!this.getValue())
+                    return true;
+                  // Patch the upload form before submitting and add the CSRF token
+                  uploadForm = this.getInputElement().$.form;
+                  csrf = uploadForm.csrfmiddlewaretoken;
+                  if(csrf)
+                    return true;
+                  csrf = document.createElement('input');
+                  csrf.setAttribute('name', 'csrfmiddlewaretoken');
+                  csrf.setAttribute('type', 'hidden');
+                  
+                  function getCookie(name) {
+                      var cookieValue = null;
+                      if (document.cookie && document.cookie != '') {
+                          var cookies = document.cookie.split(';');
+                          for (var i = 0; i < cookies.length; i++) {
+                              var cookie = cookies[i];
+                              // Does this cookie string begin with the name we want?
+                              if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                  break;
+                              }
+                          }
+                      }
+                      return cookieValue;
+                  }
+                  
+                  csrf_cookie = getCookie('csrftoken');
+                  if(!csrf_cookie)
+                    return true;
+                  csrf.setAttribute('value', csrf_cookie);
+                  uploadForm.appendChild(csrf);
+                  return true;
+                }
 						},
 						{
 							type : 'fileButton',

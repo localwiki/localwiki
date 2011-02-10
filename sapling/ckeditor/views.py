@@ -2,12 +2,10 @@ import os
 import urlparse
 
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.views.generic.simple import direct_to_template
 
-@csrf_exempt
 def ck_upload(request, upload_folder):
     error_message = 'Unable to upload'
     

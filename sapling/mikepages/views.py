@@ -48,4 +48,4 @@ def edit(request, slug):
             return show(request, page.slug)
     else:
         form = PageForm(instance = page)
-    return render_to_response('mikepages/page_edit.html', {'form': form})
+    return direct_to_template(request, 'mikepages/page_edit.html', {'form': form})
