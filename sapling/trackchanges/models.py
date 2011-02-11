@@ -3,6 +3,7 @@ from collections import defaultdict
 
 from django.db import models
 from django.conf import settings
+from django.db.models.options import DEFAULT_NAMES as ALL_META_OPTIONS
 from django.contrib.auth.models import User
 
 from utils import *
@@ -19,6 +20,8 @@ class TrackChanges(object):
         models.signals.class_prepared.connect(self.finalize, sender=cls)
 
     def finalize(self, sender, **kws):
+        if self.ineligible_for_history_model(sender):
+            return
         history_model = self.create_history_model(sender)
 
         setattr(sender, '_track_changes', True)
@@ -54,6 +57,12 @@ class TrackChanges(object):
         setattr(sender, self.manager_name, descriptor)
         # Being able to look this up is intensely helpful.
         setattr(sender, '_history_manager_name', self.manager_name)
+
+    def ineligible_for_history_model(self, model):
+        """
+        Certain abstract-y models can't have corresponding history models.
+        """
+        return model._meta.proxy or model._meta.abstract
 
     def create_history_model(self, model):
         """
@@ -127,7 +136,6 @@ class TrackChanges(object):
         for k in d:
             if isinstance(d[k], models.fields.Field): del d[k]
 
-        
         return d
 
     def get_fields(self, model):
@@ -232,14 +240,19 @@ class TrackChanges(object):
         }
         return fields
 
+    META_TO_SKIP = [
+        'db_table', 'get_latest_by', 'managed', 'unique_together', 'ordering',
+    ]
     def get_meta_options(self, model):
         """
         Returns a dictionary of fields that will be added to
         the Meta inner class of the track changes model.
         """
-        return {
-            'ordering': ('-history_date',),
-        }
+        meta = { 'ordering': ('-history_date',) }
+        for k in ALL_META_OPTIONS:
+            if k in TrackChanges.META_TO_SKIP: continue 
+            meta[k] = getattr(model._meta, k)
+        return meta
 
     def post_save(self, instance, created, **kws):
         history_type = getattr(instance, '_history_type', None)

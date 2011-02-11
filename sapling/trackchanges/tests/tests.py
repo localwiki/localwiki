@@ -510,6 +510,20 @@ class TrackChangesTest(TestCase):
         r_m = m.history.most_recent().history_info.reverted_to_version
         self.assertEqual(r_m, m.history.all()[2])
 
+    def test_copy_custom_attributes(self):
+        m21 = M21CustomAttribute(name="oh")
+        m21.save()
+        h = m21.history.most_recent()
+        self.assertTrue(hasattr(h, 'magic'))
+
+        # We don't copy custom managers because it's not clear we
+        # _should_.  After all, what exactly is it supposed to do when
+        # accessed on a historical instance?
+        m20 = M20CustomManager(name="BEST EVER")
+        m20.save()
+        h = m20.history.most_recent()
+        self.assertFalse(hasattr(h, 'myman'))
+
     #def test_correct_fk_version_lookup(self):
     #    """
     #    grabbing a foreignkey attribute on a historical instance
