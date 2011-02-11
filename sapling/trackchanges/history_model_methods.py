@@ -103,7 +103,6 @@ def _wrap_foreign_keys(m):
 
 def _fix_reverse_lookups(m):
     def _reverse_set_lookup(m, rel_o):
-        attr = rel_o.field.attname
         parent_model = rel_o.model
         parent_pk_att = parent_model._meta.pk.attname
 
@@ -121,16 +120,28 @@ def _fix_reverse_lookups(m):
         # return a QuerySet containing the proper history objects
         return parent_model.history.filter(history_id__in=history_ids)
 
+    def _reverse_attr_lookup(m, rel_o):
+        parent_model = rel_o.model
+        as_of = m.history_info.date
+
+        # Find unique values of the base (non-historical) model.
+        unique_values = unique_lookup_values_for(m.history_info._object)
+        if not unique_values:
+            pk_att = m.history_info._object._meta.pk.attname
+            pk_val = getattr(m.history_info._object, pk_att)
+            unique_values = {pk_att:pk_val}
+
+        print "FILTER ON", unique_values
+        return parent_model.history.filter(
+            history_date__lte=as_of,
+            **unique_values
+        )[0]
+
     related_objects = m.history_info._object._meta.get_all_related_objects()
     related_versioned = [ o for o in related_objects if is_versioned(o.model) ]
     for rel_o in related_versioned:
         if isinstance(rel_o.field, models.OneToOneField):
-            # XXX
-            # XXX
-            # TODO MUST DO MUST CHECK
-            # OneToOneFields have a direct lookup (not a set)
-            #_proper_reverse_lookup = partial(_reverse_attr_lookup, m, rel_o)
-            pass
+            _proper_reverse_lookup = partial(_reverse_attr_lookup, m, rel_o)
         else:
             _proper_reverse_lookup = partial(_reverse_set_lookup, m, rel_o)
 
@@ -167,7 +178,6 @@ def _wrap_reverse_lookups(m):
         new_unique_values = {}
         for k, v in unique_values.iteritems():
             new_unique_values['%s%s%s' % (attr, LOOKUP_SEP, k)] = v
-
         unique_values = new_unique_values
 
         # Grab parent history objects that are less than the as_of date
@@ -187,6 +197,7 @@ def _wrap_reverse_lookups(m):
         return parent_model.history.filter(history_id__in=history_ids)
 
     def _reverse_attr_lookup(m, rel_o):
+        attr = rel_o.field.name
         parent_model = rel_o.model
         as_of = m.history_info.date
 
@@ -197,10 +208,23 @@ def _wrap_reverse_lookups(m):
             pk_val = getattr(m.history_info._object, pk_att)
             unique_values = {pk_att:pk_val}
 
-        return parent_model.history.filter(
-            history_date__lte=as_of,
-            **unique_values
-        )[0]
+        # Construct something like {'b__email':'a@example.org', ...}
+        # from the unique fields of the base model.
+        new_unique_values = {}
+        for k, v in unique_values.iteritems():
+            new_unique_values['%s%s%s' % (attr, LOOKUP_SEP, k)] = v
+        unique_values = new_unique_values
+
+        try:
+            obj = parent_model.history.filter(
+                history_date__lte=as_of,
+                **unique_values
+            )[0]
+        except IndexError:
+            raise parent_model.history.model.DoesNotExist(
+                "%s matching query does not exist." %
+                parent_model.history.model._meta.object_name)
+        return obj
 
     related_objects = m.history_info._object._meta.get_all_related_objects()
     related_versioned = [ o for o in related_objects if is_versioned(o.model) ]

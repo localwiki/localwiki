@@ -135,7 +135,6 @@ class TrackChanges(object):
         # later.
         for k in d:
             if isinstance(d[k], models.fields.Field): del d[k]
-
         return d
 
     def get_fields(self, model):

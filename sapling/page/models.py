@@ -23,6 +23,8 @@ class FilePage(models.Model):
 class DateTest(models.Model):
     date = models.DateTimeField(default=datetime.datetime.now)
     name = models.CharField(max_length=200)
+    class Meta:
+        unique_together = ('date', 'name')
 
 class Tag(models.Model):
     name = models.CharField(max_length=200)

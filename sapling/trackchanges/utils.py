@@ -2,6 +2,7 @@ from collections import defaultdict
 from functools import partial
 
 from django.db import models
+from django.db.models.sql.constants import LOOKUP_SEP
 
 def is_versioned(m):
     """
@@ -20,14 +21,46 @@ def unique_lookup_values_for(m):
     for field in m._meta.fields:
         if field.primary_key or field.auto_created: continue
         if not field.unique: continue
+        is_onetoone = (
+            hasattr(field, 'related') and
+            field.related.field.__class__ == models.OneToOneField
+        )
+        if is_onetoone and is_versioned(field.related.model):
+            # If the OneToOneField is versioned then we return something
+            # along the lines of fieldname__pk=m.pk.  We do this
+            # because on historical models, foreign keys to versioned
+            # models point right to their historical model form.  So we
+            # normally do things like
+            # p.history.filter(fk=historical_fk).  To build this unique
+            # dictionary we need to use the pk of the provided
+            # NON-historical object, m.
+            k = "%s%sid" % (field.name, LOOKUP_SEP)
+            v = getattr(m, field.name).pk
+            return { k : v }
 
         return { field.name: getattr(m, field.name) }
 
     if m._meta.unique_together:
         unique_fields = {}
-        # tuple of field names, e.g. ('email', 'cellphone')
+        # See note about OneToOneFields above.
+        onetoone_versioned = []
+        for field in m._meta.fields:
+            is_onetoone = (
+                hasattr(field, 'related') and
+                field.related.field.__class__ == models.OneToOneField
+            )
+            if is_onetoone and is_versioned(field.related.model):
+                onetoone_versioned.append(field.name)
+
+        # Tuple of field names, e.g. ('email', 'cellphone')
         for k in m._meta.unique_together[0]:
-            unique_fields[k] = getattr(m, k)
+            # Do fancy lookup for versioned OneToOneFields.
+            if k in onetoone_versioned:
+                k = "%s%sid" % (field.name, LOOKUP_SEP)
+                v = getattr(m, field.name).pk
+                unique_fields[k] = v
+            else:
+                unique_fields[k] = getattr(m, k)
         return unique_fields
 
 def _related_objs_delete_passalong(m):
@@ -54,7 +87,11 @@ def _related_objs_delete_passalong(m):
         accessor = rel_o.get_accessor_name()
         if not hasattr(m, accessor):
             continue
-        objs = getattr(m, accessor).all()
+        # OneToOneField means a single object.
+        if rel_o.field.related.field.__class__ == models.OneToOneField:
+            objs = [ getattr(m, accessor) ]
+        else:
+            objs = getattr(m, accessor).all()
         for o in objs:
             # We use a dictionary for fast lookup in
             # _set_arguments_for
