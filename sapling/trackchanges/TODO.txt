@@ -1,70 +1,3 @@
-class Tag(models.Model):
-    name = models.CharField(max_length=200)
-
-    history = TrackChanges()
-
-class FK(models.Model):
-    a = models.CharField(max_length=200)
-    b = models.ForeignKey(Tag, null=True)
-
-    history = TrackChanges()
-
-FK.history.filter(b=t) gives "error..no such field. choices are a, b_id, .."
-
-Tag.history.filter(fk=fk) gives error, no listing of fk.
-
-both of these should totally work.
-
-IDEA:
-
-replace ForeignKey(Tag) with ForeignKey(Tag_hist), etc.
---------
-THEN:
-
- ** it seems like trackchanges=False isn't working on the parents of FK models.
- tag.delete(track_changes=False) doesn't seem to work
-
-get manytomany working, first direct
-then get reverse m2m working
-THEN intermediate models. oh god.
-
-THEN:
-
- * copy over model's Meta options.  looks like we want to ignore:
-   db_table, get_latest_by, managed, 
- * copy over things like custom managers (objects = MyManger()), methods?  what
-   do we call this?  self.get_other_members()  also any other custom methods
-   and attributes
- * should pretend to be the non-historical class, too, for isinstance()
-   checks?
- * After M2M, other stuff working:
-    - Model inheritence should work.  Test it.
-        - abstract base model with history = TrackChanges()
-        - child model of abstract with history = TrackChanges()
-        - concrete models (multi-table inheritence)
-          - should check that the implicit OneToOneField lookup works
-            and respects historical good-ness
-        - proxy models. i guess it'd be cool if
-          ProxyModel.history.filter() returned ProxyModel instances :)
-        - multiple inheritence examples
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--------
- * documentation
- * admin interface
-
 = Notes =
 
 == FileFields ==
@@ -116,6 +49,8 @@ explain why to use.
 "Why not django-reversion or django-versions?"
 
 Both of these apps serialize models into blobs.  We believe that having the full power of the Django ORM available is the best way to do this.  For lots of reasons:  you have the full power of the orm, migrations are easier and it's possible to do the sort of things we want to do - sorting, displaying, limiting of revisions.
+
+"Why not django-revisions?"
 
 ==================================
 ==================================

@@ -22,19 +22,26 @@ class HistoricalMetaInfoQuerySet(QuerySet):
     Simple QuerySet to make filtering intuitive.
     """
     def filter(self, *args, **kws):
-        """
-        Replace all instances of history_info__whatever with
-        history_whatever.
-        """
+        rels = self.model._original_model._meta.get_all_related_objects()
+        versioned_vars = [ o.var_name for o in rels if is_versioned(o.model) ]
         kws_new = {}
         for k,v in kws.iteritems():
             k_new = k
             parts = k.split(models.sql.constants.LOOKUP_SEP)
+            # Replace all instances of history_info__whatever with
+            # history_whatever.
             if len(parts) > 1 and parts[0] == 'history_info':
                 rest = models.sql.constants.LOOKUP_SEP.join(parts[2:])
                 if rest:
                     rest = "%s%s" % (models.sql.constants.LOOKUP_SEP, rest)
                 k_new = 'history_%s%s' % (parts[1], rest)
+            # Replace all instances of fk__whatever with
+            # fk_hist__whatever if fk is a versioned model.
+            if parts[0] in versioned_vars:
+                rest = models.sql.constants.LOOKUP_SEP.join(parts[2:])
+                if rest:
+                    rest = "%s%s" % (models.sql.constants.LOOKUP_SEP, rest)
+                k_new = '%s_hist%s' % (parts[0], rest)
 
             kws_new[k_new] = v
 
@@ -59,7 +66,6 @@ class HistoryManager(models.Manager):
         # reasonable and a good practice anyway.
 
         unique_fields = unique_lookup_values_for(self.instance)
-        print "UNIQUE FIELDS:", unique_fields
         filter = unique_fields
         # We look up based on unique fields whenever possible
         # and, as a fallback, use the primary key. This is because we'd like

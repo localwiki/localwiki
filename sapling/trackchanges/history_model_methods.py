@@ -50,9 +50,6 @@ def historical_record_init(m, *args, **kws):
     This is the __init__ method of historical record instances.
     """
     retval = super(m.__class__, m).__init__(*args, **kws)
-    print "in historical_record_init"
-    print args
-    print kws
     m._direct_lookup_fields = {}
     #_wrap_foreign_keys(m)
     _wrap_reverse_lookups(m)
@@ -71,17 +68,12 @@ def _wrap_foreign_keys(m):
     """
     def _lookup_version(m, fk_obj):
         history_manager = getattr(fk_obj, fk_obj._history_manager_name)
-        print "looking up as of..", m.history_info.date
         return history_manager.as_of(date=m.history_info.date)
 
     def _wrap_field(m, field):
-        print "..ONONON:", m.__class__, "ENDON"
-        print "fk obj getting:", field.name, "ENDGETPRINT"
         fk_obj = getattr(m, field.name)
         if is_versioned(fk_obj):
-            print "HAS ATTR OF HISTORY MANAGER"
             _lookup_proper_fk_version = partial(_lookup_version, m, fk_obj)
-            print "SET", field.name, "to lookup old fk version on", m
             m._direct_lookup_fields[field.name] = SimpleLazyObject(
                 _lookup_proper_fk_version
             )
@@ -239,9 +231,6 @@ def historical_record_getattribute(model, m, name):
     direct_val = basedict.get('_direct_lookup_fields', {}).get(name)
     if direct_val is not None:
         return direct_val
-    #print "BASEDICT", basedict
-    #print "name:", name
-    #print "  result:", model.__getattribute__(m, name)
     return model.__getattribute__(m, name)
 
 def revert_to(hm, delete_newer_versions=False, **kws):

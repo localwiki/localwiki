@@ -44,18 +44,14 @@ def _related_objs_delete_passalong(m):
             instance._track_changes = child_m._track_changes
             instance._save_with = child_m._save_with
 
-    print "INSTANCE..>LOL<", m 
     m._rel_objs_to_catch = defaultdict(dict)
     m._rel_objs_methods = {}
     # Get the related objects.
     related_objects = m._meta.get_all_related_objects()
     related_versioned = [ o for o in related_objects if is_versioned(o.model) ]
-    print "RELATED VERSIONED:", related_versioned
     # Using related objs, build a dictionary mapping model class -> pks
     for rel_o in related_versioned:
         accessor = rel_o.get_accessor_name()
-        print "  HAS ATTR?", m, accessor
-        print hasattr(m, accessor)
         if not hasattr(m, accessor):
             continue
         objs = getattr(m, accessor).all()
@@ -97,10 +93,7 @@ def delete_with_arguments(m, using=None, track_changes=True, **kws):
           signal handlers, NOT in this method. Custom delete()
           methods aren't called when doing bulk QuerySet.delete().
     """
-    print "DELETE_WITH_ARGUMENTS IS BEING CALLED"
-    print "!!!\nSETTING TRACK CHANGES TO", track_changes, "ON m", m, "\n!!!!!!!!"
     m._track_changes = track_changes
-    print "DELETE_WITH_ARGUMENTS", id(m)
     m._save_with = kws
 
     _related_objs_delete_passalong(m)

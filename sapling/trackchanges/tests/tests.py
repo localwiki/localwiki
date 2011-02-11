@@ -102,15 +102,7 @@ class TrackChangesTest(TestCase):
         Remove all created models and all model history.
         """
         for M in self.test_models:
-            print ">> M:", M
-            print "M ALL", M.objects.all()
             for m in M.objects.all():
-                # clear out existing history
-                #print "  M history all", m.history.all()
-                #for entry in m.history.all():
-                #    print "   about to delete", entry
-                #    entry.delete()
-                print " about to delete", m
                 m.delete(track_changes=False)
         self._cleanup_file_environment()
 
@@ -725,6 +717,38 @@ class TrackChangesTest(TestCase):
 #
 #        m2_h = m2.history.most_recent()
 #        self.assertEqual(len(m2_h.m12foreignkey_set.all()), 1)
+
+    def test_fk_versioned_filters(self):
+        m2 = M2(a="bats", b="cats", c=1)
+        m2.save()
+        m2_h0 = m2.history.most_recent()
+
+        m12 = M12ForeignKey(a=m2, b="drats")
+        m12.save()
+        m12_h0 = m12.history.most_recent()
+        m12.b += "!"
+        m12.save()
+        m12_h1 = m12.history.most_recent()
+
+        # Two versions of m12 are pointed at the current version of m2
+        self.assertEqual(len(M12ForeignKey.history.filter(a=m2_h0)), 2)
+
+        # There are two versions of m12 pointed at m2, but this is
+        # Many->One relationship, so only one m2 should appear here.
+        self.assertEqual(len(M2.history.filter(m12foreignkey=m12_h0)), 1)
+        self.assertEqual(len(M2.history.filter(m12foreignkey=m12_h1)), 1)
+
+        # ==== Filter on instances ====
+
+        # Two historical versions of m12 are pointed at the current historical
+        # instance of m2.
+        self.assertEqual(len(m12.history.filter(a=m2_h0)), 2)
+
+        # There are two versions of m12 pointed at m2, but this is
+        # Many->One relationship, so only one m2 should appear here.
+        self.assertEqual(len(m2.history.filter(m12foreignkey=m12_h0)), 1)
+        self.assertEqual(len(m2.history.filter(m12foreignkey=m12_h1)), 1)
+
 #
 ##    def test_onetoone_reverse_lookup(self):
 ##         # Reverse onetoone field lookups on historical models should,

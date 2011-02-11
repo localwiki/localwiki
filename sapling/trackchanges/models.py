@@ -68,18 +68,17 @@ class TrackChanges(object):
 
         @returns: Class representing the historical version of the model.
         """
-        print "OMG THE MODEL:", model, type(model)
         attrs = self.get_misc_members(model)
-        print "..FIELDS:", self.get_fields(model)
         attrs.update(self.get_fields(model))
         attrs.update(get_history_fields(self, model))
         attrs.update(self.get_extra_history_fields(model))
-        #attrs = self.clean_fields(model, attrs)
         attrs.update(Meta=type('Meta', (), self.get_meta_options(model)))
+
+        # For convience's sake, it's nice to be able to reference the
+        # non-historical class from the historical class.
+        attrs['_original_model'] = model
+
         name = '%s_hist' % model._meta.object_name
-        print "FINAL"
-        import pprint
-        pprint.pprint(attrs)
         return type(name, (models.Model,), attrs)
 
     def wrap_model_fields(self, model):
@@ -123,10 +122,12 @@ class TrackChanges(object):
         for k in TrackChanges.MEMBERS_TO_SKIP:
             if d.get(k, None) is not None:
                 del d[k]
-        # remove some fields we know we'll re-add in modified form later
-        print "D!", d
+        # Remove some fields we know we'll re-add in modified form
+        # later.
         for k in d:
             if isinstance(d[k], models.fields.Field): del d[k]
+
+        
         return d
 
     def get_fields(self, model):
@@ -143,7 +144,6 @@ class TrackChanges(object):
             for k in TrackChanges.FK_FIELDS_TO_COPY:
                 if hasattr(field, k):
                     opts[k] = getattr(field, k, None)
-            print "FK!OPTS", opts
             return opts
         fields = {'__module__': model.__module__}
 
@@ -241,17 +241,6 @@ class TrackChanges(object):
             'ordering': ('-history_date',),
         }
 
-    #def clean_fields(self, model, attrs):
-    #    """
-    #    Remove some fields in attrs that need to be removed.
-    #    """
-    #    for name in attrs:
-    #        if isinstance(attrs[name], VersionedForeignKey):
-    #            # get_misc_members adds in reverse related descriptors
-    #            # for versioned related objects. We remove these because
-    #            # we add our own (versioned) reverse lookups.
-    #    return attrs
-
     def post_save(self, instance, created, **kws):
         history_type = getattr(instance, '_history_type', None)
         is_revert = history_type == TYPE_REVERTED
@@ -262,15 +251,11 @@ class TrackChanges(object):
         self.create_historical_record(instance, history_type)
 
     def pre_delete(self, instance, **kws):
-        print "IN PRE DELETE FOR", instance
         self._pk_recycle_cleanup(instance)
 
         #self._pre_delete_related_objects(instance)
     
     def post_delete(self, instance, **kws):
-        print "POSTDELETE-INSTANCE", instance
-        print "POSTDELETE-INSTANCEDETAIL", instance.__dict__
-        print "POSTDELETE-ID", id(instance)
         history_type = getattr(instance, '_history_type', None)
         is_revert = history_type == TYPE_REVERTED
         history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
@@ -311,7 +296,6 @@ class TrackChanges(object):
             attrs[field.attname] = getattr(instance, field.attname)
         attrs.update(self._get_save_with_attrs(instance))
         #attrs = self._get_save_with_attrs(instance)
-        print "ATTS TO CREAT", attrs
         manager.create(history_type=type, **attrs)
 
     def _get_save_with_attrs(self, instance):
