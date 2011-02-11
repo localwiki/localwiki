@@ -1,0 +1,25 @@
+{% extends "mikepages/base.html" %}
+
+{% load diff_tags %}
+
+{% block media %}
+  <style>
+    del {
+      background: #FDC6C6;
+    }
+    ins {
+      background: #AAFF66;
+    }
+  </style>
+{% endblock %}
+
+{% block title %}What you changed{% endblock %}
+{% block header %}Nice! Here's what you changed:{% endblock %}
+
+{% block main %}
+  <table width="100%">
+    {% diff page1 page2 as page_diff %}
+    {{ page_diff }} 
+  </table>
+  <a href="{% url show-page slug=page2.slug %}">Looks good</a>
+{% endblock %}

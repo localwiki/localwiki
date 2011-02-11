@@ -20,76 +20,76 @@ package org.outerj.daisy.diff.tag;
  */
 public class DelimiterAtom extends TextAtom {
 
-    public DelimiterAtom(char c) {
-        super("" + c);
-    }
+	public DelimiterAtom(char c) {
+		super("" + c);
+	}
 
-    public static boolean isValidDelimiter(String s) {
-        if (s.length() == 1)
-            return isValidDelimiter(s.charAt(0));
-        return false;
-    }
+	public static boolean isValidDelimiter(String s) {
+		if (s.length() == 1)
+			return isValidDelimiter(s.charAt(0));
+		return false;
+	}
 
-    public static boolean isValidDelimiter(char c) {
-        switch (c) {
-        // Basic Delimiters
-        case '/':
-        case '.':
-        case '!':
-        case ',':
-        case ';':
-        case '?':
-        case ' ':
-        case '=':
-        case '\'':
-        case '"':
-        case '\t':
-        case '\r':
-        case '\n':
-            // Extra Delimiters
-        case '[':
-        case ']':
-        case '{':
-        case '}':
-        case '(':
-        case ')':
-        case '&':
-        case '|':
-        case '\\':
-        case '-':
-        case '_':
-        case '+':
-        case '*':
-        case ':':
-            return true;
-        default:
-            return false;
-        }
-    }
+	public static boolean isValidDelimiter(char c) {
+		switch (c) {
+		// Basic Delimiters
+		case '/':
+		case '.':
+		case '!':
+		case ',':
+		case ';':
+		case '?':
+		case ' ':
+		case '=':
+		case '\'':
+		case '"':
+		case '\t':
+		case '\r':
+		case '\n':
+			// Extra Delimiters
+		case '[':
+		case ']':
+		case '{':
+		case '}':
+		case '(':
+		case ')':
+		case '&':
+		case '|':
+		case '\\':
+		case '-':
+		case '_':
+		case '+':
+		case '*':
+		case ':':
+			return true;
+		default:
+			return false;
+		}
+	}
 
-    @Override
-    public boolean isValidAtom(String s) {
-        return super.isValidAtom(s) && isValidDelimiterAtom(s);
-    }
+	@Override
+	public boolean isValidAtom(String s) {
+		return super.isValidAtom(s) && isValidDelimiterAtom(s);
+	}
 
-    private boolean isValidDelimiterAtom(String s) {
-        return isValidDelimiter(s);
-    }
+	private boolean isValidDelimiterAtom(String s) {
+		return isValidDelimiter(s);
+	}
 
-    @Override
-    public String toString() {
-        return "DelimiterAtom: "
-                + getFullText().replaceAll("\n", "\\\\n").replaceAll("\r",
-                        "\\\\r").replaceAll("\t", "\\\\t");
-    }
+	@Override
+	public String toString() {
+		return "DelimiterAtom: "
+				+ getFullText().replaceAll("\n", "\\\\n").replaceAll("\r",
+						"\\\\r").replaceAll("\t", "\\\\t");
+	}
 
-    @Override
-    public boolean equalsIdentifier(Atom a) {
-        return super.equalsIdentifier(a)
-        // Handling for automatically inserted newlines
-                || ((a.getIdentifier().equals(" ") || a.getIdentifier().equals(
-                        "\n")) && (getIdentifier().equals(" ") || getIdentifier()
-                        .equals("\n")));
-    }
+	@Override
+	public boolean equalsIdentifier(Atom a) {
+		return super.equalsIdentifier(a)
+		// Handling for automatically inserted newlines
+				|| ((a.getIdentifier().equals(" ") || a.getIdentifier().equals(
+						"\n")) && (getIdentifier().equals(" ") || getIdentifier()
+						.equals("\n")));
+	}
 
 }

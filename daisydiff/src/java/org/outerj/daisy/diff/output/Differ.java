@@ -24,17 +24,20 @@ import org.xml.sax.SAXException;
  * 
  * @author kapelonk
  * @see HtmlDiffer
- *
+ * 
  */
 public interface Differ {
-	
+
 	/**
 	 * Compares two Node Trees.
 	 * 
-	 * @param leftComparator Root of the first tree.
-	 * @param rightComparator Root of the second tree.
-	 * @throws SAXException something went wrong with parsing of the trees.
+	 * @param leftComparator
+	 *            Root of the first tree.
+	 * @param rightComparator
+	 *            Root of the second tree.
+	 * @throws SAXException
+	 *             something went wrong with parsing of the trees.
 	 */
 	void diff(TextNodeComparator leftComparator,
-            TextNodeComparator rightComparator) throws SAXException;
+			TextNodeComparator rightComparator) throws SAXException;
 }

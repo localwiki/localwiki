@@ -19,35 +19,35 @@ import org.outerj.daisy.diff.html.modification.Modification;
 
 public class WhiteSpaceNode extends TextNode {
 
-    public WhiteSpaceNode(TagNode parent, String s) {
-        super(parent, s);
-    }
+	public WhiteSpaceNode(TagNode parent, String s) {
+		super(parent, s);
+	}
 
-    public WhiteSpaceNode(TagNode parent, String s, Node like) {
-        this(parent, s);
+	public WhiteSpaceNode(TagNode parent, String s, Node like) {
+		this(parent, s);
 
-        try {
-            TextNode textNode = (TextNode) like;
-            Modification newModification = textNode.getModification().clone();
+		try {
+			TextNode textNode = (TextNode) like;
+			Modification newModification = textNode.getModification().clone();
 
-            newModification.setFirstOfID(false);
-            setModification(newModification);
+			newModification.setFirstOfID(false);
+			setModification(newModification);
 
-        } catch (ClassCastException e) {
-        } catch (NullPointerException e) {
-        }
-    }
+		} catch (ClassCastException e) {
+		} catch (NullPointerException e) {
+		}
+	}
 
-    public static boolean isWhiteSpace(char c) {
-        switch (c) {
-        case ' ':
-        case '\t':
-        case '\r':
-        case '\n':
-            return true;
-        default:
-            return false;
-        }
-    }
+	public static boolean isWhiteSpace(char c) {
+		switch (c) {
+		case ' ':
+		case '\t':
+		case '\r':
+		case '\n':
+			return true;
+		default:
+			return false;
+		}
+	}
 
 }

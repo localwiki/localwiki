@@ -28,8 +28,10 @@ import org.junit.Test;
 public class TagDifferTest {
 
 	/**
-	 * Adding a single word. 
-	 * @throws Exception something went wrong.
+	 * Adding a single word.
+	 * 
+	 * @throws Exception
+	 *             something went wrong.
 	 */
 	@Test
 	public void simpleTextAdd() throws Exception {
@@ -48,7 +50,9 @@ public class TagDifferTest {
 
 	/**
 	 * Removing a single word.
-	 * @throws Exception something went wrong.
+	 * 
+	 * @throws Exception
+	 *             something went wrong.
 	 */
 	@Test
 	public void simpleTextRemove() throws Exception {
@@ -65,8 +69,10 @@ public class TagDifferTest {
 	}
 
 	/**
-	 * Changing a single word. 
-	 * @throws Exception something went wrong.
+	 * Changing a single word.
+	 * 
+	 * @throws Exception
+	 *             something went wrong.
 	 */
 	@Test
 	public void simpleTextChange() throws Exception {
@@ -85,7 +91,8 @@ public class TagDifferTest {
 	/**
 	 * Adding an HTML attribute.
 	 * 
-	 * @throws Exception something went wrong.
+	 * @throws Exception
+	 *             something went wrong.
 	 */
 	@Test
 	public void simpleAttributeAdd() throws Exception {
@@ -104,7 +111,8 @@ public class TagDifferTest {
 	/**
 	 * Adding an HTML tag.
 	 * 
-	 * @throws Exception something went wrong.
+	 * @throws Exception
+	 *             something went wrong.
 	 */
 	@Test
 	public void simpleTagAdd() throws Exception {
@@ -123,7 +131,8 @@ public class TagDifferTest {
 	/**
 	 * Two text changes.
 	 * 
-	 * @throws Exception something went wrong.
+	 * @throws Exception
+	 *             something went wrong.
 	 */
 	@Test
 	public void twiceChangeText() throws Exception {

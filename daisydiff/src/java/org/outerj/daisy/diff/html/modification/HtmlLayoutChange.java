@@ -16,46 +16,46 @@
 package org.outerj.daisy.diff.html.modification;
 
 /**
- * This class holds the removal or addition of HTML tags around text. It contains
- * the same information that is presented in the tooltips of default Daisy Diff HTML output.
+ * This class holds the removal or addition of HTML tags around text. It
+ * contains the same information that is presented in the tooltips of default
+ * Daisy Diff HTML output.
  * 
- * This class is not used internally by DaisyDiff. It does not take any part in the diff process.
- * It is simply provided for applications that use the DaisyDiff library and need more information
- * on the results.
+ * This class is not used internally by DaisyDiff. It does not take any part in
+ * the diff process. It is simply provided for applications that use the
+ * DaisyDiff library and need more information on the results.
  * 
  * @author kapelonk
- *
+ * 
  */
 public class HtmlLayoutChange {
 
 	/**
-	 * Either an HTML was introduced in the new output, or it was deleted 
-	 * (but the text in-between the opening and closing tag is the same).
+	 * Either an HTML was introduced in the new output, or it was deleted (but
+	 * the text in-between the opening and closing tag is the same).
 	 */
 	public enum Type {
 		TAG_ADDED, TAG_REMOVED
 	}
-	
+
 	/**
 	 * Only two enumeration values possible
 	 */
 	private Type type = null;
-	
+
 	/**
 	 * Full text of the opening tag. (e.g <td width="50%").
 	 */
 	private String openingTag = null;
-	
+
 	/**
 	 * Full text of the closing tag (e.g. </td>)
 	 */
 	private String endingTag = null;
-	
+
 	/**
 	 * Default contructor that justs inserts sane values.
 	 */
-	public HtmlLayoutChange()
-	{
+	public HtmlLayoutChange() {
 		openingTag = "";
 		endingTag = "";
 	}
@@ -72,7 +72,8 @@ public class HtmlLayoutChange {
 	/**
 	 * Setter for the type.
 	 * 
-	 * @param type the type to set
+	 * @param type
+	 *            the type to set
 	 */
 	public void setType(Type type) {
 		this.type = type;
@@ -90,7 +91,8 @@ public class HtmlLayoutChange {
 	/**
 	 * Setter for the opening tag.
 	 * 
-	 * @param openingTag the openingTag to set
+	 * @param openingTag
+	 *            the openingTag to set
 	 */
 	public void setOpeningTag(String openingTag) {
 		this.openingTag = openingTag;
@@ -108,10 +110,11 @@ public class HtmlLayoutChange {
 	/**
 	 * Setter for the ending tag.
 	 * 
-	 * @param endingTag the endingTag to set
+	 * @param endingTag
+	 *            the endingTag to set
 	 */
 	public void setEndingTag(String endingTag) {
 		this.endingTag = endingTag;
 	}
-	
+
 }

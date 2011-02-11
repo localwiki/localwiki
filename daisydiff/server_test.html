@@ -1,0 +1,21 @@
+<html>
+<head><title>DaisyDiff server test</title></head>
+<body>
+<div>
+<h3>Diff</h3>
+<form method="POST" action="http://localhost:8080/diff">
+Left:<textarea name="field1"></textarea>
+Right:<textarea name="field2"></textarea>
+<input type="submit" value="Diff"/>
+</form>
+
+<h3>Merge</h3>
+<form method="POST" action="http://localhost:8080/merge">
+Old:<textarea name="field1"></textarea>
+New:<textarea name="field2"></textarea>
+Ancestor:<textarea name="ancestor"></textarea>
+<input type="submit" value="Merge"/>
+</form>
+</div>
+</body>
+</html>

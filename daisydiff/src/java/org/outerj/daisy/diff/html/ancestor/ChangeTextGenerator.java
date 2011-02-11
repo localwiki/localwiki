@@ -28,110 +28,115 @@ import org.outerj.daisy.diff.html.modification.HtmlLayoutChange;
 public class ChangeTextGenerator {
 
 	private List<HtmlLayoutChange> htmlLayoutChanges = null;
-	
-    private AncestorComparator ancestorComparator;
 
-    private AncestorComparator other;
+	private AncestorComparator ancestorComparator;
 
-    private TagToStringFactory factory;
+	private AncestorComparator other;
 
-    private Locale locale;
-    
-    private static final int MAX_OUTPUT_LINE_LENGTH = 55;   //   Lines won't go longer than this unless a single word it longer than this.
+	private TagToStringFactory factory;
 
-    public ChangeTextGenerator(AncestorComparator ancestorComparator,
-            AncestorComparator other, Locale locale) {
-        this.ancestorComparator = ancestorComparator;
-        this.other = other;
-        this.factory = new TagToStringFactory();
-        this.locale = locale;
-        
-        htmlLayoutChanges = new ArrayList<HtmlLayoutChange>();
-    }
+	private Locale locale;
 
-    public ChangeText getChanged(RangeDifference... differences) {
-        ChangeText txt = new ChangeText(ChangeTextGenerator.MAX_OUTPUT_LINE_LENGTH);
+	private static final int MAX_OUTPUT_LINE_LENGTH = 55; // Lines won't go
+															// longer than this
+															// unless a single
+															// word it longer
+															// than this.
 
-        boolean rootlistopened = false;
+	public ChangeTextGenerator(AncestorComparator ancestorComparator,
+			AncestorComparator other, Locale locale) {
+		this.ancestorComparator = ancestorComparator;
+		this.other = other;
+		this.factory = new TagToStringFactory();
+		this.locale = locale;
 
-        if (differences.length > 1) {
-            txt.addHtml("<ul class='changelist'>");
-            rootlistopened = true;
-        }
+		htmlLayoutChanges = new ArrayList<HtmlLayoutChange>();
+	}
 
-        for (int j = 0; j < differences.length; j++) {
+	public ChangeText getChanged(RangeDifference... differences) {
+		ChangeText txt = new ChangeText(
+				ChangeTextGenerator.MAX_OUTPUT_LINE_LENGTH);
 
-            RangeDifference d = differences[j];
+		boolean rootlistopened = false;
 
-            boolean lvl1listopened = false;
+		if (differences.length > 1) {
+			txt.addHtml("<ul class='changelist'>");
+			rootlistopened = true;
+		}
 
-            if (rootlistopened) {
-                txt.addHtml("<li>");
-            }
+		for (int j = 0; j < differences.length; j++) {
 
-            if (d.leftLength() + d.rightLength() > 1) {
-                txt.addHtml("<ul class='changelist'>");
-                lvl1listopened = true;
-            }
+			RangeDifference d = differences[j];
 
-            // left are the old ones
-            for (int i = d.leftStart(); i < d.leftEnd(); i++) {
-                if (lvl1listopened)
-                    txt.addHtml("<li>");
+			boolean lvl1listopened = false;
 
-                // add a bullet for a old tag
-                addTagOld(txt, other.getAncestor(i));
+			if (rootlistopened) {
+				txt.addHtml("<li>");
+			}
 
-                if (lvl1listopened)
-                    txt.addHtml("</li>");
+			if (d.leftLength() + d.rightLength() > 1) {
+				txt.addHtml("<ul class='changelist'>");
+				lvl1listopened = true;
+			}
 
-            }
+			// left are the old ones
+			for (int i = d.leftStart(); i < d.leftEnd(); i++) {
+				if (lvl1listopened)
+					txt.addHtml("<li>");
 
-            // right are the new ones
-            for (int i = d.rightStart(); i < d.rightEnd(); i++) {
-                if (lvl1listopened)
-                    txt.addHtml("<li>");
+				// add a bullet for a old tag
+				addTagOld(txt, other.getAncestor(i));
 
-                // add a bullet for a new tag
-                addTagNew(txt, this.getAncestor(i));
+				if (lvl1listopened)
+					txt.addHtml("</li>");
 
-                if (lvl1listopened)
-                    txt.addHtml("</li>");
+			}
 
-            }
+			// right are the new ones
+			for (int i = d.rightStart(); i < d.rightEnd(); i++) {
+				if (lvl1listopened)
+					txt.addHtml("<li>");
 
-            if (lvl1listopened) {
-                txt.addHtml("</ul>");
-            }
+				// add a bullet for a new tag
+				addTagNew(txt, this.getAncestor(i));
 
-            if (rootlistopened) {
-                txt.addHtml("</li>");
-            }
-        }
+				if (lvl1listopened)
+					txt.addHtml("</li>");
 
-        if (rootlistopened) {
-            txt.addHtml("</ul>");
-        }
+			}
 
-        return txt;
+			if (lvl1listopened) {
+				txt.addHtml("</ul>");
+			}
 
-    }
+			if (rootlistopened) {
+				txt.addHtml("</li>");
+			}
+		}
 
-    private void addTagOld(ChangeText txt, TagNode ancestor) {
-    	TagToString tagToString = factory.create(ancestor, locale);
-    	tagToString.getRemovedDescription(txt);
-    	htmlLayoutChanges.add(tagToString.getHtmlLayoutChange());
-    }
+		if (rootlistopened) {
+			txt.addHtml("</ul>");
+		}
 
-    private void addTagNew(ChangeText txt, TagNode ancestor) {
-    	TagToString tagToString = factory.create(ancestor, locale);
-    	tagToString.getAddedDescription(txt);
-    	htmlLayoutChanges.add(tagToString.getHtmlLayoutChange());
-    }
+		return txt;
 
-    private TagNode getAncestor(int i) {
-        return ancestorComparator.getAncestor(i);
-    }
+	}
+
+	private void addTagOld(ChangeText txt, TagNode ancestor) {
+		TagToString tagToString = factory.create(ancestor, locale);
+		tagToString.getRemovedDescription(txt);
+		htmlLayoutChanges.add(tagToString.getHtmlLayoutChange());
+	}
+
+	private void addTagNew(ChangeText txt, TagNode ancestor) {
+		TagToString tagToString = factory.create(ancestor, locale);
+		tagToString.getAddedDescription(txt);
+		htmlLayoutChanges.add(tagToString.getHtmlLayoutChange());
+	}
+
+	private TagNode getAncestor(int i) {
+		return ancestorComparator.getAncestor(i);
+	}
 
 	/**
 	 * @return the htmlChange
@@ -139,7 +144,5 @@ public class ChangeTextGenerator {
 	public List<HtmlLayoutChange> getHtmlLayoutChanges() {
 		return htmlLayoutChanges;
 	}
-    
-    
 
 }

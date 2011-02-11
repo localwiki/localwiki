@@ -20,22 +20,25 @@ import org.outerj.daisy.diff.tag.TagDiffer;
 
 /**
  * 
- * Interface for classes that are interested in the tag-like result structure
- * as produced by DaisyDiff.
+ * Interface for classes that are interested in the tag-like result structure as
+ * produced by DaisyDiff.
  * 
  * @author kapelonk
  * @see TagDiffer
- *
+ * 
  */
 public interface TextDiffer {
-	
+
 	/**
 	 * Compares two Node Trees.
 	 * 
-	 * @param leftComparator Root of the first tree.
-	 * @param rightComparator Root of the second tree.
-	 * @throws Exception something went wrong with parsing of the trees.
+	 * @param leftComparator
+	 *            Root of the first tree.
+	 * @param rightComparator
+	 *            Root of the second tree.
+	 * @throws Exception
+	 *             something went wrong with parsing of the trees.
 	 */
 	void diff(IAtomSplitter leftComparator, IAtomSplitter rightComparator)
-    throws Exception;
+			throws Exception;
 }

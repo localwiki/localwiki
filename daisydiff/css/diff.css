@@ -17,6 +17,11 @@ span.diff-tag-added {
   background-color: #ccffcc; /* light green */
 }
 
+span.diff-tag-conflict {
+  font-size: 100%;
+  background-color: #f781be; /* light rose */
+}
+
 /*
  * Styles for the HTML Diff
  */
@@ -37,6 +42,11 @@ span.diff-html-changed {
   background: url(../images/diffunderline.gif) bottom repeat-x;
   *background-color: #c6c6fd; /* light blue */
   cursor: pointer;
+}
+
+span.diff-html-conflict {
+/*  background: url(../images/diffunderline.gif) bottom repeat-x; */
+  background-color: #f781be; /* light rose */
 }
 
 span.diff-html-selected {
@@ -61,7 +71,7 @@ span.diff-html-changed img{
  
 }
 
-div.diff-removed-image, div.diff-added-image{
+div.diff-removed-image, div.diff-added-image, div.diff-conflict-image {
   height: 300px;
   width: 200px;  
   position: absolute;
@@ -70,7 +80,7 @@ div.diff-removed-image, div.diff-added-image{
   -moz-opacity: 0.55;
 }
 
-div.diff-removed-image, div.diff-added-image {
+div.diff-removed-image, div.diff-added-image, div.diff-conflict-image  {
   margin-top: 2px;
   margin-bottom: 2px;
   margin-right: 2px;
@@ -84,6 +94,12 @@ div.diff-removed-image {
 div.diff-added-image {
   background-color: #ccffcc;
   background-image: url(../images/diffplus.gif);
+  background-repeat: no-repeat;
+}
+
+div.diff-conflict-image {
+  background-color: #f781be;
+  background-image: url(../images/diffconflict.gif);
   background-repeat: no-repeat;
 }
 

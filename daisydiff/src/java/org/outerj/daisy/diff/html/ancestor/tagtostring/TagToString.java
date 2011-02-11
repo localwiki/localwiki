@@ -27,165 +27,165 @@ import org.xml.sax.Attributes;
 
 public class TagToString {
 
-    protected TagNode node;
+	protected TagNode node;
 
-    protected TagChangeSematic sem;
+	protected TagChangeSematic sem;
 
-    private ResourceBundle bundle;
-    
-    private HtmlLayoutChange htmlLayoutChange = null;
+	private ResourceBundle bundle;
 
-    protected TagToString(TagNode node, TagChangeSematic sem,
-            ResourceBundle bundle) {
-        this.node = node;
-        this.sem = sem;
-        this.bundle = bundle;
-        
-    }
+	private HtmlLayoutChange htmlLayoutChange = null;
 
-    public String getDescription() {
-    	
-        return getString("diff-" + node.getQName());
-        
-    }
+	protected TagToString(TagNode node, TagChangeSematic sem,
+			ResourceBundle bundle) {
+		this.node = node;
+		this.sem = sem;
+		this.bundle = bundle;
 
-    public void getRemovedDescription(ChangeText txt) {
-    	htmlLayoutChange = new HtmlLayoutChange();
-    	htmlLayoutChange.setEndingTag(node.getEndTag());
-    	htmlLayoutChange.setOpeningTag(node.getOpeningTag());
-    	htmlLayoutChange.setType(Type.TAG_REMOVED);
-        if (sem == TagChangeSematic.MOVED) {
-            txt.addText(getMovedOutOf() + " " + getArticle().toLowerCase()
-                    + " ");
-            txt.addHtml("<b>");
-            txt.addText(getDescription().toLowerCase());
-            txt.addHtml("</b>");
-        } else if (sem == TagChangeSematic.STYLE) {
-            txt.addHtml("<b>");
-            txt.addText(getDescription());
-            txt.addHtml("</b>");
-            txt.addText(" " + getStyleRemoved().toLowerCase());
-        } else {
-            txt.addHtml("<b>");
-            txt.addText(getDescription());
-            txt.addHtml("</b>");
-            txt.addText(" " + getRemoved().toLowerCase());
-        }
-        addAttributes(txt, node.getAttributes());
-        txt.addText(".");
-    }
+	}
 
-    public void getAddedDescription(ChangeText txt) {
-    	htmlLayoutChange = new HtmlLayoutChange();
-    	htmlLayoutChange.setEndingTag(node.getEndTag());
-    	htmlLayoutChange.setOpeningTag(node.getOpeningTag());
-    	htmlLayoutChange.setType(Type.TAG_ADDED);
-        if (sem == TagChangeSematic.MOVED) {
-            txt.addText(getMovedTo() + " " + getArticle().toLowerCase() + " ");
-            txt.addHtml("<b>");
-            txt.addText(getDescription().toLowerCase());
-            txt.addHtml("</b>");
-        } else if (sem == TagChangeSematic.STYLE) {
-            txt.addHtml("<b>");
-            txt.addText(getDescription());
-            txt.addHtml("</b>");
-            txt.addText(" " + getStyleAdded().toLowerCase());
-        } else {
-            txt.addHtml("<b>");
-            txt.addText(getDescription());
-            txt.addHtml("</b>");
-            txt.addText(" " + getAdded().toLowerCase());
-        }
-        addAttributes(txt, node.getAttributes());
-        txt.addText(".");
-    }
+	public String getDescription() {
 
-    protected String getMovedTo() {
-        return getString("diff-movedto");
-    }
+		return getString("diff-" + node.getQName());
 
-    protected String getStyleAdded() {
-        return getString("diff-styleadded");
-    }
+	}
 
-    protected String getAdded() {
-        return getString("diff-added");
-    }
+	public void getRemovedDescription(ChangeText txt) {
+		htmlLayoutChange = new HtmlLayoutChange();
+		htmlLayoutChange.setEndingTag(node.getEndTag());
+		htmlLayoutChange.setOpeningTag(node.getOpeningTag());
+		htmlLayoutChange.setType(Type.TAG_REMOVED);
+		if (sem == TagChangeSematic.MOVED) {
+			txt.addText(getMovedOutOf() + " " + getArticle().toLowerCase()
+					+ " ");
+			txt.addHtml("<b>");
+			txt.addText(getDescription().toLowerCase());
+			txt.addHtml("</b>");
+		} else if (sem == TagChangeSematic.STYLE) {
+			txt.addHtml("<b>");
+			txt.addText(getDescription());
+			txt.addHtml("</b>");
+			txt.addText(" " + getStyleRemoved().toLowerCase());
+		} else {
+			txt.addHtml("<b>");
+			txt.addText(getDescription());
+			txt.addHtml("</b>");
+			txt.addText(" " + getRemoved().toLowerCase());
+		}
+		addAttributes(txt, node.getAttributes());
+		txt.addText(".");
+	}
 
-    protected String getMovedOutOf() {
-        return getString("diff-movedoutof");
-    }
+	public void getAddedDescription(ChangeText txt) {
+		htmlLayoutChange = new HtmlLayoutChange();
+		htmlLayoutChange.setEndingTag(node.getEndTag());
+		htmlLayoutChange.setOpeningTag(node.getOpeningTag());
+		htmlLayoutChange.setType(Type.TAG_ADDED);
+		if (sem == TagChangeSematic.MOVED) {
+			txt.addText(getMovedTo() + " " + getArticle().toLowerCase() + " ");
+			txt.addHtml("<b>");
+			txt.addText(getDescription().toLowerCase());
+			txt.addHtml("</b>");
+		} else if (sem == TagChangeSematic.STYLE) {
+			txt.addHtml("<b>");
+			txt.addText(getDescription());
+			txt.addHtml("</b>");
+			txt.addText(" " + getStyleAdded().toLowerCase());
+		} else {
+			txt.addHtml("<b>");
+			txt.addText(getDescription());
+			txt.addHtml("</b>");
+			txt.addText(" " + getAdded().toLowerCase());
+		}
+		addAttributes(txt, node.getAttributes());
+		txt.addText(".");
+	}
 
-    protected String getStyleRemoved() {
-        return getString("diff-styleremoved");
-    }
+	protected String getMovedTo() {
+		return getString("diff-movedto");
+	}
 
-    protected String getRemoved() {
-        return getString("diff-removed");
-    }
+	protected String getStyleAdded() {
+		return getString("diff-styleadded");
+	}
 
-    protected void addAttributes(ChangeText txt, Attributes attributes) {
-        if (attributes.getLength() < 1)
-            return;
+	protected String getAdded() {
+		return getString("diff-added");
+	}
 
-        txt.addText(" " + getWith().toLowerCase() + " "
-                + translateArgument(attributes.getQName(0)) + " "
-                + attributes.getValue(0));
-        for (int i = 1; i < attributes.getLength() - 1; i++) {
-            txt.addText(", " + translateArgument(attributes.getQName(i)) + " "
-                    + attributes.getValue(i));
-        }
-        if (attributes.getLength() > 1) {
-            txt.addText(" "
-                    + getAnd().toLowerCase()
-                    + " "
-                    + translateArgument(attributes.getQName(attributes
-                            .getLength() - 1)) + " "
-                    + attributes.getValue(attributes.getLength() - 1));
-        }
-    }
+	protected String getMovedOutOf() {
+		return getString("diff-movedoutof");
+	}
 
-    private String getAnd() {
-        return getString("diff-and");
-    }
+	protected String getStyleRemoved() {
+		return getString("diff-styleremoved");
+	}
 
-    private String getWith() {
-        return getString("diff-with");
-    }
+	protected String getRemoved() {
+		return getString("diff-removed");
+	}
 
-    protected String translateArgument(String name) {
-        if (name.equalsIgnoreCase("src"))
-            return getSource().toLowerCase();
-        if (name.equalsIgnoreCase("width"))
-            return getWidth().toLowerCase();
-        if (name.equalsIgnoreCase("height"))
-            return getHeight().toLowerCase();
-        return name;
-    }
+	protected void addAttributes(ChangeText txt, Attributes attributes) {
+		if (attributes.getLength() < 1)
+			return;
 
-    private String getHeight() {
-        return getString("diff-height");
-    }
+		txt.addText(" " + getWith().toLowerCase() + " "
+				+ translateArgument(attributes.getQName(0)) + " "
+				+ attributes.getValue(0));
+		for (int i = 1; i < attributes.getLength() - 1; i++) {
+			txt.addText(", " + translateArgument(attributes.getQName(i)) + " "
+					+ attributes.getValue(i));
+		}
+		if (attributes.getLength() > 1) {
+			txt.addText(" "
+					+ getAnd().toLowerCase()
+					+ " "
+					+ translateArgument(attributes.getQName(attributes
+							.getLength() - 1)) + " "
+					+ attributes.getValue(attributes.getLength() - 1));
+		}
+	}
 
-    private String getWidth() {
-        return getString("diff-width");
-    }
+	private String getAnd() {
+		return getString("diff-and");
+	}
 
-    protected String getSource() {
-        return getString("diff-source");
-    }
+	private String getWith() {
+		return getString("diff-with");
+	}
 
-    protected String getArticle() {
-        return getString("diff-" + node.getQName() + "-article");
-    }
+	protected String translateArgument(String name) {
+		if (name.equalsIgnoreCase("src"))
+			return getSource().toLowerCase();
+		if (name.equalsIgnoreCase("width"))
+			return getWidth().toLowerCase();
+		if (name.equalsIgnoreCase("height"))
+			return getHeight().toLowerCase();
+		return name;
+	}
 
-    public String getString(String key) {
-        try {
-            return bundle.getString(key);
-        } catch (MissingResourceException e) {
-            return '!' + key + '!';
-        }
-    }
+	private String getHeight() {
+		return getString("diff-height");
+	}
+
+	private String getWidth() {
+		return getString("diff-width");
+	}
+
+	protected String getSource() {
+		return getString("diff-source");
+	}
+
+	protected String getArticle() {
+		return getString("diff-" + node.getQName() + "-article");
+	}
+
+	public String getString(String key) {
+		try {
+			return bundle.getString(key);
+		} catch (MissingResourceException e) {
+			return '!' + key + '!';
+		}
+	}
 
 	/**
 	 * @return the htmlChange
@@ -193,7 +193,5 @@ public class TagToString {
 	public HtmlLayoutChange getHtmlLayoutChange() {
 		return htmlLayoutChange;
 	}
-    
-    
 
 }

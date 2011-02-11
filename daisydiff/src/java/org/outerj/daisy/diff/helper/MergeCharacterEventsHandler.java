@@ -21,89 +21,89 @@ import org.xml.sax.Locator;
 import org.xml.sax.Attributes;
 
 class MergeCharacterEventsHandler implements ContentHandler {
-    private ContentHandler consumer;
+	private ContentHandler consumer;
 
-    private char[] ch;
+	private char[] ch;
 
-    private int start = 0;
+	private int start = 0;
 
-    private int length = 0;
+	private int length = 0;
 
-    public MergeCharacterEventsHandler(ContentHandler consumer) {
-        this.consumer = consumer;
-    }
+	public MergeCharacterEventsHandler(ContentHandler consumer) {
+		this.consumer = consumer;
+	}
 
-    public void characters(char ch[], int start, int length)
-            throws SAXException {
-        char[] newCh = new char[this.length + length];
-        if (this.ch != null)
-            System.arraycopy(this.ch, this.start, newCh, 0, this.length);
-        System.arraycopy(ch, start, newCh, this.length, length);
-        this.start = 0;
-        this.length = newCh.length;
-        this.ch = newCh;
-    }
+	public void characters(char ch[], int start, int length)
+			throws SAXException {
+		char[] newCh = new char[this.length + length];
+		if (this.ch != null)
+			System.arraycopy(this.ch, this.start, newCh, 0, this.length);
+		System.arraycopy(ch, start, newCh, this.length, length);
+		this.start = 0;
+		this.length = newCh.length;
+		this.ch = newCh;
+	}
 
-    private void flushCharacters() throws SAXException {
-        if (ch != null) {
-            consumer.characters(ch, start, length);
-            ch = null;
-            start = 0;
-            length = 0;
-        }
-    }
+	private void flushCharacters() throws SAXException {
+		if (ch != null) {
+			consumer.characters(ch, start, length);
+			ch = null;
+			start = 0;
+			length = 0;
+		}
+	}
 
-    public void endDocument() throws SAXException {
-        flushCharacters();
-        consumer.endDocument();
-    }
+	public void endDocument() throws SAXException {
+		flushCharacters();
+		consumer.endDocument();
+	}
 
-    public void startDocument() throws SAXException {
-        flushCharacters();
-        consumer.startDocument();
-    }
+	public void startDocument() throws SAXException {
+		flushCharacters();
+		consumer.startDocument();
+	}
 
-    public void ignorableWhitespace(char ch[], int start, int length)
-            throws SAXException {
-        flushCharacters();
-        consumer.ignorableWhitespace(ch, start, length);
-    }
+	public void ignorableWhitespace(char ch[], int start, int length)
+			throws SAXException {
+		flushCharacters();
+		consumer.ignorableWhitespace(ch, start, length);
+	}
 
-    public void endPrefixMapping(String prefix) throws SAXException {
-        flushCharacters();
-        consumer.endPrefixMapping(prefix);
-    }
+	public void endPrefixMapping(String prefix) throws SAXException {
+		flushCharacters();
+		consumer.endPrefixMapping(prefix);
+	}
 
-    public void skippedEntity(String name) throws SAXException {
-        flushCharacters();
-        consumer.skippedEntity(name);
-    }
+	public void skippedEntity(String name) throws SAXException {
+		flushCharacters();
+		consumer.skippedEntity(name);
+	}
 
-    public void setDocumentLocator(Locator locator) {
-        consumer.setDocumentLocator(locator);
-    }
+	public void setDocumentLocator(Locator locator) {
+		consumer.setDocumentLocator(locator);
+	}
 
-    public void processingInstruction(String target, String data)
-            throws SAXException {
-        flushCharacters();
-        consumer.processingInstruction(target, data);
-    }
+	public void processingInstruction(String target, String data)
+			throws SAXException {
+		flushCharacters();
+		consumer.processingInstruction(target, data);
+	}
 
-    public void startPrefixMapping(String prefix, String uri)
-            throws SAXException {
-        flushCharacters();
-        consumer.startPrefixMapping(prefix, uri);
-    }
+	public void startPrefixMapping(String prefix, String uri)
+			throws SAXException {
+		flushCharacters();
+		consumer.startPrefixMapping(prefix, uri);
+	}
 
-    public void endElement(String namespaceURI, String localName, String qName)
-            throws SAXException {
-        flushCharacters();
-        consumer.endElement(namespaceURI, localName, qName);
-    }
+	public void endElement(String namespaceURI, String localName, String qName)
+			throws SAXException {
+		flushCharacters();
+		consumer.endElement(namespaceURI, localName, qName);
+	}
 
-    public void startElement(String namespaceURI, String localName,
-            String qName, Attributes atts) throws SAXException {
-        flushCharacters();
-        consumer.startElement(namespaceURI, localName, qName, atts);
-    }
+	public void startElement(String namespaceURI, String localName,
+			String qName, Attributes atts) throws SAXException {
+		flushCharacters();
+		consumer.startElement(namespaceURI, localName, qName, atts);
+	}
 }

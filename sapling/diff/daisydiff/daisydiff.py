@@ -2,10 +2,12 @@ import httplib
 import urllib
 import urlparse
 import html5lib
+import lxml
 
 from django.conf import settings
 
-DAISYDIFF_URL = getattr(settings, 'DAISYDIFF_URL', 'http://localhost:8080')
+DAISYDIFF_URL = getattr(settings, 'DAISYDIFF_URL', 'http://localhost:8080/diff')
+DAISYDIFF_MERGE_URL = getattr(settings, 'DAISYDIFF_MERGE_URL', 'http://localhost:8080/merge')
 
 class ServiceUnavailableError(Exception):
     def __init__(self, value):
@@ -33,7 +35,35 @@ def daisydiff(field1, field2, service_url=DAISYDIFF_URL):
     data = response.read()
     conn.close()
     return extract_table_row(data)
+
+def daisydiff_merge(field1, field2, ancestor, service_url=DAISYDIFF_MERGE_URL):
+    """
+    Uses the DaisyDiff server to merge the two versions of the field, given a common
+    ancestor and returns the tuple (merged_version, has_conflict) where has_conflict
+    is True if the merge could not be done cleanly.
+    """
+    params = urllib.urlencode({'field1': field1, 'field2': field2, 'ancestor': ancestor})
+    headers = {"Content-type": "application/x-www-form-urlencoded",
+               "Accept": "text/html"}
+    split_url = urlparse.urlsplit(service_url)
     
+    conn = httplib.HTTPConnection(split_url.netloc)
+    conn.request("POST", split_url.path, params, headers)
+    response = conn.getresponse()
+    if not response.status == 200:
+        raise ServiceUnavailableError("Service responded with status %i %s"
+                                      % (response.status, response.reason))
+    data = response.read()
+    conn.close()
+    return extract_merge(data)
+
+def extract_merge(xml):
+    doc = lxml.etree.fromstring(xml)
+    body_list = [lxml.etree.tostring(child) for child in doc.find('body')]
+    body = ''.join(body_list)
+    has_conflict = 'true' in doc.find('conflict').text
+    return (body, has_conflict)
+
 def extract_table_row(html):
     doc = html5lib.parse(html)
     return find_element_by_tag('tr', doc).toxml()

@@ -6,19 +6,15 @@ from models import Page
 
 page_info = {
     'queryset': Page.objects.all(),
-    'template_name': 'page_list.html',
+    'template_name': 'mikepages/page_list.html',
     'template_object_name': 'page',
 }
-
 
 urlpatterns = patterns('',
     # Example:
     # (r'^diffs/', include('diffs.foo.urls')),
-    (r'^$', list_detail.object_list, page_info),
-    (r'^diff/$', views.diff),
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # (r'^admin/', include(admin.site.urls)),
+    url(r'^$', list_detail.object_list, page_info, 'title-index'),
+    url(r'^(?P<slug>[-\w]+)$', views.show, name='show-page'),
+    url(r'^(?P<slug>[-\w]+)/upload', views.upload, name='upload-image'),
+    url(r'^(?P<slug>[-\w]+)/edit$', views.edit, name='edit-page'),
 )

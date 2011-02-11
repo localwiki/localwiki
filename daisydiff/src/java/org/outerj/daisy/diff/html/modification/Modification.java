@@ -19,79 +19,101 @@ import java.util.List;
 
 public class Modification implements Cloneable {
 
-    private ModificationType type;
+	private ModificationType type;
 
-    private long id = -1;
+	private ModificationType outputType;
 
-    private Modification prevMod = null;
+	private long id = -1;
 
-    private Modification nextMod = null;
+	private Modification prevMod = null;
 
-    private boolean firstOfID = false;
-    
-    private List<HtmlLayoutChange> htmlLayoutChanges = null;
+	private Modification nextMod = null;
 
-    public Modification(ModificationType type) {
-        this.type = type;
-    }
+	private boolean firstOfID = false;
 
-    @Override
-    public Modification clone() {
-        Modification newM = new Modification(this.getType());
-        newM.setID(getID());
-        newM.setChanges(getChanges());
-        newM.setHtmlLayoutChanges(getHtmlLayoutChanges());
-        newM.setFirstOfID(isFirstOfID());
-        newM.setNext(getNext());
-        newM.setPrevious(getPrevious());
-        return newM;
-    }
+	private List<HtmlLayoutChange> htmlLayoutChanges = null;
 
-    public ModificationType getType() {
-        return type;
-    }
+	public Modification(ModificationType type) {
+		this.type = type;
+		this.outputType = type;
+	}
 
-    public void setID(long id) {
-        this.id = id;
-    }
+	public Modification(ModificationType type, ModificationType outputType) {
+		this.type = type;
+		this.outputType = outputType;
+	}
 
-    public long getID() {
-        return id;
-    }
+	@Override
+	public Modification clone() {
+		Modification newM = new Modification(this.getType(), getOutputType());
+		newM.setID(getID());
+		newM.setChanges(getChanges());
+		newM.setHtmlLayoutChanges(getHtmlLayoutChanges());
+		newM.setFirstOfID(isFirstOfID());
+		newM.setNext(getNext());
+		newM.setPrevious(getPrevious());
+		return newM;
+	}
 
-    public void setPrevious(Modification m) {
-        this.prevMod = m;
-    }
+	public ModificationType getType() {
+		return type;
+	}
 
-    public Modification getPrevious() {
-        return prevMod;
-    }
+	/**
+	 * Returns the type of this modification regarding output formatting (i.e.
+	 * in order to specify how this modification shall be formatted).
+	 * 
+	 * In three-way diffs we format "ADDED" modifications as REMOVED, and the
+	 * other way round, because the comparison is reversed, compared to a
+	 * two-way diff.
+	 * 
+	 * @return the way how this modification shall be formatted
+	 */
+	public ModificationType getOutputType() {
+		return outputType;
+	}
 
-    public void setNext(Modification m) {
-        this.nextMod = m;
-    }
+	public void setID(long id) {
+		this.id = id;
+	}
 
-    public Modification getNext() {
-        return nextMod;
-    }
+	public long getID() {
+		return id;
+	}
 
-    private String changes;
+	public void setPrevious(Modification m) {
+		this.prevMod = m;
+	}
 
-    public void setChanges(final String changes) {
-        this.changes = changes;
-    }
+	public Modification getPrevious() {
+		return prevMod;
+	}
 
-    public String getChanges() {
-        return changes;
-    }
+	public void setNext(Modification m) {
+		this.nextMod = m;
+	}
 
-    public boolean isFirstOfID() {
-        return firstOfID;
-    }
+	public Modification getNext() {
+		return nextMod;
+	}
 
-    public void setFirstOfID(boolean firstOfID) {
-        this.firstOfID = firstOfID;
-    }
+	private String changes;
+
+	public void setChanges(final String changes) {
+		this.changes = changes;
+	}
+
+	public String getChanges() {
+		return changes;
+	}
+
+	public boolean isFirstOfID() {
+		return firstOfID;
+	}
+
+	public void setFirstOfID(boolean firstOfID) {
+		this.firstOfID = firstOfID;
+	}
 
 	/**
 	 * @return the htmlLayoutChanges
@@ -101,14 +123,11 @@ public class Modification implements Cloneable {
 	}
 
 	/**
-	 * @param htmlLayoutChanges the htmlLayoutChanges to set
+	 * @param htmlLayoutChanges
+	 *            the htmlLayoutChanges to set
 	 */
 	public void setHtmlLayoutChanges(List<HtmlLayoutChange> htmlLayoutChanges) {
 		this.htmlLayoutChanges = htmlLayoutChanges;
 	}
-
-	
-    
-    
 
 }

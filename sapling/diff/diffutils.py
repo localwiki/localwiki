@@ -263,6 +263,9 @@ class ImageFieldDiff(FileFieldDiff):
         return render_to_string('diff/image_diff.html', {'diff': d})
         
 def get_diff_operations(a, b):
+    """
+    Returns the minimal diff operations between two strings, using difflib. 
+    """
     if a == b:
         return None
     operations = []
@@ -281,6 +284,10 @@ def get_diff_operations(a, b):
     return operations
 
 def get_diff_operations_clean(a, b):
+    """
+    Returns a cleaned-up, more human-friendly set of diff operations between
+    two strings.  Uses diff_match_patch.
+    """
     if a == b:
         return None
     dmp = diff_match_patch.diff_match_patch()
@@ -296,10 +303,19 @@ def get_diff_operations_clean(a, b):
     return [ { op_map[op]: data } for op, data in diff ]
 
 class Registry(object):
+    """
+    This tracks what diff util should be used for what model or field.
+    """
     def __init__(self):
         self._registry = {}
         
     def register(self, model_or_field, diff_util):
+        """
+        Registers a diff util for a particular model or field type.
+        @param model_or_field: type that will be compared (subclass of Model or Field)
+        @param diff_util: class that will do the comparison (subclass of BaseModelDiff
+        or BaseFieldDiff, respectively)
+        """
         self._registry[model_or_field] = diff_util
         
     def get_diff_util(self, model_or_field):
@@ -321,10 +337,7 @@ registry = Registry()
 
 def register(model_or_field, diff_util):
     """
-    Registers a diff util for a particular model or field type.
-    @param model_or_field: type that will be compared (subclass of Model or Field)
-    @param diff_util: class that will do the comparison (subclass of BaseModelDiff
-    or BaseFieldDiff, respectively)
+    See Registry.register()
     """ 
     registry.register(model_or_field, diff_util)
 
@@ -336,6 +349,9 @@ def diff(object1, object2):
     diff_util = registry.get_diff_util(object1.__class__)
     return diff_util(object1, object2)
 
+"""
+Built-in diff utils provided for some of the Django field types.
+"""
 register(models.CharField, TextFieldDiff)
 register(models.TextField, TextFieldDiff)
 register(models.FileField, FileFieldDiff)

@@ -30,37 +30,37 @@ import org.xml.sax.ContentHandler;
 
 public class XslFilter {
 
-    public ContentHandler xsl(ContentHandler consumer, String xslPath)
-            throws IOException {
+	public ContentHandler xsl(ContentHandler consumer, String xslPath)
+			throws IOException {
 
-        try {
-            // Create transformer factory
-            TransformerFactory factory = TransformerFactory.newInstance();
+		try {
+			// Create transformer factory
+			TransformerFactory factory = TransformerFactory.newInstance();
 
-            // Use the factory to create a template containing the xsl file
-            Templates template = factory.newTemplates(new StreamSource(
-                    getClass().getClassLoader().getResourceAsStream(xslPath)));
+			// Use the factory to create a template containing the xsl file
+			Templates template = factory.newTemplates(new StreamSource(
+					getClass().getClassLoader().getResourceAsStream(xslPath)));
 
-            // Use the template to create a transformer
-            TransformerFactory transFact = TransformerFactory.newInstance();
-            SAXTransformerFactory saxTransFact = (SAXTransformerFactory) transFact;
-            // create a ContentHandler
-            TransformerHandler transHand = saxTransFact
-                    .newTransformerHandler(template);
+			// Use the template to create a transformer
+			TransformerFactory transFact = TransformerFactory.newInstance();
+			SAXTransformerFactory saxTransFact = (SAXTransformerFactory) transFact;
+			// create a ContentHandler
+			TransformerHandler transHand = saxTransFact
+					.newTransformerHandler(template);
 
-            transHand.setResult(new SAXResult(consumer));
+			transHand.setResult(new SAXResult(consumer));
 
-            return transHand;
+			return transHand;
 
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (TransformerFactoryConfigurationError e) {
-            e.printStackTrace();
-        }
-        throw new IllegalStateException("Can't transform xml.");
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (TransformerFactoryConfigurationError e) {
+			e.printStackTrace();
+		}
+		throw new IllegalStateException("Can't transform xml.");
 
-    }
+	}
 
 }

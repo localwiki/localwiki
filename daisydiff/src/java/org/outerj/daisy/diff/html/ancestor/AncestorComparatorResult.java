@@ -21,35 +21,32 @@ import java.util.List;
 import org.outerj.daisy.diff.html.modification.HtmlLayoutChange;
 
 public class AncestorComparatorResult {
-	
-	
 
-    private boolean changed = false;
+	private boolean changed = false;
 
-    private String changes = null;
-    
-    private List<HtmlLayoutChange> htmlLayoutChanges= null;
-    
-    public AncestorComparatorResult()
-	{
-    	htmlLayoutChanges = new ArrayList<HtmlLayoutChange>();
+	private String changes = null;
+
+	private List<HtmlLayoutChange> htmlLayoutChanges = null;
+
+	public AncestorComparatorResult() {
+		htmlLayoutChanges = new ArrayList<HtmlLayoutChange>();
 	}
 
-    public boolean isChanged() {
-        return changed;
-    }
+	public boolean isChanged() {
+		return changed;
+	}
 
-    public void setChanged(boolean changed) {
-        this.changed = changed;
-    }
+	public void setChanged(boolean changed) {
+		this.changed = changed;
+	}
 
-    public String getChanges() {
-        return changes;
-    }
+	public String getChanges() {
+		return changes;
+	}
 
-    public void setChanges(String changes) {
-        this.changes = changes;
-    }
+	public void setChanges(String changes) {
+		this.changes = changes;
+	}
 
 	/**
 	 * @return the htmlChanges
@@ -59,14 +56,11 @@ public class AncestorComparatorResult {
 	}
 
 	/**
-	 * @param htmlLayoutChanges the htmlChanges to set
+	 * @param htmlLayoutChanges
+	 *            the htmlChanges to set
 	 */
 	public void setHtmlLayoutChanges(List<HtmlLayoutChange> htmlLayoutChanges) {
 		this.htmlLayoutChanges = htmlLayoutChanges;
 	}
-    
-    
-    
-    
 
 }

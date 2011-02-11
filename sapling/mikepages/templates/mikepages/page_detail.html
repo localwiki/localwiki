@@ -1,0 +1,17 @@
+{% extends "mikepages/base.html" %}
+{% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
+{% block header %}{{ page.name }}{% endblock %}
+
+{% block main %}
+  <div>
+    {{ page.content|safe }}
+  </div>
+  
+  <p>Modified {{ page.date|timesince }} ago</p>
+  
+  <p>
+    <a href="{% url edit-page slug=page.slug %}">Edit this page</a>
+  </p>
+{% endblock %}
+
+

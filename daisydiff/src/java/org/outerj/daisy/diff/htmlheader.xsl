@@ -141,4 +141,12 @@
 </span>
 </xsl:template>
 
+<xsl:template match="span[@class='diff-html-conflict']">
+<span>
+  <xsl:copy-of select="@*"/>
+  <xsl:attribute name="onclick">return tipR(constructToolTipCon(this));</xsl:attribute>
+  <xsl:apply-templates select="node()"/>
+</span>
+</xsl:template>
+
 </xsl:stylesheet>

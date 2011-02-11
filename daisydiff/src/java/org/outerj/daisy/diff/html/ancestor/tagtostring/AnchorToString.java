@@ -25,25 +25,25 @@ import org.xml.sax.helpers.AttributesImpl;
 
 public class AnchorToString extends TagToString {
 
-    protected AnchorToString(TagNode node, TagChangeSematic sem,
-            ResourceBundle bundle) {
-        super(node, sem, bundle);
-    }
+	protected AnchorToString(TagNode node, TagChangeSematic sem,
+			ResourceBundle bundle) {
+		super(node, sem, bundle);
+	}
 
-    @Override
-    protected void addAttributes(ChangeText txt, Attributes attributes) {
-        AttributesImpl newAttrs = new AttributesImpl(attributes);
-        String href = newAttrs.getValue("href");
+	@Override
+	protected void addAttributes(ChangeText txt, Attributes attributes) {
+		AttributesImpl newAttrs = new AttributesImpl(attributes);
+		String href = newAttrs.getValue("href");
 
-        if (href != null) {
-            txt.addText(" " + getWithDestination().toLowerCase() + " " + href);
-            newAttrs.removeAttribute(newAttrs.getIndex("href"));
-        }
-        super.addAttributes(txt, newAttrs);
-    }
+		if (href != null) {
+			txt.addText(" " + getWithDestination().toLowerCase() + " " + href);
+			newAttrs.removeAttribute(newAttrs.getIndex("href"));
+		}
+		super.addAttributes(txt, newAttrs);
+	}
 
-    private String getWithDestination() {
-        return getString("diff-withdestination");
-    }
+	private String getWithDestination() {
+		return getString("diff-withdestination");
+	}
 
 }

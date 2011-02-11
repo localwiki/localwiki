@@ -20,6 +20,7 @@ import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 
+import org.outerj.daisy.diff.html.HTMLDiffer;
 import org.outerj.daisy.diff.html.HtmlSaxDiffOutput;
 import org.outerj.daisy.diff.html.SideBySideHTMLDiffer;
 import org.outerj.daisy.diff.html.TextNodeComparator;
@@ -55,38 +56,104 @@ public class DaisyDiffServer {
 
 class DaisyDiffHandler extends FormHandler {
 
-	public String doGet(HashMap<String, String> form) {
+	public String doGet(HashMap<String, String> form, String path) {
 		this.contentType = "text/plain";
 
-		return "Server is up.  Use POST method to request a diff.";
+		return "Server is up.  Use POST method to request a diff or merge.";
 	}
 
-	public String doPost(HashMap<String, String> form) {
-		this.contentType = "text/html";
+	public String doPost(HashMap<String, String> form, String path) {
+		
 
 		StringBuffer response = new StringBuffer();
-
-		if (form.containsKey("field1") && form.containsKey("field2")) {
-			response.append(diff(form.get("field1"), form.get("field2")));
-		} else {
-			response.append("Required POST parameters: field1, field2");
+		if (path.equals("/diff")) {
+			if (form.containsKey("field1") && form.containsKey("field2")) {
+				this.contentType = "text/html";
+				response.append(diff(form.get("field1"), form.get("field2")));
+			} else {
+				response.append("Required POST parameters: field1, field2");
+			}
+		} else if (path.equals("/merge")) {
+			if (form.containsKey("field1") && form.containsKey("field2")
+					&& form.containsKey("ancestor")) {
+				this.contentType = "text/xml";
+				response.append(merge(form.get("field1"), form.get("field2"),
+						form.get("ancestor")));
+			} else {
+				response.append("Required POST parameters: field1, field2, ancestor");
+			}
 		}
 
 		return response.toString();
 	}
 
+	private String merge(String left, String right, String ancestor) {
+		try {	
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
+					.newInstance();
+			TransformerHandler result = tf.newTransformerHandler();
+			result.setResult(new StreamResult(out));
+
+			XslFilter filter = new XslFilter();
+			String xsl = "org/outerj/daisy/diff/threeway.xsl";
+			ContentHandler postProcess = filter.xsl(result, xsl);
+
+			Locale locale = Locale.getDefault();
+			String prefix = "diff";
+
+			HtmlCleaner cleaner = new HtmlCleaner();
+
+			InputSource ancestorSource = new InputSource(
+					new ByteArrayInputStream(ancestor.getBytes()));
+			InputSource oldSource = new InputSource(new ByteArrayInputStream(
+					left.getBytes()));
+			InputSource newSource = new InputSource(new ByteArrayInputStream(
+					right.getBytes()));
+
+			DomTreeBuilder ancestorHandler = new DomTreeBuilder();
+			cleaner.cleanAndParse(ancestorSource, ancestorHandler);
+			TextNodeComparator ancestorComparator = new TextNodeComparator(
+					ancestorHandler, locale, true);
+
+			DomTreeBuilder oldHandler = new DomTreeBuilder();
+			cleaner.cleanAndParse(oldSource, oldHandler);
+			TextNodeComparator leftComparator = new TextNodeComparator(
+					oldHandler, locale, true);
+
+			DomTreeBuilder newHandler = new DomTreeBuilder();
+			cleaner.cleanAndParse(newSource, newHandler);
+			TextNodeComparator rightComparator = new TextNodeComparator(
+					newHandler, locale, true);
+
+			postProcess.startDocument();
+			postProcess.startElement("", "diffreport", "diffreport",
+					new AttributesImpl());
+			postProcess.startElement("", "diff", "diff", new AttributesImpl());
+			HtmlSaxDiffOutput output = new HtmlSaxDiffOutput(postProcess,
+					prefix);
+
+			HTMLDiffer differ = new HTMLDiffer(output);
+			differ.diff(ancestorComparator, leftComparator, rightComparator);
+
+			postProcess.endElement("", "diff", "diff");
+			postProcess.endElement("", "diffreport", "diffreport");
+			postProcess.endDocument();
+
+			return out.toString();
+
+		} catch (Throwable e) {
+			return e.getMessage();
+		}
+	}
+
 	private String diff(String left, String right) {
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-
 			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
-			.newInstance();
-
+					.newInstance();
 			TransformerHandler result = tf.newTransformerHandler();
-
 			result.setResult(new StreamResult(out));
-
-			InputStream oldStream, newStream;
 
 			XslFilter filter = new XslFilter();
 
@@ -157,12 +224,15 @@ abstract class FormHandler implements HttpHandler {
 		HashMap<String, String> form = parseForm(content.toString(), "UTF-8");
 
 		String requestMethod = exchange.getRequestMethod();
+		String path = exchange.getRequestURI().getPath();
+		System.out.println(requestMethod + " " + path);
+		
 		String response;
 
 		if (requestMethod.equalsIgnoreCase("GET")) {
-			response = doGet(form);
+			response = doGet(form, path);
 		} else if (requestMethod.equalsIgnoreCase("POST")) {
-			response = doPost(form);
+			response = doPost(form, path);
 		} else {
 			response = "Method not supported: " + requestMethod;
 		}
@@ -174,27 +244,28 @@ abstract class FormHandler implements HttpHandler {
 	}
 
 	private HashMap<String, String> parseForm(String raw, String encoding)
-	throws UnsupportedEncodingException {
+			throws UnsupportedEncodingException {
 		HashMap<String, String> form = new HashMap<String, String>();
 		StringTokenizer params = new StringTokenizer(raw, "&");
 
 		while (params.hasMoreTokens()) {
 			String p = params.nextToken();
 			String[] parts = p.split("=");
+			String value = parts.length > 1 ? parts[1] : "";
 			form.put(URLDecoder.decode(parts[0], encoding), URLDecoder.decode(
-					parts[1], encoding));
+					value, encoding));
 		}
 		return form;
 	}
 
 	private void sendResponseHeaders(HttpExchange exchange, int length)
-	throws IOException {
+			throws IOException {
 		Headers responseHeaders = exchange.getResponseHeaders();
 		responseHeaders.set("Content-Type", contentType);
 		exchange.sendResponseHeaders(200, length);
 	}
 
-	public abstract String doGet(HashMap<String, String> form);
+	public abstract String doGet(HashMap<String, String> form, String path);
 
-	public abstract String doPost(HashMap<String, String> form);
+	public abstract String doPost(HashMap<String, String> form, String path);
 }

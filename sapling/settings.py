@@ -45,6 +45,14 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'static')
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/static/'
 
+
+# django-staticfiles settings
+STATIC_ROOT = MEDIA_ROOT
+STATICFILES_MEDIA_DIRNAMES = (
+    'media',
+    'static',
+)
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
@@ -64,6 +72,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'trackchanges.middleware.AutoTrackUserInfoMiddleware',
 )
 
@@ -81,10 +90,12 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'staticfiles',
     'trackchanges',
     'page',
     'diff',
     'mikepages',
+    'ckeditor',
 )
 
 

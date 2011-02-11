@@ -3,14 +3,15 @@ from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from django.conf import settings
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
     # Example:
     # (r'^sapling/', include('sapling.foo.urls')),
-
-    (r'^testdiff/', include('mikepages.urls')),
-
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+    (r'^mikepages/', include('sapling.mikepages.urls')),
     # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
     # to INSTALLED_APPS to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),

@@ -7,7 +7,7 @@
   <property name="src" location="src/java"/>
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
-  <property name="modeldiff" location="../sapling/modeldiff/daisydiff"/>
+  <property name="diff_app" location="../sapling/diff/daisydiff"/>
 
   <path id="project.class.path">
     <fileset dir="lib">
@@ -49,7 +49,7 @@
         <attribute name="Main-Class" value="org.outerj.daisy.diff.Main"/>
       </manifest>
     </jar>
-    <copy todir="${modeldiff}">
+    <copy todir="${diff_app}">
       <fileset dir="${dist}"/>
     </copy>
   </target>

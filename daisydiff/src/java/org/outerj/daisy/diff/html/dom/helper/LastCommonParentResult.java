@@ -23,52 +23,52 @@ import org.outerj.daisy.diff.html.dom.TagNode;
  */
 public class LastCommonParentResult {
 
-    public LastCommonParentResult() {
+	public LastCommonParentResult() {
 
-    }
+	}
 
-    // Parent
-    private TagNode parent;
+	// Parent
+	private TagNode parent;
 
-    public TagNode getLastCommonParent() {
-        return parent;
-    }
+	public TagNode getLastCommonParent() {
+		return parent;
+	}
 
-    public void setLastCommonParent(TagNode parent) {
-        this.parent = parent;
-    }
+	public void setLastCommonParent(TagNode parent) {
+		this.parent = parent;
+	}
 
-    // Splitting
-    private boolean splittingNeeded = false;
+	// Splitting
+	private boolean splittingNeeded = false;
 
-    public boolean isSplittingNeeded() {
-        return splittingNeeded;
-    }
+	public boolean isSplittingNeeded() {
+		return splittingNeeded;
+	}
 
-    public void setSplittingNeeded() {
-        splittingNeeded = true;
-    }
+	public void setSplittingNeeded() {
+		splittingNeeded = true;
+	}
 
-    // Depth
-    private int lastCommonParentDepth = -1;
+	// Depth
+	private int lastCommonParentDepth = -1;
 
-    public int getLastCommonParentDepth() {
-        return lastCommonParentDepth;
-    }
+	public int getLastCommonParentDepth() {
+		return lastCommonParentDepth;
+	}
 
-    public void setLastCommonParentDepth(int depth) {
-        lastCommonParentDepth = depth;
-    }
+	public void setLastCommonParentDepth(int depth) {
+		lastCommonParentDepth = depth;
+	}
 
-    // Index
-    private int indexInLastCommonParent = -1;
+	// Index
+	private int indexInLastCommonParent = -1;
 
-    public int getIndexInLastCommonParent() {
-        return indexInLastCommonParent;
-    }
+	public int getIndexInLastCommonParent() {
+		return indexInLastCommonParent;
+	}
 
-    public void setIndexInLastCommonParent(int index) {
-        indexInLastCommonParent = index;
-    }
+	public void setIndexInLastCommonParent(int index) {
+		indexInLastCommonParent = index;
+	}
 
 }

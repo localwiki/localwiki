@@ -25,20 +25,20 @@ import org.xml.sax.SAXException;
 
 public class HtmlCleaner {
 
-    private NekoHtmlParser parser;
+	private NekoHtmlParser parser;
 
-    private XslFilter filter;
+	private XslFilter filter;
 
-    public HtmlCleaner() {
-        this.parser = new NekoHtmlParser();
-        this.filter = new XslFilter();
-    }
+	public HtmlCleaner() {
+		this.parser = new NekoHtmlParser();
+		this.filter = new XslFilter();
+	}
 
-    public void cleanAndParse(InputSource source, ContentHandler consumer)
-            throws IOException, SAXException {
-        ContentHandler cleanupFilter = filter.xsl(consumer,
-                "org/outerj/daisy/diff/cleanup.xsl");
-        parser.parse(source, cleanupFilter);
-    }
+	public void cleanAndParse(InputSource source, ContentHandler consumer)
+			throws IOException, SAXException {
+		ContentHandler cleanupFilter = filter.xsl(consumer,
+				"org/outerj/daisy/diff/cleanup.xsl");
+		parser.parse(source, cleanupFilter);
+	}
 
 }
