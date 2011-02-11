@@ -51,104 +51,8 @@ def historical_record_init(m, *args, **kws):
     """
     retval = super(m.__class__, m).__init__(*args, **kws)
     m._direct_lookup_fields = {}
-    #_wrap_foreign_keys(m)
     _wrap_reverse_lookups(m)
-    #_fix_reverse_lookups(m)
     return retval
-
-def _wrap_foreign_keys(m):
-    """
-    Sets the foreign key fields to the historical versions of the
-    foreign keys if the related objects are versioned.
-
-    Wraps these in SimpleLazyObjects so the lookup doesn't happen unless
-    the objects are used.
-
-    @param m: a historical record model
-    """
-    def _lookup_version(m, fk_obj):
-        history_manager = getattr(fk_obj, fk_obj._history_manager_name)
-        return history_manager.as_of(date=m.history_info.date)
-
-    def _wrap_field(m, field):
-        fk_obj = getattr(m, field.name)
-        if is_versioned(fk_obj):
-            _lookup_proper_fk_version = partial(_lookup_version, m, fk_obj)
-            m._direct_lookup_fields[field.name] = SimpleLazyObject(
-                _lookup_proper_fk_version
-            )
-
-    m._direct_lookup_fields = {}
-    #for field in m.history_info._object._meta.fields:
-    #    if isinstance(field, models.ForeignKey):
-    for field in m._meta.fields:
-        if isinstance(field, VersionedForeignKey):
-            attname = field._attribute_name
-            m._direct_lookup_fields[attname] = field.lookup_proper_version(m)
-    #for field in m._meta.many_to_many:
-    #    if is_versioned(field.related.parent_model):
-    #        m._direct_lookup_fields[field.attname] = m2m_lookup_proper_version(m, field)
-
-
-    # WAS WORKING:
-    #for field in m._meta.fields:
-    #    if isinstance(field, VersionedForeignKey):
-    #        setattr(m, field._attribute_name, field.lookup_proper_version(m))
-    #XXX
-    # AGhhh i think we need to use our custom __getattribute__, god
-    # damnit
-    #for field in m._meta.many_to_many:
-    #    if is_versioned(field.related.parent_model):
-    #        setattr()
-
-def _fix_reverse_lookups(m):
-    def _reverse_set_lookup(m, rel_o):
-        parent_model = rel_o.model
-        parent_pk_att = parent_model._meta.pk.attname
-
-        # Start with the reverse of the fks on the historical models.
-        qs = getattr(m, '%s_hist_set' % rel_o.var_name)
-
-        # Then grab only the most recent version of each history model.
-        # First, group by the parent_pk.
-        qs = qs.order_by(parent_pk_att).values(parent_pk_att).distinct()
-        # Then annotate the maximum history object id.
-        #ids = qs.values('history_id').annotate(Max('history_id'))
-        ids = qs.annotate(Max('history_id'))
-        history_ids = [ v['history_id__max'] for v in ids ]
-
-        # return a QuerySet containing the proper history objects
-        return parent_model.history.filter(history_id__in=history_ids)
-
-    def _reverse_attr_lookup(m, rel_o):
-        parent_model = rel_o.model
-        as_of = m.history_info.date
-
-        # Find unique values of the base (non-historical) model.
-        unique_values = unique_lookup_values_for(m.history_info._object)
-        if not unique_values:
-            pk_att = m.history_info._object._meta.pk.attname
-            pk_val = getattr(m.history_info._object, pk_att)
-            unique_values = {pk_att:pk_val}
-
-        print "FILTER ON", unique_values
-        return parent_model.history.filter(
-            history_date__lte=as_of,
-            **unique_values
-        )[0]
-
-    related_objects = m.history_info._object._meta.get_all_related_objects()
-    related_versioned = [ o for o in related_objects if is_versioned(o.model) ]
-    for rel_o in related_versioned:
-        if isinstance(rel_o.field, models.OneToOneField):
-            _proper_reverse_lookup = partial(_reverse_attr_lookup, m, rel_o)
-        else:
-            _proper_reverse_lookup = partial(_reverse_set_lookup, m, rel_o)
-
-        # Set the accessor to a lazy lookup function that, when
-        # accessed, looks up the proper related set.
-        accessor = rel_o.get_accessor_name()
-        m._direct_lookup_fields[accessor] = SimpleLazyObject(_proper_reverse_lookup)
 
 def _wrap_reverse_lookups(m):
     """
@@ -289,7 +193,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     if unique_values:
         ms = m.__class__.objects.filter(**unique_values)
         if ms:
-            # keep the primary key unique
+            # Keep the primary key unique.
             m.pk = ms[0].pk
 
     if delete_newer_versions:
