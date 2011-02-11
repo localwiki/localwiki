@@ -103,7 +103,7 @@ class TrackChanges(object):
         '__weakref__',
         # TODO, maybe: if we wanted to be fancy we could define our
         # own __doc__ that explains "this is like the normal model
-        # plus these historical methods"
+        # plus these historical methods."
         '__doc__',
         '_meta',
         '_base_manager',
