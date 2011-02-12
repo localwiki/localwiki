@@ -21,7 +21,7 @@ class MergeModelForm(forms.ModelForm):
     To customize how the version_date is determined, set self.verson_date_field to the name of the field to use
     or override get_version_date().
     """
-    version_date = forms.CharField(widget=forms.HiddenInput())
+    version_date = forms.CharField(widget=forms.HiddenInput(), required=False)
     conflict_warning = 'Warning: someone else made changes before you.  Please review the changes and save again.'
     
     def __init__(self, *args, **kwargs):
