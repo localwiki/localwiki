@@ -598,24 +598,24 @@ class TrackChangesTest(TestCase):
         m18_h = m18.history.as_of(version=4)
         self.assertEqual(m18_h.m2.c, 3)
 
-    #    ###############################
-    #    # ManyToMany attribute
-    #    ###############################
-    #    #t1 = LameTag(name="T1")
-    #    #t1.save()
-    #    #t2 = LameTag(name="T2")
-    #    #t2.save()
-    #    #m19 = M19ManyToManyFieldVersioned(a="m19 woo")
-    #    #m19.save()
-    #    #m19.tags.add(t1, t2)
-    #    #t1.name += "!"
-    #    #t1.save()
-    #    #t2.name += "!"
-    #    #t2.save()
+        ###############################
+        # ManyToMany attribute
+        ###############################
+        t1 = LameTag(name="T1")
+        t1.save()
+        t2 = LameTag(name="T2")
+        t2.save()
+        m19 = M19ManyToManyFieldVersioned(a="m19 woo")
+        m19.save()
+        m19.tags.add(t1, t2)
+        t1.name += "!"
+        t1.save()
+        t2.name += "!"
+        t2.save()
 
-    #    #m19_h = m19.history.most_recent()
-    #    #tags = m19_h.tags.all()
-    #    #self.assertEqual(set([t.name for t in tags]), set(["T1", "T2"]))
+        m19_h = m19.history.most_recent()
+        tags = m19_h.tags.all()
+        self.assertEqual(set([t.name for t in tags]), set(["T1", "T2"]))
 
     def test_fk_reverse_no_interference(self):
         m2 = M2(a="aaaa!", b="bbbb!", c=1)

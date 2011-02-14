@@ -34,8 +34,11 @@ def unique_lookup_values_for(m):
             # p.history.filter(fk=historical_fk).  To build this unique
             # dictionary we need to use the pk of the provided
             # NON-historical object, m.
+
+            # For OneToOneFields, attname is "b_id"
+            related_pk = getattr(m, field.attname)
             k = "%s%sid" % (field.name, LOOKUP_SEP)
-            v = getattr(m, field.name).pk
+            v = related_pk
             return { k : v }
 
         return { field.name: getattr(m, field.name) }

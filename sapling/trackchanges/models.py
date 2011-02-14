@@ -1,4 +1,5 @@
 import copy
+from functools import partial
 
 from django.db import models
 from django.conf import settings
@@ -118,6 +119,13 @@ class TrackChanges(object):
         'to_field'
     ]
 
+    M2M_FIELDS_TO_COPY = [
+        'null',
+        'blank',
+        'db_index',
+        'db_tablespace',
+    ]
+
     def get_misc_members(self, model):
         # Would like to know a better way to do this.
         # Ideally we would subclass the model and then extend it.
@@ -141,16 +149,26 @@ class TrackChanges(object):
         Creates copies of the model's original fields, returning
         a dictionary mapping field name to copied field object.
         """
-        #def _get_m2m_opts(field):
-        #    field.
-        # Though not strictly a field, this attribute
-        # is required for a model to function properly.
         def _get_fk_opts(field):
             opts = {}
             for k in TrackChanges.FK_FIELDS_TO_COPY:
                 if hasattr(field, k):
                     opts[k] = getattr(field, k, None)
             return opts
+        def _get_m2m_opts(field):
+            # Always set symmetrical to False as there's no disadvantage
+            # to allowing reverse lookups.
+            opts = {'symmetrical': False}
+            for k in TrackChanges.M2M_FIELDS_TO_COPY:
+                if hasattr(field, k):
+                    opts[k] = getattr(field, k, None)
+            # XXX TODO deal with intermediate tables
+            if hasattr(field, 'through'):
+                pass
+            return opts
+
+        # Though not strictly a field, this attribute
+        # is required for a model to function properly.
         fields = {'__module__': model.__module__}
 
         for field in (model._meta.fields + model._meta.many_to_many):
@@ -169,48 +187,40 @@ class TrackChanges(object):
                 field._unique = False
                 field.db_index = True
 
-            # page.fktoself_hist: Accessor for field 'b' clashes with related field 'FKToSelf_hist.fktoself_hist_set'. Add a related_name argument to the definition for 'b'.
+            is_fk = isinstance(field, models.ForeignKey)
+            is_m2m = isinstance(field, models.ManyToManyField)
+            if is_fk or is_m2m:
+                parent_model = field.related.parent_model
+                is_to_self = parent_model == model
+                # If the field is versioned then we replace it with a
+                # FK/M2M to the historical model.
+                if is_versioned(parent_model) or is_to_self:
+                    if is_fk:
+                        model_type = models.ForeignKey
+                        options = _get_fk_opts(field)
+                    else:
+                        model_type = models.ManyToManyField
+                        options = _get_m2m_opts(field)
+                        _m2m_changed = partial(self.m2m_changed, field.attname)
+                        models.signals.m2m_changed.connect(_m2m_changed,
+                            sender=getattr(model, field.attname).through,
+                            weak=False,
+                        )
+                    if is_to_self:
+                        # Fix related name conflict. We set this manually
+                        # elsewhere so giving this a funky name isn't a
+                        # problem.
+                        options['related_name'] = '%s_hist_set_2' % field.related.var_name
+                        hist_field = model_type('self', **options)
+                    else:
+                        # Make the field into a foreignkey pointed at the
+                        # history model.
+                        fk_history_model = field.related.parent_model.history.model
+                        hist_field = model_type(fk_history_model, **options)
 
-            if isinstance(field, models.ForeignKey):
-                is_fk_to_self = field.related.parent_model == model
-                if is_fk_to_self:
-                    options = _get_fk_opts(field)
-                    # Fix related name conflict. We set this manually
-                    # elsewhere so giving this a funky name isn't a
-                    # problem.
-                    options['related_name'] = '%s_hist_set_2' % field.related.var_name
-
-                    hist_field = models.ForeignKey('self', **options)
                     hist_field.name = field.name
                     hist_field.attname = field.attname
                     field = hist_field
-                elif is_versioned(field.related.parent_model):
-                    # Make the field into a foreignkey pointed at the
-                    # history model.
-                    fk_history_model = field.related.parent_model.history.model
-                    options = _get_fk_opts(field)
-
-                    hist_field = models.ForeignKey(fk_history_model, **options)
-                    hist_field.name = field.name
-                    hist_field.attname = field.attname
-                    field = hist_field
-
-            #if isinstance(field, models.ForeignKey):
-            #    # If the related model is also versioned then we will
-            #    # use a custom IntegerField instead. This is to prevent
-            #    # deletion of a versioned model instance from cascading
-            #    # and deleting historical versions of related objects.
-            #    if is_versioned(field.related.parent_model):
-            #        field = VersionedForeignKey(field)
-            #    else:
-            #        if field.rel.related_name is not None:
-            #            # custom related_name is set so we have to
-            #            # rename it or we'll have a collision
-            #            field.rel.related_name = "%s_hist" % field.rel.related_name
-
-            #if isinstance(field, models.ManyToManyField):
-            #    opts = _get_m2m_opts(field)
-            #    field = models.ManyToManyField(opts)
 
             fields[field.name] = field
 
@@ -260,6 +270,7 @@ class TrackChanges(object):
         else:
             history_type = history_type or TYPE_UPDATED
         self.create_historical_record(instance, history_type)
+        self.m2m_init(instance)
 
     def pre_delete(self, instance, **kws):
         self._pk_recycle_cleanup(instance)
@@ -272,11 +283,44 @@ class TrackChanges(object):
         history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
         if not self._is_pk_recycle_a_problem(instance):
             self.create_historical_record(instance, history_type)
+            self.m2m_init(instance)
 
         # Disconnect the related objects signals
         if hasattr(instance, '_rel_objs_methods'):
             for model, method in instance._rel_objs_methods.iteritems():
                 models.signals.pre_delete.disconnect(method, model, weak=False)
+
+    def m2m_init(self, instance):
+        """
+        Initialize the m2m sets on a historical instance.
+        """
+        hist_instance = instance.history.most_recent()
+        for field in instance._meta.many_to_many:
+            if is_versioned(field.related.parent_model):
+                current_objs = getattr(instance, field.attname).all()
+                setattr(hist_instance, field.attname, current_objs)
+
+    def m2m_changed(self, attname, sender, instance, action, reverse,
+                    model, pk_set, **kwargs):
+        """
+        A signal handler that syncs changes to m2m relations with
+        historical models.
+
+        @param attname: attribute name of the m2m field on the base model.
+        """
+        if pk_set:
+            changed_ms = [ model.objects.get(pk=pk) for pk in pk_set ]
+            hist_changed_ms = [ m.history.most_recent() for m in changed_ms ]
+        hist_instance = instance.history.most_recent()
+        hist_through = getattr(hist_instance, attname)
+        if action == 'post_add':
+            for hist_m in hist_changed_ms:
+                hist_through.add(hist_m)
+        elif action == 'post_remove':
+            for hist_m in hist_changed_ms:
+                hist_through.remove(hist_m)
+        elif action == 'post_clear':
+            hist_through.clear()
 
     def create_historical_record(self, instance, type):
         manager = getattr(instance, self.manager_name)

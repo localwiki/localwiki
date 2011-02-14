@@ -46,7 +46,7 @@ class FKNoVer(models.Model):
 
     history = TrackChanges()
 
-class FKM(models.Model):
+class FKM2(models.Model):
     a = models.CharField(max_length=200)
     b = models.ManyToManyField(Tag, null=True)
 
