@@ -770,75 +770,63 @@ class TrackChangesTest(TestCase):
 
         child_h = child.history.most_recent()
         self.assertEqual(child_h.m15onetoone.a, "i have a onetoone field")
+
+    def test_manytomany_reverse_lookup(self):
+        t1 = LameTag(name="lame1")
+        t1.save()
+        t2 = LameTag(name="lame2")
+        t2.save()
+        m19 = M19ManyToManyFieldVersioned(a="best m19")
+        m19.save()
+        m19.tags.add(t1, t2)
+    
+        t1.name += "!"
+        t1.save()
+        t2.name += "!"
+        t2.save()
+    
+        m19.a += "!"
+        m19.save()
+    
+        t1.name += "!"
+        t1.save()
+        t2.name += "!"
+        t2.save()
+    
+        # reverse set on these should be empty
+        t1_h = t1.history.all()[2]
+        t2_h = t2.history.all()[2]
+        reverse_set = t1_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 0))
+        reverse_set = t2_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 0))
+    
+        # reverse set on these should be "best m19"
+        t1_h = t1.history.all()[1]
+        t2_h = t2.history.all()[1]
+        reverse_set = t1_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(reverse_set.all()[0].a, "best m19")
+        reverse_set = t2_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(reverse_set.all()[0].a, "best m19")
+    
+        # reverse set on these should be "best m19!"
+        t1_h = t1.history.all()[0]
+        t2_h = t2.history.all()[0]
+        reverse_set = t1_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(reverse_set.all()[0].a, "best m19!")
+        reverse_set = t2_h.m19manytomanyfieldversioned_set
+        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(reverse_set.all()[0].a, "best m19!")
+##
+#    def test_reverse_related_name(self):
+#        # custom ForeignKey related_name
 #
-##    #def test_manytomany_reverse_lookup(self):
-##    #    t1 = LameTag(name="lame1")
-##    #    t1.save()
-##    #    t2 = LameTag(name="lame2")
-##    #    t2.save()
-##    #    m19 = M19ManyToManyFieldVersioned(a="best m19")
-##    #    m19.save()
-##    #    m19.tags.add(t1, t2)
-##
-##    #    t1.name += "!"
-##    #    t1.save()
-##    #    t2.name += "!"
-##    #    t2.save()
-##
-##    #    m19.a += "!"
-##    #    m19.save()
-##
-##    #    t1.name += "!"
-##    #    t1.save()
-##    #    t2.name += "!"
-##    #    t2.save()
-##
-##    #    # reverse set on these should be empty
-##    #    t1_h = t1.history.all()[2]
-##    #    t2_h = t2.history.all()[2]
-##    #    reverse_set = t1_h.m19manytomanyfieldversioned_set
-##    #    self.assertEqual(len(reverse_set.all(), 0))
-##    #    reverse_set = t2_h.m19manytomanyfieldversioned_set
-##    #    self.assertEqual(len(reverse_set.all(), 0))
-##
-##    #    # reverse set on these should be "best m19"
-##    #    t1_h = t1.history.all()[1]
-##    #    t2_h = t2.history.all()[1]
-##    #    reverse_set = t1_h.m19manytomanyfieldversioned_set
-##    #    self.assertEqual(len(reverse_set.all(), 1))
-##    #    self.assertEqual(reverse_set.all()[0].a, "best m19")
-##    #    reverse_set = t2_h.m19manytomanyfieldversioned_set
-##    #    self.assertEqual(len(reverse_set.all(), 1))
-##    #    self.assertEqual(reverse_set.all()[0].a, "best m19")
-##
-##    #    # reverse set on these should be "best m19!"
-##    #    t1_h = t1.history.all()[0]
-##    #    t2_h = t2.history.all()[0]
-##    #    reverse_set = t1_h.m19manytomanyfieldversioned_set
-##    #    self.assertEqual(len(reverse_set.all(), 1))
-##    #    self.assertEqual(reverse_set.all()[0].a, "best m19!")
-##    #    reverse_set = t2_h.m19manytomanyfieldversioned_set
-##    #    self.assertEqual(len(reverse_set.all(), 1))
-##    #    self.assertEqual(reverse_set.all()[0].a, "best m19!")
-##
-###    def test_reverse_related_name(self):
-###        # custom ForeignKey related_name
-###
-###        # custom OneToOneField related_name
-###
-###        # custom ManyToManyField related_name
-###
-###        pass
-###
-####    def test_correct_fk_lookup_when_recreated(self):
-####        # If we have M.versioned_attribute and then we delete
-####        # versioned_attribute and then re-create it we should be able
-####        # to retrieve the right fk version, even so.
-####
-####        # This should work because we have the history record for M
-####        # storing the pk of versioned_attribute.  And because pks won't
-####        # be recycled (except in SQLite with the bug that will be fixed)
-####        # this shouldn't be a problem.
-####        pass
-####
-###
+#        # custom OneToOneField related_name
+#
+#        # custom ManyToManyField related_name
+#
+#        pass
+#

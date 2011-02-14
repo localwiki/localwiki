@@ -57,7 +57,7 @@ def historical_record_init(m, *args, **kws):
 def _wrap_reverse_lookups(m):
     """
     Make reverse foreign key lookups return historical versions
-    if the parent model is versioned.
+    if the model is versioned.
 
     @param m: a historical record model
     """
@@ -130,7 +130,9 @@ def _wrap_reverse_lookups(m):
                 parent_model.history.model._meta.object_name)
         return obj
 
-    related_objects = m.history_info._object._meta.get_all_related_objects()
+    model_meta = m.history_info._object._meta
+    related_objects = model_meta.get_all_related_objects()
+    related_objects += model_meta.get_all_related_many_to_many_objects()
     related_versioned = [ o for o in related_objects if is_versioned(o.model) ]
     for rel_o in related_versioned:
         # set the accessor to a lazy lookup function that, when
