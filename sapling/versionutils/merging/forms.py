@@ -1,11 +1,6 @@
-from datetime import datetime
-from django import forms
 from django.db import models
-from mikepages.models import Page
-from diff.daisydiff.daisydiff import daisydiff_merge
-from django.template.defaultfilters import slugify
+from django import forms
 
-        
 class MergeModelForm(forms.ModelForm):
     """
     ModelForm subclass that detects editing conflicts.  For example, consider the following scenario:
@@ -80,30 +75,3 @@ class MergeModelForm(forms.ModelForm):
                 self.data['version_date'] = current_version_date
                 raise e
         return self.cleaned_data
-    
-class PageForm(MergeModelForm):
-    conflict_warning = 'Warning: someone else saved this page before you.  Please review their changes and save again.'
-    
-    class Meta:
-        model = Page
-        fields = ('name', 'content')
-        
-    def merge(self, yours, theirs, ancestor):
-        (merged_content, conflict) = daisydiff_merge(yours['content'], theirs['content'], '')
-        if conflict:
-            self.data = self.data.copy()
-            self.data['content'] = merged_content
-            raise forms.ValidationError(self.conflict_warning)
-        else:
-            yours['content'] = merged_content
-        return yours
-    
-    def clean_name(self):
-        name = self.cleaned_data['name']
-        try:
-            page = Page.objects.get(slug__exact=slugify(name))
-            if self.instance != page:
-                raise forms.ValidationError('A page with this name already exists')
-        except Page.DoesNotExist:
-            pass
-        return name

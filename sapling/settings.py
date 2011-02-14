@@ -73,7 +73,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'trackchanges.middleware.AutoTrackUserInfoMiddleware',
+    'versionutils.versioning.middleware.AutoTrackUserInfoMiddleware',
 )
 
 ROOT_URLCONF = 'sapling.urls'
@@ -85,17 +85,21 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    # Django-provided apps
     'django.contrib.auth',
     'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+
+    # External apps
     'staticfiles',
-    'trackchanges',
-    'page',
-    'diff',
-    'mikepages',
+
+    # Our apps
+    'versionutils.versioning',
+    'versionutils.diff',
     'ckeditor',
+    'pages',
 )
 
 try:

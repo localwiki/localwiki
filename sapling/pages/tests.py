@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db import models
 from forms import MergeModelForm, PageForm
-from mikepages.models import Page
+from pages.models import Page
 
 class PageTest(TestCase):
     def test_merge_conflict(self):

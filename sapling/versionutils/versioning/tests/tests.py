@@ -10,11 +10,11 @@ from django.core.files.base import ContentFile
 
 from utils import TestSettingsManager
 from models import *
-from trackchanges.constants import *
+from versionutils.versioning.constants import *
 
 mgr = TestSettingsManager()
 INSTALLED_APPS=list(settings.INSTALLED_APPS)
-INSTALLED_APPS.append('trackchanges.tests')
+INSTALLED_APPS.append('versionutils.versioning.tests')
 mgr.set(INSTALLED_APPS=INSTALLED_APPS) 
 
 class TrackChangesTest(TestCase):
@@ -76,7 +76,7 @@ class TrackChangesTest(TestCase):
         m.save()
 
     def _setup_file_environment(self):
-        fpath = os.path.join(settings.MEDIA_ROOT, 'test_trackchanges_uploads')
+        fpath = os.path.join(settings.MEDIA_ROOT, 'test_versioning_uploads')
         if not os.path.exists(fpath):
             os.mkdir(fpath)
         # remove any existing files
@@ -243,7 +243,7 @@ class TrackChangesTest(TestCase):
 
         im_src = os.path.join(os.path.split(__file__)[0], 'static', 'a.png')
         im_dest = os.path.join(
-            settings.MEDIA_ROOT, 'test_trackchanges_uploads', 'a.png'
+            settings.MEDIA_ROOT, 'test_versioning_uploads', 'a.png'
         )
         m = M11Image(a=File(open(im_src, 'r')))
         m.save()

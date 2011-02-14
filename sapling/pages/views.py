@@ -13,7 +13,7 @@ class PageDetailView(Custom404Mixin, DetailView):
     context_object_name = 'page'
     
     def handler404(self, request, slug): 
-        return HttpResponseNotFound(direct_to_template(request, 'mikepages/page_new.html', {'name': slug}))
+        return HttpResponseNotFound(direct_to_template(request, 'pages/page_new.html', {'name': slug}))
     
 
 class PageUpdateView(CreateObjectMixin, UpdateView):

@@ -1,6 +1,6 @@
 from django.db import models
 
-from trackchanges.models import TrackChanges
+from versionutils.versioning import TrackChanges
 
 """
 TODO: It would be cool to write a little thing to randomly generate
@@ -65,12 +65,12 @@ class M9URL(models.Model):
     history = TrackChanges()
 
 class M10File(models.Model):
-    a = models.FileField(upload_to='test_trackchanges_uploads')
+    a = models.FileField(upload_to='test_versioning_uploads')
 
     history = TrackChanges()
 
 class M11Image(models.Model):
-    a = models.ImageField(upload_to='test_trackchanges_uploads')
+    a = models.ImageField(upload_to='test_versioning_uploads')
 
     history = TrackChanges()
 

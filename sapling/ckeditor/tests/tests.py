@@ -4,7 +4,10 @@ from django.test import TestCase
 from django.db import models
 from django.core import exceptions
 
-from ckeditor.models import XHTMLField, XMLField, HTML5Field, HTML5FragmentField
+from ckeditor.models import XHTMLField
+from ckeditor.models import XMLField
+from ckeditor.models import HTML5Field
+from ckeditor.models import HTML5FragmentField
 import xssattacks
 
 class XHTMLModel(models.Model):

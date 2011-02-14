@@ -2,7 +2,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from ckeditor.models import HTML5FragmentField
 
-import diff
+from versionutils import diff
 
 class Page(models.Model):
     name = models.CharField(max_length=255)
