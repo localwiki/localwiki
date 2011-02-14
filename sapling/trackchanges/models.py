@@ -298,7 +298,9 @@ class TrackChanges(object):
         for field in instance._meta.many_to_many:
             if is_versioned(field.related.parent_model):
                 current_objs = getattr(instance, field.attname).all()
-                setattr(hist_instance, field.attname, current_objs)
+                setattr(hist_instance, field.attname,
+                        [ o.history.most_recent() for o in current_objs ]
+                )
 
     def m2m_changed(self, attname, sender, instance, action, reverse,
                     model, pk_set, **kwargs):

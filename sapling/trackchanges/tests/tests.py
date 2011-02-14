@@ -797,28 +797,28 @@ class TrackChangesTest(TestCase):
         t1_h = t1.history.all()[2]
         t2_h = t2.history.all()[2]
         reverse_set = t1_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 0))
+        self.assertEqual(len(reverse_set.all()), 0)
         reverse_set = t2_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 0))
+        self.assertEqual(len(reverse_set.all()), 0)
     
         # reverse set on these should be "best m19"
         t1_h = t1.history.all()[1]
         t2_h = t2.history.all()[1]
         reverse_set = t1_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(len(reverse_set.all()), 1)
         self.assertEqual(reverse_set.all()[0].a, "best m19")
         reverse_set = t2_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(len(reverse_set.all()), 1)
         self.assertEqual(reverse_set.all()[0].a, "best m19")
     
         # reverse set on these should be "best m19!"
         t1_h = t1.history.all()[0]
         t2_h = t2.history.all()[0]
         reverse_set = t1_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(len(reverse_set.all()), 1)
         self.assertEqual(reverse_set.all()[0].a, "best m19!")
         reverse_set = t2_h.m19manytomanyfieldversioned_set
-        self.assertEqual(len(reverse_set.all(), 1))
+        self.assertEqual(len(reverse_set.all()), 1)
         self.assertEqual(reverse_set.all()[0].a, "best m19!")
 ##
 #    def test_reverse_related_name(self):
