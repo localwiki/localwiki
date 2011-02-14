@@ -1,0 +1,17 @@
+This is a version of the daisydiff HTML diffing library that's we've modified
+in a few ways.  Some noteworthy changes:
+
+  * Diffing is rendered in the classic wiki side-by-side manner.
+  * Diffing can be provided as a service rather than simply via a
+    command-line app.  This dramatically improves performance.
+  * Three-way merging is supported.  This is essential for resolving
+    wiki edit conflicts.
+
+Modifications will be pushed upstream where possible.  We will likely continue
+improving this version of daisydiff and figure out what we want to do[1] at a
+later, better point.
+
+------
+1. It doesn't look like DaisyDiff has been actively maintained in some while.
+We may end up carrying the torch on this one.  We may end up rewriting this in
+python at some point, too.

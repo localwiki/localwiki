@@ -1,4 +1,4 @@
-A ckeditor django app.  Does nice things like checks for allowed XHTML
+A ckeditor django app we've created.  Does nice things like checks for allowed XHTML
 elements and optionally renders buttons based on pre-defined allowed elements.
 
 This editor whitelists allowed elements/attributes to combat XSS attacks.
