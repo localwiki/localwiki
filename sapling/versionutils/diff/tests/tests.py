@@ -22,7 +22,7 @@ from diff.diffutils import TextFieldDiff, FileFieldDiff, ImageFieldDiff
 from diff.diffutils import HtmlFieldDiff
 
 mgr = TestSettingsManager()
-INSTALLED_APPS=list(settings.INSTALLED_APPS)
+INSTALLED_APPS = list(settings.INSTALLED_APPS)
 INSTALLED_APPS.append('diff.tests')
 mgr.set(INSTALLED_APPS=INSTALLED_APPS)
 

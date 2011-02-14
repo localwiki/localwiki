@@ -5,6 +5,7 @@ class Custom404Mixin(object):
     @classonlymethod
     def as_view(cls, **initargs):
         default_view = super(Custom404Mixin, cls).as_view(**initargs)
+
         def view_or_handler404(request, *args, **kwargs):
             self = cls(**initargs)
             try:

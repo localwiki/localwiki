@@ -33,7 +33,7 @@ class PageTest(TestCase):
         self.failUnless('Edit conflict!' in p.content)
 
 class TestModel(models.Model):
-    save_time = models.DateTimeField(auto_now = True)
+    save_time = models.DateTimeField(auto_now=True)
     contents = models.TextField()
             
 class TestForm(MergeModelForm):
@@ -49,7 +49,6 @@ class TestMergeForm(MergeModelForm):
         return yours
 
 class MergeModelFormTest(TestCase):
-    
     
     def test_get_version_date(self):
         """

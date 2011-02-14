@@ -10,10 +10,11 @@ from django.utils.translation import ugettext_lazy as _
 
 import widgets
 
+
 class XMLValidator(object):
     def __init__(self, schema_path):
         self.schema_path = schema_path
-    
+
     def __call__(self, value):
         try:
             relaxng_doc = etree.parse(self.schema_path)
@@ -25,10 +26,11 @@ class XMLValidator(object):
             pass
         raise exceptions.ValidationError('This field contains invalid data.')
 
+
 def custom_sanitizer(allowed):
     class CustomSanitizer(sanitizer.HTMLSanitizer):
         allowed_elements = allowed
-        
+
     return CustomSanitizer
 
 def sanitize_html(unsafe):
@@ -46,11 +48,11 @@ def sanitize_html_fragment(unsafe, allowed_elements=None):
 class XMLField(models.TextField):
     description = _("XML text")
 
-    def __init__(self, verbose_name=None, name=None, schema_path=None, **kwargs):
+    def __init__(self, verbose_name=None, name=None, schema_path=None, **kws):
         self.schema_path = schema_path
         self.default_validators = [XMLValidator(schema_path)]
-        models.Field.__init__(self, verbose_name, name, **kwargs)
-    
+        models.Field.__init__(self, verbose_name, name, **kws)
+
     
 class XHTMLField(XMLField):
     """Note: this needs a real schema document before it will work!"""
@@ -58,7 +60,7 @@ class XHTMLField(XMLField):
     schema_path = os.path.join(os.path.dirname(__file__), 'schema', 'html.ng')
     
     def __init__(self, verbose_name=None, name=None, **kwargs):
-        super(XHTMLField, self).__init__(verbose_name, name, 
+        super(XHTMLField, self).__init__(verbose_name, name,
                                         self.schema_path, **kwargs)
 
 
@@ -76,19 +78,22 @@ class HTML5Field(models.TextField):
 class HTML5FragmentField(models.TextField):
     """
     Use this field in your models for storing user-editable HTML fragments.
-    It provides the CKEditor widget by default and sanitizes user-submitted HTML
-    before storing it using html5lib.
+    It provides the CKEditor widget by default and sanitizes user-submitted
+    HTML before storing it using html5lib.
     Any non-whitelisted elements, such as <script>, will be escaped, and non-
     whitelisted attributes will be stripped.
     You can customize the whitelisted elements by setting the allowed_elements
     argument like this:
     
     class Page(models.Model):
-        contents = HTML5FragmentField(allowed_elements=['p', 'a', 'strong', 'em'])
+        contents = HTML5FragmentField(
+            allowed_elements=['p', 'a', 'strong', 'em']
+        )
     """
     description = _("HTML5 fragment text")
     
-    def __init__(self, verbose_name=None, name=None, allowed_elements=None, **kwargs):
+    def __init__(self, verbose_name=None, name=None, allowed_elements=None,
+                 **kwargs):
         models.Field.__init__(self, verbose_name, name, **kwargs)
         self.allowed_elements = allowed_elements
         
@@ -97,6 +102,10 @@ class HTML5FragmentField(models.TextField):
         return sanitize_html_fragment(value, self.allowed_elements)
     
     def formfield(self, **kwargs):
-        defaults = {'widget' : widgets.CKEditor(attrs={'allowed_tags': self.allowed_elements})}
+        defaults = {
+            'widget': widgets.CKEditor(
+                attrs={'allowed_tags': self.allowed_elements}
+            )
+        }
         defaults.update(kwargs)
         return super(HTML5FragmentField, self).formfield(**defaults)

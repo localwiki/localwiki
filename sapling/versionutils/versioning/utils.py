@@ -19,8 +19,10 @@ def unique_lookup_values_for(m):
     @param m: An instance of a model.
     """
     for field in m._meta.fields:
-        if field.primary_key or field.auto_created: continue
-        if not field.unique: continue
+        if field.primary_key or field.auto_created:
+            continue
+        if not field.unique:
+            continue
         is_onetoone = (
             hasattr(field, 'related') and
             field.related.field.__class__ == models.OneToOneField

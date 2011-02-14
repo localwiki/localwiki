@@ -22,7 +22,7 @@ class MergeModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(MergeModelForm, self).__init__(*args, **kwargs)
         
-        if kwargs.has_key('instance'):
+        if 'instance' in kwargs:
             instance = kwargs['instance']
             self.initial['version_date'] = str(self.get_version_date(instance))
     

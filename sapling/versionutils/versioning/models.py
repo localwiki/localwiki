@@ -141,7 +141,8 @@ class TrackChanges(object):
         # Remove some fields we know we'll re-add in modified form
         # later.
         for k in d:
-            if isinstance(d[k], models.fields.Field): del d[k]
+            if isinstance(d[k], models.fields.Field):
+                del d[k]
         return d
 
     def get_fields(self, model):
@@ -155,6 +156,7 @@ class TrackChanges(object):
                 if hasattr(field, k):
                     opts[k] = getattr(field, k, None)
             return opts
+
         def _get_m2m_opts(field):
             # Always set symmetrical to False as there's no disadvantage
             # to allowing reverse lookups.
@@ -251,6 +253,7 @@ class TrackChanges(object):
     META_TO_SKIP = [
         'db_table', 'get_latest_by', 'managed', 'unique_together', 'ordering',
     ]
+
     def get_meta_options(self, model):
         """
         Returns a dictionary of fields that will be added to
@@ -258,7 +261,8 @@ class TrackChanges(object):
         """
         meta = { 'ordering': ('-history_date',) }
         for k in ALL_META_OPTIONS:
-            if k in TrackChanges.META_TO_SKIP: continue 
+            if k in TrackChanges.META_TO_SKIP:
+                continue 
             meta[k] = getattr(model._meta, k)
         return meta
 

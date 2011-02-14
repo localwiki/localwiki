@@ -228,7 +228,6 @@ class HtmlFieldDiff(BaseFieldDiff):
         return {'deleted': self.field1, 'inserted': self.field2}
         
     
-    
 class FileFieldDiff(BaseFieldDiff):
     """
     Compares the fields as file paths and renders links to the files.

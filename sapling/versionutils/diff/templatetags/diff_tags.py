@@ -19,7 +19,8 @@ class DiffNode(template.Node):
 def do_diff(parser, token):
     try:
         tag_name, object1, object2, dummy, context_var = token.split_contents()
-        if not dummy == 'as': raise ValueError()
+        if not dummy == 'as':
+            raise ValueError()
     except ValueError:
         raise template.TemplateSyntaxError, "%r tag requires four arguments" % token.contents.split()[0]
     return DiffNode(object1, object2, context_var)

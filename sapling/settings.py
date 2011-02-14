@@ -10,7 +10,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 import os
-PROJECT_ROOT = os.path.join(os.path.dirname(__file__),'..')
+PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..')
 
 DATABASE_ENGINE = ''           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = ''             # Or path to database file if using sqlite3.

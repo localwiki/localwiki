@@ -4,7 +4,7 @@ try:
     import simplejson as json
 except ImportError:
     import json
-    
+
 from django import forms
 from django.conf import settings
 from django.template.loader import render_to_string
@@ -13,6 +13,7 @@ from django.utils.safestring import mark_safe
 ckeditor_path = 'js/ckeditor/ckeditor.js'
 if settings.DEBUG:
     ckeditor_path = 'js/ckeditor/ckeditor_source.js'
+
 
 class CKEditor(forms.Textarea):
     _auto_button_map = (('Form', 'form'),
@@ -50,21 +51,24 @@ class CKEditor(forms.Textarea):
             if 'allowed_tags' in attrs:
                 self.config = self.default_config(attrs['allowed_tags'])
                 
-    def default_config(self, buttons = None):
+    def default_config(self, buttons=None):
         toolbar = []
         if buttons:
             for name, tag in self._auto_button_map:
                 if tag in buttons:
                     toolbar.append(name)
                     
-        return json.dumps({'toolbar': [toolbar], 'filebrowserInsertimageUploadUrl':'upload', 'extraPlugins': 'insertimage,simpleimage'})
+        return json.dumps(
+            {'toolbar': [toolbar], 'filebrowserInsertimageUploadUrl': 'upload',
+             'extraPlugins': 'insertimage,simpleimage'}
+        )
                 
     def button_for_tag(self, tag):
         if tag in self._auto_button_map:
             return self._auto_button_map[tag]
         else:
             return None
-                
+
     def render(self, name, value, attrs=None, **kwargs):
         rendered = super(CKEditor, self).render(name, value, attrs)
         context = {

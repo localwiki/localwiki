@@ -13,10 +13,10 @@ class Page(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Page, self).save(*args, **kwargs)
-        
+
 
 class PageDiff(diff.BaseModelDiff):
-    fields = ( 'name', 
+    fields = ('name', 
               ('content', diff.diffutils.HtmlFieldDiff),
              )
    
