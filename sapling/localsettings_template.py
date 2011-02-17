@@ -13,3 +13,7 @@ DATABASE_PASSWORD = ''
 # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_HOST = ''
 DATABASE_PORT = ''
+
+DAISYDIFF_URL = 'http://localhost:8080/diff'
+DAISYDIFF_MERGE_URL = 'http://localhost:8080/merge'
+

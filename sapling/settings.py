@@ -38,25 +38,22 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'static')
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/static/'
+MEDIA_URL = '/media/'
 
 
-# django-staticfiles settings
-STATIC_ROOT = MEDIA_ROOT
-STATICFILES_MEDIA_DIRNAMES = (
-    'media',
-    'static',
-)
+# staticfiles settings
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+# trailing slash. For integration with staticfiles, this should be the same as
+# STATIC_URL followed by 'admin/'
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '7*s172_b94i2w%%1$)g__eph%(-$8&n7ahh0a)atcur72a4sbc'
@@ -91,9 +88,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-
-    # External apps
-    'staticfiles',
+    'django.contrib.staticfiles',
 
     # Our apps
     'versionutils.versioning',
