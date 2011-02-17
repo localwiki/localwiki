@@ -38,15 +38,20 @@ distribution.  pip makes this super easy.
 
 
 5.  Copy sapling/localsettings_template.py to sapling/localsettings.py and edit
-to your liking.  Then run syncdb and collectstatic.
-	(ENV)$ python sapling/manage.py syncdb
-	(ENV)$ python sapling/manage.py collectstatic
+to your liking.
+	(ENV)$ cp sapling/localsettings_template.py sapling/localsettings.py
 
 You are now done installing things and you can start the built-in Django
-development server.
+development server, after running syncdb and collectstatic.
+	(ENV)$ python sapling/manage.py syncdb
+	(ENV)$ python sapling/manage.py collectstatic
 	(ENV)$ python sapling/manage.py runserver
+
+Note: by default, the development server listens on 127.0.0.1 only.  To access
+the development server from another machine (a potential security hazard), run:
+	(ENV)$ python sapling/manage.py runserver 0.0.0.0:8000
 	
-To enable diffing/merging, start the daisydiff server in a new terminal.
+To enable diffing and merging, start the daisydiff server in a new terminal.
 	$ cd sapling/versionutils/diff/daisydiff/
 	$ java -jar daisydiff.jar --server --port=8080
 	
