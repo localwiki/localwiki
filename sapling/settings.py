@@ -95,9 +95,6 @@ INSTALLED_APPS = (
     'versionutils.diff',
     'ckeditor',
     'pages',
-
-    # DONT CHECK THIS IN
-    'philiptest',
 )
 
 try:
