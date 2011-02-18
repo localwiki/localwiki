@@ -7,7 +7,7 @@
   <property name="src" location="src/java"/>
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
-  <property name="diff_app" location="../sapling/diff/daisydiff"/>
+  <property name="diff_app" location="../sapling/versionutils/diff/daisydiff"/>
 
   <path id="project.class.path">
     <fileset dir="lib">

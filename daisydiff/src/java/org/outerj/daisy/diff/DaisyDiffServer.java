@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -63,7 +62,6 @@ class DaisyDiffHandler extends FormHandler {
 	}
 
 	public String doPost(HashMap<String, String> form, String path) {
-		
 
 		StringBuffer response = new StringBuffer();
 		if (path.equals("/diff")) {
@@ -80,7 +78,8 @@ class DaisyDiffHandler extends FormHandler {
 				response.append(merge(form.get("field1"), form.get("field2"),
 						form.get("ancestor")));
 			} else {
-				response.append("Required POST parameters: field1, field2, ancestor");
+				response
+						.append("Required POST parameters: field1, field2, ancestor");
 			}
 		}
 
@@ -88,7 +87,7 @@ class DaisyDiffHandler extends FormHandler {
 	}
 
 	private String merge(String left, String right, String ancestor) {
-		try {	
+		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			SAXTransformerFactory tf = (SAXTransformerFactory) TransformerFactory
 					.newInstance();
@@ -226,7 +225,7 @@ abstract class FormHandler implements HttpHandler {
 		String requestMethod = exchange.getRequestMethod();
 		String path = exchange.getRequestURI().getPath();
 		System.out.println(requestMethod + " " + path);
-		
+
 		String response;
 
 		if (requestMethod.equalsIgnoreCase("GET")) {
@@ -236,11 +235,13 @@ abstract class FormHandler implements HttpHandler {
 		} else {
 			response = "Method not supported: " + requestMethod;
 		}
-		sendResponseHeaders(exchange, response.length());
+
+		byte[] responseBytes = response.getBytes();
+		sendResponseHeaders(exchange, responseBytes.length);
 		OutputStream responseBody = exchange.getResponseBody();
-		responseBody.write(response.getBytes());
+		responseBody.write(responseBytes);
 		responseBody.close();
-		System.out.println(response.length() + " bytes sent in response");
+		System.out.println(responseBytes.length + " bytes sent in response");
 	}
 
 	private HashMap<String, String> parseForm(String raw, String encoding)
