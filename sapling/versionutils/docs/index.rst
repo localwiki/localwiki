@@ -37,7 +37,7 @@ First, add this project to your list of ``INSTALLED_APPS`` in
         'django.contrib.sessions',
         'django.contrib.sites',
         ...
-        'versiontutils.versioning',
+        'versionutils.versioning',
         ...
     )
 
