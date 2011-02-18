@@ -189,6 +189,10 @@ class TrackChanges(object):
                 field._unique = False
                 field.db_index = True
 
+            if getattr(field, 'auto_now', None):
+                # Don't set auto_now=True historical models' fields.
+                field.auto_now = False
+
             is_fk = isinstance(field, models.ForeignKey)
             is_m2m = isinstance(field, models.ManyToManyField)
             if is_fk or is_m2m:

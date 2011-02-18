@@ -820,6 +820,13 @@ class TrackChangesTest(TestCase):
         reverse_set = t2_h.m19manytomanyfieldversioned_set
         self.assertEqual(len(reverse_set.all()), 1)
         self.assertEqual(reverse_set.all()[0].a, "best m19!")
+
+    def test_autonow_field(self):
+        m = M23AutoNow(b="sup")
+        for i in range(0, 10):
+            m.save()
+            m_h = m.history.most_recent()
+            self.assertEqual(m.a, m_h.a)
 ##
 #    def test_reverse_related_name(self):
 #        # custom ForeignKey related_name

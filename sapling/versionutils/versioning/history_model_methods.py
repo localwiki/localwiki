@@ -88,13 +88,11 @@ def _wrap_reverse_lookups(m):
         # that point at the base model.
         qs = parent_model.history.filter(
             history_date__lte=as_of,
-            #**{attr:m.history_info._object}
             **unique_values
         )
         # Then group by the parent_pk
         qs = qs.order_by(parent_pk_att).values(parent_pk_att).distinct()
         # then annotate the maximum history object id
-        #ids = qs.values('history_id').annotate(Max('history_id'))
         ids = qs.annotate(Max('history_id'))
         history_ids = [ v['history_id__max'] for v in ids ]
         # return a QuerySet containing the proper history objects
@@ -135,12 +133,12 @@ def _wrap_reverse_lookups(m):
     related_objects += model_meta.get_all_related_many_to_many_objects()
     related_versioned = [ o for o in related_objects if is_versioned(o.model) ]
     for rel_o in related_versioned:
-        # set the accessor to a lazy lookup function that, when
-        # accessed, looks up the proper related set
+        # Set the accessor to a lazy lookup function that, when
+        # accessed, looks up the proper related set.
         accessor = rel_o.get_accessor_name()
         
         if isinstance(rel_o.field, models.OneToOneField):
-            # OneToOneFields have a direct lookup (not a set)
+            # OneToOneFields have a direct lookup (not a set).
             _proper_reverse_lookup = partial(_reverse_attr_lookup, m, rel_o)
         else:
             _proper_reverse_lookup = partial(_reverse_set_lookup, m, rel_o)
@@ -178,7 +176,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     @param track_changes: if False, won't log *this revert* as an action in
              the history log.
     """
-    # maybe-TODO At some point we may want to pull this out into some
+    # Maybe-TODO At some point we may want to pull this out into some
     # kind of hm.history_info.get_instance() method. Providing
     # get_instance() would be a liability, though, because we want to
     # encourage interaction with the historical instance -- it does

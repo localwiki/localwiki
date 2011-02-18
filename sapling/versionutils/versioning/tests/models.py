@@ -172,11 +172,17 @@ class M22ManyToManySelfVersioned(models.Model):
 
     history = TrackChanges()
 
+class M23AutoNow(models.Model):
+    a = models.DateTimeField(auto_now=True)
+    b = models.CharField(max_length=200)
+
+    history = TrackChanges()
+
 TEST_MODELS = [
     M1, M2, M3BigInteger, M4Date, M5Decimal, M6Email, M7Numbers,
     M8Time, M9URL, M10File, M11Image, M12ForeignKey, M13ForeignKeySelf,
     M14ManyToMany, M15OneToOne, M16Unique, M17ForeignKeyVersioned,
     M18OneToOneFieldVersioned, M19ManyToManyFieldVersioned,
     M20CustomManager, M21CustomAttribute,
-    M22ManyToManySelfVersioned,
+    M22ManyToManySelfVersioned, M23AutoNow,
 ]

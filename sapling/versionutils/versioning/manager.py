@@ -100,8 +100,10 @@ class HistoryManager(models.Manager):
         """
         Returns the object as it was at the date or version number provided.
 
-        @param date: datetime object.
-        @param version: integer (version number)
+        @param date: datetime object.  The datetime doesn't have to be exact.
+                     We will return the historical instance that's most recent,
+                     moving backward in time.
+        @param version: integer (version number).
         """
         try:
             if version and version > 0:
