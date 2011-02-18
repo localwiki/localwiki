@@ -110,8 +110,13 @@ def _related_objs_delete_passalong(m):
         models.signals.pre_delete.connect(_pass_on_arguments, sender=model, weak=False)
         # Save the method so we can disconnect it
         m._rel_objs_methods[model] = _pass_on_arguments
+        
+def save_func(model_save):
+    def save(m, *args, **kws):
+        return save_with_arguments(model_save, m, *args, **kws)
+    return save
 
-def save_with_arguments(m, force_insert=False, force_update=False, using=None,
+def save_with_arguments(model_save, m, force_insert=False, force_update=False, using=None,
                         track_changes=True, **kws):
     """
     A simple custom save() method on models with changes tracked.
@@ -122,12 +127,19 @@ def save_with_arguments(m, force_insert=False, force_update=False, using=None,
     """
     m._track_changes = track_changes
     m._save_with = kws
-    return super(m.__class__, m).save(force_insert=force_insert,
+    
+    return model_save(m, force_insert=force_insert,
                                       force_update=force_update,
                                       using=using,
     )
+    
+def delete_func(model_delete):
+    def delete(*args, **kws):
+        return delete_with_arguments(model_delete, *args, **kws)
+    return delete
 
-def delete_with_arguments(m, using=None, track_changes=True, **kws):
+
+def delete_with_arguments(model_delete, m, using=None, track_changes=True, **kws):
     """
     A simple custom delete() method on models with changes tracked.
 
@@ -139,4 +151,4 @@ def delete_with_arguments(m, using=None, track_changes=True, **kws):
     m._save_with = kws
 
     _related_objs_delete_passalong(m)
-    return super(m.__class__, m).delete(using=using)
+    return model_delete(m, using=using)

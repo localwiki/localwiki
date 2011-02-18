@@ -35,8 +35,8 @@ def get_history_fields(self, model):
         # h.history_ip_address we can write h.history_info.ip_address
         'history_info': HistoricalMetaInfo(),
         'revert_to': revert_to,
-        'save': save_with_arguments,
-        'delete': delete_with_arguments,
+        #'save': save_with_arguments,
+        #'delete': delete_with_arguments,
         '__init__': historical_record_init,
         '__getattribute__':
             # not sure why functools.partial doesn't work here
@@ -199,7 +199,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     if delete_newer_versions:
         newer = m.history.filter(history_info__date__gt=hm.history_info.date)
         for v in newer:
-            v.delete(track_changes=False)
+            v.delete()
 
     m._history_type = TYPE_REVERTED
 

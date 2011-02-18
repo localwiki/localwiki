@@ -28,8 +28,8 @@ class TrackChanges(object):
 
         # Over-ride the save, delete methods to allow arguments to be passed in
         # such as comment="Made a small change."
-        setattr(sender, 'save', save_with_arguments)
-        setattr(sender, 'delete', delete_with_arguments)
+        setattr(sender, 'save', save_func(sender.save))
+        setattr(sender, 'delete', delete_func(sender.delete))
 
         # We also attach signal handlers to the save, delete methods.  It's
         # easier to have two things going on (signal, and an overridden method)
@@ -109,6 +109,8 @@ class TrackChanges(object):
         '_meta',
         '_base_manager',
         '_default_manager',
+        'save',
+        'delete'
     ]
 
     FK_FIELDS_TO_COPY = [
