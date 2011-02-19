@@ -1,5 +1,5 @@
 from django import template
-from diff.diffutils import diff
+from versionutils.diff.diffutils import diff
 
 register = template.Library()
 

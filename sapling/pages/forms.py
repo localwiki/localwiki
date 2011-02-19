@@ -6,14 +6,18 @@ from pages.models import Page
 from versionutils.diff.daisydiff.daisydiff import daisydiff_merge
         
 class PageForm(MergeModelForm):
-    conflict_warning = 'Warning: someone else saved this page before you.  Please review their changes and save again.'
+    conflict_warning = 'Warning: someone else saved this page before you.  Please resolve edit conflicts and save again.'
     
     class Meta:
         model = Page
         fields = ('name', 'content')
         
     def merge(self, yours, theirs, ancestor):
-        (merged_content, conflict) = daisydiff_merge(yours['content'], theirs['content'], '')
+        # ancestor may be None
+        ancestor_content = ''
+        if ancestor:
+            ancestor_content = ancestor['content']
+        (merged_content, conflict) = daisydiff_merge(yours['content'], theirs['content'], ancestor_content)
         if conflict:
             self.data = self.data.copy()
             self.data['content'] = merged_content

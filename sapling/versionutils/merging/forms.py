@@ -1,6 +1,9 @@
 from django.db import models
 from django import forms
 
+from versionutils.versioning.utils import is_versioned
+from django.forms.models import model_to_dict
+
 class MergeModelForm(forms.ModelForm):
     """
     ModelForm subclass that detects editing conflicts.  For example, consider the following scenario:
@@ -35,8 +38,14 @@ class MergeModelForm(forms.ModelForm):
         if hasattr(self, 'version_date_field'):
             return getattr(instance, self.version_date_field)
         
+        # if using versioning, return most recent version date
+        if is_versioned(instance):
+            try:
+                return instance.history.most_recent().history_info.date
+            except:
+                return ''
+            
         # no version_date_field specified, let's try to guess it
-        # TODO: support for track_changes.
         date_fields = [field for field in instance._meta.fields if isinstance(field, models.DateTimeField) and field.auto_now]
         if date_fields:
             return getattr(instance, date_fields[0].name) or ''
@@ -68,8 +77,12 @@ class MergeModelForm(forms.ModelForm):
         """
         current_version_date = str(self.get_version_date(self.instance))
         if current_version_date != self.data['version_date']:
+            ancestor = None
+            if is_versioned(self.instance) and self.data['version_date']:
+                ancestor_model = self.instance.history.as_of(self.data['version_date'])
+                ancestor = model_to_dict(ancestor_model)
             try:
-                self.cleaned_data = self.merge(self.cleaned_data, self.initial, None)
+                self.cleaned_data = self.merge(self.cleaned_data, self.initial, ancestor)
             except forms.ValidationError as e:
                 self.data = self.data.copy()
                 self.data['version_date'] = current_version_date

@@ -26,6 +26,7 @@ def get_history_fields(self, model):
         'history_date': models.DateTimeField(default=datetime.datetime.now),
         'history_version_number': version_number_of,
         'history_type': models.SmallIntegerField(choices=TYPE_CHOICES),
+        'history_type_verbose': type_to_verbose,
         # If you want to display "Reverted to version N" in every change
         # comment then you should stash that in the comment field
         # directly rather than using
@@ -44,6 +45,9 @@ def get_history_fields(self, model):
     }
 
     return fields
+
+def type_to_verbose(m):
+    return TYPE_CHOICES[m.history_info.type][1]
 
 def historical_record_init(m, *args, **kws):
     """
