@@ -391,7 +391,8 @@ class TrackChangesTest(TestCase):
                          [obj.c for obj in m_cur.history.all()]
         )
 
-    @skipIf(settings.DATABASE_ENGINE, 'sqlite3')
+    @skipIf(settings.DATABASE_ENGINE == 'sqlite3',
+            'See Django ticket #10164. Sqlite recycles primary keys')
     def test_queryset_bulk(self):
         m2 = M2(a="a oh a", b="b oh b", c=10)
         m2.save()
@@ -678,7 +679,8 @@ class TrackChangesTest(TestCase):
          self.assertEqual(len(related_set.filter(name="relatedtest2")), 1)
          self.assertEqual(len(related_set.filter(name="relatedtest!")), 1)
 
-    @skipIf(settings.DATABASE_ENGINE, 'sqlite3')
+    @skipIf(settings.DATABASE_ENGINE == 'sqlite3',
+            'See Django ticket #10164. Sqlite recycles primary keys')
     def test_fk_cascade(self):
         child = M2(a="oh yes", b="uh huh", c=10)
         child.save()
