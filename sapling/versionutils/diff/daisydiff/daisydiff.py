@@ -1,10 +1,10 @@
 import httplib
-import urllib
 import urlparse
 import html5lib
 import lxml
 
 from django.conf import settings
+from django.utils.http import urlencode
 
 DAISYDIFF_URL = getattr(settings, 'DAISYDIFF_URL', 'http://localhost:8080/diff')
 DAISYDIFF_MERGE_URL = getattr(settings, 'DAISYDIFF_MERGE_URL', 'http://localhost:8080/merge')
@@ -21,7 +21,7 @@ def daisydiff(field1, field2, service_url=DAISYDIFF_URL):
     Gets the HTML diff from the DaisyDiff server and returns it
     as a table row
     """
-    params = urllib.urlencode({'field1': field1, 'field2': field2})
+    params = urlencode({'field1': field1, 'field2': field2})
     headers = {"Content-type": "application/x-www-form-urlencoded",
                "Accept": "text/html"}
     split_url = urlparse.urlsplit(service_url)
@@ -42,7 +42,7 @@ def daisydiff_merge(field1, field2, ancestor, service_url=DAISYDIFF_MERGE_URL):
     ancestor and returns the tuple (merged_version, has_conflict) where has_conflict
     is True if the merge could not be done cleanly.
     """
-    params = urllib.urlencode({'field1': field1, 'field2': field2, 'ancestor': ancestor})
+    params = urlencode({'field1': field1, 'field2': field2, 'ancestor': ancestor})
     headers = {"Content-type": "application/x-www-form-urlencoded",
                "Accept": "text/html"}
     split_url = urlparse.urlsplit(service_url)
