@@ -2,7 +2,6 @@ import copy
 from functools import partial
 
 from django.db import models
-from django.conf import settings
 from django.db.models.options import DEFAULT_NAMES as ALL_META_OPTIONS
 from django.contrib.auth.models import User
 
@@ -288,12 +287,14 @@ class TrackChanges(object):
         #self._pre_delete_related_objects(instance)
     
     def post_delete(self, instance, **kws):
-        history_type = getattr(instance, '_history_type', None)
-        is_revert = history_type == TYPE_REVERTED
-        history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
-        if not self._is_pk_recycle_a_problem(instance):
-            self.create_historical_record(instance, history_type)
-            self.m2m_init(instance)
+        if instance._track_changes:
+            print "IN POST DELETE", instance, kws
+            history_type = getattr(instance, '_history_type', None)
+            is_revert = history_type == TYPE_REVERTED
+            history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
+            if not is_pk_recycle_a_problem(instance):
+                self.create_historical_record(instance, history_type)
+                self.m2m_init(instance)
 
         # Disconnect the related objects signals
         if hasattr(instance, '_rel_objs_methods'):
@@ -375,11 +376,6 @@ class TrackChanges(object):
             d['history_%s' % k] = v
         return d
 
-    def _is_pk_recycle_a_problem(self, instance):
-        if (settings.DATABASE_ENGINE == 'sqlite3' and
-            not unique_lookup_values_for(instance)):
-            return True
-
     def _pk_recycle_cleanup(self, instance):
         """
         SQLite recycles autofield primary keys. Oops!
@@ -390,12 +386,14 @@ class TrackChanges(object):
         that lack unique fields to prevent history-mystery!  The alternative
         would be to throw an error on deletion of these objects.
         """
-        if not self._is_pk_recycle_a_problem(instance):
+        if not is_pk_recycle_a_problem(instance):
             return
 
         manager = getattr(instance, self.manager_name)
         for entry in manager.all():
+            print "..DELETEING", entry
             entry.delete()
+        print "DONE WITH CLEANUP"
 
 
 class AutoUserField(models.ForeignKey):

@@ -2,6 +2,7 @@ from collections import defaultdict
 from functools import partial
 
 from django.db import models
+from django.conf import settings
 from django.db.models.sql.constants import LOOKUP_SEP
 
 def is_versioned(m):
@@ -67,6 +68,11 @@ def unique_lookup_values_for(m):
             else:
                 unique_fields[k] = getattr(m, k)
         return unique_fields
+
+def is_pk_recycle_a_problem(instance):
+    if (settings.DATABASE_ENGINE == 'sqlite3' and
+        not unique_lookup_values_for(instance)):
+        return True
 
 def _related_objs_delete_passalong(m):
     """
@@ -149,6 +155,9 @@ def delete_with_arguments(model_delete, m, using=None, track_changes=True, **kws
     """
     m._track_changes = track_changes
     m._save_with = kws
+
+    if is_pk_recycle_a_problem(m):
+        m._track_changes = False
 
     _related_objs_delete_passalong(m)
     return model_delete(m, using=using)

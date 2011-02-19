@@ -39,3 +39,15 @@ However, if you rename a unique field on a model you'll notice that it will clea
 >>>     p_h.name = "New name!"
 >>>     p_h.save(track_changes=False)
 >>> p.save()
+
+SQLite bug
+----------
+
+Running SQLite?  If you delete a model that contains no unique fields
+we'll zero out all its history.  This is to prevent corruption.
+
+http://code.djangoproject.com/ticket/10164 is the reason we have to do
+this.
+
+Workaround: Don't use SQLite, or if you do just know that when you
+delete models that don't have unique fields it may be "for good."
