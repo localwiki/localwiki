@@ -12,6 +12,13 @@ def is_versioned(m):
     """
     return (getattr(m, '_history_manager_name', None) is not None)
 
+def is_historical_instance(m):
+    """
+    Is the provided instance a historical instance?
+    """
+    return (hasattr(p_h, '_original_model') and
+            is_versioned(p_h._original_model))
+
 def unique_lookup_values_for(m):
     """
     Returns a name: value dictionary of the unique fields of the
