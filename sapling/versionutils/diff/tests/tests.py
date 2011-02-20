@@ -16,14 +16,14 @@ from django import db
 from utils import TestSettingsManager
 from models import M1, M1Diff, M1FieldDiff, M2, M3, M4ForeignKey, TEST_MODELS
 
-import diff
-from diff.diffutils import Registry, BaseFieldDiff, BaseModelDiff
-from diff.diffutils import TextFieldDiff, FileFieldDiff, ImageFieldDiff
-from diff.diffutils import HtmlFieldDiff
+from versionutils import diff
+from versionutils.diff.diffutils import Registry, BaseFieldDiff, BaseModelDiff
+from versionutils.diff.diffutils import TextFieldDiff, FileFieldDiff, ImageFieldDiff
+from versionutils.diff.diffutils import HtmlFieldDiff
 
 mgr = TestSettingsManager()
 INSTALLED_APPS = list(settings.INSTALLED_APPS)
-INSTALLED_APPS.append('diff.tests')
+INSTALLED_APPS.append('versionutils.diff.tests')
 mgr.set(INSTALLED_APPS=INSTALLED_APPS)
 
 class ModelDiffTest(TestCase):

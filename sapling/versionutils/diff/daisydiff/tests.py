@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.conf import settings
 from daisydiff import daisydiff
 import socket
-from diff.daisydiff.daisydiff import daisydiff_merge
+from versionutils.diff.daisydiff.daisydiff import daisydiff_merge
 
 TEST_SERVICE = hasattr(settings, 'DAISYDIFF_URL')
 

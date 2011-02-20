@@ -17,6 +17,7 @@ class HistoryDescriptor(object):
             instance._history_manager = HistoryManager(self.model, instance)
         return instance._history_manager
 
+
 class HistoricalMetaInfoQuerySet(QuerySet):
     """
     Simple QuerySet to make filtering intuitive.
@@ -46,6 +47,7 @@ class HistoricalMetaInfoQuerySet(QuerySet):
             kws_new[k_new] = v
 
         return super(HistoricalMetaInfoQuerySet, self).filter(*args, **kws_new)
+
 
 class HistoryManager(models.Manager):
     def __init__(self, model, instance=None):
@@ -86,7 +88,11 @@ class HistoryManager(models.Manager):
     @require_instance
     def most_recent(self):
         """
-        Returns the most recent copy of the history.
+        Returns:
+            The most recent historical record instance.
+
+        Raises:
+            DoesNotExist: Instance has no historical record. 
         """
         try:
             v = self.all()[0]
@@ -98,12 +104,18 @@ class HistoryManager(models.Manager):
     @require_instance
     def as_of(self, date=None, version=None):
         """
-        Returns the object as it was at the date or version number provided.
+        Args:
+            date: A datetime object.  The datetime doesn't have to be
+                exact.  We will return the historical instance that's
+                most recent, moving backward in time.
+            version: An integer version number.
 
-        @param date: datetime object.  The datetime doesn't have to be exact.
-                     We will return the historical instance that's most recent,
-                     moving backward in time.
-        @param version: integer (version number).
+        Returns:
+            A historical record instance that represents the object as
+            it was at the date or version number provided.
+
+        Raises:
+            DoesNotExist: Instance hasn't been created yet.
         """
         try:
             if version and version > 0:

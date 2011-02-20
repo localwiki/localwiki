@@ -7,24 +7,32 @@ from django.db.models.sql.constants import LOOKUP_SEP
 
 def is_versioned(m):
     """
-    @param m: A model instance or class.
-    @returns: True if the model has changes tracked.
+    Args:
+        m: A model instance or model class.
+
+    Returns:
+        True if the model has changes tracked.
     """
     return (getattr(m, '_history_manager_name', None) is not None)
 
 def is_historical_instance(m):
     """
     Is the provided instance a historical instance?
+
+    Args:
+        m: A model or historical model instance.
     """
     return (hasattr(p_h, '_original_model') and
             is_versioned(p_h._original_model))
 
 def unique_lookup_values_for(m):
     """
-    Returns a name: value dictionary of the unique fields of the
-    model instance m.
+    Args:
+        m: A model instance.
 
-    @param m: An instance of a model.
+    Returns:
+        A {name: value} dictionary of the unique fields of the
+        model instance m.
     """
     for field in m._meta.fields:
         if field.primary_key or field.auto_created:
@@ -86,7 +94,8 @@ def _related_objs_delete_passalong(m):
     For all related objects, set _track_changes and _save_with
     accordingly.
 
-    @param m: a model instance
+    Args:
+        m: A model instance.
     """
     # We use signals here.  One alternative would be to do the
     # cascade ourselves, but we can't be sure of casade behavior.

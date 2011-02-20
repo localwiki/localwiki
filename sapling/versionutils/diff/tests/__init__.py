@@ -1,2 +1,2 @@
 from tests import *
-from diff.daisydiff.tests import *
+from versionutils.diff.daisydiff.tests import *

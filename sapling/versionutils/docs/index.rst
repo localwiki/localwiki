@@ -8,7 +8,7 @@
 
 ``django-versionutils``' ``versioning`` app is a smart and flexible versioning system for models.  Existing model versioning systems left much to be desired.  Major advantages over existing versioning systems are:
 
-* Easy-to-use ORM access to historical model data.
+* Super-sexy ORM access to historical model data.
 * Supports relational fields and is *smart* about relational
   lookups.
 * Stores model data in separate tables, one table for each versioned
@@ -64,11 +64,15 @@ version::
 
 Then run ``manage.py syncdb`` and you're set!
 
+
 .. toctree::
    :maxdepth: 2
 
-   tutorial
+   usage
+   reference
    notes
+   extend
+   contribute
 
 Indices and tables
 ==================

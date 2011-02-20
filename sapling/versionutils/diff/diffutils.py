@@ -14,6 +14,7 @@ class DiffUtilNotFound(Exception):
     """
     pass
 
+
 class BaseFieldDiff():
     """
     Simplest diff possible, used when no better option is available.
@@ -24,36 +25,49 @@ class BaseFieldDiff():
     specific model.  See BaseModelDiff for details on the latter.
     
     Here's how you might create your own diff util and register it for
-    a field type:
+    a field type::
     
-    class MyIntegerDiff(BaseFieldDiff):
-        def get_diff(self):
-            if self.field1 == self.field2:
-                return None
-            return {'difference': (self.field2 - self.field1)}
-        
-        def as_html(self):
-            d = self.get_diff()
-            if d is None:
-                return 'Values are the same'
-            if d['difference'] > 0:
-                return 'New value is larger'
-            return 'New value is smaller'
-            Unchanged
+        class MyIntegerDiff(BaseFieldDiff):
+            def get_diff(self):
+                if self.field1 == self.field2:
+                    return None
+                return {'difference': (self.field2 - self.field1)}
             
-    diff.register(models.IntegerField, MyIntegerDiff)
+            def as_html(self):
+                d = self.get_diff()
+                if d is None:
+                    return 'Values are the same'
+                if d['difference'] > 0:
+                    return 'New value is larger'
+                return 'New value is smaller'
+                Unchanged
+                
+        diff.register(models.IntegerField, MyIntegerDiff)
+
+    Attributes:
+        field1: The first value you want to diff.
+        field2: The second value you want to diff, against field1.
+        template: An optional filename of the template to use when rendering.
     """
     template = None
     
     def __init__(self, field1, field2):
+        """
+        Args:
+            field1: The first value you want to diff.
+            field2: The second value you want to diff, against field1.
+        """
         self.field1 = field1
         self.field2 = field2
         
     def get_diff(self):
         """
-        Compares the two field values (field1 and field2) and returns a dictionary
-        that contains the diffs.  This dictionary can then be used by as_html() for
-        rendering HTML.  Returns None if the fields values are equal.
+        Compares the two field values (field1 and field2).
+
+        Returns:
+            A dictionary containing the diff information.  This dictionary
+            can then be used by as_html() for rendering HTML.  Returns None
+            if the field values are equal.
         """
         if self.field1 == self.field2:
             return None
@@ -61,14 +75,16 @@ class BaseFieldDiff():
     
     def as_dict(self):
         """
-        Returns the diff as a dictionary or array of dictionaries.
+        Returns:
+            The diff as a dictionary or array of dictionaries.
         """
         return self.get_diff()
     
     def as_html(self):
         """
-        Returns a string of the diff between field1 and field2.  These are normally
-        one row of an HTML table, with two cells in a side-by-side diff.
+        Returns:
+            A string of the diff between field1 and field2.  These are normally
+            one row of an HTML table, with two cells in a side-by-side diff.
         """
         diff = self.as_dict()
         if self.template:
@@ -83,38 +99,56 @@ class BaseFieldDiff():
     
     def __unicode__(self):
         return mark_safe(unicode(self.__str__()))
+
     
 class BaseModelDiff(object):
     """
     Diff util used for comparing two model instances.  By default, it will compare
     the instances on all of their fields, except AutoFields.
     To customize which fields to compare, subclass BaseModelDiff, setting the
-    'fields' or 'excludes' attributes like this:
+    'fields' or 'excludes' attributes like this::
     
-    class MyModelDiff(diff.BaseModelDiff):
-        fields =   ('name', 
-                    'contents')
+        class MyModelDiff(diff.BaseModelDiff):
+            fields =   ('name', 
+                        'contents')
                     
-    and then register it with your model like this:
+    and then register it with your model like this::
     
-    diff.register(MyModel, MyModelDiff)
+        diff.register(MyModel, MyModelDiff)
     
     You can also customize how each field is compared by using a tuple
-    ('field_name', FieldDiff) instead of just the field names, like this:
+    ('field_name', FieldDiff) instead of just the field names, like this::
     
-    class MyModelDiff(diff.BaseModelDiff):
-        fields =   ( ('name', diff.TextFieldDiff),
-                     ('contents', diff.HtmlFieldDiff),
-                   )
+        class MyModelDiff(diff.BaseModelDiff):
+            fields =   ( ('name', diff.TextFieldDiff),
+                         ('contents', diff.HtmlFieldDiff),
+                       )
+
+    Attributes:
+        fields: An optional tuple containing either field names or
+            ('field_name', FieldDiff).  The listed fields will be
+            diffed.
+        excludes: An optional tuple of field names to ignore.
+            
     """
     fields = None
     excludes = ()
     
     def __init__(self, model1, model2):
+        """
+        Args:
+            model1: The first model instance you want to diff.
+            model2: The second model instance you want to diff,
+                against model1.
+        """
         self.model1 = model1
         self.model2 = model2
     
     def as_dict(self):
+        """
+        Returns:
+            The diff as a dictionary or array of dictionaries.
+        """
         diffs = {}
         for field, field_diff in self.get_diff().items():
             field_diff_dict = field_diff.as_dict()
@@ -126,9 +160,13 @@ class BaseModelDiff(object):
     
     def as_html(self):
         """
-        Renders the diffs between the model instances as a table, returning an
-        HTML string. Only those fields that are different will be rendered as
-        rows in the table. Fields that are not different will just be skipped.
+        Renders the diffs between the model instances as an HTML table. Only
+        those fields that are different will be rendered as rows in the
+        table. Fields that are not different will be skipped.
+       
+        Returns:
+            An html string string representing the differences between
+            model1 and model2.
         """
         diffs = self.get_diff()
         diff_str = []
@@ -148,7 +186,8 @@ class BaseModelDiff(object):
             
     def get_diff(self):
         """
-        Returns a dictionary that contains all field diffs, indexed by field name.
+        Returns:
+            A dictionary that contains all field diffs, indexed by field name.
         """
         diff = {}
         diff_utils = {}
@@ -189,19 +228,23 @@ class BaseModelDiff(object):
         For use in templates, returns a safe string.
         """
         return mark_safe(unicode(self.__str__()))
+
     
 class TextFieldDiff(BaseFieldDiff):
     """
     Compares the fields as text and renders the diff in an easy to read format.
     """
+    template = 'diff/text_diff.html'
+
     def as_html(self):
         d = self.get_diff()
         if d is None:
             return '<tr><td colspan="2">(No differences found)</td></tr>'
-        return render_to_string('diff/text_diff.html', {'diff': d})
+        return render_to_string(self.template, {'diff': d})
     
     def get_diff(self):
         return get_diff_operations_clean(self.field1, self.field2)
+
     
 class HtmlFieldDiff(BaseFieldDiff):
     """
@@ -232,6 +275,8 @@ class FileFieldDiff(BaseFieldDiff):
     """
     Compares the fields as file paths and renders links to the files.
     """
+    template = 'diff/file_diff.html'
+
     def get_diff(self):
         """
         Returns a dictionary of all the file attributes or None if it's the same file
@@ -249,17 +294,19 @@ class FileFieldDiff(BaseFieldDiff):
         d = self.get_diff()
         if d is None:
             return '<tr><td colspan="2">(No differences found)</td></tr>'
-        return render_to_string('diff/file_diff.html', {'diff': d})
+        return render_to_string(self.template, {'diff': d})
 
 class ImageFieldDiff(FileFieldDiff):
     """
     Compares the fields as image file paths and renders the images.
     """
+    template = 'diff/image_diff.html'
+
     def as_html(self):
         d = self.get_diff()
         if d is None:
             return '<tr><td colspan="2">(No differences found)</td></tr>'
-        return render_to_string('diff/image_diff.html', {'diff': d})
+        return render_to_string(self.template, {'diff': d})
         
 def get_diff_operations(a, b):
     """
@@ -311,9 +358,12 @@ class Registry(object):
     def register(self, model_or_field, diff_util):
         """
         Registers a diff util for a particular model or field type.
-        @param model_or_field: type that will be compared (subclass of Model or Field)
-        @param diff_util: class that will do the comparison (subclass of BaseModelDiff
-        or BaseFieldDiff, respectively)
+
+        Attrs:
+            model_or_field: The type that will be compared (subclass of
+                Model or Field)
+            diff_util: The class that will do the comparison (subclass
+                of BaseModelDiff or BaseFieldDiff, respectively)
         """
         self._registry[model_or_field] = diff_util
         
@@ -336,23 +386,59 @@ registry = Registry()
 
 def register(model_or_field, diff_util):
     """
-    See Registry.register()
-    """ 
+    Registers a diff util for a particular model or field type.
+
+    Examples::
+
+        register(models.CharField, TextFieldDiff)
+        register(MyModel, MyModelDiff)
+
+    Attrs:
+        model_or_field: The type that will be compared (subclass of
+            Model or Field)
+        diff_util: The class that will do the comparison (subclass
+            of BaseModelDiff or BaseFieldDiff, respectively)
+    """
     registry.register(model_or_field, diff_util)
 
 def diff(object1, object2):
     """
     Compares two objects (such as model instances) and returns an object that can
     be used to render the differences between the two objects.
+
+    Examples::
+
+        >>> m1 = Person(name="Philip")
+        >>> m2 = Person(name="Phillip")
+        >>> diff(m1, m2).as_dict()
+        {'name': [{'equal': 'Phil'}, {'inserted': 'l'}, {'equal': 'ip'}]}
+        >>> diff(m1, m2).as_html()
+        u('<tr>'
+            '<td colspan="2">name</td>'
+          '</tr>\n
+          '<tr>'
+          '<td colspan="2">'
+            '<span class="diff_equal">Phil</span>'
+            '<ins>l</ins>'
+            '<span class="diff_equal">ip</span>'
+          '</td>
+          '</tr>\n')
+
+    We could do the same with a field instance.
+
+    Returns:
+        An object that can be used to display differences.  Object will be
+        either BaseFieldDiff, BaseModelDiff or a subclass.
+
+    Raises:
+        DiffUtilNotFound: If there's no registered or inferred diff for
+            the objects.
     """
     diff_util = registry.get_diff_util(object1.__class__)
     return diff_util(object1, object2)
 
-"""
-Built-in diff utils provided for some of the Django field types.
-"""
+# Built-in diff utils provided for some of the Django field types.
 register(models.CharField, TextFieldDiff)
 register(models.TextField, TextFieldDiff)
 register(models.FileField, FileFieldDiff)
 register(models.ImageField, ImageFieldDiff)
-

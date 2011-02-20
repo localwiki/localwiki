@@ -9,7 +9,6 @@ from utils import *
 from storage import *
 from registry import *
 from constants import *
-from fields import *
 from history_model_methods import get_history_fields
 import manager
 
@@ -74,7 +73,8 @@ class TrackChanges(object):
         model definition ('class MyModel(models.Model)') in the eyes of the
         Django machinery.
 
-        @returns: Class representing the historical version of the model.
+        Returns:
+            Class representing the historical version of the model.
         """
         attrs = self.get_misc_members(model)
         attrs.update(self.get_fields(model))
@@ -148,8 +148,10 @@ class TrackChanges(object):
 
     def get_fields(self, model):
         """
-        Creates copies of the model's original fields, returning
-        a dictionary mapping field name to copied field object.
+        Creates copies of the model's original fields.
+        
+        Returns:
+            A dictionary mapping field name to copied field object.
         """
         def _get_fk_opts(field):
             opts = {}
@@ -235,14 +237,17 @@ class TrackChanges(object):
 
     def get_extra_history_fields(self, model):
         """
-        Returns a dictionary of the non-essential fields that will be added to
-        the historical record model.
+        Extra, non-essential fields for the historical models.
 
-        If you subclass TrackChanges this is a good method to over-ride --
+        If you subclass TrackChanges this is a good method to over-ride:
         simply add your own values to the fields for custom fields.
 
-        NOTE: Your custom fields should start with history_ if you want them to
-              be looked up via hm.history_info.fieldname
+        NOTE: Your custom fields should start with history_ if you want them
+              to be looked up via hm.history_info.fieldname
+
+        Returns:
+            A dictionary of fields that will be added to the historical
+            record model.
         """
         fields = {
             'history_comment': models.CharField(max_length=200, blank=True,
@@ -261,8 +266,9 @@ class TrackChanges(object):
 
     def get_meta_options(self, model):
         """
-        Returns a dictionary of fields that will be added to
-        the Meta inner class of the track changes model.
+        Returns:
+            A dictionary of fields that will be added to the Meta inner
+            class of the historical record model.
         """
         meta = { 'ordering': ('-history_date',) }
         for k in ALL_META_OPTIONS:
@@ -284,17 +290,13 @@ class TrackChanges(object):
     def pre_delete(self, instance, **kws):
         self._pk_recycle_cleanup(instance)
 
-        #self._pre_delete_related_objects(instance)
-    
     def post_delete(self, instance, **kws):
-        if instance._track_changes:
-            print "IN POST DELETE", instance, kws
-            history_type = getattr(instance, '_history_type', None)
-            is_revert = history_type == TYPE_REVERTED
-            history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
-            if not is_pk_recycle_a_problem(instance):
-                self.create_historical_record(instance, history_type)
-                self.m2m_init(instance)
+        history_type = getattr(instance, '_history_type', None)
+        is_revert = history_type == TYPE_REVERTED
+        history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
+        if not is_pk_recycle_a_problem(instance):
+            self.create_historical_record(instance, history_type)
+            self.m2m_init(instance)
 
         # Disconnect the related objects signals
         if hasattr(instance, '_rel_objs_methods'):
@@ -303,7 +305,7 @@ class TrackChanges(object):
 
     def m2m_init(self, instance):
         """
-        Initialize the m2m sets on a historical instance.
+        Initialize the ManyToMany sets on a historical instance.
         """
         hist_instance = instance.history.most_recent()
         for field in instance._meta.many_to_many:
@@ -319,7 +321,8 @@ class TrackChanges(object):
         A signal handler that syncs changes to m2m relations with
         historical models.
 
-        @param attname: attribute name of the m2m field on the base model.
+        Args:
+            attname: Attribute name of the m2m field on the base model.
         """
         if pk_set:
             changed_ms = [ model.objects.get(pk=pk) for pk in pk_set ]

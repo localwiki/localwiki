@@ -1,6 +1,6 @@
 from django.db import models
 
-import diff
+from versionutils import diff
 
 """
 TODO: It would be cool to write a little thing to randomly generate

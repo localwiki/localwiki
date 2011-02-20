@@ -1,4 +1,7 @@
+from functools import wraps
+
 def require_instance(historyManagerFunction):
+    @wraps(historyManagerFunction)
     def _require_instance(*args, **kwargs):
         self = args[0]
         if not self.instance:

@@ -16,6 +16,7 @@ class Custom404Mixin(object):
                 raise e
         return view_or_handler404
 
+
 class CreateObjectMixin(object):
     def create_object(self):
         self.form_class._meta.model()

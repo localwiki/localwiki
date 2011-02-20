@@ -1,8 +1,7 @@
-"""
-Simple nailed-to-class tracking.
-"""
-
 class FieldRegistry(object):
+    """
+    Simple nailed-to-class tracking.
+    """
     _registry = {}
 
     def __init__(self, type):

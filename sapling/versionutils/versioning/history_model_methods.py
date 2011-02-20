@@ -11,7 +11,6 @@ from django.db import models
 from django.db.models import Max
 from django.db.models.sql.constants import LOOKUP_SEP
 
-from fields import *
 from constants import *
 from utils import *
 
@@ -19,6 +18,9 @@ def get_history_fields(self, model):
     """
     Returns a dictionary of the essential fields that will be added to the
     historical record model, in addition to the ones returned by models.get_fields.
+
+    Args:
+        model: A model class.
     """
     fields = {
         'history_id': models.AutoField(primary_key=True),
@@ -63,7 +65,8 @@ def _wrap_reverse_lookups(m):
     Make reverse foreign key lookups return historical versions
     if the model is versioned.
 
-    @param m: a historical record model
+    Args:
+        m: A historical record instance.
     """
     def _reverse_set_lookup(m, rel_o):
         attr = rel_o.field.name
@@ -158,6 +161,11 @@ def historical_record_getattribute(model, m, name):
     we'll get an error because Django does an isinstance() check on
     assignment to model fields. Additionally, the __set__ method on
     related fields will force evaluation due to equality checks.
+
+    Args:
+        model: A model class.
+        m: The model instance.
+        name: The string representing the attribute name.
     """
     basedict = model.__getattribute__(m, '__dict__')
     direct_val = basedict.get('_direct_lookup_fields', {}).get(name)
@@ -170,15 +178,18 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     This is used on a *historical instance* - e.g. something you get
     using history.get(..) rather than an instance of the model.  Like:
 
-    ph = p.history.as_of(..)
-    ph.revert_to()
+    >> ph = p.history.as_of(..)
+    >> ph.revert_to()
 
     Reverts to this version of the model.
 
-    @param delete_newer_versions: if True, delete all versions in the
-             history newer than this version.
-    @param track_changes: if False, won't log *this revert* as an action in
-             the history log.
+    Args:
+        delete_newer_versions: If True, delete all versions in the
+            history newer than this version.
+        track_changes: If False, won't log *this revert* as an action in
+            the history log.
+        kws: Any other keyword arguments you want to pass along to the
+            model save method.
     """
     # Maybe-TODO At some point we may want to pull this out into some
     # kind of hm.history_info.get_instance() method. Providing
@@ -210,7 +221,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     if hm.history_info.type == TYPE_DELETED:
         # We are reverting to a deleted version of the model
         # so..delete the model!
-        m.delete(reverted_to_version=hm)
+        m.delete(reverted_to_version=hm, **kws)
     else:
         m.save(reverted_to_version=hm, **kws)
 
@@ -218,7 +229,8 @@ def version_number_of(hm):
     """
     Returns version number.
 
-    @param hm: history object.
+    Args:
+        hm: Historical record instance.
     """
     if getattr(hm.history_info.instance, '_version_number', None) is None:
         date = hm.history_info.date
