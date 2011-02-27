@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>versionutils.versioning &mdash; django-versionutils v0.1 documentation</title>
+    <title>django-versionutils &mdash; django-versionutils v0.1 documentation</title>
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="django-versionutils v0.1 documentation" href="#" />
-    <link rel="next" title="Tutorial" href="tutorial.html" /> 
+    <link rel="next" title="versionutils.versioning" href="versioning/index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -33,7 +33,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="tutorial.html" title="Tutorial"
+          <a href="versioning/index.html" title="versionutils.versioning"
              accesskey="N">next</a> |</li>
         <li><a href="#">django-versionutils v0.1 documentation</a> &raquo;</li> 
       </ul>
@@ -44,78 +44,31 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="versionutils-versioning">
-<h1><tt class="docutils literal"><span class="pre">versionutils.versioning</span></tt><a class="headerlink" href="#versionutils-versioning" title="Permalink to this headline">¶</a></h1>
-<p><tt class="docutils literal"><span class="pre">django-versionutils</span></tt>&#8216; <tt class="docutils literal"><span class="pre">versioning</span></tt> app is a smart and flexible versioning system for models.  Existing model versioning systems left much to be desired.  Major advantages over existing versioning systems are:</p>
-<ul class="simple">
-<li>Easy-to-use ORM access to historical model data.</li>
-<li>Supports relational fields and is <em>smart</em> about relational
-lookups.</li>
-<li>Stores model data in separate tables, one table for each versioned
-model.  Doesn&#8217;t add book-keeping fields or crazy things to your models.</li>
-<li>Does not serialize model data.  Migrations aren&#8217;t insane.</li>
-<li>Does smart lookup of old model versions, even if the model is
-currently deleted.  Tracks models by unique fields where possible.</li>
-<li>Easy to extend and add your own custom fields to versioned models.</li>
-<li>Supports several constructs important to real-world usage, like
-&#8220;delete all newer versions when reverting&#8221; and &#8220;don&#8217;t track changes for
-this save.&#8221;  Allows per-save data, like a changeset comment, to be
-optionally passed into the parent model.</li>
-<li>Extensive test suite.</li>
-<li>Can optionally automatically track user information during saves.</li>
-</ul>
-</div>
-<div class="section" id="how-to-install">
-<h1>How to Install<a class="headerlink" href="#how-to-install" title="Permalink to this headline">¶</a></h1>
-<p>First, add this project to your list of <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> in
-<tt class="docutils literal"><span class="pre">settings.py</span></tt>:</p>
-<div class="highlight-python"><pre>INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    ...
-    'versiontutils.versioning',
-    ...
-)</pre>
-</div>
-<p>If you want to automatically track user information during saves, simply add
-<tt class="docutils literal"><span class="pre">AutoTrackUserInfoMiddleware</span></tt> to your middleware:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
-    <span class="s">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
-    <span class="s">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
-    <span class="s">&#39;versionutils.versioning.middleware.AutoTrackUserInfoMiddleware&#39;</span><span class="p">,</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<p>Now you&#8217;ve got the app installed!  But you probably want to track changes on
-some models, right?  Simply add <tt class="docutils literal"><span class="pre">TrackChanges()</span></tt> to a model you want to
-version:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">versionutils.versioning</span> <span class="kn">import</span> <span class="n">TrackChanges</span>
-
-<span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-    <span class="o">...</span>
-
-    <span class="n">history</span> <span class="o">=</span> <span class="n">TrackChanges</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Then run <tt class="docutils literal"><span class="pre">manage.py</span> <span class="pre">syncdb</span></tt> and you&#8217;re set!</p>
+  <div class="section" id="django-versionutils">
+<h1><tt class="docutils literal"><span class="pre">django-versionutils</span></tt><a class="headerlink" href="#django-versionutils" title="Permalink to this headline">¶</a></h1>
+<p><tt class="docutils literal"><span class="pre">django-versionutils</span></tt> is a collection of reusable Django apps designed
+to provide everything you need to do robust, smart and extendable versioning,
+diffing and merging when working with Django.</p>
+<p>The <tt class="docutils literal"><span class="pre">django-versionutils</span></tt> project was initially developed for the <a class="reference external" href="http://localwiki.org/">LocalWiki
+project</a>.  We found that existing versioning systems for Django didn&#8217;t
+suit our needs (and often left much to be desired).</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#basic-example">Basic example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#reverting-objects">Reverting objects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#getting-historical-objects">Getting historical objects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#smart-related-object-lookup">Smart related object lookup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorial.html#some-more-examples">Some more examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="versioning/index.html"><tt class="docutils literal"><span class="pre">versionutils.versioning</span></tt></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="versioning/install.html">How to Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="versioning/usage.html">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="versioning/reference.html">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="versioning/notes.html">Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="versioning/extend.html">Extending</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="notes.html">Notes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notes.html#migrations-syncdb">Migrations / syncdb</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes.html#bulk-queryset-update-admin-bulk-actions">Bulk QuerySet update() / Admin bulk actions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notes.html#smart-lookups">Smart lookups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diff/index.html"><tt class="docutils literal"><span class="pre">versionutils.diff</span></tt></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="diff/install.html">How to Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diff/reference.html">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="merging/index.html"><tt class="docutils literal"><span class="pre">versionutils.merging</span></tt></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="merging/index.html#how-to-install">How to Install</a></li>
 </ul>
 </li>
 </ul>
@@ -125,7 +78,6 @@ version:</p>
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
 <li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
 </ul>
 </div>
@@ -138,16 +90,15 @@ version:</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">versionutils.versioning</span></tt></a></li>
-<li><a class="reference internal" href="#how-to-install">How to Install</a><ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">django-versionutils</span></tt></a><ul>
 </ul>
 </li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
   <h4>Next topic</h4>
-  <p class="topless"><a href="tutorial.html"
-                        title="next chapter">Tutorial</a></p>
+  <p class="topless"><a href="versioning/index.html"
+                        title="next chapter"><tt class="docutils literal"><span class="pre">versionutils.versioning</span></tt></a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/index.txt"
@@ -177,7 +128,7 @@ version:</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="tutorial.html" title="Tutorial"
+          <a href="versioning/index.html" title="versionutils.versioning"
              >next</a> |</li>
         <li><a href="#">django-versionutils v0.1 documentation</a> &raquo;</li> 
       </ul>
