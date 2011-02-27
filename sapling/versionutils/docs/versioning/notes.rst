@@ -20,9 +20,9 @@ Because there's no magic here -- there's really a separate ``_hist`` table for e
 
 Bulk QuerySet update() / Admin bulk actions
 -------------------------------------------
-django-trackchanges works fine with QuerySet.delete() and the admin's bulk deleting.  However, at the moment there's no way to have it work with QuerySet.update().  We recommend not using QuerySet.update() on models you want to perserve versioning information on.
+The ``versioning`` app works fine with ``QuerySet.delete()`` and the admin's bulk deleting.  However, at the moment there's no way to have it work with ``QuerySet.update()``.  We recommend not using ``QuerySet.update()`` on models you want to perserve versioning information on.
 
-Working around this is braindead-easy!  See http://code.trac.localwiki.org/ticket/33 for a workaround.  Issuing a QuerySet.update() won't break anything -- it just won't save a new version of the model in the history.
+Working around this is braindead-easy!  See http://code.trac.localwiki.org/ticket/33 for a workaround.  Issuing a ``QuerySet.update()`` won't break anything -- it just won't save a new version of the model in the history.
 
 For more information, see Django ticket #12184 (http://code.djangoproject.com/ticket/12184), #10754 (http://code.djangoproject.com/ticket/10754) and our ticket #33 (http://code.trac.localwiki.org/ticket/33).  Weigh in!
 
@@ -31,14 +31,14 @@ Smart lookups
 
 We try do our best to be smart about unique fields! For instance, if you delete and then recreate a model (so it has a new integer primary key), we'll still pull up the correct history of the model based on its unique fields, if possible.
 
-However, if you rename a unique field on a model you'll notice that it will clear out the history of the model unless there was a model with that same field in the past (in which case you'll see that model's history). If you'd like to rename all the historical versions' unique fields you'll want to do that by hand, kinda like this:
+However, if you rename a unique field on a model you'll notice that it will clear out the history of the model unless there was a model with that same field in the past (in which case you'll see that model's history). If you'd like to rename all the historical versions' unique fields you'll want to do that by hand, kinda like this::
 
->>> p.name = "New name!"
-# 'name' is a unique field
->>> for p_h in p.history.all():
->>>     p_h.name = "New name!"
->>>     p_h.save(track_changes=False)
->>> p.save()
+    >>> p.name = "New name!"
+    # 'name' is a unique field
+    >>> for p_h in p.history.all():
+    >>>     p_h.name = "New name!"
+    >>>     p_h.save(track_changes=False)
+    >>> p.save()
 
 SQLite bug
 ----------
@@ -49,5 +49,5 @@ we'll zero out all its history.  This is to prevent corruption.
 http://code.djangoproject.com/ticket/10164 is the reason we have to do
 this.
 
-Workaround: Don't use SQLite, or if you do just know that when you
+Workaround: Don't use SQLite in production, or if you do just know that when you
 delete models that don't have unique fields it may be "for good."

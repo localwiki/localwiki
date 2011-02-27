@@ -85,7 +85,6 @@ class HistoryManager(models.Manager):
 
         return HistoricalMetaInfoQuerySet(model=self.model).filter(**filter)
 
-    @require_instance
     def most_recent(self):
         """
         Returns:

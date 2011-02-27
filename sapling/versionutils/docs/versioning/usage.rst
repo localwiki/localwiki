@@ -24,7 +24,7 @@ Using ``versionutils.versioning`` is extremely simple.  Here's a little usage ex
     u'Some dude'
 
 Historical instances have all the same fields as the normal model.  They
-also have the ``history_info`` field which has information on the
+also have :attr:`the history_info field<history_info>` which has information on the
 revision::
 
     >>> m_hist.history_info.date
@@ -32,12 +32,9 @@ revision::
     >>> m_hist.history_info.version_number()
     1
 
-If you enable the ``AutoTrackUserInfoMiddleware`` then the optional
+If you enable the :doc:`AutoTrackUserInfoMiddleware<install>` then the optional
 ``history_info.user`` and ``history_info.user_ip`` attributes be
 automatically added.
-
-You can add extra history fields to ``history_info`` by subclassing
-``TrackChanges`` and extending the ``get_extra_history_fields`` method.
 
 Reverting objects
 -----------------
@@ -94,7 +91,7 @@ Smart related object lookup
 ---------------------------
 
 When a versioned model is related to another versioned model via a foreign
-key [#]_ lookups of the related object on the historical instance will refer
+key lookups of the related object on the historical instance will refer
 to that related object *at the time the parent instance was saved*.  Here's an
 example:
 
@@ -105,6 +102,8 @@ Suppose we have::
         person = models.ForeignKey(Person)
     
         history = TrackChanges()
+
+then::
 
     >>> philip = Person.objects.get(name='Philip')
     >>> profile = Profile(details="Long walks on the beach", person=philip)
@@ -150,6 +149,23 @@ current historical object *at the time it was saved!*
 
 ``OneToOneField`` and ``ManyToManyField`` behave similarly.
 
+Passing in extra arguments to save() and delete()
+-------------------------------------------------
+Because we sometimes want to associate extra information with a given
+model ``save()`` or ``delete()`` (like a save comment), we allow extra arguments
+to be passed into ``save()`` and ``delete()``::
+
+    >> p = Person(name="Arlen", description="Likes beer")
+    >> p.save(comment="creating this person for the first time")
+    >> ph = p.history.most_recent()
+    >> ph.history_info.comment
+    u'creating this person for the first time'
+
+You can pass in any of the *optional fields* on the :attr:`history_info
+attribute<history_info>` into the ``save()`` and ``delete()`` methods on your
+models.  In theory you can pass in non-optional fields (like ``date``),
+but you probably won't need to do that.
+
 Some more examples
 ------------------
 
@@ -158,4 +174,5 @@ updated::
 
     >>> from versionutils.versioning.constants import *
     >>> Person.history.filter(history_info__type=TYPE_ADDED)
-    [<Person_hist: Person object as of 2011-02-15 21:53:15.613445>, <Person_hist: Person object as of 2011-02-15 17:23:20.483243>]
+    [<Person_hist: Person object as of 2011-02-15 21:53:15.613445>,
+     <Person_hist: Person object as of 2011-02-15 17:23:20.483243>]

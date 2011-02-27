@@ -76,15 +76,15 @@ class TrackChanges(object):
         Returns:
             Class representing the historical version of the model.
         """
-        attrs = self.get_misc_members(model)
+        # For convience's sake, it's nice to be able to reference the
+        # non-historical class from the historical class.
+        attrs = {'_original_model': model}
+
+        attrs.update(self.get_misc_members(model))
         attrs.update(self.get_fields(model))
         attrs.update(get_history_fields(self, model))
         attrs.update(self.get_extra_history_fields(model))
         attrs.update(Meta=type('Meta', (), self.get_meta_options(model)))
-
-        # For convience's sake, it's nice to be able to reference the
-        # non-historical class from the historical class.
-        attrs['_original_model'] = model
 
         name = '%s_hist' % model._meta.object_name
         return type(name, (models.Model,), attrs)
@@ -129,12 +129,22 @@ class TrackChanges(object):
 
     def get_misc_members(self, model):
         # Would like to know a better way to do this.
-        # Ideally we would subclass the model and then extend it.
-        # But Django won't let us replace a field (in our case, a
-        # ForeignKey field we are replacing with a wrapped IntegerField)
-        # Based on a message on twitter from Adrian, approaches like
-        # http://bit.ly/gPXlgk to get around the subclass limitation
-        # are a bad idea, but not sure why (?)
+        # Ideally we would subclass the model and then extend it,
+        # but Django won't let us replace a field (in our case, a
+        # ForeignKey field change to point to a historical model).
+        # See also http://bit.ly/9k2Eqn
+        #
+        # The error we see when trying this is:
+        # FieldError: Local field 'person' in class 'ProfileChangeFK' clashes
+        # with field of similar name from base class 'Profile'
+        #
+        # But really -- even though the historical model does a good job
+        # of pretending to be the non-historical model -- it's still a
+        # different model.  Faking might be bad.  People shouldn't write code
+        # that depends on the model type.  If this becomes problematic then
+        # we can swap out our call to type() in create_history_model()
+        # for a call to a metaclass with __instancecheck__ /
+        # __subclasscheck__ defined (a'la python 2.6)
         d = copy.copy(dict(model.__dict__))
         for k in TrackChanges.MEMBERS_TO_SKIP:
             if d.get(k, None) is not None:

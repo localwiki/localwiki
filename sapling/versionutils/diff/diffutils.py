@@ -359,6 +359,9 @@ class Registry(object):
         """
         Registers a diff util for a particular model or field type.
 
+        For convience, several built-in fields (CharField, TextField,
+        FileField, ImageField) are pre-registered.
+
         Attrs:
             model_or_field: The type that will be compared (subclass of
                 Model or Field)
@@ -378,6 +381,9 @@ class Registry(object):
             return BaseFieldDiff
         # unregistered, try the base class
         if model_or_field.__base__ is not object:
+            # NOTE: I think __base__ will grab the 'right' parent class.
+            # This will probably work fine.  The work around
+            # (for c in __bases__) is probably too annoying to implement. 
             return self.get_diff_util(model_or_field.__base__)
         
         raise DiffUtilNotFound
@@ -387,6 +393,9 @@ registry = Registry()
 def register(model_or_field, diff_util):
     """
     Registers a diff util for a particular model or field type.
+
+    For convience, several built-in fields (CharField, TextField,
+    FileField, ImageField) are pre-registered.
 
     Examples::
 
@@ -406,7 +415,7 @@ def diff(object1, object2):
     Compares two objects (such as model instances) and returns an object that can
     be used to render the differences between the two objects.
 
-    Examples::
+    Example::
 
         >>> m1 = Person(name="Philip")
         >>> m2 = Person(name="Phillip")
@@ -415,16 +424,16 @@ def diff(object1, object2):
         >>> diff(m1, m2).as_html()
         u('<tr>'
             '<td colspan="2">name</td>'
-          '</tr>\n
+          '</tr>
           '<tr>'
           '<td colspan="2">'
             '<span class="diff_equal">Phil</span>'
             '<ins>l</ins>'
             '<span class="diff_equal">ip</span>'
           '</td>
-          '</tr>\n')
+          '</tr>')
 
-    We could do the same with a field instance.
+    We could also provide two field instances to diff().
 
     Returns:
         An object that can be used to display differences.  Object will be

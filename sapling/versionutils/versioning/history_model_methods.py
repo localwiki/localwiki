@@ -9,6 +9,7 @@ import datetime
 
 from django.db import models
 from django.db.models import Max
+from django.utils.functional import SimpleLazyObject
 from django.db.models.sql.constants import LOOKUP_SEP
 
 from constants import *
@@ -176,10 +177,10 @@ def historical_record_getattribute(model, m, name):
 def revert_to(hm, delete_newer_versions=False, **kws):
     """
     This is used on a *historical instance* - e.g. something you get
-    using history.get(..) rather than an instance of the model.  Like:
+    using history.get(..) rather than an instance of the model.  Like::
 
-    >> ph = p.history.as_of(..)
-    >> ph.revert_to()
+        >> ph = p.history.as_of(..)
+        >> ph.revert_to()
 
     Reverts to this version of the model.
 
