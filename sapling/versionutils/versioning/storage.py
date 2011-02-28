@@ -1,7 +1,7 @@
 """
-  * Right now we simply block delete() on FileFields.  Django's default behavior
-    is to never override a file -- it simply renames it whatever_2.txt. This
-    will work for us, for now.
+  * Right now we simply block delete() on FileFields.  Django's default
+    behavior is to never override a file -- it simply renames it
+    whatever_2.txt. This will work for us, for now.
 
       * This will work for our (localwiki) purposes because we'll probably
         have a separate model for the actual file and we can have a long
@@ -12,6 +12,7 @@
     having 400,000 files in a single directory.  So when we deal with
     this we can look at doing fancy things.
 """
+
 
 class FileStorageWrapper(object):
     """

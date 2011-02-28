@@ -33,10 +33,12 @@ def custom_sanitizer(allowed):
 
     return CustomSanitizer
 
+
 def sanitize_html(unsafe):
     p = html5lib.HTMLParser(tokenizer=sanitizer.HTMLSanitizer)
     tree = p.parse(unsafe)
     return tree.toxml()
+
 
 def sanitize_html_fragment(unsafe, allowed_elements=None):
     if not allowed_elements:
@@ -44,6 +46,7 @@ def sanitize_html_fragment(unsafe, allowed_elements=None):
     p = html5lib.HTMLParser(tokenizer=custom_sanitizer(allowed_elements))
     tree = p.parseFragment(unsafe)
     return tree.toxml()
+
 
 class XMLField(models.TextField):
     description = _("XML text")
@@ -53,12 +56,12 @@ class XMLField(models.TextField):
         self.default_validators = [XMLValidator(schema_path)]
         models.Field.__init__(self, verbose_name, name, **kws)
 
-    
+
 class XHTMLField(XMLField):
     """Note: this needs a real schema document before it will work!"""
     description = _("XHTML text")
     schema_path = os.path.join(os.path.dirname(__file__), 'schema', 'html.ng')
-    
+
     def __init__(self, verbose_name=None, name=None, **kwargs):
         super(XHTMLField, self).__init__(verbose_name, name,
                                         self.schema_path, **kwargs)
@@ -66,15 +69,15 @@ class XHTMLField(XMLField):
 
 class HTML5Field(models.TextField):
     description = _("HTML5 text")
-    
+
     def __init__(self, verbose_name=None, name=None, **kwargs):
         models.Field.__init__(self, verbose_name, name, **kwargs)
-        
+
     def clean(self, value, model_instance):
         super(HTML5Field, self).clean(value, model_instance)
         return sanitize_html(value)
 
-    
+
 class HTML5FragmentField(models.TextField):
     """
     Use this field in your models for storing user-editable HTML fragments.
@@ -84,23 +87,23 @@ class HTML5FragmentField(models.TextField):
     whitelisted attributes will be stripped.
     You can customize the whitelisted elements by setting the allowed_elements
     argument like this:
-    
+
     class Page(models.Model):
         contents = HTML5FragmentField(
             allowed_elements=['p', 'a', 'strong', 'em']
         )
     """
     description = _("HTML5 fragment text")
-    
+
     def __init__(self, verbose_name=None, name=None, allowed_elements=None,
                  **kwargs):
         models.Field.__init__(self, verbose_name, name, **kwargs)
         self.allowed_elements = allowed_elements
-        
+
     def clean(self, value, model_instance):
         super(HTML5FragmentField, self).clean(value, model_instance)
         return sanitize_html_fragment(value, self.allowed_elements)
-    
+
     def formfield(self, **kwargs):
         defaults = {
             'widget': widgets.CKEditor(

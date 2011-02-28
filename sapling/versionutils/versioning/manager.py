@@ -4,6 +4,7 @@ from django.db.models.query import QuerySet
 from utils import *
 from decorators import *
 
+
 class HistoryDescriptor(object):
     def __init__(self, model):
         self.model = model
@@ -24,9 +25,9 @@ class HistoricalMetaInfoQuerySet(QuerySet):
     """
     def filter(self, *args, **kws):
         rels = self.model._original_model._meta.get_all_related_objects()
-        versioned_vars = [ o.var_name for o in rels if is_versioned(o.model) ]
+        versioned_vars = [o.var_name for o in rels if is_versioned(o.model)]
         kws_new = {}
-        for k,v in kws.iteritems():
+        for k, v in kws.iteritems():
             k_new = k
             parts = k.split(models.sql.constants.LOOKUP_SEP)
             # Replace all instances of history_info__whatever with
@@ -58,7 +59,7 @@ class HistoryManager(models.Manager):
     def get_query_set(self):
         if self.instance is None:
             return HistoricalMetaInfoQuerySet(model=self.model)
-        
+
         # TODO: Explore using natural_key() here if it exists on the
         # model. One idea: SHA-1 an escaped, string form of the
         # natural_key() and store it as an indexed field in the
@@ -91,7 +92,7 @@ class HistoryManager(models.Manager):
             The most recent historical record instance.
 
         Raises:
-            DoesNotExist: Instance has no historical record. 
+            DoesNotExist: Instance has no historical record.
         """
         try:
             v = self.all()[0]
@@ -118,13 +119,13 @@ class HistoryManager(models.Manager):
         """
         try:
             if version and version > 0:
-                v = self.all().order_by('history_date')[version-1]
+                v = self.all().order_by('history_date')[version - 1]
             elif date:
                 v = self.filter(history_date__lte=date)[0]
         except IndexError:
             raise self.instance.DoesNotExist("%s hasn't been created yet." %
                     self.instance._meta.object_name)
-        
+
         return v
 
     class NoUniqueValuesError(Exception):

@@ -15,10 +15,12 @@ from django.db.models.sql.constants import LOOKUP_SEP
 from constants import *
 from utils import *
 
+
 def get_history_fields(self, model):
     """
     Returns a dictionary of the essential fields that will be added to the
-    historical record model, in addition to the ones returned by models.get_fields.
+    historical record model, in addition to the ones returned by
+    models.get_fields.
 
     Args:
         model: A model class.
@@ -49,8 +51,10 @@ def get_history_fields(self, model):
 
     return fields
 
+
 def type_to_verbose(m):
     return TYPE_CHOICES[m.history_info.type][1]
+
 
 def historical_record_init(m, *args, **kws):
     """
@@ -60,6 +64,7 @@ def historical_record_init(m, *args, **kws):
     m._direct_lookup_fields = {}
     _wrap_reverse_lookups(m)
     return retval
+
 
 def _wrap_reverse_lookups(m):
     """
@@ -83,7 +88,7 @@ def _wrap_reverse_lookups(m):
         if not unique_values:
             pk_att = m.history_info._object._meta.pk.attname
             pk_val = getattr(m.history_info._object, pk_att)
-            unique_values = {pk_att:pk_val}
+            unique_values = {pk_att: pk_val}
 
         # Construct something like {'b__email':'a@example.org', ...}
         # from the unique fields of the base model.
@@ -102,7 +107,7 @@ def _wrap_reverse_lookups(m):
         qs = qs.order_by(parent_pk_att).values(parent_pk_att).distinct()
         # then annotate the maximum history object id
         ids = qs.annotate(Max('history_id'))
-        history_ids = [ v['history_id__max'] for v in ids ]
+        history_ids = [v['history_id__max'] for v in ids]
         # return a QuerySet containing the proper history objects
         return parent_model.history.filter(history_id__in=history_ids)
 
@@ -116,7 +121,7 @@ def _wrap_reverse_lookups(m):
         if not unique_values:
             pk_att = m.history_info._object._meta.pk.attname
             pk_val = getattr(m.history_info._object, pk_att)
-            unique_values = {pk_att:pk_val}
+            unique_values = {pk_att: pk_val}
 
         # Construct something like {'b__email':'a@example.org', ...}
         # from the unique fields of the base model.
@@ -139,24 +144,25 @@ def _wrap_reverse_lookups(m):
     model_meta = m.history_info._object._meta
     related_objects = model_meta.get_all_related_objects()
     related_objects += model_meta.get_all_related_many_to_many_objects()
-    related_versioned = [ o for o in related_objects if is_versioned(o.model) ]
+    related_versioned = [o for o in related_objects if is_versioned(o.model)]
     for rel_o in related_versioned:
         # Set the accessor to a lazy lookup function that, when
         # accessed, looks up the proper related set.
         accessor = rel_o.get_accessor_name()
-        
+
         if isinstance(rel_o.field, models.OneToOneField):
             # OneToOneFields have a direct lookup (not a set).
-            _proper_reverse_lookup = partial(_reverse_attr_lookup, m, rel_o)
+            _reverse_lookup = partial(_reverse_attr_lookup, m, rel_o)
         else:
-            _proper_reverse_lookup = partial(_reverse_set_lookup, m, rel_o)
-        m._direct_lookup_fields[accessor] = SimpleLazyObject(_proper_reverse_lookup)
+            _reverse_lookup = partial(_reverse_set_lookup, m, rel_o)
+        m._direct_lookup_fields[accessor] = SimpleLazyObject(_reverse_lookup)
+
 
 def historical_record_getattribute(model, m, name):
     """
     We have to define our own __getattribute__ because otherwise there's
     no way to set our wrapped foreign key attributes.
-    
+
     If we try and set
     history_instance.att = SimpleLazyObject(_lookup_proper_fk_version)
     we'll get an error because Django does an isinstance() check on
@@ -173,6 +179,7 @@ def historical_record_getattribute(model, m, name):
     if direct_val is not None:
         return direct_val
     return model.__getattribute__(m, name)
+
 
 def revert_to(hm, delete_newer_versions=False, **kws):
     """
@@ -196,12 +203,12 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     # kind of hm.history_info.get_instance() method. Providing
     # get_instance() would be a liability, though, because we want to
     # encourage interaction with the historical instance -- it does
-    # fancy foreignkey lookups, etc. 
+    # fancy foreignkey lookups, etc.
     m = hm.history_info._object
 
-    # If we simply grab hm.history_info._object we may hit a uniqueness exception
-    # if we save the model and it already exists.  This is because the pk of the
-    # model may have changed if it was deleted at some time.
+    # If we simply grab hm.history_info._object we may hit a uniqueness
+    # exception.  If we save the model and it already exists.  This is because
+    # the pk of the model may have changed if it was deleted at some time.
 
     # Get the current model instance if it exists and set the pk
     # accordingly.
@@ -226,6 +233,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     else:
         m.save(reverted_to_version=hm, **kws)
 
+
 def version_number_of(hm):
     """
     Returns version number.
@@ -240,6 +248,7 @@ def version_number_of(hm):
             obj.history.filter(history_date__lte=date)
         )
     return hm.history_info.instance._version_number
+
 
 class HistoricalMetaInfo(object):
     def __get__(self, instance, owner):
@@ -267,6 +276,8 @@ class HistoricalObjectDescriptor(object):
         self.model = model
 
     def __get__(self, instance, owner):
-        values = (getattr(instance, f.attname) for f in self.model._meta.fields)
+        values = (getattr(instance, f.attname)
+                  for f in self.model._meta.fields
+                 )
         m = self.model(*values)
         return m

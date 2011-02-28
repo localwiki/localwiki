@@ -6,15 +6,19 @@ import lxml
 from django.conf import settings
 from django.utils.http import urlencode
 
-DAISYDIFF_URL = getattr(settings, 'DAISYDIFF_URL', 'http://localhost:8080/diff')
-DAISYDIFF_MERGE_URL = getattr(settings, 'DAISYDIFF_MERGE_URL', 'http://localhost:8080/merge')
+DAISYDIFF_URL = getattr(settings, 'DAISYDIFF_URL',
+    'http://localhost:8080/diff')
+DAISYDIFF_MERGE_URL = getattr(settings, 'DAISYDIFF_MERGE_URL',
+    'http://localhost:8080/merge')
+
 
 class ServiceUnavailableError(Exception):
     def __init__(self, value):
         self.value = value
-    
+
     def __str__(self):
         return repr(self.value)
+
 
 def daisydiff(field1, field2, service_url=DAISYDIFF_URL):
     """
@@ -25,7 +29,7 @@ def daisydiff(field1, field2, service_url=DAISYDIFF_URL):
     headers = {"Content-type": "application/x-www-form-urlencoded",
                "Accept": "text/html"}
     split_url = urlparse.urlsplit(service_url)
-    
+
     conn = httplib.HTTPConnection(split_url.netloc)
     conn.request("POST", split_url.path, params, headers)
     response = conn.getresponse()
@@ -36,17 +40,19 @@ def daisydiff(field1, field2, service_url=DAISYDIFF_URL):
     conn.close()
     return extract_table_row(data)
 
+
 def daisydiff_merge(field1, field2, ancestor, service_url=DAISYDIFF_MERGE_URL):
     """
-    Uses the DaisyDiff server to merge the two versions of the field, given a common
-    ancestor and returns the tuple (merged_version, has_conflict) where has_conflict
-    is True if the merge could not be done cleanly.
+    Uses the DaisyDiff server to merge the two versions of the field, given a
+    common ancestor and returns the tuple (merged_version, has_conflict) where
+    has_conflict is True if the merge could not be done cleanly.
     """
-    params = urlencode({'field1': field1, 'field2': field2, 'ancestor': ancestor})
+    params = urlencode({'field1': field1, 'field2': field2,
+                        'ancestor': ancestor})
     headers = {"Content-type": "application/x-www-form-urlencoded",
                "Accept": "text/html"}
     split_url = urlparse.urlsplit(service_url)
-    
+
     conn = httplib.HTTPConnection(split_url.netloc)
     conn.request("POST", split_url.path, params, headers)
     response = conn.getresponse()
@@ -57,6 +63,7 @@ def daisydiff_merge(field1, field2, ancestor, service_url=DAISYDIFF_MERGE_URL):
     conn.close()
     return extract_merge(data)
 
+
 def extract_merge(xml):
     doc = lxml.etree.fromstring(xml)
     body_list = [lxml.etree.tostring(child) for child in doc.find('body')]
@@ -64,9 +71,11 @@ def extract_merge(xml):
     has_conflict = 'true' in doc.find('conflict').text
     return (body, has_conflict)
 
+
 def extract_table_row(html):
     doc = html5lib.parse(html)
     return find_element_by_tag('tr', doc).toxml()
+
 
 def find_element_by_tag(tag, node):
     """

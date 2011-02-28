@@ -1,6 +1,7 @@
 from django.utils.decorators import classonlymethod
 from django.http import Http404
 
+
 class Custom404Mixin(object):
     @classonlymethod
     def as_view(cls, **initargs):
@@ -20,7 +21,7 @@ class Custom404Mixin(object):
 class CreateObjectMixin(object):
     def create_object(self):
         self.form_class._meta.model()
-        
+
     def get_object(self, queryset=None):
         try:
             return super(CreateObjectMixin, self).get_object(queryset)

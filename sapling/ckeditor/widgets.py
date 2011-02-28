@@ -43,26 +43,26 @@ class CKEditor(forms.Textarea):
                    ('Table', 'table'),
                    ('HorizontalRule', 'hr'),
                    )
-    
+
     def __init__(self, *args, **kwargs):
         super(CKEditor, self).__init__(*args, **kwargs)
         if 'attrs' in kwargs:
             attrs = kwargs['attrs']
             if 'allowed_tags' in attrs:
                 self.config = self.default_config(attrs['allowed_tags'])
-                
+
     def default_config(self, buttons=None):
         toolbar = []
         if buttons:
             for name, tag in self._auto_button_map:
                 if tag in buttons:
                     toolbar.append(name)
-                    
+
         return json.dumps(
             {'toolbar': [toolbar], 'filebrowserInsertimageUploadUrl': 'upload',
              'extraPlugins': 'insertimage,simpleimage'}
         )
-                
+
     def button_for_tag(self, tag):
         if tag in self._auto_button_map:
             return self._auto_button_map[tag]
@@ -73,13 +73,13 @@ class CKEditor(forms.Textarea):
         rendered = super(CKEditor, self).render(name, value, attrs)
         context = {
             'name': name,
-            'config': self.config 
+            'config': self.config
         }
-        return rendered +  mark_safe(render_to_string(
+        return rendered + mark_safe(render_to_string(
             'ckeditor/ckeditor_script.html', context
         ))
 
     class Media:
         js = (
-                urljoin(settings.STATIC_URL, ckeditor_path),  
+                urljoin(settings.STATIC_URL, ckeditor_path),
         )

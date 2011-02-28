@@ -5,6 +5,7 @@ from django.db import models
 from django.conf import settings
 from django.db.models.sql.constants import LOOKUP_SEP
 
+
 def is_versioned(m):
     """
     Args:
@@ -15,15 +16,6 @@ def is_versioned(m):
     """
     return (getattr(m, '_history_manager_name', None) is not None)
 
-def is_historical_instance(m):
-    """
-    Is the provided instance a historical instance?
-
-    Args:
-        m: A model or historical model instance.
-    """
-    return (hasattr(p_h, '_original_model') and
-            is_versioned(p_h._original_model))
 
 def unique_lookup_values_for(m):
     """
@@ -57,9 +49,9 @@ def unique_lookup_values_for(m):
             related_pk = getattr(m, field.attname)
             k = "%s%sid" % (field.name, LOOKUP_SEP)
             v = related_pk
-            return { k : v }
+            return {k: v}
 
-        return { field.name: getattr(m, field.name) }
+        return {field.name: getattr(m, field.name)}
 
     if m._meta.unique_together:
         unique_fields = {}
@@ -84,10 +76,12 @@ def unique_lookup_values_for(m):
                 unique_fields[k] = getattr(m, k)
         return unique_fields
 
+
 def is_pk_recycle_a_problem(instance):
     if (settings.DATABASE_ENGINE == 'sqlite3' and
         not unique_lookup_values_for(instance)):
         return True
+
 
 def _related_objs_delete_passalong(m):
     """
@@ -108,7 +102,7 @@ def _related_objs_delete_passalong(m):
     m._rel_objs_methods = {}
     # Get the related objects.
     related_objects = m._meta.get_all_related_objects()
-    related_versioned = [ o for o in related_objects if is_versioned(o.model) ]
+    related_versioned = [o for o in related_objects if is_versioned(o.model)]
     # Using related objs, build a dictionary mapping model class -> pks
     for rel_o in related_versioned:
         accessor = rel_o.get_accessor_name()
@@ -116,7 +110,7 @@ def _related_objs_delete_passalong(m):
             continue
         # OneToOneField means a single object.
         if rel_o.field.related.field.__class__ == models.OneToOneField:
-            objs = [ getattr(m, accessor) ]
+            objs = [getattr(m, accessor)]
         else:
             objs = getattr(m, accessor).all()
         for o in objs:
@@ -128,18 +122,22 @@ def _related_objs_delete_passalong(m):
     # one of the related objects
     for model in m._rel_objs_to_catch:
         ids_to_catch = m._rel_objs_to_catch[model]
-        _pass_on_arguments = partial(_set_arguments_for, m, model, ids_to_catch)
-        models.signals.pre_delete.connect(_pass_on_arguments, sender=model, weak=False)
+        _pass_on_arguments = partial(_set_arguments_for, m, model,
+            ids_to_catch)
+        models.signals.pre_delete.connect(_pass_on_arguments, sender=model,
+            weak=False)
         # Save the method so we can disconnect it
         m._rel_objs_methods[model] = _pass_on_arguments
-        
+
+
 def save_func(model_save):
     def save(m, *args, **kws):
         return save_with_arguments(model_save, m, *args, **kws)
     return save
 
-def save_with_arguments(model_save, m, force_insert=False, force_update=False, using=None,
-                        track_changes=True, **kws):
+
+def save_with_arguments(model_save, m, force_insert=False, force_update=False,
+                        using=None, track_changes=True, **kws):
     """
     A simple custom save() method on models with changes tracked.
 
@@ -149,19 +147,21 @@ def save_with_arguments(model_save, m, force_insert=False, force_update=False, u
     """
     m._track_changes = track_changes
     m._save_with = kws
-    
+
     return model_save(m, force_insert=force_insert,
                                       force_update=force_update,
                                       using=using,
     )
-    
+
+
 def delete_func(model_delete):
     def delete(*args, **kws):
         return delete_with_arguments(model_delete, *args, **kws)
     return delete
 
 
-def delete_with_arguments(model_delete, m, using=None, track_changes=True, **kws):
+def delete_with_arguments(model_delete, m, using=None,
+                          track_changes=True, **kws):
     """
     A simple custom delete() method on models with changes tracked.
 

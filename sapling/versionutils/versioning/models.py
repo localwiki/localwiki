@@ -12,6 +12,7 @@ from constants import *
 from history_model_methods import get_history_fields
 import manager
 
+
 class TrackChanges(object):
     def contribute_to_class(self, cls, name):
         self.manager_name = name
@@ -159,7 +160,7 @@ class TrackChanges(object):
     def get_fields(self, model):
         """
         Creates copies of the model's original fields.
-        
+
         Returns:
             A dictionary mapping field name to copied field object.
         """
@@ -229,13 +230,14 @@ class TrackChanges(object):
                         # Fix related name conflict. We set this manually
                         # elsewhere so giving this a funky name isn't a
                         # problem.
-                        options['related_name'] = '%s_hist_set_2' % field.related.var_name
+                        options['related_name'] = ('%s_hist_set_2' %
+                            field.related.var_name)
                         hist_field = model_type('self', **options)
                     else:
                         # Make the field into a foreignkey pointed at the
                         # history model.
-                        fk_history_model = field.related.parent_model.history.model
-                        hist_field = model_type(fk_history_model, **options)
+                        fk_hist_obj = field.related.parent_model.history.model
+                        hist_field = model_type(fk_hist_obj, **options)
 
                     hist_field.name = field.name
                     hist_field.attname = field.attname
@@ -280,10 +282,10 @@ class TrackChanges(object):
             A dictionary of fields that will be added to the Meta inner
             class of the historical record model.
         """
-        meta = { 'ordering': ('-history_date',) }
+        meta = {'ordering': ('-history_date',)}
         for k in ALL_META_OPTIONS:
             if k in TrackChanges.META_TO_SKIP:
-                continue 
+                continue
             meta[k] = getattr(model._meta, k)
         return meta
 
@@ -322,7 +324,7 @@ class TrackChanges(object):
             if is_versioned(field.related.parent_model):
                 current_objs = getattr(instance, field.attname).all()
                 setattr(hist_instance, field.attname,
-                        [ o.history.most_recent() for o in current_objs ]
+                        [o.history.most_recent() for o in current_objs]
                 )
 
     def m2m_changed(self, attname, sender, instance, action, reverse,
@@ -335,8 +337,8 @@ class TrackChanges(object):
             attname: Attribute name of the m2m field on the base model.
         """
         if pk_set:
-            changed_ms = [ model.objects.get(pk=pk) for pk in pk_set ]
-            hist_changed_ms = [ m.history.most_recent() for m in changed_ms ]
+            changed_ms = [model.objects.get(pk=pk) for pk in pk_set]
+            hist_changed_ms = [m.history.most_recent() for m in changed_ms]
         hist_instance = instance.history.most_recent()
         hist_through = getattr(hist_instance, attname)
         if action == 'post_add':
@@ -357,7 +359,8 @@ class TrackChanges(object):
         attrs = {}
         for field in instance._meta.fields:
             if isinstance(field, models.fields.related.ForeignKey):
-                is_fk_to_self = field.related.parent_model == instance.__class__
+                is_fk_to_self = (field.related.parent_model ==
+                                 instance.__class__)
                 if is_versioned(field.related.parent_model) or is_fk_to_self:
                     # If the FK field is versioned, set it to the most
                     # recent version of that object.
@@ -367,10 +370,12 @@ class TrackChanges(object):
                     fk_hist_model = field.rel.to.history.model
                     fk_id_name = field.rel.field_name
                     fk_id_val = getattr(instance, field.attname)
-                    fk_objs = fk_hist_model.objects.filter(**{fk_id_name:fk_id_val})
+                    fk_objs = fk_hist_model.objects.filter(
+                        **{fk_id_name: fk_id_val}
+                    )
 
                     if fk_objs:
-                        attrs[field.name] = fk_objs[0] # most recent version
+                        attrs[field.name] = fk_objs[0]  # most recent version
                     else:
                         attrs[field.name] = None
                     continue

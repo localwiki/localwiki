@@ -7,24 +7,30 @@ TODO: It would be cool to write a little thing to randomly generate
 model definitions for tests.
 """
 
+
 class M1(models.Model):
     a = models.CharField(max_length=200)
     b = models.TextField()
     c = models.DateTimeField()
     d = models.IntegerField()
-    
+
+
 class M1Diff(diff.BaseModelDiff):
     fields = ('d', 'c', 'b', 'a',)
-    
+
+
 class M1FieldDiff(diff.BaseFieldDiff):
     pass
+
 
 class M2(models.Model):
     a = models.FileField(upload_to='test_diff_uploads')
 
+
 class M3(models.Model):
     a = models.ImageField(upload_to='test_diff_uploads')
-    
+
+
 class M4ForeignKey(models.Model):
     a = models.ForeignKey('M1')
 
@@ -92,4 +98,3 @@ class M4ForeignKey(models.Model):
 TEST_MODELS = [
     M1, M2
 ]
-    

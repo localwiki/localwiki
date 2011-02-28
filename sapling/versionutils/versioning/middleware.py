@@ -8,6 +8,7 @@ IGNORE_USER_INFO_METHODS = (
     'GET', 'HEAD', 'OPTIONS', 'TRACE'
 )
 
+
 class AutoTrackUserInfoMiddleware(object):
     """
     Optional middleware to automatically add the current request user's
@@ -25,7 +26,9 @@ class AutoTrackUserInfoMiddleware(object):
         ip = request.META.get('REMOTE_ADDR', None)
 
         update_fields = functools.partial(self.update_fields, user, ip)
-        signals.pre_save.connect(update_fields, dispatch_uid=request, weak=False)
+        signals.pre_save.connect(
+            update_fields, dispatch_uid=request, weak=False
+        )
 
     def update_fields(self, user, ip, sender, instance, **kws):
         registry = FieldRegistry('user')

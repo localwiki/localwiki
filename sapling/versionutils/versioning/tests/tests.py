@@ -14,9 +14,10 @@ from models import *
 from versionutils.versioning.constants import *
 
 mgr = TestSettingsManager()
-INSTALLED_APPS=list(settings.INSTALLED_APPS)
+INSTALLED_APPS = list(settings.INSTALLED_APPS)
 INSTALLED_APPS.append('versionutils.versioning.tests')
-mgr.set(INSTALLED_APPS=INSTALLED_APPS) 
+mgr.set(INSTALLED_APPS=INSTALLED_APPS)
+
 
 class TrackChangesTest(TestCase):
     def _create_test_models(self):
@@ -67,7 +68,7 @@ class TrackChangesTest(TestCase):
         m.save()
         m.b.add(category)
         m.save()
-        
+
         thing = LongerNameOfThing(a="long name")
         thing.save()
         m = M15OneToOne(a="m15 yay!", b=thing)
@@ -92,7 +93,7 @@ class TrackChangesTest(TestCase):
         for M in self.test_models:
             objs += M.objects.all()
         return objs
-    
+
     def setUp(self):
         self._setup_file_environment()
         self.test_models = TEST_MODELS
@@ -121,7 +122,7 @@ class TrackChangesTest(TestCase):
         for m in self.all_objects():
             # saving should add a single history entry
             old_m, old_m_history_len = history_before[m]
-            self.assertEqual(len(m.history.all()), old_m_history_len+1)
+            self.assertEqual(len(m.history.all()), old_m_history_len + 1)
 
     def test_most_recent(self):
         m = M1.objects.get(a="A!")
@@ -135,13 +136,13 @@ class TrackChangesTest(TestCase):
         self.assertEqual(m.history.most_recent().d, m_old.d)
 
         recent_obj = m.history.most_recent().history_info._object
-        vals_recent = [ getattr(recent_obj, field)
-                        for field in recent_obj._meta.get_all_field_names()
+        vals_recent = [getattr(recent_obj, field)
+                       for field in recent_obj._meta.get_all_field_names()
         ]
-        vals_old = [ getattr(m_old, field)
-                     for field in m_old._meta.get_all_field_names()
+        vals_old = [getattr(m_old, field)
+                    for field in m_old._meta.get_all_field_names()
         ]
-        vals = [ getattr(m, field) for field in m._meta.get_all_field_names() ]
+        vals = [getattr(m, field) for field in m._meta.get_all_field_names()]
         self.assertEqual(
             vals_recent,
             vals
@@ -212,15 +213,16 @@ class TrackChangesTest(TestCase):
 
         # all the history entries should have the same unique field
         self.assertEqual([x.a for x in m.history.all()],
-                         ["What"]*len(m.history.all())
+                         ["What"] * len(m.history.all())
         )
         # and the history should be old_history_len+1 entries long
-        self.assertEqual(len(m.history.all()), old_history_len+1)
+        self.assertEqual(len(m.history.all()), old_history_len + 1)
 
     def test_deleted_object_nonunique(self):
         """
-        When we delete an object without any unique fields and then create a new object
-        with the same attributes, right afterward, we should see an entirely new history.
+        When we delete an object without any unique fields and then create a
+        new object with the same attributes, right afterward, we should see an
+        entirely new history.
         """
         m = M2(a="new m2!", b="text", c=54)
         m.save()
@@ -268,7 +270,7 @@ class TrackChangesTest(TestCase):
         m.save()
         for i in range(1, 100):
             # version numbers should line up with m.c value now
-            m.c = i+1
+            m.c = i + 1
             m.save()
 
         for i in range(1, 100):
@@ -299,7 +301,7 @@ class TrackChangesTest(TestCase):
 
         for i in range(1, 20):
             m.c = i
-            m.save() 
+            m.save()
 
         m_old = m.history.filter(c=4)[0]
         m_old.revert_to()
@@ -316,7 +318,7 @@ class TrackChangesTest(TestCase):
 
         for i in range(1, 20):
             m.c = i
-            m.save() 
+            m.save()
 
         # should be:
         # c=19, 18, 17, .. 5, 4, 3, 2 1, 0
@@ -362,7 +364,7 @@ class TrackChangesTest(TestCase):
 
         for i in range(1, 20):
             m.c = i
-            m.save() 
+            m.save()
 
         # should be:
         # c=19, 18, 17, .. 5, 4, 3, 2 1, 0
@@ -433,8 +435,9 @@ class TrackChangesTest(TestCase):
         mh.revert_to()
 
         self.assertEqual(len(M16Unique.objects.filter(a="Me me!")), 1)
-        self.assertEqual(M16Unique.objects.filter(a="Me me!")[0].b, "I am older")
-    
+        self.assertEqual(M16Unique.objects.filter(a="Me me!")[0].b,
+                         "I am older")
+
     def test_revert_to_deleted_version(self):
         # we test w/ an object w/ unique field in this case
         # non-unique re-creation doesn't make sense
@@ -470,12 +473,12 @@ class TrackChangesTest(TestCase):
         # entry.
         mh = M16Unique.history.filter(a="Gonna get", b="deleted", c=0)[0]
         self.assertEqual(mh.history_info.type, TYPE_REVERTED_DELETED)
-        
+
         # ====================================================================
         # Now with a revert when the object is also currently deleted
         # ====================================================================
 
-        m = M16Unique(a="About to get", b="really deleted", c=0) 
+        m = M16Unique(a="About to get", b="really deleted", c=0)
         m.save()
 
         m.delete()
@@ -538,7 +541,7 @@ class TrackChangesTest(TestCase):
         ###############################
         m2 = M2(a="i am m2!", b="yay!", c=1)
         m2.save()
-        
+
         m17 = M17ForeignKeyVersioned(name="yayfk!", m2=m2)
         m17.save()
 
@@ -572,8 +575,10 @@ class TrackChangesTest(TestCase):
         ###############################
         m2 = M2(a="i am m2 for onetoone!", b="onetoone yay!", c=1)
         m2.save()
-        
-        m18 = M18OneToOneFieldVersioned(name="i am the versioned thing!", m2=m2)
+
+        m18 = M18OneToOneFieldVersioned(
+            name="i am the versioned thing!", m2=m2
+        )
         m18.save()
 
         m18.name = m18.name + "!"
@@ -632,52 +637,52 @@ class TrackChangesTest(TestCase):
         #m12related = M12ForeignKeyRelatedSpecified()
 
     def test_fk_reverse_lookup(self):
-         # Reverse foreign key lookups on historical models should,
-         # if the parent model is versioned, return the related set
-         # as it was at the moment in time represented by the child
-         # model.
-         m2 = M2(a="relatedatest", b="relatedbtest", c=0)
-         m2.save()
-         m17 = M17ForeignKeyVersioned(name="relatedtest", m2=m2)
-         m17.save()
+        # Reverse foreign key lookups on historical models should,
+        # if the parent model is versioned, return the related set
+        # as it was at the moment in time represented by the child
+        # model.
+        m2 = M2(a="relatedatest", b="relatedbtest", c=0)
+        m2.save()
+        m17 = M17ForeignKeyVersioned(name="relatedtest", m2=m2)
+        m17.save()
 
-         # because m2 was created before m17, the related set
-         # of the most recent historical version of m2 should be
-         # empty
-         m2_h = m2.history.most_recent()
-         self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 0)
+        # because m2 was created before m17, the related set
+        # of the most recent historical version of m2 should be
+        # empty
+        m2_h = m2.history.most_recent()
+        self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 0)
 
-         m2.a += "!"
-         m2.save()
-         m17.name += "!"
-         m17.save()
-         # now the related set of the most recent entry should be the
-         # current m17
-         m2_h = m2.history.most_recent()
-         self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 1)
-         m17_h = m2_h.m17foreignkeyversioned_set.all()[0]
-         self.assertEqual(m17_h.name, "relatedtest")
+        m2.a += "!"
+        m2.save()
+        m17.name += "!"
+        m17.save()
+        # now the related set of the most recent entry should be the
+        # current m17
+        m2_h = m2.history.most_recent()
+        self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 1)
+        m17_h = m2_h.m17foreignkeyversioned_set.all()[0]
+        self.assertEqual(m17_h.name, "relatedtest")
 
-         m2.a += "!"
-         m2.save()
+        m2.a += "!"
+        m2.save()
 
-         m2_h = m2.history.most_recent()
-         self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 1)
-         m17_h = m2_h.m17foreignkeyversioned_set.all()[0]
-         self.assertEqual(m17_h.name, "relatedtest!")
+        m2_h = m2.history.most_recent()
+        self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 1)
+        m17_h = m2_h.m17foreignkeyversioned_set.all()[0]
+        self.assertEqual(m17_h.name, "relatedtest!")
 
-         # let's have another model point at m2 
-         m17 = M17ForeignKeyVersioned(name="relatedtest2", m2=m2)
-         m17.save()
+        # let's have another model point at m2
+        m17 = M17ForeignKeyVersioned(name="relatedtest2", m2=m2)
+        m17.save()
 
-         m2.a += "!"
-         m2.save()
+        m2.a += "!"
+        m2.save()
 
-         m2_h = m2.history.most_recent()
-         related_set = m2_h.m17foreignkeyversioned_set
-         self.assertEqual(len(related_set.all()), 2)
-         self.assertEqual(len(related_set.filter(name="relatedtest2")), 1)
-         self.assertEqual(len(related_set.filter(name="relatedtest!")), 1)
+        m2_h = m2.history.most_recent()
+        related_set = m2_h.m17foreignkeyversioned_set
+        self.assertEqual(len(related_set.all()), 2)
+        self.assertEqual(len(related_set.filter(name="relatedtest2")), 1)
+        self.assertEqual(len(related_set.filter(name="relatedtest!")), 1)
 
     @skipIf(settings.DATABASE_ENGINE == 'sqlite3',
             'See Django ticket #10164. Sqlite recycles primary keys')
@@ -709,7 +714,7 @@ class TrackChangesTest(TestCase):
 
         fk_version2 --------------
                                  |
-                                 v 
+                                 v
         fk_version1 ---------> m_version2
 
         then doing a reverse lookup in m.history should only
@@ -784,20 +789,20 @@ class TrackChangesTest(TestCase):
         m19 = M19ManyToManyFieldVersioned(a="best m19")
         m19.save()
         m19.tags.add(t1, t2)
-    
+
         t1.name += "!"
         t1.save()
         t2.name += "!"
         t2.save()
-    
+
         m19.a += "!"
         m19.save()
-    
+
         t1.name += "!"
         t1.save()
         t2.name += "!"
         t2.save()
-    
+
         # reverse set on these should be empty
         t1_h = t1.history.all()[2]
         t2_h = t2.history.all()[2]
@@ -805,7 +810,7 @@ class TrackChangesTest(TestCase):
         self.assertEqual(len(reverse_set.all()), 0)
         reverse_set = t2_h.m19manytomanyfieldversioned_set
         self.assertEqual(len(reverse_set.all()), 0)
-    
+
         # reverse set on these should be "best m19"
         t1_h = t1.history.all()[1]
         t2_h = t2.history.all()[1]
@@ -815,7 +820,7 @@ class TrackChangesTest(TestCase):
         reverse_set = t2_h.m19manytomanyfieldversioned_set
         self.assertEqual(len(reverse_set.all()), 1)
         self.assertEqual(reverse_set.all()[0].a, "best m19")
-    
+
         # reverse set on these should be "best m19!"
         t1_h = t1.history.all()[0]
         t2_h = t2.history.all()[0]
