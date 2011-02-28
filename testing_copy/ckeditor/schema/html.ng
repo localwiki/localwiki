@@ -1,0 +1,8 @@
+<element name="html" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <element name="head">
+    <element name="title"><text/></element>
+  </element>
+  <element name="body">
+    <text/>
+  </element>
+</element>

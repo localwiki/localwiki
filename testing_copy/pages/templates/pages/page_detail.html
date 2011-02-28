@@ -1,0 +1,25 @@
+{% extends "pages/base.html" %}
+{% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
+{% block header %}{{ page.name }}{% endblock %}
+
+{% block main %}
+  {% if show_revision %}
+    <em class="revision_details">
+        Revision {{ page.history_info.version_number }}
+        ({{ page.history_info.date }}
+        by {{ page.history_info.user_name|default:page.history_info.user_ip }})
+    </em>
+  {% endif %}
+  
+  <div>
+    {{ page.content|safe }}
+  </div>
+  
+  <p>Modified {{ date|timesince }} ago (<a href="{% url page-history slug=page.slug %}">History</a>)</p>
+  
+  <p>
+    <a href="{% url edit-page slug=page.slug %}">Edit this page</a>
+  </p>
+{% endblock %}
+
+

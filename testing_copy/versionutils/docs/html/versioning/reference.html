@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Reference &mdash; django-versionutils v0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="django-versionutils v0.1 documentation" href="../index.html" />
+    <link rel="up" title="versionutils.versioning" href="index.html" />
+    <link rel="next" title="Notes" href="notes.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="notes.html" title="Notes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">django-versionutils v0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U"><tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="versionutils-versioning">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">versionutils.versioning</span></tt><a class="headerlink" href="#versionutils-versioning" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="TrackChanges">
+<em class="property">class </em><tt class="descname">TrackChanges</tt><a class="headerlink" href="#TrackChanges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an instance of this class as an attribute on your models to
+track changes to the model.</p>
+<p><tt class="docutils literal"><span class="pre">TrackChanges</span></tt> is a manager, so standard queryset functions like
+<tt class="docutils literal"><span class="pre">all()</span></tt> and <tt class="docutils literal"><span class="pre">filter()</span></tt> work.</p>
+<p>Please <a class="reference internal" href="usage.html"><em>read the usage documentation.</em></a></p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">versionutils.versioning</span> <span class="kn">import</span> <span class="n">TrackChanges</span>
+
+<span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="o">...</span>
+
+    <span class="n">history</span> <span class="o">=</span> <span class="n">TrackChanges</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then run <tt class="docutils literal"><span class="pre">manage.py</span> <span class="pre">syncdb</span></tt> and you’re set!</p>
+<dl class="method">
+<dt>
+<tt class="descname">most_recent():</tt></dt>
+<dd><p>This method must be called via an instance of the model rather
+than from the class.  E.g. <tt class="docutils literal"><span class="pre">m.history.most_recent()</span></tt> rather
+than <tt class="docutils literal"><span class="pre">Model.history.most_recent()</span></tt>.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>The most recent <a class="reference internal" href="#historical-instance"><em>historical record
+instance</em></a>.</dd>
+<dt>Raises:</dt>
+<dd>DoesNotExist: Instance has no historical record.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">as_of([date=None][, version=None]):</tt></dt>
+<dd><p>This method must be called via an instance of the model rather
+than from the class.  E.g. <tt class="docutils literal"><span class="pre">m.history.as_of(..)</span></tt> rather
+than <tt class="docutils literal"><span class="pre">Model.history.as_of(..)</span></tt>.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first docutils">
+<dt>date: A datetime object.  The datetime doesn&#8217;t have to be</dt>
+<dd>exact.  We will return the historical instance that&#8217;s
+most recent, moving backward in time.</dd>
+</dl>
+<p class="last">version: An integer version number.</p>
+</dd>
+<dt>Returns:</dt>
+<dd>A <a class="reference internal" href="#historical-instance"><em>historical record instance</em></a> that
+represents the object as it was at the date or version number
+provided.</dd>
+<dt>Raises:</dt>
+<dd>DoesNotExist: Instance hasn&#8217;t been created yet.</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="historical-instance">
+<span id="id1"></span><h3>Historical instance<a class="headerlink" href="#historical-instance" title="Permalink to this headline">¶</a></h3>
+<p>Methods on <a class="reference internal" href="#TrackChanges" title="TrackChanges"><tt class="xref py py-class docutils literal"><span class="pre">TrackChanges</span></tt></a> return either historical instances or
+QuerySets of historical instances.</p>
+<p>A historical instance represents a model at some point in time.  A historical model contains all the same fields, attributes and methods as the usual model, but also has some extra methods and historical metadata:</p>
+<blockquote>
+<div><dl class="method">
+<dt>
+<tt class="descname">revert_to([delete_newer_versions=False][, **kws]):</tt></dt>
+<dd><p>Reverts to this version of the model.  Example:</p>
+<div class="highlight-python"><pre>&gt;&gt; ph = p.history.as_of(..)
+&gt;&gt; ph.revert_to()</pre>
+</div>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>delete_newer_versions: If True, delete all versions in the</dt>
+<dd>history newer than this version.</dd>
+<dt>track_changes: If False, won&#8217;t log <em>this revert</em> as an action in</dt>
+<dd>the history log.</dd>
+<dt>kws: Any other keyword arguments you want to pass along to the</dt>
+<dd>model save method.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="history_info">
+<tt class="descname">history_info</tt><a class="headerlink" href="#history_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Historical metadata for the the historical model.  You can
+<a class="reference internal" href="extend.html"><em>easily define new fields to track here.</em></a></p>
+<p>Built-in attributes are:</p>
+<dl class="attribute">
+<dt id="date">
+<tt class="descname">date</tt><a class="headerlink" href="#date" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>DateTimeField</cite> representing the momement in time the historical
+instance references.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="version_number">
+<tt class="descname">version_number</tt><big>(</big><big>)</big><a class="headerlink" href="#version_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the version number of the historical instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="type_to_verbose">
+<tt class="descname">type_to_verbose</tt><big>(</big><big>)</big><a class="headerlink" href="#type_to_verbose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a human-readable description of the type of action
+the historical instance refers to.  E.g. &#8220;Updated&#8221;</p>
+</dd></dl>
+
+<p>Optional fields, on by default (see <a class="reference internal" href="extend.html"><em>how to extend</em></a>):</p>
+<dl class="attribute">
+<dt id="user">
+<tt class="descname">user</tt><a class="headerlink" href="#user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional <cite>UserField</cite>.  Automatically set if you have
+<cite>AutoTrackUserInfoMiddleware</cite> enabled
+(see <a class="reference internal" href="install.html"><em>how to install</em></a>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="user_ip">
+<tt class="descname">user_ip</tt><a class="headerlink" href="#user_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional <cite>IPAddressField</cite>.  Automatically set if you have
+<cite>AutoTrackUserInfoMiddleware</cite> enabled
+(see <a class="reference internal" href="install.html"><em>how to install</em></a>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="comment">
+<tt class="descname">comment</tt><a class="headerlink" href="#comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optional <cite>CharField</cite> intended to be a user&#8217;s description of
+the change action.</p>
+</dd></dl>
+
+<p>Fields you probably don&#8217;t need to use:</p>
+<dl class="attribute">
+<dt id="type">
+<tt class="descname">type</tt><a class="headerlink" href="#type" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer representing the type of action the historical
+instance refers to.  You should probably use
+<a class="reference internal" href="#type_to_verbose" title="type_to_verbose"><tt class="xref py py-func docutils literal"><span class="pre">type_to_verbose()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="id">
+<tt class="descname">id</tt><a class="headerlink" href="#id" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <em>global</em> historic id for the instance.  This is global for
+the whole historical model&#8217;s table.  Use
+<a class="reference internal" href="#version_number" title="version_number"><tt class="xref py py-func docutils literal"><span class="pre">version_number()</span></tt></a>, it&#8217;s almost certainly what you
+want.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Reference</a><ul>
+<li><a class="reference internal" href="#versionutils-versioning"><tt class="docutils literal"><span class="pre">versionutils.versioning</span></tt></a><ul>
+<li><a class="reference internal" href="#historical-instance">Historical instance</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="usage.html"
+                        title="previous chapter">Usage</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="notes.html"
+                        title="next chapter">Notes</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/versioning/reference.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="notes.html" title="Notes"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             >previous</a> |</li>
+        <li><a href="../index.html">django-versionutils v0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" ><tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Philip Neustrom.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>

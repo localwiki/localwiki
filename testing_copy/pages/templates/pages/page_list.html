@@ -1,0 +1,13 @@
+{% extends "pages/base.html" %}
+
+{% block title %}Title index{% endblock %}
+
+{% block header %}Title index{% endblock %}
+
+{% block main %}
+  <ul>
+  {% for page in page_list %}
+    <li><a href="{{ page.slug }}">{{ page.name }}</a></li>
+  {% endfor %}
+  </ul>
+{% endblock %}
