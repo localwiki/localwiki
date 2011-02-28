@@ -3,7 +3,8 @@
      (http://www.python.org/dev/peps/pep-0008/).
   3. Write tests!  Tons of great information here:
      http://docs.djangoproject.com/en/dev/topics/testing/
-  4. Agree to the contributor agreement (<URL HERE>).
+  4. For non-trivial contributions, agree to the contributor agreement:
+     http://localwiki.org/cla
 
 Email patches to philip@localwiki.org, issue a GitHub pull request, or post
 them to the LocalWiki development mailing list.
