@@ -403,7 +403,7 @@ def register(model_or_field, diff_util):
     """
     Registers a diff util for a particular model or field type.
 
-    For convience, several built-in fields (CharField, TextField,
+    For convenience, several built-in fields (CharField, TextField,
     FileField, ImageField) are pre-registered.
 
     Examples::
@@ -443,15 +443,13 @@ def diff(object1, object2):
           '</td>
           '</tr>')
 
-    We could also provide two field instances to diff().
-
     Returns:
         An object that can be used to display differences.  Object will be
-        either BaseFieldDiff, BaseModelDiff or a subclass.
+        either BaseModelDiff or a subclass.
 
     Raises:
         DiffUtilNotFound: If there's no registered or inferred diff for
-            the objects.
+        the objects.
     """
     diff_util = registry.get_diff_util(object1.__class__)
     return diff_util(object1, object2)
