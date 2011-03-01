@@ -90,8 +90,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.staticfiles',
 
-    'philiptest',
-
     # Our apps
     'versionutils.versioning',
     'versionutils.diff',
