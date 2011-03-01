@@ -40,7 +40,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return {
 			title : 'Insert Image',
 			minWidth : 420,
-			minHeight : 120,
+			minHeight : 150,
 			onShow : function()
 			{
 				this.imageElement = false;
@@ -71,7 +71,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			  }
         this.imageElement = editor.document.createElement( 'img' );
         this.imageElement.setAttribute( 'alt', '' );
-
         this.commitContent( this.imageElement );
         
         // Remove empty style attribute.
@@ -80,7 +79,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
         // Insert a new Image.
         editor.insertElement( this.imageElement );
-        this.hide()
+        this.hide();
 			},
 			onLoad : function()
 			{
@@ -116,42 +115,40 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							label : 'Choose a file from your computer',
 							style: 'height:40px',
 							size : 34,
-							validate : function ()
-                {
-                  if(!this.getValue())
-                    return true;
-                  // Patch the upload form before submitting and add the CSRF token
-                  uploadForm = this.getInputElement().$.form;
-                  csrf = uploadForm.csrfmiddlewaretoken;
-                  if(csrf)
-                    return true;
-                  csrf = document.createElement('input');
-                  csrf.setAttribute('name', 'csrfmiddlewaretoken');
-                  csrf.setAttribute('type', 'hidden');
-                  
-                  function getCookie(name) {
-                      var cookieValue = null;
-                      if (document.cookie && document.cookie != '') {
-                          var cookies = document.cookie.split(';');
-                          for (var i = 0; i < cookies.length; i++) {
-                              var cookie = cookies[i];
-                              // Does this cookie string begin with the name we want?
-                              if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                  break;
-                              }
-                          }
-                      }
-                      return cookieValue;
-                  }
-                  
-                  csrf_cookie = getCookie('csrftoken');
-                  if(!csrf_cookie)
-                    return true;
-                  csrf.setAttribute('value', csrf_cookie);
-                  uploadForm.appendChild(csrf);
-                  return true;
-                }
+							onChange : function ()
+                                {
+                                  // Patch the upload form before submitting and add the CSRF token
+                                  function getCookie(name) {
+                                      var cookieValue = null;
+                                      if (document.cookie && document.cookie != '') {
+                                          var cookies = document.cookie.split(';');
+                                          for (var i = 0; i < cookies.length; i++) {
+                                              var cookie = cookies[i];
+                                              // Does this cookie string begin with the name we want?
+                                              if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                  break;
+                                              }
+                                          }
+                                      }
+                                      return cookieValue;
+                                  }
+                                  
+                                  var csrf_cookie = getCookie('csrftoken');
+                                  if(!csrf_cookie)
+                                    return;
+                                  
+                                  var uploadForm = this.getInputElement().$.form;
+                                  var csrf = uploadForm.csrfmiddlewaretoken;
+                                  if(csrf)
+                                    return;
+                                  
+                                  csrf = uploadForm.ownerDocument.createElement('input');
+                                  csrf.setAttribute('name', 'csrfmiddlewaretoken');
+                                  csrf.setAttribute('type', 'hidden');
+                                  csrf.setAttribute('value', csrf_cookie);
+                                  uploadForm.appendChild(csrf);
+                                }
 						},
 						{
 							type : 'fileButton',
@@ -168,7 +165,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						  style : 'float:left;margin-top:10px',
 						  onClick : function()
 						          {
-						            urlText = this.getDialog().getContentElement('Upload', 'txtUrl');
+						            var urlText = this.getDialog().getContentElement('Upload', 'txtUrl');
 						            urlText.getElement().show();
 						            urlText.focus();
 						          }
