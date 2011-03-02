@@ -22,14 +22,14 @@ great way to quickly chat about functionality and plans!
 If using GitHub:
 
    1. Fork on GitHub (click Fork button)
-   2. Clone to computer ($ git clone git@github.com:you/localwiki-all.git )
+   2. Clone to computer ($ git clone git@github.com:you/sapling.git )
    3. Set up remote upstream
-      ($ git remote add upstream git://github.com/localwiki/localwiki-all.git)
+      ($ git remote add upstream git://github.com/localwiki/sapling.git)
    4. Create a branch for new issue ($ git checkout -b 100-new-feature)
    5. Develop on issue branch.
       [Time passes, the main LocalWiki repository accumulates new commits]
    6. Commit changes to issue branch
-      ($ git add . ; git commit -m ‘commit message’)
+      ($ git add . ; git commit -m 'commit message')
    7. Fetch upstream ($ git fetch upstream)
    8. Update local master ($ git checkout master; git pull upstream master)
    9. Repeat steps 5-8 till dev is complete
