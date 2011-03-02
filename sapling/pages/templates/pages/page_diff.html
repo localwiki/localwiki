@@ -51,7 +51,7 @@
             </td>
         </tr>
     </thead>
-    {% diff old.history__object new.history__object as page_diff %}
+    {% diff old new as page_diff %}
     <tbody valign="top">
         {{ page_diff.get_diff.content }}
     </tbody>

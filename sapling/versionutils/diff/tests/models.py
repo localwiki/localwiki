@@ -1,6 +1,7 @@
 from django.db import models
 
 from versionutils import diff
+from versionutils.versioning import TrackChanges
 
 """
 TODO: It would be cool to write a little thing to randomly generate
@@ -33,6 +34,11 @@ class M3(models.Model):
 
 class M4ForeignKey(models.Model):
     a = models.ForeignKey('M1')
+
+class M5Versioned(models.Model):
+    a = models.CharField(max_length=200)
+
+    history = TrackChanges()
 
 #class M3BigInteger(models.Model):
 #    a = models.CharField(max_length=200)
@@ -96,5 +102,5 @@ class M4ForeignKey(models.Model):
 #    c = models.IntegerField()
 
 TEST_MODELS = [
-    M1, M2
+    M1, M2, 
 ]

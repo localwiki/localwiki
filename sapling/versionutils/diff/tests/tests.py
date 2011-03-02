@@ -14,7 +14,7 @@ from django.core.files.storage import default_storage
 from django import db
 
 from utils import TestSettingsManager
-from models import M1, M1Diff, M1FieldDiff, M2, M3, M4ForeignKey, TEST_MODELS
+from models import *
 
 from versionutils import diff
 from versionutils.diff.diffutils import Registry, BaseFieldDiff, BaseModelDiff
@@ -102,6 +102,11 @@ class ModelDiffTest(TestCase):
 
         self.assertEqual(d1['a'], d2)
 
+    def test_historical_instance(self):
+        o1 = M5Versioned(a="O1")
+        o1.save()
+        o2 = M5Versioned(a="O2")
+        o2.save()
 
 class BaseFieldDiffTest(TestCase):
     test_class = BaseFieldDiff

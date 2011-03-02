@@ -7,7 +7,7 @@ from django.conf import settings
 
 import diff_match_patch
 import daisydiff
-
+from versionutils.versioning.utils import is_historical_instance
 
 class DiffUtilNotFound(Exception):
     """
@@ -443,6 +443,21 @@ def diff(object1, object2):
           '</td>
           '</tr>')
 
+    This can work with versioned models, e.g.::
+
+        >> diff(m1.history.as_of(version=2),
+        >>      m2.history.as_of(version=3)).as_html()
+        u('<tr>'
+            '<td colspan="2">name</td>'
+          '</tr>
+          '<tr>'
+          '<td colspan="2">'
+            '<span class="diff_equal">Phil</span>'
+            '<ins>l</ins>'
+            '<span class="diff_equal">ip!</span>'
+          '</td>
+          '</tr>')
+
     Returns:
         An object that can be used to display differences.  Object will be
         either BaseModelDiff or a subclass.
@@ -451,6 +466,10 @@ def diff(object1, object2):
         DiffUtilNotFound: If there's no registered or inferred diff for
         the objects.
     """
+    if is_historical_instance(object1): 
+        object1 = object1.history_info._object
+    if is_historical_instance(object2): 
+        object2 = object2.history_info._object
     diff_util = registry.get_diff_util(object1.__class__)
     return diff_util(object1, object2)
 
