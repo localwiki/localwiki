@@ -13,7 +13,7 @@ needed by lxml), java(needed for daisydiff), python-setuptools, virtualenv
 2.  Set up virtualenv. For more info, see http://pypi.python.org/pypi/virtualenv
 
 Create an empty environment.  Replace ENV with whatever folder name you want.
-    $ virtualenv --no-site-packages ENV
+    $ virtualenv ENV
     
 Activate the new environment.
     $ source ENV/bin/activate
