@@ -89,6 +89,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    
+    # Other third-party apps
+    'sorl.thumbnail',
 
     # Our apps
     'versionutils.versioning',

@@ -1,4 +1,7 @@
 {% extends "pages/base.html" %}
+
+{% load pages_tags %}
+
 {% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
 {% block header %}{{ page.name }}{% endblock %}
 
@@ -12,7 +15,7 @@
   {% endif %}
   
   <div>
-    {{ page.content|safe }}
+    {% render_page page.content %}
   </div>
   
   <p>Modified {{ date|timesince }} ago (<a href="{% url page-history slug=page.slug %}">History</a>)</p>

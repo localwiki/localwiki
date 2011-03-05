@@ -1,6 +1,7 @@
 {% extends "pages/base.html" %}
 
 {% load diff_tags %}
+{% load pages_tags %}
 
 {% block media %}
   <style>
@@ -53,7 +54,7 @@
     </thead>
     {% diff old new as page_diff %}
     <tbody valign="top">
-        {{ page_diff.get_diff.content }}
+        {% render_page page_diff.get_diff.content %}
     </tbody>
   </table>
   <p>
