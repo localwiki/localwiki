@@ -12,7 +12,7 @@ class PageContentNode(BaseIncludeNode):
     def __init__(self, html_var, *args, **kwargs):
         super(PageContentNode, self).__init__(*args, **kwargs)
         self.html_var = template.Variable(html_var)
-        
+
     def render(self, context):
         try:
             html = self.html_var.resolve(context)
@@ -23,13 +23,14 @@ class PageContentNode(BaseIncludeNode):
                 raise
             return ''
 
-    
+
 @register.tag(name='render_page')
 def do_render_page(parser, token):
     try:
         tag, html_var = token.split_contents()
     except ValueError:
-        raise template.TemplateSyntaxError, "%r tag requires one argument" % token.contents.split()[0]
+        raise template.TemplateSyntaxError, ("%r tag requires one argument" %
+                                             token.contents.split()[0])
     return PageContentNode(html_var)
 
 
@@ -42,10 +43,13 @@ def do_link(parser, token):
     try:
         tag, href = token.split_contents()
     except ValueError:
-        raise template.TemplateSyntaxError, "%r tag requires one argument" % token.contents.split()[0]
+        raise template.TemplateSyntaxError("%r tag requires one argument" %
+                                           token.contents.split()[0])
     if not is_quoted(href):
-        raise template.TemplateSyntaxError, "%r tag's argument should be in quotes" % token.contents.split()[0]
-    
+        raise template.TemplateSyntaxError(
+                                    "%r tag's argument should be in quotes" %
+                                     token.contents.split()[0])
+
     nodelist = parser.parse(('endlink',))
     parser.delete_first_token()
     return LinkNode(href[1:-1], nodelist)
