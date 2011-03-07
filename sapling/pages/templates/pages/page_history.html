@@ -84,7 +84,7 @@
       <td>
         <label for="id_version_{{ forloop.revcounter }}">
         <input type="checkbox" name="version" value="{{ forloop.revcounter }}" id="id_version_{{ forloop.revcounter }}"/>
-        <a href="{% url page-version slug=page.slug version=forloop.revcounter %}">{{ version.history_info.date }}</a>
+        <a href="{% url page-version slug=page.pretty_slug version=forloop.revcounter %}">{{ version.history_info.date }}</a>
         {{ version.history_info.type_verbose }} by {{ version.history_info.user_ip }}
         </label>
       </td>
@@ -94,6 +94,6 @@
   </table>
   </form>
   <p>
-    <a href="{% url show-page slug=page.slug %}">View page</a>
+    <a href="{% url show-page slug=page.pretty_slug %}">View page</a>
   </p>
 {% endblock %}

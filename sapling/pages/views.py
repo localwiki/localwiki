@@ -14,9 +14,10 @@ class PageDetailView(Custom404Mixin, DetailView):
     model = Page
     context_object_name = 'page'
 
-    def handler404(self, request, slug):
+    def handler404(self, request, *args, **kwargs):
         return HttpResponseNotFound(
-            direct_to_template(request, 'pages/page_new.html', {'name': slug})
+            direct_to_template(request, 'pages/page_new.html',
+                               {'name': kwargs['original_slug']})
         )
 
     def get_context_data(self, **kwargs):
@@ -29,7 +30,7 @@ class PageVersionDetailView(PageDetailView):
     template_name = 'pages/page_detail.html'
 
     def get_object(self):
-        page = get_object_or_404(Page, slug__iexact=self.kwargs['slug'])
+        page = super(PageVersionDetailView, self).get_object()
         return page.history.as_of(version=int(self.kwargs['version']))
 
     def get_context_data(self, **kwargs):
@@ -45,10 +46,10 @@ class PageUpdateView(CreateObjectMixin, UpdateView):
     form_class = PageForm
 
     def get_success_url(self):
-        return reverse('show-page', args=[self.object.slug])
+        return reverse('show-page', args=[self.object.pretty_slug])
 
     def create_object(self):
-        return Page(name=self.kwargs['slug'])
+        return Page(name=self.kwargs['original_slug'])
 
 
 class PageHistoryView(ListView):
@@ -56,7 +57,7 @@ class PageHistoryView(ListView):
     template_name = "pages/page_history.html"
 
     def get_queryset(self):
-        self.page = get_object_or_404(Page, slug__iexact=self.kwargs['slug'])
+        self.page = get_object_or_404(Page, slug__exact=self.kwargs['slug'])
         return self.page.history.all()
 
     def get_context_data(self, **kwargs):
@@ -65,13 +66,13 @@ class PageHistoryView(ListView):
         return context
 
 
-def compare(request, slug, version1=None, version2=None):
+def compare(request, slug, version1=None, version2=None, **kwargs):
     versions = request.GET.getlist('version')
     if not versions:
         versions = [v for v in (version1, version2) if v]
     if not versions:
         return redirect(reverse('page-history', args=[slug]))
-    page = get_object_or_404(Page, slug__iexact=slug)
+    page = get_object_or_404(Page, slug__exact=slug)
     versions = [int(v) for v in versions]
     old = min(versions)
     new = max(versions)
