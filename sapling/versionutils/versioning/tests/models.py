@@ -175,7 +175,7 @@ class M19ManyToManyFieldVersioned(models.Model):
 
 class CustomManager(models.Manager):
     def foo(self):
-        print "bar"
+        return "bar"
 
 
 class M20CustomManager(models.Model):
@@ -183,6 +183,13 @@ class M20CustomManager(models.Model):
     objects = models.Manager()
 
     myman = CustomManager()
+
+    history = TrackChanges()
+
+
+class M20CustomManagerDirect(models.Model):
+    name = models.CharField(max_length=200)
+    objects = CustomManager()
 
     history = TrackChanges()
 

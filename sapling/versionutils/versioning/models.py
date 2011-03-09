@@ -184,14 +184,19 @@ class TrackChanges(object):
         for k in TrackChanges.MEMBERS_TO_SKIP:
             if d.get(k, None) is not None:
                 del d[k]
-        # Remove some fields we know we'll re-add in modified form
-        # later.
+        # Modify fields and remove some fields we know we'll re-add in
+        # modified form later.
         for k in copy.copy(d):
             if isinstance(d[k], models.fields.Field):
                 del d[k]
+                continue
             # This appears with model inheritance.
             elif isinstance(getattr(d[k], 'field', None), models.fields.Field):
                 del d[k]
+                continue
+            if isinstance(getattr(d[k], 'manager', None), models.Manager):
+                # Re-init managers.
+                d[k] = d[k].manager.__class__()
         return d
 
     def get_fields(self, model):

@@ -534,7 +534,14 @@ class TrackChangesTest(TestCase):
         m20 = M20CustomManager(name="BEST EVER")
         m20.save()
         h = m20.history.most_recent()
-        self.assertFalse(hasattr(h, 'myman'))
+        self.assertTrue(hasattr(M20CustomManager.history.model, 'myman'))
+        self.assertEqual("bar", M20CustomManager.history.model.myman.foo())
+
+        # This model has 'objects' set to the custom manager.
+        m = M20CustomManagerDirect(name="Yup")
+        m.save()
+        self.assertEqual("bar",
+                         M20CustomManagerDirect.history.model.objects.foo())
 
     def test_correct_fk_version_lookup(self):
         """
