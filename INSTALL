@@ -55,7 +55,7 @@ If you get "pip: command not found", install it.
 	
 4.  Install required python packages using requirements.txt, included in this
 distribution.  pip makes this super easy.
-	(ENV)$ pip install -r requirements.txt
+	(ENV)$ pip install -r install_helpers/requirements.txt
 
 
 5.  Create the database.  Here's how we do it:
