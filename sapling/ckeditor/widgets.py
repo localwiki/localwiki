@@ -46,10 +46,13 @@ class CKEditor(forms.Textarea):
 
     def __init__(self, *args, **kwargs):
         super(CKEditor, self).__init__(*args, **kwargs)
+        buttons = None
         if 'attrs' in kwargs:
             attrs = kwargs['attrs']
             if 'allowed_tags' in attrs:
                 self.config = self.default_config(attrs['allowed_tags'])
+                buttons = attrs['allowed_tags']
+        self.config = self.default_config(buttons=buttons)
 
     def default_config(self, buttons=None):
         toolbar = []
