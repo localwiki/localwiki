@@ -4,23 +4,45 @@ from django.test import TestCase
 from django.db import models
 from forms import MergeModelForm, PageForm
 from pages.models import Page, slugify
+from urllib import quote
 
 
 class PageTest(TestCase):
     def test_slugify(self):
+        # spaces and casing
         self.failUnless(slugify('Front Page') == 'front_page')
         self.failUnless(slugify('fRoNt PaGe') == 'front_page')
         self.failUnless(slugify('Front_Page') == 'front_page')
         self.failUnless(slugify('Front+Page') == 'front_page')
         self.failUnless(slugify('Front%20Page') == 'front_page')
+
+        # slashes
         self.failUnless(slugify('Front Page/Talk') == 'front_page/talk')
         self.failUnless(slugify('Front Page%2FTalk') == 'front_page/talk')
-        self.failUnless(slugify("Ben & Jerry's") == "ben_&_jerry's")
-        self.failUnless(slugify("Ben & Jerry's") == "ben_&_jerry's")
-        self.failUnless(slugify("Ben_%26_Jerry's") == "ben_&_jerry's")
-        self.failUnless(slugify("Заглавная Страница") == "заглавная_страница")
-        self.failUnless(slugify("Заглавная%20Страница") ==
-                        "заглавная_страница")
+
+        # extra spaces
+        self.failUnless(slugify(' I  N  C  E  P  T  I  O  N ') ==
+                                'i_n_c_e_p_t_i_o_n')
+
+        # quotes and other stuff
+        self.failUnless(slugify("Ben & Jerry's") == "ben_%26_jerry%27s")
+        self.failUnless(slugify("Ben & Jerry's") == "ben_%26_jerry%27s")
+        self.failUnless(slugify("Ben_%26_Jerry's") == "ben_%26_jerry%27s")
+        self.failUnless(slugify('Manny "Pac-Man" Pacquaio') ==
+                                'manny_pac-man_pacquaio')
+        self.failUnless(slugify("Where am I?") == "where_am_i")
+        self.failUnless(slugify("What the @#$!!") == "what_the")
+
+        # unicode
+        slug = ("%D0%B7%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F"
+                     "_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
+        assert slug == quote("заглавная_страница")
+        self.failUnless(slugify("Заглавная Страница") == slug)
+        self.failUnless(slugify("Заглавная%20Страница") == slug)
+
+        # idempotent?
+        a = 'АЯ `~!@#$%^&*()-_+=/\|}{[]:;"\'<>.,'
+        self.failUnless(slugify(a) == slugify(slugify(a)))
 
     def test_pretty_slug(self):
         a = Page(name='Front Page')
@@ -28,9 +50,12 @@ class PageTest(TestCase):
         a = Page(name='Front Page/Talk')
         self.failUnless(a.pretty_slug == 'Front_Page/Talk')
         a = Page(name="Ben & Jerry's")
-        self.failUnless(a.pretty_slug == "Ben_&_Jerry's")
+        self.failUnless(a.pretty_slug == "Ben_%26_Jerry%27s")
         a = Page(name='Заглавная Страница')
-        self.failUnless(a.pretty_slug == 'Заглавная_Страница')
+        slug = ("%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F"
+                "_%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
+        assert slug == quote('Заглавная_Страница')
+        self.failUnless(a.pretty_slug == slug)
 
     def test_merge_conflict(self):
         p = Page()

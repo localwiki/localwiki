@@ -1,9 +1,8 @@
 from urllib import quote
 from urllib import unquote_plus
 import re
-import string
 from django.db import models
-from django.template.defaultfilters import slugify, stringfilter
+from django.template.defaultfilters import stringfilter
 from ckeditor.models import HTML5FragmentField
 
 from versionutils import diff
@@ -34,29 +33,39 @@ class PageDiff(diff.BaseModelDiff):
              )
 
 
-def slugify(value, lowercase=True):
-    """Normalizes page name.
+diff.register(Page, PageDiff)
+
+
+def slugify(value, lowercase=True, keep="\-\._'/&"):
+    """Normalizes page name for db lookup or canonical URL
+
+    Args:
+        value: String or unicode object to normalize.
+        lowercase: Convert to lowercase. Defaults to True.
+        keep: Special non-word and non-space characters that should
+            not get stripped out. Defaults to characters important to meaning.
+    Returns:
+        An HTML-safe, url-encoded string with special characters removed.
     """
-    stuff_we_like = '-_/&:\'"'  # special characters we like in a url
-    import unicodedata
-    # normalize unicode
-    value = unicodedata.normalize('NFKD', value)
     # decode URL-encoded chars
-    value = unquote_plus(value)
-    # remove non-{word,space,stuff we like} characters
-    misc_characters = re.compile(('[^\w\s%r]' % stuff_we_like), re.UNICODE)
-    value = re.sub(misc_characters, '', value).strip()
+    value = unquote_plus(value.encode('utf-8')).decode('utf-8')
+
+    # normalize unicode
+    import unicodedata
+    value = unicodedata.normalize('NFKD', unicode(value))
+
+    # remove non-{word,space,keep} characters
+    misc_characters = re.compile(('[^\w\s%s]' % keep), re.UNICODE)
+    value = re.sub(misc_characters, '', value)
+    value = value.strip()
+
     if lowercase:
         value = value.lower()
-    # encode as utf-8
-    value = value.encode('utf-8', 'ignore')
-    # replace spaces and repeating underscores with underscores
+
+    # spaces to underscore
     value = re.sub('[_\s]+', '_', value)
-    # do we want this? disabled. url-encode, preserving stuff we like:
-    # value = quote(value, stuff_we_like)
+    # url-encode
+    value = quote(value.encode('utf-8'))
     return mark_safe(value)
 slugify.is_safe = True
 slugify = stringfilter(slugify)
-
-
-diff.register(Page, PageDiff)
