@@ -24,8 +24,19 @@ class HistoricalMetaInfoQuerySet(QuerySet):
     Simple QuerySet to make filtering intuitive.
     """
     def filter(self, *args, **kws):
+        # Get the variable names of related, versioned objects.
         rels = self.model._original_model._meta.get_all_related_objects()
         versioned_vars = [o.var_name for o in rels if is_versioned(o.model)]
+
+        # Get the lookup names of versioned parent models.
+        parents = self.model._original_model._meta.parents
+        versioned_parents = []
+        for k, v in parents.iteritems():
+            if is_versioned(k):
+                versioned_parents.append(v.name)
+
+        # Iterate through the provided keywords, replacing certain
+        # attributes with ones that correspond to historical models.
         kws_new = {}
         for k, v in kws.iteritems():
             k_new = k
@@ -44,6 +55,14 @@ class HistoricalMetaInfoQuerySet(QuerySet):
                 if rest:
                     rest = "%s%s" % (models.sql.constants.LOOKUP_SEP, rest)
                 k_new = '%s_hist%s' % (parts[0], rest)
+            # Replace all instances of parent_ptr__whatever
+            # with parent_hist_ptr__whatever if parent's versioned.
+            if parts[0] in versioned_parents:
+                rest = models.sql.constants.LOOKUP_SEP.join(parts[2:])
+                if rest:
+                    rest = "%s%s" % (models.sql.constants.LOOKUP_SEP, rest)
+                # -4 will remove '_ptr' from the original string.
+                k_new = '%s_hist_ptr%s' % (parts[0][:-4], rest)
 
             kws_new[k_new] = v
 
@@ -55,6 +74,16 @@ class HistoryManager(models.Manager):
         super(HistoryManager, self).__init__()
         self.model = model
         self.instance = instance
+
+        parent_instance = get_parent_instance(
+            self.instance, model._original_model)
+        if parent_instance:
+            # Having a parent instance means we are doing concrete model
+            # inheritence.  In this case, we want to return a QuerySet
+            # associated with the parent historical instance.  If the
+            # child is also versioned then the child will attach its own
+            # HistoryManager instance which will over-ride this.
+            self.instance = parent_instance
 
     def get_query_set(self):
         if self.instance is None:
@@ -77,7 +106,27 @@ class HistoryManager(models.Manager):
         # has changed underneath.
         if not unique_fields:
             if self.instance.pk:
-                filter = {self.instance._meta.pk.name: self.instance.pk}
+                pk_name = self.instance._meta.pk.name
+                # Having a related object for a pk implies that this is
+                # a concretely subclassed object.  We need to use an
+                # integer lookup in this case.
+                if getattr(self.instance._meta.pk, 'rel', None):
+                    # We normally use the history_id to do the lookup,
+                    # but if the parent model is versioned then the pk
+                    # on the child (historical) model will be a parent
+                    # pointer, so we want this lookup be of the form
+                    # parentmodel_hist_ptr__id rather than
+                    # parentmodel_ptr__id.
+                    original_base = getattr(self.model.__base__,
+                                            '_original_model', None)
+                    if original_base and is_versioned(original_base):
+                        pk_name = "%s%sid" % (
+                            # Use historical model's pk name of the form
+                            # parentmodel_hist_ptr.
+                            self.model._meta.pk.name,
+                            models.sql.constants.LOOKUP_SEP)
+
+                filter = {pk_name: self.instance.pk}
             else:
                 raise self.NoUniqueValuesError(
                     "Wasn't passed an active (existing) instance and model "

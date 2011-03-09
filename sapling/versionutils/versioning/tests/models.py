@@ -208,6 +208,69 @@ class M23AutoNow(models.Model):
     history = TrackChanges()
 
 
+############################################################
+# Model inheritance test models
+############################################################
+
+
+class M24ProxyModel(models.Model):
+    a = models.CharField(max_length=100)
+
+    history = TrackChanges()
+
+
+class M24SubclassProxy(M24ProxyModel):
+    def myfunc(self):
+        return True
+
+    class Meta:
+        proxy = True
+
+
+class M25AbstractModel(models.Model):
+    a = models.CharField(max_length=100)
+
+    class Meta:
+        abstract = True
+
+
+class M25SubclassAbstract(M25AbstractModel):
+    b = models.CharField(max_length=100)
+
+    history = TrackChanges()
+
+# Concrete model inheritence
+# --------------------------
+
+
+class M26ConcreteModelA(models.Model):
+    a = models.CharField(max_length=100)
+
+
+class M26SubclassConcreteA(M26ConcreteModelA):
+    b = models.CharField(max_length=100)
+    history = TrackChanges()
+
+
+class M26ConcreteModelB(models.Model):
+    a = models.CharField(max_length=100)
+    history = TrackChanges()
+
+
+class M26SubclassConcreteB(M26ConcreteModelB):
+    b = models.CharField(max_length=100)
+
+
+class M26ConcreteModelC(models.Model):
+    a = models.CharField(max_length=100)
+    history = TrackChanges()
+
+
+class M26SubclassConcreteC(M26ConcreteModelC):
+    b = models.CharField(max_length=100)
+    history = TrackChanges()
+
+
 TEST_MODELS = [
     M1, M2, M3BigInteger, M4Date, M5Decimal, M6Email, M7Numbers,
     M8Time, M9URL, M10File, M11Image, M12ForeignKey, M13ForeignKeySelf,
@@ -215,4 +278,7 @@ TEST_MODELS = [
     M18OneToOneFieldVersioned, M19ManyToManyFieldVersioned,
     M20CustomManager, M21CustomAttribute,
     M22ManyToManySelfVersioned, M23AutoNow,
+    M24SubclassProxy, M25SubclassAbstract,
+    M26SubclassConcreteA, M26ConcreteModelB,
+    M26SubclassConcreteB, M26ConcreteModelC, M26SubclassConcreteC,
 ]

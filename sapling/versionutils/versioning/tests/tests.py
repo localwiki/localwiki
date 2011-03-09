@@ -67,7 +67,6 @@ class TrackChangesTest(TestCase):
         m = M14ManyToMany(a="text test!")
         m.save()
         m.b.add(category)
-        m.save()
 
         thing = LongerNameOfThing(a="long name")
         thing.save()
@@ -75,6 +74,9 @@ class TrackChangesTest(TestCase):
         m.save()
 
         m = M16Unique(a="What", b="lots of text", c=6)
+        m.save()
+
+        m = M24SubclassProxy(a="sup")
         m.save()
 
     def _setup_file_environment(self):
@@ -88,7 +90,7 @@ class TrackChangesTest(TestCase):
     def _cleanup_file_environment(self):
         pass
 
-    def all_objects(self):
+    def all_test_objects(self):
         objs = []
         for M in self.test_models:
             objs += M.objects.all()
@@ -109,17 +111,21 @@ class TrackChangesTest(TestCase):
         self._cleanup_file_environment()
 
     def test_new_save(self):
+        for m in self.all_test_objects():
+            m.save()
+            self.assertEqual(len(m.history.all()), 2)
+
         new_m = M1(a="ayesyes!", b="bbb", c="cx", d="dddd")
         new_m.save()
         self.assertEqual(len(new_m.history.all()), 1)
 
     def test_empty_save(self):
         history_before = {}
-        for m in self.all_objects():
+        for m in self.all_test_objects():
             history_before[m] = (m, len(m.history.all()))
-        for m in self.all_objects():
+        for m in self.all_test_objects():
             m.save()
-        for m in self.all_objects():
+        for m in self.all_test_objects():
             # saving should add a single history entry
             old_m, old_m_history_len = history_before[m]
             self.assertEqual(len(m.history.all()), old_m_history_len + 1)
@@ -837,6 +843,48 @@ class TrackChangesTest(TestCase):
             m.save()
             m_h = m.history.most_recent()
             self.assertEqual(m.a, m_h.a)
+
+    def test_inheritance(self):
+        # The basics of model inheritance ("is history being created?")
+        # is tested elsewhere.  But let's look to make sure the correct
+        # instance types are being returned for various cases.
+        m = M24SubclassProxy(a="dude")
+        m.save()
+        self.assertEqual(type(m.history.most_recent()), m.history.model)
+
+        m = M25SubclassAbstract(a="new", b="test")
+        m.save()
+        self.assertEqual(type(m.history.most_recent()), m.history.model)
+
+        m = M26SubclassConcreteA(a="hi", b="there")
+        m.save()
+        self.assertEqual(type(m.history.most_recent()), m.history.model)
+
+        m = M26SubclassConcreteB(a="hi", b="there")
+        m.save()
+        parent = M26ConcreteModelB.objects.get(a="hi")
+        self.assertEqual(type(parent.history.most_recent()),
+                         M26ConcreteModelB.history.model)
+
+        child = M26SubclassConcreteC(a="hi", b="there")
+        child.save()
+        self.assertEqual(type(child.history.most_recent()),
+                         child.history.model)
+        parent = M26ConcreteModelC.objects.get(a="hi")
+        self.assertEqual(type(parent.history.most_recent()),
+                         parent.history.model)
+        # Can we get to the child model from the parent?
+        parent.a += "!"
+        parent.save()
+        child.b += "!"
+        child.save()
+        parent_h = parent.history.as_of(version=1)
+        child_h = parent_h.m26subclassconcretec
+        # Child has old version of b attribute.
+        self.assertEqual(child_h.b, "there")
+        # Child has old version of a attribute
+        self.assertEqual(child_h.a, "hi")
+
 ##
 #    def test_reverse_related_name(self):
 #        # custom ForeignKey related_name

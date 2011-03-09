@@ -16,6 +16,25 @@ from constants import *
 from utils import *
 
 
+def get_history_methods(self, model):
+    """
+    Returns a dictionary of the essential methods that will be added to
+    the histoical record model.
+    """
+    fields = {
+        # lookup function for cleaniness. Instead of doing
+        # h.history_ip_address we can write h.history_info.ip_address
+        'history_info': HistoricalMetaInfo(),
+        'revert_to': revert_to,
+        '__init__': historical_record_init,
+        '__getattribute__':
+            # not sure why functools.partial doesn't work here
+            lambda m, name: historical_record_getattribute(model, m, name),
+    }
+
+    return fields
+
+
 def get_history_fields(self, model):
     """
     Returns a dictionary of the essential fields that will be added to the
@@ -37,16 +56,6 @@ def get_history_fields(self, model):
         # directly rather than using
         # reverted_to_version.version_number() on each display.
         'history_reverted_to_version': models.ForeignKey('self', null=True),
-        # lookup function for cleaniness. Instead of doing
-        # h.history_ip_address we can write h.history_info.ip_address
-        'history_info': HistoricalMetaInfo(),
-        'revert_to': revert_to,
-        #'save': save_with_arguments,
-        #'delete': delete_with_arguments,
-        '__init__': historical_record_init,
-        '__getattribute__':
-            # not sure why functools.partial doesn't work here
-            lambda m, name: historical_record_getattribute(model, m, name),
     }
 
     return fields
@@ -60,7 +69,18 @@ def historical_record_init(m, *args, **kws):
     """
     This is the __init__ method of historical record instances.
     """
-    retval = super(m.__class__, m).__init__(*args, **kws)
+    if kws.get('__class__'):
+        base = kws.get('__class__').__base__
+    else:
+        base = m.__class__.__base__
+
+    if is_historical_instance(base):
+        kws['__class__'] = base
+    else:
+        if kws.get('__class__'):
+            del kws['__class__']
+
+    retval = base.__init__(m, *args, **kws)
     m._direct_lookup_fields = {}
     _wrap_reverse_lookups(m)
     return retval
@@ -115,12 +135,26 @@ def _wrap_reverse_lookups(m):
         attr = rel_o.field.name
         parent_model = rel_o.model
         as_of = m.history_info.date
+        is_subclass = False
 
         # Find unique values of the base (non-historical) model.
         unique_values = unique_lookup_values_for(m.history_info._object)
         if not unique_values:
+            # Check to see if this is a subclass relation with a
+            # historical model.
+            for k, v in rel_o.opts.parents.iteritems():
+                if is_versioned(k):
+                    # Cheap comparison hack.
+                    is_subclass = v.related.__dict__ == rel_o.__dict__
+
             pk_att = m.history_info._object._meta.pk.attname
-            pk_val = getattr(m.history_info._object, pk_att)
+            if is_subclass:
+                # For subclassed historical models' implicit OneToOne
+                # relation we want to use the id of the historical
+                # model when the related object is also versioned.
+                pk_val = getattr(m, 'history_id')
+            else:
+                pk_val = getattr(m.history_info._object, pk_att)
             unique_values = {pk_att: pk_val}
 
         # Construct something like {'b__email':'a@example.org', ...}

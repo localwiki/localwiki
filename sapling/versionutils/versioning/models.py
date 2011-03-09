@@ -3,13 +3,13 @@ from functools import partial
 
 from django.db import models
 from django.db.models.options import DEFAULT_NAMES as ALL_META_OPTIONS
-from django.contrib.auth.models import User
 
 from utils import *
 from storage import *
-from registry import *
 from constants import *
 from history_model_methods import get_history_fields
+from history_model_methods import get_history_methods
+import fields
 import manager
 
 
@@ -19,9 +19,19 @@ class TrackChanges(object):
         models.signals.class_prepared.connect(self.finalize, sender=cls)
 
     def finalize(self, sender, **kws):
-        if self.ineligible_for_history_model(sender):
+        if sender._meta.abstract:
+            # We can't do anything on the abstract model.
             return
-        history_model = self.create_history_model(sender)
+        elif sender._meta.proxy:
+            # Get the history model from the base class.
+            base = sender
+            while base._meta.proxy:
+                base = base._meta.proxy_for_model
+            if hasattr(base, '_history_manager_name'):
+                hist_attr = getattr(base, '_history_manager_name')
+                history_model = getattr(sender, hist_attr).model
+        else:
+            history_model = self.create_history_model(sender)
 
         setattr(sender, '_track_changes', True)
 
@@ -38,16 +48,19 @@ class TrackChanges(object):
         # is issued -- custom delete() and save() methods aren't called
         # in that case.
 
+        _post_save = partial(self.post_save, sender)
+        _pre_delete = partial(self.pre_delete, sender)
+        _post_delete = partial(self.post_delete, sender)
         # The TrackChanges object will be discarded, so the signal handlers
         # can't use weak references.
         models.signals.post_save.connect(
-            self.post_save, sender=sender, weak=False
+            _post_save, weak=False
         )
         models.signals.pre_delete.connect(
-            self.pre_delete, sender=sender, weak=False
+            _pre_delete, weak=False
         )
         models.signals.post_delete.connect(
-            self.post_delete, sender=sender, weak=False
+            _post_delete, weak=False
         )
 
         self.wrap_model_fields(sender)
@@ -79,15 +92,36 @@ class TrackChanges(object):
         """
         # For convience's sake, it's nice to be able to reference the
         # non-historical class from the historical class.
-        attrs = {'_original_model': model}
+        attrs = {
+            '_original_model': model,
+            # Though not strictly a field, this attribute
+            # is required for a model to function properly.
+            '__module__': model.__module__,
+        }
 
-        attrs.update(self.get_misc_members(model))
+        attrs.update(get_history_methods(self, model))
+        # Parents mean we are concretely subclassed.
+        if not model._meta.parents:
+            attrs.update(self.get_misc_members(model))
+            attrs.update(Meta=type('Meta', (), self.get_meta_options(model)))
+        if not is_versioned(model.__base__):
+            attrs.update(get_history_fields(self, model))
+            attrs.update(self.get_extra_history_fields(model))
         attrs.update(self.get_fields(model))
-        attrs.update(get_history_fields(self, model))
-        attrs.update(self.get_extra_history_fields(model))
-        attrs.update(Meta=type('Meta', (), self.get_meta_options(model)))
 
         name = '%s_hist' % model._meta.object_name
+        # If we have a parent (meaning we're concretely subclassing)
+        # then let's have our historical object subclass the parent
+        # model's historical model, if the parent model is versioned.
+        # Concretely subclassed models keep some of their information in
+        # their parent model's table, and so if we subclass then we can
+        # mirror this DB relationship for our historical models.
+        # Migrations are easier this way -- you migrate historical
+        # models in the exact same fashion as non-historical models.
+        if model._meta.parents:
+            if is_versioned(model.__base__):
+                return type(name, (model.__base__.history.model,), attrs)
+            return type(name, (model.__base__,), attrs)
         return type(name, (models.Model,), attrs)
 
     def wrap_model_fields(self, model):
@@ -152,8 +186,11 @@ class TrackChanges(object):
                 del d[k]
         # Remove some fields we know we'll re-add in modified form
         # later.
-        for k in d:
+        for k in copy.copy(d):
             if isinstance(d[k], models.fields.Field):
+                del d[k]
+            # This appears with model inheritance.
+            elif isinstance(getattr(d[k], 'field', None), models.fields.Field):
                 del d[k]
         return d
 
@@ -183,11 +220,9 @@ class TrackChanges(object):
                 pass
             return opts
 
-        # Though not strictly a field, this attribute
-        # is required for a model to function properly.
-        fields = {'__module__': model.__module__}
-
-        for field in (model._meta.fields + model._meta.many_to_many):
+        attrs = {}
+        for field in (model._meta.local_fields +
+                      model._meta.local_many_to_many):
             field = copy.deepcopy(field)
 
             if isinstance(field, models.AutoField):
@@ -215,6 +250,12 @@ class TrackChanges(object):
                 # If the field is versioned then we replace it with a
                 # FK/M2M to the historical model.
                 if is_versioned(parent_model) or is_to_self:
+                    if getattr(field.rel, 'parent_link', None):
+                        # Concrete model inheritance and the parent is
+                        # versioned.  In this case, we subclass the
+                        # parent historical model and use that parent
+                        # related field instead.
+                        continue
                     if is_fk:
                         model_type = models.ForeignKey
                         options = _get_fk_opts(field)
@@ -243,9 +284,9 @@ class TrackChanges(object):
                     hist_field.attname = field.attname
                     field = hist_field
 
-            fields[field.name] = field
+            attrs[field.name] = field
 
-        return fields
+        return attrs
 
     def get_extra_history_fields(self, model):
         """
@@ -261,16 +302,16 @@ class TrackChanges(object):
             A dictionary of fields that will be added to the historical
             record model.
         """
-        fields = {
+        attrs = {
             'history_comment': models.CharField(max_length=200, blank=True,
                                                 null=True
             ),
-            'history_user': AutoUserField(null=True),
-            'history_user_ip': AutoIPAddressField(null=True),
+            'history_user': fields.AutoUserField(null=True),
+            'history_user_ip': fields.AutoIPAddressField(null=True),
             '__unicode__': lambda self: u'%s as of %s' % (self.history__object,
                                                           self.history_date)
         }
-        return fields
+        return attrs
 
     META_TO_SKIP = [
         'db_table', 'get_latest_by', 'managed', 'unique_together', 'ordering',
@@ -289,7 +330,22 @@ class TrackChanges(object):
             meta[k] = getattr(model._meta, k)
         return meta
 
-    def post_save(self, instance, created, **kws):
+    def post_save(self, parent, instance, created, **kws):
+        # To support subclassing.
+        if not isinstance(instance, parent):
+            return
+        parent_instance = get_parent_instance(instance, parent)
+        if parent_instance:
+            if (is_versioned(parent_instance) and
+                is_directly_versioned(instance)):
+                # The parent instance has its own handler that will fire
+                # in this case.
+                return
+            # Because this signal is attached to the parent
+            # class, let's save a historical record for the
+            # parent instance here.
+            instance = parent_instance
+
         history_type = getattr(instance, '_history_type', None)
         is_revert = history_type == TYPE_REVERTED
         if created:
@@ -299,14 +355,52 @@ class TrackChanges(object):
         self.create_historical_record(instance, history_type)
         self.m2m_init(instance)
 
-    def pre_delete(self, instance, **kws):
+    def pre_delete(self, parent, instance, **kws):
+        # To support subclassing.
+        if not isinstance(instance, parent):
+            return
+        parent_instance = get_parent_instance(instance, parent)
+        if parent_instance:
+            if is_versioned(parent_instance):
+                # The parent instance has its own handler that will fire
+                # in this case.
+                return
+            # Because this signal is attached to the parent
+            # class, let's save a historical record for the
+            # parent instance here.
+            instance = parent_instance
+
         self._pk_recycle_cleanup(instance)
 
-    def post_delete(self, instance, **kws):
+        # If this model has a parent model (concrete model inheritance)
+        # and that model isn't versioned then we need to set
+        # track_changes=False.  This is because the parent model is
+        # considered a 'part' of the child model in this case and this
+        # is the only way to ensure consistency.
+        for model in instance.__class__._meta.parents:
+            if not is_versioned(model):
+                instance._track_changes = False
+
+    def post_delete(self, parent, instance, **kws):
+        # To support subclassing.
+        if not isinstance(instance, parent):
+            return
+
+        parent_instance = get_parent_instance(instance, parent)
+        if parent_instance:
+            if is_versioned(parent_instance):
+                # The parent instance has its own handler that will fire
+                # in this case.
+                return
+            # Because this signal is attached to the parent
+            # class, let's save a historical record for the
+            # parent instance here.
+            instance = parent_instance
+
         history_type = getattr(instance, '_history_type', None)
         is_revert = history_type == TYPE_REVERTED
         history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
-        if not is_pk_recycle_a_problem(instance):
+        if not is_pk_recycle_a_problem(instance) and instance._track_changes:
             self.create_historical_record(instance, history_type)
             self.m2m_init(instance)
 
@@ -362,9 +456,15 @@ class TrackChanges(object):
                 is_fk_to_self = (field.related.parent_model ==
                                  instance.__class__)
                 if is_versioned(field.related.parent_model) or is_fk_to_self:
+                    if field.rel.parent_link:
+                        # Concrete model inheritance and the parent is
+                        # versioned.  In this case, we subclass the
+                        # parent historical model and use that parent
+                        # related field instead.
+                        continue
+
                     # If the FK field is versioned, set it to the most
                     # recent version of that object.
-
                     # The object the FK id refers to may have been
                     # deleted so we can't simply do Model.objects.get().
                     fk_hist_model = field.rel.to.history.model
@@ -379,9 +479,10 @@ class TrackChanges(object):
                     else:
                         attrs[field.name] = None
                     continue
+
             attrs[field.attname] = getattr(instance, field.attname)
+
         attrs.update(self._get_save_with_attrs(instance))
-        #attrs = self._get_save_with_attrs(instance)
         manager.create(history_type=type, **attrs)
 
     def _get_save_with_attrs(self, instance):
@@ -409,23 +510,100 @@ class TrackChanges(object):
 
         manager = getattr(instance, self.manager_name)
         for entry in manager.all():
-            print "..DELETEING", entry
             entry.delete()
-        print "DONE WITH CLEANUP"
 
 
-class AutoUserField(models.ForeignKey):
-    def __init__(self, **kws):
-        super(AutoUserField, self).__init__(User, **kws)
+def _related_objs_delete_passalong(m):
+    """
+    For all related objects, set _track_changes and _save_with
+    accordingly.
 
-    def contribute_to_class(self, cls, name):
-        super(AutoUserField, self).contribute_to_class(cls, name)
-        registry = FieldRegistry('user')
-        registry.add_field(cls, self)
+    Args:
+        m: A model instance.
+    """
+    # We use signals here.  One alternative would be to do the
+    # cascade ourselves, but we can't be sure of casade behavior.
+    def _set_arguments_for(child_m, model, ids_to_catch, instance, **kws):
+        if instance.pk in ids_to_catch:
+            instance._track_changes = child_m._track_changes
+            instance._save_with = child_m._save_with
+
+    m._rel_objs_to_catch = defaultdict(dict)
+    m._rel_objs_methods = {}
+    # Get the related objects.
+    related_objects = m._meta.get_all_related_objects()
+    related_versioned = [o for o in related_objects if is_versioned(o.model)]
+    # Using related objs, build a dictionary mapping model class -> pks
+    for rel_o in related_versioned:
+        accessor = rel_o.get_accessor_name()
+        if not hasattr(m, accessor):
+            continue
+        # OneToOneField means a single object.
+        if rel_o.field.related.field.__class__ == models.OneToOneField:
+            objs = [getattr(m, accessor)]
+        else:
+            objs = getattr(m, accessor).all()
+        for o in objs:
+            # We use a dictionary for fast lookup in
+            # _set_arguments_for
+            m._rel_objs_to_catch[o.__class__][o.pk] = True
+
+    # Construct a method that will check to see if the sender is
+    # one of the related objects
+    for model in m._rel_objs_to_catch:
+        ids_to_catch = m._rel_objs_to_catch[model]
+        _pass_on_arguments = partial(_set_arguments_for, m, model,
+            ids_to_catch)
+        models.signals.pre_delete.connect(_pass_on_arguments, sender=model,
+            weak=False)
+        # Save the method so we can disconnect it
+        m._rel_objs_methods[model] = _pass_on_arguments
 
 
-class AutoIPAddressField(models.IPAddressField):
-    def contribute_to_class(self, cls, name):
-        super(AutoIPAddressField, self).contribute_to_class(cls, name)
-        registry = FieldRegistry('ip')
-        registry.add_field(cls, self)
+def save_func(model_save):
+    def save(m, *args, **kws):
+        return save_with_arguments(model_save, m, *args, **kws)
+    return save
+
+
+def save_with_arguments(model_save, m, force_insert=False, force_update=False,
+                        using=None, track_changes=True, **kws):
+    """
+    A simple custom save() method on models with changes tracked.
+
+    NOTE: All essential logic should go into our post/pre-delete/save
+          signal handlers, NOT in this method. Custom delete()
+          methods aren't called when doing bulk QuerySet.delete().
+    """
+    m._track_changes = track_changes
+    m._save_with = kws
+
+    return model_save(m, force_insert=force_insert,
+                                      force_update=force_update,
+                                      using=using,
+    )
+
+
+def delete_func(model_delete):
+    def delete(*args, **kws):
+        return delete_with_arguments(model_delete, *args, **kws)
+    return delete
+
+
+def delete_with_arguments(model_delete, m, using=None,
+                          track_changes=True, **kws):
+    """
+    A simple custom delete() method on models with changes tracked.
+
+    NOTE: Most history logic should go into our post/pre-delete/save
+          signal handlers, NOT in this method. Custom delete()
+          methods aren't called when doing bulk QuerySet.delete().
+    """
+    m._track_changes = track_changes
+    m._save_with = kws
+
+    if is_pk_recycle_a_problem(m):
+        m._track_changes = False
+
+    _related_objs_delete_passalong(m)
+    return model_delete(m, using=using)
