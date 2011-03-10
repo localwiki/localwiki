@@ -107,3 +107,6 @@ try:
     from localsettings import *
 except:
     pass
+
+# Allow localsettings.py to define LOCAL_INSTALLED_APPS
+INSTALLED_APPS = tuple(list(INSTALLED_APPS) + list(LOCAL_INSTALLED_APPS))

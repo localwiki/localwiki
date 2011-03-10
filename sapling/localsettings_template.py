@@ -13,3 +13,5 @@ DATABASES = {
 
 DAISYDIFF_URL = 'http://localhost:8080/diff'
 DAISYDIFF_MERGE_URL = 'http://localhost:8080/merge'
+
+LOCAL_INSTALLED_APPS = ()
