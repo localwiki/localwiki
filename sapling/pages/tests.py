@@ -4,6 +4,8 @@ from django.test import TestCase
 from django.db import models
 from forms import MergeModelForm, PageForm
 from pages.models import Page, slugify
+from pages.plugins import html_to_template_text
+from pages.plugins import tag_imports
 from urllib import quote
 
 
@@ -106,7 +108,6 @@ class TestMergeForm(MergeModelForm):
 
 
 class MergeModelFormTest(TestCase):
-
     def test_get_version_date(self):
         """
         Should return empty string or value of auto_now field
@@ -194,3 +195,49 @@ class MergeModelFormTest(TestCase):
         m_new = TestModel.objects.get(pk=m_old.pk)
         # merge() in this case concatenates the two versions
         self.failUnless(m_new.contents == 'abcdef')
+
+
+class HTMLToTemplateTextTest(TestCase):
+    def test_plaintext(self):
+        html = "No XHTML"
+        with self.assertRaises(TypeError):
+            html_to_template_text(html)
+
+    def test_django_tags_escaped(self):
+        html = "<div>{% if 1 %}evil{% endif %}</div>"
+        template_text = html_to_template_text(html)
+        imports = ''.join(tag_imports)
+        self.assertEqual(
+            template_text,
+            imports +
+            "<div>&#123;% if 1 %&#125;evil&#123;% endif %&#125;</div>"
+        )
+
+        html = "<div>{{% if 1 %}}evil{{% endif %}}</div>"
+        template_text = html_to_template_text(html)
+        self.assertEqual(
+            template_text,
+            imports + (
+            "<div>&#123;%&#123;% if 1 %&#125;&#125;evil"
+             "&#123;%&#123;% endif %&#125;&#125;</div>")
+        )
+
+    def test_link_tag(self):
+        html = '<div><a href="http://example.org"></a></div>'
+        template_text = html_to_template_text(html)
+        imports = ''.join(tag_imports)
+        self.assertEqual(template_text,
+            imports + 
+            '<div>{% link "http://example.org" %}{% endlink %}</div>')
+
+        html = '<div><a href="http://example.org">hi!</a></div>'
+        template_text = html_to_template_text(html)
+        self.assertEqual(template_text,
+            imports + 
+            '<div>{% link "http://example.org" %}hi!{% endlink %}</div>')
+
+        html = '<div><a href="http://example.org">hi!</a></div>'
+        template_text = html_to_template_text(html)
+        self.assertEqual(template_text,
+            imports + 
+            '<div>{% link "http://example.org" %}hi!{% endlink %}</div>')

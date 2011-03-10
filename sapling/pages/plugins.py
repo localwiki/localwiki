@@ -1,9 +1,7 @@
-import os
 from lxml import etree
 from lxml.html import fragments_fromstring
 from urlparse import urlparse
 from django.template import Node
-from django.template.base import Template
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from pages.models import Page
@@ -85,9 +83,9 @@ tag_handlers = {"a": [handle_link],
                 "img": [handle_image],
                }
 
-
-def html_to_template(unsafe_html):
-    """ Parse html and turn it into a template
+def html_to_template_text(unsafe_html):
+    """
+    Parse html and turn it into template text.
     """
     safe_html = sanitize_template_tags(unsafe_html)
     top_level_elements = fragments_fromstring(safe_html.decode('utf-8'))
@@ -107,7 +105,7 @@ def html_to_template(unsafe_html):
 
     template_bits = [etree.tostring(elem, encoding='utf-8')
                      for elem in container]
-    return Template(''.join(tag_imports + template_bits))
+    return ''.join(tag_imports + template_bits)
 
 
 class LinkNode(Node):
