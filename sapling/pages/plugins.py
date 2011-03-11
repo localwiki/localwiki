@@ -1,3 +1,18 @@
+""" Conversion of HTML into template with dynamic parts.
+
+We want to allow some dynamic content that gets inserted as the HTML is
+rendered. This is done by converting certain HTML tags into template tags.
+
+For example, to mark links to non-existant pages with a different style, this:
+    <a href="My Page">My Page</a>
+gets converted to this:
+    {% link "My Page" %}My Page{% endlink %}
+and rendered as appropriate by the LinkNode class.
+
+The function html_to_template_text parses the HTML and lets each registered
+handler a chance to do something with an element, such as replace it with a
+template tag.
+"""
 from lxml import etree
 from lxml.html import fragments_fromstring
 from urlparse import urlparse
@@ -8,12 +23,18 @@ from pages.models import Page
 from django.conf import settings
 
 
-def sanitize_template_tags(html):
-    return html.replace('{', '&#123;').replace('}', '&#125;')
+def sanitize_intermediate(html):
+    """ Sanitizes template tags and escapes entities.
+    """
+    return html.replace('{', '&#123;')\
+               .replace('}', '&#125;')\
+               .replace('&', '{amp}')  # escape all entities
 
 
-def template_tag(tag_text):
-    return '{%% %s %%}' % (tag_text,)
+def sanitize_final(html):
+    """ Fixes escaped entities.
+    """
+    return html.replace('{amp}', '&')  # unescape entities
 
 
 def insert_text_before(text, elem):
@@ -30,8 +51,8 @@ def handle_link(elem):
 
     href = elem.attrib['href']
 
-    before = template_tag('link "%s"' % href) + (elem.text or '')
-    after = template_tag('endlink') + (elem.tail or '')
+    before = '{%% link "%s" %%}' % href + (elem.text or '')
+    after = '{% endlink %}' + (elem.tail or '')
 
     insert_text_before(before, elem)
     for child in elem:
@@ -63,9 +84,8 @@ def handle_image(elem):
     width = int(style['width'].replace('px', ''))
     height = int(style['height'].replace('px', ''))
 
-    before = template_tag('thumbnail "%s" "%dx%d" as im' %
-                          (src, width, height))
-    after = template_tag('endthumbnail')
+    before = '{%% thumbnail "%s" "%dx%d" as im %%}' % (src, width, height)
+    after = '{% endthumbnail %}'
 
     elem.attrib['src'] = '{{ im.url }}'
 
@@ -83,11 +103,12 @@ tag_handlers = {"a": [handle_link],
                 "img": [handle_image],
                }
 
+
 def html_to_template_text(unsafe_html):
     """
     Parse html and turn it into template text.
     """
-    safe_html = sanitize_template_tags(unsafe_html)
+    safe_html = sanitize_intermediate(unsafe_html)
     top_level_elements = fragments_fromstring(safe_html.decode('utf-8'))
 
     # put top level elements in container
@@ -103,7 +124,7 @@ def html_to_template_text(unsafe_html):
             if can_continue is False:
                 break
 
-    template_bits = [etree.tostring(elem, encoding='utf-8')
+    template_bits = [sanitize_final(etree.tostring(elem, encoding='utf-8'))
                      for elem in container]
     return ''.join(tag_imports + template_bits)
 

@@ -12,52 +12,52 @@ from urllib import quote
 class PageTest(TestCase):
     def test_slugify(self):
         # spaces and casing
-        self.failUnless(slugify('Front Page') == 'front_page')
-        self.failUnless(slugify('fRoNt PaGe') == 'front_page')
-        self.failUnless(slugify('Front_Page') == 'front_page')
-        self.failUnless(slugify('Front+Page') == 'front_page')
-        self.failUnless(slugify('Front%20Page') == 'front_page')
+        self.assertEqual(slugify('Front Page'), 'front_page')
+        self.assertEqual(slugify('fRoNt PaGe'), 'front_page')
+        self.assertEqual(slugify('Front_Page'), 'front_page')
+        self.assertEqual(slugify('Front+Page'), 'front_page')
+        self.assertEqual(slugify('Front%20Page'), 'front_page')
 
         # slashes
-        self.failUnless(slugify('Front Page/Talk') == 'front_page/talk')
-        self.failUnless(slugify('Front Page%2FTalk') == 'front_page/talk')
+        self.assertEqual(slugify('Front Page/Talk'), 'front_page/talk')
+        self.assertEqual(slugify('Front Page%2FTalk'), 'front_page/talk')
 
         # extra spaces
-        self.failUnless(slugify(' I  N  C  E  P  T  I  O  N ') ==
+        self.assertEqual(slugify(' I  N  C  E  P  T  I  O  N '),
                                 'i_n_c_e_p_t_i_o_n')
 
         # quotes and other stuff
-        self.failUnless(slugify("Ben & Jerry's") == "ben_%26_jerry%27s")
-        self.failUnless(slugify("Ben & Jerry's") == "ben_%26_jerry%27s")
-        self.failUnless(slugify("Ben_%26_Jerry's") == "ben_%26_jerry%27s")
-        self.failUnless(slugify('Manny "Pac-Man" Pacquaio') ==
+        self.assertEqual(slugify("Ben & Jerry's"), "ben_%26_jerry%27s")
+        self.assertEqual(slugify("Ben & Jerry's"), "ben_%26_jerry%27s")
+        self.assertEqual(slugify("Ben_%26_Jerry's"), "ben_%26_jerry%27s")
+        self.assertEqual(slugify('Manny "Pac-Man" Pacquaio'),
                                 'manny_pac-man_pacquaio')
-        self.failUnless(slugify("Where am I?") == "where_am_i")
-        self.failUnless(slugify("What the @#$!!") == "what_the")
+        self.assertEqual(slugify("Where am I?"), "where_am_i")
+        self.assertEqual(slugify("What the @#$!!"), "what_the")
 
         # unicode
         slug = ("%D0%B7%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F"
                      "_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
         assert slug == quote("заглавная_страница")
-        self.failUnless(slugify("Заглавная Страница") == slug)
-        self.failUnless(slugify("Заглавная%20Страница") == slug)
+        self.assertEqual(slugify("Заглавная Страница"), slug)
+        self.assertEqual(slugify("Заглавная%20Страница"), slug)
 
         # idempotent?
         a = 'АЯ `~!@#$%^&*()-_+=/\|}{[]:;"\'<>.,'
-        self.failUnless(slugify(a) == slugify(slugify(a)))
+        self.assertEqual(slugify(a), slugify(slugify(a)))
 
     def test_pretty_slug(self):
         a = Page(name='Front Page')
-        self.failUnless(a.pretty_slug == 'Front_Page')
+        self.assertEqual(a.pretty_slug, 'Front_Page')
         a = Page(name='Front Page/Talk')
-        self.failUnless(a.pretty_slug == 'Front_Page/Talk')
+        self.assertEqual(a.pretty_slug, 'Front_Page/Talk')
         a = Page(name="Ben & Jerry's")
-        self.failUnless(a.pretty_slug == "Ben_%26_Jerry%27s")
+        self.assertEqual(a.pretty_slug, "Ben_%26_Jerry%27s")
         a = Page(name='Заглавная Страница')
         slug = ("%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F"
                 "_%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
         assert slug == quote('Заглавная_Страница')
-        self.failUnless(a.pretty_slug == slug)
+        self.assertEqual(a.pretty_slug, slug)
 
     def test_merge_conflict(self):
         p = Page()
@@ -218,8 +218,26 @@ class HTMLToTemplateTextTest(TestCase):
         self.assertEqual(
             template_text,
             imports + (
-            "<div>&#123;%&#123;% if 1 %&#125;&#125;evil"
-             "&#123;%&#123;% endif %&#125;&#125;</div>")
+            "<div>&#123;&#123;% if 1 %&#125;&#125;evil"
+             "&#123;&#123;% endif %&#125;&#125;</div>")
+        )
+
+        # malicious use of intermediate sanitization
+        html = "<div>{amp}</div>"
+        template_text = html_to_template_text(html)
+        self.assertEqual(
+            template_text,
+            imports + (
+            "<div>&#123;amp&#125;</div>")
+        )
+
+        # preserves entities
+        html = '<div>&amp;&lt;</div>'
+        template_text = html_to_template_text(html)
+        self.assertEqual(
+            template_text,
+            imports + (
+            "<div>&amp;&lt;</div>")
         )
 
     def test_link_tag(self):
@@ -227,17 +245,17 @@ class HTMLToTemplateTextTest(TestCase):
         template_text = html_to_template_text(html)
         imports = ''.join(tag_imports)
         self.assertEqual(template_text,
-            imports + 
+            imports +
             '<div>{% link "http://example.org" %}{% endlink %}</div>')
 
         html = '<div><a href="http://example.org">hi!</a></div>'
         template_text = html_to_template_text(html)
         self.assertEqual(template_text,
-            imports + 
+            imports +
             '<div>{% link "http://example.org" %}hi!{% endlink %}</div>')
 
         html = '<div><a href="http://example.org">hi!</a></div>'
         template_text = html_to_template_text(html)
         self.assertEqual(template_text,
-            imports + 
+            imports +
             '<div>{% link "http://example.org" %}hi!{% endlink %}</div>')
