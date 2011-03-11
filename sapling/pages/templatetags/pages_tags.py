@@ -17,7 +17,7 @@ class PageContentNode(BaseIncludeNode):
 
     def render(self, context):
         try:
-            html = str(self.html_var.resolve(context))
+            html = unicode(self.html_var.resolve(context))
             t = Template(html_to_template_text(html))
             return self.render_template(t, context)
         except:

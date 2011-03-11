@@ -109,11 +109,14 @@ def html_to_template_text(unsafe_html):
     Parse html and turn it into template text.
     """
     safe_html = sanitize_intermediate(unsafe_html)
-    top_level_elements = fragments_fromstring(safe_html.decode('utf-8'))
+    top_level_elements = fragments_fromstring(safe_html)
 
     # put top level elements in container
     container = etree.Element('div')
+    if top_level_elements and not hasattr(top_level_elements[0], 'tag'):
+        container.text = top_level_elements.pop(0)
     container.extend(top_level_elements)
+
     context = etree.iterwalk(container, events=('end',))
     # walk over all elements
     for action, elem in context:
@@ -126,7 +129,7 @@ def html_to_template_text(unsafe_html):
 
     template_bits = [sanitize_final(etree.tostring(elem, encoding='utf-8'))
                      for elem in container]
-    return ''.join(tag_imports + template_bits)
+    return ''.join(tag_imports + [container.text or ''] + template_bits)
 
 
 class LinkNode(Node):
