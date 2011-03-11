@@ -200,8 +200,8 @@ class MergeModelFormTest(TestCase):
 class HTMLToTemplateTextTest(TestCase):
     def test_plaintext(self):
         html = "No XHTML"
-        with self.assertRaises(TypeError):
-            html_to_template_text(html)
+        imports = ''.join(tag_imports)
+        self.assertEqual(html_to_template_text(html), imports + "No XHTML")
 
     def test_django_tags_escaped(self):
         html = "<div>{% if 1 %}evil{% endif %}</div>"
