@@ -11,7 +11,7 @@ from django.utils.safestring import mark_safe
 
 
 class Page(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, editable=False, unique=True)
     content = HTML5FragmentField(
         allowed_elements=['p', 'a', 'em', 'strong', 'img']

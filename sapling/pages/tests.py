@@ -232,12 +232,12 @@ class HTMLToTemplateTextTest(TestCase):
         )
 
         # preserves entities
-        html = '<div>&amp;&lt;</div>'
+        html = '<div>&amp;&lt; then &#123;</div>'
         template_text = html_to_template_text(html)
         self.assertEqual(
             template_text,
             imports + (
-            "<div>&amp;&lt;</div>")
+            "<div>&amp;&lt; then &#123;</div>")
         )
 
     def test_link_tag(self):
