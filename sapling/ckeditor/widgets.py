@@ -45,11 +45,9 @@ class CKEditor(forms.Textarea):
                        )
 
     def __init__(self, *args, **kwargs):
+        self.allowed_tags = kwargs.pop('allowed_tags', None)
+        self.config = kwargs.pop('ck_config', None)
         super(CKEditor, self).__init__(*args, **kwargs)
-        if 'attrs' in kwargs:
-            self.attrs = kwargs['attrs']
-            if 'ck_config' in self.attrs:
-                self.config = self.attrs['ck_config'] 
 
     def get_config(self):
         """Get the config definition for CKEditor.
@@ -57,7 +55,7 @@ class CKEditor(forms.Textarea):
         Returns:
             Dictionary containing things like 'toolbar', 'plugins', etc.
         """
-        if hasattr(self, 'config'):
+        if self.config:
             return self.config
         config = {}
         config['toolbar'] = self.get_toolbar()
@@ -75,12 +73,13 @@ class CKEditor(forms.Textarea):
             Array of toolbars, each toolbar being an array of button names.
         """
         toolbar = []
-        if 'allowed_tags' in self.attrs:
-            allowed_tags = self.attrs['allowed_tags']
+        if self.allowed_tags:
             for name, tag in self._auto_button_map:
-                if tag in allowed_tags:
+                if tag in self.allowed_tags:
                     toolbar.append(name)
-        return [toolbar]
+        if toolbar:
+            return [toolbar]
+        return []
 
     def get_plugins(self):
         """Get the comma-separated list of plugins for CKEditor
@@ -94,9 +93,13 @@ class CKEditor(forms.Textarea):
 
     def render(self, name, value, attrs=None, **kwargs):
         rendered = super(CKEditor, self).render(name, value, attrs)
+        config = self.get_config()
+        config_str = json.dumps(self.get_config())
+        if not config:
+            config_str = ''
         context = {
             'name': name,
-            'config': json.dumps(self.get_config())
+            'config': config_str
         }
         return rendered + mark_safe(render_to_string(
             'ckeditor/ckeditor_script.html', context

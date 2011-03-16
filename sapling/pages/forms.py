@@ -3,6 +3,7 @@ from django.template.defaultfilters import slugify
 
 from versionutils.merging.forms import MergeModelForm
 from pages.models import Page
+from pages.widgets import WikiEditor
 from versionutils.diff.daisydiff.daisydiff import daisydiff_merge
 
 
@@ -15,6 +16,7 @@ class PageForm(MergeModelForm):
     class Meta:
         model = Page
         fields = ('name', 'content')
+        widgets = {'content': WikiEditor()}
 
     def merge(self, yours, theirs, ancestor):
         # ancestor may be None

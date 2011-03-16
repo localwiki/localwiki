@@ -106,9 +106,7 @@ class HTML5FragmentField(models.TextField):
 
     def formfield(self, **kwargs):
         defaults = {
-            'widget': widgets.CKEditor(
-                attrs={'allowed_tags': self.allowed_elements}
-            )
+            'widget': widgets.CKEditor(allowed_tags=self.allowed_elements)
         }
         defaults.update(kwargs)
         return super(HTML5FragmentField, self).formfield(**defaults)
