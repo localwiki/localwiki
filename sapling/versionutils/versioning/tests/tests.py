@@ -638,6 +638,17 @@ class TrackChangesTest(TestCase):
         tags = m19_h.tags.all()
         self.assertEqual(set([t.name for t in tags]), set(["T1", "T2"]))
 
+    def test_fk_to_self_hist_lookup(self):
+        m = M13ForeignKeySelf(a=None, b="Yo!")
+        m.save()
+        m2 = M13ForeignKeySelf(a=m, b="Another")
+        m2.save()
+        m.b += "!"
+        m.save()
+
+        m2_h = m2.history.most_recent()
+        self.assertEqual(m2_h.a.b, "Yo!")
+
     def test_fk_reverse_no_interference(self):
         m2 = M2(a="aaaa!", b="bbbb!", c=1)
         m2.save()

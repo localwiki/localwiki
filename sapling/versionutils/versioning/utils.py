@@ -83,7 +83,7 @@ def unique_lookup_values_for(m):
             hasattr(field, 'related') and
             field.related.field.__class__ == models.OneToOneField
         )
-        if is_onetoone and is_versioned(field.related.model):
+        if is_onetoone and is_versioned(field.related.parent_model):
             # If the OneToOneField is versioned then we return something
             # along the lines of fieldname__pk=m.pk.  We do this
             # because on historical models, foreign keys to versioned
@@ -93,11 +93,22 @@ def unique_lookup_values_for(m):
             # dictionary we need to use the pk of the provided
             # NON-historical object, m.
 
-            # For OneToOneFields, attname is "b_id"
-            related_pk = getattr(m, field.attname)
-            k = "%s%sid" % (field.name, LOOKUP_SEP)
-            v = related_pk
-            return {k: v}
+            # Get the unique fields of the related model.
+            uniques = {}
+            # tring to getattr MapData, page
+            parent_instance = getattr(m, field.name)
+            parent_unique = unique_lookup_values_for(parent_instance)
+            if not parent_unique:
+                # E.g. {'id': 3}
+                parent_pk_name = parent_instance._meta.pk.name
+                parent_unique = {parent_pk_name: parent_instance.pk}
+
+            for parent_k, parent_v in parent_unique.iteritems():
+                # Create something like {'page__id': 3} or
+                # {'page__slug': 'front page'}
+                k = "%s%s%s" % (field.name, LOOKUP_SEP, parent_k)
+                uniques[k] = parent_v
+            return uniques
 
         return {field.name: getattr(m, field.name)}
 
