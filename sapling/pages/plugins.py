@@ -81,6 +81,8 @@ def handle_image(elem):
 
     src = elem.attrib['src'].replace(settings.MEDIA_URL, '')
     style = parse_style(elem.attrib['style'])
+    if 'width' not in style or 'height' not in style:
+        return
     width = int(style['width'].replace('px', ''))
     height = int(style['height'].replace('px', ''))
 
