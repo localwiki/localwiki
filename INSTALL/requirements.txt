@@ -4,3 +4,4 @@ lxml>=2.3
 Sphinx>=1.0.7
 sorl-thumbnail>=11.01
 PIL>=1.1.7
+-e git+git://github.com/philipn/olwidget.git#egg=django-olwidget

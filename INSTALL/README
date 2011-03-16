@@ -1,5 +1,5 @@
 This setup assumes we're using PostgreSQL.  You should be able to use any
-supported GeoDjango database.  If you'd like to do something more
+supported django database.  If you'd like to do something more
 specialized, please see the general Django install instructions here:
 
 http://docs.djangoproject.com/en/dev/topics/install/
