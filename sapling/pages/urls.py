@@ -12,7 +12,8 @@ page_list_info = {
 
 
 def fix_slug(func):
-    """Applies custom slugify to the slug
+    """
+    Applies custom slugify to the slug.
     """
     def wrapped(*args, **kwargs):
         if 'slug' in kwargs:
@@ -21,11 +22,12 @@ def fix_slug(func):
         return func(*args, **kwargs)
     return wrapped
 
+
 urlpatterns = patterns('',
     url(r'^$', ListView.as_view(**page_list_info), name='title-index'),
-    url(r'^(?P<slug>.+)/edit$', fix_slug(views.PageUpdateView.as_view()),
+    url(r'^(?P<slug>.+)/_edit$', fix_slug(views.PageUpdateView.as_view()),
         name='edit-page'),
-    url(r'^(?P<slug>.+)/upload', fix_slug(views.upload), name='upload-image'),
+    url(r'^(?P<slug>.+)/_upload', fix_slug(views.upload), name='upload-image'),
     url(r'^(?P<slug>.+)/_history/compare$', fix_slug(views.compare)),
     url(r'^(?P<slug>.+)/_history/(?P<version1>[0-9]+)...(?P<version2>[0-9]+)$',
         fix_slug(views.compare), name='compare-revisions'),

@@ -6,6 +6,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^pages/', include('sapling.pages.urls')),
+    (r'^map/', include('sapling.maps.urls')),
+
     (r'^admin/', include(admin.site.urls)),
 )
 

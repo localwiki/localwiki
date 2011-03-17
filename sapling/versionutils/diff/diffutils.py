@@ -314,6 +314,29 @@ class ImageFieldDiff(FileFieldDiff):
         return render_to_string(self.template, {'diff': d})
 
 
+class GeometryFieldDiff(BaseFieldDiff):
+    """
+    Compares two Geometry Field types and renders their difference as a
+    geometry collection.
+    """
+    template = 'diff/geometry_diff.html'
+
+    def get_diff(self):
+        if self.field1 == self.field2:
+            return None
+        # XXX TODO
+        # This should be something different. Symmetric difference
+        # isn't quite right.  We want to show addition, deletion.
+        difference = self.field1.sym_difference(self.field2)
+        return {'difference': difference}
+
+    def as_html(self):
+        from olwidget.widgets import InfoMap
+        d = self.get_diff()
+        diff_map = InfoMap([(d['difference'], 'Whats changed')])
+        return render_to_string(self.template, {'diff': diff_map})
+
+
 def get_diff_operations(a, b):
     """
     Returns the minimal diff operations between two strings, using difflib.
@@ -466,9 +489,9 @@ def diff(object1, object2):
         DiffUtilNotFound: If there's no registered or inferred diff for
         the objects.
     """
-    if is_historical_instance(object1): 
+    if is_historical_instance(object1):
         object1 = object1.history_info._object
-    if is_historical_instance(object2): 
+    if is_historical_instance(object2):
         object2 = object2.history_info._object
     diff_util = registry.get_diff_util(object1.__class__)
     return diff_util(object1, object2)
@@ -479,3 +502,10 @@ register(models.CharField, TextFieldDiff)
 register(models.TextField, TextFieldDiff)
 register(models.FileField, FileFieldDiff)
 register(models.ImageField, ImageFieldDiff)
+
+# XXX TODO
+# register for all Geometry Fields
+# then can we remove the GeometryFieldDiff specification in models.py?
+# for field in GEO_FIELDS:
+#     register(field, GeometryFieldDiff)
+# or maybe just use subclassing trick?

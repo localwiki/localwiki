@@ -1,7 +1,7 @@
 from urllib import quote
 from urllib import unquote_plus
 import re
-from django.db import models
+from django.contrib.gis.db import models
 from django.template.defaultfilters import stringfilter
 from ckeditor.models import HTML5FragmentField
 
@@ -17,6 +17,9 @@ class Page(models.Model):
         allowed_elements=['p', 'a', 'em', 'strong', 'img']
     )
     history = TrackChanges()
+
+    def __unicode__(self):
+        return self.name
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)

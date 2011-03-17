@@ -310,8 +310,23 @@ class HistoricalObjectDescriptor(object):
         self.model = model
 
     def __get__(self, instance, owner):
-        values = (getattr(instance, f.attname)
-                  for f in self.model._meta.fields
-                 )
+        values = []
+        for f in self.model._meta.fields:
+            related = getattr(f, 'related', None)
+            if related and is_versioned(related.parent_model):
+                # If the field points to a related, versioned model then
+                # we need to subsitute an instance of that model (not
+                # versioned) here.  This is because we use the same
+                # attname for the pointer to the historical, related
+                # object.  For instance, if we have "Map" -> OneToOne ->
+                # "Page", then in Map_hist we have page_id which stores
+                # the value of the Page_hist object.
+                attribute = getattr(instance, f.name)
+                if attribute is not None:
+                    values.append(attribute.history_info._object.pk)
+                else:
+                    values.append(None)
+            else:
+                values.append(getattr(instance, f.attname))
         m = self.model(*values)
         return m

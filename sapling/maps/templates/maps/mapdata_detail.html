@@ -1,0 +1,28 @@
+{% extends "maps/base.html" %}
+
+{% block media %}{{ map.media }}{% endblock %}
+
+{% block title %}Map for {{ page.name }} - {{ block.super }}{% endblock %}
+{% block header %}Map for {{ page.name }}{% endblock %}
+
+{% block main %}
+    {% if show_revision %}
+        <em class="revision_details">
+            Revision {{ mapdata.history_info.version_number }}
+            ({{ mapdata.history_info.date }}
+            by {{ mapdata.history_info.user_name|default:mapdata.history_info.user_ip }})
+        </em>
+    {% endif %}
+  
+  <div>
+    {{ map }}
+  </div>
+  
+  <p>Modified {{ date|timesince }} ago (<a href="{% url page-map-history slug=page.pretty_slug %}">History</a>)</p>
+    
+  <p>
+    <a href="{% url edit-page-map slug=page.pretty_slug %}">Edit this map</a>
+  </p>
+{% endblock %}
+
+

@@ -1,5 +1,5 @@
-{% extends "pages/base.html" %}
-{% block title %}Previous versions of {{ page.name }} - {{ block.super }}{% endblock %}
+{% extends "maps/base.html" %}
+{% block title %}Previous versions of map for {{ mapdata.page.name }} - {{ block.super }}{% endblock %}
 {% block media %}
     <style type="text/css">
         .version_highlight {
@@ -59,7 +59,7 @@
       })
     </script>
 {% endblock %}
-{% block header %}Previous versions of "{{ page.name }}"{% endblock %}
+{% block header %}Previous versions of map for "{{ mapdata.page.name }}"{% endblock %}
 
 {% block main %}
   <form method="GET" action="compare" name="compare_form">
@@ -84,7 +84,7 @@
       <td>
         <label for="id_version_{{ forloop.revcounter }}">
         <input type="checkbox" name="version" value="{{ forloop.revcounter }}" id="id_version_{{ forloop.revcounter }}"/>
-        <a href="{% url page-version slug=page.pretty_slug version=forloop.revcounter %}">{{ version.history_info.date }}</a>
+        <a href="{% url page-map-version slug=mapdata.page.pretty_slug version=forloop.revcounter %}">{{ version.history_info.date }}</a>
         {{ version.history_info.type_verbose }} by {{ version.history_info.user_ip }}
         </label>
       </td>
@@ -94,6 +94,6 @@
   </table>
   </form>
   <p>
-    <a href="{% url show-page slug=page.pretty_slug %}">View page</a>
+    <a href="{% url show-page-map slug=mapdata.page.pretty_slug %}">View map</a>
   </p>
 {% endblock %}

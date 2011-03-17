@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     # Other third-party apps
+    'olwidget',
     'sorl.thumbnail',
 
     # Our apps
@@ -101,6 +102,7 @@ INSTALLED_APPS = (
     'versionutils.diff',
     'ckeditor',
     'pages',
+    'maps',
 )
 
 try:
