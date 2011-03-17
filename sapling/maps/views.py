@@ -1,6 +1,7 @@
 from django.views.generic import DetailView, UpdateView, ListView
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404, redirect
+from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
 
 from olwidget.widgets import InfoMap
@@ -12,10 +13,16 @@ from pages.models import Page
 from pages.models import slugify
 
 
-# XXX
-# add custom4040mixin thing
-class MapDetailView(DetailView):
+class MapDetailView(Custom404Mixin, DetailView):
     model = MapData
+
+    def handler404(self, request, *args, **kwargs):
+        page_slug = kwargs.get('slug')
+        page = Page.objects.get(slug=slugify(page_slug))
+        return HttpResponseNotFound(
+            direct_to_template(request, 'maps/mapdata_new.html',
+                               {'page': page})
+        )
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
@@ -38,8 +45,10 @@ class MapUpdateView(CreateObjectMixin, UpdateView):
     def get_object(self):
         page_slug = self.kwargs.get('slug')
         page = Page.objects.get(slug=slugify(page_slug))
-        mapdata = get_object_or_404(MapData, page=page)
-        return mapdata
+        mapdatas = MapData.objects.filter(page=page)
+        if mapdatas:
+            return mapdatas[0]
+        return MapData(page=page)
 
     def get_success_url(self):
         return reverse('show-page-map', args=[self.object.page.pretty_slug])

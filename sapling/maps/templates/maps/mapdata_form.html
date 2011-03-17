@@ -1,9 +1,9 @@
 {% extends "maps/base.html" %}
 {% block media %}{{ form.media }}{% endblock %}
 
-{% block title %}Editing page "{{ form.instance.name }}" - {{ block.super }}{% endblock %}
+{% block title %}Editing map for "{{ form.instance.page.name }}" - {{ block.super }}{% endblock %}
 
-{% block header %}Editing page "{{ form.instance.name }}"{% endblock %}
+{% block header %}Editing map for "{{ form.instance.page.name }}"{% endblock %}
     
 {% block main %}
     <form method="post" action="">{% csrf_token %}
