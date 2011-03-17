@@ -23,9 +23,9 @@ def slugify(func):
 
 urlpatterns = patterns('',
     url(r'^$', ListView.as_view(**page_list_info), name='title-index'),
-    url(r'^(?P<slug>.+)/edit$', slugify(views.PageUpdateView.as_view()),
+    url(r'^(?P<slug>.+)/_edit$', slugify(views.PageUpdateView.as_view()),
         name='edit-page'),
-    url(r'^(?P<slug>.+)/upload', slugify(views.upload), name='upload-image'),
+    url(r'^(?P<slug>.+)/_upload', slugify(views.upload), name='upload-image'),
     url(r'^(?P<slug>.+)/_history/compare$', slugify(views.compare)),
     url(r'^(?P<slug>.+)/_history/(?P<version1>[0-9]+)...(?P<version2>[0-9]+)$',
         slugify(views.compare), name='compare-revisions'),
