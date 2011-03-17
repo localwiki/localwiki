@@ -1,5 +1,5 @@
 <script type="text/javascript">
 <!--
-    CKEDITOR.replace( 'id_{{ name }}', {{ config|safe }} );
+CKEDITOR.replace('id_{{ name }}'{% if config %}, {{ config|safe }}{% endif %});
 -->
 </script>

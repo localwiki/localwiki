@@ -903,6 +903,23 @@ class TrackChangesTest(TestCase):
         # Child has old version of a attribute
         self.assertEqual(child_h.a, "hi")
 
+    def test_inheritance_delete(self):
+        # If B (versioned) is a concrete subclass of A (not versioned),
+        # and A is deleted then the historical models for B should also
+        # be deleted.
+        B = M26SubclassConcreteA
+        A = M26ConcreteModelA
+
+        m = B(a="child", b="yes")
+        m.save()
+        # parent isn't versioned
+        parent = A.objects.get(a="child")
+        parent.delete()
+
+        self.assertEqual(len(B.objects.filter(a="child")), 0)
+        self.assertEqual(len(A.objects.filter(a="child")), 0)
+        self.assertEqual(len(B.history.filter(a="child")), 0)
+
 ##
 #    def test_reverse_related_name(self):
 #        # custom ForeignKey related_name

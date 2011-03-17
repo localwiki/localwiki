@@ -1,8 +1,10 @@
 from django import template
 from django.template.loader_tags import BaseIncludeNode
-from django.template import Node
+from django.template import Template
 from django.conf import settings
-from pages.plugins import html_to_template, LinkNode
+
+from pages.plugins import html_to_template_text
+from pages.plugins import LinkNode
 
 
 register = template.Library()
@@ -15,9 +17,9 @@ class PageContentNode(BaseIncludeNode):
 
     def render(self, context):
         try:
-            html = self.html_var.resolve(context)
-            template = html_to_template(str(html))
-            return self.render_template(template, context)
+            html = unicode(self.html_var.resolve(context))
+            t = Template(html_to_template_text(html))
+            return self.render_template(t, context)
         except:
             if settings.TEMPLATE_DEBUG:
                 raise

@@ -17,66 +17,89 @@ if settings.DEBUG:
 
 class CKEditor(forms.Textarea):
     _auto_button_map = (('Form', 'form'),
-                   ('Checkbox', 'input'),
-                   ('Radio', 'input'),
-                   ('TextField', 'input'),
-                   ('Textarea', 'textarea'),
-                   ('Select', 'select'),
-                   ('Button', 'input'),
-                   ('ImageButton', 'input'),
-                   ('Hidden', 'input'),
-                   ('Bold', 'strong'),
-                   ('Italic', 'em'),
-                   ('Underline', 'u'),
-                   ('Strike', 'strike'),
-                   ('Subscript', 'sub'),
-                   ('Superscript', 'sup'),
-                   ('NumberedList', 'ol'),
-                   ('BulletedList', 'ul'),
-                   ('Blockquote', 'blockquote'),
-                   ('CreateDiv', 'div'),
-                   ('Link', 'a'),
-                   ('Unlink', 'a'),
-                   ('Anchor', 'a'),
-                   ('InsertImage', 'img'),
-                   ('Flash', 'object'),
-                   ('Table', 'table'),
-                   ('HorizontalRule', 'hr'),
-                   )
+                       ('Checkbox', 'input'),
+                       ('Radio', 'input'),
+                       ('TextField', 'input'),
+                       ('Textarea', 'textarea'),
+                       ('Select', 'select'),
+                       ('Button', 'input'),
+                       ('ImageButton', 'input'),
+                       ('Hidden', 'input'),
+                       ('Bold', 'strong'),
+                       ('Italic', 'em'),
+                       ('Underline', 'u'),
+                       ('Strike', 'strike'),
+                       ('Subscript', 'sub'),
+                       ('Superscript', 'sup'),
+                       ('NumberedList', 'ol'),
+                       ('BulletedList', 'ul'),
+                       ('Blockquote', 'blockquote'),
+                       ('CreateDiv', 'div'),
+                       ('Link', 'a'),
+                       ('Unlink', 'a'),
+                       ('Anchor', 'a'),
+                       ('Image', 'img'),
+                       ('Flash', 'object'),
+                       ('Table', 'table'),
+                       ('HorizontalRule', 'hr'),
+                       )
 
     def __init__(self, *args, **kwargs):
+        self.allowed_tags = kwargs.pop('allowed_tags', None)
+        self.config = kwargs.pop('ck_config', None)
         super(CKEditor, self).__init__(*args, **kwargs)
-        buttons = None
-        if 'attrs' in kwargs:
-            attrs = kwargs['attrs']
-            if 'allowed_tags' in attrs:
-                self.config = self.default_config(attrs['allowed_tags'])
-                buttons = attrs['allowed_tags']
-        self.config = self.default_config(buttons=buttons)
 
-    def default_config(self, buttons=None):
+    def get_config(self):
+        """Get the config definition for CKEditor.
+
+        Returns:
+            Dictionary containing things like 'toolbar', 'plugins', etc.
+        """
+        if self.config:
+            return self.config
+        config = {}
+        config['toolbar'] = self.get_toolbar()
+        config['plugins'] = self.get_plugins()
+        config['extraPlugins'] = self.get_extra_plugins()
+        for k, v in config.items():
+            if not v:
+                del config[k]
+        return config
+
+    def get_toolbar(self):
+        """Get the toolbar definition for CKEditor.
+
+        Returns:
+            Array of toolbars, each toolbar being an array of button names.
+        """
         toolbar = []
-        if buttons:
+        if self.allowed_tags:
             for name, tag in self._auto_button_map:
-                if tag in buttons:
+                if tag in self.allowed_tags:
                     toolbar.append(name)
+        if toolbar:
+            return [toolbar]
+        return []
 
-        return json.dumps(
-            {'toolbar': [toolbar], 'filebrowserInsertimageUploadUrl': 'upload',
-             'extraPlugins': 'insertimage,simpleimage'}
-        )
+    def get_plugins(self):
+        """Get the comma-separated list of plugins for CKEditor
+        """
+        return None
 
-    def button_for_tag(self, tag):
-        if tag in self._auto_button_map:
-            return self._auto_button_map[tag]
-        else:
-            return None
+    def get_extra_plugins(self):
+        """Get the comma-separated list of extra plugins for CKEditor
+        """
+        return None
 
     def render(self, name, value, attrs=None, **kwargs):
         rendered = super(CKEditor, self).render(name, value, attrs)
+        config = self.get_config()
+        config_str = json.dumps(self.get_config())
+        if not config:
+            config_str = ''
         context = {
             'name': name,
-            'config': self.config
+            'config': config_str
         }
         return rendered + mark_safe(render_to_string(
             'ckeditor/ckeditor_script.html', context

@@ -8,6 +8,7 @@ from ckeditor.models import XHTMLField
 from ckeditor.models import XMLField
 from ckeditor.models import HTML5Field
 from ckeditor.models import HTML5FragmentField
+from ckeditor.widgets import CKEditor
 import xssattacks
 
 
@@ -21,6 +22,10 @@ class HTML5Model(models.Model):
 
 class HTML5FragmentModel(models.Model):
     html = HTML5FragmentField()
+
+
+class RestrictedHTML5FragmentModel(models.Model):
+    html = HTML5FragmentField(allowed_elements=['a'])
 
 
 class XHTMLFieldTest(TestCase):
@@ -61,6 +66,70 @@ class HTML5FragmentField(TestCase):
         m.html = '<script/>'
         m.clean_fields()
         self.assertEquals(m.html, '&lt;script/&gt;')
+
+    def test_allowed_elements(self):
+        m = RestrictedHTML5FragmentModel()
+        m.html = '<p><a href="#top">This link</a> takes you to the top</p>'
+        m.clean_fields()
+        self.assertEquals(m.html, ('&lt;p&gt;<a href="#top">This link</a>'
+                                   ' takes you to the top&lt;/p&gt;'))
+
+
+class CKEditorWidgetTest(TestCase):
+    def test_default_config(self):
+        ck = CKEditor()
+        rendered = ck.render("ck", "Test")
+        expected = ('<textarea rows="10" cols="40" name="ck">Test</textarea>'
+                    '<script type="text/javascript">\n'
+                    '<!--\n'
+                    "CKEDITOR.replace('id_ck');\n"
+                    '-->\n'
+                    '</script>')
+        self.assertEqual(rendered, expected)
+
+    def test_config_based_on_allowed_tags(self):
+        ck = CKEditor(allowed_tags=['a'])
+        rendered = ck.render("ck", "Test")
+        expected = ('<textarea rows="10" cols="40" name="ck">Test</textarea>'
+                    '<script type="text/javascript">\n'
+                    '<!--\n'
+                    "CKEDITOR.replace('id_ck', "
+                    '{"toolbar": [["Link", "Unlink", "Anchor"]]});\n'
+                    '-->\n'
+                    '</script>')
+        self.assertEqual(rendered, expected)
+
+    def test_custom_config(self):
+        ck = CKEditor(ck_config={'extraPlugins': 'myThing'})
+        rendered = ck.render("ck", "Test")
+        expected = ('<textarea rows="10" cols="40" name="ck">Test</textarea>'
+                    '<script type="text/javascript">\n'
+                    '<!--\n'
+                    "CKEDITOR.replace('id_ck', "
+                    '{"extraPlugins": "myThing"});\n'
+                    '-->\n'
+                    '</script>')
+        self.assertEqual(rendered, expected)
+
+
+class CustomCKEditor(CKEditor):
+    def get_extra_plugins(self):
+        plugins = ["myPlugin1", "myPlugin2"]
+        return ','.join(plugins)
+
+
+class CustomCKEditorTest(TestCase):
+    def test_config(self):
+        ck = CustomCKEditor()
+        rendered = ck.render("ck", "Test")
+        expected = ('<textarea rows="10" cols="40" name="ck">Test</textarea>'
+                    '<script type="text/javascript">\n'
+                    '<!--\n'
+                    "CKEDITOR.replace('id_ck', "
+                    '{"extraPlugins": "myPlugin1,myPlugin2"});\n'
+                    '-->\n'
+                    '</script>')
+        self.assertEqual(rendered, expected)
 
 
 class XSSTest(TestCase):
