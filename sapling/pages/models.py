@@ -10,12 +10,15 @@ from versionutils.versioning import TrackChanges
 from django.utils.safestring import mark_safe
 
 
+allowed_tags = ['p', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3', 'h4',
+                'h5', 'hr', 'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tr',
+                'th', 'td']
+
+
 class Page(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, editable=False, unique=True)
-    content = HTML5FragmentField(
-        allowed_elements=['p', 'a', 'em', 'strong', 'img']
-    )
+    content = HTML5FragmentField(allowed_elements=allowed_tags)
     history = TrackChanges()
 
     def save(self, *args, **kwargs):
