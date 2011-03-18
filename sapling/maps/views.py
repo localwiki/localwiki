@@ -95,11 +95,6 @@ class MapVersionDetailView(MapDetailView):
 class MapCompareView(diff.views.CompareView):
     model = MapData
 
-    def get_context_data(self, **kwargs):
-        context = super(MapCompareView, self).get_context_data(**kwargs)
-        context['map_media'] = InfoMap([]).media
-        return context
-
     def get_object(self):
         page = Page.objects.get(slug=slugify(self.kwargs.get('slug')))
         return get_object_or_404(MapData, page=page)

@@ -2,7 +2,8 @@
 {% load diff_tags %}
 
 {% block media %}
-  {{ map_media }}
+  {% diff old new as map_diff %}
+  {{ map_diff.media }}
   <style>
     del {
       background: #FDC6C6;
@@ -52,8 +53,8 @@
         </tr>
     </thead>
     <tbody valign="top">
-        {% diff old new as map_diff %}
-        {{ map_diff.get_diff.geom }} 
+    {% diff old new as map_diff %}
+    {{ map_diff.get_diff.geom }} 
     </tbody>
   </table>
   <p>

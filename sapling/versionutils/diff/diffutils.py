@@ -3,11 +3,13 @@ import difflib
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
+from django import forms
 from django.conf import settings
 
 import diff_match_patch
 import daisydiff
 from versionutils.versioning.utils import is_historical_instance
+
 
 class DiffUtilNotFound(Exception):
     """
@@ -94,6 +96,10 @@ class BaseFieldDiff():
         if diff is None:
             return '<tr><td colspan="2">(No differences found)</td></tr>'
         return '<tr><td>%s</td><td>%s</td></tr>' % (self.field1, self.field2)
+
+    def _media(self):
+        return forms.Media()
+    media = property(_media)
 
     def __str__(self):
         return self.as_html()
@@ -221,6 +227,16 @@ class BaseModelDiff(object):
 
         return diff
 
+    def _media(self):
+        # Add all the field diffs' media attributes together.
+        # Because the field diffs don't compute anything until their
+        # relevant get_diff() methods are called, this isn't expensive.
+        m = forms.Media()
+        for name, field_diff in self.get_diff().iteritems():
+            m += field_diff.media
+        return m
+    media = property(_media)
+
     def __str__(self):
         return self.as_html()
 
@@ -335,6 +351,11 @@ class GeometryFieldDiff(BaseFieldDiff):
         d = self.get_diff()
         diff_map = InfoMap([(d['difference'], 'Whats changed')])
         return render_to_string(self.template, {'diff': diff_map})
+
+    def _media(self):
+        from olwidget.widgets import InfoMap
+        return InfoMap([]).media
+    media = property(_media)
 
 
 def get_diff_operations(a, b):
