@@ -16,22 +16,21 @@
   {% block media %}{% endblock %}
 </head>
 
+{% block body %}
 <body>
   <div>
-    <header>
+    <div id="header">
       <h1>{% block header %}{% endblock %}</h1>
-    </header>
-    <nav>
-      {% include "pages/nav.html" %}
-    </nav>
+    </div>
+    <div id="nav">
+      {% include "maps/nav.html" %}
+    </div>
 
     <div id="main">
       {% block main %}{% endblock %}
     </div>
-
-    <footer>
-     <p align="right" style="font-family:Symbol">&#960;</p>
-    </footer>
   </div>
 </body>
+{% endblock %}
+
 </html>

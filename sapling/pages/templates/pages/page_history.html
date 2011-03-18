@@ -1,98 +1,14 @@
 {% extends "pages/base.html" %}
-{% block title %}Previous versions of {{ page.name }} - {{ block.super }}{% endblock %}
+
 {% block media %}
-    <style type="text/css">
-        .version_highlight {
-            background: #FFFFBE;
-        }
-        thead {
-            padding-top: 100em;
-            margin-bottom: 1em;
-        }
-        input[type="checkbox"] {
-            width: 100px;
-        }
-    </style>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.5.min.js"></script>
-    <script type="text/javascript">
-      function highlight(){
-          var selected = $('input:checked[name="version"]').length;
-          if(selected > 2)
-          {
-              $('input[name="version"]').removeAttr('checked').parents('tr').removeClass('version_highlight');;
-              $(this).attr('checked', 'checked').parents('tr').addClass('version_highlight');
-              return;
-          }
-          var seen = 0;
-          $('input[name="version"]').each(function (){
-             if($(this).attr('checked')){
-                 $(this).parents('tr').addClass('version_highlight');
-                 seen++;
-             } else {
-                 if(seen > 0 && seen < selected)
-                    $(this).parents('tr').addClass('version_highlight');
-                 else $(this).parents('tr').removeClass('version_highlight');
-             }
-          });
-      }
-      function compare() {
-          var versions = [];
-          $('input:checked[name="version"]').each(function(){
-              versions.push($(this).val());
-          });
-          if(!versions.length)
-          {
-            alert("Please select two versions to compare");
-            return false;
-          }
-          var newer = versions[0];
-          var older = newer > 1 ? newer - 1 : 1;
-          if(versions.length > 1)
-            older = versions[1]
-          window.location.href="" + older + "..." + newer;
-          return false;
-      }
-      $(function (){
-          highlight();
-          $('input[name="version"]').click(highlight);
-          $('form[name="compare_form"]').submit(compare);
-      })
-    </script>
+  {% include "versionutils/history/media.html" %}
 {% endblock %}
-{% block header %}Previous versions of "{{ page.name }}"{% endblock %}
+
+{% block title %}Previous versions of page "{{ mapdata.page.name }}" - {{ block.super }}{% endblock %}
+{% block header %}Previous versions of page "{{ mapdata.page.name }}"{% endblock %}
 
 {% block main %}
-  <form method="GET" action="compare" name="compare_form">
-  <table>
-    <thead>
-      <tr>
-        <td>
-          <input type="submit" value="Compare">
-        </td>
-      </tr>
-    </thead>
-    <tfoot>
-      <tr>
-        <td>
-          <input type="submit" value="Compare">
-        </td>
-      </tr>
-    </tfoot>
-    <tbody>
-  {% for version in version_list %}
-    <tr>
-      <td>
-        <label for="id_version_{{ forloop.revcounter }}">
-        <input type="checkbox" name="version" value="{{ forloop.revcounter }}" id="id_version_{{ forloop.revcounter }}"/>
-        <a href="{% url page-version slug=page.pretty_slug version=forloop.revcounter %}">{{ version.history_info.date }}</a>
-        {{ version.history_info.type_verbose }} by {{ version.history_info.user_ip }}
-        </label>
-      </td>
-    </tr>
-  {% endfor %}
-    </tbody>
-  </table>
-  </form>
+  {% include "versionutils/history/form.html" %}
   <p>
     <a href="{% url show-page slug=page.pretty_slug %}">View page</a>
   </p>

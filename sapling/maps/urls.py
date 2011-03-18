@@ -1,9 +1,6 @@
 from django.conf.urls.defaults import *
-from django.views.generic import ListView
 
 import views
-from models import MapData
-from pages.models import slugify
 
 urlpatterns = patterns('',
     url(r'^(?P<slug>.+)/_edit/$', views.MapUpdateView.as_view(),
