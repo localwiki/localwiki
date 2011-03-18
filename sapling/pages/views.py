@@ -1,15 +1,14 @@
-from models import Page
-from forms import PageForm
 from django.views.generic.simple import direct_to_template
 from django.views.generic import DetailView, UpdateView, ListView
-
 from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 
 from ckeditor.views import ck_upload
 
+from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin
+
 from models import Page
 from forms import PageForm
 
@@ -70,22 +69,8 @@ class PageHistoryView(ListView):
         return context
 
 
-def compare(request, slug, version1=None, version2=None, **kwargs):
-    versions = request.GET.getlist('version')
-    if not versions:
-        versions = [v for v in (version1, version2) if v]
-    if not versions:
-        return redirect(reverse('page-history', args=[slug]))
-    page = get_object_or_404(Page, slug__exact=slug)
-    versions = [int(v) for v in versions]
-    old = min(versions)
-    new = max(versions)
-    if len(versions) == 1:
-        old = max(new - 1, 1)
-    old_version = page.history.as_of(version=old)
-    new_version = page.history.as_of(version=new)
-    context = {'old': old_version, 'new': new_version, 'page': page}
-    return direct_to_template(request, 'pages/page_diff.html', context)
+class PageCompareView(diff.views.CompareView):
+    model = Page
 
 
 def upload(request, slug, **kwargs):
