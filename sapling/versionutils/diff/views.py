@@ -16,7 +16,7 @@ class CompareView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CompareView, self).get_context_data(**kwargs)
 
-        version1 = self.kwargs.get('verison1')
+        version1 = self.kwargs.get('version1')
         version2 = self.kwargs.get('version2')
         versions = self.request.GET.getlist('version')
         if not versions:
@@ -28,6 +28,7 @@ class CompareView(DetailView):
         new = max(versions)
         if len(versions) == 1:
             old = max(new - 1, 1)
+        print old, new
         old_version = self.object.history.as_of(version=old)
         new_version = self.object.history.as_of(version=new)
 
