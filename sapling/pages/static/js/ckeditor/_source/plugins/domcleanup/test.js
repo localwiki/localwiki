@@ -2,35 +2,27 @@ function domcleanupTests(editor)
 {
     module("domcleanup tests")
     test("Substitute p for br", function(){
-        editor.setData('First line<br/>Second line');
-        same(editor.getData(),
-            '<p>\n\tFirst line</p>\n<p>\n\tSecond line</p>\n');
+        var r = editor.dataProcessor.toHtml('First line<br/>Second line');
+        same(r, 'First line<p />Second line');
     });
     test("Substitute strong for b", function(){
-        editor.setData('I am <b>strong</b>');
-        same(editor.getData(),
-            '<p>\n\tI am <strong>strong</strong></p>\n');
+        var r = editor.dataProcessor.toHtml('I am <b>strong</b>');
+        same(r, 'I am <strong>strong</strong>');
     });
     test("Multiple br", function(){
-        editor.setData('First line<br/><br/>Second line');
-        same(editor.getData(),
-            '<p>\n\tFirst line</p>\n<p>\n\t&nbsp;</p>\n<p>\n\tSecond line</p>\n');
+        var r = editor.dataProcessor.toHtml('First line<br/><br/>Second line');
+        same(r, 'First line<p /><p />Second line');
     });
     test("Drop unwanted elements", function(){
-        editor.setData('<style>body { color: red; }</style>');
-        same(editor.getData(), '');
+        var r = editor.dataProcessor.toHtml('<style>body{color:red;}</style>');
+        same(r, '');
     })
     test("Strip unwanted tags", function(){
-        editor.setData('<div>Hello</div>');
-        same(editor.getData(),
-            '<p>\n\tHello</p>\n');
-        editor.setData('<object>Hello</object>');
-        same(editor.getData(),
-            '<p>\n\tHello</p>\n');
+        var r = editor.dataProcessor.toHtml('<object>Hello</object>');
+        same(r, 'Hello');
     });
     test("Strip unwanted attributes", function(){
-        editor.setData('<p style="color: blue;">Hello</p>');
-        same(editor.getData(),
-            '<p>\n\tHello</p>\n');
+        var r = editor.dataProcessor.toHtml('<p style="color:blue;">Hello</p>');
+        same(r, '<p>Hello</p>');
     });
 }
