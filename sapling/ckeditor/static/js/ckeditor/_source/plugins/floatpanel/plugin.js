@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -60,6 +60,8 @@ CKEDITOR.plugins.add( 'floatpanel',
 				children : [],
 				dir : editor.lang.dir
 			};
+
+			editor.on( 'mode', function(){ this.hide(); }, this );
 		},
 
 		proto :
@@ -123,10 +125,11 @@ CKEDITOR.plugins.add( 'floatpanel',
 
 				element.setStyles(
 					{
-						top : 0,
+						top : top + 'px',
 						left: 0,
 						display	: ''
 					});
+
 				// Don't use display or visibility style because we need to
 				// calculate the rendering layout later and focus the element.
 				element.setOpacity( 0 );
@@ -302,7 +305,7 @@ CKEDITOR.plugins.add( 'floatpanel',
 							// We need this get fired manually because of unfired focus() function.
 							this.allowBlur( true );
 						}, 0, this);
-					}, 0, this);
+					},  CKEDITOR.env.air ? 200 : 0, this);
 				this.visible = 1;
 
 				if ( this.onShow )

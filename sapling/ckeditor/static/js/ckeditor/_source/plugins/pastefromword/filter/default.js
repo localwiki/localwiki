@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -120,6 +120,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var cssLengthRelativeUnit = /^([.\d]*)+(em|ex|px|gd|rem|vw|vh|vm|ch|mm|cm|in|pt|pc|deg|rad|ms|s|hz|khz){1}?/i;
 	var emptyMarginRegex = /^(?:\b0[^\s]*\s*){1,4}$/;		// e.g. 0px 0pt 0px
+	var romanLiternalPattern = '^m{0,4}(cm|cd|d?c{0,3})(xc|xl|l?x{0,3})(ix|iv|v?i{0,3})$',
+		lowerRomanLiteralRegex = new RegExp( romanLiternalPattern ),
+		upperRomanLiteralRegex = new RegExp( romanLiternalPattern.toUpperCase() );
 
 	var listBaseIndent = 0,
 		 previousListItemMargin;
@@ -144,8 +147,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					if ( !isNaN( bulletStyle[ 1 ] ) )
 						bulletStyle = 'decimal';
-					// No way to distinguish between Roman numerals and Alphas,
-					// detect them as a whole.
+					else if ( lowerRomanLiteralRegex.test( bulletStyle[ 1 ] ) )
+						bulletStyle = 'lower-roman';
+					else if ( upperRomanLiteralRegex.test( bulletStyle[ 1 ] ) )
+						bulletStyle = 'upper-roman';
 					else if ( /^[a-z]+$/.test( bulletStyle[ 1 ] ) )
 						bulletStyle = 'lower-alpha';
 					else if ( /^[A-Z]+$/.test( bulletStyle[ 1 ] ) )
@@ -802,8 +807,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					'font' : function( element )
 					{
-						// IE/Safari: drop the font tag if it comes from list bullet text.
-						if ( !CKEDITOR.env.gecko && isListBulletIndicator( element.parent ) )
+						// Drop the font tag if it comes from list bullet text.
+						if ( isListBulletIndicator( element.parent ) )
 						{
 							delete element.name;
 							return;
@@ -854,8 +859,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					'span' : function( element )
 					{
-						// IE/Safari: remove the span if it comes from list bullet text.
-						if ( !CKEDITOR.env.gecko && isListBulletIndicator( element.parent ) )
+						// Remove the span if it comes from list bullet text.
+						if ( isListBulletIndicator( element.parent ) )
 							return false;
 
 						element.filterChildren();
@@ -865,9 +870,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							return null;
 						}
 
-						// For IE/Safari: List item bullet type is supposed to be indicated by
+						// List item bullet type is supposed to be indicated by
 						// the text of a span with style 'mso-list : Ignore' or an image.
-						if ( !CKEDITOR.env.gecko && isListBulletIndicator( element ) )
+						if ( isListBulletIndicator( element ) )
 						{
 							var listSymbolNode = element.firstChild( function( node )
 							{

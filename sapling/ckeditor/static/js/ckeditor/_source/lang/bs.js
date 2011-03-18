@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -56,6 +56,7 @@ CKEDITOR.lang['bs'] =
 	superscript		: 'Superscript',
 	horizontalrule	: 'Ubaci horizontalnu liniju',
 	pagebreak		: 'Insert Page Break for Printing', // MISSING
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Izbriši link',
 	undo			: 'Vrati',
 	redo			: 'Ponovi',
@@ -109,6 +110,17 @@ CKEDITOR.lang['bs'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Širina',
+		height			: 'Visina',
+		align			: 'Poravnanje',
+		alignLeft		: 'Lijevo',
+		alignRight		: 'Desno',
+		alignCenter		: 'Centar',
+		alignTop		: 'Vrh',
+		alignMiddle		: 'Sredina',
+		alignBottom		: 'Dno',
+		invalidHeight	: 'Height must be a number.', // MISSING
+		invalidWidth	: 'Width must be a number.', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -155,9 +167,7 @@ CKEDITOR.lang['bs'] =
 		popupFullScreen	: 'Cijeli ekran (IE)',
 		popupScrollBars	: 'Scroll traka',
 		popupDependent	: 'Ovisno (Netscape)',
-		popupWidth		: 'Širina',
 		popupLeft		: 'Lijeva pozicija',
-		popupHeight		: 'Visina',
 		popupTop		: 'Gornja pozicija',
 		id				: 'Id', // MISSING
 		langDir			: 'Smjer pisanja',
@@ -165,18 +175,19 @@ CKEDITOR.lang['bs'] =
 		langDirRTL		: 'S desna na lijevo (RTL)',
 		acccessKey		: 'Pristupna tipka',
 		name			: 'Naziv',
-		langCode		: 'Smjer pisanja',
-		tabIndex		: 'Tab indeks',
-		advisoryTitle	: 'Advisory title',
+		langCode			: 'Smjer pisanja',
+		tabIndex			: 'Tab indeks',
+		advisoryTitle		: 'Advisory title',
 		advisoryContentType	: 'Advisory vrsta sadržaja',
 		cssClasses		: 'Klase CSS stilova',
 		charset			: 'Linked Resource Charset',
 		styles			: 'Stil',
-		selectAnchor	: 'Izaberi sidro',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Izaberi sidro',
 		anchorName		: 'Po nazivu sidra',
-		anchorId		: 'Po Id-u elementa',
-		emailAddress	: 'E-Mail Adresa',
-		emailSubject	: 'Subjekt poruke',
+		anchorId			: 'Po Id-u elementa',
+		emailAddress		: 'E-Mail Adresa',
+		emailSubject		: 'Subjekt poruke',
 		emailBody		: 'Poruka',
 		noAnchors		: '(Nema dostupnih sidra na stranici)',
 		noUrl			: 'Molimo ukucajte URL link',
@@ -243,15 +254,9 @@ CKEDITOR.lang['bs'] =
 		rows		: 'Redova',
 		columns		: 'Kolona',
 		border		: 'Okvir',
-		align		: 'Poravnanje',
-		alignLeft	: 'Lijevo',
-		alignCenter	: 'Centar',
-		alignRight	: 'Desno',
-		width		: 'Širina',
 		widthPx		: 'piksela',
 		widthPc		: 'posto',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'Visina',
 		cellSpace	: 'Razmak æelija',
 		cellPad		: 'Uvod æelija',
 		caption		: 'Naslov',
@@ -287,9 +292,6 @@ CKEDITOR.lang['bs'] =
 			wordWrap		: 'Word Wrap', // MISSING
 			hAlign			: 'Horizontal Alignment', // MISSING
 			vAlign			: 'Vertical Alignment', // MISSING
-			alignTop		: 'Top', // MISSING
-			alignMiddle		: 'Middle', // MISSING
-			alignBottom		: 'Bottom', // MISSING
 			alignBaseline	: 'Baseline', // MISSING
 			bgColor			: 'Background Color', // MISSING
 			borderColor		: 'Border Color', // MISSING
@@ -410,24 +412,17 @@ CKEDITOR.lang['bs'] =
 		btnUpload	: 'Šalji na server',
 		upload		: 'Šalji',
 		alt			: 'Tekst na slici',
-		width		: 'Širina',
-		height		: 'Visina',
 		lockRatio	: 'Zakljuèaj odnos',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Resetuj dimenzije',
 		border		: 'Okvir',
 		hSpace		: 'HSpace',
 		vSpace		: 'VSpace',
-		align		: 'Poravnanje',
-		alignLeft	: 'Lijevo',
-		alignRight	: 'Desno',
 		alertUrl	: 'Molimo ukucajte URL od slike.',
 		linkTab		: 'Link', // MISSING
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
 		urlMissing	: 'Image source URL is missing.', // MISSING
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -451,16 +446,10 @@ CKEDITOR.lang['bs'] =
 		accessAlways	: 'Always', // MISSING
 		accessSameDomain: 'Same domain', // MISSING
 		accessNever		: 'Never', // MISSING
-		align			: 'Poravnanje',
-		alignLeft		: 'Lijevo',
 		alignAbsBottom	: 'Abs dole',
 		alignAbsMiddle	: 'Abs sredina',
 		alignBaseline	: 'Bazno',
-		alignBottom		: 'Dno',
-		alignMiddle		: 'Sredina',
-		alignRight		: 'Desno',
 		alignTextTop	: 'Vrh teksta',
-		alignTop		: 'Vrh',
 		quality			: 'Quality', // MISSING
 		qualityBest		: 'Best', // MISSING
 		qualityHigh		: 'High', // MISSING
@@ -474,13 +463,9 @@ CKEDITOR.lang['bs'] =
 		windowMode		: 'Window mode', // MISSING
 		flashvars		: 'Variables for Flash', // MISSING
 		bgcolor			: 'Boja pozadine',
-		width			: 'Širina',
-		height			: 'Visina',
 		hSpace			: 'HSpace',
 		vSpace			: 'VSpace',
 		validateSrc		: 'Molimo ukucajte URL link',
-		validateWidth	: 'Width must be a number.', // MISSING
-		validateHeight	: 'Height must be a number.', // MISSING
 		validateHSpace	: 'HSpace must be a number.', // MISSING
 		validateVSpace	: 'VSpace must be a number.' // MISSING
 	},
@@ -615,6 +600,15 @@ CKEDITOR.lang['bs'] =
 		remove				: 'Remove Div' // MISSING
   	},
 
+	iframe :
+	{
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
+		scrolling	: 'Enable scrollbars', // MISSING
+		border		: 'Show frame border' // MISSING
+	},
+
 	font :
 	{
 		label		: 'Font',
@@ -730,10 +724,11 @@ CKEDITOR.lang['bs'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'IFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

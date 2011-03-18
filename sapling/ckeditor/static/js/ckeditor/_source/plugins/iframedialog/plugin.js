@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -53,7 +53,7 @@ CKEDITOR.plugins.add( 'iframedialog',
 			 * @constructor
 			 * @param {CKEDITOR.dialog} dialog
 			 * Parent dialog object.
-			 * @param {CKEDITOR.dialog.uiElementDefinition} elementDefinition
+			 * @param {CKEDITOR.dialog.definition.uiElement} elementDefinition
 			 * The element definition. Accepted fields:
 			 * <ul>
 			 * 	<li><strong>src</strong> (Required) The src field of the iframe. </li>

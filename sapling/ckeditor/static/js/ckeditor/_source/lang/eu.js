@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -56,6 +56,7 @@ CKEDITOR.lang['eu'] =
 	superscript		: 'Goi-indize',
 	horizontalrule	: 'Txertatu Marra Horizontala',
 	pagebreak		: 'Txertatu Orrialde-jauzia',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Kendu Esteka',
 	undo			: 'Desegin',
 	redo			: 'Berregin',
@@ -109,6 +110,17 @@ CKEDITOR.lang['eu'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Zabalera',
+		height			: 'Altuera',
+		align			: 'Lerrokatu',
+		alignLeft		: 'Ezkerrera',
+		alignRight		: 'Eskuman',
+		alignCenter		: 'Erdian',
+		alignTop		: 'Goian',
+		alignMiddle		: 'Erdian',
+		alignBottom		: 'Behean',
+		invalidHeight	: 'Altuera zenbaki bat izan behar da.',
+		invalidWidth	: 'Zabalera zenbaki bat izan behar da.',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, erabilezina</span>'
@@ -155,9 +167,7 @@ CKEDITOR.lang['eu'] =
 		popupFullScreen	: 'Pantaila Osoa (IE)',
 		popupScrollBars	: 'Korritze Barrak',
 		popupDependent	: 'Menpekoa (Netscape)',
-		popupWidth		: 'Zabalera',
 		popupLeft		: 'Ezkerreko  Posizioa',
-		popupHeight		: 'Altuera',
 		popupTop		: 'Goiko Posizioa',
 		id				: 'Id',
 		langDir			: 'Hizkuntzaren Norabidea',
@@ -165,18 +175,19 @@ CKEDITOR.lang['eu'] =
 		langDirRTL		: 'Eskumatik Ezkerrera (RTL)',
 		acccessKey		: 'Sarbide-gakoa',
 		name			: 'Izena',
-		langCode		: 'Hizkuntzaren Norabidea',
-		tabIndex		: 'Tabulazio Indizea',
-		advisoryTitle	: 'Izenburua',
+		langCode			: 'Hizkuntzaren Norabidea',
+		tabIndex			: 'Tabulazio Indizea',
+		advisoryTitle		: 'Izenburua',
 		advisoryContentType	: 'Eduki Mota (Content Type)',
 		cssClasses		: 'Estilo-orriko Klaseak',
 		charset			: 'Estekatutako Karaktere Multzoa',
 		styles			: 'Estiloa',
-		selectAnchor	: 'Aingura bat hautatu',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Aingura bat hautatu',
 		anchorName		: 'Aingura izenagatik',
-		anchorId		: 'Elementuaren ID-gatik',
-		emailAddress	: 'ePosta Helbidea',
-		emailSubject	: 'Mezuaren Gaia',
+		anchorId			: 'Elementuaren ID-gatik',
+		emailAddress		: 'ePosta Helbidea',
+		emailSubject		: 'Mezuaren Gaia',
 		emailBody		: 'Mezuaren Gorputza',
 		noAnchors		: '(Ez daude aingurak eskuragarri dokumentuan)',
 		noUrl			: 'Mesedez URL esteka idatzi',
@@ -243,15 +254,9 @@ CKEDITOR.lang['eu'] =
 		rows		: 'Lerroak',
 		columns		: 'Zutabeak',
 		border		: 'Ertzaren Zabalera',
-		align		: 'Lerrokatu',
-		alignLeft	: 'Ezkerrean',
-		alignCenter	: 'Erdian',
-		alignRight	: 'Eskuman',
-		width		: 'Zabalera',
 		widthPx		: 'pixel',
 		widthPc		: 'ehuneko',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'Altuera',
 		cellSpace	: 'Gelaxka arteko tartea',
 		cellPad		: 'Gelaxken betegarria',
 		caption		: 'Epigrafea',
@@ -287,9 +292,6 @@ CKEDITOR.lang['eu'] =
 			wordWrap		: 'Itzulbira',
 			hAlign			: 'Lerrokatze Horizontala',
 			vAlign			: 'Lerrokatze Bertikala',
-			alignTop		: 'Goian',
-			alignMiddle		: 'Erdian',
-			alignBottom		: 'Behean',
 			alignBaseline	: 'Oinarri-lerroan',
 			bgColor			: 'Fondoaren Kolorea',
 			borderColor		: 'Ertzaren Kolorea',
@@ -410,24 +412,17 @@ CKEDITOR.lang['eu'] =
 		btnUpload	: 'Zerbitzarira bidalia',
 		upload		: 'Gora Kargatu',
 		alt			: 'Ordezko Testua',
-		width		: 'Zabalera',
-		height		: 'Altuera',
 		lockRatio	: 'Erlazioa Blokeatu',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Tamaina Berrezarri',
 		border		: 'Ertza',
 		hSpace		: 'HSpace',
 		vSpace		: 'VSpace',
-		align		: 'Lerrokatu',
-		alignLeft	: 'Ezkerrera',
-		alignRight	: 'Eskuman',
 		alertUrl	: 'Mesedez Irudiaren URLa idatzi',
 		linkTab		: 'Esteka',
 		button2Img	: 'Aukeratutako irudi botoia, irudi normal batean eraldatu nahi duzu?',
 		img2Button	: 'Aukeratutako irudia, irudi botoi batean eraldatu nahi duzu?',
 		urlMissing	: 'Image source URL is missing.', // MISSING
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -451,16 +446,10 @@ CKEDITOR.lang['eu'] =
 		accessAlways	: 'Beti',
 		accessSameDomain: 'Domeinu berdinekoak',
 		accessNever		: 'Inoiz ere ez',
-		align			: 'Lerrokatu',
-		alignLeft		: 'Ezkerrera',
 		alignAbsBottom	: 'Abs Behean',
 		alignAbsMiddle	: 'Abs Erdian',
 		alignBaseline	: 'Oinan',
-		alignBottom		: 'Behean',
-		alignMiddle		: 'Erdian',
-		alignRight		: 'Eskuman',
 		alignTextTop	: 'Testua Goian',
-		alignTop		: 'Goian',
 		quality			: 'Kalitatea',
 		qualityBest		: 'Hoberena',
 		qualityHigh		: 'Altua',
@@ -474,13 +463,9 @@ CKEDITOR.lang['eu'] =
 		windowMode		: 'Leihoaren modua',
 		flashvars		: 'Flash Aldagaiak',
 		bgcolor			: 'Atzeko kolorea',
-		width			: 'Zabalera',
-		height			: 'Altuera',
 		hSpace			: 'HSpace',
 		vSpace			: 'VSpace',
 		validateSrc		: 'Mesedez URL esteka idatzi',
-		validateWidth	: 'Zabalera zenbaki bat izan behar da.',
-		validateHeight	: 'Altuera zenbaki bat izan behar da.',
 		validateHSpace	: 'HSpace zenbaki bat izan behar da.',
 		validateVSpace	: 'VSpace zenbaki bat izan behar da.'
 	},
@@ -615,6 +600,15 @@ CKEDITOR.lang['eu'] =
 		remove				: 'Remove Div' // MISSING
   	},
 
+	iframe :
+	{
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
+		scrolling	: 'Enable scrollbars', // MISSING
+		border		: 'Show frame border' // MISSING
+	},
+
 	font :
 	{
 		label		: 'Letra-tipoa',
@@ -730,10 +724,11 @@ CKEDITOR.lang['eu'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Aingura',
-		flash	: 'Flash Animazioa',
-		div		: 'Orrialde Saltoa',
-		unknown	: 'Objektu ezezaguna'
+		anchor		: 'Aingura',
+		flash		: 'Flash Animazioa',
+		iframe		: 'IFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Objektu ezezaguna'
 	},
 
 	resize : 'Arrastatu tamaina aldatzeko',

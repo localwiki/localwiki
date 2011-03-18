@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -56,6 +56,7 @@ CKEDITOR.lang['eo'] =
 	superscript		: 'Superskribo',
 	horizontalrule	: 'Enmeti Horizonta Linio',
 	pagebreak		: 'Insert Page Break for Printing', // MISSING
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Forigi Ligilon',
 	undo			: 'Malfari',
 	redo			: 'Refari',
@@ -109,6 +110,17 @@ CKEDITOR.lang['eo'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Larĝo',
+		height			: 'Alto',
+		align			: 'Ĝisrandigo',
+		alignLeft		: 'Maldekstre',
+		alignRight		: 'Dekstre',
+		alignCenter		: 'Centre',
+		alignTop		: 'Supre',
+		alignMiddle		: 'Centre',
+		alignBottom		: 'Malsupre',
+		invalidHeight	: 'Height must be a number.', // MISSING
+		invalidWidth	: 'Width must be a number.', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -155,9 +167,7 @@ CKEDITOR.lang['eo'] =
 		popupFullScreen	: 'Tutekrane (IE)',
 		popupScrollBars	: 'Rulumlisteloj',
 		popupDependent	: 'Dependa (Netscape)',
-		popupWidth		: 'Larĝo',
 		popupLeft		: 'Pozicio de Maldekstro',
-		popupHeight		: 'Alto',
 		popupTop		: 'Pozicio de Supro',
 		id				: 'Id', // MISSING
 		langDir			: 'Skribdirekto',
@@ -165,18 +175,19 @@ CKEDITOR.lang['eo'] =
 		langDirRTL		: 'De dekstro maldekstren (RTL)',
 		acccessKey		: 'Fulmoklavo',
 		name			: 'Nomo',
-		langCode		: 'Skribdirekto',
-		tabIndex		: 'Taba Ordo',
-		advisoryTitle	: 'Indika Titolo',
+		langCode			: 'Skribdirekto',
+		tabIndex			: 'Taba Ordo',
+		advisoryTitle		: 'Indika Titolo',
 		advisoryContentType	: 'Indika Enhavotipo',
 		cssClasses		: 'Klasoj de Stilfolioj',
 		charset			: 'Signaro de la Ligita Rimedo',
 		styles			: 'Stilo',
-		selectAnchor	: 'Elekti Ankron',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Elekti Ankron',
 		anchorName		: 'Per Ankronomo',
-		anchorId		: 'Per Elementidentigilo',
-		emailAddress	: 'Retadreso',
-		emailSubject	: 'Temlinio',
+		anchorId			: 'Per Elementidentigilo',
+		emailAddress		: 'Retadreso',
+		emailSubject		: 'Temlinio',
 		emailBody		: 'Mesaĝa korpo',
 		noAnchors		: '<Ne disponeblas ankroj en la dokumento>',
 		noUrl			: 'Bonvolu entajpi la URL-on',
@@ -243,15 +254,9 @@ CKEDITOR.lang['eo'] =
 		rows		: 'Linioj',
 		columns		: 'Kolumnoj',
 		border		: 'Bordero',
-		align		: 'Ĝisrandigo',
-		alignLeft	: 'Maldekstre',
-		alignCenter	: 'Centre',
-		alignRight	: 'Dekstre',
-		width		: 'Larĝo',
 		widthPx		: 'Bitbilderoj',
 		widthPc		: 'elcentoj',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'Alto',
 		cellSpace	: 'Interspacigo de Ĉeloj',
 		cellPad		: 'Ĉirkaŭenhava Plenigado',
 		caption		: 'Titolo',
@@ -287,9 +292,6 @@ CKEDITOR.lang['eo'] =
 			wordWrap		: 'Word Wrap', // MISSING
 			hAlign			: 'Horizontal Alignment', // MISSING
 			vAlign			: 'Vertical Alignment', // MISSING
-			alignTop		: 'Top', // MISSING
-			alignMiddle		: 'Middle', // MISSING
-			alignBottom		: 'Bottom', // MISSING
 			alignBaseline	: 'Baseline', // MISSING
 			bgColor			: 'Background Color', // MISSING
 			borderColor		: 'Border Color', // MISSING
@@ -410,24 +412,17 @@ CKEDITOR.lang['eo'] =
 		btnUpload	: 'Sendu al Servilo',
 		upload		: 'Alŝuti',
 		alt			: 'Anstataŭiga Teksto',
-		width		: 'Larĝo',
-		height		: 'Alto',
 		lockRatio	: 'Konservi Proporcion',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Origina Grando',
 		border		: 'Bordero',
 		hSpace		: 'HSpaco',
 		vSpace		: 'VSpaco',
-		align		: 'Ĝisrandigo',
-		alignLeft	: 'Maldekstre',
-		alignRight	: 'Dekstre',
 		alertUrl	: 'Bonvolu tajpi la URL de la bildo',
 		linkTab		: 'Link', // MISSING
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
 		urlMissing	: 'Image source URL is missing.', // MISSING
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -451,16 +446,10 @@ CKEDITOR.lang['eo'] =
 		accessAlways	: 'Always', // MISSING
 		accessSameDomain: 'Same domain', // MISSING
 		accessNever		: 'Never', // MISSING
-		align			: 'Ĝisrandigo',
-		alignLeft		: 'Maldekstre',
 		alignAbsBottom	: 'Abs Malsupre',
 		alignAbsMiddle	: 'Abs Centre',
 		alignBaseline	: 'Je Malsupro de Teksto',
-		alignBottom		: 'Malsupre',
-		alignMiddle		: 'Centre',
-		alignRight		: 'Dekstre',
 		alignTextTop	: 'Je Supro de Teksto',
-		alignTop		: 'Supre',
 		quality			: 'Quality', // MISSING
 		qualityBest		: 'Best', // MISSING
 		qualityHigh		: 'High', // MISSING
@@ -474,13 +463,9 @@ CKEDITOR.lang['eo'] =
 		windowMode		: 'Window mode', // MISSING
 		flashvars		: 'Variables for Flash', // MISSING
 		bgcolor			: 'Fona Koloro',
-		width			: 'Larĝo',
-		height			: 'Alto',
 		hSpace			: 'HSpaco',
 		vSpace			: 'VSpaco',
 		validateSrc		: 'Bonvolu entajpi la URL-on',
-		validateWidth	: 'Width must be a number.', // MISSING
-		validateHeight	: 'Height must be a number.', // MISSING
 		validateHSpace	: 'HSpace must be a number.', // MISSING
 		validateVSpace	: 'VSpace must be a number.' // MISSING
 	},
@@ -615,6 +600,15 @@ CKEDITOR.lang['eo'] =
 		remove				: 'Remove Div' // MISSING
   	},
 
+	iframe :
+	{
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
+		scrolling	: 'Enable scrollbars', // MISSING
+		border		: 'Show frame border' // MISSING
+	},
+
 	font :
 	{
 		label		: 'Tiparo',
@@ -730,10 +724,11 @@ CKEDITOR.lang['eo'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'IFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

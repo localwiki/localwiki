@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -188,7 +188,7 @@ CKEDITOR.command.prototype =
 CKEDITOR.event.implementOn( CKEDITOR.command.prototype, true );
 
 /**
- * Indicates the preivous command state.
+ * Indicates the previous command state.
  * @name CKEDITOR.command.prototype.previousState
  * @type Number
  * @see #state

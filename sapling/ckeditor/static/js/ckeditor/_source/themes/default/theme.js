@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -26,7 +26,9 @@ CKEDITOR.themes.add( 'default', (function()
 		{
 			// Creates an HTML structure that reproduces the editor class hierarchy.
 			var html =
-				'<span class="cke_shared">' +
+				'<span class="cke_shared "' +
+				' dir="'+ editor.lang.dir + '"' +
+				'>' +
 				'<span class="' + editor.skinClass + ' ' + editor.id + ' cke_editor_' + editor.name + '">' +
 				'<span class="' + CKEDITOR.env.cssClass + '">' +
 				'<span class="cke_wrapper cke_' + editor.lang.dir + '">' +
@@ -44,6 +46,10 @@ CKEDITOR.themes.add( 'default', (function()
 
 			// Get the deeper inner <div>.
 			container = mainContainer.getChild( [0,0,0,0] );
+
+			// Save a reference to the shared space container.
+			!editor.sharedSpaces && ( editor.sharedSpaces = {} );
+			editor.sharedSpaces[ spaceName ] = container;
 
 			// When the editor gets focus, we show the space container, hiding others.
 			editor.on( 'focus', function()
@@ -118,12 +124,11 @@ CKEDITOR.themes.add( 'default', (function()
 			var container = CKEDITOR.dom.element.createFromHtml( [
 				'<span' +
 					' id="cke_', name, '"' +
-					' onmousedown="return false;"' +
 					' class="', editor.skinClass, ' ', editor.id, ' cke_editor_', name, '"' +
 					' dir="', editor.lang.dir, '"' +
 					' title="', ( CKEDITOR.env.gecko ? ' ' : '' ), '"' +
 					' lang="', editor.langCode, '"' +
-					( CKEDITOR.env.webkit? ' tabindex="' + tabIndex + '"' : '' ) +
+						( CKEDITOR.env.webkit? ' tabindex="' + tabIndex + '"' : '' ) +
 					' role="application"' +
 					' aria-labelledby="cke_', name, '_arialbl"' +
 					( style ? ' style="' + style + '"' : '' ) +
@@ -163,6 +168,18 @@ CKEDITOR.themes.add( 'default', (function()
 			// Disable browser context menu for editor's chrome.
 			container.disableContextMenu();
 
+			// Use a class to indicate that the current selection is in different direction than the UI.
+			editor.on( 'contentDirChanged', function( evt )
+			{
+				var func = ( editor.lang.dir != evt.data ? 'add' : 'remove' ) + 'Class';
+
+				container.getChild( 1 )[ func ]( 'cke_mixed_dir_content' );
+
+				// Put the mixed direction class on the respective element also for shared spaces.
+				var toolbarSpace = this.sharedSpaces && this.sharedSpaces[ this.config.toolbarLocation ];
+				toolbarSpace && toolbarSpace.getParent().getParent()[ func ]( 'cke_mixed_dir_content' );
+			});
+
 			editor.fireOnce( 'themeLoaded' );
 			editor.fireOnce( 'uiReady' );
 		},
@@ -185,10 +202,14 @@ CKEDITOR.themes.add( 'default', (function()
 								'<div id="%title#" class="%title" role="presentation"></div>' +
 								'<a id="%close_button#" class="%close_button" href="javascript:void(0)" title="' +  editor.lang.common.close+'" role="button"><span class="cke_label">X</span></a>' +
 								'<div id="%tabs#" class="%tabs" role="tablist"></div>' +
-								'<table class="%contents" role="presentation"><tr>' +
+								'<table class="%contents" role="presentation">' +
+								'<tr>' +
 								  '<td id="%contents#" class="%contents" role="presentation"></td>' +
-								'</tr></table>' +
-								'<div id="%footer#" class="%footer" role="presentation"></div>' +
+								'</tr>' +
+								'<tr>' +
+								  '<td id="%footer#" class="%footer" role="presentation"></td>' +
+								'</tr>' +
+								'</table>' +
 							'</div>' +
 							'<div id="%tl#" class="%tl"></div>' +
 							'<div id="%tc#" class="%tc"></div>' +
@@ -227,24 +248,28 @@ CKEDITOR.themes.add( 'default', (function()
 					close		: close,
 					tabs		: body.getChild( 2 ),
 					contents	: body.getChild( [ 3, 0, 0, 0 ] ),
-					footer		: body.getChild( 4 )
+					footer		: body.getChild( [ 3, 0, 1, 0 ] )
 				}
 			};
 		},
 
 		destroy : function( editor )
 		{
-			var container = editor.container;
-			container.clearCustomData();
-			editor.element.clearCustomData();
+			var container = editor.container,
+				element = editor.element;
 
 			if ( container )
+			{
+				container.clearCustomData();
 				container.remove();
+			}
 
-			if ( editor.elementMode == CKEDITOR.ELEMENT_MODE_REPLACE )
-				editor.element.show();
-
-			delete editor.element;
+			if ( element )
+			{
+				element.clearCustomData();
+				editor.elementMode == CKEDITOR.ELEMENT_MODE_REPLACE && element.show();
+				delete editor.element;
+			}
 		}
 	};
 })() );
@@ -324,7 +349,7 @@ CKEDITOR.editor.prototype.resize = function( width, height, isContentHeight, res
  */
 CKEDITOR.editor.prototype.getResizable = function()
 {
-	return this.container.getChild( 1 );
+	return this.container;
 };
 
 /**
@@ -356,6 +381,6 @@ CKEDITOR.editor.prototype.getResizable = function()
 /**
  * Fired after the editor instance is resized through
  * the {@link CKEDITOR.editor.prototype.resize} method.
- * @name CKEDITOR#resize
+ * @name CKEDITOR.editor#resize
  * @event
  */

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -100,6 +100,16 @@ body .cke_dialog
 .cke_skin_kama .cke_rtl .cke_dialog_footer
 {
 	text-align: left;
+}
+
+.cke_skin_kama .cke_dialog_footer .cke_resizer
+{
+	margin-top: 20px;
+}
+.cke_skin_kama .cke_browser_iequirks .cke_dialog_footer .cke_resizer,
+.cke_skin_kama .cke_browser_ie6 .cke_dialog_footer .cke_resizer
+{
+	margin-top: 27px;
 }
 
 /* tabs */
@@ -394,6 +404,7 @@ body .cke_dialog
 .cke_skin_kama a.cke_dialog_ui_button_ok span,
 .cke_skin_kama a.cke_dialog_ui_button_cancel span
 {
+	width:60px;
 	padding-right: 20px;
 	padding-left: 20px;
 }
@@ -508,6 +519,12 @@ body .cke_dialog
 	position: relative;
 }
 
+/* IE7 needs position static #6806 */
+.cke_skin_kama .cke_browser_ie7 .cke_dialog_footer_buttons
+{
+	position: static;
+}
+
 /* Gecko 1.8 does not support for display: inline-table */
 .cke_skin_kama .cke_browser_gecko18 .cke_dialog_footer_buttons
 {
@@ -517,7 +534,6 @@ body .cke_dialog
 .cke_skin_kama .cke_dialog_footer_buttons span.cke_dialog_ui_button
 {
 	margin: 7px 0;
-	width: 60px;
 	text-align: center;
 }
 
@@ -712,8 +728,8 @@ body .cke_dialog
 {
 	border : 2px ridge black;
 	overflow : scroll;
-	height : 160px;
-	width : 230px;
+	height : 200px;
+	width : 300px;
 	padding : 2px;
 	background-color : white;
 }
@@ -879,4 +895,21 @@ body .cke_dialog
 	opacity: 1.0;
 	filter: alpha(opacity=100);
 	border: 1px solid white;
+}
+
+/**
+ * Styles specific to "cellProperties" dialog.
+ */
+
+.cke_skin_kama .cke_dialog_contents a.colorChooser
+{
+	display:block;
+	margin-top:6px;
+	margin-left: 10px;
+	width: 80px;
+}
+
+.cke_skin_kama .cke_rtl .cke_dialog_contents a.colorChooser
+{
+	margin-right: 10px;
 }

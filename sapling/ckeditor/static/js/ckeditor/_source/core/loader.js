@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -59,12 +59,11 @@ if ( !CKEDITOR.loader )
 			'core/htmlparser/cdata'		: [ 'core/htmlparser' ],
 			'core/htmlparser/filter'	: [ 'core/htmlparser' ],
 			'core/htmlparser/basicwriter': [ 'core/htmlparser' ],
-			'core/imagecacher'		: [ 'core/dom/element', 'core/event' ],
 			'core/lang'				: [],
 			'core/plugins'			: [ 'core/resourcemanager' ],
 			'core/resourcemanager'	: [ 'core/scriptloader', 'core/tools' ],
 			'core/scriptloader'		: [ 'core/dom/element', 'core/env' ],
-			'core/skins'			: [ 'core/imagecacher', 'core/scriptloader' ],
+			'core/skins'			: [ 'core/scriptloader' ],
 			'core/themes'			: [ 'core/resourcemanager' ],
 			'core/tools'			: [ 'core/env' ],
 			'core/ui'				: [],
@@ -108,7 +107,7 @@ if ( !CKEDITOR.loader )
 			return path;
 		})();
 
-		var timestamp = 'AA4E4NT';
+		var timestamp = 'B2I852F';
 
 		var getUrl = function( resource )
 		{

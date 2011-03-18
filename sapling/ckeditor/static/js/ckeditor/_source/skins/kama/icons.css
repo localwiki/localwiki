@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -354,4 +354,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 .cke_skin_kama .cke_button_bidiltr .cke_icon
 {
 	background-position: 0 -1056px;
+}
+.cke_skin_kama .cke_button_iframe .cke_icon
+{
+	background-position: 0 -1279px;
 }

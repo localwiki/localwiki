@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -149,25 +149,28 @@ CKEDITOR.plugins.add( 'forms',
 
 						if ( name == 'input' )
 						{
-							var type = element.getAttribute( 'type' );
+							switch( element.getAttribute( 'type' ) )
+							{
+								case 'button' :
+								case 'submit' :
+								case 'reset' :
+									return { button : CKEDITOR.TRISTATE_OFF };
 
-							if ( type == 'text' || type == 'password' )
-								return { textfield : CKEDITOR.TRISTATE_OFF };
+								case 'checkbox' :
+									return { checkbox : CKEDITOR.TRISTATE_OFF };
 
-							if ( type == 'button' || type == 'submit' || type == 'reset' )
-								return { button : CKEDITOR.TRISTATE_OFF };
+								case 'radio' :
+									return { radio : CKEDITOR.TRISTATE_OFF };
 
-							if ( type == 'checkbox' )
-								return { checkbox : CKEDITOR.TRISTATE_OFF };
+								case 'image' :
+									return { imagebutton : CKEDITOR.TRISTATE_OFF };
 
-							if ( type == 'radio' )
-								return { radio : CKEDITOR.TRISTATE_OFF };
-
-							if ( type == 'image' )
-								return { imagebutton : CKEDITOR.TRISTATE_OFF };
+								default :
+									return { textfield : CKEDITOR.TRISTATE_OFF };
+							}
 						}
 
-						if ( name == 'img' && element.getAttribute( '_cke_real_element_type' ) == 'hiddenfield' )
+						if ( name == 'img' && element.data( 'cke-real-element-type' ) == 'hiddenfield' )
 							return { hiddenfield : CKEDITOR.TRISTATE_OFF };
 					}
 				});
@@ -183,18 +186,12 @@ CKEDITOR.plugins.add( 'forms',
 					evt.data.dialog = 'select';
 				else if ( element.is( 'textarea' ) )
 					evt.data.dialog = 'textarea';
-				else if ( element.is( 'img' ) && element.getAttribute( '_cke_real_element_type' ) == 'hiddenfield' )
+				else if ( element.is( 'img' ) && element.data( 'cke-real-element-type' ) == 'hiddenfield' )
 					evt.data.dialog = 'hiddenfield';
 				else if ( element.is( 'input' ) )
 				{
-					var type = element.getAttribute( 'type' );
-
-					switch ( type )
+					switch ( element.getAttribute( 'type' ) )
 					{
-						case 'text' :
-						case 'password' :
-							evt.data.dialog = 'textfield';
-							break;
 						case 'button' :
 						case 'submit' :
 						case 'reset' :
@@ -208,6 +205,9 @@ CKEDITOR.plugins.add( 'forms',
 							break;
 						case 'image' :
 							evt.data.dialog = 'imagebutton';
+							break;
+						default :
+							evt.data.dialog = 'textfield';
 							break;
 					}
 				}
@@ -231,6 +231,9 @@ CKEDITOR.plugins.add( 'forms',
 					{
 						var attrs = input.attributes,
 							type = attrs.type;
+						// Old IEs don't provide type for Text inputs #5522
+						if ( !type )
+							attrs.type = 'text';
 						if ( type == 'checkbox' || type == 'radio' )
 							attrs.value == 'on' && delete attrs.value;
 					}
@@ -272,10 +275,7 @@ if ( CKEDITOR.env.ie )
 					return !!this.$.checked;
 				case 'value' :
 					var type = this.getAttribute( 'type' );
-					if ( type == 'checkbox' || type == 'radio' )
-						return this.$.value != 'on';
-					break;
-				default:
+					return type == 'checkbox' || type == 'radio' ? this.$.value != 'on' : this.$.value;
 			}
 		}
 

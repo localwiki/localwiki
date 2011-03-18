@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -112,7 +112,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  */
 ( function()
 {
-	/**
+	/*
 	 * Adds (additional) arguments to given url.
 	 *
 	 * @param {String}
@@ -135,7 +135,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return url + ( ( url.indexOf( "?" ) != -1 ) ? "&" : "?" ) + queryString.join( "&" );
 	}
 
-	/**
+	/*
 	 * Make a string's first character uppercase.
 	 *
 	 * @param {String}
@@ -148,7 +148,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return f + str.substr( 1 );
 	}
 
-	/**
+	/*
 	 * The onlick function assigned to the 'Browse Server' button. Opens the
 	 * file browser and updates target field when file is selected.
 	 *
@@ -177,7 +177,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		editor.popup( url, width, height, editor.config.fileBrowserWindowFeatures );
 	}
 
-	/**
+	/*
 	 * The onlick function assigned to the 'Upload' button. Makes the final
 	 * decision whether form is really submitted and updates target field when
 	 * file is uploaded.
@@ -202,7 +202,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return true;
 	}
 
-	/**
+	/*
 	 * Setups the file element.
 	 *
 	 * @param {CKEDITOR.ui.dialog.file}
@@ -223,16 +223,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		fileInput.filebrowser = filebrowser;
 	}
 
-	/**
+	/*
 	 * Traverse through the content definition and attach filebrowser to
 	 * elements with 'filebrowser' attribute.
 	 *
 	 * @param String
 	 *            dialogName Dialog name.
-	 * @param {CKEDITOR.dialog.dialogDefinitionObject}
+	 * @param {CKEDITOR.dialog.definitionObject}
 	 *            definition Dialog definition.
 	 * @param {Array}
-	 *            elements Array of {@link CKEDITOR.dialog.contentDefinition}
+	 *            elements Array of {@link CKEDITOR.dialog.definition.content}
 	 *            objects.
 	 */
 	function attachFileBrowser( editor, dialogName, definition, elements )
@@ -278,7 +278,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 			else if ( element.filebrowser.action == 'QuickUpload' && element[ 'for' ] )
 			{
-				var url = element.filebrowser.url;
+				url = element.filebrowser.url;
 				if ( url === undefined )
 				{
 					url = editor.config[ 'filebrowser' + ucFirst( dialogName ) + 'UploadUrl' ];
@@ -308,7 +308,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	}
 
-	/**
+	/*
 	 * Updates the target element with the url of uploaded/selected file.
 	 *
 	 * @param {String}
@@ -333,10 +333,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	}
 
-	/**
+	/*
 	 * Returns true if filebrowser is configured in one of the elements.
 	 *
-	 * @param {CKEDITOR.dialog.dialogDefinitionObject}
+	 * @param {CKEDITOR.dialog.definitionObject}
 	 *            definition Dialog definition.
 	 * @param String
 	 *            tabId The tab id where element(s) can be found.
@@ -388,6 +388,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		init : function( editor, pluginPath )
 		{
 			editor._.filebrowserFn = CKEDITOR.tools.addFunction( setUrl, editor );
+			editor.on( 'destroy', function () { CKEDITOR.tools.removeFunction( this._.filebrowserFn ); } );
 		}
 	} );
 
@@ -498,4 +499,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @default 'location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,modal=yes,alwaysRaised=yes,resizable=yes,scrollbars=yes'
  * @example
  * config.filebrowserWindowFeatures = 'resizable=yes,scrollbars=no';
+ */
+
+/**
+ * The width of the file browser popup window. It can be a number or a percent string.
+ * @name CKEDITOR.config.filebrowserWindowWidth
+ * @type Number|String
+ * @default '80%'
+ * @example
+ * config.filebrowserWindowWidth = 750;
+ * @example
+ * config.filebrowserWindowWidth = '50%';
+ */
+
+/**
+ * The height of the file browser popup window. It can be a number or a percent string.
+ * @name CKEDITOR.config.filebrowserWindowHeight
+ * @type Number|String
+ * @default '70%'
+ * @example
+ * config.filebrowserWindowHeight = 580;
+ * @example
+ * config.filebrowserWindowHeight = '50%';
  */

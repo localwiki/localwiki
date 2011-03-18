@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -56,6 +56,7 @@ CKEDITOR.lang['it'] =
 	superscript		: 'Apice',
 	horizontalrule	: 'Inserisci riga orizzontale',
 	pagebreak		: 'Inserisci interruzione di pagina',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Elimina collegamento',
 	undo			: 'Annulla',
 	redo			: 'Ripristina',
@@ -109,6 +110,17 @@ CKEDITOR.lang['it'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Larghezza',
+		height			: 'Altezza',
+		align			: 'Allineamento',
+		alignLeft		: 'Sinistra',
+		alignRight		: 'Destra',
+		alignCenter		: 'Centrato',
+		alignTop		: 'In Alto',
+		alignMiddle		: 'Centrato',
+		alignBottom		: 'In Basso',
+		invalidHeight	: 'L\'altezza dev\'essere un numero',
+		invalidWidth	: 'La Larghezza dev\'essere un numero',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, non disponibile</span>'
@@ -155,9 +167,7 @@ CKEDITOR.lang['it'] =
 		popupFullScreen	: 'A tutto schermo (IE)',
 		popupScrollBars	: 'Barre di scorrimento',
 		popupDependent	: 'Dipendente (Netscape)',
-		popupWidth		: 'Larghezza',
 		popupLeft		: 'Posizione da sinistra',
-		popupHeight		: 'Altezza',
 		popupTop		: 'Posizione dall\'alto',
 		id				: 'Id',
 		langDir			: 'Direzione scrittura',
@@ -165,18 +175,19 @@ CKEDITOR.lang['it'] =
 		langDirRTL		: 'Da Destra a Sinistra (RTL)',
 		acccessKey		: 'Scorciatoia<br />da tastiera',
 		name			: 'Nome',
-		langCode		: 'Direzione scrittura',
-		tabIndex		: 'Ordine di tabulazione',
-		advisoryTitle	: 'Titolo',
+		langCode			: 'Direzione scrittura',
+		tabIndex			: 'Ordine di tabulazione',
+		advisoryTitle		: 'Titolo',
 		advisoryContentType	: 'Tipo della risorsa collegata',
 		cssClasses		: 'Nome classe CSS',
 		charset			: 'Set di caretteri della risorsa collegata',
 		styles			: 'Stile',
-		selectAnchor	: 'Scegli Ancora',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Scegli Ancora',
 		anchorName		: 'Per Nome',
-		anchorId		: 'Per id elemento',
-		emailAddress	: 'Indirizzo E-Mail',
-		emailSubject	: 'Oggetto del messaggio',
+		anchorId			: 'Per id elemento',
+		emailAddress		: 'Indirizzo E-Mail',
+		emailSubject		: 'Oggetto del messaggio',
 		emailBody		: 'Corpo del messaggio',
 		noAnchors		: '(Nessuna ancora disponibile nel documento)',
 		noUrl			: 'Devi inserire l\'URL del collegamento',
@@ -243,15 +254,9 @@ CKEDITOR.lang['it'] =
 		rows		: 'Righe',
 		columns		: 'Colonne',
 		border		: 'Dimensione bordo',
-		align		: 'Allineamento',
-		alignLeft	: 'Sinistra',
-		alignCenter	: 'Centrato',
-		alignRight	: 'Destra',
-		width		: 'Larghezza',
 		widthPx		: 'pixel',
 		widthPc		: 'percento',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'Altezza',
 		cellSpace	: 'Spaziatura celle',
 		cellPad		: 'Padding celle',
 		caption		: 'Intestazione',
@@ -287,9 +292,6 @@ CKEDITOR.lang['it'] =
 			wordWrap		: 'Ritorno a capo',
 			hAlign			: 'Allineamento orizzontale',
 			vAlign			: 'Allineamento verticale',
-			alignTop		: 'In Alto',
-			alignMiddle		: 'Al Centro',
-			alignBottom		: 'In Basso',
 			alignBaseline	: 'Linea Base',
 			bgColor			: 'Colore di Sfondo',
 			borderColor		: 'Colore del Bordo',
@@ -410,24 +412,17 @@ CKEDITOR.lang['it'] =
 		btnUpload	: 'Invia al server',
 		upload		: 'Carica',
 		alt			: 'Testo alternativo',
-		width		: 'Larghezza',
-		height		: 'Altezza',
 		lockRatio	: 'Blocca rapporto',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Reimposta dimensione',
 		border		: 'Bordo',
 		hSpace		: 'HSpace',
 		vSpace		: 'VSpace',
-		align		: 'Allineamento',
-		alignLeft	: 'Sinistra',
-		alignRight	: 'Destra',
 		alertUrl	: 'Devi inserire l\'URL per l\'immagine',
 		linkTab		: 'Collegamento',
 		button2Img	: 'Vuoi trasformare il bottone immagine selezionato in un\'immagine semplice?',
 		img2Button	: 'Vuoi trasferomare l\'immagine selezionata in un bottone immagine?',
 		urlMissing	: 'Image source URL is missing.', // MISSING
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -451,16 +446,10 @@ CKEDITOR.lang['it'] =
 		accessAlways	: 'Sempre',
 		accessSameDomain: 'Solo stesso dominio',
 		accessNever		: 'Mai',
-		align			: 'Allineamento',
-		alignLeft		: 'Sinistra',
 		alignAbsBottom	: 'In basso assoluto',
 		alignAbsMiddle	: 'Centrato assoluto',
 		alignBaseline	: 'Linea base',
-		alignBottom		: 'In Basso',
-		alignMiddle		: 'Centrato',
-		alignRight		: 'Destra',
 		alignTextTop	: 'In alto al testo',
-		alignTop		: 'In Alto',
 		quality			: 'Qualità',
 		qualityBest		: 'Massima',
 		qualityHigh		: 'Alta',
@@ -474,13 +463,9 @@ CKEDITOR.lang['it'] =
 		windowMode		: 'Modalità finestra',
 		flashvars		: 'Variabili per Flash',
 		bgcolor			: 'Colore sfondo',
-		width			: 'Larghezza',
-		height			: 'Altezza',
 		hSpace			: 'HSpace',
 		vSpace			: 'VSpace',
 		validateSrc		: 'Devi inserire l\'URL del collegamento',
-		validateWidth	: 'La Larghezza dev\'essere un numero',
-		validateHeight	: 'L\'altezza dev\'essere un numero',
 		validateHSpace	: 'L\'HSpace dev\'essere un numero.',
 		validateVSpace	: 'Il VSpace dev\'essere un numero.'
 	},
@@ -615,6 +600,15 @@ CKEDITOR.lang['it'] =
 		remove				: 'Remove Div' // MISSING
   	},
 
+	iframe :
+	{
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
+		scrolling	: 'Enable scrollbars', // MISSING
+		border		: 'Show frame border' // MISSING
+	},
+
 	font :
 	{
 		label		: 'Font',
@@ -730,10 +724,11 @@ CKEDITOR.lang['it'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Ancora',
-		flash	: 'Animazione Flash',
-		div		: 'Interruzione di Pagina',
-		unknown	: 'Oggetto sconosciuto'
+		anchor		: 'Ancora',
+		flash		: 'Animazione Flash',
+		iframe		: 'IFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Oggetto sconosciuto'
 	},
 
 	resize : 'Trascina per ridimensionare',

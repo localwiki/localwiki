@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -56,6 +56,7 @@ CKEDITOR.lang['he'] =
 	superscript		: 'כתיב עליון',
 	horizontalrule	: 'הוספת קו אופקי',
 	pagebreak		: 'הוספת שבירת דף',
+	pagebreakAlt		: 'שבירת דף',
 	unlink			: 'הסרת הקישור',
 	undo			: 'ביטול צעד אחרון',
 	redo			: 'חזרה על צעד אחרון',
@@ -109,6 +110,17 @@ CKEDITOR.lang['he'] =
 		langDirRTL		: 'ימין לשמאל (RTL)',
 		styles			: 'סגנון',
 		cssClasses		: 'מחלקות גליונות סגנון',
+		width			: 'רוחב',
+		height			: 'גובה',
+		align			: 'יישור',
+		alignLeft		: 'לשמאל',
+		alignRight		: 'לימין',
+		alignCenter		: 'מרכז',
+		alignTop		: 'למעלה',
+		alignMiddle		: 'לאמצע',
+		alignBottom		: 'לתחתית',
+		invalidHeight	: 'הגובה חייב להיות מספר.',
+		invalidWidth	: 'הרוחב חייב להיות מספר.',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, לא זמין</span>'
@@ -155,9 +167,7 @@ CKEDITOR.lang['he'] =
 		popupFullScreen	: 'מסך מלא (IE)',
 		popupScrollBars	: 'ניתן לגלילה',
 		popupDependent	: 'תלוי (Netscape)',
-		popupWidth		: 'רוחב',
 		popupLeft		: 'מיקום צד שמאל',
-		popupHeight		: 'גובה',
 		popupTop		: 'מיקום צד עליון',
 		id				: 'זיהוי (ID)',
 		langDir			: 'כיוון שפה',
@@ -165,18 +175,19 @@ CKEDITOR.lang['he'] =
 		langDirRTL		: 'ימין לשמאל (RTL)',
 		acccessKey		: 'מקש גישה',
 		name			: 'שם',
-		langCode		: 'קוד שפה',
-		tabIndex		: 'מספר טאב',
-		advisoryTitle	: 'כותרת מוצעת',
+		langCode			: 'קוד שפה',
+		tabIndex			: 'מספר טאב',
+		advisoryTitle		: 'כותרת מוצעת',
 		advisoryContentType	: 'Content Type מוצע',
 		cssClasses		: 'גיליונות עיצוב קבוצות',
 		charset			: 'קידוד המשאב המקושר',
 		styles			: 'סגנון',
-		selectAnchor	: 'בחירת עוגן',
+		rel			: 'קשר גומלין',
+		selectAnchor		: 'בחירת עוגן',
 		anchorName		: 'עפ"י שם העוגן',
-		anchorId		: 'עפ"י זיהוי (ID) האלמנט',
-		emailAddress	: 'כתובת הדוא"ל',
-		emailSubject	: 'נושא ההודעה',
+		anchorId			: 'עפ"י זיהוי (ID) האלמנט',
+		emailAddress		: 'כתובת הדוא"ל',
+		emailSubject		: 'נושא ההודעה',
 		emailBody		: 'גוף ההודעה',
 		noAnchors		: '(אין עוגנים זמינים בדף)',
 		noUrl			: 'יש להקליד את כתובת הקישור (URL)',
@@ -243,15 +254,9 @@ CKEDITOR.lang['he'] =
 		rows		: 'שורות',
 		columns		: 'עמודות',
 		border		: 'גודל מסגרת',
-		align		: 'יישור',
-		alignLeft	: 'שמאל',
-		alignCenter	: 'מרכז',
-		alignRight	: 'ימין',
-		width		: 'רוחב',
 		widthPx		: 'פיקסלים',
 		widthPc		: 'אחוז',
 		widthUnit	: 'יחידת רוחב',
-		height		: 'גובה',
 		cellSpace	: 'מרווח תא',
 		cellPad		: 'ריפוד תא',
 		caption		: 'כיתוב',
@@ -287,9 +292,6 @@ CKEDITOR.lang['he'] =
 			wordWrap		: 'מניעת גלישת שורות',
 			hAlign			: 'יישור אופקי',
 			vAlign			: 'יישור אנכי',
-			alignTop		: 'למעלה',
-			alignMiddle		: 'מרכז',
-			alignBottom		: 'למטה',
 			alignBaseline	: 'שורת בסיס',
 			bgColor			: 'צבע רקע',
 			borderColor		: 'צבע מסגרת',
@@ -410,24 +412,17 @@ CKEDITOR.lang['he'] =
 		btnUpload	: 'שליחה לשרת',
 		upload		: 'העלאה',
 		alt			: 'טקסט חלופי',
-		width		: 'רוחב',
-		height		: 'גובה',
 		lockRatio	: 'נעילת היחס',
 		unlockRatio	: 'ביטול נעילת היחס',
 		resetSize	: 'איפוס הגודל',
 		border		: 'מסגרת',
 		hSpace		: 'מרווח אופקי',
 		vSpace		: 'מרווח אנכי',
-		align		: 'יישור',
-		alignLeft	: 'לשמאל',
-		alignRight	: 'לימין',
 		alertUrl	: 'יש להקליד את כתובת התמונה',
 		linkTab		: 'קישור',
 		button2Img	: 'האם להפוך את תמונת הכפתור לתמונה פשוטה?',
 		img2Button	: 'האם להפוך את התמונה לכפתור תמונה?',
 		urlMissing	: 'כתובת התמונה חסרה.',
-		validateWidth	: 'שדה הרוחב חייב להיות מספר שלם.',
-		validateHeight	: 'שדה הגובה חייב להיות מספר שלם.',
 		validateBorder	: 'שדה המסגרת חייב להיות מספר שלם.',
 		validateHSpace	: 'שדה המרווח האופקי חייב להיות מספר שלם.',
 		validateVSpace	: 'שדה המרווח האנכי חייב להיות מספר שלם.'
@@ -451,16 +446,10 @@ CKEDITOR.lang['he'] =
 		accessAlways	: 'תמיד',
 		accessSameDomain: 'דומיין זהה',
 		accessNever		: 'אף פעם',
-		align			: 'יישור',
-		alignLeft		: 'לשמאל',
 		alignAbsBottom	: 'לתחתית האבסולוטית',
 		alignAbsMiddle	: 'מרכוז אבסולוטי',
 		alignBaseline	: 'לקו התחתית',
-		alignBottom		: 'לתחתית',
-		alignMiddle		: 'לאמצע',
-		alignRight		: 'לימין',
 		alignTextTop	: 'לראש הטקסט',
-		alignTop		: 'למעלה',
 		quality			: 'איכות',
 		qualityBest		: 'מעולה',
 		qualityHigh		: 'גבוהה',
@@ -474,13 +463,9 @@ CKEDITOR.lang['he'] =
 		windowMode		: 'מצב חלון',
 		flashvars		: 'משתנים לפלאש',
 		bgcolor			: 'צבע רקע',
-		width			: 'רוחב',
-		height			: 'גובה',
 		hSpace			: 'מרווח אופקי',
 		vSpace			: 'מרווח אנכי',
 		validateSrc		: 'יש להקליד את כתובת סרטון הפלאש (URL)',
-		validateWidth	: 'הרוחב חייב להיות מספר.',
-		validateHeight	: 'הגובה חייב להיות מספר.',
 		validateHSpace	: 'המרווח האופקי חייב להיות מספר.',
 		validateVSpace	: 'המרווח האנכי חייב להיות מספר.'
 	},
@@ -615,6 +600,15 @@ CKEDITOR.lang['he'] =
 		remove				: 'הסרת מיכל (Div)'
   	},
 
+	iframe :
+	{
+		title		: 'מאפייני חלון פנימי (iframe)',
+		toolbar		: 'חלון פנימי (iframe)',
+		noUrl		: 'יש להכניס כתובת לחלון.',
+		scrolling	: 'אפשר פסי גלילה',
+		border		: 'הראה מסגרת לחלון'
+	},
+
 	font :
 	{
 		label		: 'גופן',
@@ -730,10 +724,11 @@ CKEDITOR.lang['he'] =
 
 	fakeobjects :
 	{
-		anchor	: 'עוגן',
-		flash	: 'סרטון פלאש',
-		div		: 'שבירת דף',
-		unknown	: 'אובייקט לא ידוע'
+		anchor		: 'עוגן',
+		flash		: 'סרטון פלאש',
+		iframe		: 'חלון פנימי (iframe)',
+		hiddenfield	: 'שדה חבוי',
+		unknown		: 'אובייקט לא ידוע'
 	},
 
 	resize : 'יש לגרור בכדי לשנות את הגודל',

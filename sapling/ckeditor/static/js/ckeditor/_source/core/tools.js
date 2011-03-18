@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -638,7 +638,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			return functions.push( function()
 				{
-					fn.apply( scope || this, arguments );
+					return fn.apply( scope || this, arguments );
 				}) - 1;
 		},
 

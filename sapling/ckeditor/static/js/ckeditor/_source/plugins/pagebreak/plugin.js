@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -88,8 +88,7 @@ CKEDITOR.plugins.pagebreakCmd =
 
 		// Creates the fake image used for this element.
 		breakObject = editor.createFakeElement( breakObject, 'cke_pagebreak', 'div' );
-		breakObject.setAttribute( 'alt', label );
-		breakObject.setAttribute( 'aria-label', label );
+		breakObject.setAttributes( { alt : label, 'aria-label' : label, title : label } );
 
 		var ranges = editor.getSelection().getRanges( true );
 

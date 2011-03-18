@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -56,6 +56,7 @@ CKEDITOR.lang['uk'] =
 	superscript		: 'Верхній індекс',
 	horizontalrule	: 'Горизонтальна лінія',
 	pagebreak		: 'Вставити розрив сторінки',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Видалити посилання',
 	undo			: 'Повернути',
 	redo			: 'Повторити',
@@ -109,6 +110,17 @@ CKEDITOR.lang['uk'] =
 		langDirRTL		: 'Справа наліво (RTL)',
 		styles			: 'Стиль CSS',
 		cssClasses		: 'Клас CSS',
+		width			: 'Ширина',
+		height			: 'Висота',
+		align			: 'Вирівнювання',
+		alignLeft		: 'По лівому краю',
+		alignRight		: 'По правому краю',
+		alignCenter		: 'По центру',
+		alignTop		: 'По верхньому краю',
+		alignMiddle		: 'По середині',
+		alignBottom		: 'По нижньому краю',
+		invalidHeight	: 'Висота повинна бути цілим числом.',
+		invalidWidth	: 'Ширина повинна бути цілим числом.',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, не доступне</span>'
@@ -155,9 +167,7 @@ CKEDITOR.lang['uk'] =
 		popupFullScreen	: 'Повний екран (IE)',
 		popupScrollBars	: 'Стрічки прокрутки',
 		popupDependent	: 'Залежний (Netscape)',
-		popupWidth		: 'Ширина',
 		popupLeft		: 'Позиція зліва',
-		popupHeight		: 'Висота',
 		popupTop		: 'Позиція зверху',
 		id				: 'Ідентифікатор',
 		langDir			: 'Напрямок мови',
@@ -165,18 +175,19 @@ CKEDITOR.lang['uk'] =
 		langDirRTL		: 'Справа наліво (RTL)',
 		acccessKey		: 'Гаряча клавіша',
 		name			: 'Ім\'я',
-		langCode		: 'Код мови',
-		tabIndex		: 'Послідовність переходу',
-		advisoryTitle	: 'Заголовок',
+		langCode			: 'Код мови',
+		tabIndex			: 'Послідовність переходу',
+		advisoryTitle		: 'Заголовок',
 		advisoryContentType	: 'Тип вмісту',
 		cssClasses		: 'Клас CSS',
 		charset			: 'Кодування',
 		styles			: 'Стиль CSS',
-		selectAnchor	: 'Оберіть якір',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Оберіть якір',
 		anchorName		: 'За ім\'ям елементу',
-		anchorId		: 'За ідентифікатором елементу',
-		emailAddress	: 'Адреса ел. пошти',
-		emailSubject	: 'Тема листа',
+		anchorId			: 'За ідентифікатором елементу',
+		emailAddress		: 'Адреса ел. пошти',
+		emailSubject		: 'Тема листа',
 		emailBody		: 'Тіло повідомлення',
 		noAnchors		: '(В цьому документі немає якорів)',
 		noUrl			: 'Будь ласка, вкажіть URL посилання',
@@ -243,15 +254,9 @@ CKEDITOR.lang['uk'] =
 		rows		: 'Рядки',
 		columns		: 'Стовбці',
 		border		: 'Розмір рамки',
-		align		: 'Вирівнювання',
-		alignLeft	: 'По лівому краю',
-		alignCenter	: 'По центру',
-		alignRight	: 'По правому краю',
-		width		: 'Ширина',
 		widthPx		: 'пікселів',
 		widthPc		: 'відсотків',
 		widthUnit	: 'Одиниці вимір.',
-		height		: 'Висота',
 		cellSpace	: 'Проміжок',
 		cellPad		: 'Внутр. відступ',
 		caption		: 'Заголовок таблиці',
@@ -287,9 +292,6 @@ CKEDITOR.lang['uk'] =
 			wordWrap		: 'Автоперенесення тексту',
 			hAlign			: 'Гориз. вирівнювання',
 			vAlign			: 'Верт. вирівнювання',
-			alignTop		: 'По верхньому краю',
-			alignMiddle		: 'По середині',
-			alignBottom		: 'По нижньому краю',
 			alignBaseline	: 'По базовій лінії',
 			bgColor			: 'Колір фону',
 			borderColor		: 'Колір рамки',
@@ -410,24 +412,17 @@ CKEDITOR.lang['uk'] =
 		btnUpload	: 'Надіслати на сервер',
 		upload		: 'Надіслати',
 		alt			: 'Альтернативний текст',
-		width		: 'Ширина',
-		height		: 'Висота',
 		lockRatio	: 'Зберегти пропорції',
 		unlockRatio	: 'Не зберігати пропорції',
 		resetSize	: 'Очистити поля розмірів',
 		border		: 'Рамка',
 		hSpace		: 'Гориз. відступ',
 		vSpace		: 'Верт. відступ',
-		align		: 'Вирівн.',
-		alignLeft	: 'По лівому краю',
-		alignRight	: 'По правому краю',
 		alertUrl	: 'Будь ласка, вкажіть URL зображення',
 		linkTab		: 'Посилання',
 		button2Img	: 'Бажаєте перетворити обрану кнопку-зображення на просте зображення?',
 		img2Button	: 'Бажаєте перетворити обране зображення на кнопку-зображення?',
 		urlMissing	: 'Вкажіть URL зображення.',
-		validateWidth	: 'Ширина повинна бути цілим числом.',
-		validateHeight	: 'Висота повинна бути цілим числом.',
 		validateBorder	: 'Ширина рамки повинна бути цілим числом.',
 		validateHSpace	: 'Гориз. відступ повинен бути цілим числом.',
 		validateVSpace	: 'Верт. відступ повинен бути цілим числом.'
@@ -451,16 +446,10 @@ CKEDITOR.lang['uk'] =
 		accessAlways	: 'Завжди',
 		accessSameDomain: 'З того ж домена',
 		accessNever		: 'Ніколи',
-		align			: 'Вирівнювання',
-		alignLeft		: 'По лівому краю',
 		alignAbsBottom	: 'По нижньому краю (abs)',
 		alignAbsMiddle	: 'По середині (abs)',
 		alignBaseline	: 'По базовій лінії',
-		alignBottom		: 'По нижньому краю',
-		alignMiddle		: 'По середині',
-		alignRight		: 'По правому краю',
 		alignTextTop	: 'Текст по верхньому краю',
-		alignTop		: 'По верхньому краю',
 		quality			: 'Якість',
 		qualityBest		: 'Відмінна',
 		qualityHigh		: 'Висока',
@@ -474,13 +463,9 @@ CKEDITOR.lang['uk'] =
 		windowMode		: 'Віконний режим',
 		flashvars		: 'Змінні Flash',
 		bgcolor			: 'Колір фону',
-		width			: 'Ширина',
-		height			: 'Висота',
 		hSpace			: 'Гориз. відступ',
 		vSpace			: 'Верт. відступ',
 		validateSrc		: 'Будь ласка, вкажіть URL посилання',
-		validateWidth	: 'Ширина повинна бути цілим числом.',
-		validateHeight	: 'Висота повинна бути цілим числом.',
 		validateHSpace	: 'Гориз. відступ повинен бути цілим числом.',
 		validateVSpace	: 'Верт. відступ повинен бути цілим числом.'
 	},
@@ -615,6 +600,15 @@ CKEDITOR.lang['uk'] =
 		remove				: 'Видалити блок'
   	},
 
+	iframe :
+	{
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
+		scrolling	: 'Enable scrollbars', // MISSING
+		border		: 'Show frame border' // MISSING
+	},
+
 	font :
 	{
 		label		: 'Шрифт',
@@ -730,10 +724,11 @@ CKEDITOR.lang['uk'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Якір',
-		flash	: 'Flash-анімація',
-		div		: 'Розрив сторінки',
-		unknown	: 'Невідомий об\'єкт'
+		anchor		: 'Якір',
+		flash		: 'Flash-анімація',
+		iframe		: 'IFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Невідомий об\'єкт'
 	},
 
 	resize : 'Потягніть для зміни розмірів',

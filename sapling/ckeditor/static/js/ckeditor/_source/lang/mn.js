@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -56,6 +56,7 @@ CKEDITOR.lang['mn'] =
 	superscript		: 'Зэрэг болгох',
 	horizontalrule	: 'Хөндлөн зураас оруулах',
 	pagebreak		: 'Хуудас тусгаарлагч оруулах',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Линк авч хаях',
 	undo			: 'Хүчингүй болгох',
 	redo			: 'Өмнөх үйлдлээ сэргээх',
@@ -109,6 +110,17 @@ CKEDITOR.lang['mn'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Өргөн',
+		height			: 'Өндөр',
+		align			: 'Эгнээ',
+		alignLeft		: 'Зүүн',
+		alignRight		: 'Баруун',
+		alignCenter		: 'Төвд',
+		alignTop		: 'Дээд талд',
+		alignMiddle		: 'Дунд талд',
+		alignBottom		: 'Доод талд',
+		invalidHeight	: 'Height must be a number.', // MISSING
+		invalidWidth	: 'Width must be a number.', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -155,9 +167,7 @@ CKEDITOR.lang['mn'] =
 		popupFullScreen	: 'Цонх дүүргэх (IE)',
 		popupScrollBars	: 'Скрол хэсэгүүд',
 		popupDependent	: 'Хамаатай (Netscape)',
-		popupWidth		: 'Өргөн',
 		popupLeft		: 'Зүүн байрлал',
-		popupHeight		: 'Өндөр',
 		popupTop		: 'Дээд байрлал',
 		id				: 'Id', // MISSING
 		langDir			: 'Хэлний чиглэл',
@@ -165,18 +175,19 @@ CKEDITOR.lang['mn'] =
 		langDirRTL		: 'Баруунаас зүүн (RTL)',
 		acccessKey		: 'Холбох түлхүүр',
 		name			: 'Нэр',
-		langCode		: 'Хэлний чиглэл',
-		tabIndex		: 'Tab индекс',
-		advisoryTitle	: 'Зөвлөлдөх гарчиг',
+		langCode			: 'Хэлний чиглэл',
+		tabIndex			: 'Tab индекс',
+		advisoryTitle		: 'Зөвлөлдөх гарчиг',
 		advisoryContentType	: 'Зөвлөлдөх төрлийн агуулга',
 		cssClasses		: 'Stylesheet классууд',
 		charset			: 'Тэмдэгт оноох нөөцөд холбогдсон',
 		styles			: 'Загвар',
-		selectAnchor	: 'Холбоос сонгох',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'Холбоос сонгох',
 		anchorName		: 'Холбоосын нэрээр',
-		anchorId		: 'Элемэнт Id-гаар',
-		emailAddress	: 'E-Mail Хаяг',
-		emailSubject	: 'Message гарчиг',
+		anchorId			: 'Элемэнт Id-гаар',
+		emailAddress		: 'E-Mail Хаяг',
+		emailSubject		: 'Message гарчиг',
 		emailBody		: 'Message-ийн агуулга',
 		noAnchors		: '(Баримт бичиг холбоосгүй байна)',
 		noUrl			: 'Линк URL-ээ төрөлжүүлнэ үү',
@@ -243,15 +254,9 @@ CKEDITOR.lang['mn'] =
 		rows		: 'Мөр',
 		columns		: 'Багана',
 		border		: 'Хүрээний хэмжээ',
-		align		: 'Эгнээ',
-		alignLeft	: 'Зүүн талд',
-		alignCenter	: 'Төвд',
-		alignRight	: 'Баруун талд',
-		width		: 'Өргөн',
 		widthPx		: 'цэг',
 		widthPc		: 'хувь',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'Өндөр',
 		cellSpace	: 'Нүх хоорондын зай (spacing)',
 		cellPad		: 'Нүх доторлох(padding)',
 		caption		: 'Тайлбар',
@@ -287,9 +292,6 @@ CKEDITOR.lang['mn'] =
 			wordWrap		: 'Word Wrap', // MISSING
 			hAlign			: 'Horizontal Alignment', // MISSING
 			vAlign			: 'Vertical Alignment', // MISSING
-			alignTop		: 'Top', // MISSING
-			alignMiddle		: 'Middle', // MISSING
-			alignBottom		: 'Bottom', // MISSING
 			alignBaseline	: 'Baseline', // MISSING
 			bgColor			: 'Background Color', // MISSING
 			borderColor		: 'Border Color', // MISSING
@@ -410,24 +412,17 @@ CKEDITOR.lang['mn'] =
 		btnUpload	: 'Үүнийг сервэррүү илгээ',
 		upload		: 'Хуулах',
 		alt			: 'Тайлбар текст',
-		width		: 'Өргөн',
-		height		: 'Өндөр',
 		lockRatio	: 'Радио түгжих',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'хэмжээ дахин оноох',
 		border		: 'Хүрээ',
 		hSpace		: 'Хөндлөн зай',
 		vSpace		: 'Босоо зай',
-		align		: 'Эгнээ',
-		alignLeft	: 'Зүүн',
-		alignRight	: 'Баруун',
 		alertUrl	: 'Зурагны URL-ын төрлийн сонгоно уу',
 		linkTab		: 'Линк',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
 		urlMissing	: 'Image source URL is missing.', // MISSING
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -451,16 +446,10 @@ CKEDITOR.lang['mn'] =
 		accessAlways	: 'Always', // MISSING
 		accessSameDomain: 'Same domain', // MISSING
 		accessNever		: 'Never', // MISSING
-		align			: 'Эгнээ',
-		alignLeft		: 'Зүүн',
 		alignAbsBottom	: 'Abs доод талд',
 		alignAbsMiddle	: 'Abs Дунд талд',
 		alignBaseline	: 'Baseline',
-		alignBottom		: 'Доод талд',
-		alignMiddle		: 'Дунд талд',
-		alignRight		: 'Баруун',
 		alignTextTop	: 'Текст дээр',
-		alignTop		: 'Дээд талд',
 		quality			: 'Quality', // MISSING
 		qualityBest		: 'Best', // MISSING
 		qualityHigh		: 'High', // MISSING
@@ -474,13 +463,9 @@ CKEDITOR.lang['mn'] =
 		windowMode		: 'Window mode', // MISSING
 		flashvars		: 'Variables for Flash', // MISSING
 		bgcolor			: 'Фонны өнгө',
-		width			: 'Өргөн',
-		height			: 'Өндөр',
 		hSpace			: 'Хөндлөн зай',
 		vSpace			: 'Босоо зай',
 		validateSrc		: 'Линк URL-ээ төрөлжүүлнэ үү',
-		validateWidth	: 'Width must be a number.', // MISSING
-		validateHeight	: 'Height must be a number.', // MISSING
 		validateHSpace	: 'HSpace must be a number.', // MISSING
 		validateVSpace	: 'VSpace must be a number.' // MISSING
 	},
@@ -615,6 +600,15 @@ CKEDITOR.lang['mn'] =
 		remove				: 'Remove Div' // MISSING
   	},
 
+	iframe :
+	{
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
+		scrolling	: 'Enable scrollbars', // MISSING
+		border		: 'Show frame border' // MISSING
+	},
+
 	font :
 	{
 		label		: 'Фонт',
@@ -730,10 +724,11 @@ CKEDITOR.lang['mn'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'IFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING
