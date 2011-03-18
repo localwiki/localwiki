@@ -370,6 +370,11 @@ class Registry(object):
         For convience, several built-in fields (CharField, TextField,
         FileField, ImageField) are pre-registered.
 
+        NOTE: You generally don't have to register models to use diff() on
+              them.  Registering a diff util for a field or model will give
+              you the ability to customize behavior or deal with custom
+              fields.
+
         Attrs:
             model_or_field: The type that will be compared (subclass of
                 Model or Field)
