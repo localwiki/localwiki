@@ -361,6 +361,9 @@ class GeometryFieldDiff(BaseFieldDiff):
 
     def as_html(self):
         from olwidget.widgets import InfoMap
+        olwidget_options = None
+        if hasattr(settings, 'OLWIDGET_DEFAULT_OPTIONS'):
+            olwidget_options = settings.OLWIDGET_DEFAULT_OPTIONS
         d = self.get_diff()
         diff_map = InfoMap([(d['intersection'],
                              {'html': '<p>Stayed the same</p>',
@@ -383,7 +386,7 @@ class GeometryFieldDiff(BaseFieldDiff):
                                         'fill_opacity': '1',
                                         'stroke_opacity': '0'}}
                             ),
-        ])
+        ], options=olwidget_options)
         return render_to_string(self.template, {'diff': diff_map})
 
     def _media(self):
