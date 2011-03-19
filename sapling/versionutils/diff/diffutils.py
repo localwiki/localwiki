@@ -150,6 +150,7 @@ class BaseModelDiff(object):
         """
         self.model1 = model1
         self.model2 = model2
+        self._diff = None
 
     def as_dict(self):
         """
@@ -162,7 +163,7 @@ class BaseModelDiff(object):
             if field_diff_dict:
                 diffs[field] = field_diff_dict
         if not diffs:
-            return None
+            diffs = None
         return diffs
 
     def as_html(self):
@@ -196,6 +197,8 @@ class BaseModelDiff(object):
         Returns:
             A dictionary that contains all field diffs, indexed by field name.
         """
+        if self._diff is not None:
+            return self._diff
         diff = {}
         diff_utils = {}
 
@@ -225,7 +228,17 @@ class BaseModelDiff(object):
                     getattr(self.model2, field.name)
                 )
 
+        self._diff = diff
         return diff
+
+    def __getitem__(self, name):
+        "Returns a BoundField with the given name."
+        d = self.get_diff()
+        try:
+            field = d[name]
+        except KeyError:
+            raise KeyError('Key %r not found in Model Diff' % name)
+        return field
 
     def _media(self):
         # Add all the field diffs' media attributes together.
