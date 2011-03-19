@@ -28,7 +28,6 @@ class CompareView(DetailView):
         new = max(versions)
         if len(versions) == 1:
             old = max(new - 1, 1)
-        print old, new
         old_version = self.object.history.as_of(version=old)
         new_version = self.object.history.as_of(version=new)
 

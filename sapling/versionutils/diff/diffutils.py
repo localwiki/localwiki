@@ -340,16 +340,37 @@ class GeometryFieldDiff(BaseFieldDiff):
     def get_diff(self):
         if self.field1 == self.field2:
             return None
-        # XXX TODO
-        # This should be something different. Symmetric difference
-        # isn't quite right.  We want to show addition, deletion.
-        difference = self.field1.sym_difference(self.field2)
-        return {'difference': difference}
+        intersection = self.field1.intersection(self.field2)
+        deleted = self.field1.difference(self.field2)
+        inserted = self.field2.difference(self.field1)
+        return {'intersection': intersection,
+                'deleted': deleted, 'inserted': inserted}
 
     def as_html(self):
         from olwidget.widgets import InfoMap
         d = self.get_diff()
-        diff_map = InfoMap([(d['difference'], 'Whats changed')])
+        diff_map = InfoMap([(d['intersection'],
+                             {'html': '<p>Stayed the same</p>',
+                              'style': {'fill_color': '#fff3a3',
+                                        'stroke_color': '#fff3a3',
+                                        'fill_opacity': '1',
+                                        'stroke_opacity': '0'}}
+                            ),
+                            (d['inserted'],
+                             {'html': '<p>Added</p>',
+                              'style': {'fill_color': '#AAFF66',
+                                        'stroke_color': '#AAFF66',
+                                        'fill_opacity': '1',
+                                        'stroke_opacity': '0'}}
+                            ),
+                            (d['deleted'],
+                             {'html': '<p>Removed</p>',
+                              'style': {'fill_color': '#ff7777',
+                                        'stroke_color': '#ff7777',
+                                        'fill_opacity': '1',
+                                        'stroke_opacity': '0'}}
+                            ),
+        ])
         return render_to_string(self.template, {'diff': diff_map})
 
     def _media(self):
