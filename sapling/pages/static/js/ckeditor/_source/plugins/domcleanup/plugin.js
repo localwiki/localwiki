@@ -14,7 +14,7 @@ CKEDITOR.plugins.add( 'domcleanup',
 
         editor.on( 'paste', function( evt )
         {
-            //console.log(evt.data.html);
+            console.log(evt.data.html);
         });
         
     },
@@ -54,16 +54,15 @@ CKEDITOR.plugins.add( 'domcleanup',
                             return element;
                         var remap = {'br':'p',
                                      'i': 'em',
-                                     'b': 'strong'
+                                     'b': 'strong',
                                     };
                         if(remap[element.name])
                         {
                             element.name = remap[element.name];
-                            if(element.isEmpty && 
-                                !element.children &&
-                                element.parent &&
-                                element.parent.next &&
-                                element.parent.next.name == element.name)
+                            if(element.isEmpty &&
+                              !(element.children && element.children.length) &&
+                              element.parent && element.parent.name == 'p' &&
+                              element.parent.children.length == 1)
                                 element.name = '';
                         }
                         else element.name = '';

@@ -7,6 +7,7 @@ class WikiEditor(CKEditor):
         config = super(WikiEditor, self).get_config()
         additional = {'filebrowserInsertimageUploadUrl': 'upload',
                       'domcleanupAllowedTags': models.allowed_tags,
+                      'contentsCss': '',
                      }
         config.update(additional)
         return config
