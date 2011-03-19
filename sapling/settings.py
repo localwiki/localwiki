@@ -55,9 +55,6 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 # STATIC_URL followed by 'admin/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '7*s172_b94i2w%%1$)g__eph%(-$8&n7ahh0a)atcur72a4sbc'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
@@ -104,3 +101,12 @@ try:
     from localsettings import *
 except:
     pass
+
+# Generate a local secret key.
+if not 'SECRET_KEY' in locals():
+    from random import choice
+    SECRET_KEY = ''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
+    fname = os.path.join(os.path.dirname(__file__), 'localsettings.py')
+    f = open(fname, 'a')
+    f.write("SECRET_KEY = '%s'" % SECRET_KEY)
+    f.close()
