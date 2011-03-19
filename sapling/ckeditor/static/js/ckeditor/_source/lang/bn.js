@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -56,6 +56,7 @@ CKEDITOR.lang['bn'] =
 	superscript		: 'অভিলেখ',
 	horizontalrule	: 'রেখা যুক্ত কর',
 	pagebreak		: 'পেজ ব্রেক',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'লিংক সরাও',
 	undo			: 'আনডু',
 	redo			: 'রি-ডু',
@@ -109,6 +110,17 @@ CKEDITOR.lang['bn'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'প্রস্থ',
+		height			: 'দৈর্ঘ্য',
+		align			: 'এলাইন',
+		alignLeft		: 'বামে',
+		alignRight		: 'ডানে',
+		alignCenter		: 'মাঝখানে',
+		alignTop		: 'উপর',
+		alignMiddle		: 'মধ্য',
+		alignBottom		: 'নীচে',
+		invalidHeight	: 'Height must be a number.', // MISSING
+		invalidWidth	: 'Width must be a number.', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -155,9 +167,7 @@ CKEDITOR.lang['bn'] =
 		popupFullScreen	: 'পূর্ণ পর্দা জুড়ে (IE)',
 		popupScrollBars	: 'স্ক্রল বার',
 		popupDependent	: 'ডিপেন্ডেন্ট (Netscape)',
-		popupWidth		: 'প্রস্থ',
 		popupLeft		: 'বামের পজিশন',
-		popupHeight		: 'দৈর্ঘ্য',
 		popupTop		: 'ডানের পজিশন',
 		id				: 'Id', // MISSING
 		langDir			: 'ভাষা লেখার দিক',
@@ -165,18 +175,19 @@ CKEDITOR.lang['bn'] =
 		langDirRTL		: 'ডান থেকে বাম (RTL)',
 		acccessKey		: 'এক্সেস কী',
 		name			: 'নাম',
-		langCode		: 'ভাষা লেখার দিক',
-		tabIndex		: 'ট্যাব ইন্ডেক্স',
-		advisoryTitle	: 'পরামর্শ শীর্ষক',
+		langCode			: 'ভাষা লেখার দিক',
+		tabIndex			: 'ট্যাব ইন্ডেক্স',
+		advisoryTitle		: 'পরামর্শ শীর্ষক',
 		advisoryContentType	: 'পরামর্শ কন্টেন্টের প্রকার',
 		cssClasses		: 'স্টাইল-শীট ক্লাস',
 		charset			: 'লিংক রিসোর্স ক্যারেক্টর সেট',
 		styles			: 'স্টাইল',
-		selectAnchor	: 'নোঙর বাছাই',
+		rel			: 'Relationship', // MISSING
+		selectAnchor		: 'নোঙর বাছাই',
 		anchorName		: 'নোঙরের নাম দিয়ে',
-		anchorId		: 'নোঙরের আইডি দিয়ে',
-		emailAddress	: 'ইমেইল ঠিকানা',
-		emailSubject	: 'মেসেজের বিষয়',
+		anchorId			: 'নোঙরের আইডি দিয়ে',
+		emailAddress		: 'ইমেইল ঠিকানা',
+		emailSubject		: 'মেসেজের বিষয়',
 		emailBody		: 'মেসেজের দেহ',
 		noAnchors		: '(No anchors available in the document)', // MISSING
 		noUrl			: 'অনুগ্রহ করে URL লিংক টাইপ করুন',
@@ -243,15 +254,9 @@ CKEDITOR.lang['bn'] =
 		rows		: 'রো',
 		columns		: 'কলাম',
 		border		: 'বর্ডার সাইজ',
-		align		: 'এলাইনমেন্ট',
-		alignLeft	: 'বামে',
-		alignCenter	: 'মাঝখানে',
-		alignRight	: 'ডানে',
-		width		: 'প্রস্থ',
 		widthPx		: 'পিক্সেল',
 		widthPc		: 'শতকরা',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'দৈর্ঘ্য',
 		cellSpace	: 'সেল স্পেস',
 		cellPad		: 'সেল প্যাডিং',
 		caption		: 'শীর্ষক',
@@ -287,9 +292,6 @@ CKEDITOR.lang['bn'] =
 			wordWrap		: 'Word Wrap', // MISSING
 			hAlign			: 'Horizontal Alignment', // MISSING
 			vAlign			: 'Vertical Alignment', // MISSING
-			alignTop		: 'Top', // MISSING
-			alignMiddle		: 'Middle', // MISSING
-			alignBottom		: 'Bottom', // MISSING
 			alignBaseline	: 'Baseline', // MISSING
 			bgColor			: 'Background Color', // MISSING
 			borderColor		: 'Border Color', // MISSING
@@ -410,24 +412,17 @@ CKEDITOR.lang['bn'] =
 		btnUpload	: 'ইহাকে সার্ভারে প্রেরন কর',
 		upload		: 'আপলোড',
 		alt			: 'বিকল্প টেক্সট',
-		width		: 'প্রস্থ',
-		height		: 'দৈর্ঘ্য',
 		lockRatio	: 'অনুপাত লক কর',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'সাইজ পূর্বাবস্থায় ফিরিয়ে দাও',
 		border		: 'বর্ডার',
 		hSpace		: 'হরাইজন্টাল স্পেস',
 		vSpace		: 'ভার্টিকেল স্পেস',
-		align		: 'এলাইন',
-		alignLeft	: 'বামে',
-		alignRight	: 'ডানে',
 		alertUrl	: 'অনুগ্রহক করে ছবির URL টাইপ করুন',
 		linkTab		: 'লিংক',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
 		urlMissing	: 'Image source URL is missing.', // MISSING
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -451,16 +446,10 @@ CKEDITOR.lang['bn'] =
 		accessAlways	: 'Always', // MISSING
 		accessSameDomain: 'Same domain', // MISSING
 		accessNever		: 'Never', // MISSING
-		align			: 'এলাইন',
-		alignLeft		: 'বামে',
 		alignAbsBottom	: 'Abs নীচে',
 		alignAbsMiddle	: 'Abs উপর',
 		alignBaseline	: 'মূল রেখা',
-		alignBottom		: 'নীচে',
-		alignMiddle		: 'মধ্য',
-		alignRight		: 'ডানে',
 		alignTextTop	: 'টেক্সট উপর',
-		alignTop		: 'উপর',
 		quality			: 'Quality', // MISSING
 		qualityBest		: 'Best', // MISSING
 		qualityHigh		: 'High', // MISSING
@@ -474,13 +463,9 @@ CKEDITOR.lang['bn'] =
 		windowMode		: 'Window mode', // MISSING
 		flashvars		: 'Variables for Flash', // MISSING
 		bgcolor			: 'বেকগ্রাউন্ড রং',
-		width			: 'প্রস্থ',
-		height			: 'দৈর্ঘ্য',
 		hSpace			: 'হরাইজন্টাল স্পেস',
 		vSpace			: 'ভার্টিকেল স্পেস',
 		validateSrc		: 'অনুগ্রহ করে URL লিংক টাইপ করুন',
-		validateWidth	: 'Width must be a number.', // MISSING
-		validateHeight	: 'Height must be a number.', // MISSING
 		validateHSpace	: 'HSpace must be a number.', // MISSING
 		validateVSpace	: 'VSpace must be a number.' // MISSING
 	},
@@ -615,6 +600,15 @@ CKEDITOR.lang['bn'] =
 		remove				: 'Remove Div' // MISSING
   	},
 
+	iframe :
+	{
+		title		: 'IFrame Properties', // MISSING
+		toolbar		: 'IFrame', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
+		scrolling	: 'Enable scrollbars', // MISSING
+		border		: 'Show frame border' // MISSING
+	},
+
 	font :
 	{
 		label		: 'ফন্ট',
@@ -730,10 +724,11 @@ CKEDITOR.lang['bn'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'IFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

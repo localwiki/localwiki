@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -75,7 +75,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			else if ( previousBlock && ( node = previousBlock.getParent() ) && node.is( 'li' ) )
 			{
 				previousBlock.breakParent( node );
-				range.moveToElementEditStart( previousBlock.getNext() );
+				node = previousBlock.getNext();
+				range.moveToElementEditStart( node );
 				previousBlock.move( previousBlock.getPrevious() );
 			}
 
@@ -98,7 +99,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 			else
 			{
-				var newBlock;
+				var newBlock,
+					newBlockDir;
 
 				if ( previousBlock )
 				{
@@ -109,13 +111,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						// Otherwise, duplicate the previous block.
 						newBlock = previousBlock.clone();
+						// Value attribute of list item should not be duplicated (#7330).
+						newBlock.is( 'li' ) && newBlock.removeAttribute( 'value' );
 					}
 				}
 				else if ( nextBlock )
 					newBlock = nextBlock.clone();
 
 				if ( !newBlock )
-					newBlock = doc.createElement( blockTag );
+				{
+					// We have already created a new list item. (#6849)
+					if ( node && node.is( 'li' ) )
+						newBlock = node;
+					else
+					{
+						newBlock = doc.createElement( blockTag );
+						if ( previousBlock && ( newBlockDir = previousBlock.getDirection() ) )
+							newBlock.setAttribute( 'dir', newBlockDir );
+					}
+				}
 				// Force the enter block unless we're talking of a list item.
 				else if ( forceMode && !newBlock.is( 'li' ) )
 					newBlock.renameNode( blockTag );
@@ -145,7 +159,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				if ( !CKEDITOR.env.ie )
 					newBlock.appendBogus();
 
-				range.insertNode( newBlock );
+				if ( !newBlock.getParent() )
+					range.insertNode( newBlock );
 
 				// This is tricky, but to make the new block visible correctly
 				// we must select it.
@@ -222,15 +237,28 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// If we are at the end of a header block.
 			if ( !forceMode && isEndOfBlock && headerTagRegex.test( startBlockTag ) )
 			{
-				// Insert a <br> after the current paragraph.
-				doc.createElement( 'br' ).insertAfter( startBlock );
+				var newBlock,
+					newBlockDir;
 
-				// A text node is required by Gecko only to make the cursor blink.
-				if ( CKEDITOR.env.gecko )
-					doc.createText( '' ).insertAfter( startBlock );
+				if ( ( newBlockDir = startBlock.getDirection() ) )
+				{
+					newBlock = doc.createElement( 'div' );
+					newBlock.setAttribute( 'dir', newBlockDir );
+					newBlock.insertAfter( startBlock );
+					range.setStart( newBlock, 0 );
+				}
+				else
+				{
+					// Insert a <br> after the current paragraph.
+					doc.createElement( 'br' ).insertAfter( startBlock );
 
-				// IE has different behaviors regarding position.
-				range.setStartAt( startBlock.getNext(), CKEDITOR.env.ie ? CKEDITOR.POSITION_BEFORE_START : CKEDITOR.POSITION_AFTER_START );
+					// A text node is required by Gecko only to make the cursor blink.
+					if ( CKEDITOR.env.gecko )
+						doc.createText( '' ).insertAfter( startBlock );
+
+					// IE has different behaviors regarding position.
+					range.setStartAt( startBlock.getNext(), CKEDITOR.env.ie ? CKEDITOR.POSITION_BEFORE_START : CKEDITOR.POSITION_AFTER_START );
+				}
 			}
 			else
 			{

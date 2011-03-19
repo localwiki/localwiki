@@ -1,11 +1,11 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 (function()
 {
-	var guardElements = { table:1, tbody: 1, ul:1, ol:1, blockquote:1, div:1, tr: 1 },
+	var guardElements = { table:1, ul:1, ol:1, blockquote:1, div:1 },
 		directSelectionGuardElements = {},
 		// All guard elements which can have a direction applied on them.
 		allGuardElements = {};
@@ -33,7 +33,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		selectedElement = selectedElement || path.block || path.blockLimit;
 
-		if ( !selectedElement || selectedElement.getName() == 'body' )
+		// If we're having BODY here, user probably done CTRL+A, let's try to get the enclosed node, if any.
+		selectedElement.is( 'body' ) &&
+			( selectedElement = editor.getSelection().getRanges()[ 0 ].getEnclosedNode() );
+
+		if ( !selectedElement )
 			return;
 
 		var selectionDir = useComputedState ?
@@ -47,13 +51,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	function handleMixedDirContent( evt )
 	{
 		var editor = evt.editor,
-			chromeRoot = editor.container.getChild( 1 ),
-			directionNode = getElementForDirection( evt.data.path.lastElement );
+			directionNode = evt.data.path.block || evt.data.path.blockLimit;
 
-		if ( directionNode && editor.lang.dir != directionNode.getComputedStyle( 'direction' ) )
-			chromeRoot.addClass( 'cke_mixed_dir_content' );
-		else
-			chromeRoot.removeClass( 'cke_mixed_dir_content' );
+		editor.fire( 'contentDirChanged', directionNode ? directionNode.getComputedStyle( 'direction' ) : editor.lang.dir );
 	}
 
 	/**
@@ -76,6 +76,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function switchDir( element, dir, editor, database )
 	{
+		if ( element.isReadOnly() )
+			return;
+
 		// Mark this element as processed by switchDir.
 		CKEDITOR.dom.element.setMarker( database, element, 'bidi_processed', 1 );
 
@@ -101,9 +104,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if ( elementDir == dir )
 			return null;
 
-		// Reuse computedState if we already have it.
-		var dirBefore = useComputedState ? elementDir : element.getComputedStyle( 'direction' );
-
 		// Clear direction on this element.
 		element.removeStyle( 'direction' );
 
@@ -119,22 +119,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// Set new direction for this element.
 			element.setAttribute( 'dir', dir );
 
-		// If the element direction changed, we need to switch the margins of
-		// the element and all its children, so it will get really reflected
-		// like a mirror. (#5910)
-		if ( dir != dirBefore )
-			editor.fire( 'dirChanged', element );
-
 		editor.forceNextSelectionCheck();
 
 		return null;
 	}
 
-	function getFullySelected( range, elements )
+	function getFullySelected( range, elements, enterMode )
 	{
 		var ancestor = range.getCommonAncestor( false, true );
 
-		range.enlarge( CKEDITOR.ENLARGE_BLOCK_CONTENTS );
+		range = range.clone();
+		range.enlarge( enterMode == CKEDITOR.ENTER_BR ?
+				CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS
+				: CKEDITOR.ENLARGE_BLOCK_CONTENTS );
 
 		if ( range.checkBoundaryOfElement( ancestor, CKEDITOR.START )
 				&& range.checkBoundaryOfElement( ancestor, CKEDITOR.END ) )
@@ -143,8 +140,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			while ( ancestor && ancestor.type == CKEDITOR.NODE_ELEMENT
 					&& ( parent = ancestor.getParent() )
 					&& parent.getChildCount() == 1
-					&& ( !( ancestor.getName() in elements ) || ( parent.getName() in elements ) )
-					)
+					&& !( ancestor.getName() in elements ) )
 				ancestor = parent;
 
 			return ancestor.type == CKEDITOR.NODE_ELEMENT
@@ -181,10 +177,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if ( !selectedElement || selectedElement
 							&& !( selectedElement.type == CKEDITOR.NODE_ELEMENT && selectedElement.getName() in directSelectionGuardElements )
 						)
-						selectedElement = getFullySelected( range, guardElements );
+						selectedElement = getFullySelected( range, guardElements, enterMode );
 
-					if ( selectedElement && !selectedElement.isReadOnly() )
-						switchDir( selectedElement, dir, editor, database );
+					selectedElement && switchDir( selectedElement, dir, editor, database );
 
 					var iterator,
 						block;
@@ -199,7 +194,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						return !! ( node.type == CKEDITOR.NODE_ELEMENT
 								&& node.getName() in guardElements
-								&& !( node.getName() == ( enterMode == CKEDITOR.ENTER_P ) ? 'p' : 'div'
+								&& !( node.getName() == ( enterMode == CKEDITOR.ENTER_P ? 'p' : 'div' )
 									&& node.getParent().type == CKEDITOR.NODE_ELEMENT
 									&& node.getParent().getName() == 'blockquote' )
 								// Element must be fully included in the range as well. (#6485).
@@ -214,8 +209,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					iterator.enlargeBr = enterMode != CKEDITOR.ENTER_BR;
 
 					while ( ( block = iterator.getNextParagraph( enterMode == CKEDITOR.ENTER_P ? 'p' : 'div' ) ) )
-						!block.isReadOnly() && switchDir( block, dir, editor, database );
-				}
+						switchDir( block, dir, editor, database );
+					}
 
 				CKEDITOR.dom.element.clearAllMarkers( database );
 
@@ -253,7 +248,80 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			addButtonCommand( 'BidiRtl', lang.rtl, 'bidirtl', bidiCommand( 'rtl' ) );
 
 			editor.on( 'selectionChange', onSelectionChange );
+			editor.on( 'contentDom', function()
+			{
+				editor.document.on( 'dirChanged', function( evt )
+				{
+					editor.fire( 'dirChanged',
+						{
+							node : evt.data,
+							dir : evt.data.getDirection( 1 )
+						} );
+				})
+			});
 		}
 	});
 
+	// If the element direction changed, we need to switch the margins of
+	// the element and all its children, so it will get really reflected
+	// like a mirror. (#5910)
+	function isOffline( el )
+	{
+		var html = el.getDocument().getBody().getParent();
+		while ( el )
+		{
+			if ( el.equals( html ) )
+				return false;
+			el = el.getParent();
+		}
+		return true;
+	}
+	function dirChangeNotifier( org )
+	{
+		var isAttribute = org == elementProto.setAttribute,
+			isRemoveAttribute = org == elementProto.removeAttribute,
+			dirStyleRegexp = /\bdirection\s*:\s*(.*?)\s*(:?$|;)/;
+
+		return function( name, val )
+		{
+			if ( !this.getDocument().equals( CKEDITOR.document ) )
+			{
+				var orgDir;
+				if ( ( name == ( isAttribute || isRemoveAttribute ? 'dir' : 'direction' ) ||
+					 name == 'style' && ( isRemoveAttribute || dirStyleRegexp.test( val ) ) ) && !isOffline( this ) )
+				{
+					orgDir = this.getDirection( 1 );
+					var retval = org.apply( this, arguments );
+					if ( orgDir != this.getDirection( 1 ) )
+					{
+						this.getDocument().fire( 'dirChanged', this );
+						return retval;
+					}
+				}
+			}
+
+			return org.apply( this, arguments );
+		};
+	}
+
+	var elementProto = CKEDITOR.dom.element.prototype,
+		methods = [ 'setStyle', 'removeStyle', 'setAttribute', 'removeAttribute' ];
+	for ( var i = 0; i < methods.length; i++ )
+		elementProto[ methods[ i ] ] = CKEDITOR.tools.override( elementProto[ methods [ i ] ], dirChangeNotifier );
 })();
+
+/**
+ * Fired when the language direction of an element is changed
+ * @name CKEDITOR.editor#dirChanged
+ * @event
+ * @param {CKEDITOR.editor} editor This editor instance.
+ * @param {Object} eventData.node The element that is being changed.
+ * @param {String} eventData.dir The new direction.
+ */
+
+/**
+ * Fired when the language direction in the specific cursor position is changed
+ * @name CKEDITOR.editor#contentDirChanged
+ * @event
+ * @param {String} eventData The direction in the current position.
+ */

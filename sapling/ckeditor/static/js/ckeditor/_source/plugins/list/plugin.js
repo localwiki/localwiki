@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -11,6 +11,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 {
 	var listNodeNames = { ol : 1, ul : 1 },
 		emptyTextRegex = /^[\n\r\t ]*$/;
+
+	var whitespaces = CKEDITOR.dom.walker.whitespaces(),
+		bookmarks = CKEDITOR.dom.walker.bookmark(),
+		nonEmpty = function( node ){ return !( whitespaces( node ) || bookmarks( node ) ); };
 
 	CKEDITOR.plugins.list = {
 		/*
@@ -33,6 +37,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			for ( var i = 0, count = listNode.getChildCount() ; i < count ; i++ )
 			{
 				var listItem = listNode.getChild( i );
+
+				// Fixing malformed nested lists by moving it into a previous list item. (#6236)
+				if( listItem.type == CKEDITOR.NODE_ELEMENT && listItem.getName() in CKEDITOR.dtd.$list )
+					CKEDITOR.plugins.list.listToArray( listItem, database, baseArray, baseIndentLevel + 1 );
 
 				// It may be a text node or some funny stuff.
 				if ( listItem.$.nodeName.toLowerCase() != 'li' )
@@ -79,6 +87,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				currentIndex = baseIndex,
 				indentLevel = Math.max( listArray[ baseIndex ].indent, 0 ),
 				currentListItem = null,
+				itemDir,
 				paragraphName = ( paragraphMode == CKEDITOR.ENTER_P ? 'p' : 'div' );
 			while ( 1 )
 			{
@@ -88,6 +97,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if ( !rootNode || listArray[ currentIndex ].parent.getName() != rootNode.getName() )
 					{
 						rootNode = listArray[ currentIndex ].parent.clone( false, 1 );
+						dir && rootNode.setAttribute( 'dir', dir );
 						retval.append( rootNode );
 					}
 					currentListItem = rootNode.append( item.element.clone( 0, 1 ) );
@@ -97,24 +107,39 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 				else if ( item.indent == Math.max( indentLevel, 0 ) + 1 )
 				{
-					var listData = CKEDITOR.plugins.list.arrayToList( listArray, null, currentIndex, paragraphMode );
+					// Maintain original direction (#6861).
+					var orgDir = item.element.getDirection( 1 ),
+						currDir = listArray[ currentIndex - 1 ].element.getDirection( 1 ),
+						listData = CKEDITOR.plugins.list.arrayToList( listArray, null, currentIndex, paragraphMode,
+						currDir != orgDir ? orgDir: null );
+
+					// If the next block is an <li> with another list tree as the first
+					// child, we'll need to append a filler (<br>/NBSP) or the list item
+					// wouldn't be editable. (#6724)
+					if ( !currentListItem.getChildCount() && CKEDITOR.env.ie && !( doc.$.documentMode > 7 ))
+						currentListItem.append( doc.createText( '\xa0' ) );
 					currentListItem.append( listData.listNode );
 					currentIndex = listData.nextIndex;
 				}
 				else if ( item.indent == -1 && !baseIndex && item.grandparent )
 				{
-					currentListItem;
 					if ( listNodeNames[ item.grandparent.getName() ] )
+					{
 						currentListItem = item.element.clone( false, true );
+						itemDir = item.element.getDirection( 1 );
+						item.grandparent.getDirection( 1 ) != itemDir &&
+							currentListItem.setAttribute( 'dir', itemDir );
+					}
 					else
 					{
 						// Create completely new blocks here.
-						if ( dir || item.element.hasAttributes() ||
-							( paragraphMode != CKEDITOR.ENTER_BR && item.grandparent.getName() != 'td' ) )
+						if ( dir || item.element.hasAttributes() || paragraphMode != CKEDITOR.ENTER_BR )
 						{
 							currentListItem = doc.createElement( paragraphName );
 							item.element.copyAttributes( currentListItem, { type:1, value:1 } );
-							dir && currentListItem.setAttribute( 'dir', dir );
+							itemDir = item.element.getDirection() || dir;
+							itemDir &&
+								currentListItem.setAttribute( 'dir', itemDir );
 
 							// There might be a case where there are no attributes in the element after all
 							// (i.e. when "type" or "value" are the only attributes set). In this case, if enterMode = BR,
@@ -132,11 +157,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if ( currentListItem.type == CKEDITOR.NODE_DOCUMENT_FRAGMENT
 						 && currentIndex != listArray.length - 1 )
 					{
-						if ( currentListItem.getLast()
-								&& currentListItem.getLast().type == CKEDITOR.NODE_ELEMENT
-								&& currentListItem.getLast().getAttribute( 'type' ) == '_moz' )
-							currentListItem.getLast().remove();
-						currentListItem.appendBogus();
+						var last = currentListItem.getLast();
+						if ( last && last.type == CKEDITOR.NODE_ELEMENT
+								&& last.getAttribute( 'type' ) == '_moz' )
+						{
+							last.remove();
+						}
+
+						if ( !( last = currentListItem.getLast( nonEmpty )
+							&& last.type == CKEDITOR.NODE_ELEMENT
+							&& last.getName() in CKEDITOR.dtd.$block ) )
+						{
+							currentListItem.append( doc.createElement( 'br' ) );
+						}
 					}
 
 					if ( currentListItem.type == CKEDITOR.NODE_ELEMENT &&
@@ -183,30 +216,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	};
 
-	function setState( editor, state )
-	{
-		editor.getCommand( this.name ).setState( state );
-	}
-
 	function onSelectionChange( evt )
 	{
 		var path = evt.data.path,
 			blockLimit = path.blockLimit,
 			elements = path.elements,
-			element;
+			element,
+			i;
 
 		// Grouping should only happen under blockLimit.(#3940).
-		for ( var i = 0 ; i < elements.length && ( element = elements[ i ] )
+		for ( i = 0 ; i < elements.length && ( element = elements[ i ] )
 			  && !element.equals( blockLimit ); i++ )
 		{
 			if ( listNodeNames[ elements[i].getName() ] )
-			{
-				return setState.call( this, evt.editor,
-						this.type == elements[i].getName() ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF );
-			}
+				return this.setState( this.type == elements[i].getName() ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF );
 		}
 
-		return setState.call( this, evt.editor, CKEDITOR.TRISTATE_OFF );
+		return this.setState( CKEDITOR.TRISTATE_OFF );
 	}
 
 	function changeListType( editor, groupObj, database, listsCreated )
@@ -472,7 +498,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						enclosedNode = range && range.getEnclosedNode();
 					if ( enclosedNode && enclosedNode.is
 						&& this.type == enclosedNode.getName() )
-							setState.call( this, editor, CKEDITOR.TRISTATE_ON );
+							this.setState( CKEDITOR.TRISTATE_ON );
 				}
 			}
 
@@ -673,10 +699,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		init : function( editor )
 		{
 			// Register commands.
-			var numberedListCommand = new listCommand( 'numberedlist', 'ol' ),
-				bulletedListCommand = new listCommand( 'bulletedlist', 'ul' );
-			editor.addCommand( 'numberedlist', numberedListCommand );
-			editor.addCommand( 'bulletedlist', bulletedListCommand );
+			var numberedListCommand = editor.addCommand( 'numberedlist', new listCommand( 'numberedlist', 'ol' ) ),
+				bulletedListCommand = editor.addCommand( 'bulletedlist', new listCommand( 'bulletedlist', 'ul' ) );
 
 			// Register the toolbar button.
 			editor.ui.addButton( 'NumberedList',

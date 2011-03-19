@@ -1,10 +1,15 @@
 from ckeditor.widgets import CKEditor
+import models
 
 
 class WikiEditor(CKEditor):
     def get_config(self):
         config = super(WikiEditor, self).get_config()
-        config.update({'filebrowserInsertimageUploadUrl': 'upload'})
+        additional = {'filebrowserInsertimageUploadUrl': 'upload',
+                      'domcleanupAllowedTags': models.allowed_tags,
+                      'contentsCss': '',
+                     }
+        config.update(additional)
         return config
 
     def get_plugins(self):
@@ -13,14 +18,15 @@ class WikiEditor(CKEditor):
                 'enterkey,entities,filebrowser,font,format,horizontalrule,'
                 'htmldataprocessor,image,indent,keystrokes,link,list,'
                 'pastetext,removeformat,save,showblocks,stylescombo,table,'
-                'tabletools,specialchar,tab,toolbar,undo,wysiwygarea,wsc')
+                'tabletools,specialchar,tab,toolbar,undo,wysiwygarea,wsc,'
+                'sourcearea')
 
     def get_extra_plugins(self):
-        plugins = ['insertimage', 'simpleimage']
+        plugins = ['insertimage', 'simpleimage', 'domcleanup']
         return ','.join(plugins)
 
     def get_toolbar(self):
-        styles = ['Bold', 'Italic', 'Underline']
+        styles = ['Source', 'Bold', 'Italic', 'Underline']
         links = ['Link', 'Unlink']
         media = ['InsertImage']
         misc = ['Copy', 'Paste', 'Undo', 'Redo']

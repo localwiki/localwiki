@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -35,14 +35,6 @@ function commitAdvParams()
 	{
 		var attrName = this.att,
 			value = this.getValue();
-
-		// Broadcast Lang Dir change
-		if ( attrName == 'dir' )
-		{
-			var dir = element.getAttribute( attrName, value );
-			if ( dir != value && element.getParent() )
-					this._.dialog._.editor.fire( 'dirChanged', element );
-		}
 
 		if ( value )
 			element.setAttribute( attrName, value );

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -17,7 +17,6 @@ CKEDITOR.skins = (function()
 {
 	// Holds the list of loaded skins.
 	var loaded = {},
-		preloaded = {},
 		paths = {};
 
 	var loadPart = function( editor, skinName, part, callback )
@@ -52,33 +51,6 @@ CKEDITOR.skins = (function()
 						else
 							return 'url(' + baseUrl + opener +  path + closer + ')';
 					} );
-		}
-
-		// Check if we need to preload images from it.
-		var preload = skinDefinition.preload;
-		if ( preload && preload.length > 0 )
-		{
-			if ( !preloaded[ skinName ] )
-			{
-				// Prepare image URLs
-				appendSkinPath( preload );
-
-				// Get preloader event dispatcher object.
-				preloaded[ skinName ] = CKEDITOR.imageCacher.load( preload );
-			}
-
-			if ( !preloaded[ skinName ].finished )
-			{
-				// Bind listener for this editor instance.
-				preloaded[ skinName ].on( 'loaded', function()
-					{
-						loadPart( editor, skinName, part, callback );
-					}
-				);
-
-				// Execution will be continued from event listener.
-				return;
-			}
 		}
 
 		// Get the part definition.

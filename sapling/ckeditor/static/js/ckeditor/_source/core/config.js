@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -292,6 +292,7 @@ CKEDITOR.config =
 		'forms,' +
 		'horizontalrule,' +
 		'htmldataprocessor,' +
+		'iframe,' +
 		'image,' +
 		'indent,' +
 		'justify,' +
@@ -349,7 +350,7 @@ CKEDITOR.config =
 
 	/**
 	 * List of regular expressions to be executed over the input HTML,
-	 * indicating code that must stay untouched.
+	 * indicating HTML source code that matched must <strong>not</strong> present in WYSIWYG mode for editing.
 	 * @type Array
 	 * @default [] (empty array)
 	 * @example

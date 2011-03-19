@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -30,7 +30,17 @@ CKEDITOR.plugins.add( 'domiterator' );
 	}
 
 	var beginWhitespaceRegex = /^[\r\n\t ]+$/,
-		isBookmark = CKEDITOR.dom.walker.bookmark();
+		// Ignore bookmark nodes.(#3783)
+		bookmarkGuard = CKEDITOR.dom.walker.bookmark( false, true );
+
+	// Get a reference for the next element, bookmark nodes are skipped.
+	function getNextSourceNode( node, startFromSibling, lastNode )
+	{
+		var next = node.getNextSourceNode( startFromSibling, null, lastNode );
+		while ( !bookmarkGuard( next ) )
+			next = next.getNextSourceNode( startFromSibling, null, lastNode );
+		return next;
+	}
 
 	iterator.prototype = {
 		getNextParagraph : function( blockTag )
@@ -197,7 +207,7 @@ CKEDITOR.plugins.add( 'domiterator' );
 				// to close the range, otherwise we include the parent within it.
 				if ( range && !closeRange )
 				{
-					while ( !currentNode.getNext() && !isLast )
+					while ( !currentNode.getNext( bookmarkGuard ) && !isLast )
 					{
 						var parentNode = currentNode.getParent();
 
@@ -220,7 +230,7 @@ CKEDITOR.plugins.add( 'domiterator' );
 				if ( includeNode )
 					range.setEndAt( currentNode, CKEDITOR.POSITION_AFTER_END );
 
-				currentNode = currentNode.getNextSourceNode( continueFromSibling, null, lastNode );
+				currentNode = getNextSourceNode ( currentNode, continueFromSibling, lastNode );
 				isLast = !currentNode;
 
 				// We have found a block boundary. Let's close the range and move out of the
@@ -256,15 +266,15 @@ CKEDITOR.plugins.add( 'domiterator' );
 					// Create the fixed block.
 					block = this.range.document.createElement( blockTag || 'p' );
 
-					// Move the contents of the temporary range to the fixed block.
-					range.extractContents().appendTo( block );
-					block.trim();
+						// Move the contents of the temporary range to the fixed block.
+						range.extractContents().appendTo( block );
+						block.trim();
 
-					// Insert the fixed block into the DOM.
-					range.insertNode( block );
+						// Insert the fixed block into the DOM.
+						range.insertNode( block );
 
-					removePreviousBr = removeLastBr = true;
-				}
+						removePreviousBr = removeLastBr = true;
+					}
 				else if ( block.getName() != 'li' )
 				{
 					// If the range doesn't includes the entire contents of the
@@ -297,13 +307,9 @@ CKEDITOR.plugins.add( 'domiterator' );
 					// the current range, which could be an <li> child (nested
 					// lists) or the next sibling <li>.
 
-					this._.nextNode = ( block.equals( lastNode ) ? null :
-						range.getBoundaryNodes().endNode.getNextSourceNode( true, null, lastNode ) );
+					this._.nextNode = ( block.equals( lastNode ) ? null : getNextSourceNode( range.getBoundaryNodes().endNode, 1, lastNode ) );
 				}
 			}
-
-			// Ignore bookmark nodes.(#3783)
-			var bookmarkGuard = CKEDITOR.dom.walker.bookmark( false, true );
 
 			if ( removePreviousBr )
 			{
@@ -336,13 +342,7 @@ CKEDITOR.plugins.add( 'domiterator' );
 			if ( !this._.nextNode )
 			{
 				this._.nextNode = ( isLast || block.equals( lastNode ) ) ? null :
-					block.getNextSourceNode( true, null, lastNode );
-			}
-
-			if ( !bookmarkGuard( this._.nextNode ) )
-			{
-				this._.nextNode = this._.nextNode.getNextSourceNode( true, null, function( node )
-					{ return !node.equals( lastNode ) && bookmarkGuard( node ); } );
+					getNextSourceNode( block, 1, lastNode );
 			}
 
 			return block;

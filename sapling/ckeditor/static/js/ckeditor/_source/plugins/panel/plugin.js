@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -136,12 +136,6 @@ CKEDITOR.ui.panel.prototype =
 					className = parentDiv.getParent().getAttribute( 'class' ),
 					langCode = parentDiv.getParent().getAttribute( 'lang' ),
 					doc = iframe.getFrameDocument();
-				// Initialize the IFRAME document body.
-				doc.$.open();
-
-				// Support for custom document.domain in IE.
-				if ( CKEDITOR.env.isCustomDomain() )
-					doc.$.domain = document.domain;
 
 				var onLoad = CKEDITOR.tools.addFunction( CKEDITOR.tools.bind( function( ev )
 					{
@@ -150,7 +144,7 @@ CKEDITOR.ui.panel.prototype =
 							this.onLoad();
 					}, this ) );
 
-				doc.$.write(
+				var data =
 					'<!DOCTYPE html>' +
 					'<html dir="' + dir + '" class="' + className + '_container" lang="' + langCode + '">' +
 						'<head>' +
@@ -162,8 +156,9 @@ CKEDITOR.ui.panel.prototype =
 						// after <body>, so it (body) becames immediatelly
 						// available. (#3031)
 						CKEDITOR.tools.buildStyleHtml( this.css ) +
-					'<\/html>' );
-				doc.$.close();
+					'<\/html>';
+
+				doc.write( data );
 
 				var win = doc.getWindow();
 
@@ -194,6 +189,7 @@ CKEDITOR.ui.panel.prototype =
 
 				holder = doc.getBody();
 				holder.unselectable();
+				CKEDITOR.env.air && CKEDITOR.tools.callFunction( onLoad );
 			}
 			else
 				holder = this.document.getById( this.id );
@@ -397,3 +393,10 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 		}
 	}
 });
+
+/**
+ * Fired when a panel is added to the document
+ * @name CKEDITOR#ariaWidget
+ * @event
+ * @param {Object} holder The element wrapping the panel
+ */

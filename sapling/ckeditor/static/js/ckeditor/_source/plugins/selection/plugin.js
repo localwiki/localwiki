@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -79,29 +79,110 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				case 'wysiwyg' :
 					editor.document.$.execCommand( 'SelectAll', false, null );
+					// Force triggering selectionChange (#7008)
+					editor.forceNextSelectionCheck();
+					editor.selectionChange();
 					break;
 				case 'source' :
 					// Select the contents of the textarea
-					var textarea = editor.textarea.$ ;
+					var textarea = editor.textarea.$;
 					if ( CKEDITOR.env.ie )
-					{
-						textarea.createTextRange().execCommand( 'SelectAll' ) ;
-					}
+						textarea.createTextRange().execCommand( 'SelectAll' );
 					else
 					{
-						textarea.selectionStart = 0 ;
-						textarea.selectionEnd = textarea.value.length ;
+						textarea.selectionStart = 0;
+						textarea.selectionEnd = textarea.value.length;
 					}
-					textarea.focus() ;
+					textarea.focus();
 			}
 		},
 		canUndo : false
 	};
 
+	function createFillingChar( doc )
+	{
+		removeFillingChar( doc );
+
+		var fillingChar = doc.createText( '\u200B' );
+		doc.setCustomData( 'cke-fillingChar', fillingChar );
+
+		return fillingChar;
+	}
+
+	function getFillingChar( doc )
+	{
+		return doc && doc.getCustomData( 'cke-fillingChar' );
+	}
+
+	// Checks if a filling char has been used, eventualy removing it (#1272).
+	function checkFillingChar( doc )
+	{
+		var fillingChar = doc && getFillingChar( doc );
+		if ( fillingChar )
+		{
+			// Use this flag to avoid removing the filling char right after
+			// creating it.
+			if ( fillingChar.getCustomData( 'ready' ) )
+				removeFillingChar( doc );
+			else
+				fillingChar.setCustomData( 'ready', 1 );
+		}
+	}
+
+	function removeFillingChar( doc )
+	{
+		var fillingChar = doc && doc.removeCustomData( 'cke-fillingChar' );
+		if ( fillingChar )
+		{
+			// We can't simply remove the filling node because the user
+			// will actually enlarge it when typing, so we just remove the
+			// invisible char from it.
+			fillingChar.setText( fillingChar.getText().replace( /\u200B/g, '' ) );
+			fillingChar = 0;
+		}
+	}
+
 	CKEDITOR.plugins.add( 'selection',
 	{
 		init : function( editor )
 		{
+			// On WebKit only, we need a special "filling" char on some situations
+			// (#1272). Here we set the events that should invalidate that char.
+			if ( CKEDITOR.env.webkit )
+			{
+				editor.on( 'selectionChange', function() { checkFillingChar( editor.document ); } );
+				editor.on( 'beforeSetMode', function() { removeFillingChar( editor.document ); } );
+				editor.on( 'key', function( e )
+					{
+						// Remove the filling char before some keys get
+						// executed, so they'll not get blocked by it.
+						switch ( e.data.keyCode )
+						{
+							case 37 :	// LEFT-ARROW
+							case 39 :	// RIGHT-ARROW
+							case 8 :	// BACKSPACE
+								removeFillingChar( editor.document );
+						}
+					});
+
+				var fillingCharBefore;
+				function beforeData()
+				{
+					var fillingChar = getFillingChar( editor.document );
+					fillingCharBefore = fillingChar && fillingChar.getText();
+					fillingCharBefore && fillingChar.setText( fillingCharBefore.replace( /\u200B/g, '' ) );
+				}
+				function afterData()
+				{
+						var fillingChar = getFillingChar( editor.document );
+						fillingChar && fillingChar.setText( fillingCharBefore );
+				}
+				editor.on( 'beforeUndoImage', beforeData );
+				editor.on( 'afterUndoImage', afterData );
+				editor.on( 'beforeGetData', beforeData, null, null, 0 );
+				editor.on( 'getData', afterData );
+			}
+
 			editor.on( 'contentDom', function()
 				{
 					var doc = editor.document,
@@ -133,10 +214,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								// point.
 								if ( savedRange )
 								{
-									// Range restored here might invalidate the DOM structure thus break up
-									// the locked selection, give it up. (#6083)
-									var lockedSelection = doc.getCustomData( 'cke_locked_selection' );
-									if ( restoreEnabled && !lockedSelection )
+									if ( restoreEnabled )
 									{
 										// Well not break because of this.
 										try
@@ -145,6 +223,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										}
 										catch (e)
 										{}
+
+										// Update locked selection because of the normalized text nodes. (#6083, #6987)
+										var lockedSelection = doc.getCustomData( 'cke_locked_selection' );
+										if ( lockedSelection )
+										{
+											lockedSelection.unlock();
+											lockedSelection.lock();
+										}
 									}
 
 									savedRange = null;
@@ -325,6 +411,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						doc.on( 'keyup', checkSelectionChangeTimeout, editor );
 					}
 				});
+
+			// Clear the cached range path before unload. (#7174)
+			editor.on( 'contentDomUnload', editor.forceNextSelectionCheck, editor );
 
 			editor.addCommand( 'selectAll', selectAllCmd );
 			editor.ui.addButton( 'SelectAll',
@@ -556,6 +645,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var func = CKEDITOR.env.ie ?
 				( function()
 				{
+					function getNodeIndex( node ) { return new CKEDITOR.dom.node( node ).getIndex(); }
+
 					// Finds the container and offset for a specific boundary
 					// of an IE range.
 					var getBoundaryInformation = function( range, start )
@@ -566,76 +657,103 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// Gets the element that encloses the range entirely.
 						var parent = range.parentElement();
-						var siblings = parent.childNodes;
 
-						var testRange;
+						// Empty parent element, e.g. <i>^</i>
+						if ( !parent.hasChildNodes() )
+							return  { container : parent, offset : 0 };
 
-						for ( var i = 0 ; i < siblings.length ; i++ )
+						var siblings = parent.children,
+							child,
+							testRange = range.duplicate(),
+							startIndex = 0,
+							endIndex = siblings.length - 1,
+							index = -1,
+							position,
+							distance;
+
+						// Binary search over all element childs to test the range to see whether
+						// range is right on the boundary of one element.
+						while ( startIndex <= endIndex )
 						{
-							var child = siblings[ i ];
-							if ( child.nodeType == 1 )
-							{
-								testRange = range.duplicate();
+							index = Math.floor( ( startIndex + endIndex ) / 2 );
+							child = siblings[ index ];
+							testRange.moveToElementText( child );
+							position = testRange.compareEndPoints( 'StartToStart', range );
 
-								testRange.moveToElementText( child );
-
-								var comparisonStart = testRange.compareEndPoints( 'StartToStart', range ),
-									comparisonEnd = testRange.compareEndPoints( 'EndToStart', range );
-
-								testRange.collapse();
-
-								if ( comparisonStart > 0 )
-									break;
-								// When selection stay at the side of certain self-closing elements, e.g. BR,
-								// our comparison will never shows an equality. (#4824)
-								else if ( !comparisonStart
-									|| comparisonEnd == 1 && comparisonStart == -1 )
-									return { container : parent, offset : i };
-								else if ( !comparisonEnd )
-									return { container : parent, offset : i + 1 };
-
-								testRange = null;
-							}
+							if ( position > 0 )
+								endIndex = index - 1;
+							else if ( position < 0 )
+								startIndex = index + 1;
+							else
+								return { container : parent, offset : getNodeIndex( child ) };
 						}
 
-						if ( !testRange )
+						// All childs are text nodes,
+						// or to the right hand of test range are all text nodes. (#6992)
+						if ( index == -1 || index == siblings.length - 1 && position < 0 )
 						{
-							testRange = range.duplicate();
+							// Adapt test range to embrace the entire parent contents.
 							testRange.moveToElementText( parent );
-							testRange.collapse( false );
-						}
+							testRange.setEndPoint( 'StartToStart', range );
 
-						testRange.setEndPoint( 'StartToStart', range );
-						// IE report line break as CRLF with range.text but
-						// only LF with textnode.nodeValue, normalize them to avoid
-						// breaking character counting logic below. (#3949)
-						var distance = testRange.text.replace( /(\r\n|\r)/g, '\n' ).length;
+							// IE report line break as CRLF with range.text but
+							// only LF with textnode.nodeValue, normalize them to avoid
+							// breaking character counting logic below. (#3949)
+							distance = testRange.text.replace( /(\r\n|\r)/g, '\n' ).length;
 
-						try
-						{
+							siblings = parent.childNodes;
+
+							// Actual range anchor right beside test range at the boundary of text node.
+							if ( !distance )
+							{
+								child = siblings[ siblings.length - 1 ];
+
+								if ( child.nodeType == CKEDITOR.NODE_ELEMENT )
+									return { container : parent, offset : siblings.length };
+								else
+									return { container : child, offset : child.nodeValue.length };
+							}
+
+							// Start the measuring until distance overflows, meanwhile count the text nodes.
+							var i = siblings.length;
 							while ( distance > 0 )
 								distance -= siblings[ --i ].nodeValue.length;
-						}
-						// Measurement in IE could be somtimes wrong because of <select> element. (#4611)
-						catch( e )
-						{
-							distance = 0;
-						}
 
-
-						if ( distance === 0 )
-						{
-							return {
-								container : parent,
-								offset : i
-							};
+							return  { container : siblings[ i ], offset : -distance };
 						}
+						// Test range was one offset beyond OR behind the anchored text node.
 						else
 						{
-							return {
-								container : siblings[ i ],
-								offset : -distance
-							};
+							// Adapt one side of test range to the actual range
+							// for measuring the offset between them.
+							testRange.collapse( position > 0 ? true : false );
+							testRange.setEndPoint( position > 0 ? 'StartToStart' : 'EndToStart', range );
+
+							// IE report line break as CRLF with range.text but
+							// only LF with textnode.nodeValue, normalize them to avoid
+							// breaking character counting logic below. (#3949)
+							distance = testRange.text.replace( /(\r\n|\r)/g, '\n' ).length;
+
+							// Actual range anchor right beside test range at the inner boundary of text node.
+							if ( !distance )
+								return { container : parent, offset : getNodeIndex( child ) + ( position > 0 ? 0 : 1 ) };
+
+							// Start the measuring until distance overflows, meanwhile count the text nodes.
+							while ( distance > 0 )
+							{
+								child = child[ position > 0 ? 'previousSibling' : 'nextSibling' ];
+								try
+								{
+									distance -= child.nodeValue.length;
+								}
+								// Measurement in IE could be somtimes wrong because of <select> element. (#4611)
+								catch( e )
+								{
+									return { container : parent, offset : getNodeIndex( child ) };
+								}
+							}
+
+							return { container : child, offset : position > 0 ? -distance : child.nodeValue.length + distance };
 						}
 					};
 
@@ -797,7 +915,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						walker.evaluator = function( node )
 						{
 							if ( node.type == CKEDITOR.NODE_ELEMENT
-								&& node.getAttribute( 'contenteditable' ) == 'false' )
+								&& node.isReadOnly() )
 							{
 								var newRange = range.clone();
 								range.setEndBefore( node );
@@ -1031,44 +1149,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				return;
 			}
 
-			if ( CKEDITOR.env.ie )
-			{
-				this.getNative().empty();
+			var range = new CKEDITOR.dom.range( element.getDocument() );
+			range.setStartBefore( element );
+			range.setEndAfter( element );
+			range.select();
 
-				try
-				{
-					// Try to select the node as a control.
-					range = this.document.$.body.createControlRange();
-					range.addElement( element.$ );
-					range.select();
-				}
-				catch( e )
-				{
-					// If failed, select it as a text range.
-					range = this.document.$.body.createTextRange();
-					range.moveToElementText( element.$ );
-					range.select();
-				}
-				finally
-				{
-					this.document.fire( 'selectionchange' );
-				}
+			this.document.fire( 'selectionchange' );
+			this.reset();
 
-				this.reset();
-			}
-			else
-			{
-				// Create the range for the element.
-				range = this.document.$.createRange();
-				range.selectNode( element.$ );
-
-				// Select the range.
-				var sel = this.getNative();
-				sel.removeAllRanges();
-				sel.addRange( range );
-
-				this.reset();
-			}
 		},
 
 		/**
@@ -1107,8 +1195,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				var sel = this.getNative();
 
+				// getNative() returns null if iframe is "display:none" in FF. (#6577)
+				if ( !sel )
+					return;
+
 				if ( ranges.length )
+				{
 					sel.removeAllRanges();
+					// Remove any existing filling char first.
+					CKEDITOR.env.webkit && removeFillingChar( this.document );
+				}
 
 				for ( var i = 0 ; i < ranges.length ; i++ )
 				{
@@ -1126,7 +1222,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( !between.collapsed )
 						{
 							between.shrink( CKEDITOR.NODE_ELEMENT, true );
-							if ( between.getCommonAncestor().isReadOnly())
+							var ancestor = between.getCommonAncestor(),
+								enclosed = between.getEnclosedNode();
+
+							// The following cases has to be considered:
+							// 1. <span contenteditable="false">[placeholder]</span>
+							// 2. <input contenteditable="false"  type="radio"/> (#6621)
+							if ( ancestor.isReadOnly() || enclosed && enclosed.isReadOnly() )
 							{
 								right.setStart( left.startContainer, left.startOffset );
 								ranges.splice( i--, 1 );
@@ -1152,8 +1254,46 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						startContainer.appendText( '' );
 					}
 
-					nativeRange.setStart( startContainer.$, range.startOffset );
-					nativeRange.setEnd( range.endContainer.$, range.endOffset );
+					if ( range.collapsed && CKEDITOR.env.webkit )
+					{
+						// Append a zero-width space so WebKit will not try to
+						// move the selection by itself (#1272).
+						var fillingChar = createFillingChar( this.document );
+						range.insertNode( fillingChar ) ;
+
+						var next = fillingChar.getNext();
+
+						// If the filling char is followed by a <br>, whithout
+						// having something before it, it'll not blink.
+						// Let's remove it in this case.
+						if ( next && !fillingChar.getPrevious() && next.type == CKEDITOR.NODE_ELEMENT && next.getName() == 'br' )
+						{
+							removeFillingChar( this.document );
+							range.moveToPosition( next, CKEDITOR.POSITION_BEFORE_START );
+						}
+						else
+							range.moveToPosition( fillingChar, CKEDITOR.POSITION_AFTER_END );
+					}
+
+					nativeRange.setStart( range.startContainer.$, range.startOffset );
+
+					try
+					{
+						nativeRange.setEnd( range.endContainer.$, range.endOffset );
+					}
+					catch ( e )
+					{
+						// There is a bug in Firefox implementation (it would be too easy
+						// otherwise). The new start can't be after the end (W3C says it can).
+						// So, let's create a new range and collapse it to the desired point.
+						if ( e.toString().indexOf( 'NS_ERROR_ILLEGAL_VALUE' ) >= 0 )
+						{
+							range.collapse( 1 );
+							nativeRange.setEnd( range.endContainer.$, range.endOffset );
+						}
+						else
+							throw e;
+					}
 
 					// Select the range.
 					sel.addRange( nativeRange );
@@ -1237,9 +1377,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// V2
 			function( forceExpand )
 			{
-				var collapsed = this.collapsed;
-				var isStartMarkerAlone;
-				var dummySpan;
+				var collapsed = this.collapsed,
+					isStartMarkerAlone, dummySpan, ieRange;
+
+				// Try to make a object selection.
+				var selected = this.getEnclosedNode();
+				if ( selected )
+				{
+					try
+					{
+						ieRange = this.document.$.body.createControlRange();
+						ieRange.addElement( selected.$ );
+						ieRange.select();
+						return;
+					}
+					catch( er ) {}
+				}
 
 				// IE doesn't support selecting the entire table row/cell, move the selection into cells, e.g.
 				// <table><tbody><tr>[<td>cell</b></td>... => <table><tbody><tr><td>[cell</td>...
@@ -1259,7 +1412,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					endNode = bookmark.endNode;
 
 				// Create the main range which will be used for the selection.
-				var ieRange = this.document.$.body.createTextRange();
+				ieRange = this.document.$.body.createTextRange();
 
 				// Position the range at the start boundary.
 				ieRange.moveToElementText( startNode.$ );
@@ -1340,36 +1493,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		:
 			function()
 			{
-				var startContainer = this.startContainer;
-
-				// If we have a collapsed range, inside an empty element, we must add
-				// something to it, otherwise the caret will not be visible.
-				if ( this.collapsed && startContainer.type == CKEDITOR.NODE_ELEMENT && !startContainer.getChildCount() )
-					startContainer.append( new CKEDITOR.dom.text( '' ) );
-
-				var nativeRange = this.document.$.createRange();
-				nativeRange.setStart( startContainer.$, this.startOffset );
-
-				try
-				{
-					nativeRange.setEnd( this.endContainer.$, this.endOffset );
-				}
-				catch ( e )
-				{
-					// There is a bug in Firefox implementation (it would be too easy
-					// otherwise). The new start can't be after the end (W3C says it can).
-					// So, let's create a new range and collapse it to the desired point.
-					if ( e.toString().indexOf( 'NS_ERROR_ILLEGAL_VALUE' ) >= 0 )
-					{
-						this.collapse( true );
-						nativeRange.setEnd( this.endContainer.$, this.endOffset );
-					}
-					else
-						throw( e );
-				}
-
-				var selection = this.document.getSelection().getNative();
-				selection.removeAllRanges();
-				selection.addRange( nativeRange );
+				this.document.getSelection().selectRanges( [ this ] );
 			};
 } )();

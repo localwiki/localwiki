@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -334,16 +334,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		'table-column' : 1,
 		'table-cell' : 1,
 		'table-caption' : 1
-	},
-	blockBoundaryNodeNameMatch = { hr : 1 };
+	};
 
 	CKEDITOR.dom.element.prototype.isBlockBoundary = function( customNodeNames )
 	{
-		var nodeNameMatches = CKEDITOR.tools.extend( {},
-													blockBoundaryNodeNameMatch, customNodeNames || {} );
+		var nodeNameMatches = CKEDITOR.tools.extend( {}, CKEDITOR.dtd.$block, customNodeNames || {} );
 
-		return blockBoundaryDisplayMatch[ this.getComputedStyle( 'display' ) ] ||
-			nodeNameMatches[ this.getName() ];
+		// Don't consider floated formatting as block boundary, fall back to dtd check in that case. (#6297)
+		return this.getComputedStyle( 'float' ) == 'none' && blockBoundaryDisplayMatch[ this.getComputedStyle( 'display' ) ]
+				|| nodeNameMatches[ this.getName() ];
 	};
 
 	CKEDITOR.dom.walker.blockBoundary = function( customNodeNames )
@@ -374,7 +373,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			return ( node && node.getName
 					&& node.getName() == 'span'
-					&& node.hasAttribute( '_cke_bookmark' ) );
+					&& node.data( 'cke-bookmark' ) );
 		}
 
 		return function( node )
@@ -422,18 +421,34 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		};
 	};
 
-	var tailNbspRegex = /^[\t\r\n ]*(?:&nbsp;|\xa0)$/,
-		isNotWhitespaces = CKEDITOR.dom.walker.whitespaces( 1 ),
-		isNotBookmark = CKEDITOR.dom.walker.bookmark( 0, 1 ),
-		fillerEvaluator = function( element )
+	CKEDITOR.dom.walker.nodeType = function( type, isReject )
+	{
+		return function( node )
 		{
-			return isNotBookmark( element ) && isNotWhitespaces( element );
+			return !! ( isReject ^ ( node.type == type ) );
+		};
+	};
+
+	var tailNbspRegex = /^[\t\r\n ]*(?:&nbsp;|\xa0)$/,
+		isWhitespaces = CKEDITOR.dom.walker.whitespaces(),
+		isBookmark = CKEDITOR.dom.walker.bookmark(),
+		toSkip = function( node )
+		{
+			return isBookmark( node )
+					|| isWhitespaces( node )
+					|| node.type == CKEDITOR.NODE_ELEMENT
+					&& node.getName() in CKEDITOR.dtd.$inline
+					&& !( node.getName() in CKEDITOR.dtd.$empty );
 		};
 
 	// Check if there's a filler node at the end of an element, and return it.
 	CKEDITOR.dom.element.prototype.getBogus = function()
 	{
-		var tail = this.getLast( fillerEvaluator );
+		// Bogus are not always at the end, e.g. <p><a>text<br /></a></p> (#7070).
+		var tail = this;
+		do { tail = tail.getPreviousSourceNode(); }
+		while ( toSkip( tail ) )
+
 		if ( tail && ( !CKEDITOR.env.ie ? tail.is && tail.is( 'br' )
 				: tail.getText && tailNbspRegex.test( tail.getText() ) ) )
 		{
