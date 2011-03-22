@@ -3,47 +3,63 @@
 from django.test import TestCase
 from django.db import models
 from forms import MergeModelForm, PageForm
-from pages.models import Page, slugify
+from pages.models import Page, slugify, url_to_name, clean_name, name_to_url
 from pages.plugins import html_to_template_text
 from pages.plugins import tag_imports
 from urllib import quote
 
 
 class PageTest(TestCase):
+    def test_clean_name(self):
+        self.assertEqual(clean_name(' Front Page '), 'Front Page')
+        self.assertEqual(clean_name('_edit'), 'edit')
+        self.assertEqual(clean_name('Front Page /_edit'), 'Front Page/edit')
+        self.assertEqual(clean_name('/Front Page/'), 'Front Page')
+        self.assertEqual(clean_name('Front Page// /'), 'Front Page')
+
+    def test_url_to_name(self):
+        self.assertEqual(url_to_name('Front_Page'), 'Front Page')
+        self.assertEqual(url_to_name('Ben_%26_Jerry%27s'), "Ben & Jerry's")
+
+    def test_name_to_url(self):
+        self.assertEqual(name_to_url('Front Page'), 'Front_Page')
+        self.assertEqual(name_to_url("Ben & Jerry's"), 'Ben_%26_Jerry%27s')
+
     def test_slugify(self):
         # spaces and casing
-        self.assertEqual(slugify('Front Page'), 'front_page')
-        self.assertEqual(slugify('fRoNt PaGe'), 'front_page')
-        self.assertEqual(slugify('Front_Page'), 'front_page')
-        self.assertEqual(slugify('Front+Page'), 'front_page')
-        self.assertEqual(slugify('Front%20Page'), 'front_page')
+        self.assertEqual(slugify('Front Page'), 'front page')
+        self.assertEqual(slugify('fRoNt PaGe'), 'front page')
+        self.assertEqual(slugify('Front_Page'), 'front page')
+        self.assertEqual(slugify('Front+Page'), 'front page')
+        self.assertEqual(slugify('Front%20Page'), 'front page')
 
         # slashes
-        self.assertEqual(slugify('Front Page/Talk'), 'front_page/talk')
-        self.assertEqual(slugify('Front Page%2FTalk'), 'front_page/talk')
+        self.assertEqual(slugify('Front Page/Talk'), 'front page/talk')
+        self.assertEqual(slugify('Front Page%2FTalk'), 'front page/talk')
 
         # extra spaces
         self.assertEqual(slugify(' I  N  C  E  P  T  I  O  N '),
-                                'i_n_c_e_p_t_i_o_n')
+                                'i n c e p t i o n')
 
         # quotes and other stuff
-        self.assertEqual(slugify("Ben & Jerry's"), "ben_%26_jerry%27s")
-        self.assertEqual(slugify("Ben & Jerry's"), "ben_%26_jerry%27s")
-        self.assertEqual(slugify("Ben_%26_Jerry's"), "ben_%26_jerry%27s")
+        self.assertEqual(slugify("Ben & Jerry's"), "ben & jerry's")
+        self.assertEqual(slugify("Ben & Jerry's"), "ben & jerry's")
+        self.assertEqual(slugify("Ben_%26_Jerry's"), "ben & jerry's")
         self.assertEqual(slugify('Manny "Pac-Man" Pacquaio'),
-                                'manny_pac-man_pacquaio')
-        self.assertEqual(slugify("Where am I?"), "where_am_i")
-        self.assertEqual(slugify("What the @#$!!"), "what_the")
+                                'manny "pac-man" pacquaio')
+        self.assertEqual(slugify("Where am I?"), "where am i")
+        self.assertEqual(slugify("What the @#$!!"), "what the @$!!")
 
         # unicode
-        slug = ("%D0%B7%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F"
+        self.assertEqual(slugify("Заглавная Страница"), 'заглавная страница')
+        encoded = ("%D0%B7%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F"
                      "_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
-        assert slug == quote("заглавная_страница")
-        self.assertEqual(slugify("Заглавная Страница"), slug)
-        self.assertEqual(slugify("Заглавная%20Страница"), slug)
+        self.assertEqual(slugify(encoded), 'заглавная страница')
+        self.assertEqual(slugify("Заглавная%20Страница"), 'заглавная страница')
 
         # idempotent?
         a = 'АЯ `~!@#$%^&*()-_+=/\|}{[]:;"\'<>.,'
+        self.assertEqual(slugify(a), 'ая !@$%&*()- /"\'.,')
         self.assertEqual(slugify(a), slugify(slugify(a)))
 
     def test_pretty_slug(self):
