@@ -1,0 +1,69 @@
+@import url('olwidget.css'); /* import base CSS */
+
+.olMap {
+   font-family: Verdana, sans-serif!important;
+}
+
+.olControlAttribution {
+   color: #6f6f6f;
+   font-size: 0.7em!important;
+   width: 100%;
+   right: 0!important;
+   text-align: right;
+   padding-right: 0.5em;
+   padding-bottom: 0.3em;
+}
+.olControlAttribution a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Hide layers toggle */
+.baseLayersDiv, .baseLbl {
+    display: none;
+}
+
+/* Hide Data overlay description */
+.dataLbl {
+    display: none;
+}
+
+.dataLayersDiv .labelSpan {
+    display: none;
+}
+.dataLayersDiv br {
+    display: none;
+}
+.dataLayersDiv:after {
+    content: "Show overlay";
+    margin-left: 0.2em;
+}
+
+.olControlLayerSwitcher * {
+    background-color: black!important;
+}
+.olControlLayerSwitcher .layersDiv {
+    border-left: 2px solid black;
+    font-size: 1.2em;
+}
+
+/* Hide the "Editing map" message */
+.olwidgetEditableLayerSwitcher .maxmin {
+    display: none;
+}
+
+/* We hide the modify feature button because that's our 'default'
+   mode */
+.olControlEditingToolbar .olControlModifyFeatureItemActive,
+.olControlEditingToolbar .olControlModifyFeatureItemInactive {
+    display: none;
+}
+
+/* We hide the undo and redo buttons, as we make them available via
+   Ctrl-Z, Ctrl-Y/Shift-Ctrl-Z */
+.olControlEditingToolbar .olControlUndoItemInactive,
+.olControlEditingToolbar .olControlUndoItemActive,
+.olControlEditingToolbar .olControlRedoItemInactive,
+.olControlEditingToolbar .olControlRedoItemActive {
+    display: none;
+}
