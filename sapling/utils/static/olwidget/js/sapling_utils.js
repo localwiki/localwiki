@@ -1,6 +1,25 @@
 SaplingMap = {
 
-    setup: function(map) {
+    init_openlayers: function() {
+        OpenLayers.Control.LayerSwitcher.prototype.roundedCorner = false;
+        olwidget.EditableLayerSwitcher.prototype.roundedCorner = false;
+        var base_onClick = olwidget.EditingToolbar.prototype.onClick;
+        olwidget.EditingToolbar.prototype.onClick = function (ctrl, evt) {
+            if (ctrl.active) {
+                // If the control is already active and it's clicked on
+                // then we want to deactivate it.
+                base_onClick.call(this, ctrl, evt);
+                ctrl.deactivate();
+                var layer = SaplingMap._get_editing_layer(map);
+                SaplingMap._set_modify_control(layer);
+            }
+            else {
+                base_onClick.call(this, ctrl, evt);
+            }
+        }
+    },
+
+    setup_map: function(map) {
         this._open_editing(map);    
     },
 
@@ -64,6 +83,15 @@ SaplingMap = {
             else if (layer.controls[i].active) {
                 // Deactivate the non-modify control
                 layer.controls[i].deactivate();
+            }
+        }
+    },
+
+    _get_editing_layer: function(map) {
+        for (var i = 0; i < map.controls.length; i++) {
+            if (map.controls[i] && map.controls[i].CLASS_NAME == 
+                "olwidget.EditableLayerSwitcher") { 
+                return map.vectorLayers[0];
             }
         }
     },
