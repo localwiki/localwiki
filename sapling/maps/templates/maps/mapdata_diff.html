@@ -23,6 +23,15 @@
       font-style: italic;
     }
   </style>
+  <script type="text/javascript">
+    /* Always display LayerSwitcher in diff view. */
+    var base_initMap = olwidget.Map.prototype.initMap;
+    olwidget.Map.prototype.initMap = function(mapDivId, opts) {
+        base_initMap.call(this, mapDivId, opts);
+        this.addControl(new OpenLayers.Control.LayerSwitcher());
+    };
+  </script>
+
 {% endblock %}
 
 {% block title %}Differences for map on {{ new.page.name }}{% endblock %}

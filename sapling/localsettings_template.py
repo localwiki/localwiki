@@ -11,7 +11,13 @@ DATABASES = {
     }
 }
 
-OLWIDGET_DEFAULT_OPTIONS = {'layers': ['cloudmade.1714']}
+OLWIDGET_DEFAULT_OPTIONS = {
+    'layers': ['cloudmade.33813'],
+    'map_options': {
+        'controls': ['Navigation', 'LayerSwitcher', 'PanZoomBar',
+                     'Attribution'],
+    },
+}
 
 DAISYDIFF_URL = 'http://localhost:8080/diff'
 DAISYDIFF_MERGE_URL = 'http://localhost:8080/merge'

@@ -1,6 +1,8 @@
 <div id="{{ id }}"></div>
 {{ layer_html|join:"" }}
 <script type="text/javascript">
+    OpenLayers.Control.LayerSwitcher.prototype.roundedCorner = false;
+    olwidget.EditableLayerSwitcher.prototype.roundedCorner = false;
     OpenLayers.ImgPath = "{{STATIC_URL}}img/openlayers/themes/dark/";
     var map = new olwidget.Map("{{ id }}", [
             {{ layer_js|join:"," }}

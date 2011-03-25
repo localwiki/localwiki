@@ -5,11 +5,13 @@ SaplingMap = {
     },
 
     _registerEvents: function(map, layer) {
+        // Switch to "modify" mode after adding a feature.
         var self = this;
         layer.events.register("featureadded", null, function () {
                 self._set_modify_control(layer);
         });
 
+        // Key commands for undo/redo.
         var undo_button = this._get_undo_button(layer.controls);
         var redo_button = this._get_redo_button(layer.controls);
         var KeyboardDefaults = OpenLayers.Class(OpenLayers.Control.KeyboardDefaults, {
