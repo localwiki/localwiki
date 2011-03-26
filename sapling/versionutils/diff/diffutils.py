@@ -365,29 +365,31 @@ class GeometryFieldDiff(BaseFieldDiff):
         if hasattr(settings, 'OLWIDGET_DEFAULT_OPTIONS'):
             olwidget_options = settings.OLWIDGET_DEFAULT_OPTIONS
         d = self.get_diff()
-        diff_map = InfoMap([(d['intersection'],
-                             {'html': '<p>Stayed the same</p>',
-                              'style': {'fill_color': '#fff3a3',
-                                        'stroke_color': '#fff3a3',
-                                        'fill_opacity': '1',
-                                        'stroke_opacity': '0'}}
-                            ),
-                            (d['inserted'],
-                             {'html': '<p>Added</p>',
-                              'style': {'fill_color': '#AAFF66',
-                                        'stroke_color': '#AAFF66',
-                                        'fill_opacity': '1',
-                                        'stroke_opacity': '0'}}
-                            ),
-                            (d['deleted'],
-                             {'html': '<p>Removed</p>',
-                              'style': {'fill_color': '#ff7777',
-                                        'stroke_color': '#ff7777',
-                                        'fill_opacity': '1',
-                                        'stroke_opacity': '0'}}
-                            ),
-        ], options=olwidget_options)
-        return render_to_string(self.template, {'diff': diff_map})
+        deleted = InfoMap([
+            (d['intersection'], {
+             'html': '<p>Stayed the same</p>',
+             'style': {'fill_color': '#fff3a3', 'stroke_color': '#fff3a3',
+                       'fill_opacity': '1', 'stroke_opacity': '0'}}),
+            (d['deleted'], {
+             'html': '<p>Removed</p>',
+             'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
+                       'fill_opacity': '1', 'stroke_opacity': '0'}}),
+            ], options=olwidget_options)
+
+        inserted = InfoMap([
+            (d['intersection'], {
+             'html': '<p>Stayed the same</p>',
+             'style': {'fill_color': '#fff3a3', 'stroke_color': '#fff3a3',
+                       'fill_opacity': '1', 'stroke_opacity': '0'}}),
+            (d['inserted'], {
+             'html': '<p>Added</p>',
+             'style': {'fill_color': '#AAFF66', 'stroke_color': '#AAFF66',
+                       'fill_opacity': '1', 'stroke_opacity': '0'}}),
+            ], options=olwidget_options)
+
+        return render_to_string(self.template, {
+            'deleted': deleted, 'inserted': inserted
+        })
 
     def _media(self):
         from olwidget.widgets import InfoMap
