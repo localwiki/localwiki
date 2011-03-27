@@ -3,12 +3,12 @@ from django.contrib.gis.db import models
 from versionutils import diff
 from versionutils.versioning import TrackChanges
 from pages.models import Page
+from validators import validate_geometry
 
 
-# TODO
-# Maybe move this into pages/models.py?
+# TODO: Maybe move this into pages/models.py?
 class MapData(models.Model):
-    geom = models.GeometryCollectionField()
+    geom = models.GeometryCollectionField(validators=[validate_geometry])
     page = models.OneToOneField(Page)
 
     objects = models.GeoManager()
