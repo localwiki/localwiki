@@ -351,11 +351,47 @@ class GeometryFieldDiff(BaseFieldDiff):
     template = 'diff/geometry_diff.html'
 
     def get_diff(self):
+        from django.contrib.gis.geos import Polygon, MultiPolygon
+        from django.contrib.gis.geos import GeometryCollection
+
         if self.field1 == self.field2:
             return None
-        intersection = self.field1.intersection(self.field2)
-        deleted = self.field1.difference(self.field2)
-        inserted = self.field2.difference(self.field1)
+
+        # Iterate through all contained geometries, collecting all
+        # polygons.
+        mp_list = []
+        other_geom = []
+        for geom in self.field1:
+            if type(geom) == Polygon:
+                mp_list.append(geom)
+            else:
+                other_geom.append(geom)
+
+        # Take collected polygons and flatten them together in a
+        # cascaded union.
+        geom_collection = GeometryCollection(
+            MultiPolygon(mp_list, srid=self.field1.srid).cascaded_union,
+            srid=self.field1.srid
+        )
+
+        field1 = geom_collection
+
+        mp_list = []
+        other_geom = []
+        for geom in self.field2:
+            if type(geom) == Polygon:
+                mp_list.append(geom)
+            else:
+                other_geom.append(geom)
+        geom_collection = GeometryCollection(
+            MultiPolygon(mp_list, srid=self.field2.srid).cascaded_union,
+            srid=self.field1.srid
+        )
+        field2 = geom_collection
+
+        intersection = field1.intersection(field2)
+        deleted = field1.difference(field2)
+        inserted = field2.difference(field1)
         return {'intersection': intersection,
                 'deleted': deleted, 'inserted': inserted}
 

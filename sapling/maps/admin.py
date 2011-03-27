@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from olwidget.admin import GeoModelAdmin
+from django.contrib.gis import admin
+from django.contrib import admin
 
 from models import *
 
-admin.site.register(MapData, GeoModelAdmin)
+admin.site.register(MapData)#, admin.GeoModelAdmin)

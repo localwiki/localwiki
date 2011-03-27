@@ -9,7 +9,7 @@ from ckeditor.views import ck_upload
 from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin
 
-from models import Page
+from models import Page, url_to_name
 from forms import PageForm
 
 
@@ -20,7 +20,7 @@ class PageDetailView(Custom404Mixin, DetailView):
     def handler404(self, request, *args, **kwargs):
         return HttpResponseNotFound(
             direct_to_template(request, 'pages/page_new.html',
-                               {'name': kwargs['original_slug']})
+                               {'name': url_to_name(kwargs['original_slug'])})
         )
 
     def get_context_data(self, **kwargs):
@@ -52,7 +52,7 @@ class PageUpdateView(CreateObjectMixin, UpdateView):
         return reverse('show-page', args=[self.object.pretty_slug])
 
     def create_object(self):
-        return Page(name=self.kwargs['original_slug'])
+        return Page(name=url_to_name(self.kwargs['original_slug']))
 
 
 class PageHistoryView(ListView):

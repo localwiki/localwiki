@@ -3,8 +3,9 @@
 {% block header %}Page "{{ name }}" does not exist (yet!){% endblock %}
 
 {% block main %}
+{% load pages_tags %}
   <p>
-    <a href="{% url edit-page slug=name %}">Create this page</a>
+    <a href="{% url edit-page slug=name|name_to_url %}">Create this page</a>
   </p>
 {% endblock %}
 
