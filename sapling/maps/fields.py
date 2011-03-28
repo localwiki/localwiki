@@ -24,20 +24,21 @@ class FlatGeometryCollectionField(models.GeometryCollectionField):
     def _flatten(self, geom_collection):
         # Iterate through all contained geometries, collecting all
         # polygons.
-        mp_list = []
+        polygons = []
         other_geom = []
         for geom in geom_collection:
             if type(geom) == Polygon:
-                mp_list.append(geom)
+                polygons.append(geom)
             else:
                 other_geom.append(geom)
+        all_geom = other_geom
+
+        # Take all polygons and smash them together using
+        # cascaded_union.
+        if polygons:
+            all_geom.append(MultiPolygon(polygons, srid=geom_collection.srid).cascaded_union)
         
-        # Take collected polygons and flatten them together in a
-        # cascaded union.
-        return GeometryCollection(
-            MultiPolygon(mp_list, srid=geom_collection.srid).cascaded_union,
-            srid=geom_collection.srid
-        )
+        return GeometryCollection(all_geom, srid=geom_collection.srid)
 
     def pre_save(self, instance, add):
         geom = getattr(instance, self.attname)
