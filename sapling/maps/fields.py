@@ -13,32 +13,45 @@ class FlatGeometryCollectionField(models.GeometryCollectionField):
     Raises:
         ValidationError: If the provided geometry is not valid.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kws):
         # Ensure the geometry provided is valid.
-        validators = kwargs.get('validators', [])
+        validators = kws.get('validators', [])
         if not validate_geometry in validators:
             validators.append(validate_geometry)
-        kwargs['validators'] = validators
-        return super(FlatGeometryCollectionField, self).__init__(*args, **kwargs)
+        kws['validators'] = validators
+        return super(FlatGeometryCollectionField, self).__init__(*args, **kws)
 
-    def _flatten(self, geom_collection):
+    def _flatten(self, geoms):
         # Iterate through all contained geometries, collecting all
         # polygons.
-        polygons = []
+        polys = []
         other_geom = []
-        for geom in geom_collection:
+        for geom in geoms:
             if type(geom) == Polygon:
-                polygons.append(geom)
+                polys.append(geom)
             else:
                 other_geom.append(geom)
-        all_geom = other_geom
 
-        # Take all polygons and smash them together using
-        # cascaded_union.
-        if polygons:
-            all_geom.append(MultiPolygon(polygons, srid=geom_collection.srid).cascaded_union)
-        
-        return GeometryCollection(all_geom, srid=geom_collection.srid)
+        # TODO: Look into collapsing only overlapping polygons.  If we
+        # collapse only overlapping then we preserve the polygons'
+        # "independence" in the editor -- when clicked on they will
+        # appear as separate polygons.  I couldn't think of a way to do
+        # this that wasn't a reimplementation of the cascading union
+        # algorithm and it didn't seem worth it given that folks might
+        # not care about this very minor detail.
+        if polys:
+            # Smash all polygons using a cascaded union.
+            cascaded_poly = MultiPolygon(polys, srid=geoms.srid).cascaded_union
+            # Skip points and lines that are fully contained in the flattened
+            # polygons.
+            flat_geoms = [cascaded_poly]
+            for geom in other_geom:
+                if not cascaded_poly.contains(geom):
+                    flat_geoms.append(geom)
+        else:
+            flat_geoms = other_geom
+
+        return GeometryCollection(flat_geoms, srid=geoms.srid)
 
     def pre_save(self, instance, add):
         geom = getattr(instance, self.attname)
