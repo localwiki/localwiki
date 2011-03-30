@@ -16,7 +16,10 @@ OLWIDGET_DEFAULT_OPTIONS = {
     'map_options': {
         'controls': ['Navigation', 'LayerSwitcher', 'PanZoomBar',
                      'Attribution'],
+        'theme': '/static/openlayers/theme/sapling/style.css',
     },
+    'overlay_style': {'fillColor': '#ffc868',
+                      'strokeColor': '#db9e33'},
 }
 
 DAISYDIFF_URL = 'http://localhost:8080/diff'
