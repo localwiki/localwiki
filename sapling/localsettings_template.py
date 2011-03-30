@@ -12,6 +12,10 @@ DATABASES = {
 }
 
 OLWIDGET_DEFAULT_OPTIONS = {
+    'default_lat': 37.76,
+    'default_lon': -122.43,
+    'default_zoom': 12,
+
     'layers': ['cloudmade.33813'],
     'map_options': {
         'controls': ['Navigation', 'LayerSwitcher', 'PanZoomBar',
