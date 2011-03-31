@@ -18,7 +18,7 @@ OLWIDGET_DEFAULT_OPTIONS = {
 
     'layers': ['cloudmade.33813'],
     'map_options': {
-        'controls': ['Navigation', 'LayerSwitcher', 'PanZoomBar',
+        'controls': ['Navigation', 'PanZoomBar', 'KeyboardDefaults',
                      'Attribution'],
         'theme': '/static/openlayers/theme/sapling/style.css',
     },
