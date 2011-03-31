@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django import forms
 from django.conf import settings
+from django.contrib.gis.db import models as gis_models
 
 import diff_match_patch
 import daisydiff
@@ -604,9 +605,5 @@ register(models.TextField, TextFieldDiff)
 register(models.FileField, FileFieldDiff)
 register(models.ImageField, ImageFieldDiff)
 
-# XXX TODO
-# register for all Geometry Fields
-# then can we remove the GeometryFieldDiff specification in models.py?
-# for field in GEO_FIELDS:
-#     register(field, GeometryFieldDiff)
-# or maybe just use subclassing trick?
+# GeoDjango.
+register(gis_models.GeometryField, GeometryFieldDiff)
