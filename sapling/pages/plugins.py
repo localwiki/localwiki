@@ -1,4 +1,5 @@
-""" Conversion of HTML into template with dynamic parts.
+"""
+Conversion of HTML into template with dynamic parts.
 
 We want to allow some dynamic content that gets inserted as the HTML is
 rendered. This is done by converting certain HTML tags into template tags.

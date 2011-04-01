@@ -351,50 +351,55 @@ class GeometryFieldDiff(BaseFieldDiff):
     """
     template = 'diff/geometry_diff.html'
 
+    def _split_out_geometry(self, types, given_geoms):
+        from django.contrib.gis.geos import GeometryCollection
+
+        other_geom = []
+        split_out = []
+        for geom in given_geoms:
+            if type(geom) in types:
+                split_out.append(geom)
+            else:
+                other_geom.append(geom)
+        split_out = GeometryCollection(split_out, srid=given_geoms.srid)
+        other_geom = GeometryCollection(other_geom, srid=given_geoms.srid)
+
+        return (split_out, other_geom)
+
     def get_diff(self):
-        from django.contrib.gis.geos import Polygon, MultiPolygon
+        from django.contrib.gis.geos import Point, MultiPoint, LineString
+        from django.contrib.gis.geos import LinearRing, MultiLineString
         from django.contrib.gis.geos import GeometryCollection
 
         if self.field1 == self.field2:
             return None
 
-        # Iterate through all contained geometries, collecting all
-        # polygons.
-        mp_list = []
-        other_geom = []
-        for geom in self.field1:
-            if type(geom) == Polygon:
-                mp_list.append(geom)
-            else:
-                other_geom.append(geom)
+        LINE_TYPES = [LineString, LinearRing, MultiLineString]
 
-        # Take collected polygons and flatten them together in a
-        # cascaded union.
-        geom_collection = GeometryCollection(
-            MultiPolygon(mp_list, srid=self.field1.srid).cascaded_union,
-            srid=self.field1.srid
-        )
+        # Separate lines from other geometry in field1.
+        lines1, other_geom1 = self._split_out_geometry(LINE_TYPES, self.field1)
 
-        field1 = geom_collection
+        # Separate lines from other geometry in field2.
+        lines2, other_geom2 = self._split_out_geometry(LINE_TYPES, self.field2)
 
-        mp_list = []
-        other_geom = []
-        for geom in self.field2:
-            if type(geom) == Polygon:
-                mp_list.append(geom)
-            else:
-                other_geom.append(geom)
-        geom_collection = GeometryCollection(
-            MultiPolygon(mp_list, srid=self.field2.srid).cascaded_union,
-            srid=self.field1.srid
-        )
-        field2 = geom_collection
+        # For lines, we do an intersection() and then filter out point
+        # intersections.
+        lines_same = []
+        for geom in lines1.intersection(lines2):
+            if type(geom) == Point or type(geom) == MultiPoint:
+                continue
+            lines_same.append(geom)
+        lines_same = GeometryCollection(lines_same, srid=self.field1.srid)
 
-        intersection = field1.intersection(field2)
-        deleted = field1.difference(field2)
-        inserted = field2.difference(field1)
-        return {'intersection': intersection,
-                'deleted': deleted, 'inserted': inserted}
+        # The intersection of the other_geoms will tell us where
+        # they're the same.
+        other_geom_same = other_geom1.intersection(other_geom2)
+
+        same = other_geom_same.union(lines_same)
+        deleted = self.field1.difference(self.field2)
+        inserted = self.field2.difference(self.field1)
+
+        return {'same': same, 'deleted': deleted, 'inserted': inserted}
 
     def as_html(self):
         from olwidget.widgets import InfoMap
@@ -403,25 +408,25 @@ class GeometryFieldDiff(BaseFieldDiff):
             olwidget_options = settings.OLWIDGET_DEFAULT_OPTIONS
         d = self.get_diff()
         deleted = InfoMap([
-            (d['intersection'], {
+            (d['same'], {
              'html': '<p>Stayed the same</p>',
-             'style': {'fill_color': '#fff3a3', 'stroke_color': '#fff3a3',
-                       'fill_opacity': '1', 'stroke_opacity': '0'}}),
+             'style': {'fill_color': '#ffd9a0', 'stroke_color': '#ffd9a0',
+                       'fill_opacity': '1', 'stroke_opacity': '1'}}),
             (d['deleted'], {
              'html': '<p>Removed</p>',
              'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
-                       'fill_opacity': '1', 'stroke_opacity': '0'}}),
+                       'fill_opacity': '1', 'stroke_opacity': '1'}}),
             ], options=olwidget_options)
 
-        inserted = InfoMap([
-            (d['intersection'], {
+        inserted = InfoMap(
+            [(d['same'], {
              'html': '<p>Stayed the same</p>',
-             'style': {'fill_color': '#fff3a3', 'stroke_color': '#fff3a3',
-                       'fill_opacity': '1', 'stroke_opacity': '0'}}),
+             'style': {'fill_color': '#ffd9a0', 'stroke_color': '#ffd9a0',
+                       'fill_opacity': '1', 'stroke_opacity': '1'}}),
             (d['inserted'], {
              'html': '<p>Added</p>',
              'style': {'fill_color': '#AAFF66', 'stroke_color': '#AAFF66',
-                       'fill_opacity': '1', 'stroke_opacity': '0'}}),
+                       'fill_opacity': '1', 'stroke_opacity': '1'}}),
             ], options=olwidget_options)
 
         return render_to_string(self.template, {

@@ -43,7 +43,7 @@ class FlatGeometryCollectionField(models.GeometryCollectionField):
             # Smash all polygons using a cascaded union.
             cascaded_poly = MultiPolygon(polys, srid=geoms.srid).cascaded_union
             # Skip points and lines that are fully contained in the flattened
-            # polygons.
+            # polygon.
             flat_geoms = [cascaded_poly]
             for geom in other_geom:
                 if not cascaded_poly.contains(geom):
