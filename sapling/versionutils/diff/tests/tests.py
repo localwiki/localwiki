@@ -1,21 +1,12 @@
-import os
-import copy
-import shutil
 import datetime
-from decimal import Decimal
-import cStringIO as StringIO
-from pprint import pprint
 
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.conf import settings
-from django.core.files import File
 from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
 from django import db
 
 from utils import TestSettingsManager
 from models import *
-
 from versionutils import diff
 from versionutils.diff.diffutils import Registry, BaseFieldDiff, BaseModelDiff
 from versionutils.diff.diffutils import TextFieldDiff

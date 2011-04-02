@@ -402,31 +402,62 @@ class GeometryFieldDiff(BaseFieldDiff):
         return {'same': same, 'deleted': deleted, 'inserted': inserted}
 
     def as_html(self):
+        from django.contrib.gis.geos import Point, MultiPoint, LineString
+        from django.contrib.gis.geos import LinearRing, MultiLineString
+        from django.contrib.gis.geos import GeometryCollection, Polygon
+
         from olwidget.widgets import InfoMap
+
         olwidget_options = None
         if hasattr(settings, 'OLWIDGET_DEFAULT_OPTIONS'):
             olwidget_options = settings.OLWIDGET_DEFAULT_OPTIONS
         d = self.get_diff()
+
+        union = d['same'].union(d['inserted'])
+        if type(union) != GeometryCollection:
+            union = GeometryCollection(union, srid=union.srid)
+        inserted_boundary = None
+        for geom in union:
+            if type(geom) == Polygon:
+                if not inserted_boundary:
+                    inserted_boundary = geom.boundary
+                else:
+                    inserted_boundary.union(geom.boundary)
+
+        union = d['same'].union(d['deleted'])
+        deleted_boundary = None
+        print "UNION", union
+        if type(union) != GeometryCollection:
+            union = GeometryCollection(union, srid=union.srid)
+        for geom in union:
+            if type(geom) == Polygon:
+                if not deleted_boundary:
+                    deleted_boundary = geom.boundary
+                else:
+                    deleted_boundary.union(geom.boundary)
+
         deleted = InfoMap([
+            (deleted_boundary, {'style': {'stroke_color': '#d9a55b', 'stroke_opacity': '1'}}),
             (d['same'], {
              'html': '<p>Stayed the same</p>',
-             'style': {'fill_color': '#ffd9a0', 'stroke_color': '#ffd9a0',
-                       'fill_opacity': '1', 'stroke_opacity': '1'}}),
+             'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
+                       'stroke_opacity': '0'}}),
             (d['deleted'], {
              'html': '<p>Removed</p>',
              'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
-                       'fill_opacity': '1', 'stroke_opacity': '1'}}),
+                       'fill_opacity': '0.8', 'stroke_opacity': '0'}}),
             ], options=olwidget_options)
 
-        inserted = InfoMap(
-            [(d['same'], {
+        inserted = InfoMap([
+            (inserted_boundary, {'style': {'stroke_color': '#d9a55b', 'stroke_opacity': '1'}}),
+            (d['same'], {
              'html': '<p>Stayed the same</p>',
-             'style': {'fill_color': '#ffd9a0', 'stroke_color': '#ffd9a0',
-                       'fill_opacity': '1', 'stroke_opacity': '1'}}),
+             'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
+                       'stroke_opacity': '0'}}),
             (d['inserted'], {
              'html': '<p>Added</p>',
-             'style': {'fill_color': '#AAFF66', 'stroke_color': '#AAFF66',
-                       'fill_opacity': '1', 'stroke_opacity': '1'}}),
+             'style': {'fill_color': '#9bff53', 'stroke_color': '#9bff53',
+                       'fill_opacity': '0.8', 'stroke_opacity': '0'}}),
             ], options=olwidget_options)
 
         return render_to_string(self.template, {

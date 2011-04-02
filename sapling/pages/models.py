@@ -1,15 +1,15 @@
 from urllib import quote
 from urllib import unquote_plus
 import re
+
 from django.contrib.gis.db import models
 from django.template.defaultfilters import stringfilter
 from django.core.exceptions import ValidationError
-from ckeditor.models import HTML5FragmentField
-
-from versionutils import diff
-from versionutils.versioning import TrackChanges
 from django.utils.safestring import mark_safe
 
+from ckeditor.models import HTML5FragmentField
+from versionutils import diff
+from versionutils.versioning import TrackChanges
 
 allowed_tags = ['p', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3', 'h4',
                 'h5', 'hr', 'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tr',

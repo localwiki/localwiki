@@ -1,12 +1,14 @@
 # coding=utf-8
 
+from urllib import quote
+
 from django.test import TestCase
 from django.db import models
+
 from forms import MergeModelForm, PageForm
 from pages.models import Page, slugify, url_to_name, clean_name, name_to_url
 from pages.plugins import html_to_template_text
 from pages.plugins import tag_imports
-from urllib import quote
 
 
 class PageTest(TestCase):

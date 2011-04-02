@@ -32,8 +32,8 @@ class FlatGeometryCollectionField(models.GeometryCollectionField):
             else:
                 other_geom.append(geom)
 
-        # TODO: Look into collapsing only overlapping polygons.  If we
-        # collapse only overlapping then we preserve the polygons'
+        # TODO: Maybe look into collapsing only overlapping polygons.
+        # If we collapse only overlapping then we preserve the polygons'
         # "independence" in the editor -- when clicked on they will
         # appear as separate polygons.  I couldn't think of a way to do
         # this that wasn't a reimplementation of the cascading union

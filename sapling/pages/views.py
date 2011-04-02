@@ -5,10 +5,8 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
 from ckeditor.views import ck_upload
-
 from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin
-
 from models import Page, url_to_name
 from forms import PageForm
 

@@ -17,11 +17,13 @@ template tag.
 from lxml import etree
 from lxml.html import fragments_fromstring
 from urlparse import urlparse
+
 from django.template import Node
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
-from pages.models import Page
 from django.conf import settings
+
+from pages.models import Page
 
 
 def sanitize_intermediate(html):

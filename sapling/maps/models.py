@@ -6,7 +6,7 @@ from pages.models import Page
 from fields import *
 
 
-# TODO: Maybe move this into pages/models.py?
+# Maybe move this into pages/models.py?
 class MapData(models.Model):
     geom = FlatGeometryCollectionField()
     page = models.OneToOneField(Page)

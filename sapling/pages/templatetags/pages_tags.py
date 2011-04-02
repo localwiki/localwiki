@@ -1,5 +1,4 @@
 from django import template
-from django.template.defaultfilters import stringfilter
 from django.template.loader_tags import BaseIncludeNode
 from django.template import Template
 from django.conf import settings
@@ -7,7 +6,6 @@ from django.conf import settings
 from pages.plugins import html_to_template_text
 from pages.plugins import LinkNode
 from pages import models
-
 
 register = template.Library()
 
