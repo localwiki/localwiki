@@ -16,7 +16,7 @@ OLWIDGET_DEFAULT_OPTIONS = {
     'default_lon': -122.43,
     'default_zoom': 12,
 
-    'layers': ['cloudmade.33813'],
+    'layers': ['cloudmade.35165'],
     'map_options': {
         'controls': ['Navigation', 'PanZoomBar', 'KeyboardDefaults',
                      'Attribution'],
