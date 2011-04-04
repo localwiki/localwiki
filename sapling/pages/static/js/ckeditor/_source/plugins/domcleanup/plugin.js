@@ -1,5 +1,7 @@
 /**
  * @file domcleanup plugin
+ * 
+ * Simplifies and sanitizes inserted (including pasted) HTML.
  */
 
 CKEDITOR.plugins.add( 'domcleanup',
@@ -14,12 +16,23 @@ CKEDITOR.plugins.add( 'domcleanup',
 
         editor.on( 'paste', function( evt )
         {
-            console.log(evt.data.html);
+        // haven't had to customize this, yet
         });
         
     },
     afterInit : function( editor )
     {
+        // fix Array.indexOf in IE (we use it later)
+        if(!Array.indexOf){
+            Array.prototype.indexOf = function(obj){
+                for(var i=0; i<this.length; i++){
+                    if(this[i]==obj){
+                        return i;
+                    }
+                }
+                return -1;
+            }
+        }
         var dataProcessor = editor.dataProcessor,
         dataFilter = dataProcessor && dataProcessor.dataFilter;
         if ( dataFilter )
@@ -39,9 +52,9 @@ CKEDITOR.plugins.add( 'domcleanup',
                             'a' : ['name','href','_cke_saved_href'],
                             'img' : ['src','_cke_saved_src','alt','width',
                                      'height','style'],
-                             'table' : ['width'],
+                            'table' : ['width'],
                             'th': ['colspan', 'rowspan'],
-                            'td': ['colspan', 'rowspan'],
+                            'td': ['colspan', 'rowspan']
                         };
                         for(attr in element.attributes)
                         {
@@ -54,7 +67,7 @@ CKEDITOR.plugins.add( 'domcleanup',
                             return element;
                         var remap = {'br':'p',
                                      'i': 'em',
-                                     'b': 'strong',
+                                     'b': 'strong'
                                     };
                         if(remap[element.name])
                         {

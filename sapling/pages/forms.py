@@ -15,7 +15,7 @@ class PageForm(MergeModelForm):
 
     class Meta:
         model = Page
-        fields = ('name', 'content')
+        fields = ('content',)
         widgets = {'content': WikiEditor()}
 
     def merge(self, yours, theirs, ancestor):
