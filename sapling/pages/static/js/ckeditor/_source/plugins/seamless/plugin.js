@@ -35,7 +35,7 @@
 	    jQuery('span.cke_wrapper').css('padding', '0');
 	    var toolBar = jQuery('#cke_top_' + evt.editor.name + ' > div')
 	                           .addClass('cke_wrapper');
-	    toolBar.wrap(jQuery('<div/>').height('36px'));
+	    toolBar.wrap(jQuery('<div/>').height(toolBar.parent().height()));
 	    var barTop = toolBar.offset().top;
 	    jQuery(window).scroll(function () {
 	       if(jQuery(document).scrollTop() >= barTop)
