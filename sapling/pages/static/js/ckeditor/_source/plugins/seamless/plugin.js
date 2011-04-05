@@ -11,6 +11,7 @@
 	                                          'margin-right: -' + right + ';' +
 	                                          'padding: 0;' +
 	                                          'border: 0;' +
+	                                          'display: none;' +
 	                                        '}';
 	    style += '#cke_top_' + editor.name + ' .cke_toolbox { padding-left: ' + left + ' padding-bottom: 3px;}';
 	    style += '#cke_' + editor.name + ' span.cke_wrapper { width: 100% }';
@@ -32,6 +33,7 @@
 	};
 	var fixToolbar = function(evt)
 	{
+	    jQuery('#cke_' + evt.editor.name).css('display', 'block');
 	    jQuery('span.cke_wrapper').css('padding', '0');
 	    var toolBar = jQuery('#cke_top_' + evt.editor.name + ' > div')
 	                           .addClass('cke_wrapper');
@@ -43,7 +45,6 @@
            else
                toolBar.removeClass('fixedBar');
 	    });
-	    
 	}
 	var resizeEditor = function( editor )
 	{
