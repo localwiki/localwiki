@@ -118,20 +118,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							onChange : function ()
                                 {
                                   // Patch the upload form before submitting and add the CSRF token
-                                  function getCookie(name) {
-                                      var cookieValue = null;
-                                      if (document.cookie && document.cookie != '') {
-                                          var cookies = document.cookie.split(';');
-                                          for (var i = 0; i < cookies.length; i++) {
-                                              var cookie = cookies[i];
-                                              // Does this cookie string begin with the name we want?
-                                              if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                                  break;
-                                              }
-                                          }
-                                      }
-                                      return cookieValue;
+                                  function getCookie(key) {
+                                      var result;
+                                      // adapted from the jQuery Cookie plugin
+                                      return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decodeURIComponent(result[1]) : null;
                                   }
                                   
                                   var csrf_cookie = getCookie('csrftoken');
