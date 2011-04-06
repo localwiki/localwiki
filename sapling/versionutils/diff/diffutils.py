@@ -351,18 +351,20 @@ class GeometryFieldDiff(BaseFieldDiff):
     """
     template = 'diff/geometry_diff.html'
 
-    def _split_out_geometry(self, types, given_geoms):
+    def _split_out_geometry(self, types, geoms):
         from django.contrib.gis.geos import GeometryCollection
 
         other_geom = []
         split_out = []
-        for geom in given_geoms:
+        if type(geoms) != GeometryCollection:
+            geoms = GeometryCollection(geoms, srid=geoms.srid)
+        for geom in geoms:
             if type(geom) in types:
                 split_out.append(geom)
             else:
                 other_geom.append(geom)
-        split_out = GeometryCollection(split_out, srid=given_geoms.srid)
-        other_geom = GeometryCollection(other_geom, srid=given_geoms.srid)
+        split_out = GeometryCollection(split_out, srid=geoms.srid)
+        other_geom = GeometryCollection(other_geom, srid=geoms.srid)
 
         return (split_out, other_geom)
 
@@ -394,71 +396,94 @@ class GeometryFieldDiff(BaseFieldDiff):
         # The intersection of the other_geoms will tell us where
         # they're the same.
         other_geom_same = other_geom1.intersection(other_geom2)
-
         same = other_geom_same.union(lines_same)
-        deleted = self.field1.difference(self.field2)
-        inserted = self.field2.difference(self.field1)
+
+        deleted_other_geom = other_geom1.difference(other_geom2)
+        deleted_lines = lines1.difference(lines2)
+        inserted_other_geom = other_geom2.difference(other_geom1)
+        inserted_lines = lines2.difference(lines1)
+
+        deleted = deleted_other_geom.union(deleted_lines)
+        inserted = inserted_other_geom.union(inserted_lines)
 
         return {'same': same, 'deleted': deleted, 'inserted': inserted}
 
     def as_html(self):
-        from django.contrib.gis.geos import Point, MultiPoint, LineString
-        from django.contrib.gis.geos import LinearRing, MultiLineString
-        from django.contrib.gis.geos import GeometryCollection, Polygon
-
+        from django.contrib.gis.geos import Polygon, MultiPolygon
         from olwidget.widgets import InfoMap
 
+        POLY_TYPES = [Polygon, MultiPolygon]
         olwidget_options = None
         if hasattr(settings, 'OLWIDGET_DEFAULT_OPTIONS'):
             olwidget_options = settings.OLWIDGET_DEFAULT_OPTIONS
+
         d = self.get_diff()
+        if d is None:
+            return '<tr><td colspan="2">(No differences found)</td></tr>'
 
-        union = d['same'].union(d['inserted'])
-        if type(union) != GeometryCollection:
-            union = GeometryCollection(union, srid=union.srid)
-        inserted_boundary = None
-        for geom in union:
-            if type(geom) == Polygon:
-                if not inserted_boundary:
-                    inserted_boundary = geom.boundary
-                else:
-                    inserted_boundary.union(geom.boundary)
+        # Split out polygons from other geometries in field1, field2,
+        # same, deleted and inserted.
+        poly_field1, misc = self._split_out_geometry(POLY_TYPES, self.field1)
+        poly_field2, misc = self._split_out_geometry(POLY_TYPES, self.field2)
+        poly_same, other_geom_same = self._split_out_geometry(
+            POLY_TYPES, d['same'])
+        poly_deleted, other_geom_deleted = self._split_out_geometry(
+            POLY_TYPES, d['deleted'])
+        poly_inserted, other_geom_inserted = self._split_out_geometry(
+            POLY_TYPES, d['inserted'])
 
-        union = d['same'].union(d['deleted'])
-        deleted_boundary = None
-        print "UNION", union
-        if type(union) != GeometryCollection:
-            union = GeometryCollection(union, srid=union.srid)
-        for geom in union:
-            if type(geom) == Polygon:
-                if not deleted_boundary:
-                    deleted_boundary = geom.boundary
-                else:
-                    deleted_boundary.union(geom.boundary)
+        # We nee to convert from GeometryCollection to MultiPolygon to
+        # compute boundary.
+        poly_field1 = MultiPolygon([p for p in poly_field1],
+                                   srid=self.field1.srid)
+        poly_field2 = MultiPolygon([p for p in poly_field2],
+                                   srid=self.field2.srid)
 
         deleted = InfoMap([
-            (deleted_boundary, {'style': {'stroke_color': '#d9a55b', 'stroke_opacity': '1'}}),
-            (d['same'], {
-             'html': '<p>Stayed the same</p>',
-             'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
-                       'stroke_opacity': '0'}}),
-            (d['deleted'], {
-             'html': '<p>Removed</p>',
-             'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
-                       'fill_opacity': '0.8', 'stroke_opacity': '0'}}),
-            ], options=olwidget_options)
+            (poly_same, {'html': '<p>Stayed the same</p>',
+                         'style': {'stroke_opacity': '0'}}),
+            (poly_deleted,
+                {'html': '<p>Removed</p>',
+                 'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
+                           'stroke_opacity': '0'}
+                }
+            ),
+            (poly_field1.boundary, {}),
+            (other_geom_same,
+                {'html': '<p>Stayed the same</p>',
+                 'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
+                           'stroke_opacity': '1'}}
+            ),
+            (other_geom_deleted,
+                {'html': '<p>Removed</p>',
+                 'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
+                           'fill_opacity': '0.8', 'stroke_opacity': '1'}
+                }
+            ),
+        ], options=olwidget_options)
 
         inserted = InfoMap([
-            (inserted_boundary, {'style': {'stroke_color': '#d9a55b', 'stroke_opacity': '1'}}),
-            (d['same'], {
-             'html': '<p>Stayed the same</p>',
-             'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
-                       'stroke_opacity': '0'}}),
-            (d['inserted'], {
-             'html': '<p>Added</p>',
-             'style': {'fill_color': '#9bff53', 'stroke_color': '#9bff53',
-                       'fill_opacity': '0.8', 'stroke_opacity': '0'}}),
-            ], options=olwidget_options)
+            (poly_same, {'html': '<p>Stayed the same</p>',
+                         'style': {'stroke_opacity': '0'}}),
+            (poly_inserted,
+                {'html': '<p>Added</p>',
+                 'style': {'fill_color': '#9bff53', 'stroke_color': '#9bff53',
+                           'stroke_opacity': '0'}
+                }
+            ),
+            (poly_field2.boundary, {}),
+            (other_geom_same,
+                {'html': '<p>Stayed the same</p>',
+                 'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
+                           'stroke_opacity': '1'}}
+            ),
+            (other_geom_inserted,
+                {'html': '<p>Added</p>',
+                 'style': {'fill_color': '#9bff53', 'stroke_color': '#9bff53',
+                           'fill_opacity': '0.8', 'stroke_opacity': '1'}
+                }
+            ),
+        ], options=olwidget_options)
 
         return render_to_string(self.template, {
             'deleted': deleted, 'inserted': inserted
