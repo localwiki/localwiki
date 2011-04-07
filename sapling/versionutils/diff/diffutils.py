@@ -396,7 +396,10 @@ class GeometryFieldDiff(BaseFieldDiff):
         # The intersection of the other_geoms will tell us where
         # they're the same.
         other_geom_same = other_geom1.intersection(other_geom2)
-        same = other_geom_same.union(lines_same)
+        # Form a collection out of the components of both.
+        same = GeometryCollection([g for g in other_geom_same] +
+                                  [g for g in lines_same],
+                                  srid=lines_same.srid)
 
         deleted_other_geom = other_geom1.difference(other_geom2)
         deleted_lines = lines1.difference(lines2)
