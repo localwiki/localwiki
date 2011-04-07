@@ -396,6 +396,11 @@ class GeometryFieldDiff(BaseFieldDiff):
         # The intersection of the other_geoms will tell us where
         # they're the same.
         other_geom_same = other_geom1.intersection(other_geom2)
+        # Always wrap in a GeometryCollection.
+        if not type(other_geom_same) == GeometryCollection:
+            other_geom_same = GeometryCollection(other_geom_same,
+                                                 srid=other_geom_same.srid)
+
         # Form a collection out of the components of both.
         same = GeometryCollection([g for g in other_geom_same] +
                                   [g for g in lines_same],
