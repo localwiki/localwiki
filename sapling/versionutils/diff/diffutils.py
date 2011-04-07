@@ -420,6 +420,15 @@ class GeometryFieldDiff(BaseFieldDiff):
         from django.contrib.gis.geos import Polygon, MultiPolygon
         from olwidget.widgets import InfoMap
 
+        def _convert_to_multipolygon(field):
+            l = []
+            for p in field:
+                if type(p) == MultiPolygon:
+                    l += [item for item in p]
+                else:
+                    l.append(p)
+            return MultiPolygon(l, srid=field.srid)
+
         POLY_TYPES = [Polygon, MultiPolygon]
         olwidget_options = None
         if hasattr(settings, 'OLWIDGET_DEFAULT_OPTIONS'):
@@ -440,12 +449,10 @@ class GeometryFieldDiff(BaseFieldDiff):
         poly_inserted, other_geom_inserted = self._split_out_geometry(
             POLY_TYPES, d['inserted'])
 
-        # We nee to convert from GeometryCollection to MultiPolygon to
+        # We need to convert from GeometryCollection to MultiPolygon to
         # compute boundary.
-        poly_field1 = MultiPolygon([p for p in poly_field1],
-                                   srid=self.field1.srid)
-        poly_field2 = MultiPolygon([p for p in poly_field2],
-                                   srid=self.field2.srid)
+        poly_field1 = _convert_to_multipolygon(poly_field1)
+        poly_field2 = _convert_to_multipolygon(poly_field2)
 
         deleted = InfoMap([
             (poly_same, {'html': '<p>Stayed the same</p>',
