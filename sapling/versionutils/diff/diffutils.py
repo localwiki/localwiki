@@ -460,7 +460,7 @@ class GeometryFieldDiff(BaseFieldDiff):
             (poly_deleted,
                 {'html': '<p>Removed</p>',
                  'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
-                           'stroke_opacity': '0'}
+                           'fill_opacity': '0.8', 'stroke_opacity': '0'}
                 }
             ),
             (poly_field1.boundary, {}),
@@ -483,7 +483,7 @@ class GeometryFieldDiff(BaseFieldDiff):
             (poly_inserted,
                 {'html': '<p>Added</p>',
                  'style': {'fill_color': '#9bff53', 'stroke_color': '#9bff53',
-                           'stroke_opacity': '0'}
+                           'fill_opacity': '0.8', 'stroke_opacity': '0'}
                 }
             ),
             (poly_field2.boundary, {}),
