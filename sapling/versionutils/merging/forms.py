@@ -5,9 +5,9 @@ from versionutils.versioning.utils import is_versioned
 from django.forms.models import model_to_dict
 
 
-class MergeModelForm(forms.ModelForm):
+class MergeModelFormMixin(object):
     """
-    ModelForm subclass that detects editing conflicts.  For example, consider
+    ModelForm mixin that detects editing conflicts.  For example, consider
     the following scenario:
 
     User A obtains a form to edit model instance M
@@ -15,17 +15,25 @@ class MergeModelForm(forms.ModelForm):
     User B makes some changes and submits the form.  M is updated.
     User A makes some changes and submits the form.  B's changes are lost.
 
-    MergeModelForm will check to see if anyone else has edited the associated
+    MergeModelFormMixin will check to see if anyone else has edited the associated
     model since the form was loaded.  If so, a ValidationError is raised with
     the provided conflict_message.
 
-    To perform a merge in this case, simply subclass MergeModelForm and provide
-    your own merge() method.
+    To perform a merge in this case, simply subclass MergeModelFormMixin
+    before subclassing ModelForm and provide your own merge() method.
 
     As long as the associated model is versioned using versioning.TrackChanges
     or has a DateTimeField with auto_now=True this will work automatically.
     Otherwise you'll want to subclass MergeModelForm and override
     get_version_date().
+
+    NOTE: You need to list MergeModelFormMixin before ModelForm in your
+    subclasses list.  Example::
+
+        class PageForm(MergeModelFormMixin, forms.ModelForm):
+            class Meta:
+                model = Page
+                fields = ('content',)
 
     Attributes:
         conflict_warning: The optional warning string to return alongside
@@ -41,11 +49,14 @@ class MergeModelForm(forms.ModelForm):
         'Please review the changes and save again.')
 
     def __init__(self, *args, **kwargs):
-        super(MergeModelForm, self).__init__(*args, **kwargs)
+        base_init = forms.ModelForm.__init__(self, *args, **kwargs)
 
         if 'instance' in kwargs:
             instance = kwargs['instance']
             self.initial['version_date'] = str(self.get_version_date(instance))
+        # Due to mixin behavior we need to set this here, too.
+        self.fields['version_date'] = self.version_date
+        return base_init
 
     def get_version_date(self, instance):
         """
