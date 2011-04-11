@@ -9,8 +9,10 @@ class WikiEditor(CKEditor):
         config = super(WikiEditor, self).get_config()
         additional = {'filebrowserInsertimageUploadUrl': '_upload/',
                       'domcleanupAllowedTags': models.allowed_tags,
-                      'contentsCss': '',
+                      'contentsCss': urljoin(settings.STATIC_URL,
+                                             'css/pages.css'),
                       'toolbarCanCollapse': False,
+                      'enterMode': 1,
                      }
         config.update(additional)
         return config
@@ -19,13 +21,14 @@ class WikiEditor(CKEditor):
         # We only want the minimal set of plugins
         return ('about,basicstyles,clipboard,contextmenu,elementspath,'
                 'enterkey,entities,filebrowser,font,format,horizontalrule,'
-                'htmldataprocessor,image,indent,keystrokes,link,list,'
+                'htmldataprocessor,indent,keystrokes,link,list,'
                 'pastetext,removeformat,save,stylescombo,table,'
                 'tabletools,specialchar,tab,toolbar,undo,wysiwygarea,wsc,'
-                'sourcearea')
+                'sourcearea,selection')
 
     def get_extra_plugins(self):
-        plugins = ['insertimage', 'simpleimage', 'domcleanup', 'seamless']
+        plugins = ['insertimage', 'simpleimage', 'domcleanup', 'seamless',
+                   'customenterkey']
         return ','.join(plugins)
 
     def get_toolbar(self):

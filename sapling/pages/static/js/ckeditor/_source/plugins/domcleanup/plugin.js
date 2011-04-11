@@ -52,6 +52,7 @@ CKEDITOR.plugins.add( 'domcleanup',
                             'a' : ['name','href','_cke_saved_href'],
                             'img' : ['src','_cke_saved_src','alt','width',
                                      'height','style'],
+                            'span' : ['class', 'style'],
                             'table' : ['width'],
                             'th': ['colspan', 'rowspan'],
                             'td': ['colspan', 'rowspan']
