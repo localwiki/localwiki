@@ -86,7 +86,8 @@ Note: by default, the development server listens on 127.0.0.1 only.  To access
 the development server from another machine (a potential security hazard), run:
 	(ENV)$ python sapling/manage.py runserver 0.0.0.0:8000
 	
-To enable diffing and merging, start the daisydiff server in a new terminal.
+To enable pretty diffing and merging, start the html diff server in a new
+terminal:
 	$ cd sapling/versionutils/diff/daisydiff/
 	$ java -jar daisydiff.jar --server --port=8080
 	
