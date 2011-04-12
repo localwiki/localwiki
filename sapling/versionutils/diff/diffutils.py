@@ -402,9 +402,9 @@ class GeometryFieldDiff(BaseFieldDiff):
                                                  srid=other_geom_same.srid)
 
         # Form a collection out of the components of both.
-        same = GeometryCollection([g for g in other_geom_same] +
-                                  [g for g in lines_same],
-                                  srid=lines_same.srid)
+        same = GeometryCollection(
+            [g for g in other_geom_same] + [g for g in lines_same],
+            srid=lines_same.srid)
 
         deleted_other_geom = other_geom1.difference(other_geom2)
         deleted_lines = lines1.difference(lines2)

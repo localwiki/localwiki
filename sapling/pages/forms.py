@@ -13,9 +13,6 @@ class PageForm(MergeModelFormMixin, forms.ModelForm):
         "Please resolve edit conflicts and save again."
     )
 
-    def __init__(self, *args, **kwargs):
-        super(PageForm, self).__init__(*args, **kwargs)
-
     class Meta:
         model = Page
         fields = ('content',)

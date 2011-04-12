@@ -30,4 +30,4 @@ Simply add this project to your list of ``INSTALLED_APPS`` in
 :mod:`versionutils.merging.forms`
 *********************************
 
-.. autoclass:: versionutils.merging.forms.MergeModelForm
+.. autoclass:: versionutils.merging.forms.MergeModelFormMixin

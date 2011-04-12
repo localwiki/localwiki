@@ -49,7 +49,9 @@ class MergeModelFormMixin(object):
         'Please review the changes and save again.')
 
     def __init__(self, *args, **kwargs):
-        base_init = forms.ModelForm.__init__(self, *args, **kwargs)
+        # Calling super(self.__class__) leads to infinite recursion
+        # here.  Is there a better way to do this?
+        base_init = super(self.__class__.__base__, self).__init__(*args, **kwargs)
 
         if 'instance' in kwargs:
             instance = kwargs['instance']
@@ -124,6 +126,8 @@ class MergeModelFormMixin(object):
         Raises:
             ValidationError: When there's a conflict when calling merge().
         """
+        self.cleaned_data = super(self.__class__.__base__, self).clean()
+
         current_version_date = str(self.get_version_date(self.instance))
         form_version_date = self.data['version_date']
         if current_version_date != form_version_date:
