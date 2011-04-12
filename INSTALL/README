@@ -11,11 +11,10 @@ http://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
 
 Here's how to get this code running on Ubuntu Server Edition 10.04 LTS
 
-1.  Prerequisites: subversion, gcc, libxml2, libxslt, python-dev(the last 4 are
+1.  Prerequisites: gcc, libxml2, libxslt, python-dev(the last 4 are
 needed by lxml), java(needed for daisydiff), image decoders, python-setuptools,
 virtualenv, gdal, postgresql, postgis:
 
-    $ sudo apt-get install subversion
     $ sudo apt-get install gcc libxslt-dev python-dev
     $ sudo apt-get install openjdk-6-jdk
     $ sudo aptitude install libjpeg62 libjpeg62-dev zlib1g-dev
