@@ -15,9 +15,9 @@ class MergeModelFormMixin(object):
     User B makes some changes and submits the form.  M is updated.
     User A makes some changes and submits the form.  B's changes are lost.
 
-    MergeModelFormMixin will check to see if anyone else has edited the associated
-    model since the form was loaded.  If so, a ValidationError is raised with
-    the provided conflict_message.
+    MergeModelFormMixin will check to see if anyone else has edited the
+    associated model since the form was loaded.  If so, a ValidationError is
+    raised with the provided conflict_message.
 
     To perform a merge in this case, simply subclass MergeModelFormMixin
     before subclassing ModelForm and provide your own merge() method.
