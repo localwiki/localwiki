@@ -39,7 +39,7 @@ Activate the new environment.
     $ source ENV/bin/activate
     
     (ENV)[...]$  	<-- This prompt means you've activated the ENV environment.
-    					Run all of the following commands in this environment.
+                        Run all of the following commands in this environment.
     
 
 3.  Install pip, if it's not already there.  Recent versions of virtualenv
