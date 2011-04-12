@@ -263,12 +263,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		return {
 			title : ( dialogType == 'image' ) ? editor.lang.image.title : editor.lang.image.titleButton,
-			minWidth : 300,
+			minWidth : 200,
 			minHeight : 150,
 			onShow : function()
 			{
 				this.imageElement = false;
 				this.linkElement = false;
+				this.frameElement = false;
 
 				// Default: create a new element.
 				this.imageEditMode = false;
@@ -282,7 +283,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var editor = this.getParentEditor(),
 					sel = this.getParentEditor().getSelection(),
 					element = sel.getSelectedElement(),
-					link = element && element.getAscendant( 'a' );
+					link = element && element.getAscendant( 'a' ),
+					frame = element && element.getAscendant('span');
 
 				//Hide loader.
 				CKEDITOR.document.getById( imagePreviewLoaderId ).setStyle( 'display', 'none' );
@@ -317,6 +319,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Fill out all fields.
 					if ( dialogType == 'image' )
 						this.setupContent( LINK, link );
+				}
+				if ( frame )
+				{
+				    this.frameElement = frame;
 				}
 
 				if ( element && element.getName() == 'img' && !element.getAttribute( '_cke_realelement' )
@@ -632,7 +638,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															width: '40px',
 															id : 'txtWidth',
 															labelLayout : 'horizontal',
-															label : editor.lang.image.width,
+															label : editor.lang.common.width,
 															onKeyUp : onSizeChange,
 															onChange : function()
 															{
@@ -642,7 +648,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															{
 																var aMatch  =  this.getValue().match( regexGetSizeOrEmpty );
 																if ( !aMatch )
-																	alert( editor.lang.image.validateWidth );
+																	alert( editor.lang.common.validateWidth );
 																return !!aMatch;
 															},
 															setup : setupDimension,
@@ -651,9 +657,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 																var value = this.getValue();
 																if ( type == IMAGE )
 																{
+																    var frame = element.getAscendant('span');
 																	if ( value )
+																	{
+																	    if( frame )
+																	       frame.setStyle( 'width', CKEDITOR.tools.cssLength( value )) ;
 																		element.setStyle( 'width', CKEDITOR.tools.cssLength( value ) );
-																	else if ( !value && this.isChanged( ) )
+																	} else if ( !value && this.isChanged( ) )
 																		element.removeStyle( 'width' );
 
 																	!internalCommit && element.removeAttribute( 'width' );
@@ -682,7 +692,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															id : 'txtHeight',
 															width: '40px',
 															labelLayout : 'horizontal',
-															label : editor.lang.image.height,
+															label : editor.lang.common.height,
 															onKeyUp : onSizeChange,
 															onChange : function()
 															{
@@ -692,7 +702,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															{
 																var aMatch = this.getValue().match( regexGetSizeOrEmpty );
 																if ( !aMatch )
-																	alert( editor.lang.image.validateHeight );
+																	alert( editor.lang.common.validateHeight );
 																return !!aMatch;
 															},
 															setup : setupDimension,
@@ -793,6 +803,107 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 												}
 											]
 										},
+										{
+                                                    id : 'cmbAlign',
+                                                    type : 'radio',
+                                                    labelLayout : 'vertical',
+                                                    //widths : [ '35%','65%' ],
+                                                    label : editor.lang.common.align,
+                                                    'default' : '',
+                                                    items :
+                                                    [
+                                                        [ editor.lang.common.alignLeft , 'left'],
+                                                        [ 'None' , ''],
+                                                        [ editor.lang.common.alignRight , 'right']
+                                                        // Backward compatible with v2 on setup when specified as attribute value,
+                                                        // while these values are no more available as select options.
+                                                        //  [ editor.lang.common.alignAbsBottom , 'absBottom'],
+                                                        //  [ editor.lang.common.alignAbsMiddle , 'absMiddle'],
+                                                        //  [ editor.lang.common.alignBaseline , 'baseline'],
+                                                        //  [ editor.lang.common.alignTextTop , 'text-top'],
+                                                        //  [ editor.lang.common.alignBottom , 'bottom'],
+                                                        //  [ editor.lang.common.alignMiddle , 'middle'],
+                                                        //  [ editor.lang.common.alignTop , 'top']
+                                                    ],
+                                                    onChange : function()
+                                                    {
+                                                        updatePreview( this.getDialog() );
+                                                        commitInternally.call( this, 'advanced:txtdlgGenStyle' );
+                                                    },
+                                                    setup : function( type, element )
+                                                    {
+                                                        if ( type == IMAGE )
+                                                        {
+                                                            var value = element.getStyle( 'float' );
+                                                            switch( value )
+                                                            {
+                                                                // Ignore those unrelated values.
+                                                                case 'inherit':
+                                                                case 'none':
+                                                                    value = '';
+                                                            }
+
+                                                            !value && ( value = ( element.getAttribute( 'align' ) || '' ).toLowerCase() );
+                                                            this.setValue( value );
+                                                        }
+                                                    },
+                                                    commit : function( type, element, internalCommit )
+                                                    {
+                                                        var frame = element.getAscendant('span');
+                                                        if(frame)
+                                                           element = frame;
+                                                        var value = this.getValue();
+                                                        if ( type == IMAGE || type == PREVIEW )
+                                                        {
+                                                            if ( value )
+                                                                element.setStyle( 'float', value );
+                                                            else
+                                                                element.removeStyle( 'float' );
+
+                                                            if ( !internalCommit && type == IMAGE )
+                                                            {
+                                                                value = ( element.getAttribute( 'align' ) || '' ).toLowerCase();
+                                                                switch( value )
+                                                                {
+                                                                    // we should remove it only if it matches "left" or "right",
+                                                                    // otherwise leave it intact.
+                                                                    case 'left':
+                                                                    case 'right':
+                                                                        element.removeAttribute( 'align' );
+                                                                }
+                                                            }
+                                                        }
+                                                        else if ( type == CLEANUP )
+                                                            element.removeStyle( 'float' );
+
+                                                    }
+                                                },
+                                                {
+                                                    id : 'chkBorder',
+                                                    type : 'checkbox',
+                                                    label : 'Show border',
+                                                    setup : function( type, element )
+                                                    {
+                                                        var frame = this.getDialog().frameElement;
+                                                        if(frame)
+                                                            element = frame;
+                                                        this.setValue(jQuery(element.$).hasClass('image_frame_border'));
+                                                    },
+                                                    commit : function( type, element, internalCommit )
+                                                    {
+                                                        var frame = element.getAscendant('span');
+                                                        if(frame)
+                                                           element = frame;
+                                                        var value = this.getValue();
+                                                        if ( type == IMAGE || type == PREVIEW )
+                                                        {
+                                                            if(value)
+                                                                element.addClass('image_frame_border');
+                                                            else
+                                                                element.removeClass('image_frame_border');
+                                                        }
+                                                    }
+                                                },
 										{
 											type : 'vbox',
 											padding : 1,
@@ -983,79 +1094,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															element.removeStyle( 'margin-top' );
 															element.removeStyle( 'margin-bottom' );
 														}
-													}
-												},
-												{
-													id : 'cmbAlign',
-													type : 'select',
-													labelLayout : 'horizontal',
-													widths : [ '35%','65%' ],
-													style : 'width:90px',
-													label : editor.lang.image.align,
-													'default' : '',
-													items :
-													[
-														[ editor.lang.common.notSet , ''],
-														[ editor.lang.image.alignLeft , 'left'],
-														[ editor.lang.image.alignRight , 'right']
-														// Backward compatible with v2 on setup when specified as attribute value,
-														// while these values are no more available as select options.
-														//	[ editor.lang.image.alignAbsBottom , 'absBottom'],
-														//	[ editor.lang.image.alignAbsMiddle , 'absMiddle'],
-														//  [ editor.lang.image.alignBaseline , 'baseline'],
-														//  [ editor.lang.image.alignTextTop , 'text-top'],
-														//  [ editor.lang.image.alignBottom , 'bottom'],
-														//  [ editor.lang.image.alignMiddle , 'middle'],
-														//  [ editor.lang.image.alignTop , 'top']
-													],
-													onChange : function()
-													{
-														updatePreview( this.getDialog() );
-														commitInternally.call( this, 'advanced:txtdlgGenStyle' );
-													},
-													setup : function( type, element )
-													{
-														if ( type == IMAGE )
-														{
-															var value = element.getStyle( 'float' );
-															switch( value )
-															{
-																// Ignore those unrelated values.
-																case 'inherit':
-																case 'none':
-																	value = '';
-															}
-
-															!value && ( value = ( element.getAttribute( 'align' ) || '' ).toLowerCase() );
-															this.setValue( value );
-														}
-													},
-													commit : function( type, element, internalCommit )
-													{
-														var value = this.getValue();
-														if ( type == IMAGE || type == PREVIEW )
-														{
-															if ( value )
-																element.setStyle( 'float', value );
-															else
-																element.removeStyle( 'float' );
-
-															if ( !internalCommit && type == IMAGE )
-															{
-																value = ( element.getAttribute( 'align' ) || '' ).toLowerCase();
-																switch( value )
-																{
-																	// we should remove it only if it matches "left" or "right",
-																	// otherwise leave it intact.
-																	case 'left':
-																	case 'right':
-																		element.removeAttribute( 'align' );
-																}
-															}
-														}
-														else if ( type == CLEANUP )
-															element.removeStyle( 'float' );
-
 													}
 												}
 											]

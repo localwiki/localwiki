@@ -13,7 +13,7 @@ from versionutils.versioning import TrackChanges
 
 allowed_tags = ['p', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3', 'h4',
                 'h5', 'hr', 'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tr',
-                'th', 'td']
+                'th', 'td', 'span']
 
 
 class Page(models.Model):

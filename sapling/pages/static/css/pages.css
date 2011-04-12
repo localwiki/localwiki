@@ -2,3 +2,18 @@
     text-decoration: none;
     border-bottom: 1px dashed;
 }
+
+.image_frame {
+    display:inline-block;
+    padding: 2px;
+}
+
+.image_frame_border {
+    border: 1px solid #cccccc;
+}
+
+.image_caption {
+    display: block;
+    text-align: center;
+    font-size: 80%;
+}

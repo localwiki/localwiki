@@ -32,9 +32,9 @@ CKEDITOR.plugins.add( 'insertimage',
 				var element = evt.data.element;
 
 				if ( element.is( 'img' ) && !element.getAttribute( '_cke_realelement' ) )
-					evt.data.dialog = 'image';
+					evt.data.dialog = 'simpleimage';
 			});
-		
+			
 		// Highlight button when an image is selected in the editor
 		var imgStyle = new CKEDITOR.style( { element : 'img' } );
 		editor.attachStyleStateChange( imgStyle, function( state )

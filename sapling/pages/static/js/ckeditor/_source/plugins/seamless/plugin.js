@@ -14,14 +14,14 @@
 	                                          'display: none;' +
 	                                        '}';
 	    style += '#cke_top_' + editor.name + ' .cke_toolbox { padding-left: ' + left + ' padding-bottom: 3px;}';
-	    style += '#cke_' + editor.name + ' span.cke_wrapper { width: 100% }';
+	    style += '#cke_' + editor.name + ' span.cke_wrapper { width: 100%; }';
 	    // hide editor bottom
 	    style += '#cke_bottom_' + editor.name + '{ display: none; }';
 	    style += '#cke_contents_' + editor.name + '{ font-size: 0; }';
 	    // hide focus outline
 	    style += '#cke_' + editor.name + ' .cke_focus { outline: 0 !important;}';
 	    // hide scrollbar
-	    style += '#cke_contents_' + editor.name + '>iframe{ overflow: hidden;}';
+	    style += '#cke_contents_' + editor.name + '>iframe{ width: 100%;}';
 	    // fixed toolbar
 	    style += '.fixedBar { top: 0; position: fixed; width: 100%;' +
 	                         'padding-bottom: 0 !important;' +
@@ -48,6 +48,7 @@
 	}
 	var resizeEditor = function( editor )
 	{
+	    jQuery('#cke_contents_' + editor.name + '>iframe').width(jQuery("#cke_" + editor.name).width());
 		if ( !editor.window )
 			return;
 		var doc = editor.document,
@@ -55,6 +56,15 @@
 		if ( doc.$.body.parentNode )
 		{
 			var bodyHeight = jQuery(doc.$.body).outerHeight(true);
+			var maxBottom = bodyHeight;
+			jQuery(doc.$.body).find('span').each(function ()
+			{
+			    var element = jQuery(this);
+			    var bottom = element.offset().top + element.outerHeight(true);
+			    if(bottom > maxBottom)
+			       maxBottom = bottom;
+			});
+			bodyHeight = maxBottom;
 			// bodyHeight is inaccurate, plus we want extra room to reduce
 			// flickering
 			docHeight = bodyHeight + 60;
@@ -62,7 +72,9 @@
 		
         docHeight = Math.max(docHeight, 200);
 		if ( Math.abs(docHeight - currentHeight) > 5)
+		{
 		    jQuery('#cke_contents_' + editor.name).height(docHeight);
+		}
 	};
 	
 	CKEDITOR.plugins.add( 'seamless',
@@ -78,6 +90,7 @@
 					setTimeout( function(){ resizeEditor( evt.editor ); }, 100 );
 				});
 			}
+			jQuery(window).resize(function(){resizeEditor(editor);});
 		}
 	});
 
