@@ -5,7 +5,7 @@ from versionutils.versioning.utils import is_versioned
 from django.forms.models import model_to_dict
 
 
-class MergeModelFormMixin(object):
+class MergeMixin(object):
     """
     ModelForm mixin that detects editing conflicts.  For example, consider
     the following scenario:
@@ -15,22 +15,22 @@ class MergeModelFormMixin(object):
     User B makes some changes and submits the form.  M is updated.
     User A makes some changes and submits the form.  B's changes are lost.
 
-    MergeModelFormMixin will check to see if anyone else has edited the
+    MergeMixin will check to see if anyone else has edited the
     associated model since the form was loaded.  If so, a ValidationError is
     raised with the provided conflict_message.
 
-    To perform a merge in this case, simply subclass MergeModelFormMixin
-    before subclassing ModelForm and provide your own merge() method.
+    To perform a merge in this case, simply subclass MergeMixin and provide
+    your own merge() method.
 
     As long as the associated model is versioned using versioning.TrackChanges
     or has a DateTimeField with auto_now=True this will work automatically.
-    Otherwise you'll want to subclass MergeModelForm and override
+    Otherwise you'll want to subclass MergeMixin and override
     get_version_date().
 
-    NOTE: You need to list MergeModelFormMixin before ModelForm in your
+    NOTE: You need to list MergeMixin before ModelForm in your
     subclasses list.  Example::
 
-        class PageForm(MergeModelFormMixin, forms.ModelForm):
+        class PageForm(MergeMixin, forms.ModelForm):
             class Meta:
                 model = Page
                 fields = ('content',)
@@ -49,9 +49,7 @@ class MergeModelFormMixin(object):
         'Please review the changes and save again.')
 
     def __init__(self, *args, **kwargs):
-        # Calling super(self.__class__) leads to infinite recursion
-        # here.  Is there a better way to do this?
-        base_init = super(self.__class__.__base__, self).__init__(*args, **kwargs)
+        base_init = super(MergeMixin, self).__init__(*args, **kwargs)
 
         if 'instance' in kwargs:
             instance = kwargs['instance']
@@ -86,7 +84,7 @@ class MergeModelFormMixin(object):
         if date_fields:
             return getattr(instance, date_fields[0].name) or ''
 
-        raise ValueError('MergeModelForm does not have a version_date_field')
+        raise ValueError('MergeMixin cannot find a version_date_field')
 
     def merge(self, yours, theirs, ancestor):
         """

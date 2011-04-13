@@ -1,13 +1,14 @@
 from django import forms
 from django.template.defaultfilters import slugify
 
-from versionutils.merging.forms import MergeModelFormMixin
+from versionutils.merging.forms import MergeMixin
+from versionutils.versioning.forms import CommentMixin
 from pages.models import Page
 from pages.widgets import WikiEditor
 from versionutils.diff.daisydiff.daisydiff import daisydiff_merge
 
 
-class PageForm(MergeModelFormMixin, forms.ModelForm):
+class PageForm(MergeMixin, CommentMixin, forms.ModelForm):
     conflict_warning = (
         "Warning: someone else saved this page before you.  "
         "Please resolve edit conflicts and save again."

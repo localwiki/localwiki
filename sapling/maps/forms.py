@@ -4,7 +4,8 @@ from django.contrib.gis.geos import GeometryCollection, GEOSGeometry
 
 from olwidget.forms import MapModelForm
 
-from versionutils.merging.forms import MergeModelFormMixin
+from versionutils.merging.forms import MergeMixin
+from versionutils.versioning.forms import CommentMixin
 from models import MapData
 
 OLWIDGET_OPTIONS = None
@@ -12,7 +13,7 @@ if hasattr(settings, 'OLWIDGET_DEFAULT_OPTIONS'):
     OLWIDGET_OPTIONS = settings.OLWIDGET_DEFAULT_OPTIONS
 
 
-class MapForm(MergeModelFormMixin, MapModelForm):
+class MapForm(MergeMixin, CommentMixin, MapModelForm):
     class Meta:
         model = MapData
         exclude = ('page',)

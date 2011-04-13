@@ -139,3 +139,9 @@ A historical instance represents a model at some point in time.  A historical mo
            the whole historical model's table.  Use
            :func:`version_number()`, it's almost certainly what you
            want.
+
+************************************
+:mod:`versionutils.versioning.forms`
+************************************
+
+.. autoclass:: versionutils.versioning.forms.CommentMixin

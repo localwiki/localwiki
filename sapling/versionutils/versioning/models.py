@@ -581,7 +581,9 @@ def save_with_arguments(model_save, m, force_insert=False, force_update=False,
           methods aren't called when doing bulk QuerySet.delete().
     """
     m._track_changes = track_changes
-    m._save_with = kws
+    if not hasattr(m, '_save_with'):
+        m.save_with = {}
+    m._save_with.update(kws)
 
     return model_save(m, force_insert=force_insert,
                                       force_update=force_update,
