@@ -49,7 +49,6 @@ CKEDITOR.plugins.add( 'simpleimage',
 		
 		editor.on('instanceReady', function( evt )
 		{
-		    jQuery('img', evt.editor.document.$).attr('contentEditable', 'false');
 		    // click on image -> add placeholder caption
 		    evt.editor.document.on('click', function(evt){
 		        var element = evt.data.getTarget();
