@@ -11,4 +11,7 @@
       <input type="submit" value="Save"/>
       <a href="../">Cancel</a>
     </form>
+    {% with form.instance as page %}
+      {% include "pages/editor_actions.html" %}
+    {% endwith %}
 {% endblock %}

@@ -24,6 +24,8 @@
     <div id="nav">
       {% include "pages/nav.html" %}
     </div>
+    
+    {% block messages %}{% endblock %}
 
     <div id="main">
       {% block main %}{% endblock %}
