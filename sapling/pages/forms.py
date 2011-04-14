@@ -46,3 +46,8 @@ class PageForm(MergeMixin, CommentMixin, forms.ModelForm):
         except Page.DoesNotExist:
             pass
         return name
+
+
+class PageDeleteForm(forms.Form):
+    comment = forms.CharField(max_length=150, required=False,
+                              label="Reason for deletion")

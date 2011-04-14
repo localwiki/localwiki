@@ -95,7 +95,7 @@ def unique_lookup_values_for(m):
 
             # Get the unique fields of the related model.
             uniques = {}
-            # tring to getattr MapData, page
+
             parent_instance = getattr(m, field.name)
             parent_unique = unique_lookup_values_for(parent_instance)
             if not parent_unique:

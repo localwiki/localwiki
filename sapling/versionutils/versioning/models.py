@@ -357,8 +357,8 @@ class TrackChanges(object):
             history_type = TYPE_REVERTED_ADDED if is_revert else TYPE_ADDED
         else:
             history_type = history_type or TYPE_UPDATED
-        self.create_historical_record(instance, history_type)
-        self.m2m_init(instance)
+        hist_instance = self.create_historical_record(instance, history_type)
+        self.m2m_init(instance, hist_instance)
 
     def pre_delete(self, parent, instance, **kws):
         # To support subclassing.
@@ -406,19 +406,18 @@ class TrackChanges(object):
         is_revert = history_type == TYPE_REVERTED
         history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
         if not is_pk_recycle_a_problem(instance) and instance._track_changes:
-            self.create_historical_record(instance, history_type)
-            self.m2m_init(instance)
+            hist_instance = self.create_historical_record(instance, history_type)
+            self.m2m_init(instance, hist_instance)
 
         # Disconnect the related objects signals
         if hasattr(instance, '_rel_objs_methods'):
             for model, method in instance._rel_objs_methods.iteritems():
                 models.signals.pre_delete.disconnect(method, model, weak=False)
 
-    def m2m_init(self, instance):
+    def m2m_init(self, instance, hist_instance):
         """
         Initialize the ManyToMany sets on a historical instance.
         """
-        hist_instance = instance.history.most_recent()
         for field in instance._meta.many_to_many:
             if is_versioned(field.related.parent_model):
                 current_objs = getattr(instance, field.attname).all()
@@ -488,7 +487,7 @@ class TrackChanges(object):
             attrs[field.attname] = getattr(instance, field.attname)
 
         attrs.update(self._get_save_with_attrs(instance))
-        manager.create(history_type=type, **attrs)
+        return manager.create(history_type=type, **attrs)
 
     def _get_save_with_attrs(self, instance):
         """
@@ -582,7 +581,7 @@ def save_with_arguments(model_save, m, force_insert=False, force_update=False,
     """
     m._track_changes = track_changes
     if not hasattr(m, '_save_with'):
-        m.save_with = {}
+        m._save_with = {}
     m._save_with.update(kws)
 
     return model_save(m, force_insert=force_insert,

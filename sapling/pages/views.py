@@ -1,6 +1,8 @@
 from django.views.generic.simple import direct_to_template
-from django.views.generic import DetailView, UpdateView, ListView
-from django.http import HttpResponseNotFound
+from django.views.generic import DetailView, UpdateView, ListView, DeleteView
+from django.views.generic.edit import ModelFormMixin, FormMixin, ProcessFormView
+from django.views.generic.detail import SingleObjectTemplateResponseMixin
+from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 
@@ -8,8 +10,9 @@ from ckeditor.views import ck_upload
 from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin
 from models import Page, url_to_name
-from forms import PageForm
+from forms import PageForm, PageDeleteForm
 
+# Where possible, we subclass similar generic views here.
 
 class PageDetailView(Custom404Mixin, DetailView):
     model = Page
@@ -51,6 +54,28 @@ class PageUpdateView(CreateObjectMixin, UpdateView):
 
     def create_object(self):
         return Page(name=url_to_name(self.kwargs['original_slug']))
+
+
+class PageDeleteView(DeleteView, FormMixin):
+    model = Page
+    context_object_name = 'page'
+    form_class = PageDeleteForm
+
+    def delete(self, *args, **kwargs):
+        form = self.get_form(self.get_form_class())
+        if form.is_valid():
+            self.object = self.get_object()
+            self.object.delete(comment=form.cleaned_data.get('comment'))
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        # Redirect back to the page.
+        return reverse('show-page', args=[self.kwargs.get('original_slug')])
+
+    def get_context_data(self, **kwargs):
+        context = super(PageDeleteView, self).get_context_data(**kwargs)
+        context['form'] = self.get_form(self.get_form_class())
+        return context
 
 
 class PageHistoryView(ListView):
