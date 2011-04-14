@@ -84,3 +84,8 @@ class MapForm(MergeMixin, CommentMixin, MapModelForm):
         deleted = GeometryCollection([GEOSGeometry(s) for s in deleted],
             srid=geoms.srid)
         return (added, deleted)
+
+
+class MapDeleteForm(forms.Form):
+    comment = forms.CharField(max_length=150, required=False,
+                              label="Reason for deletion")

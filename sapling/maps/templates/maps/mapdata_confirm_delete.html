@@ -1,0 +1,10 @@
+{% extends "maps/mapdata_detail.html" %}
+
+{% block messages %}
+<div id="messages">
+ <form method="post" action="">{% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit" value="Delete"/>
+ </form>
+</div>
+{% endblock %}

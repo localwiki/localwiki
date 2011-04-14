@@ -1,7 +1,6 @@
 from django.views.generic.simple import direct_to_template
 from django.views.generic import DetailView, UpdateView, ListView, DeleteView
-from django.views.generic.edit import ModelFormMixin, FormMixin, ProcessFormView
-from django.views.generic.detail import SingleObjectTemplateResponseMixin
+from django.views.generic.edit import FormMixin
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
@@ -11,6 +10,7 @@ from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin
 from models import Page, url_to_name
 from forms import PageForm, PageDeleteForm
+
 
 # Where possible, we subclass similar generic views here.
 
