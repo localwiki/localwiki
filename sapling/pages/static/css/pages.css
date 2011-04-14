@@ -5,7 +5,9 @@
 
 .image_frame {
     display:inline-block;
+    vertical-align: top;
     padding: 2px;
+    margin: 2px;
 }
 
 .image_frame_border {
