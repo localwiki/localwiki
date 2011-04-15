@@ -1,4 +1,4 @@
-from django.views.generic import DetailView, UpdateView, ListView, DeleteView
+from django.views.generic import DetailView, UpdateView, ListView
 from django.views.generic.edit import FormMixin
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
@@ -9,12 +9,12 @@ from django.conf import settings
 from olwidget.widgets import InfoMap
 
 from versionutils import diff
-from utils.views import Custom404Mixin, CreateObjectMixin
+from utils.views import Custom404Mixin, CreateObjectMixin, DeleteView
 from pages.models import Page
 from pages.models import slugify
 
 from models import MapData
-from forms import MapForm, MapDeleteForm
+from forms import MapForm
 
 OLWIDGET_OPTIONS = None
 if hasattr(settings, 'OLWIDGET_DEFAULT_OPTIONS'):
@@ -63,26 +63,13 @@ class MapUpdateView(CreateObjectMixin, UpdateView):
         return reverse('show-page-map', args=[self.object.page.pretty_slug])
 
 
-class MapDeleteView(MapDetailView, DeleteView, FormMixin):
+class MapDeleteView(MapDetailView, DeleteView):
     model = MapData
     context_object_name = 'mapdata'
-    form_class = MapDeleteForm
-
-    def delete(self, *args, **kwargs):
-        form = self.get_form(self.get_form_class())
-        if form.is_valid():
-            self.object = self.get_object()
-            self.object.delete(comment=form.cleaned_data.get('comment'))
-        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         # Redirect back to the map.
         return reverse('show-page-map', args=[self.kwargs.get('slug')])
-
-    def get_context_data(self, **kwargs):
-        context = super(MapDeleteView, self).get_context_data(**kwargs)
-        context['form'] = self.get_form(self.get_form_class())
-        return context
 
 
 class MapHistoryView(ListView):

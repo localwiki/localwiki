@@ -1,5 +1,9 @@
 from django.utils.decorators import classonlymethod
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
+from django.views.generic import DeleteView
+from django.views.generic.edit import FormMixin
+
+from forms import DeleteForm
 
 
 class Custom404Mixin(object):
@@ -27,3 +31,19 @@ class CreateObjectMixin(object):
             return super(CreateObjectMixin, self).get_object(queryset)
         except Http404:
             return self.create_object()
+
+
+class DeleteView(DeleteView, FormMixin):
+    form_class = DeleteForm
+
+    def delete(self, *args, **kwargs):
+        form = self.get_form(self.get_form_class())
+        if form.is_valid():
+            self.object = self.get_object()
+            self.object.delete(comment=form.cleaned_data.get('comment'))
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteView, self).get_context_data(**kwargs)
+        context['form'] = self.get_form(self.get_form_class())
+        return context
