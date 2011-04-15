@@ -86,7 +86,7 @@ class DeleteView(DeleteView, FormMixin):
 class RevertView(DeleteView):
     """
     View for reverting an object retrieved with `self.get_object()`,
-    with a response rendered by template.  Has a confirmation from and
+    with a response rendered by template.  Has a confirmation form and
     passes a comment along to `revert_to()`.
 
     You'll need to define a `_confirm_revert` template, similar to
