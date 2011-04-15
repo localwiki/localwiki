@@ -18,10 +18,10 @@
     {{ map }}
   </div>
   
-  <p>Modified {{ date|timesince }} ago (<a href="{% url page-map-history slug=page.pretty_slug %}">History</a>)</p>
+  <p>Modified {{ date|timesince }} ago (<a href="{% url mapdata-history slug=page.pretty_slug %}">History</a>)</p>
     
   <p>
-    <a href="{% url edit-page-map slug=page.pretty_slug %}">Edit this map</a>
+    <a href="{% url edit-mapdata slug=page.pretty_slug %}">Edit this map</a>
   </p>
 {% endblock %}
 

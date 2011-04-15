@@ -309,12 +309,11 @@ class TrackChanges(object):
         """
         attrs = {
             'history_comment': models.CharField(max_length=200, blank=True,
-                                                null=True
-            ),
+                null=True),
             'history_user': fields.AutoUserField(null=True),
             'history_user_ip': fields.AutoIPAddressField(null=True),
-            '__unicode__': lambda self: u'%s as of %s' % (self.history__object,
-                                                          self.history_date)
+            '__unicode__': lambda self: u'%s as of %s' % (
+                self.history__object, self.history_date),
         }
         return attrs
 
@@ -406,7 +405,8 @@ class TrackChanges(object):
         is_revert = history_type == TYPE_REVERTED
         history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
         if not is_pk_recycle_a_problem(instance) and instance._track_changes:
-            hist_instance = self.create_historical_record(instance, history_type)
+            hist_instance = self.create_historical_record(
+                instance, history_type)
             self.m2m_init(instance, hist_instance)
 
         # Disconnect the related objects signals

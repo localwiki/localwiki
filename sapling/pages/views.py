@@ -6,7 +6,8 @@ from django.shortcuts import get_object_or_404
 
 from ckeditor.views import ck_upload
 from versionutils import diff
-from utils.views import Custom404Mixin, CreateObjectMixin, DeleteView
+from utils.views import Custom404Mixin, CreateObjectMixin
+from utils.views import DeleteView, RevertView, HistoryView
 from models import Page, url_to_name
 from forms import PageForm
 
@@ -64,10 +65,16 @@ class PageDeleteView(DeleteView):
         return reverse('show-page', args=[self.kwargs.get('original_slug')])
 
 
-class PageHistoryView(ListView):
-    context_object_name = "version_list"
-    template_name = "pages/page_history.html"
+class PageRevertView(RevertView):
+    model = Page
+    context_object_name = 'page'
 
+    def get_success_url(self):
+        # Redirect back to the page.
+        return reverse('show-page', args=[self.kwargs.get('original_slug')])
+
+
+class PageHistoryView(HistoryView):
     def get_queryset(self):
         self.page = get_object_or_404(Page, slug__exact=self.kwargs['slug'])
         return self.page.history.all()

@@ -8,8 +8,8 @@
 {% block header %}Previous versions of map for "{{ mapdata.page.name }}"{% endblock %}
 
 {% block main %}
-  {% include "versionutils/history/form.html" %}
+  {% include "utils/history/form.html" %}
   <p>
-    <a href="{% url show-page-map slug=mapdata.page.pretty_slug %}">View map</a>
+    <a href="{% url show-mapdata slug=mapdata.page.pretty_slug %}">View map</a>
   </p>
 {% endblock %}
