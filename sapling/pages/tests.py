@@ -55,15 +55,18 @@ class PageTest(TestCase):
         self.assertEqual(slugify("What the @#$!!"), "what the @$!!")
 
         # unicode
-        self.assertEqual(slugify("Заглавная Страница"), 'заглавная страница')
+        self.assertEqual(slugify("Заглавная Страница".decode('utf-8')),
+                         'заглавная страница'.decode('utf-8').lower())
         encoded = ("%D0%B7%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F"
                      "_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
-        self.assertEqual(slugify(encoded), 'заглавная страница')
-        self.assertEqual(slugify("Заглавная%20Страница"), 'заглавная страница')
+        self.assertEqual(slugify(encoded),
+                         'заглавная страница'.decode('utf-8'))
+        self.assertEqual(slugify("Заглавная%20Страница".decode('utf-8')),
+                         'заглавная страница'.decode('utf-8'))
 
         # idempotent?
         a = 'АЯ `~!@#$%^&*()-_+=/\|}{[]:;"\'<>.,'
-        self.assertEqual(slugify(a), 'ая !@$%&*()- /"\'.,')
+        self.assertEqual(slugify(a), 'ая !@$%&*()- /"\'.,'.decode('utf-8'))
         self.assertEqual(slugify(a), slugify(slugify(a)))
 
     def test_pretty_slug(self):
