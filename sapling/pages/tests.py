@@ -4,8 +4,10 @@ from urllib import quote
 
 from django.test import TestCase
 from django.db import models
+from django import forms
 
-from forms import MergeModelForm, PageForm
+from versionutils.merging.forms import MergeMixin
+from forms import PageForm
 from pages.models import Page, slugify, url_to_name, clean_name, name_to_url
 from pages.plugins import html_to_template_text
 from pages.plugins import tag_imports
@@ -111,12 +113,12 @@ class TestModel(models.Model):
     contents = models.TextField()
 
 
-class TestForm(MergeModelForm):
+class TestForm(MergeMixin, forms.ModelForm):
     class Meta:
         model = TestModel
 
 
-class TestMergeForm(MergeModelForm):
+class TestMergeForm(MergeMixin, forms.ModelForm):
     class Meta:
         model = TestModel
 
@@ -174,7 +176,7 @@ class MergeModelFormTest(TestCase):
         a_post['contents'] = 'a contents'
         a = TestForm(a_post, instance=m_new)
         self.failIf(a.is_valid())
-        self.failUnless(MergeModelForm.conflict_warning in str(a.errors))
+        self.failUnless(MergeMixin.conflict_warning in str(a.errors))
 
         #repeated save with the same form rendered again should work, though
         a_post = a.data
