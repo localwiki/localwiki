@@ -2,6 +2,9 @@
 {% load url from future %}
 
 {% block version_info_extras %}
+  {{ version_info.comment }}
+  </label>
+  </td>
   <td>
     {% if not forloop.first %}
     {% ifnotequal version_info.type_verbose "Deleted" %}

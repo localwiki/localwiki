@@ -33,9 +33,9 @@
       {% else %}
         {{ version_info.user_ip }}
       {% endif %}
+      {% block version_info_extras %}{% endblock %}
       </label>
     </td>
-    {% block version_info_extras %}{% endblock %}
   </tr>
 {% endwith %}
 {% endfor %}
