@@ -444,6 +444,35 @@ class TrackChangesTest(TestCase):
         self.assertEqual(M16Unique.objects.filter(a="Me me!")[0].b,
                          "I am older")
 
+    def test_revert_to_once_deleted_fk(self):
+        # Restoring a model from a deleted state to an active state
+        # should cause all the related models that were pointed to it
+        # to be restored and restored to the correct version.
+        m16 = M16Unique(a="name here", b="first text", c=1)
+        m16.save()
+        mfk = MUniqueAndFK(a="my name", b="first text mfk", c=m16)
+        mfk.save()
+
+        # Save a couple revisions.
+        m16.b += "!"
+        m16.save()
+        mfk.b += "!"
+        mfk.save()
+        m16.b += "!"
+        m16.save()
+        mfk.b += "!"
+        mfk.save()
+
+        # Delete m16, which will cause mfk to be deleted via cascade.        
+        m16.delete()
+        
+        mfk_h = mfk.history.as_of(version=2)
+        mfk_h.revert_to()
+
+        mfk = MUniqueAndFK.objects.get(a="my name", b="first text mfk!")
+        # It should point to the correct version of m16.
+        self.assertEqual(mfk.c.b, mfk_h.c.b)
+
     def test_revert_to_deleted_version(self):
         # we test w/ an object w/ unique field in this case
         # non-unique re-creation doesn't make sense
