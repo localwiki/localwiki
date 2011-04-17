@@ -1,5 +1,6 @@
 import copy
 from functools import partial
+from collections import defaultdict
 
 from django.db import models
 from django.db.models.options import DEFAULT_NAMES as ALL_META_OPTIONS

@@ -6,11 +6,13 @@ we can't simply write down "class MyHistoricalInstance(..)..."
 so we have the methods laid out flat here.
 """
 import datetime
+from functools import partial
 
 from django.db import models
 from django.db.models import Max
 from django.utils.functional import SimpleLazyObject
 from django.db.models.sql.constants import LOOKUP_SEP
+from django.core.exceptions import ObjectDoesNotExist
 
 from constants import *
 from utils import *
@@ -232,15 +234,13 @@ def revert_to(hm, delete_newer_versions=False, **kws):
             the history log.
         kws: Any other keyword arguments you want to pass along to the
             model save method.
+
+    Returns:
+        The new model instance.
     """
-    # Maybe-TODO At some point we may want to pull this out into some
-    # kind of hm.history_info.get_instance() method. Providing
-    # get_instance() would be a liability, though, because we want to
-    # encourage interaction with the historical instance -- it does
-    # fancy foreignkey lookups, etc.
     m = hm.history_info._object
 
-    # If we simply grab hm.history_info._object we may hit a uniqueness
+    # If we simply save hm.history_info._object we may hit a uniqueness
     # exception.  If we save the model and it already exists.  This is because
     # the pk of the model may have changed if it was deleted at some time.
 
@@ -261,12 +261,28 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     m._history_type = TYPE_REVERTED
 
     if hm.history_info.type == TYPE_DELETED:
-        # We are reverting to a deleted version of the model
-        # so..delete the model!
+        # Delete the model when reverting to a deleted version.
         m.delete(reverted_to_version=hm, **kws)
     else:
+        # Check that none of the attached, versioned related fields are
+        # currently deleted.
+        for field in get_related_versioned_fields(m):
+            rel_hist = getattr(hm, field.name)
+            rel_o = rel_hist.history_info._object
+            latest_version = rel_o.history.most_recent()
+            if latest_version.history_info.type == TYPE_DELETED:
+                # This means the related, versioned object is
+                # currently deleted.  In this case we want to throw
+                # an exception, as reverting doesn't make any sense
+                # and will otherwise raise a database
+                # IntegrityError.
+                raise ObjectDoesNotExist("Model attribute '%s' points to "
+                    "model %s that does not exist! Re-create the "
+                    "referenced model and try again." % (field.name, rel_o.__class__))
+
         m.save(reverted_to_version=hm, **kws)
 
+    return m
 
 def version_number_of(hm):
     """
