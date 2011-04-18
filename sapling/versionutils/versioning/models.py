@@ -403,8 +403,14 @@ class TrackChanges(object):
             instance = parent_instance
 
         history_type = getattr(instance, '_history_type', None)
-        is_revert = history_type == TYPE_REVERTED
-        history_type = TYPE_REVERTED_DELETED if is_revert else TYPE_DELETED
+        is_delete_cascade = getattr(instance, '_is_delete_cascade', None)
+        if history_type == TYPE_REVERTED:
+            if is_delete_cascade: history_type = TYPE_REVERTED_DELETED_CASCADE
+            else: history_type = TYPE_REVERTED_DELETED
+        else:
+            if is_delete_cascade: history_type = TYPE_DELETED_CASCADE
+            else: history_type = TYPE_DELETED
+
         if not is_pk_recycle_a_problem(instance) and instance._track_changes:
             hist_instance = self.create_historical_record(
                 instance, history_type)
@@ -518,27 +524,33 @@ class TrackChanges(object):
             entry.delete()
 
 
-def _related_objs_delete_passalong(m):
+def _related_objs_cascade_bookkeeping(m):
     """
-    For all related objects, set _track_changes and _save_with
-    accordingly.
+    m.delete() causes a cascaded delete to occur, wherein all related
+    objects are also deleted.  This method passes along our custom
+    delete() parameters (like m.delete(comment="My comment")), sets
+    certain attributes correctly (like track_changes=False), and ensures
+    that the deleted objects' historical records note that they were
+    deleted via a cascade.
 
     Args:
         m: A model instance.
     """
-    # We use signals here.  One alternative would be to do the
-    # cascade ourselves, but we can't be sure of casade behavior.
-    def _set_arguments_for(child_m, model, ids_to_catch, instance, **kws):
+    def _do_bookkeeping_on(child_m, model, ids_to_catch,
+                           instance, **kws):
         if instance.pk in ids_to_catch:
             instance._track_changes = child_m._track_changes
             instance._save_with = child_m._save_with
+            instance._is_delete_cascade = True
 
     m._rel_objs_to_catch = defaultdict(dict)
     m._rel_objs_methods = {}
-    # Get the related objects.
+
+    # Get the related objects that are versioned.
     related_objects = m._meta.get_all_related_objects()
     related_versioned = [o for o in related_objects if is_versioned(o.model)]
-    # Using related objs, build a dictionary mapping model class -> pks
+    # Build a dictionary mapping model class -> pks of the related
+    # objects.
     for rel_o in related_versioned:
         accessor = rel_o.get_accessor_name()
         if not hasattr(m, accessor):
@@ -550,19 +562,23 @@ def _related_objs_delete_passalong(m):
             objs = getattr(m, accessor).all()
         for o in objs:
             # We use a dictionary for fast lookup in
-            # _set_arguments_for
+            # _do_bookkeeping_on
             m._rel_objs_to_catch[o.__class__][o.pk] = True
 
-    # Construct a method that will check to see if the sender is
-    # one of the related objects
+    # For each relevant related object, we attach a method to the
+    # pre_delete signal that does our bookkeeping.
     for model in m._rel_objs_to_catch:
         ids_to_catch = m._rel_objs_to_catch[model]
-        _pass_on_arguments = partial(_set_arguments_for, m, model,
+        # Construct a method that will check to see if the sender is
+        # one of the related objects.
+        _do_bookkeeping = partial(_do_bookkeeping_on, m, model,
             ids_to_catch)
-        models.signals.pre_delete.connect(_pass_on_arguments, sender=model,
+        # We use signals here.  One alternative would be to do the
+        # cascade ourselves, but we can't be sure of casade behavior.
+        models.signals.pre_delete.connect(_do_bookkeeping, sender=model,
             weak=False)
-        # Save the method so we can disconnect it
-        m._rel_objs_methods[model] = _pass_on_arguments
+        # Save the method so we can disconnect it it after the delete.
+        m._rel_objs_methods[model] = _do_bookkeeping
 
 
 def save_func(model_save):
@@ -612,5 +628,5 @@ def delete_with_arguments(model_delete, m, using=None,
     if is_pk_recycle_a_problem(m):
         m._track_changes = False
 
-    _related_objs_delete_passalong(m)
+    _related_objs_cascade_bookkeeping(m)
     return model_delete(m, using=using)

@@ -278,7 +278,8 @@ def revert_to(hm, delete_newer_versions=False, **kws):
                 # IntegrityError.
                 raise ObjectDoesNotExist("Model attribute '%s' points to "
                     "model %s that does not exist! Re-create the "
-                    "referenced model and try again." % (field.name, rel_o.__class__))
+                    "referenced model and try again." %
+                    (field.name, rel_o.__class__))
 
         m.save(reverted_to_version=hm, **kws)
 
