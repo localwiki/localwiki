@@ -352,11 +352,12 @@ class TrackChanges(object):
             instance = parent_instance
 
         history_type = getattr(instance, '_history_type', None)
-        is_revert = history_type == TYPE_REVERTED
-        if created:
-            history_type = TYPE_REVERTED_ADDED if is_revert else TYPE_ADDED
-        else:
-            history_type = history_type or TYPE_UPDATED
+        if not history_type == TYPE_REVERTED_CASCADE:
+            is_revert = history_type == TYPE_REVERTED
+            if created:
+                history_type = TYPE_REVERTED_ADDED if is_revert else TYPE_ADDED
+            else:
+                history_type = history_type or TYPE_UPDATED
         hist_instance = self.create_historical_record(instance, history_type)
         self.m2m_init(instance, hist_instance)
 

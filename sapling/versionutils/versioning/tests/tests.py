@@ -501,15 +501,15 @@ class TrackChangesTest(TestCase):
         m = m.history.as_of(version=1).revert_to()
         self.assertEqual(m.c.b, n.b)
 
-        # Case 3:
+        # Case 3(a):
         #   A model (M) with an FK to another versioned model (N).
         #   Model N is deleted, which causes Model M to be deleted via a
         #   cascade.  Model N being restored should cause Model M to be
         #   restored.
 
-        n = M16Unique(a="name here3", b="first text", c=1)
+        n = M16Unique(a="name here3a", b="first text", c=1)
         n.save()
-        m = MUniqueAndFK(a="my name3", b="first text mfk", c=n)
+        m = MUniqueAndFK(a="my name3a", b="first text mfk", c=n)
         m.save()
 
         n.b += "!"
@@ -520,7 +520,33 @@ class TrackChangesTest(TestCase):
         n.delete()  # Will cause m to be deleted via cascade.
         n.history.as_of(version=1).revert_to()
 
-        self.assertEquals(len(MUniqueAndFK.objects.filter(a="my name3")), 1)
+        self.assertEquals(len(MUniqueAndFK.objects.filter(a="my name3a")), 1)
+
+        # Case 3(b):
+        #   A model (L) with an FK to another versioned model (M) with
+        #   an FK to another versioned model (N).
+        #   Model N is deleted, which causes models L, M to be deleted via
+        #   cascade.  Model L being restored should cause models L, M to
+        #   be restored.
+
+        n = M16Unique(a="name here3b", b="first text", c=1)
+        n.save()
+        m = MUniqueAndFK(a="my name3b", b="first text mfk", c=n)
+        m.save()
+        l = MUniqueAndFK2(a="oh name3b", b="texthere l", c=m)
+        l.save()
+
+        n.b += "!"
+        n.save()
+        m.b += "!"
+        m.save()
+        l.b += "!"
+        l.save()
+
+        n.delete() # Will cause m, l to be deleted via cascade.
+        n.history.as_of(version=1).revert_to()
+
+        self.assertEquals(len(MUniqueAndFK2.objects.filter(a="oh name3b")), 1)
 
         # Case 4:
         #   A model (M) with an FK to another versioned model (N).

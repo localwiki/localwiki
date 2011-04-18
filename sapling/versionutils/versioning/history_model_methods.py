@@ -83,7 +83,7 @@ def historical_record_init(m, *args, **kws):
             del kws['__class__']
 
     retval = base.__init__(m, *args, **kws)
-    m._direct_lookup_fields = {}
+    m._wrapped_lookup_fields = {}
     _wrap_reverse_lookups(m)
     return retval
 
@@ -191,7 +191,7 @@ def _wrap_reverse_lookups(m):
             _reverse_lookup = partial(_reverse_attr_lookup, m, rel_o)
         else:
             _reverse_lookup = partial(_reverse_set_lookup, m, rel_o)
-        m._direct_lookup_fields[accessor] = SimpleLazyObject(_reverse_lookup)
+        m._wrapped_lookup_fields[accessor] = SimpleLazyObject(_reverse_lookup)
 
 
 def historical_record_getattribute(model, m, name):
@@ -211,10 +211,47 @@ def historical_record_getattribute(model, m, name):
         name: The string representing the attribute name.
     """
     basedict = model.__getattribute__(m, '__dict__')
-    direct_val = basedict.get('_direct_lookup_fields', {}).get(name)
+    direct_val = basedict.get('_wrapped_lookup_fields', {}).get(name)
     if direct_val is not None:
         return direct_val
+    # We allow the original attribute to be obtained by asking for
+    # m.__direct_name.
+    if name.startswith('__direct_'):
+        name = name[9:]
     return model.__getattribute__(m, name)
+
+
+def _cascade_revert(current_hm, m, **kws):
+    """
+    Iterates through (reverse) related objects and calls revert_to() on
+    them if they were deleted via a cascaded delete.
+    """
+    version_before_delete = current_hm.history_info.version_number() - 1
+    hm = m.history.as_of(version=version_before_delete)
+
+    related_objs_versioned = [
+        o for o in m._meta.get_all_related_objects() if is_versioned(o.model)
+    ]
+    for rel_o in related_objs_versioned:
+        print "REL O", rel_o
+        rel_lookup = getattr(hm, '__direct_%s_hist_set' % rel_o.var_name)
+        print "REL LOOKUP", rel_lookup
+        if rel_lookup:
+            rel_hms = rel_lookup.all()
+        else:
+            # A direct value (e.g. OneToOne).
+            rel_lookup = getattr(hm, '__direct_%s_hist' % rel_o.var_name)
+            rel_hms = [rel_lookup]
+
+        for rel_hm in rel_hms:
+            latest_rel_hm = rel_hm.history_info._object.history.most_recent()
+            if latest_rel_hm.history_info.type in [TYPE_DELETED_CASCADE,
+                    TYPE_REVERTED_DELETED_CASCADE]:
+                # The related object was most recently deleted via a
+                # delete cascade.  So we revert it.
+                print "DOING REVERT_TO on latest_rel_hm", latest_rel_hm, "kws:", kws
+                latest_rel_hm._from_cascade_revert = True
+                latest_rel_hm.revert_to(**kws)
 
 
 def revert_to(hm, delete_newer_versions=False, **kws):
@@ -260,6 +297,11 @@ def revert_to(hm, delete_newer_versions=False, **kws):
 
     m._history_type = TYPE_REVERTED
 
+    # Having the _from_cascade_revert attribute means revert_to() was
+    # called from _cascade_revert().
+    if getattr(hm, '_from_cascade_revert', False):
+        m._history_type = TYPE_REVERTED_CASCADE
+
     if hm.history_info.type == TYPE_DELETED:
         # Delete the model when reverting to a deleted version.
         m.delete(reverted_to_version=hm, **kws)
@@ -267,10 +309,12 @@ def revert_to(hm, delete_newer_versions=False, **kws):
         # Check that none of the attached, versioned related fields are
         # currently deleted.
         for field in get_related_versioned_fields(m):
+            print "..related_versioned_fields:", field
             rel_hist = getattr(hm, field.name)
             rel_o = rel_hist.history_info._object
             latest_version = rel_o.history.most_recent()
             if latest_version.history_info.type == TYPE_DELETED:
+                print "latest is TYPE DELETED"
                 # This means the related, versioned object is
                 # currently deleted.  In this case we want to throw
                 # an exception, as reverting doesn't make any sense
@@ -281,9 +325,19 @@ def revert_to(hm, delete_newer_versions=False, **kws):
                     "referenced model and try again." %
                     (field.name, rel_o.__class__))
 
+        current_hm = m.history.most_recent()
+
+        print "IN REVERT_TO, calling save", kws, "on m", m, m.__dict__
         m.save(reverted_to_version=hm, **kws)
 
+        # If we are reverting from a deleted state to a restored state
+        # then we should cascade the revert to children that were
+        # deleted during the initial delete().
+        if current_hm.history_info.type in DELETED_TYPES:
+            _cascade_revert(current_hm, m, **kws)
+
     return m
+
 
 def version_number_of(hm):
     """
