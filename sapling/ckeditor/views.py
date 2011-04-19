@@ -8,6 +8,8 @@ from django.views.generic.simple import direct_to_template
 
 
 def ck_upload(request, upload_folder):
+    """ Save file uploaded via CKEditor.
+    """
     error_message = 'Unable to upload'
 
     upload_location = os.path.join(settings.MEDIA_ROOT, upload_folder)
@@ -21,18 +23,25 @@ def ck_upload(request, upload_folder):
             saved_file = filesystem.save(uploaded_file.name, uploaded_file)
             saved_url = filesystem.url(saved_file)
         except Exception:
-            return HttpResponse(error_message)
-
-        try:
-            callback = request.GET['CKEditorFuncNum']
-        except KeyError:
-            callback = ''
+            return ck_upload_result(request, message=error_message)
     else:
-        return HttpResponse(error_message)
+        ck_upload_result(request, message=error_message)
+
+    return ck_upload_result(request, url=saved_url)
+
+
+def ck_upload_result(request, url='', message=''):
+    """ Notify CKEditor of upload via JS callback
+    """
+    try:
+        callback = request.GET['CKEditorFuncNum']
+    except KeyError:
+        callback = ''
 
     context = {
         'callback': callback,
-        'saved_url': saved_url,
+        'saved_url': url,
+        'message': message,
         }
 
     return direct_to_template(request, 'ckeditor/upload_result.html', context)

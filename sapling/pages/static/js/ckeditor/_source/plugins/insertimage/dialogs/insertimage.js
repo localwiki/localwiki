@@ -70,6 +70,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
                 this.imageElement = editor.document.createElement('img');
                 this.imageElement.setCustomData('isReady', 'false');
+                this.setupContent();
             },
             onOk: function () {
                 // if there is a file to upload, do that first
@@ -148,6 +149,35 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                     style: 'display:none',
                     label: editor.lang.image.btnUpload,
                     'for': ['Upload', 'upload']
+                }, {
+                    type: 'html',
+                    id: 'imagePicker',
+                    html: 'Select an image: <div style="max-height: 10em; overflow-y: auto;"><div class="image_picker_msg"></div><div class="image_picker"></div></div>',
+                    style: 'margin-top: 10px',
+                    setup: function() {
+                        var element = this.getElement().$;
+                        var txtUrl = this.getDialog().getContentElement('Upload', 'txtUrl');
+                        var spinner = jQuery('<em>(Loading...)</em>');
+                        var no_images = jQuery('<em>(No images attached to this page)</em>');
+                        var image_picker = jQuery('.image_picker', element);
+                        var message = jQuery('.image_picker_msg', element);
+                        message.empty().append(spinner);
+                        jQuery.get('_files/', function(data){
+                        	var result = jQuery('.file_list', data)
+                        					.find('a')
+                        					.click(function(){
+	                                            txtUrl.setValue(jQuery(this).attr('href'));
+	                                            return false;
+                                        	})
+                                    		.end();
+                            message.empty();
+                            image_picker.empty();
+                            if(result.find('a').length)
+                            	image_picker.append(result);
+                            else message.append(no_images);
+                            
+                        });
+                    }
                 }, {
                     type: 'html',
                     id: 'webImageHint',

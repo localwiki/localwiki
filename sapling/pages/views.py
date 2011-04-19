@@ -5,9 +5,12 @@ from django.views.generic import DetailView, UpdateView, ListView
 
 from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
+from django.db import IntegrityError
 from utils.views import Custom404Mixin, CreateObjectMixin
 from django.shortcuts import get_object_or_404, redirect
-from ckeditor.views import ck_upload
+from ckeditor.views import ck_upload_result
+from pages.models import PageImage
+from django.views.decorators.http import require_POST
 
 
 class PageDetailView(Custom404Mixin, DetailView):
@@ -66,6 +69,19 @@ class PageHistoryView(ListView):
         return context
 
 
+class PageFilesView(ListView):
+    context_object_name = "file_list"
+    template_name = "pages/page_files.html"
+
+    def get_queryset(self):
+        return PageImage.objects.filter(slug__exact=self.kwargs['slug'])
+
+    def get_context_data(self, **kwargs):
+        context = super(PageFilesView, self).get_context_data(**kwargs)
+        context['slug'] = self.kwargs['original_slug']
+        return context
+
+
 def compare(request, slug, version1=None, version2=None, **kwargs):
     versions = request.GET.getlist('version')
     if not versions:
@@ -84,5 +100,13 @@ def compare(request, slug, version1=None, version2=None, **kwargs):
     return direct_to_template(request, 'pages/page_diff.html', context)
 
 
+@require_POST
 def upload(request, slug, **kwargs):
-    return ck_upload(request, 'ck_upload/')
+    uploaded = request.FILES['upload']
+    try:
+        image = PageImage(file=uploaded, name=uploaded.name, slug=slug)
+        image.save()
+        return ck_upload_result(request, url=image.file.url)
+    except IntegrityError:
+        return ck_upload_result(request,
+                                message='A file with this name already exists')

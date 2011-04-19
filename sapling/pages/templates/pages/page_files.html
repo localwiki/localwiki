@@ -1,0 +1,31 @@
+{% extends "pages/base.html" %}
+{% load thumbnail %}
+{% block title %}Files - {{ block.super }}{% endblock %}
+{% block media %}
+<style>
+    ul.file_list {
+        list-style-type: none;
+        text-indent: -1em;
+    }
+
+    .file_list img {
+        vertical-align: text-bottom;
+        padding: 2px;
+    }
+</style>
+{% endblock %}
+{% block header %}Files attached to this page: {% endblock %}
+
+{% block main %}
+  <ul class="file_list">
+  {% for file in file_list %}
+    <li>{% thumbnail file.file "32x32" as im %}
+          <a href="{{ file.file.url }}"><img src={{ im.url }}/>{{ file.name }}</a>
+        {% endthumbnail %}
+    </li>
+  {% endfor %}
+  </ul>
+  <p>
+    <a href="{% url show-page slug=slug %}">View page</a>
+  </p>
+{% endblock %}

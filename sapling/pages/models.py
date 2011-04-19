@@ -45,6 +45,16 @@ class PageDiff(diff.BaseModelDiff):
 diff.register(Page, PageDiff)
 
 
+class PageImage(models.Model):
+    file = models.ImageField(upload_to='pages/images/')
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, editable=False)
+
+    class Meta:
+        unique_together = ('slug', 'name')
+        ordering = ['-id']
+
+
 def clean_name(name):
     # underscores are used to namespace special URLs, so let's remove them
     name = re.sub('_', ' ', name).strip()
