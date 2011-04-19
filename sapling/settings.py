@@ -59,6 +59,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 # STATIC_URL followed by 'admin/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
+OL_API = STATIC_URL + 'openlayers/OpenLayers.js'
 OLWIDGET_CSS = '%solwidget/css/sapling.css' % STATIC_URL
 CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js' % STATIC_URL
 
