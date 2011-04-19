@@ -406,11 +406,15 @@ class TrackChanges(object):
         history_type = getattr(instance, '_history_type', None)
         is_delete_cascade = getattr(instance, '_is_delete_cascade', None)
         if history_type == TYPE_REVERTED:
-            if is_delete_cascade: history_type = TYPE_REVERTED_DELETED_CASCADE
-            else: history_type = TYPE_REVERTED_DELETED
+            if is_delete_cascade:
+                history_type = TYPE_REVERTED_DELETED_CASCADE
+            else:
+                history_type = TYPE_REVERTED_DELETED
         else:
-            if is_delete_cascade: history_type = TYPE_DELETED_CASCADE
-            else: history_type = TYPE_DELETED
+            if is_delete_cascade:
+                history_type = TYPE_DELETED_CASCADE
+            else:
+                history_type = TYPE_DELETED
 
         if not is_pk_recycle_a_problem(instance) and instance._track_changes:
             hist_instance = self.create_historical_record(
@@ -565,6 +569,19 @@ def _related_objs_cascade_bookkeeping(m):
             # We use a dictionary for fast lookup in
             # _do_bookkeeping_on
             m._rel_objs_to_catch[o.__class__][o.pk] = True
+            # Django will *not* call m.delete on children -- it does a
+            # bulk delete on children + does a post_delete and
+            # pre_delete on each child.
+
+            # We go recursive here because the way Django does delete
+            # cascades is, with models A --fk--> B --fk--> C, pre_delete
+            # on C, then pre_delete on B, then pre_delete on A.  Django
+            # will *not* call m.delete() on children - it only calls
+            # pre_delete and post_delete along with a bulk database
+            # delete.
+            o._save_with = m._save_with
+            o._track_changes = m._track_changes
+            _related_objs_cascade_bookkeeping(o)
 
     # For each relevant related object, we attach a method to the
     # pre_delete signal that does our bookkeeping.
