@@ -51,6 +51,22 @@ class PageUpdateView(CreateObjectMixin, UpdateView):
     model = Page
     form_class = PageForm
 
+    def success_msg(self):
+        # NOTE: This is eventually marked as safe when rendered in our
+        # template.  So do *not* allow unescaped user input!
+        map_create_link = ''
+        if not hasattr(self.object, 'mapdata'):
+            slug = self.object.pretty_slug
+            map_create_link = (
+                '<p><a href="%s">[map icon] Create a map for this page?'
+                '</a></p>' % reverse('edit-mapdata', args=[slug])
+            )
+        return (
+            '<div>Thank you for your changes. '
+            'Your attention to detail is appreciated.</div>'
+            '%s' % map_create_link
+        )
+
     def get_success_url(self):
         return reverse('show-page', args=[self.object.pretty_slug])
 
