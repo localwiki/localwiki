@@ -41,7 +41,7 @@
           <a href="usage.html" title="Usage"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">django-versionutils v0.1 documentation</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U"><tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
+          <li><a href="index.html" accesskey="U"><tt class="docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -213,6 +213,24 @@ want.</p>
 </div></blockquote>
 </div>
 </div>
+<div class="section" id="versionutils-versioning-forms">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">versionutils.versioning.forms</span></tt><a class="headerlink" href="#versionutils-versioning-forms" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="versionutils.versioning.forms.CommentMixin">
+<em class="property">class </em><tt class="descclassname">versionutils.versioning.forms.</tt><tt class="descname">CommentMixin</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#versionutils.versioning.forms.CommentMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>ModelForm mixin that adds a comment field to the form.  When the
+ModelForm is saved the comment is set on the historical instance.</p>
+<p>NOTE: You need to list CommentMixin before ModelForm in your
+subclasses list.  Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">PageForm</span><span class="p">(</span><span class="n">CommentMixin</span><span class="p">,</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Page</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;content&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -228,6 +246,7 @@ want.</p>
 <li><a class="reference internal" href="#historical-instance">Historical instance</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#versionutils-versioning-forms"><tt class="docutils literal"><span class="pre">versionutils.versioning.forms</span></tt></a></li>
 </ul>
 </li>
 </ul>
@@ -273,7 +292,7 @@ want.</p>
           <a href="usage.html" title="Usage"
              >previous</a> |</li>
         <li><a href="../index.html">django-versionutils v0.1 documentation</a> &raquo;</li>
-          <li><a href="index.html" ><tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
+          <li><a href="index.html" ><tt class="docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

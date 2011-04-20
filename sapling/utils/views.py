@@ -1,5 +1,9 @@
 from django.utils.decorators import classonlymethod
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
+from django.views.generic import DeleteView, ListView
+from django.views.generic.edit import FormMixin
+
+from forms import DeleteForm, RevertForm
 
 
 class Custom404Mixin(object):
@@ -27,3 +31,99 @@ class CreateObjectMixin(object):
             return super(CreateObjectMixin, self).get_object(queryset)
         except Http404:
             return self.create_object()
+
+
+class HistoryView(ListView):
+    context_object_name = 'version_list'
+    template_name_suffix = '_history'
+    revert_view_name = None
+
+    def get_revert_view_name(self):
+        if self.revert_view_name:
+            return self.revert_view_name
+        # We assume these are historical instances.
+        if hasattr(self.object_list, 'model'):
+            opts = self.object_list.model._original_model._meta
+            return 'revert-%s' % opts.object_name.lower()
+
+    def get_context_data(self, **kwargs):
+        context = super(HistoryView, self).get_context_data(**kwargs)
+        context['slug'] = self.kwargs.get('slug')
+        context['revert_view'] = self.get_revert_view_name()
+        return context
+
+    def get_template_names(self):
+        # We want obj_history not obj_hist_history.
+        if hasattr(self.object_list, 'model'):
+            hist_model = self.object_list.model
+            self.object_list.model = hist_model._original_model
+            names = super(HistoryView, self).get_template_names()
+            self.object_list.model = hist_model
+        return names
+
+
+class DeleteView(DeleteView, FormMixin):
+    """
+    A subclass of the generic DeleteView that passes along a comment
+    with the delete().
+    """
+    form_class = DeleteForm
+
+    def delete(self, *args, **kwargs):
+        form = self.get_form(self.get_form_class())
+        if form.is_valid():
+            self.object = self.get_object()
+            self.object.delete(comment=form.cleaned_data.get('comment'))
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super(DeleteView, self).get_context_data(**kwargs)
+        context['form'] = self.get_form(self.get_form_class())
+        return context
+
+
+# We subclass DeleteView here because the action flow is identical.
+class RevertView(DeleteView):
+    """
+    View for reverting an object retrieved with `self.get_object()`,
+    with a response rendered by template.  Has a confirmation form and
+    passes a comment along to `revert_to()`.
+
+    You'll need to define a `_confirm_revert` template, similar to
+    `_confirm_delete`.
+    """
+    template_name_suffix = '_confirm_revert'
+    form_class = RevertForm
+
+    def __init__(self, *args, **kwargs):
+        base_init = super(RevertView, self).__init__(*args, **kwargs)
+        # We want object_confirm_revert, not object_hist_confirm_revert.
+        if not self.template_name_field:
+            self.template_name_field = self.context_object_name
+        return base_init
+
+    def get_object(self):
+        obj = super(RevertView, self).get_object()
+        return obj.history.as_of(version=int(self.kwargs['version']))
+
+    def revert(self, *args, **kwargs):
+        form = self.get_form(self.get_form_class())
+        if form.is_valid():
+            self.object = self.get_object()
+            self.object.revert_to(comment=form.cleaned_data.get('comment'))
+        return HttpResponseRedirect(self.get_success_url())
+
+    def delete(self, *args, **kwargs):
+        return self.revert(*args, **kwargs)
+
+    def get_template_names(self):
+        """
+        We want obj_confirm_revert not obj_hist_confirm_revert.
+        """
+        orig_object = self.object
+        # Temporarily swap out self.object with an instance of the
+        # non-historical object for template-finding purposes.
+        self.object = orig_object.history_info._object
+        names = super(RevertView, self).get_template_names()
+        self.object = orig_object
+        return names

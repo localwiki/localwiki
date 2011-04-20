@@ -1,16 +1,19 @@
-from models import Page, url_to_name
-from forms import PageForm
+from django.views.decorators.http import require_POST
 from django.views.generic.simple import direct_to_template
 from django.views.generic import DetailView, UpdateView, ListView
-
 from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
-from utils.views import Custom404Mixin, CreateObjectMixin
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
+
 from ckeditor.views import ck_upload_result
-from pages.models import PageImage
-from django.views.decorators.http import require_POST
+from versionutils import diff
+from utils.views import Custom404Mixin, CreateObjectMixin
+from utils.views import DeleteView, RevertView, HistoryView
+from models import Page, PageImage, url_to_name
+from forms import PageForm
+
+# Where possible, we subclass similar generic views here.
 
 
 class PageDetailView(Custom404Mixin, DetailView):
@@ -55,10 +58,25 @@ class PageUpdateView(CreateObjectMixin, UpdateView):
         return Page(name=url_to_name(self.kwargs['original_slug']))
 
 
-class PageHistoryView(ListView):
-    context_object_name = "version_list"
-    template_name = "pages/page_history.html"
+class PageDeleteView(DeleteView):
+    model = Page
+    context_object_name = 'page'
 
+    def get_success_url(self):
+        # Redirect back to the page.
+        return reverse('show-page', args=[self.kwargs.get('original_slug')])
+
+
+class PageRevertView(RevertView):
+    model = Page
+    context_object_name = 'page'
+
+    def get_success_url(self):
+        # Redirect back to the page.
+        return reverse('show-page', args=[self.kwargs.get('original_slug')])
+
+
+class PageHistoryView(HistoryView):
     def get_queryset(self):
         self.page = get_object_or_404(Page, slug__exact=self.kwargs['slug'])
         return self.page.history.all()
@@ -82,22 +100,8 @@ class PageFilesView(ListView):
         return context
 
 
-def compare(request, slug, version1=None, version2=None, **kwargs):
-    versions = request.GET.getlist('version')
-    if not versions:
-        versions = [v for v in (version1, version2) if v]
-    if not versions:
-        return redirect(reverse('page-history', args=[slug]))
-    page = get_object_or_404(Page, slug__exact=slug)
-    versions = [int(v) for v in versions]
-    old = min(versions)
-    new = max(versions)
-    if len(versions) == 1:
-        old = max(new - 1, 1)
-    old_version = page.history.as_of(version=old)
-    new_version = page.history.as_of(version=new)
-    context = {'old': old_version, 'new': new_version, 'page': page}
-    return direct_to_template(request, 'pages/page_diff.html', context)
+class PageCompareView(diff.views.CompareView):
+    model = Page
 
 
 @require_POST

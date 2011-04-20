@@ -1,6 +1,3 @@
-from collections import defaultdict
-from functools import partial
-
 from django.db import models
 from django.conf import settings
 from django.db.models.sql.constants import LOOKUP_SEP
@@ -43,6 +40,22 @@ def is_historical_instance(m):
     """
     return (hasattr(m, '_original_model') and
             is_versioned(m._original_model))
+
+
+def get_related_versioned_fields(m):
+    """
+    Args:
+        m: A model instance or model class.
+
+    Returns:
+        A list of the fields attached to m which are versioned.
+    """
+    fields = []
+    rel_fields = [f for f in m._meta.fields if hasattr(f, 'related')]
+    for field in rel_fields:
+        if is_versioned(field.related.parent_model):
+            fields.append(field)
+    return fields
 
 
 def get_parent_instance(m, parent):
@@ -95,7 +108,7 @@ def unique_lookup_values_for(m):
 
             # Get the unique fields of the related model.
             uniques = {}
-            # tring to getattr MapData, page
+
             parent_instance = getattr(m, field.name)
             parent_unique = unique_lookup_values_for(parent_instance)
             if not parent_unique:
@@ -140,6 +153,3 @@ def is_pk_recycle_a_problem(instance):
     if (settings.DATABASE_ENGINE == 'sqlite3' and
         not unique_lookup_values_for(instance)):
         return True
-
-
-

@@ -6,6 +6,7 @@ from decimal import Decimal
 from django.test import TestCase
 from django.conf import settings
 from django.core.files import File
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.base import ContentFile
 from django.utils.unittest import skipIf
 
@@ -443,6 +444,130 @@ class TrackChangesTest(TestCase):
         self.assertEqual(len(M16Unique.objects.filter(a="Me me!")), 1)
         self.assertEqual(M16Unique.objects.filter(a="Me me!")[0].b,
                          "I am older")
+
+    def test_revert_fk_behavior(self):
+        # Case 1:
+        #   A model (M) with an FK to another versioned model (N).  Both
+        #   models are currently deleted.  Model M is reverted.  An
+        #   exception should be raised.
+
+        n = M16Unique(a="name here", b="first text", c=1)
+        n.save()
+        m = MUniqueAndFK(a="my name", b="first text mfk", c=n)
+        m.save()
+
+        n.b += "!"
+        n.save()
+        m.b += "!"
+        m.save()
+        m.delete()
+        n.delete()
+
+        m_h = m.history.as_of(version=2)
+        self.assertRaises(ObjectDoesNotExist, m_h.revert_to)
+
+        # Case 2:
+        #   A model (M) with an FK to another versioned model (N).  Both
+        #   models were deleted at one point, but have since been
+        #   restored.  Reverting Model M to an old state, where the
+        #   historical instance points to an old version of Model N,
+        #   should create a new Model M that points to the *most recent
+        #   version of Model N* rather than the old version.
+
+        n = M16Unique(a="name here2", b="first text", c=1)
+        n.save()
+        m = MUniqueAndFK(a="my name2", b="first text mfk", c=n)
+        m.save()
+
+        n.b += "!"
+        n.save()
+        m.b += "!"
+        m.save()
+        n.b += "!"
+        n.save()
+        m.b += "!"
+        m.save()
+        m.delete()
+        n.delete()
+
+        n = n.history.as_of(version=2).revert_to()
+        m = m.history.as_of(version=2).revert_to()
+
+        n.b += "?"
+        n.save()
+        m.b += "?"
+        m.save()
+
+        m = m.history.as_of(version=1).revert_to()
+        self.assertEqual(m.c.b, n.b)
+
+        # Case 3(a):
+        #   A model (M) with an FK to another versioned model (N).
+        #   Model N is deleted, which causes Model M to be deleted via a
+        #   cascade.  Model N being restored should cause Model M to be
+        #   restored.
+
+        n = M16Unique(a="name here3a", b="first text", c=1)
+        n.save()
+        m = MUniqueAndFK(a="my name3a", b="first text mfk", c=n)
+        m.save()
+
+        n.b += "!"
+        n.save()
+        m.b += "!"
+        m.save()
+
+        n.delete()  # Will cause m to be deleted via cascade.
+        n.history.as_of(version=1).revert_to()
+
+        self.assertEquals(len(MUniqueAndFK.objects.filter(a="my name3a")), 1)
+
+        # Case 3(b):
+        #   A model (L) with an FK to another versioned model (M) with
+        #   an FK to another versioned model (N).
+        #   Model N is deleted, which causes models L, M to be deleted via
+        #   cascade.  Model L being restored should cause models L, M to
+        #   be restored.
+
+        n = M16Unique(a="name here3b", b="first text", c=1)
+        n.save()
+        m = MUniqueAndFK(a="my name3b", b="first text mfk", c=n)
+        m.save()
+        l = MUniqueAndFK2(a="oh name3b", b="texthere l", c=m)
+        l.save()
+
+        n.b += "!"
+        n.save()
+        m.b += "!"
+        m.save()
+        l.b += "!"
+        l.save()
+
+        n.delete() # Will cause m, l to be deleted via cascade.
+        n.history.as_of(version=1).revert_to()
+
+        self.assertEquals(len(MUniqueAndFK2.objects.filter(a="oh name3b")), 1)
+
+        # Case 4:
+        #   A model (M) with an FK to another versioned model (N).
+        #   Model M is deleted.  Then Model N is deleted.  Restoring
+        #   Model N should not restore Model M.
+
+        n = M16Unique(a="name here4", b="first text", c=1)
+        n.save()
+        m = MUniqueAndFK(a="my name4", b="first text mfk", c=n)
+        m.save()
+
+        n.b += "!"
+        n.save()
+        m.b += "!"
+        m.save()
+
+        m.delete()
+        n.delete()
+
+        n.history.as_of(version=2).revert_to()
+        self.assertEquals(len(MUniqueAndFK.objects.filter(a="my name4")), 0)
 
     def test_revert_to_deleted_version(self):
         # we test w/ an object w/ unique field in this case

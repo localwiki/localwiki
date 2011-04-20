@@ -1,12 +1,16 @@
 # coding=utf-8
 
+from urllib import quote
+
 from django.test import TestCase
 from django.db import models
-from forms import MergeModelForm, PageForm
+from django import forms
+
+from versionutils.merging.forms import MergeMixin
+from forms import PageForm
 from pages.models import Page, slugify, url_to_name, clean_name, name_to_url
 from pages.plugins import html_to_template_text
 from pages.plugins import tag_imports
-from urllib import quote
 
 
 class PageTest(TestCase):
@@ -51,15 +55,18 @@ class PageTest(TestCase):
         self.assertEqual(slugify("What the @#$!!"), "what the @$!!")
 
         # unicode
-        self.assertEqual(slugify("Заглавная Страница"), 'заглавная страница')
+        self.assertEqual(slugify("Заглавная Страница".decode('utf-8')),
+                         'заглавная страница'.decode('utf-8').lower())
         encoded = ("%D0%B7%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F"
                      "_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
-        self.assertEqual(slugify(encoded), 'заглавная страница')
-        self.assertEqual(slugify("Заглавная%20Страница"), 'заглавная страница')
+        self.assertEqual(slugify(encoded),
+                         'заглавная страница'.decode('utf-8'))
+        self.assertEqual(slugify("Заглавная%20Страница".decode('utf-8')),
+                         'заглавная страница'.decode('utf-8'))
 
         # idempotent?
         a = 'АЯ `~!@#$%^&*()-_+=/\|}{[]:;"\'<>.,'
-        self.assertEqual(slugify(a), 'ая !@$%&*()- /"\'.,')
+        self.assertEqual(slugify(a), 'ая !@$%&*()- /"\'.,'.decode('utf-8'))
         self.assertEqual(slugify(a), slugify(slugify(a)))
 
     def test_pretty_slug(self):
@@ -109,12 +116,12 @@ class TestModel(models.Model):
     contents = models.TextField()
 
 
-class TestForm(MergeModelForm):
+class TestForm(MergeMixin, forms.ModelForm):
     class Meta:
         model = TestModel
 
 
-class TestMergeForm(MergeModelForm):
+class TestMergeForm(MergeMixin, forms.ModelForm):
     class Meta:
         model = TestModel
 
@@ -172,7 +179,7 @@ class MergeModelFormTest(TestCase):
         a_post['contents'] = 'a contents'
         a = TestForm(a_post, instance=m_new)
         self.failIf(a.is_valid())
-        self.failUnless(MergeModelForm.conflict_warning in str(a.errors))
+        self.failUnless(MergeMixin.conflict_warning in str(a.errors))
 
         #repeated save with the same form rendered again should work, though
         a_post = a.data

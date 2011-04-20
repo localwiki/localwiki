@@ -1,6 +1,0 @@
--e svn+http://code.djangoproject.com/svn/django/trunk#egg=Django
-html5lib>=0.90
-lxml>=2.3
-Sphinx>=1.0.7
-sorl-thumbnail>=11.01
-PIL>=1.1.7

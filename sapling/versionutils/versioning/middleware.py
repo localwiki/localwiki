@@ -14,8 +14,8 @@ class AutoTrackUserInfoMiddleware(object):
     Optional middleware to automatically add the current request user's
     information into the historical model as it's saved.
     """
-    # TODO: refactor this if we want to track more than ip, user.
-    #       Could use a passed-in callable for logic.
+    # If we wanted to track more than ip, user then we could use a
+    # passed-in callable for logic.
     def process_request(self, request):
         if request.method in IGNORE_USER_INFO_METHODS:
             pass

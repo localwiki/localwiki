@@ -73,23 +73,31 @@ locking of models, forms, etc.</p>
 <div class="section" id="versionutils-merging-forms">
 <h3><tt class="xref py py-mod docutils literal"><span class="pre">versionutils.merging.forms</span></tt><a class="headerlink" href="#versionutils-merging-forms" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
-<dt id="versionutils.merging.forms.MergeModelForm">
-<em class="property">class </em><tt class="descclassname">versionutils.merging.forms.</tt><tt class="descname">MergeModelForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#versionutils.merging.forms.MergeModelForm" title="Permalink to this definition">¶</a></dt>
-<dd><p>ModelForm subclass that detects editing conflicts.  For example, consider
+<dt id="versionutils.merging.forms.MergeMixin">
+<em class="property">class </em><tt class="descclassname">versionutils.merging.forms.</tt><tt class="descname">MergeMixin</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#versionutils.merging.forms.MergeMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>ModelForm mixin that detects editing conflicts.  For example, consider
 the following scenario:</p>
 <p>User A obtains a form to edit model instance M
 User B obtains a form to edit the same instance
 User B makes some changes and submits the form.  M is updated.
 User A makes some changes and submits the form.  B&#8217;s changes are lost.</p>
-<p>MergeModelForm will check to see if anyone else has edited the associated
-model since the form was loaded.  If so, a ValidationError is raised with
-the provided conflict_message.</p>
-<p>To perform a merge in this case, simply subclass MergeModelForm and provide
+<p>MergeMixin will check to see if anyone else has edited the
+associated model since the form was loaded.  If so, a ValidationError is
+raised with the provided conflict_message.</p>
+<p>To perform a merge in this case, simply subclass MergeMixin and provide
 your own merge() method.</p>
 <p>As long as the associated model is versioned using versioning.TrackChanges
 or has a DateTimeField with auto_now=True this will work automatically.
-Otherwise you&#8217;ll want to subclass MergeModelForm and override
+Otherwise you&#8217;ll want to subclass MergeMixin and override
 get_version_date().</p>
+<p>NOTE: You need to list MergeMixin before ModelForm in your
+subclasses list.  Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">PageForm</span><span class="p">(</span><span class="n">MergeMixin</span><span class="p">,</span> <span class="n">forms</span><span class="o">.</span><span class="n">ModelForm</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Page</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;content&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
 <dl class="docutils">
 <dt>Attributes:</dt>
 <dd><dl class="first last docutils">

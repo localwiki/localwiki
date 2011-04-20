@@ -1,19 +1,34 @@
-import os
-
 DEBUG = True
 CACHE_BACKEND = 'dummy:///'
 
-DATABASE_ENGINE = 'sqlite3'
-# Or path to database file if using sqlite3.
-DATABASE_NAME = os.path.join(os.path.dirname(__file__), 'dev.db')
-# Not used with sqlite3.
-DATABASE_USER = ''
-# Not used with sqlite3.
-DATABASE_PASSWORD = ''
-# Set to empty string for localhost. Not used with sqlite3.
-DATABASE_HOST = ''
-DATABASE_PORT = ''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'sapling',
+        'USER': 'sapling',
+        'PASSWORD': '** PASSWORD GOES HERE **',
+        'HOST': '127.0.0.1',
+    }
+}
+
+OLWIDGET_DEFAULT_OPTIONS = {
+    'default_lat': 37.76,
+    'default_lon': -122.43,
+    'default_zoom': 12,
+
+    'layers': ['cloudmade.35165'],
+    'map_options': {
+        'controls': ['Navigation', 'PanZoomBar', 'KeyboardDefaults',
+                     'Attribution'],
+        'theme': '/static/openlayers/theme/sapling/style.css',
+    },
+    'overlay_style': {'fillColor': '#ffc868',
+                      'strokeColor': '#db9e33'},
+}
 
 DAISYDIFF_URL = 'http://localhost:8080/diff'
 DAISYDIFF_MERGE_URL = 'http://localhost:8080/merge'
 
+LOCAL_INSTALLED_APPS = ()
+
+CLOUDMADE_API_KEY = 'Get an API key at http://cloudmade.com'

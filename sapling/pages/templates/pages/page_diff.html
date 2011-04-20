@@ -10,14 +10,14 @@
       text-decoration: none;
     }
     ins {
-      background: #AAFF66;
+      background: #b4ff78;
       text-decoration: none;
     }
     del img {
       border: 0.5em #FDC6C6 solid;
     }
     ins img{
-      border: 0.5em #AAFF66 solid;
+      border: 0.5em #b4ff78 solid;
     }
     td.revision_details {
       font-style: italic;
@@ -54,7 +54,7 @@
     </thead>
     {% diff old new as page_diff %}
     <tbody valign="top">
-        {% render_page page_diff.get_diff.content %}
+        {% render_page page_diff.content %}
     </tbody>
   </table>
   <p>

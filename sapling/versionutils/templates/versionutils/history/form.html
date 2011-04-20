@@ -1,0 +1,44 @@
+<form method="GET" action="compare" name="compare_form">
+<table>
+  <thead>
+    <tr>
+      <td>
+        <input type="submit" value="Compare">
+      </td>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <td>
+        <input type="submit" value="Compare">
+      </td>
+    </tr>
+  </tfoot>
+  <tbody>
+{% for version in version_list %}
+{% with version.history_info as version_info %}
+  <tr>
+    <td>
+      <label for="id_version_{{ forloop.revcounter }}">
+      <input type="checkbox" name="version" value="{{ forloop.revcounter }}" id="id_version_{{ forloop.revcounter }}"/>
+      {# We assume a standard url format here. #}
+      <a href="{{ forloop.revcounter }}">{{ version_info.date }}</a>
+      {{ version_info.type_verbose }} by
+      {% if version_info.user %}
+        {% if version_info.user.get_absolute_url %}
+          <a href="{{ version_info.user.get_absolute_url }}">{{ version_info.user }}</a>
+        {% else %}
+          {{ version_info.user }}
+        {% endif %}
+      {% else %}
+        {{ version_info.user_ip }}
+      {% endif %}
+      {% block version_info_extras %}{% endblock %}
+      </label>
+    </td>
+  </tr>
+{% endwith %}
+{% endfor %}
+  </tbody>
+</table>
+</form>

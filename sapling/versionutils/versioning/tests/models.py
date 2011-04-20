@@ -215,6 +215,21 @@ class M23AutoNow(models.Model):
     history = TrackChanges()
 
 
+class MUniqueAndFK(models.Model):
+    a = models.CharField(max_length=200, unique=True)
+    b = models.CharField(max_length=200)
+    c = models.ForeignKey(M16Unique)
+
+    history = TrackChanges()
+
+
+class MUniqueAndFK2(models.Model):
+    a = models.CharField(max_length=200, unique=True)
+    b = models.CharField(max_length=200)
+    c = models.ForeignKey(MUniqueAndFK)
+
+    history = TrackChanges()
+
 ############################################################
 # Model inheritance test models
 ############################################################
@@ -288,4 +303,5 @@ TEST_MODELS = [
     M24SubclassProxy, M25SubclassAbstract,
     M26SubclassConcreteA, M26ConcreteModelB,
     M26SubclassConcreteB, M26ConcreteModelC, M26SubclassConcreteC,
+    MUniqueAndFK, MUniqueAndFK2,
 ]

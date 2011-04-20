@@ -85,6 +85,9 @@ class HistoryManager(models.Manager):
             # HistoryManager instance which will over-ride this.
             self.instance = parent_instance
 
+    def create(self, **kwargs):
+        return QuerySet(self.model, using=self._db).create(**kwargs)
+
     def get_query_set(self):
         if self.instance is None:
             return HistoricalMetaInfoQuerySet(model=self.model)

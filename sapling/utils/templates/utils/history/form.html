@@ -1,0 +1,15 @@
+{% extends "versionutils/history/form.html" %}
+{% load url from future %}
+
+{% block version_info_extras %}
+  {{ version_info.comment }}
+  </label>
+  </td>
+  <td>
+    {% if not forloop.first %}
+    {% ifnotequal version_info.type_verbose "Deleted" %}
+        <a href="{% url revert_view slug=slug version=forloop.revcounter %}">revert</a>
+    {% endifnotequal %}
+    {% endif %}
+  </td>
+{% endblock %}

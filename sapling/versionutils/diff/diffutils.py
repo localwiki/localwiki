@@ -3,11 +3,14 @@ import difflib
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
+from django import forms
 from django.conf import settings
+from django.contrib.gis.db import models as gis_models
 
 import diff_match_patch
 import daisydiff
 from versionutils.versioning.utils import is_historical_instance
+
 
 class DiffUtilNotFound(Exception):
     """
@@ -95,6 +98,10 @@ class BaseFieldDiff():
             return '<tr><td colspan="2">(No differences found)</td></tr>'
         return '<tr><td>%s</td><td>%s</td></tr>' % (self.field1, self.field2)
 
+    def _media(self):
+        return forms.Media()
+    media = property(_media)
+
     def __str__(self):
         return self.as_html()
 
@@ -144,6 +151,7 @@ class BaseModelDiff(object):
         """
         self.model1 = model1
         self.model2 = model2
+        self._diff = None
 
     def as_dict(self):
         """
@@ -156,7 +164,7 @@ class BaseModelDiff(object):
             if field_diff_dict:
                 diffs[field] = field_diff_dict
         if not diffs:
-            return None
+            diffs = None
         return diffs
 
     def as_html(self):
@@ -190,6 +198,8 @@ class BaseModelDiff(object):
         Returns:
             A dictionary that contains all field diffs, indexed by field name.
         """
+        if self._diff is not None:
+            return self._diff
         diff = {}
         diff_utils = {}
 
@@ -219,7 +229,27 @@ class BaseModelDiff(object):
                     getattr(self.model2, field.name)
                 )
 
+        self._diff = diff
         return diff
+
+    def __getitem__(self, name):
+        "Returns a BoundField with the given name."
+        d = self.get_diff()
+        try:
+            field = d[name]
+        except KeyError:
+            raise KeyError('Key %r not found in Model Diff' % name)
+        return field
+
+    def _media(self):
+        # Add all the field diffs' media attributes together.
+        # Because the field diffs don't compute anything until their
+        # relevant get_diff() methods are called, this isn't expensive.
+        m = forms.Media()
+        for name, field_diff in self.get_diff().iteritems():
+            m += field_diff.media
+        return m
+    media = property(_media)
 
     def __str__(self):
         return self.as_html()
@@ -312,6 +342,172 @@ class ImageFieldDiff(FileFieldDiff):
         if d is None:
             return '<tr><td colspan="2">(No differences found)</td></tr>'
         return render_to_string(self.template, {'diff': d})
+
+
+class GeometryFieldDiff(BaseFieldDiff):
+    """
+    Compares two Geometry Field types and renders their difference as a
+    geometry collection.
+    """
+    template = 'diff/geometry_diff.html'
+
+    def _split_out_geometry(self, types, geoms):
+        from django.contrib.gis.geos import GeometryCollection
+
+        other_geom = []
+        split_out = []
+        if type(geoms) != GeometryCollection:
+            geoms = GeometryCollection(geoms, srid=geoms.srid)
+        for geom in geoms:
+            if type(geom) in types:
+                split_out.append(geom)
+            else:
+                other_geom.append(geom)
+        split_out = GeometryCollection(split_out, srid=geoms.srid)
+        other_geom = GeometryCollection(other_geom, srid=geoms.srid)
+
+        return (split_out, other_geom)
+
+    def get_diff(self):
+        from django.contrib.gis.geos import Point, MultiPoint, LineString
+        from django.contrib.gis.geos import LinearRing, MultiLineString
+        from django.contrib.gis.geos import GeometryCollection
+
+        if self.field1 == self.field2:
+            return None
+
+        LINE_TYPES = [LineString, LinearRing, MultiLineString]
+
+        # Separate lines from other geometry in field1.
+        lines1, other_geom1 = self._split_out_geometry(LINE_TYPES, self.field1)
+
+        # Separate lines from other geometry in field2.
+        lines2, other_geom2 = self._split_out_geometry(LINE_TYPES, self.field2)
+
+        # For lines, we do an intersection() and then filter out point
+        # intersections.
+        lines_same = []
+        for geom in lines1.intersection(lines2):
+            if type(geom) == Point or type(geom) == MultiPoint:
+                continue
+            lines_same.append(geom)
+        lines_same = GeometryCollection(lines_same, srid=self.field1.srid)
+
+        # The intersection of the other_geoms will tell us where
+        # they're the same.
+        other_geom_same = other_geom1.intersection(other_geom2)
+        # Always wrap in a GeometryCollection.
+        if not type(other_geom_same) == GeometryCollection:
+            other_geom_same = GeometryCollection(other_geom_same,
+                                                 srid=other_geom_same.srid)
+
+        # Form a collection out of the components of both.
+        same = GeometryCollection(
+            [g for g in other_geom_same] + [g for g in lines_same],
+            srid=lines_same.srid)
+
+        deleted_other_geom = other_geom1.difference(other_geom2)
+        deleted_lines = lines1.difference(lines2)
+        inserted_other_geom = other_geom2.difference(other_geom1)
+        inserted_lines = lines2.difference(lines1)
+
+        deleted = deleted_other_geom.union(deleted_lines)
+        inserted = inserted_other_geom.union(inserted_lines)
+
+        return {'same': same, 'deleted': deleted, 'inserted': inserted}
+
+    def as_html(self):
+        from django.contrib.gis.geos import Polygon, MultiPolygon
+        from olwidget.widgets import InfoMap
+
+        def _convert_to_multipolygon(field):
+            l = []
+            for p in field:
+                if type(p) == MultiPolygon:
+                    l += [item for item in p]
+                else:
+                    l.append(p)
+            return MultiPolygon(l, srid=field.srid)
+
+        POLY_TYPES = [Polygon, MultiPolygon]
+        olwidget_options = None
+        if hasattr(settings, 'OLWIDGET_DEFAULT_OPTIONS'):
+            olwidget_options = settings.OLWIDGET_DEFAULT_OPTIONS
+
+        d = self.get_diff()
+        if d is None:
+            return '<tr><td colspan="2">(No differences found)</td></tr>'
+
+        # Split out polygons from other geometries in field1, field2,
+        # same, deleted and inserted.
+        poly_field1, misc = self._split_out_geometry(POLY_TYPES, self.field1)
+        poly_field2, misc = self._split_out_geometry(POLY_TYPES, self.field2)
+        poly_same, other_geom_same = self._split_out_geometry(
+            POLY_TYPES, d['same'])
+        poly_deleted, other_geom_deleted = self._split_out_geometry(
+            POLY_TYPES, d['deleted'])
+        poly_inserted, other_geom_inserted = self._split_out_geometry(
+            POLY_TYPES, d['inserted'])
+
+        # We need to convert from GeometryCollection to MultiPolygon to
+        # compute boundary.
+        poly_field1 = _convert_to_multipolygon(poly_field1)
+        poly_field2 = _convert_to_multipolygon(poly_field2)
+
+        deleted = InfoMap([
+            (poly_same, {'html': 'Stayed the same',
+                         'style': {'stroke_opacity': '0'}}),
+            (poly_deleted,
+                {'html': 'Removed',
+                 'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
+                           'fill_opacity': '0.8', 'stroke_opacity': '0'}
+                }
+            ),
+            (poly_field1.boundary, {}),
+            (other_geom_same,
+                {'html': 'Stayed the same',
+                 'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
+                           'stroke_opacity': '1'}}
+            ),
+            (other_geom_deleted,
+                {'html': 'Removed',
+                 'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
+                           'fill_opacity': '0.8', 'stroke_opacity': '1'}
+                }
+            ),
+        ], options=olwidget_options)
+
+        inserted = InfoMap([
+            (poly_same, {'html': 'Stayed the same',
+                         'style': {'stroke_opacity': '0'}}),
+            (poly_inserted,
+                {'html': 'Added',
+                 'style': {'fill_color': '#9bff53', 'stroke_color': '#9bff53',
+                           'fill_opacity': '0.8', 'stroke_opacity': '0'}
+                }
+            ),
+            (poly_field2.boundary, {}),
+            (other_geom_same,
+                {'html': 'Stayed the same',
+                 'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
+                           'stroke_opacity': '1'}}
+            ),
+            (other_geom_inserted,
+                {'html': 'Added',
+                 'style': {'fill_color': '#9bff53', 'stroke_color': '#9bff53',
+                           'fill_opacity': '0.8', 'stroke_opacity': '1'}
+                }
+            ),
+        ], options=olwidget_options)
+
+        return render_to_string(self.template, {
+            'deleted': deleted, 'inserted': inserted
+        })
+
+    def _media(self):
+        from olwidget.widgets import InfoMap
+        return InfoMap([]).media
+    media = property(_media)
 
 
 def get_diff_operations(a, b):
@@ -471,9 +667,9 @@ def diff(object1, object2):
         DiffUtilNotFound: If there's no registered or inferred diff for
         the objects.
     """
-    if is_historical_instance(object1): 
+    if is_historical_instance(object1):
         object1 = object1.history_info._object
-    if is_historical_instance(object2): 
+    if is_historical_instance(object2):
         object2 = object2.history_info._object
     diff_util = registry.get_diff_util(object1.__class__)
     return diff_util(object1, object2)
@@ -484,3 +680,6 @@ register(models.CharField, TextFieldDiff)
 register(models.TextField, TextFieldDiff)
 register(models.FileField, FileFieldDiff)
 register(models.ImageField, ImageFieldDiff)
+
+# GeoDjango.
+register(gis_models.GeometryField, GeometryFieldDiff)

@@ -1,0 +1,93 @@
+This setup assumes we're using PostgreSQL.  You should be able to use any
+supported django database.  If you'd like to do something more
+specialized, please see the general Django install instructions here:
+
+http://docs.djangoproject.com/en/dev/topics/install/
+
+and the GeoDjango install instructions here:
+
+http://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
+-------------------------------------------------------------------------------
+
+Here's how to get this code running on Ubuntu Server Edition 10.04 LTS
+
+1.  Prerequisites: gcc, libxml2, libxslt, python-dev(the last 4 are
+needed by lxml), java(needed for daisydiff), image decoders, python-setuptools,
+virtualenv, gdal, postgresql, postgis:
+
+    $ sudo apt-get install gcc libxslt-dev python-dev
+    $ sudo apt-get install openjdk-6-jdk
+    $ sudo aptitude install libjpeg62 libjpeg62-dev zlib1g-dev
+    $ sudo apt-get install python-setuptools
+    $ sudo apt-get install gdal-bin proj
+    $ sudo apt-get install postgresql-8.4-postgis postgresql-client
+    $ sudo apt-get install python-psycopg2
+    $ sudo easy_install virtualenv
+
+NOTE: This setup assumes usage of PostgreSQL and its extension, PostGIS.  You
+could use any of the supported GeoDjango databases -- just install that
+instead of postgresql and postgis.  GeoDjango install instructions are here:
+http://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
+
+	
+2.  Set up virtualenv. For more info, see http://pypi.python.org/pypi/virtualenv
+
+Create an empty environment.  Replace ENV with whatever folder name you want.
+    $ virtualenv ENV
+    
+Activate the new environment.
+    $ source ENV/bin/activate
+    
+    (ENV)[...]$  	<-- This prompt means you've activated the ENV environment.
+                        Run all of the following commands in this environment.
+    
+
+3.  Install pip, if it's not already there.  Recent versions of virtualenv
+come with pip installed.  For more info, see http://pypi.python.org/pypi/pip
+
+Check if pip is installed.
+	(ENV)$ pip --version
+
+If you get "pip: command not found", install it.
+	(ENV)$ easy_install pip
+	
+	
+4.  Install required python packages using requirements.txt, included in this
+distribution.  pip makes this super easy.
+	(ENV)$ pip install -r INSTALL/requirements.txt
+
+
+5.  Create the database.  Here's how we do it:
+
+    (ENV)$ sudo -u postgres bash INSTALL/create_template_postgis-debian.sh
+    (ENV)$ sudo su - postgres  # Become postgres user, then:
+
+    $ createuser sapling -P  # Remember the password you enter here!
+    $ createdb -E UTF8 -T template_postgis -O sapling sapling
+    # Switch back to your normal system user now.
+
+    You may want to customize the user & privilege granting based on your
+    local setup, of course.
+
+
+5.  Copy sapling/localsettings_template.py to sapling/localsettings.py and edit
+to your liking.
+	(ENV)$ cp sapling/localsettings_template.py sapling/localsettings.py
+
+
+You are now done installing things and you can start the built-in Django
+development server, after running syncdb and collectstatic.
+	(ENV)$ python sapling/manage.py syncdb
+	(ENV)$ python sapling/manage.py collectstatic
+	(ENV)$ python sapling/manage.py runserver
+
+Note: by default, the development server listens on 127.0.0.1 only.  To access
+the development server from another machine (a potential security hazard), run:
+	(ENV)$ python sapling/manage.py runserver 0.0.0.0:8000
+	
+To enable pretty diffing and merging, start the html diff server in a new
+terminal:
+	$ cd sapling/versionutils/diff/daisydiff/
+	$ java -jar daisydiff.jar --server --port=8080
+	
+Hooray!

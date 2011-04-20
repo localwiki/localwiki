@@ -18,20 +18,22 @@
 
 <body>
   <div>
-    <header>
+    <div id="header">
       <h1>{% block header %}{% endblock %}</h1>
-    </header>
-    <nav>
+    </div>
+    <div id="nav">
       {% include "pages/nav.html" %}
-    </nav>
+    </div>
+    
+    {% block messages %}{% endblock %}
 
     <div id="main">
       {% block main %}{% endblock %}
     </div>
 
-    <footer>
+    <div id="footer">
      <p align="right" style="font-family:Symbol">&#960;</p>
-    </footer>
+    </div>
   </div>
 </body>
 </html>

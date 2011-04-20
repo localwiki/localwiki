@@ -1,0 +1,17 @@
+{% extends "maps/base.html" %}
+{% block media %}{{ form.media }}{% endblock %}
+
+{% block title %}Editing map for "{{ form.instance.page.name }}" - {{ block.super }}{% endblock %}
+
+{% block header %}Editing map for "{{ form.instance.page.name }}"{% endblock %}
+    
+{% block main %}
+    <form method="post" action="">{% csrf_token %}
+      {{ form.as_ul }}
+      <input type="submit" value="Save"/>
+      <a href="../">Cancel</a>
+    </form>
+    {% with form.instance as map %}
+      {% include "maps/editor_actions.html" %}
+    {% endwith %}
+{% endblock %}
