@@ -17,7 +17,7 @@ class MergeMixin(object):
 
     MergeMixin will check to see if anyone else has edited the
     associated model since the form was loaded.  If so, a ValidationError is
-    raised with the provided conflict_message.
+    raised with the provided conflict_error.
 
     To perform a merge in this case, simply subclass MergeMixin and provide
     your own merge() method.
@@ -36,7 +36,7 @@ class MergeMixin(object):
                 fields = ('content',)
 
     Attributes:
-        conflict_warning: The optional warning string to return alongside
+        conflict_error: The optional warning string to return alongside
             ValidationError on a conflict.
         version_date_field: Optional field name to use for figuring out
             the version date.  We infer this automatically if the associated
@@ -45,8 +45,10 @@ class MergeMixin(object):
             get_version_date() instead of using this attribute.
     """
     version_date = forms.CharField(widget=forms.HiddenInput(), required=False)
-    conflict_warning = ('Warning: someone else made changes before you.  '
+    conflict_error = ('Warning: someone else made changes before you.  '
         'Please review the changes and save again.')
+    successful_merge_msg = ('Someone else made changes before you but your '
+        'changes were successfully merged.')
 
     def __init__(self, *args, **kwargs):
         base_init = super(MergeMixin, self).__init__(*args, **kwargs)
@@ -56,6 +58,8 @@ class MergeMixin(object):
             self.initial['version_date'] = str(self.get_version_date(instance))
         # Due to mixin behavior we need to set this here, too.
         self.fields['version_date'] = self.version_date
+
+        self.performed_merge = False
         return base_init
 
     def get_version_date(self, instance):
@@ -109,14 +113,14 @@ class MergeMixin(object):
         Returns:
             A dictionary of cleaned and merged fields, similar to clean().
         """
-        raise forms.ValidationError(self.conflict_warning)
+        raise forms.ValidationError(self.conflict_error)
 
     def clean(self):
         """
         Detects when the instance is newer than the one used to generate the
         form.  Calls merge() when there is a version conflict, and if there is
-        still anerror, updates the version date in the form to give the user a
-        chance to save anyway.
+        still an error, updates the version date in the form to give the user
+        a chance to save anyway.
 
         Returns
             cleaned_data.
@@ -140,4 +144,7 @@ class MergeMixin(object):
                 self.data = self.data.copy()
                 self.data['version_date'] = current_version_date
                 raise e
+            else:
+                # Note that we performed a merge, for use elsewhere.
+                self.performed_merge = True
         return self.cleaned_data

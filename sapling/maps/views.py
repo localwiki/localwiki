@@ -1,4 +1,4 @@
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseNotFound
@@ -9,7 +9,7 @@ from olwidget.widgets import InfoMap
 
 from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin
-from utils.views import DeleteView, RevertView, HistoryView
+from utils.views import DeleteView, UpdateView, RevertView, HistoryView
 from pages.models import Page
 from pages.models import slugify
 

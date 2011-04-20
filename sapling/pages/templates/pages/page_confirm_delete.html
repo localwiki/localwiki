@@ -1,7 +1,7 @@
 {% extends "pages/page_detail.html" %}
 
-{% block messages %}
-<div id="messages">
+{% block dialog %}
+<div id="dialog">
  <form method="post" action="">{% csrf_token %}
     {{ form.as_ul }}
     <input type="submit" value="Delete"/>

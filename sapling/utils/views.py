@@ -1,6 +1,7 @@
 from django.utils.decorators import classonlymethod
+from django.contrib import messages
 from django.http import Http404, HttpResponseRedirect
-from django.views.generic import DeleteView, ListView
+from django.views.generic import DeleteView, UpdateView, ListView
 from django.views.generic.edit import FormMixin
 
 from forms import DeleteForm, RevertForm
@@ -60,6 +61,18 @@ class HistoryView(ListView):
             names = super(HistoryView, self).get_template_names()
             self.object_list.model = hist_model
         return names
+
+
+class UpdateView(UpdateView):
+    """
+    A subclass of the generic UpdateView that adds a message if the
+    associated form was successfully merged.
+    """
+    def form_valid(self, form):
+        if getattr(form, 'performed_merge', None):
+            messages.add_message(self.request, messages.WARNING,
+                                 form.successful_merge_msg)
+        return super(UpdateView, self).form_valid(form)
 
 
 class DeleteView(DeleteView, FormMixin):

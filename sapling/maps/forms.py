@@ -28,7 +28,7 @@ class MapForm(MergeMixin, CommentMixin, MapModelForm):
         if conflict:
             self.data = self.data.copy()
             self.data['geom'] = merged_content
-            raise forms.ValidationError(self.conflict_warning)
+            raise forms.ValidationError(self.conflict_error)
         else:
             yours['geom'] = merged_content
         return yours

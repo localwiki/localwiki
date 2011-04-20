@@ -1,6 +1,6 @@
 from django.views.decorators.http import require_POST
 from django.views.generic.simple import direct_to_template
-from django.views.generic import DetailView, UpdateView, ListView
+from django.views.generic import DetailView, ListView
 from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
@@ -8,7 +8,7 @@ from django.db import IntegrityError
 from ckeditor.views import ck_upload_result
 from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin
-from utils.views import DeleteView, RevertView, HistoryView
+from utils.views import UpdateView, DeleteView, RevertView, HistoryView
 from models import Page, PageImage, url_to_name
 from forms import PageForm
 

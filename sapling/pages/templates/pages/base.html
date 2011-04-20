@@ -25,9 +25,17 @@
       {% include "pages/nav.html" %}
     </div>
     
-    {% block messages %}{% endblock %}
-
     <div id="main">
+      {% block messages %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+      {% endblock %}
+      {% block dialog %}{% endblock %}
       {% block main %}{% endblock %}
     </div>
 

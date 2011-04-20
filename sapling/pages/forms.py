@@ -9,7 +9,7 @@ from versionutils.diff.daisydiff.daisydiff import daisydiff_merge
 
 
 class PageForm(MergeMixin, CommentMixin, forms.ModelForm):
-    conflict_warning = (
+    conflict_error = (
         "Warning: someone else saved this page before you.  "
         "Please resolve edit conflicts and save again."
     )
@@ -30,7 +30,7 @@ class PageForm(MergeMixin, CommentMixin, forms.ModelForm):
         if conflict:
             self.data = self.data.copy()
             self.data['content'] = merged_content
-            raise forms.ValidationError(self.conflict_warning)
+            raise forms.ValidationError(self.conflict_error)
         else:
             yours['content'] = merged_content
         return yours
