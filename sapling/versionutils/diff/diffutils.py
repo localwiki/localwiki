@@ -151,7 +151,6 @@ class BaseModelDiff(object):
             model_class: Optional parameter that indicates the
                 model class to consider when diffing.
         """
-        print "__init__", model1, model2, model_class
         self.model1 = model1
         self.model2 = model2
         if model_class:
@@ -167,8 +166,6 @@ class BaseModelDiff(object):
         """
         diffs = {}
         for field, field_diff in self.get_diff().items():
-            print "SELF.model_class", self.model_class
-            print "FIELD", field
             field_diff_dict = field_diff.as_dict()
             if field_diff_dict:
                 diffs[field] = field_diff_dict
@@ -695,7 +692,6 @@ def diff(object1, object2):
         base_class = object1.__class__
 
     diff_util = registry.get_diff_util(base_class)
-    print "GETTING DIFF UITL with base_class=", base_class
     return diff_util(object1, object2, model_class=base_class)
 
 
