@@ -26,7 +26,12 @@ class MapDetailView(Custom404Mixin, DetailView):
 
     def handler404(self, request, *args, **kwargs):
         page_slug = kwargs.get('slug')
-        page = Page.objects.get(slug=slugify(page_slug))
+        try:
+            page = Page.objects.get(slug=slugify(page_slug))
+        except Page.DoesNotExist:
+            page = Page(slug=slugify(page_slug))
+            # XXX Make a message that says "Page doesn't exist. <Create
+            # page>?"
         return HttpResponseNotFound(
             direct_to_template(request, 'maps/mapdata_new.html',
                                {'page': page})
@@ -34,7 +39,7 @@ class MapDetailView(Custom404Mixin, DetailView):
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
-        page = Page.objects.get(slug=slugify(page_slug))
+        page = get_object_or_404(Page, slug=slugify(page_slug))
         mapdata = get_object_or_404(MapData, page=page)
         return mapdata
 
@@ -56,8 +61,14 @@ class MapVersionDetailView(MapDetailView):
     context_object_name = 'mapdata'
 
     def get_object(self):
-        mapdata = super(MapVersionDetailView, self).get_object()
-        self.page = mapdata.page
+        page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
+        latest_page = page.history.most_recent()
+        # Need to set the pk on the dummy page for correct MapData lookup.
+        page.pk = latest_page.id
+        page.name = latest_page.name
+        self.page = page
+
+        mapdata = MapData(page=page)
         return mapdata.history.as_of(version=int(self.kwargs['version']))
 
     def get_object_date(self):
@@ -116,8 +127,13 @@ class MapRevertView(MapVersionDetailView, RevertView):
 
 class MapHistoryView(HistoryView):
     def get_queryset(self):
-        page = Page.objects.get(slug=slugify(self.kwargs['slug']))
-        self.mapdata = get_object_or_404(MapData, page=page)
+        page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
+        latest_page = page.history.most_recent()
+        # Need to set the pk on the dummy page for correct MapData lookup.
+        page.pk = latest_page.id
+        page.name = latest_page.name
+
+        self.mapdata = MapData(page=page)
         return self.mapdata.history.all()
 
     def get_context_data(self, **kwargs):
@@ -130,5 +146,10 @@ class MapCompareView(diff.views.CompareView):
     model = MapData
 
     def get_object(self):
-        page = Page.objects.get(slug=slugify(self.kwargs.get('slug')))
-        return get_object_or_404(MapData, page=page)
+        page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
+        latest_page = page.history.most_recent()
+        # Need to set the pk on the dummy page for correct MapData lookup.
+        page.pk = latest_page.id
+        page.name = latest_page.name
+
+        return MapData(page=page)

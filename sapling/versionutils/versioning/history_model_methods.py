@@ -233,9 +233,7 @@ def _cascade_revert(current_hm, m, **kws):
         o for o in m._meta.get_all_related_objects() if is_versioned(o.model)
     ]
     for rel_o in related_objs_versioned:
-        print "REL O", rel_o
         rel_lookup = getattr(hm, '__direct_%s_hist_set' % rel_o.var_name)
-        print "REL LOOKUP", rel_lookup
         if rel_lookup:
             rel_hms = rel_lookup.all()
         else:
@@ -249,7 +247,6 @@ def _cascade_revert(current_hm, m, **kws):
                     TYPE_REVERTED_DELETED_CASCADE]:
                 # The related object was most recently deleted via a
                 # delete cascade.  So we revert it.
-                print "DOING REVERT_TO on latest_rel_hm", latest_rel_hm, "kws:", kws
                 latest_rel_hm._from_cascade_revert = True
                 latest_rel_hm.revert_to(**kws)
 
@@ -309,12 +306,10 @@ def revert_to(hm, delete_newer_versions=False, **kws):
         # Check that none of the attached, versioned related fields are
         # currently deleted.
         for field in get_related_versioned_fields(m):
-            print "..related_versioned_fields:", field
             rel_hist = getattr(hm, field.name)
             rel_o = rel_hist.history_info._object
             latest_version = rel_o.history.most_recent()
             if latest_version.history_info.type == TYPE_DELETED:
-                print "latest is TYPE DELETED"
                 # This means the related, versioned object is
                 # currently deleted.  In this case we want to throw
                 # an exception, as reverting doesn't make any sense
@@ -327,7 +322,6 @@ def revert_to(hm, delete_newer_versions=False, **kws):
 
         current_hm = m.history.most_recent()
 
-        print "IN REVERT_TO, calling save", kws, "on m", m, m.__dict__
         m.save(reverted_to_version=hm, **kws)
 
         # If we are reverting from a deleted state to a restored state

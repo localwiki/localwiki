@@ -142,15 +142,22 @@ class BaseModelDiff(object):
     fields = None
     excludes = ()
 
-    def __init__(self, model1, model2):
+    def __init__(self, model1, model2, model_class=None):
         """
         Args:
             model1: The first model instance you want to diff.
             model2: The second model instance you want to diff,
                 against model1.
+            model_class: Optional parameter that indicates the
+                model class to consider when diffing.
         """
+        print "__init__", model1, model2, model_class
         self.model1 = model1
         self.model2 = model2
+        if model_class:
+            self.model_class = model_class
+        else:
+            self.model_class = self.model1.__class__
         self._diff = None
 
     def as_dict(self):
@@ -160,6 +167,8 @@ class BaseModelDiff(object):
         """
         diffs = {}
         for field, field_diff in self.get_diff().items():
+            print "SELF.model_class", self.model_class
+            print "FIELD", field
             field_diff_dict = field_diff.as_dict()
             if field_diff_dict:
                 diffs[field] = field_diff_dict
@@ -206,14 +215,16 @@ class BaseModelDiff(object):
         if self.fields:
             diff_fields = self.fields
         else:
-            diff_fields = [f.name for f in self.model1._meta.fields]
+            #import pdb
+            #pdb.set_trace()
+            diff_fields = [f.name for f in self.model_class._meta.fields]
 
         for name in diff_fields:
             if isinstance(name, basestring):
-                field = self.model1._meta.get_field(name)
+                field = self.model_class._meta.get_field(name)
                 diff_class = registry.get_diff_util(field.__class__)
             else:
-                field = self.model1._meta.get_field(name[0])
+                field = self.model_class._meta.get_field(name[0])
                 diff_class = name[1]
             diff_utils[field] = diff_class
 
@@ -224,10 +235,21 @@ class BaseModelDiff(object):
                 if field.name in self.excludes:
                     continue
 
-                diff[field.name] = diff_class(
-                    getattr(self.model1, field.name),
-                    getattr(self.model2, field.name)
-                )
+                obj1 = getattr(self.model1, field.name)
+                obj2 = getattr(self.model2, field.name)
+                is_model_diff = issubclass(diff_class, BaseModelDiff)
+
+                if is_model_diff:
+                    # Use the non-versioned class to do the diff on the
+                    # versioned fields.
+                    if is_historical_instance(obj1):
+                        base_class = obj1.history_info._object.__class__
+                    else:
+                        base_class = obj1.__class__
+                    diff[field.name] = diff_class(obj1, obj2,
+                        model_class=base_class)
+                else:
+                    diff[field.name] = diff_class(obj1, obj2)
 
         self._diff = diff
         return diff
@@ -668,11 +690,13 @@ def diff(object1, object2):
         the objects.
     """
     if is_historical_instance(object1):
-        object1 = object1.history_info._object
-    if is_historical_instance(object2):
-        object2 = object2.history_info._object
-    diff_util = registry.get_diff_util(object1.__class__)
-    return diff_util(object1, object2)
+        base_class = object1.history_info._object.__class__
+    else:
+        base_class = object1.__class__
+
+    diff_util = registry.get_diff_util(base_class)
+    print "GETTING DIFF UITL with base_class=", base_class
+    return diff_util(object1, object2, model_class=base_class)
 
 
 # Built-in diff utils provided for some of the Django field types.

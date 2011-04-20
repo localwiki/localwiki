@@ -4,8 +4,8 @@
   {% include "versionutils/history/media.html" %}
 {% endblock %}
 
-{% block title %}Previous versions of page "{{ mapdata.page.name }}" - {{ block.super }}{% endblock %}
-{% block header %}Previous versions of page "{{ mapdata.page.name }}"{% endblock %}
+{% block title %}Previous versions of page "{{ page.name }}" - {{ block.super }}{% endblock %}
+{% block header %}Previous versions of page "{{ page.name }}"{% endblock %}
 
 {% block main %}
   {% include "utils/history/form.html" %}

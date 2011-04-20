@@ -4,7 +4,6 @@ from django.views.generic import DetailView, UpdateView, ListView
 from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
-from django.shortcuts import get_object_or_404
 
 from ckeditor.views import ck_upload_result
 from versionutils import diff
@@ -23,7 +22,8 @@ class PageDetailView(Custom404Mixin, DetailView):
     def handler404(self, request, *args, **kwargs):
         return HttpResponseNotFound(
             direct_to_template(request, 'pages/page_new.html',
-                               {'name': url_to_name(kwargs['original_slug'])})
+                               {'name': url_to_name(kwargs['original_slug']),
+                                'page': Page(slug=kwargs['slug'])})
         )
 
     def get_context_data(self, **kwargs):
@@ -36,7 +36,7 @@ class PageVersionDetailView(PageDetailView):
     template_name = 'pages/page_detail.html'
 
     def get_object(self):
-        page = super(PageVersionDetailView, self).get_object()
+        page = Page(slug=self.kwargs['slug'])
         return page.history.as_of(version=int(self.kwargs['version']))
 
     def get_context_data(self, **kwargs):
@@ -71,6 +71,10 @@ class PageRevertView(RevertView):
     model = Page
     context_object_name = 'page'
 
+    def get_object(self):
+        page = Page(slug=self.kwargs['slug'])
+        return page.history.as_of(version=int(self.kwargs['version']))
+
     def get_success_url(self):
         # Redirect back to the page.
         return reverse('show-page', args=[self.kwargs.get('original_slug')])
@@ -78,8 +82,11 @@ class PageRevertView(RevertView):
 
 class PageHistoryView(HistoryView):
     def get_queryset(self):
-        self.page = get_object_or_404(Page, slug__exact=self.kwargs['slug'])
-        return self.page.history.all()
+        all_page_history = Page(slug=self.kwargs['slug']).history.all()
+        # We set self.page to the most recent historical instance of the
+        # page.
+        self.page = all_page_history[0]
+        return all_page_history
 
     def get_context_data(self, **kwargs):
         context = super(PageHistoryView, self).get_context_data(**kwargs)
@@ -102,6 +109,9 @@ class PageFilesView(ListView):
 
 class PageCompareView(diff.views.CompareView):
     model = Page
+
+    def get_object(self):
+        return Page(slug=self.kwargs['slug'])
 
 
 @require_POST

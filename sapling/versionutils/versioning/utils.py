@@ -107,15 +107,25 @@ def unique_lookup_values_for(m):
             # NON-historical object, m.
 
             # Get the unique fields of the related model.
-            uniques = {}
+            parent_model = field.related.parent_model
+            try:
+                parent_instance = getattr(m, field.name)
+            except parent_model.DoesNotExist:
+                # parent_instance is currently deleted.  Let's look up
+                # the most recent historical version and use that to get
+                # the unique fields.
+                pk_name = parent_model._meta.pk.name
+                parent_hist_instance = parent_model.history.filter(
+                    **{pk_name: getattr(m, field.attname)})[0]
+                parent_instance = parent_hist_instance.history_info._object
 
-            parent_instance = getattr(m, field.name)
             parent_unique = unique_lookup_values_for(parent_instance)
             if not parent_unique:
                 # E.g. {'id': 3}
                 parent_pk_name = parent_instance._meta.pk.name
                 parent_unique = {parent_pk_name: parent_instance.pk}
 
+            uniques = {}
             for parent_k, parent_v in parent_unique.iteritems():
                 # Create something like {'page__id': 3} or
                 # {'page__slug': 'front page'}

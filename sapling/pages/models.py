@@ -17,7 +17,7 @@ allowed_tags = ['p', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3', 'h4',
 
 
 class Page(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False, unique=True)
     content = HTML5FragmentField(allowed_elements=allowed_tags)
     history = TrackChanges()
@@ -35,6 +35,8 @@ class Page(models.Model):
             raise ValidationError('Page name is invalid.')
 
     def pretty_slug(self):
+        if not self.name:
+            return self.slug
         return name_to_url(self.name)
     pretty_slug = property(pretty_slug)
 
