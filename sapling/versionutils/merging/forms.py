@@ -38,6 +38,8 @@ class MergeMixin(object):
     Attributes:
         conflict_error: The optional warning string to return alongside
             ValidationError on a conflict.
+        merge_success_msg: The optional string to send as a message if a
+            merge successfully occurs.
         version_date_field: Optional field name to use for figuring out
             the version date.  We infer this automatically if the associated
             model is versioned using versioning.TrackChanges or has an
@@ -47,7 +49,7 @@ class MergeMixin(object):
     version_date = forms.CharField(widget=forms.HiddenInput(), required=False)
     conflict_error = ('Warning: someone else made changes before you.  '
         'Please review the changes and save again.')
-    successful_merge_msg = ('Someone else made changes before you but your '
+    merge_success_msg = ('Someone else made changes before you but your '
         'changes were successfully merged.')
 
     def __init__(self, *args, **kwargs):

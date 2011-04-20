@@ -68,10 +68,17 @@ class UpdateView(UpdateView):
     A subclass of the generic UpdateView that adds a message if the
     associated form was successfully merged.
     """
+    success_msg = ("Thank you for your changes. "
+                   "Your attention to detail is appreciated.")
+
     def form_valid(self, form):
         if getattr(form, 'performed_merge', None):
             messages.add_message(self.request, messages.WARNING,
-                                 form.successful_merge_msg)
+                form.merge_success_msg)
+        else:
+            messages.add_message(self.request, messages.SUCCESS,
+                self.success_msg)
+
         return super(UpdateView, self).form_valid(form)
 
 
@@ -81,12 +88,15 @@ class DeleteView(DeleteView, FormMixin):
     with the delete().
     """
     form_class = DeleteForm
+    success_msg = 'Successfully deleted!'
 
     def delete(self, *args, **kwargs):
         form = self.get_form(self.get_form_class())
         if form.is_valid():
             self.object = self.get_object()
             self.object.delete(comment=form.cleaned_data.get('comment'))
+            messages.add_message(self.request, messages.SUCCESS,
+                                 self.success_msg)
         return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):
@@ -107,6 +117,7 @@ class RevertView(DeleteView):
     """
     template_name_suffix = '_confirm_revert'
     form_class = RevertForm
+    success_msg = 'Reverted to version %(version_number)s.'
 
     def __init__(self, *args, **kwargs):
         base_init = super(RevertView, self).__init__(*args, **kwargs)
@@ -124,6 +135,9 @@ class RevertView(DeleteView):
         if form.is_valid():
             self.object = self.get_object()
             self.object.revert_to(comment=form.cleaned_data.get('comment'))
+            version_number = self.object.history_info.version_number()
+            messages.add_message(self.request, messages.SUCCESS,
+                self.success_msg % {'version_number': version_number})
         return HttpResponseRedirect(self.get_success_url())
 
     def delete(self, *args, **kwargs):
