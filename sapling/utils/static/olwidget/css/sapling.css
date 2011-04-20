@@ -47,6 +47,36 @@
     font-size: 1.2em;
 }
 
+/* Our editing toolbar instead of olwidget default */
+.olControlEditingToolbar .olControlModifyFeatureItemInactive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -48px 0px;
+}
+.olControlEditingToolbar .olControlModifyFeatureItemActive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -24px 0px;
+}
+.olControlEditingToolbar .olControlClearFeaturesItemInactive,
+.olControlEditingToolbar .olControlClearFeaturesItemActive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -0px 0px;
+}
+.olControlEditingToolbar .olControlUndoItemActive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -72px 0px;
+}
+.olControlEditingToolbar .olControlUndoItemInactive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -96px 0px;
+}
+.olControlEditingToolbar .olControlRedoItemActive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -120px 0px;
+}
+.olControlEditingToolbar .olControlRedoItemInactive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -144px 0px;
+}
+.olControlEditingToolbar .olwidgetDeleteVertexItemActive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -168px 0px;
+}
+.olControlEditingToolbar .olwidgetDeleteVertexItemInactive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -192px 0px;
+}
+
 /* Hide the "Editing map" message */
 .olwidgetEditableLayerSwitcher .maxmin {
     display: none;
