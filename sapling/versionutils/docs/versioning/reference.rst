@@ -27,7 +27,7 @@ Reference
     
     Then run ``manage.py syncdb`` and you’re set!
 
-    .. method:: most_recent():
+    .. method:: most_recent()
 
         This method must be called via an instance of the model rather
         than from the class.  E.g. ``m.history.most_recent()`` rather
@@ -40,7 +40,7 @@ Reference
         Raises:
             DoesNotExist: Instance has no historical record. 
     
-    .. method:: as_of([date=None][, version=None]):
+    .. method:: as_of([date=None][, version=None])
 
         This method must be called via an instance of the model rather
         than from the class.  E.g. ``m.history.as_of(..)`` rather
@@ -145,3 +145,77 @@ A historical instance represents a model at some point in time.  A historical mo
 ************************************
 
 .. autoclass:: versionutils.versioning.forms.CommentMixin
+
+************************************
+:mod:`versionutils.versioning.views`
+************************************
+
+A set of class-based views that make working with versioned models a
+little more generic.  These views are modeled after django's
+class-based generic views.
+
+.. autoclass:: versionutils.versioning.views.UpdateView
+
+    .. method:: success_msg()
+
+       Returns a string that gets sent to
+       :mod:`django.contrib.messages`' :func:`add_message()` when the
+       model is successfully saved.
+       
+.. autoclass:: versionutils.versioning.views.DeleteView
+
+    .. method:: success_msg()
+
+       Returns a string that gets sent to
+       :mod:`django.contrib.messages`' :func:`add_message()` when the
+       model is successfully deleted.
+
+    .. attribute:: template_name_suffix
+
+        By default this is `_confirm_delete`.
+
+    .. attribute:: form_class
+
+        By default this is `DeleteForm`, which can be found in
+        `versioning.forms`.
+
+.. autoclass:: versionutils.versioning.views.RevertView
+    
+    .. attribute:: template_name_suffix
+
+        By default this is `_confirm_revert`.
+
+    .. attribute:: form_class
+
+        By default this is `RevertForm`, which can be found in
+        `versioning.forms`.
+
+.. class:: versionutils.versioning.views.HistoryView
+
+    A subclass of django.views.generic.ListView.
+
+    .. method:: get_queryset()
+
+        You need to provide this method.  It should return a queryset
+        containing historical instances.  For instance::
+
+            def get_queryset(self):
+                all_page_history = Page(slug=self.kwargs['slug']).history.all()
+                # We set self.page to the most recent historical instance of the
+                # page.
+                self.page = all_page_history[0]
+                return all_page_history
+
+    .. attribute:: context_object_name
+       
+        By default this is `version_list`.
+
+    .. attribute:: template_name_suffix
+       
+        By default this is `_history`.
+    
+    .. attribute:: revert_view_name
+
+        By default we look for a view with the name
+        `revert-<object name>`.  If you provide a string for
+        `revert_view_name` we'll use that as our revert view.

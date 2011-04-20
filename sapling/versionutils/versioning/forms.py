@@ -29,3 +29,23 @@ class CommentMixin(object):
         save_with['comment'] = self.cleaned_data.get('comment')
         self.instance._save_with = save_with
         return super(CommentMixin, self).save(commit=commit)
+
+
+class DeleteForm(forms.Form):
+    """
+    The default form displayed when using versioning.views.DeleteView.
+
+    Contains a single comment field.
+    """
+    comment = forms.CharField(max_length=150, required=False,
+        label="Reason for deletion")
+
+
+class RevertForm(forms.Form):
+    """
+    The default form displayed when using versioning.views.RevertView.
+
+    Contains a single comment field.
+    """
+    comment = forms.CharField(max_length=150, required=False,
+        label="Reason for revert")

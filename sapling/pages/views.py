@@ -7,8 +7,9 @@ from django.db import IntegrityError
 
 from ckeditor.views import ck_upload_result
 from versionutils import diff
+from versionutils.versioning.views import UpdateView, DeleteView
+from versionutils.versioning.views import RevertView, HistoryView
 from utils.views import Custom404Mixin, CreateObjectMixin
-from utils.views import UpdateView, DeleteView, RevertView, HistoryView
 from models import Page, PageImage, url_to_name
 from forms import PageForm
 

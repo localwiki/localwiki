@@ -184,7 +184,7 @@ template: An optional filename of the template to use when rendering.</dd>
 
 <dl class="class">
 <dt id="versionutils.diff.BaseModelDiff">
-<em class="property">class </em><tt class="descclassname">versionutils.diff.</tt><tt class="descname">BaseModelDiff</tt><big>(</big><em>model1</em>, <em>model2</em><big>)</big><a class="headerlink" href="#versionutils.diff.BaseModelDiff" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">versionutils.diff.</tt><tt class="descname">BaseModelDiff</tt><big>(</big><em>model1</em>, <em>model2</em>, <em>model_class=None</em><big>)</big><a class="headerlink" href="#versionutils.diff.BaseModelDiff" title="Permalink to this definition">¶</a></dt>
 <dd><p>Diff util used for comparing two model instances.  By default, it will
 compare the instances on all of their fields, except AutoFields.
 To customize which fields to compare, subclass BaseModelDiff, setting the

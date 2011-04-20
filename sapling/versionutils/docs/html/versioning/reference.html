@@ -73,8 +73,8 @@ track changes to the model.</p>
 </div>
 <p>Then run <tt class="docutils literal"><span class="pre">manage.py</span> <span class="pre">syncdb</span></tt> and you’re set!</p>
 <dl class="method">
-<dt>
-<tt class="descname">most_recent():</tt></dt>
+<dt id="TrackChanges.most_recent">
+<tt class="descname">most_recent</tt><big>(</big><big>)</big><a class="headerlink" href="#TrackChanges.most_recent" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method must be called via an instance of the model rather
 than from the class.  E.g. <tt class="docutils literal"><span class="pre">m.history.most_recent()</span></tt> rather
 than <tt class="docutils literal"><span class="pre">Model.history.most_recent()</span></tt>.</p>
@@ -88,8 +88,8 @@ instance</em></a>.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt>
-<tt class="descname">as_of([date=None][, version=None]):</tt></dt>
+<dt id="TrackChanges.as_of">
+<tt class="descname">as_of</tt><big>(</big><em>[date=None][, version=None]</em><big>)</big><a class="headerlink" href="#TrackChanges.as_of" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method must be called via an instance of the model rather
 than from the class.  E.g. <tt class="docutils literal"><span class="pre">m.history.as_of(..)</span></tt> rather
 than <tt class="docutils literal"><span class="pre">Model.history.as_of(..)</span></tt>.</p>
@@ -231,6 +231,132 @@ subclasses list.  Example:</p>
 </dd></dl>
 
 </div>
+<div class="section" id="versionutils-versioning-views">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">versionutils.versioning.views</span></tt><a class="headerlink" href="#versionutils-versioning-views" title="Permalink to this headline">¶</a></h2>
+<p>A set of class-based views that make working with versioned models a
+little more generic.  These views are modeled after django&#8217;s
+class-based generic views.</p>
+<dl class="class">
+<dt id="versionutils.versioning.views.UpdateView">
+<em class="property">class </em><tt class="descclassname">versionutils.versioning.views.</tt><tt class="descname">UpdateView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#versionutils.versioning.views.UpdateView" title="Permalink to this definition">¶</a></dt>
+<dd><p>A subclass of django.views.generic.UpdateView that that displays a
+form for editing an existing object, setting a message if the form
+was successfully merged, and redisplaying the form with validation
+errors (if there are any) and saving changes to the object. This
+uses a form automatically generated from the object&#8217;s model class
+(unless a form class is manually specified).</p>
+<p>You can use this with or without versioning.forms.MergeMixin forms.</p>
+<dl class="method">
+<dt id="UpdateView.success_msg">
+<tt class="descname">success_msg</tt><big>(</big><big>)</big><a class="headerlink" href="#UpdateView.success_msg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string that gets sent to
+<tt class="xref py py-mod docutils literal"><span class="pre">django.contrib.messages</span></tt>&#8216; <tt class="xref py py-func docutils literal"><span class="pre">add_message()</span></tt> when the
+model is successfully saved.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="versionutils.versioning.views.DeleteView">
+<em class="property">class </em><tt class="descclassname">versionutils.versioning.views.</tt><tt class="descname">DeleteView</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#versionutils.versioning.views.DeleteView" title="Permalink to this definition">¶</a></dt>
+<dd><p>A subclass of django.views.generic.DeleteView. A view that displays
+a confirmation page with a comment form and deletes an existing
+object, passing along the comment to the historical instance. The
+given object will only be deleted if the request method is POST. If
+this view is fetched via GET, it will display a confirmation page.</p>
+<p>The delete confirmation page displayed to a GET request uses a
+template_name_suffix of &#8216;_confirm_delete&#8217;.</p>
+<dl class="method">
+<dt id="DeleteView.success_msg">
+<tt class="descname">success_msg</tt><big>(</big><big>)</big><a class="headerlink" href="#DeleteView.success_msg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string that gets sent to
+<tt class="xref py py-mod docutils literal"><span class="pre">django.contrib.messages</span></tt>&#8216; <tt class="xref py py-func docutils literal"><span class="pre">add_message()</span></tt> when the
+model is successfully deleted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="DeleteView.template_name_suffix">
+<tt class="descname">template_name_suffix</tt><a class="headerlink" href="#DeleteView.template_name_suffix" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default this is <cite>_confirm_delete</cite>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="DeleteView.form_class">
+<tt class="descname">form_class</tt><a class="headerlink" href="#DeleteView.form_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default this is <cite>DeleteForm</cite>, which can be found in
+<cite>versioning.forms</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="versionutils.versioning.views.RevertView">
+<em class="property">class </em><tt class="descclassname">versionutils.versioning.views.</tt><tt class="descname">RevertView</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#versionutils.versioning.views.RevertView" title="Permalink to this definition">¶</a></dt>
+<dd><p>A view for reverting an object retrieved with self.get_object, with
+a response rendered by template. We display a confirmation page
+with a comment form and deletes an existing object, passing along
+the comment to the historical instance. The given object will only
+be deleted if the request method is POST. If this view is fetched
+via GET, it will display a confirmation page.</p>
+<p>The delete confirmation page displayed to a GET request uses a
+template_name_suffix of &#8216;_confirm_revert&#8217;.</p>
+<dl class="attribute">
+<dt id="RevertView.template_name_suffix">
+<tt class="descname">template_name_suffix</tt><a class="headerlink" href="#RevertView.template_name_suffix" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default this is <cite>_confirm_revert</cite>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="RevertView.form_class">
+<tt class="descname">form_class</tt><a class="headerlink" href="#RevertView.form_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default this is <cite>RevertForm</cite>, which can be found in
+<cite>versioning.forms</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="versionutils.versioning.views.HistoryView">
+<em class="property">class </em><tt class="descclassname">versionutils.versioning.views.</tt><tt class="descname">HistoryView</tt><a class="headerlink" href="#versionutils.versioning.views.HistoryView" title="Permalink to this definition">¶</a></dt>
+<dd><p>A subclass of django.views.generic.ListView.</p>
+<dl class="method">
+<dt id="versionutils.versioning.views.HistoryView.get_queryset">
+<tt class="descname">get_queryset</tt><big>(</big><big>)</big><a class="headerlink" href="#versionutils.versioning.views.HistoryView.get_queryset" title="Permalink to this definition">¶</a></dt>
+<dd><p>You need to provide this method.  It should return a queryset
+containing historical instances.  For instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">all_page_history</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">slug</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;slug&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="c"># We set self.page to the most recent historical instance of the</span>
+    <span class="c"># page.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">page</span> <span class="o">=</span> <span class="n">all_page_history</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">all_page_history</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="versionutils.versioning.views.HistoryView.context_object_name">
+<tt class="descname">context_object_name</tt><a class="headerlink" href="#versionutils.versioning.views.HistoryView.context_object_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default this is <cite>version_list</cite>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="versionutils.versioning.views.HistoryView.template_name_suffix">
+<tt class="descname">template_name_suffix</tt><a class="headerlink" href="#versionutils.versioning.views.HistoryView.template_name_suffix" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default this is <cite>_history</cite>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="versionutils.versioning.views.HistoryView.revert_view_name">
+<tt class="descname">revert_view_name</tt><a class="headerlink" href="#versionutils.versioning.views.HistoryView.revert_view_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default we look for a view with the name
+<cite>revert-&lt;object name&gt;</cite>.  If you provide a string for
+<cite>revert_view_name</cite> we&#8217;ll use that as our revert view.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -247,6 +373,7 @@ subclasses list.  Example:</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#versionutils-versioning-forms"><tt class="docutils literal"><span class="pre">versionutils.versioning.forms</span></tt></a></li>
+<li><a class="reference internal" href="#versionutils-versioning-views"><tt class="docutils literal"><span class="pre">versionutils.versioning.views</span></tt></a></li>
 </ul>
 </li>
 </ul>

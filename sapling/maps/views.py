@@ -9,7 +9,8 @@ from olwidget.widgets import InfoMap
 
 from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin
-from utils.views import DeleteView, UpdateView, RevertView, HistoryView
+from versionutils.versioning.views import DeleteView, UpdateView
+from versionutils.versioning.views import RevertView, HistoryView
 from pages.models import Page
 from pages.models import slugify
 
