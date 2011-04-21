@@ -101,6 +101,20 @@ class ModelDiffTest(TestCase):
         o2.save()
 
 
+class FakeFieldDiffTest(TestCase):
+    def test_property_diff(self):
+        """
+        The "fields" included in a diff don't have to be fields at all and can
+        be properties, for example, as long as a custom ModelDiff is registered
+        which dictates what FieldDiff to use for the "field".
+        """
+        diff.register(FakeFieldModel, FakeFieldModelDiff)
+        a = FakeFieldModel(a='abc')
+        b = FakeFieldModel(a='def')
+        d = diff.diff(a, b)
+        self.assertTrue(isinstance(d['b'], (TextFieldDiff,)))
+
+
 class BaseFieldDiffTest(TestCase):
     test_class = BaseFieldDiff
 

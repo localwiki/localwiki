@@ -217,40 +217,37 @@ class BaseModelDiff(object):
         for name in diff_fields:
             if isinstance(name, basestring):
                 field = self.model_class._meta.get_field(name)
-                diff_class = registry.get_diff_util(field.__class__)
-            else:
-                field = self.model_class._meta.get_field(name[0])
-                diff_class = name[1]
-            diff_utils[field] = diff_class
-
-        for field, diff_class in diff_utils.items():
-            if not (isinstance(field, (models.AutoField,
-                                       ))
-                    ):
-                if field.name in self.excludes:
+                if isinstance(field, (models.AutoField,)):
                     continue
+                diff_utils[name] = registry.get_diff_util(field.__class__)
+            else:
+                diff_utils[name[0]] = name[1]
 
-                obj1 = getattr(self.model1, field.name)
-                obj2 = getattr(self.model2, field.name)
-                is_model_diff = issubclass(diff_class, BaseModelDiff)
+        for field_name, diff_class in diff_utils.items():
+            if field_name in self.excludes:
+                continue
 
-                if is_model_diff:
-                    # Use the non-versioned class to do the diff on the
-                    # versioned fields.
-                    if is_historical_instance(obj1):
-                        base_class = obj1.history_info._object.__class__
-                    else:
-                        base_class = obj1.__class__
-                    diff[field.name] = diff_class(obj1, obj2,
-                        model_class=base_class)
+            obj1 = getattr(self.model1, field_name)
+            obj2 = getattr(self.model2, field_name)
+            is_model_diff = issubclass(diff_class, BaseModelDiff)
+
+            if is_model_diff:
+                # Use the non-versioned class to do the diff on the
+                # versioned fields.
+                if is_historical_instance(obj1):
+                    base_class = obj1.history_info._object.__class__
                 else:
-                    diff[field.name] = diff_class(obj1, obj2)
+                    base_class = obj1.__class__
+                diff[field_name] = diff_class(obj1, obj2,
+                    model_class=base_class)
+            else:
+                diff[field_name] = diff_class(obj1, obj2)
 
         self._diff = diff
         return diff
 
     def __getitem__(self, name):
-        "Returns a BoundField with the given name."
+        "Returns a FieldDiff with the given name."
         d = self.get_diff()
         try:
             field = d[name]

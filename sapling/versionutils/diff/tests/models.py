@@ -35,10 +35,24 @@ class M3(models.Model):
 class M4ForeignKey(models.Model):
     a = models.ForeignKey('M1')
 
+
 class M5Versioned(models.Model):
     a = models.CharField(max_length=200)
 
     history = TrackChanges()
+
+
+class FakeFieldModel(models.Model):
+    a = models.CharField(max_length=200)
+
+    def b(self):
+        return 'a is ' + self.a
+    b = property(b)
+
+
+class FakeFieldModelDiff(diff.BaseModelDiff):
+    fields = (('b', diff.TextFieldDiff),)
+
 
 #class M3BigInteger(models.Model):
 #    a = models.CharField(max_length=200)
