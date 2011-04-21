@@ -212,8 +212,6 @@ class BaseModelDiff(object):
         if self.fields:
             diff_fields = self.fields
         else:
-            #import pdb
-            #pdb.set_trace()
             diff_fields = [f.name for f in self.model_class._meta.fields]
 
         for name in diff_fields:
