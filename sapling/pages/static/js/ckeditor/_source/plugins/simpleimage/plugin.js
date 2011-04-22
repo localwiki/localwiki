@@ -32,6 +32,12 @@ CKEDITOR.plugins.add( 'simpleimage',
 				if ( element.is( 'img' ) && !element.getAttribute( '_cke_realelement' ) )
 					evt.data.dialog = 'simpleimage';
 			});
+		// outerHTML plugin for jQuery
+		jQuery.fn.outerHTML = function(s) {
+		return (s)
+		? this.before(s).remove()
+		: jQuery('<p>').append(this.eq(0).clone()).html();
+		};
 		var showCaption = function (img) {
 		    var frame = img.getAscendant('span');
 		    if(frame)
@@ -49,8 +55,10 @@ CKEDITOR.plugins.add( 'simpleimage',
 		
 		editor.on('instanceReady', function( evt )
 		{
+			var editor = evt.editor;
+			
 		    // click on image -> add placeholder caption
-		    evt.editor.document.on('click', function(evt){
+		    editor.document.on('click', function(evt){
 		        var element = evt.data.getTarget();
 		        if(element.is('img'))
 		        {
@@ -61,9 +69,35 @@ CKEDITOR.plugins.add( 'simpleimage',
 		          jQuery(evt.sender.$).find('.editor_temp').remove();
 		        }
 		    });
+			
+		   	jQuery(editor.document.$.body).bind('dragstart', function(evt){
+		   		editor.fire('saveSnapshot');
+		   		var img = jQuery(evt.target);
+	   			if(!img.is('img'))
+	   				return;
+	   			var oldFrame = img.parent('span.image_frame');
+	   			var oldHtml = oldFrame.length ? oldFrame.outerHTML() : img.outerHTML();
+	   			img.attr('dragged', '1');
+	   			var moveImage = function(evt){
+	   				var dropped = jQuery('img[dragged="1"]', editor.document.$);
+	   				if(dropped.length)
+	   				{
+	   					if(dropped[0] != img[0])
+	   						oldFrame.remove();
+	   					// FF seems to copy frame span also
+	   					var frame = dropped.parent('span.image_frame');
+	   					if(frame.length)
+	   						dropped = frame;
+	   					dropped.outerHTML(oldHtml);
+	   				}
+	   				jQuery(this).unbind('dragend');
+	   			};
+	   			jQuery(evt.target).bind('dragend', moveImage)
+	   					 .parent().bind('dragend', moveImage);
+	   		});
 		    
 		    // delete image -> delete its parent frame
-		    evt.editor.document.on( 'keydown', function( evt )
+		    editor.document.on( 'keydown', function( evt )
             {
                 var keyCode = evt.data.getKeystroke();
 
