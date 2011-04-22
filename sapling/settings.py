@@ -59,6 +59,11 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 # STATIC_URL followed by 'admin/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
+AUTHENTICATION_BACKENDS = (
+    'sapling.users.backends.CaseInsensitiveModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 OL_API = STATIC_URL + 'openlayers/OpenLayers.js'
 OLWIDGET_CSS = '%solwidget/css/sapling.css' % STATIC_URL
 CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js' % STATIC_URL
@@ -98,6 +103,7 @@ INSTALLED_APPS = (
 
     # Other third-party apps
     'olwidget',
+    'registration',
     'sorl.thumbnail',
 
     # Our apps
@@ -106,6 +112,7 @@ INSTALLED_APPS = (
     'ckeditor',
     'pages',
     'maps',
+    'users',
     'utils',
 )
 

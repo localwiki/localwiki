@@ -25,11 +25,7 @@
       <a href="{{ forloop.revcounter }}">{{ version_info.date }}</a>
       {{ version_info.type_verbose }} by
       {% if version_info.user %}
-        {% if version_info.user.get_absolute_url %}
-          <a href="{{ version_info.user.get_absolute_url }}">{{ version_info.user }}</a>
-        {% else %}
-          {{ version_info.user }}
-        {% endif %}
+        <a href="{{ version_info.user.get_absolute_url }}">{{ version_info.user }}</a>
       {% else %}
         {{ version_info.user_ip }}
       {% endif %}
