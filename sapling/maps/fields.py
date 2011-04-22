@@ -45,62 +45,6 @@ def flatten_collection(geoms):
     return GeometryCollection(flat_geoms, srid=geoms.srid)
 
 
-class CollectionDescriptor(object):
-    def __init__(self, field):
-        self._field = field
-
-    def __get__(self, instance=None, owner=None):
-        if instance is None:
-            raise AttributeError(
-                "The '%s' attribute can only be accessed from %s instances."
-                % (self._field.name, owner.__name__))
-
-        set_field_value = instance.__dict__.get(
-            '_explicit_set_%s' % self._field.attname, None)
-        if set_field_value:
-            # Return the value they set for the field rather than our
-            # constructed GeometryCollection.
-            return set_field_value
-
-        enum_points, enum_lines, enum_polys = [], [], []
-        points = getattr(instance, self._field.points_name)
-        if points:
-            enum_points = [p for p in points]
-        lines = getattr(instance, self._field.lines_name)
-        if lines:
-            enum_lines = [l for l in lines]
-        polys = getattr(instance, self._field.polys_name)
-        if polys:
-            enum_polys = [p for p in polys]
-
-        geoms = enum_points + enum_lines + enum_polys
-        return GeometryCollection(geoms, srid=self._field.srid)
-
-    def __set__(self, obj, value):
-        # The OGC Geometry type of the field.
-        gtype = self._field.geom_type
-
-        # The geometry type must match that of the field -- unless the
-        # general GeometryField is used.
-        if (isinstance(value, GeometryCollection) and
-            (str(value.geom_type).upper() == gtype or gtype == 'GEOMETRY')):
-            # Assigning the SRID to the geometry.
-            if value.srid is None:
-                value.srid = self._field.srid
-        elif value is None:
-            pass
-        elif isinstance(value, (basestring, buffer)):
-            # Set with WKT, HEX, or WKB
-            value = GEOSGeometry(value, srid=self._field.srid)
-        else:
-            raise TypeError(
-                'cannot set %s CollectionFrom with value of type: %s' %
-                (obj.__class__.__name__, type(value)))
-
-        obj.__dict__['_explicit_set_%s' % self._field.attname] = value
-        return value
-
-
 class CollectionFrom(models.GeometryCollectionField):
     """
     Creates a GeometryCollection pseudo-field from the provided
@@ -192,6 +136,62 @@ class CollectionFrom(models.GeometryCollectionField):
         # Set ourself to None to avoid saving any data in our column.
         setattr(instance, self.name, None)
         instance.__dict__[self.name] = None
+
+
+class CollectionDescriptor(object):
+    def __init__(self, field):
+        self._field = field
+
+    def __get__(self, instance=None, owner=None):
+        if instance is None:
+            raise AttributeError(
+                "The '%s' attribute can only be accessed from %s instances."
+                % (self._field.name, owner.__name__))
+
+        set_field_value = instance.__dict__.get(
+            '_explicit_set_%s' % self._field.attname, None)
+        if set_field_value:
+            # Return the value they set for the field rather than our
+            # constructed GeometryCollection.
+            return set_field_value
+
+        enum_points, enum_lines, enum_polys = [], [], []
+        points = getattr(instance, self._field.points_name)
+        if points:
+            enum_points = [p for p in points]
+        lines = getattr(instance, self._field.lines_name)
+        if lines:
+            enum_lines = [l for l in lines]
+        polys = getattr(instance, self._field.polys_name)
+        if polys:
+            enum_polys = [p for p in polys]
+
+        geoms = enum_points + enum_lines + enum_polys
+        return GeometryCollection(geoms, srid=self._field.srid)
+
+    def __set__(self, obj, value):
+        # The OGC Geometry type of the field.
+        gtype = self._field.geom_type
+
+        # The geometry type must match that of the field -- unless the
+        # general GeometryField is used.
+        if (isinstance(value, GeometryCollection) and
+            (str(value.geom_type).upper() == gtype or gtype == 'GEOMETRY')):
+            # Assigning the SRID to the geometry.
+            if value.srid is None:
+                value.srid = self._field.srid
+        elif value is None:
+            pass
+        elif isinstance(value, (basestring, buffer)):
+            # Set with WKT, HEX, or WKB
+            value = GEOSGeometry(value, srid=self._field.srid)
+        else:
+            raise TypeError(
+                'cannot set %s CollectionFrom with value of type: %s' %
+                (obj.__class__.__name__, type(value)))
+
+        obj.__dict__['_explicit_set_%s' % self._field.attname] = value
+        return value
 
 
 class FlatCollectionFrom(CollectionFrom):
