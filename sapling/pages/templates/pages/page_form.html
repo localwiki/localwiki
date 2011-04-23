@@ -3,9 +3,9 @@
 
 {% block title %}Editing page "{{ form.instance.name }}" - {{ block.super }}{% endblock %}
 
-{% block header %}Editing page "{{ form.instance.name }}"{% endblock %}
+{% block header_title %}Editing page "{{ form.instance.name }}"{% endblock %}
     
-{% block main %}
+{% block content %}
     <form method="post" action="">{% csrf_token %}
       {{ form.as_ul }}
       <input type="submit" value="Save"/>
