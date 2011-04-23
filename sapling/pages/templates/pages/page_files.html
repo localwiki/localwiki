@@ -14,9 +14,9 @@
     }
 </style>
 {% endblock %}
-{% block header %}Files attached to this page: {% endblock %}
+{% block header_title %}Files attached to this page: {% endblock %}
 
-{% block main %}
+{% block content %}
   <ul class="file_list">
   {% for file in file_list %}
     <li>{% thumbnail file.file "32x32" as im %}

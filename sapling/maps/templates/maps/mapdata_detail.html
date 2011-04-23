@@ -1,11 +1,11 @@
 {% extends "maps/base.html" %}
 
-{% block media %}{{ map.media }}{% endblock %}
+{% block media %}{{block.super}}{{ map.media }}{% endblock %}
 
 {% block title %}Map for {{ page.name }} - {{ block.super }}{% endblock %}
-{% block header %}Map for {{ page.name }}{% endblock %}
+{% block header_title %}Map for {{ page.name }}{% endblock %}
 
-{% block main %}
+{% block content %}
     {% if show_revision %}
         <em class="revision_details">
             Revision {{ mapdata.history_info.version_number }}

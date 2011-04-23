@@ -1,3 +1,4 @@
+{% if version_list %}
 <form method="GET" action="compare" name="compare_form">
 <table>
   <thead>
@@ -38,3 +39,6 @@
   </tbody>
 </table>
 </form>
+{% else %}
+There is no revision history.
+{% endif %}

@@ -8,7 +8,7 @@ from django.db import IntegrityError
 from ckeditor.views import ck_upload_result
 from versionutils import diff
 from versionutils.versioning.views import UpdateView, DeleteView
-from versionutils.versioning.views import RevertView, HistoryView
+from versionutils.versioning.views import RevertView, HistoryList
 from utils.views import Custom404Mixin, CreateObjectMixin
 from models import Page, PageImage, url_to_name
 from forms import PageForm
@@ -97,16 +97,20 @@ class PageRevertView(RevertView):
         return reverse('show-page', args=[self.kwargs.get('original_slug')])
 
 
-class PageHistoryView(HistoryView):
+class PageHistoryList(HistoryList):
     def get_queryset(self):
         all_page_history = Page(slug=self.kwargs['slug']).history.all()
         # We set self.page to the most recent historical instance of the
         # page.
-        self.page = all_page_history[0]
+        if all_page_history:
+            self.page = all_page_history[0]
+        else:
+            self.page = Page(slug=self.kwargs['slug'],
+                             name=self.kwargs['original_slug'])
         return all_page_history
 
     def get_context_data(self, **kwargs):
-        context = super(PageHistoryView, self).get_context_data(**kwargs)
+        context = super(PageHistoryList, self).get_context_data(**kwargs)
         context['page'] = self.page
         return context
 

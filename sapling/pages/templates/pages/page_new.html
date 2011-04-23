@@ -1,8 +1,8 @@
 {% extends "pages/base.html" %}
 {% block title %}Page not found{% endblock %}
-{% block header %}Page "{{ name }}" does not exist (yet!){% endblock %}
+{% block header_title %}Page "{{ name }}" does not exist (yet!){% endblock %}
 
-{% block main %}
+{% block content %}
 {% load pages_tags %}
   <p>
     <a href="{% url edit-page slug=name|name_to_url %}">Create this page</a>

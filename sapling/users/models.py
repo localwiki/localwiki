@@ -13,7 +13,7 @@ def name_to_first_last(self, name):
         name: A name string.
     """
     split_name = name.split()
-    last_name = None
+    last_name = ''
     if len(split_name) > 1:
         last_name = ' '.join(split_name[1:])
     first_name = split_name[0]

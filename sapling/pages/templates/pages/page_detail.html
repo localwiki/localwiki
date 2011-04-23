@@ -3,9 +3,9 @@
 {% load pages_tags %}
 
 {% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
-{% block header %}{{ page.name }}{% endblock %}
+{% block header_title %}{{ page.name }}{% endblock %}
 
-{% block main %}
+{% block content %}
   {% if show_revision %}
     <em class="revision_details">
         Revision {{ page.history_info.version_number }}
@@ -31,5 +31,3 @@
     <a href="{% url edit-page slug=page.pretty_slug %}">Edit this page</a>
   </p>
 {% endblock %}
-
-
