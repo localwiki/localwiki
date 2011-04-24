@@ -64,6 +64,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+LOGIN_REDIRECT_URL = '/'
+
 OL_API = STATIC_URL + 'openlayers/OpenLayers.js'
 OLWIDGET_CSS = '%solwidget/css/sapling.css' % STATIC_URL
 CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js' % STATIC_URL
