@@ -11,6 +11,13 @@ DATABASES = {
     }
 }
 
+# Use these email settings when running the python debugging smtp server
+# python -m smtpd -n -c DebuggingServer localhost:1025
+EMAIL_HOST = 'localhost'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 1025
+EMAIL_USE_TLS = False
+
 OLWIDGET_DEFAULT_OPTIONS = {
     'default_lat': 37.76,
     'default_lon': -122.43,
