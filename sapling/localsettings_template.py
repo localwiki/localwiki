@@ -33,8 +33,10 @@ OLWIDGET_DEFAULT_OPTIONS = {
                       'strokeColor': '#db9e33'},
 }
 
-DAISYDIFF_URL = 'http://localhost:8080/diff'
-DAISYDIFF_MERGE_URL = 'http://localhost:8080/merge'
+DAISYDIFF_URL = 'http://localhost:8081/diff'
+DAISYDIFF_MERGE_URL = 'http://localhost:8081/merge'
+
+HAYSTACK_SOLR_URL = 'http://localhost:8080/solr'
 
 LOCAL_INSTALLED_APPS = ()
 
