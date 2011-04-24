@@ -1,6 +1,6 @@
 {% load url from future %}
 
-<form method="post" action="{% url 'registration_register' %}">
+<form method="post" action="{% url 'registration_register' %}?next={{ request.GET.next }}">
 {% csrf_token %}
 {{ form.as_p }}
 
