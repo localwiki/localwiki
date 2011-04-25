@@ -4,7 +4,7 @@ from haystack import site
 from models import Page
 
 
-class PageIndex(SearchIndex):
+class PageIndex(RealTimeSearchIndex):
     text = CharField(document=True, use_template=True)
 
 
