@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'pages',
     'maps',
     'users',
+    'search',
     'utils',
 )
 

@@ -70,9 +70,11 @@ distribution.  pip makes this super easy.
     local setup, of course.
 
 
-6.  Allow the search service to start:
+6.  Allow the search service to start and back up existing config:
 
     (ENV)$ sudo sed -i 's/NO_START=1/NO_START=0/g' /etc/default/jetty
+    (ENV)$ sudo cp /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.orig
+    (ENV)$ sudo cp INSTALL/solr_schema.xml /etc/solr/conf/schema.xml
     
     Then start the search service:
 
@@ -88,6 +90,7 @@ You are now done installing things and you can start the built-in Django
 development server, after running syncdb and collectstatic.
 	(ENV)$ python sapling/manage.py syncdb
 	(ENV)$ python sapling/manage.py collectstatic
+	(ENV)$ python sapling/manage.py rebuild_index
 	(ENV)$ python sapling/manage.py runserver
 
 Note: by default, the development server listens on 127.0.0.1 only.  To access
