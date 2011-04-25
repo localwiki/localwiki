@@ -1,4 +1,5 @@
 {% extends "site/base.html" %}
+{% load highlight %}
 
 {% block content %}
     <h2>Search</h2>
@@ -22,13 +23,18 @@
                     <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a>
                     
                 </p>
+                <p>
+                    {% with result.object.content|striptags as content %}
+                    {% highlight content with query %}
+                    {% endwith %}
+                </p>
             {% empty %}
                 <p>No results found.</p>
             {% endfor %}
 
             {% if page.has_previous or page.has_next %}
                 <div>
-                    {% if page.has_previous %}<a href="?q={{ query }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
+                    {% if page.has_previous %}<a href="?q={{ uery }}&amp;page={{ page.previous_page_number }}">{% endif %}&laquo; Previous{% if page.has_previous %}</a>{% endif %}
                     |
                     {% if page.has_next %}<a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% endif %}Next &raquo;{% if page.has_next %}</a>{% endif %}
                 </div>
