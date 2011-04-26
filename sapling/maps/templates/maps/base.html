@@ -1,48 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
+{% extends "site/base.html" %}
 
-  <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
-       Remove this if you use the .htaccess -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-
-  <title>{% block title %}Wiki{% endblock %}</title>
-  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  
-  <link rel="stylesheet" href="{{ STATIC_URL }}css/pages.css">
-  <script type="text/javascript" src="{{ STATIC_URL }}olwidget/js/sapling_utils.js"></script>
-  {% block media %}{% endblock %}
-</head>
-
-{% block body %}
-<body>
-  <div>
-    <div id="header">
-      <h1>{% block header %}{% endblock %}</h1>
-    </div>
-    <div id="nav">
-      {% include "maps/nav.html" %}
-    </div>
-
-    {% block messages %}
-      {% if messages %}
-      <ul class="messages">
-          {% for message in messages %}
-          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-          {% endfor %}
-      </ul>
-      {% endif %}
-    {% endblock %}
-    {% block dialog %}{% endblock %}
-
-    <div id="main">
-      {% block main %}{% endblock %}
-    </div>
-  </div>
-</body>
+{% block media %}
+<script type="text/javascript" src="{{ STATIC_URL }}olwidget/js/sapling_utils.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}css/pages.css">
 {% endblock %}
-
-</html>

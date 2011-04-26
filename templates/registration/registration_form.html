@@ -1,0 +1,8 @@
+{% load url from future %}
+
+<form method="post" action="{% url 'registration_register' %}?next={{ request.GET.next }}">
+{% csrf_token %}
+{{ form.as_p }}
+
+<input type="submit" value="login" />
+</form>

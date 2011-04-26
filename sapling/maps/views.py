@@ -10,7 +10,7 @@ from olwidget.widgets import InfoMap
 from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin
 from versionutils.versioning.views import DeleteView, UpdateView
-from versionutils.versioning.views import RevertView, HistoryView
+from versionutils.versioning.views import RevertView, HistoryList
 from pages.models import Page
 from pages.models import slugify
 
@@ -49,6 +49,7 @@ class MapDetailView(Custom404Mixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(MapDetailView, self).get_context_data(**kwargs)
+
         context['date'] = self.get_object_date()
 
         context['page'] = self.object.page
@@ -126,7 +127,7 @@ class MapRevertView(MapVersionDetailView, RevertView):
         return context
 
 
-class MapHistoryView(HistoryView):
+class MapHistoryList(HistoryList):
     def get_queryset(self):
         page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
         latest_page = page.history.most_recent()
@@ -138,7 +139,7 @@ class MapHistoryView(HistoryView):
         return self.mapdata.history.all()
 
     def get_context_data(self, **kwargs):
-        context = super(MapHistoryView, self).get_context_data(**kwargs)
+        context = super(MapHistoryList, self).get_context_data(**kwargs)
         context['mapdata'] = self.mapdata
         return context
 

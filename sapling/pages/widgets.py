@@ -7,13 +7,15 @@ import models
 class WikiEditor(CKEditor):
     def get_config(self):
         config = super(WikiEditor, self).get_config()
-        additional = {'filebrowserInsertimageUploadUrl': '_upload/',
-                      'domcleanupAllowedTags': models.allowed_tags,
-                      'contentsCss': urljoin(settings.STATIC_URL,
-                                             'css/pages.css'),
-                      'toolbarCanCollapse': False,
-                      'enterMode': 1,
-                     }
+        additional = {
+            'skin': 'sapling',
+            'filebrowserInsertimageUploadUrl': '_upload/',
+            'domcleanupAllowedTags': models.allowed_tags,
+            'contentsCss': urljoin(settings.STATIC_URL,
+                                   'css/pages.css'),
+            'toolbarCanCollapse': False,
+            'enterMode': 1,
+        }
         config.update(additional)
         return config
 

@@ -26,21 +26,35 @@
 {% endblock %}
 
 {% block title %}Differences for {{ new.name }}{% endblock %}
-{% block header %}Differences for {{ new.name }}{% endblock %}
+{% block header_title %}Differences for {{ new.name }}{% endblock %}
 
-{% block main %}
+{% block content %}
   <table width="100%">
     <thead>
         <tr>
             <td class="revision_details">
                 Revision {{ old.history_info.version_number }}
                 ({{ old.history_info.date }}
-                by {{ old.history_info.user_name|default:old.history_info.user_ip }})
+                by
+                {% spaceless %}
+                {% if old.history_info.user %}
+                    <a href="{{ old.history_info.user.get_absolute_url }}">{{ old.history_info.user }}</a>
+                {% else %}
+                    {{ old.history_info.user_ip }}
+                {% endif %}
+                {% endspaceless %})
             </td>
             <td class="revision_details">
                 Revision {{ new.history_info.version_number }}
                 ({{ new.history_info.date }}
-                by {{ new.history_info.user_name|default:new.history_info.user_ip }})
+                by
+                {% spaceless %}
+                {% if new.history_info.user %}
+                    <a href="{{ new.history_info.user.get_absolute_url }}">{{ new.history_info.user }}</a>
+                {% else %}
+                    {{ new.history_info.user_ip }}
+                {% endif %}
+                {% endspaceless %})
             </td>
         </tr>
         <tr>

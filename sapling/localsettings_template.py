@@ -11,6 +11,13 @@ DATABASES = {
     }
 }
 
+# Use these email settings when running the python debugging smtp server
+# python -m smtpd -n -c DebuggingServer localhost:1025
+EMAIL_HOST = 'localhost'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 1025
+EMAIL_USE_TLS = False
+
 OLWIDGET_DEFAULT_OPTIONS = {
     'default_lat': 37.76,
     'default_lon': -122.43,
@@ -26,8 +33,10 @@ OLWIDGET_DEFAULT_OPTIONS = {
                       'strokeColor': '#db9e33'},
 }
 
-DAISYDIFF_URL = 'http://localhost:8080/diff'
-DAISYDIFF_MERGE_URL = 'http://localhost:8080/merge'
+DAISYDIFF_URL = 'http://localhost:8081/diff'
+DAISYDIFF_MERGE_URL = 'http://localhost:8081/merge'
+
+HAYSTACK_SOLR_URL = 'http://localhost:8080/solr'
 
 LOCAL_INSTALLED_APPS = ()
 

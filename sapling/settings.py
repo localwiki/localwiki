@@ -59,6 +59,16 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 # STATIC_URL followed by 'admin/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
+AUTHENTICATION_BACKENDS = (
+    'sapling.users.backends.CaseInsensitiveModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_REDIRECT_URL = '/'
+
+HAYSTACK_SITECONF = 'sapling.search_sites'
+HAYSTACK_SEARCH_ENGINE = 'solr'
+
 OL_API = STATIC_URL + 'openlayers/OpenLayers.js'
 OLWIDGET_CSS = '%solwidget/css/sapling.css' % STATIC_URL
 CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js' % STATIC_URL
@@ -68,6 +78,17 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source',
 #     'django.template.loaders.eggs.load_template_source',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.csrf",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.contrib.messages.context_processors.messages",
+    "django.core.context_processors.request",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -97,7 +118,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     # Other third-party apps
+    'haystack',
     'olwidget',
+    'registration',
     'sorl.thumbnail',
 
     # Our apps
@@ -106,6 +129,8 @@ INSTALLED_APPS = (
     'ckeditor',
     'pages',
     'maps',
+    'users',
+    'search',
     'utils',
 )
 

@@ -1,16 +1,23 @@
 {% extends "maps/base.html" %}
 
-{% block media %}{{ map.media }}{% endblock %}
+{% block media %}{{block.super}}{{ map.media }}{% endblock %}
 
 {% block title %}Map for {{ page.name }} - {{ block.super }}{% endblock %}
-{% block header %}Map for {{ page.name }}{% endblock %}
+{% block header_title %}Map for {{ page.name }}{% endblock %}
 
-{% block main %}
+{% block content %}
     {% if show_revision %}
         <em class="revision_details">
             Revision {{ mapdata.history_info.version_number }}
             ({{ mapdata.history_info.date }}
-            by {{ mapdata.history_info.user_name|default:mapdata.history_info.user_ip }})
+            by
+            {% spaceless %}
+            {% if mapdata.history_info.user %}
+                <a href="{{ mapdata.history_info.user.get_absolute_url }}">{{ mapdata.history_info.user }}</a>
+            {% else %}
+                {{ mapdata.history_info.user_ip }}
+            {% endif %}
+            {% endspaceless %})
         </em>
     {% endif %}
   

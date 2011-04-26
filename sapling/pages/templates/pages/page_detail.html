@@ -3,14 +3,21 @@
 {% load pages_tags %}
 
 {% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
-{% block header %}{{ page.name }}{% endblock %}
+{% block header_title %}{{ page.name }}{% endblock %}
 
-{% block main %}
+{% block content %}
   {% if show_revision %}
     <em class="revision_details">
         Revision {{ page.history_info.version_number }}
         ({{ page.history_info.date }}
-        by {{ page.history_info.user_name|default:page.history_info.user_ip }})
+        by
+        {% spaceless %}
+        {% if page.history_info.user %}
+            <a href="{{ page.history_info.user.get_absolute_url }}">{{ page.history_info.user }}</a>
+        {% else %}
+            {{ page.history_info.user_ip }}
+        {% endif %}
+        {% endspaceless %})
     </em>
   {% endif %}
   
@@ -24,5 +31,3 @@
     <a href="{% url edit-page slug=page.pretty_slug %}">Edit this page</a>
   </p>
 {% endblock %}
-
-
