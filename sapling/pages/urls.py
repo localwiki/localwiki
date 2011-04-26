@@ -41,6 +41,6 @@ urlpatterns = patterns('',
         name='page-history'),
     url(r'^(?P<slug>.+)/_files/$', slugify(views.PageFilesView.as_view()),
         name='page-files'),
-    url(r'^(?P<slug>.+)/$', slugify(views.PageDetailView.as_view()),
+    url(r'^(?P<slug>.+?)/*$', slugify(views.PageDetailView.as_view()),
         name='show-page'),
 )

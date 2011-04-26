@@ -16,6 +16,6 @@ urlpatterns = patterns('',
         views.MapVersionDetailView.as_view(), name='mapdata-version'),
     url(r'^(?P<slug>.+)/_history/$', views.MapHistoryList.as_view(),
         name='mapdata-history'),
-    url(r'^(?P<slug>.+)/$', views.MapDetailView.as_view(),
+    url(r'^(?P<slug>.+?)/*$', views.MapDetailView.as_view(),
         name='show-mapdata'),
 )
