@@ -66,6 +66,9 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_REDIRECT_URL = '/'
 
+HAYSTACK_SITECONF = 'sapling.search_sites'
+HAYSTACK_SEARCH_ENGINE = 'solr'
+
 OL_API = STATIC_URL + 'openlayers/OpenLayers.js'
 OLWIDGET_CSS = '%solwidget/css/sapling.css' % STATIC_URL
 CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js' % STATIC_URL
@@ -115,6 +118,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     # Other third-party apps
+    'haystack',
     'olwidget',
     'registration',
     'sorl.thumbnail',
@@ -126,6 +130,7 @@ INSTALLED_APPS = (
     'pages',
     'maps',
     'users',
+    'search',
     'utils',
 )
 

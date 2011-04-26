@@ -16,7 +16,7 @@ needed by lxml), java(needed for daisydiff), image decoders, python-setuptools,
 virtualenv, gdal, postgresql, postgis:
 
     $ sudo apt-get install gcc libxslt-dev python-dev
-    $ sudo apt-get install openjdk-6-jdk
+    $ sudo apt-get install openjdk-6-jdk solr-jetty
     $ sudo aptitude install libjpeg62 libjpeg62-dev zlib1g-dev
     $ sudo apt-get install python-setuptools
     $ sudo apt-get install gdal-bin proj
@@ -70,7 +70,18 @@ distribution.  pip makes this super easy.
     local setup, of course.
 
 
-5.  Copy sapling/localsettings_template.py to sapling/localsettings.py and edit
+6.  Allow the search service to start and back up existing config:
+
+    (ENV)$ sudo sed -i 's/NO_START=1/NO_START=0/g' /etc/default/jetty
+    (ENV)$ sudo cp /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.orig
+    (ENV)$ sudo cp INSTALL/solr_schema.xml /etc/solr/conf/schema.xml
+    
+    Then start the search service:
+
+    (ENV)$ sudo service jetty start
+
+
+7.  Copy sapling/localsettings_template.py to sapling/localsettings.py and edit
 to your liking.
 	(ENV)$ cp sapling/localsettings_template.py sapling/localsettings.py
 
@@ -79,6 +90,7 @@ You are now done installing things and you can start the built-in Django
 development server, after running syncdb and collectstatic.
 	(ENV)$ python sapling/manage.py syncdb
 	(ENV)$ python sapling/manage.py collectstatic
+	(ENV)$ python sapling/manage.py rebuild_index
 	(ENV)$ python sapling/manage.py runserver
 
 Note: by default, the development server listens on 127.0.0.1 only.  To access
@@ -88,6 +100,6 @@ the development server from another machine (a potential security hazard), run:
 To enable pretty diffing and merging, start the html diff server in a new
 terminal:
 	$ cd sapling/versionutils/diff/daisydiff/
-	$ java -jar daisydiff.jar --server --port=8080
+	$ java -jar daisydiff.jar --server --port=8081
 	
 Hooray!

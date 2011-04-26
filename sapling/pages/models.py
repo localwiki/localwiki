@@ -3,6 +3,7 @@ from urllib import unquote_plus
 import re
 
 from django.contrib.gis.db import models
+from django.core.urlresolvers import reverse
 from django.template.defaultfilters import stringfilter
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
@@ -24,6 +25,9 @@ class Page(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('show-page', args=[self.pretty_slug])
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
