@@ -179,7 +179,7 @@ class MergeModelFormTest(TestCase):
         a_post['contents'] = 'a contents'
         a = TestForm(a_post, instance=m_new)
         self.failIf(a.is_valid())
-        self.failUnless(MergeMixin.conflict_warning in str(a.errors))
+        self.failUnless(MergeMixin.conflict_error in str(a.errors))
 
         #repeated save with the same form rendered again should work, though
         a_post = a.data

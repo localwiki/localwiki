@@ -16,14 +16,16 @@ template tag.
 """
 from lxml import etree
 from lxml.html import fragments_fromstring
+from HTMLParser import HTMLParser
 from urlparse import urlparse
+import re
 
 from django.template import Node
-from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from pages.models import Page
+from pages.models import Page, name_to_url
+from pages.models import slugify
 
 
 def sanitize_intermediate(html):
@@ -34,10 +36,27 @@ def sanitize_intermediate(html):
                .replace('&', '{amp}')  # escape all entities
 
 
+_unescape_util = HTMLParser()
+
+
+def desanitize(fragment):
+    """ Undo sanitization, when we need the original contents.
+    """
+    fragment = sanitize_final(fragment)
+    fragment = _unescape_util.unescape(fragment)
+    return sanitize_intermediate(fragment)
+
+
 def sanitize_final(html):
     """ Fixes escaped entities.
     """
     return html.replace('{amp}', '&')  # unescape entities
+
+
+def escape_quotes(s):
+    """ Escapes double quotes for use in template tags.
+    """
+    return s.replace('"', '\\"')
 
 
 def insert_text_before(text, elem):
@@ -52,9 +71,9 @@ def handle_link(elem):
     if not 'href' in elem.attrib:
         return
 
-    href = elem.attrib['href']
+    href = desanitize(elem.attrib['href'])
 
-    before = '{%% link "%s" %%}' % href + (elem.text or '')
+    before = '{%% link "%s" %%}' % escape_quotes(href) + (elem.text or '')
     after = '{% endlink %}' + (elem.tail or '')
 
     insert_text_before(before, elem)
@@ -89,7 +108,8 @@ def handle_image(elem):
     width = int(style['width'].replace('px', ''))
     height = int(style['height'].replace('px', ''))
 
-    before = '{%% thumbnail "%s" "%dx%d" as im %%}' % (src, width, height)
+    before = '{%% thumbnail "%s" "%dx%d" as im %%}' % (escape_quotes(src),
+                                                       width, height)
     after = '{% endthumbnail %}'
 
     elem.attrib['src'] = '{{ im.url }}'
@@ -151,14 +171,13 @@ class LinkNode(Node):
             url = self.href
             cls = ''
             url_parts = urlparse(url)
-            #TODO: check if internal link, don't do anything if not
-            if not url_parts.netloc:
-                slug = slugify(url_parts.path)
-                if not Page.objects.filter(slug__exact=slug).exists():
+            if not url_parts.scheme and not url_parts.netloc:
+                try:
+                    page = Page.objects.get(slug__exact=slugify(url))
+                    url = reverse('show-page', args=[page.pretty_slug])
+                except Page.DoesNotExist:
                     cls = ' class="missing_link"'
-                else:
-                    # want canonical url for existing pages
-                    url = reverse('show-page', args=[slug])
+                    url = reverse('show-page', args=[name_to_url(url)])
             return '<a href="%s"%s>%s</a>' % (url, cls,
                                               self.nodelist.render(context))
         except:

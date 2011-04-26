@@ -6,6 +6,7 @@ from django.conf import settings
 from pages.plugins import html_to_template_text
 from pages.plugins import LinkNode
 from pages import models
+from django.utils.text import unescape_string_literal
 
 register = template.Library()
 
@@ -60,4 +61,4 @@ def do_link(parser, token):
 
     nodelist = parser.parse(('endlink',))
     parser.delete_first_token()
-    return LinkNode(href[1:-1], nodelist)
+    return LinkNode(unescape_string_literal(href), nodelist)

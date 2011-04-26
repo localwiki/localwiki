@@ -21,19 +21,19 @@ class WikiEditor(CKEditor):
         # We only want the minimal set of plugins
         return ('about,basicstyles,clipboard,contextmenu,elementspath,'
                 'enterkey,entities,filebrowser,font,format,horizontalrule,'
-                'htmldataprocessor,indent,keystrokes,link,list,'
+                'htmldataprocessor,indent,keystrokes,list,'
                 'pastetext,removeformat,save,stylescombo,table,'
                 'tabletools,specialchar,tab,toolbar,undo,wysiwygarea,wsc,'
                 'sourcearea,selection')
 
     def get_extra_plugins(self):
         plugins = ['insertimage', 'simpleimage', 'domcleanup', 'seamless',
-                   'customenterkey']
+                   'customenterkey', 'pagelink']
         return ','.join(plugins)
 
     def get_toolbar(self):
         styles = ['Source', 'Bold', 'Italic', 'Underline']
-        links = ['Link', 'Unlink']
+        links = ['PageLink']
         media = ['InsertImage']
         misc = ['Copy', 'Paste', 'Undo', 'Redo']
 

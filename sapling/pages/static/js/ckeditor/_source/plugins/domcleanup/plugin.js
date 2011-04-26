@@ -49,7 +49,7 @@ CKEDITOR.plugins.add( 'domcleanup',
                             return false;
                         var ok_tags = editor.plugins['domcleanup'].allowedTags;
                         var ok_attributes = {
-                            'a' : ['name','href','_cke_saved_href'],
+                            'a' : ['name','href','data_cke_saved_href'],
                             'img' : ['src','_cke_saved_src','alt','width',
                                      'height','style'],
                             'span' : ['class', 'style'],
