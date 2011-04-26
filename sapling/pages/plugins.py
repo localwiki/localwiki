@@ -24,7 +24,7 @@ from django.template import Node
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from pages.models import Page, name_to_url
+from pages.models import Page, name_to_url, url_to_name
 from pages.models import slugify
 
 
@@ -168,8 +168,8 @@ class LinkNode(Node):
 
     def render(self, context):
         try:
-            url = self.href
             cls = ''
+            url = self.href
             url_parts = urlparse(url)
             if not url_parts.scheme and not url_parts.netloc:
                 try:
@@ -177,7 +177,8 @@ class LinkNode(Node):
                     url = reverse('show-page', args=[page.pretty_slug])
                 except Page.DoesNotExist:
                     cls = ' class="missing_link"'
-                    url = reverse('show-page', args=[name_to_url(url)])
+                    url = name_to_url(url_to_name(url))  # My%20page -> My_page
+                    url = reverse('show-page', args=[url])
             return '<a href="%s"%s>%s</a>' % (url, cls,
                                               self.nodelist.render(context))
         except:
