@@ -1,0 +1,5 @@
+{% load url from future %}
+<form method="GET" action="{% url 'haystack_search' %}">
+<input type="text" name="q" value="{% if query and form.q.value %}{{ form.q.value }}{% endif %}" id="id_q" />
+<input type="submit" value="Search">
+</form>
