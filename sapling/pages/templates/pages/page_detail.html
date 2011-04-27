@@ -25,9 +25,9 @@
     {% render_page page.content %}
   </div>
   
-  <p>Modified {{ date|timesince }} ago (<a href="{% url page-history slug=page.pretty_slug %}">History</a>)</p>
+  <p>Modified {{ date|timesince }} ago (<a href="{% url pages:history slug=page.pretty_slug %}">History</a>)</p>
   
   <p>
-    <a href="{% url edit-page slug=page.pretty_slug %}">Edit this page</a>
+    <a href="{% url pages:edit slug=page.pretty_slug %}">Edit this page</a>
   </p>
 {% endblock %}

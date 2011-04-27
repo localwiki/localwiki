@@ -217,5 +217,5 @@ class-based generic views.
     .. attribute:: revert_view_name
 
         By default we look for a view with the name
-        `revert-<object name>`.  If you provide a string for
+        `app_label:revert`.  If you provide a string for
         `revert_view_name` we'll use that as our revert view.

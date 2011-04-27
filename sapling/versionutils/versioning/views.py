@@ -37,7 +37,7 @@ class HistoryList(ListView):
         # We assume these are historical instances.
         if hasattr(self.object_list, 'model'):
             opts = self.object_list.model._original_model._meta
-            return 'revert-%s' % opts.object_name.lower()
+            return '%s:revert' % opts.app_label
 
     def get_context_data(self, **kwargs):
         context = super(HistoryList, self).get_context_data(**kwargs)

@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 from django.views.generic import ListView
 
-import views
+from views import *
 import models
 from utils.constants import DATETIME_REGEXP
 from models import Page
@@ -25,28 +25,28 @@ def slugify(func):
 
 urlpatterns = patterns('',
     url(r'^$', ListView.as_view(**page_list_info), name='title-index'),
-    url(r'^(?P<slug>.+)/_edit$', slugify(views.PageUpdateView.as_view()),
-        name='edit-page'),
-    url(r'^(?P<slug>.+)/_delete$', slugify(views.PageDeleteView.as_view()),
-        name='delete-page'),
+    url(r'^(?P<slug>.+)/_edit$', slugify(PageUpdateView.as_view()),
+        name='edit'),
+    url(r'^(?P<slug>.+)/_delete$', slugify(PageDeleteView.as_view()),
+        name='delete'),
     url(r'^(?P<slug>.+)/_revert/(?P<version>[0-9]+)$',
-        slugify(views.PageRevertView.as_view()), name='revert-page'),
-    url(r'^(?P<slug>.+)/_upload', slugify(views.upload), name='upload-image'),
+        slugify(PageRevertView.as_view()), name='revert'),
+    url(r'^(?P<slug>.+)/_upload', slugify(upload), name='upload-image'),
     url(r'^(?P<slug>.+)/_history/compare$',
-        slugify(views.PageCompareView.as_view())),
-    url(r'^(?P<slug>.+)/_history/(?P<version1>[0-9]+)\.\.\.(?P<version2>[0-9]+)?$',
-        slugify(views.PageCompareView.as_view()), name='compare-revisions'),
-    url(r'^(?P<slug>.+)/_history/(?P<date1>%s)\.\.\.(?P<date2>%s)?$' % (
-            DATETIME_REGEXP, DATETIME_REGEXP),
-        slugify(views.PageCompareView.as_view()), name='compare-revisions'),
+        slugify(PageCompareView.as_view())),
+    url((r'^(?P<slug>.+)/_history/'
+            r'(?P<version1>[0-9]+)\.\.\.(?P<version2>[0-9]+)?$'),
+        slugify(PageCompareView.as_view()), name='compare-revisions'),
+    url(r'^(?P<slug>.+)/_history/(?P<date1>%s)\.\.\.(?P<date2>%s)?$'
+        % (DATETIME_REGEXP, DATETIME_REGEXP),
+        slugify(PageCompareView.as_view()), name='compare-dates'),
     url(r'^(?P<slug>.+)/_history/(?P<version>[0-9]+)$',
-        slugify(views.PageVersionDetailView.as_view()), name='page-version'),
+        slugify(PageVersionDetailView.as_view()), name='as_of_version'),
     url(r'^(?P<slug>.+)/_history/(?P<date>%s)$' % DATETIME_REGEXP,
-        slugify(views.PageVersionDetailView.as_view()), name='page-version'),
-    url(r'^(?P<slug>.+)/_history/$', slugify(views.PageHistoryList.as_view()),
-        name='page-history'),
-    url(r'^(?P<slug>.+)/_files/$', slugify(views.PageFilesView.as_view()),
-        name='page-files'),
-    url(r'^(?P<slug>.+?)/*$', slugify(views.PageDetailView.as_view()),
-        name='show-page'),
+        slugify(PageVersionDetailView.as_view()), name='as_of_date'),
+    url(r'^(?P<slug>.+)/_history/$', slugify(PageHistoryList.as_view()),
+        name='history'),
+    url(r'^(?P<slug>.+)/_files/$', slugify(PageFilesView.as_view()),
+        name='files'),
+    url(r'^(?P<slug>.+?)/*$', slugify(PageDetailView.as_view()), name='show'),
 )

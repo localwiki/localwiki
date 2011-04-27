@@ -5,8 +5,8 @@
 {% block content %}
 {% load pages_tags %}
   <p>
-    <a href="{% url edit-page slug=name|name_to_url %}">Create this page</a>
+    <a href="{% url pages:edit slug=name|name_to_url %}">Create this page</a>
   </p>
 
-  <p>(<a href="{% url page-history slug=page.pretty_slug %}">History</a>)</p>
+  <p>(<a href="{% url pages:history slug=page.pretty_slug %}">History</a>)</p>
 {% endblock %}

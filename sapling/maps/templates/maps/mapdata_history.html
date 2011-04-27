@@ -11,6 +11,6 @@
 {% block content %}
   {% include "utils/history/form.html" %}
   <p>
-    <a href="{% url show-mapdata slug=mapdata.page.pretty_slug %}">View map</a>
+    <a href="{% url maps:show slug=mapdata.page.pretty_slug %}">View map</a>
   </p>
 {% endblock %}
