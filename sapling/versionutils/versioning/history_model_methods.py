@@ -197,7 +197,9 @@ def _wrap_reverse_lookups(m):
 def historical_record_getattribute(model, m, name):
     """
     We have to define our own __getattribute__ because otherwise there's
-    no way to set our wrapped foreign key attributes.
+    no way to set our wrapped foreign key attributes.  We also use this
+    function to do a 'fallback' lookup on methods and attributes on the
+    non-historical instance.
 
     If we try and set
     history_instance.att = SimpleLazyObject(_lookup_proper_fk_version)
@@ -218,6 +220,16 @@ def historical_record_getattribute(model, m, name):
     # m.__direct_name.
     if name.startswith('__direct_'):
         name = name[9:]
+
+    try:
+        misc_members = model.__getattribute__(m, '_misc_members')
+    except AttributeError:
+        pass
+    else:
+        if name in misc_members:
+            # This is a custom method or attribute, so let's do a lookup on
+            # the non-historical model instance.
+            return m.history_info._object.__getattribute__(name)
     return model.__getattribute__(m, name)
 
 

@@ -201,6 +201,15 @@ class M21CustomAttribute(models.Model):
     history = TrackChanges()
 
 
+class M21CustomMethod(models.Model):
+    name = models.CharField(max_length=200)
+
+    history = TrackChanges()
+
+    def myfunc(self):
+        return self.name
+
+
 class M22ManyToManySelfVersioned(models.Model):
     a = models.TextField()
     tags = models.ManyToManyField('self')

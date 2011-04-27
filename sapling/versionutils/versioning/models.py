@@ -103,7 +103,10 @@ class TrackChanges(object):
         attrs.update(get_history_methods(self, model))
         # Parents mean we are concretely subclassed.
         if not model._meta.parents:
-            attrs.update(self.get_misc_members(model))
+            # Store _misc_members for later lookup.
+            attrs.update({'_misc_members': self.get_misc_members(model)})
+            attrs.update(self.get_custom_managers(model))
+            #attrs.update(self.get_misc_members(model))
             attrs.update(Meta=type('Meta', (), self.get_meta_options(model)))
         if not is_versioned(model.__base__):
             attrs.update(get_history_fields(self, model))
@@ -195,9 +198,15 @@ class TrackChanges(object):
             elif isinstance(getattr(d[k], 'field', None), models.fields.Field):
                 del d[k]
                 continue
-            if isinstance(getattr(d[k], 'manager', None), models.Manager):
+        return d
+
+    def get_custom_managers(self, model):
+        d = {}
+        attrs = dict(model.__dict__)
+        for k in attrs:
+            if isinstance(getattr(attrs[k], 'manager', None), models.Manager):
                 # Re-init managers.
-                d[k] = d[k].manager.__class__()
+                d[k] = attrs[k].manager.__class__()
         return d
 
     def get_fields(self, model):
