@@ -102,7 +102,7 @@ class MapUpdateView(CreateObjectMixin, UpdateView):
         return MapData(page=page)
 
     def get_success_url(self):
-        return reverse('show-mapdata', args=[self.object.page.pretty_slug])
+        return reverse('maps:show', args=[self.object.page.pretty_slug])
 
 
 class MapDeleteView(MapDetailView, DeleteView):
@@ -111,7 +111,7 @@ class MapDeleteView(MapDetailView, DeleteView):
 
     def get_success_url(self):
         # Redirect back to the map.
-        return reverse('show-mapdata', args=[self.kwargs.get('slug')])
+        return reverse('maps:show', args=[self.kwargs.get('slug')])
 
 
 class MapRevertView(MapVersionDetailView, RevertView):
@@ -121,7 +121,7 @@ class MapRevertView(MapVersionDetailView, RevertView):
 
     def get_success_url(self):
         # Redirect back to the map.
-        return reverse('show-mapdata', args=[self.kwargs.get('slug')])
+        return reverse('maps:show', args=[self.kwargs.get('slug')])
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)

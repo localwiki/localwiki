@@ -67,7 +67,7 @@ class PageUpdateView(CreateObjectMixin, UpdateView):
             slug = self.object.pretty_slug
             map_create_link = (
                 '<p><a href="%s">[map icon] Create a map for this page?'
-                '</a></p>' % reverse('edit-mapdata', args=[slug])
+                '</a></p>' % reverse('maps:edit', args=[slug])
             )
         return (
             '<div>Thank you for your changes. '
@@ -76,7 +76,7 @@ class PageUpdateView(CreateObjectMixin, UpdateView):
         )
 
     def get_success_url(self):
-        return reverse('show-page', args=[self.object.pretty_slug])
+        return reverse('pages:show', args=[self.object.pretty_slug])
 
     def create_object(self):
         return Page(name=url_to_name(self.kwargs['original_slug']))
@@ -88,7 +88,7 @@ class PageDeleteView(DeleteView):
 
     def get_success_url(self):
         # Redirect back to the page.
-        return reverse('show-page', args=[self.kwargs.get('original_slug')])
+        return reverse('pages:show', args=[self.kwargs.get('original_slug')])
 
 
 class PageRevertView(RevertView):
@@ -101,7 +101,7 @@ class PageRevertView(RevertView):
 
     def get_success_url(self):
         # Redirect back to the page.
-        return reverse('show-page', args=[self.kwargs.get('original_slug')])
+        return reverse('pages:show', args=[self.kwargs.get('original_slug')])
 
 
 class PageHistoryList(HistoryList):

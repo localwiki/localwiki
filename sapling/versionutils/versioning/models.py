@@ -202,6 +202,10 @@ class TrackChanges(object):
             elif isinstance(getattr(d[k], 'manager', None), models.Manager):
                 # Re-init managers.
                 d[k] = d[k].manager.__class__()
+            elif callable(d[k]):
+                # Skip callables - we deal with these separately.
+                del d[k]
+                continue
         return d
 
     def get_callables(self, model, skip=None):

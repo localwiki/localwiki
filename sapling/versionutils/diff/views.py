@@ -30,9 +30,11 @@ class CompareView(DetailView):
             old = min(dates)
             new = max(dates)
             new_version = self.object.history.as_of(date=new)
-            if len(dates) == 1:
-                prev_version = new_version.history_info.version_number() - 1
+            prev_version = new_version.history_info.version_number() - 1
+            if len(dates) == 1 and prev_version > 0:
                 old_version = self.object.history.as_of(version=prev_version)
+            elif prev_version <= 0:
+                old_version = None
             else:
                 old_version = self.object.history.as_of(date=old)
         else:
@@ -50,7 +52,10 @@ class CompareView(DetailView):
             new = max(versions)
             if len(versions) == 1:
                 old = max(new - 1, 1)
-            old_version = self.object.history.as_of(version=old)
+            if old > 0:
+                old_version = self.object.history.as_of(version=old)
+            else:
+                old_version = None
             new_version = self.object.history.as_of(version=new)
 
         context.update({'old': old_version, 'new': new_version})

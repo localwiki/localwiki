@@ -222,12 +222,11 @@ def historical_record_getattribute(model, m, name):
         name = name[9:]
 
     try:
-        callables = model.__getattribute__(m, '_callables')
+        callables = model.__getattribute__(m, '_original_callables')
     except AttributeError:
         pass
     else:
         if name in callables:
-            print "NAME IN callables MEMBERS", name, callables
             # This is a callable so let's do a lookup on the non-historical
             # model instance.
             return m.history_info._object.__getattribute__(name)

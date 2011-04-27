@@ -1,5 +1,6 @@
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import *
+from django.core.urlresolvers import reverse
 
 from versionutils.versioning import TrackChanges
 from pages.models import Page
@@ -17,3 +18,6 @@ class MapData(models.Model):
 
     objects = models.GeoManager()
     history = TrackChanges()
+
+    def get_absolute_url(self):
+        return reverse('maps:show', args=[self.page.pretty_slug])

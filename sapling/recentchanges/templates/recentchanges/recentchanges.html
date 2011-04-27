@@ -1,0 +1,14 @@
+{% extends "site/base.html" %}
+{% load url from future %}
+
+{% block title %}Recent Changes - {{ block.super }}{% endblock %}
+
+{% block header_title %}Recent Changes{% endblock %}
+
+{% block content %}
+  <ul>
+  {% for change in change_list %}
+    <li>(<a href="{% url change.diff_view slug=change.pretty_slug date1=change.history_info.date %}">diff</a>) <a href="{{ change.get_absolute_url }}">{{ change.name }}</a></li>
+  {% endfor %}
+  </ul>
+{% endblock %}
