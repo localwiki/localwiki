@@ -104,9 +104,10 @@ class TrackChanges(object):
         # Parents mean we are concretely subclassed.
         if not model._meta.parents:
             # Store _misc_members for later lookup.
-            attrs.update({'_misc_members': self.get_misc_members(model)})
-            attrs.update(self.get_custom_managers(model))
-            #attrs.update(self.get_misc_members(model))
+            misc_members = self.get_misc_members(model)
+            attrs.update(misc_members)
+            attrs.update({'_original_callables':
+                self.get_callables(model, skip=misc_members)})
             attrs.update(Meta=type('Meta', (), self.get_meta_options(model)))
         if not is_versioned(model.__base__):
             attrs.update(get_history_fields(self, model))
@@ -198,15 +199,23 @@ class TrackChanges(object):
             elif isinstance(getattr(d[k], 'field', None), models.fields.Field):
                 del d[k]
                 continue
+            elif isinstance(getattr(d[k], 'manager', None), models.Manager):
+                # Re-init managers.
+                d[k] = d[k].manager.__class__()
         return d
 
-    def get_custom_managers(self, model):
+    def get_callables(self, model, skip=None):
+        if skip is None:
+            skip = {}
+
         d = {}
         attrs = dict(model.__dict__)
         for k in attrs:
-            if isinstance(getattr(attrs[k], 'manager', None), models.Manager):
-                # Re-init managers.
-                d[k] = attrs[k].manager.__class__()
+            if (k in TrackChanges.MEMBERS_TO_SKIP or k in skip):
+                continue
+            if callable(attrs[k]):
+                d[k] = attrs[k]
+
         return d
 
     def get_fields(self, model):

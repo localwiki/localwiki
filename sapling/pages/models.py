@@ -27,7 +27,7 @@ class Page(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('show-page', args=[self.pretty_slug])
+        return reverse('pages:show', args=[self.pretty_slug])
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
