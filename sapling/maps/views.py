@@ -1,3 +1,5 @@
+from dateutil.parser import parse as dateparser
+
 from django.views.generic import DetailView
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
@@ -71,7 +73,12 @@ class MapVersionDetailView(MapDetailView):
         self.page = page
 
         mapdata = MapData(page=page)
-        return mapdata.history.as_of(version=int(self.kwargs['version']))
+        version = self.kwargs.get('version')
+        date = self.kwargs.get('date')
+        if version:
+            return mapdata.history.as_of(version=int(version))
+        if date:
+            return mapdata.history.as_of(date=dateparser(date))
 
     def get_object_date(self):
         return self.object.history_info.date

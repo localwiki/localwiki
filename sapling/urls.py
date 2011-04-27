@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     (r'^map/', include('sapling.maps.urls')),
     (r'^users/', include('sapling.users.urls')),
     (r'^search/', include('sapling.search.urls')),
+    (r'^recent_changes/*', include('sapling.recentchanges.urls')),
 
     (r'^admin/', include(admin.site.urls)),
 )

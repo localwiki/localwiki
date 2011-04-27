@@ -1,3 +1,5 @@
+from dateutil.parser import parse as dateparser
+
 from django.views.decorators.http import require_POST
 from django.views.generic.simple import direct_to_template
 from django.views.generic import DetailView, ListView
@@ -38,7 +40,12 @@ class PageVersionDetailView(PageDetailView):
 
     def get_object(self):
         page = Page(slug=self.kwargs['slug'])
-        return page.history.as_of(version=int(self.kwargs['version']))
+        version = self.kwargs.get('version')
+        date = self.kwargs.get('date')
+        if version:
+            return page.history.as_of(version=int(version))
+        if date:
+            return page.history.as_of(date=dateparser(date))
 
     def get_context_data(self, **kwargs):
         # we don't want PageDetailView's context, skip to DetailView's
