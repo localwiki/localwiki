@@ -12,7 +12,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 		emailSubjectRegex = /subject=([^;?:@&=$,\/]*)/,
 		emailBodyRegex = /body=([^;?:@&=$,\/]*)/,
 		anchorRegex = /^#(.*)$/,
-		urlRegex = /^((?:http|https|ftp):\/\/)?(.+)$/;
+		urlRegex = /^(?:http|https|ftp):\/\/(.+)$/;
 
 	var parseLink = function(href)
 	{
@@ -39,6 +39,11 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 			subjectMatch && ( email.subject = decodeURIComponent( subjectMatch[ 1 ] ) );
 			bodyMatch && ( email.body = decodeURIComponent( bodyMatch[ 1 ] ) );
 			retval.url = 'mailto:' + email.address;
+		}
+		else if ( ( externalMatch = href.match( urlRegex ) ) )
+		{
+			retval.type = 'external';
+			retval.url = href;
 		}
 		else
 		{
@@ -153,13 +158,17 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 						{
 							this.allowOnChange = false;
 							if ( data.url )
-								this.setValue( data.url );
+								this.setValue( data.type == 'page' ? decodeURIComponent(data.url) : data.url);
 							this.allowOnChange = true;
 
 						},
 						commit : function( data )
 						{
-							data.url = this.getValue();
+							raw = this.getValue();
+							parsed = parseLink(raw);
+							if(parsed && parsed.type == 'page')
+								data.url = encodeURIComponent(raw);
+							else data.url = raw;
 							this.allowOnChange = false;
 						}
 					}
