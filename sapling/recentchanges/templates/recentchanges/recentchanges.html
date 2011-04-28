@@ -6,32 +6,51 @@
 {% block header_title %}Recent Changes{% endblock %}
 
 {% block content %}
+  <div id="recentchanges">
   <ul>
   {% for change_list in changes_grouped_by_slug %}
-    {% for change in change_list %}
 
+    {% for change in change_list %}
+      {% spaceless %}
       {# We get the page name and page link by looking at the first change's page name and page link #}
       {% if forloop.first %}
         <li><a href="{{ change.get_absolute_url }}">{{ change.name }}</a>
         <ul>
       {% endif %}
-          {# Generate the change type label. E.g. 'changes', 'added', 'deleted', etc. #}
-          <li>
+
+          <li class="{{ change.classname }}">
+
+            {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
             {% if change.history_info.type_verbose == "Added" %}
-              (new)
+            <span class="changelabel added">(new)</span>
             {% else %}{% if change.history_info.type_verbose == "Deleted" %}
-              (deleted)
+            <span class="changelabel deleted">(deleted)</span>
             {% else %}
-              (<a href="{% url change.diff_view slug=change.pretty_slug date1=change.history_info.date %}">changes</a>)
+              <span class="changelabel updated">(<a href="{% url change.diff_view slug=change.pretty_slug date1=change.history_info.date %}">changes</a>)</span>
             {% endif %}{% endif %}
+
+            <span class="comment">{{ change.history_info.comment }}</span>
+
+            <span class="user">
+              {% if change.history_info.user %}
+              <a href="{{ change.history_info.user.get_absolute_url }}">{{ change.history_info.user }}</a>
+              {% else %}
+              {{ change.history_info.user_ip }}
+              {% endif %}
+            </span>
+
           </li>
+
       {# Close the list we created with 'forloop.first' #}
       {% if forloop.last %}
         </ul>
         </li>
       {% endif %}
 
+     {% endspaceless %}
     {% endfor %}
+
   {% endfor %}
   </ul>
+  </div>
 {% endblock %}
