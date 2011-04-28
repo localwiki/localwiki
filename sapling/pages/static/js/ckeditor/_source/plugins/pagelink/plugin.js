@@ -7,6 +7,29 @@ CKEDITOR.plugins.add( 'pagelink',
 	init : function( editor )
 	{
 		editor.addCommand( 'pagelink', new CKEDITOR.dialogCommand( 'pagelink' ) );
+		editor.addCommand( 'pageanchor', new CKEDITOR.dialogCommand( 'pageanchor' ) );
+		
+		// Add the CSS styles for anchor placeholders.
+		var side = editor.lang.dir == 'rtl' ? 'right' : 'left';
+		editor.addCss(
+			'img.cke_anchor' +
+			'{' +
+				'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/anchor.gif' ) + ');' +
+				'background-position: center center;' +
+				'background-repeat: no-repeat;' +
+				'border: 1px solid #a9a9a9;' +
+				'width: 18px !important;' +
+				'height: 18px !important;' +
+			'}\n' +
+			'a.cke_anchor' +
+			'{' +
+				'background-image: url(' + CKEDITOR.getUrl( this.path + 'images/anchor.gif' ) + ');' +
+				'background-position: ' + side + ' center;' +
+				'background-repeat: no-repeat;' +
+				'border: 1px solid #a9a9a9;' +
+				'padding-' + side + ': 18px;' +
+			'}'
+		   	);
 
 		editor.ui.addButton( 'PageLink',
 			{
@@ -16,15 +39,27 @@ CKEDITOR.plugins.add( 'pagelink',
 			} );
 		CKEDITOR.dialog.add( 'pagelink', this.path + 'dialogs/pagelink.js' );
 		
+		editor.ui.addButton( 'PageAnchor',
+			{
+				label : editor.lang.anchor.toolbar,
+				command : 'pageanchor',
+				className : 'cke_button_anchor'
+			} );
+		CKEDITOR.dialog.add( 'pageanchor', this.path + 'dialogs/pageanchor.js' );
+		
 		editor.on( 'doubleclick', function( evt )
 			{
 				var element = CKEDITOR.plugins.pagelink.getSelectedLink( editor ) || evt.data.element;
 
 				if ( !element.isReadOnly() )
 				{
-					if ( element.is( 'a' ) && element.getAttribute('href'))
+					if ( element.is( 'a' ) )
 					{
-						evt.data.dialog =  'pagelink';
+						if( element.getAttribute('href'))
+							evt.data.dialog =  'pagelink';
+					} else if ( element.is('img') && element.data( 'cke-real-element-type' ) == 'anchor' )
+					{
+						evt.data.dialog = 'pageanchor';
 					}
 				}
 			});
@@ -40,6 +75,13 @@ CKEDITOR.plugins.add( 'pagelink',
 						command : 'pagelink',
 						group : 'link',
 						order : 1
+					},
+					pageanchor :
+					{
+						label : editor.lang.anchor.menu,
+						command : 'pageanchor',
+						group : 'link',
+						order : 2
 					}
 				});
 		}
@@ -51,17 +93,47 @@ CKEDITOR.plugins.add( 'pagelink',
 				{
 					if ( !element || element.isReadOnly() )
 						return null;
-						
-					if ( !element.is( 'img' ) && element.getAttribute( 'href' ))
+					
+					var isAnchor = ( element.is( 'img' ) && element.data( 'cke-real-element-type' ) == 'pageanchor' );
+
+					if ( !isAnchor )
 					{
 						if ( !( element = CKEDITOR.plugins.pagelink.getSelectedLink( editor ) ) )
 							return null;
+
+						isAnchor = ( element.getAttribute( 'name' ) && !element.getAttribute( 'href' ) );
 					}
 
-					return  { pagelink : CKEDITOR.TRISTATE_OFF };
+					return isAnchor ?
+							{ pageanchor : CKEDITOR.TRISTATE_OFF } :
+							{ pagelink : CKEDITOR.TRISTATE_OFF };
 				});
 		}
-	}
+	},
+	afterInit : function( editor )
+	{
+		// Register a filter to displaying placeholders after mode change.
+
+		var dataProcessor = editor.dataProcessor,
+			dataFilter = dataProcessor && dataProcessor.dataFilter;
+
+		if ( dataFilter )
+		{
+			dataFilter.addRules(
+				{
+					elements :
+					{
+						a : function( element )
+						{
+							var attributes = element.attributes;
+							if ( attributes.name && !attributes.href )
+								return editor.createFakeParserElement( element, 'cke_anchor', 'anchor' );
+						}
+					}
+				});
+		}
+	},
+	requires : [ 'fakeobjects' ]
 } );
 
 CKEDITOR.plugins.pagelink =

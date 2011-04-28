@@ -2,7 +2,8 @@ import os
 from StringIO import StringIO
 from lxml import etree
 import html5lib
-from html5lib import sanitizer
+from html5lib import sanitizer, treebuilders
+from xml.sax.saxutils import escape
 
 from django.db import models
 from django.core import exceptions
@@ -41,11 +42,24 @@ def sanitize_html(unsafe):
 
 
 def sanitize_html_fragment(unsafe, allowed_elements=None):
+    # TODO: make this more simple / understandable and factor out from
+    # plugins.html_to_template_text
     if not allowed_elements:
         allowed_elements = sanitizer.HTMLSanitizer.allowed_elements
-    p = html5lib.HTMLParser(tokenizer=custom_sanitizer(allowed_elements))
-    tree = p.parseFragment(unsafe)
-    return tree.toxml()
+    p = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("lxml"),
+                            tokenizer=custom_sanitizer(allowed_elements),
+                            namespaceHTMLElements=False)
+    top_level_elements = p.parseFragment(unsafe)
+    # put top level elements in container
+    container = etree.Element('div')
+    if top_level_elements and not hasattr(top_level_elements[0], 'tag'):
+        container.text = top_level_elements.pop(0)
+    container.extend(top_level_elements)
+
+    html_bits = [etree.tostring(elem, method='html', encoding='utf-8')
+                     for elem in container]
+
+    return ''.join([escape(container.text or '')] + html_bits)
 
 
 class XMLField(models.TextField):
@@ -101,7 +115,7 @@ class HTML5FragmentField(models.TextField):
         self.allowed_elements = allowed_elements
 
     def clean(self, value, model_instance):
-        super(HTML5FragmentField, self).clean(value, model_instance)
+        value = super(HTML5FragmentField, self).clean(value, model_instance)
         return sanitize_html_fragment(value, self.allowed_elements)
 
     def formfield(self, **kwargs):

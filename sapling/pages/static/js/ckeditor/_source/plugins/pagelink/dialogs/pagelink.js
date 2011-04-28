@@ -25,8 +25,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 		if ( ( anchorMatch = href.match( anchorRegex ) ) )
 		{
 			retval.type = 'anchor';
-			retval.anchor = {};
-			retval.anchor.name = retval.anchor.id = anchorMatch[1];
+			retval.url = href;
 		}
 		// Protected email link as encoded string.
 		else if ( ( emailMatch = href.match( emailRegex ) ) )
