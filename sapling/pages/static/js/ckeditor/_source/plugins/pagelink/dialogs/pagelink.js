@@ -25,8 +25,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 		if ( ( anchorMatch = href.match( anchorRegex ) ) )
 		{
 			retval.type = 'anchor';
-			retval.anchor = {};
-			retval.anchor.name = retval.anchor.id = anchorMatch[1];
+			retval.url = href;
 		}
 		// Protected email link as encoded string.
 		else if ( ( emailMatch = href.match( emailRegex ) ) )
@@ -41,12 +40,6 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 			bodyMatch && ( email.body = decodeURIComponent( bodyMatch[ 1 ] ) );
 			retval.url = 'mailto:' + email.address;
 		}
-		// urlRegex matches empty strings, so need to check for href as well.
-		else if (  ( urlMatch = href.match( urlRegex ) ) )
-		{
-			retval.type = 'url';
-			retval.url = href;
-		}
 		else
 		{
 			retval.type = 'page';
@@ -57,7 +50,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 	}
 	var processLink = function( editor, element )
 	{
-		var href = ( element  && element.getAttribute( 'href' ) ) || '';
+		var href = ( element  && (element.data( 'cke-saved-href' ) || element.getAttribute( 'href' ) ) ) || '';
 
 		var retval = parseLink(href);
 		
@@ -202,12 +195,14 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 			{
 				default:
 					var url = data.url || '';
-					attributes[ 'href' ] = url;
+					attributes[ 'data-cke-saved-href' ] = url;
 			}
-
+			
+			attributes[ 'href' ] = attributes[ 'data-cke-saved-href' ];
+			
 			if ( !this._.selectedElement )
 			{
-				if(data.url == '')
+				if(jQuery.trim(data.url) == '')
 					return;
 				// Create element if current selection is collapsed.
 				var selection = editor.getSelection(),
@@ -216,7 +211,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 				{
 					// Short mailto link text view (#5736).
 					var text = new CKEDITOR.dom.text( data.type == 'email' ?
-							data.email.address : attributes[ 'href' ], editor.document );
+							data.email.address : attributes[ 'data-cke-saved-href' ], editor.document );
 					ranges[0].insertNode( text );
 					ranges[0].selectNodeContents( text );
 					selection.selectRanges( ranges );
@@ -231,7 +226,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 			{
 				// We're only editing an existing link, so just overwrite the attributes.
 				var element = this._.selectedElement,
-					href = element.getAttribute( 'href' ),
+					href = element.data( 'cke-saved-href' ) || element.getAttribute('href'),
 					textView = element.getHtml();
 
 				element.setAttributes( attributes );
@@ -241,10 +236,12 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 				{
 					// Short mailto link text view (#5736).
 					element.setHtml( data.type == 'email' ?
-						data.email.address : attributes[ 'href' ] );
+						data.email.address : attributes[ 'data-cke-saved-href' ] );
 				}
 
 				delete this._.selectedElement;
+				
+				// remove link if there is no url
 				if(jQuery.trim(data.url) == '')
 					jQuery(element.$).after(jQuery(element.$).html()).remove();
 			}

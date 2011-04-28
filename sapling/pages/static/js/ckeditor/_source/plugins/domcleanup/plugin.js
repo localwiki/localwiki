@@ -49,9 +49,9 @@ CKEDITOR.plugins.add( 'domcleanup',
                             return false;
                         var ok_tags = editor.plugins['domcleanup'].allowedTags;
                         var ok_attributes = {
-                            'a' : ['name','href','data_cke_saved_href'],
-                            'img' : ['src','_cke_saved_src','alt','width',
-                                     'height','style'],
+                            'a' : ['name','href','id','class'],
+                            'img' : ['src','alt','title',
+                                     'height','style','class'],
                             'span' : ['class', 'style'],
                             'table' : ['width'],
                             'th': ['colspan', 'rowspan'],
@@ -59,10 +59,14 @@ CKEDITOR.plugins.add( 'domcleanup',
                         };
                         for(attr in element.attributes)
                         {
+                        	if(attr.indexOf('data-cke-') == 0)
+                        		continue;
                             if(!ok_attributes[element.name] ||
                                 ok_attributes[element.name]
-                                                .indexOf(attr) < 0)
+                                                .indexOf(attr) < 0){
                                 delete element.attributes[attr];
+                            }
+                                
                         }
                         if(ok_tags.indexOf(element.name) > -1)
                             return element;

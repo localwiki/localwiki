@@ -35,7 +35,7 @@ class WikiEditor(CKEditor):
 
     def get_toolbar(self):
         styles = ['Source', 'Bold', 'Italic', 'Underline']
-        links = ['PageLink']
+        links = ['PageLink', 'PageAnchor']
         media = ['InsertImage']
         misc = ['Copy', 'Paste', 'Undo', 'Redo']
 

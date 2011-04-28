@@ -101,7 +101,7 @@ class PageTest(TestCase):
         a_post['content'] = '<p>a content</p>'
         a = PageForm(a_post, instance=p)
         self.failIf(a.is_valid())
-        self.failUnless(PageForm.conflict_warning in str(a.errors))
+        self.failUnless(PageForm.conflict_error in str(a.errors))
 
         a_post = a.data
         a = PageForm(a_post, instance=p)

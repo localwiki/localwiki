@@ -12,8 +12,8 @@ http://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
 Here's how to get this code running on Ubuntu Server Edition 10.04 LTS
 
 1.  Prerequisites: gcc, libxml2, libxslt, python-dev(the last 4 are
-needed by lxml), java(needed for daisydiff), image decoders, python-setuptools,
-virtualenv, gdal, postgresql, postgis:
+needed by lxml), java(needed for daisydiff and search), solr, image decoders,
+python-setuptools, virtualenv, gdal, postgresql, postgis, mercurial:
 
     $ sudo apt-get install gcc libxslt-dev python-dev
     $ sudo apt-get install openjdk-6-jdk solr-jetty
@@ -22,6 +22,7 @@ virtualenv, gdal, postgresql, postgis:
     $ sudo apt-get install gdal-bin proj
     $ sudo apt-get install postgresql-8.4-postgis postgresql-client
     $ sudo apt-get install python-psycopg2
+    $ sudo apt-get install mercurial
     $ sudo easy_install virtualenv
 
 NOTE: This setup assumes usage of PostgreSQL and its extension, PostGIS.  You

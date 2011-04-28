@@ -16,6 +16,7 @@ template tag.
 """
 from lxml import etree
 from lxml.html import fragments_fromstring
+from xml.sax.saxutils import escape
 from HTMLParser import HTMLParser
 from urlparse import urlparse
 import re
@@ -24,7 +25,7 @@ from django.template import Node
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from pages.models import Page, name_to_url
+from pages.models import Page, name_to_url, url_to_name
 from pages.models import slugify
 
 
@@ -133,6 +134,7 @@ def html_to_template_text(unsafe_html):
     """
     Parse html and turn it into template text.
     """
+    # TODO: factor out parsing/serializing
     safe_html = sanitize_intermediate(unsafe_html)
     top_level_elements = fragments_fromstring(safe_html)
 
@@ -152,10 +154,10 @@ def html_to_template_text(unsafe_html):
             if can_continue is False:
                 break
 
-    template_bits = [etree.tostring(elem, encoding='utf-8')
+    template_bits = [etree.tostring(elem, method='html', encoding='utf-8')
                      for elem in container]
     return sanitize_final(''.join(tag_imports +
-                                  [container.text or ''] +
+                                  [escape(container.text or '')] +
                                   template_bits
                                   )
                          )
@@ -168,17 +170,22 @@ class LinkNode(Node):
 
     def render(self, context):
         try:
-            url = self.href
             cls = ''
-            url_parts = urlparse(url)
-            if not url_parts.scheme and not url_parts.netloc:
+            url = self.href
+            if self.is_page_link(url):
                 try:
                     page = Page.objects.get(slug__exact=slugify(url))
                     url = reverse('show-page', args=[page.pretty_slug])
                 except Page.DoesNotExist:
                     cls = ' class="missing_link"'
-                    url = reverse('show-page', args=[name_to_url(url)])
+                    url = name_to_url(url_to_name(url))  # My%20page -> My_page
+                    url = reverse('show-page', args=[url])
             return '<a href="%s"%s>%s</a>' % (url, cls,
                                               self.nodelist.render(context))
         except:
             return ''
+
+    def is_page_link(self, url):
+        url_parts = urlparse(url)
+        return (not url_parts.scheme and not url_parts.netloc
+                and not url_parts.fragment)

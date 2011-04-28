@@ -74,6 +74,12 @@ class HTML5FragmentField(TestCase):
         self.assertEquals(m.html, ('&lt;p&gt;<a href="#top">This link</a>'
                                    ' takes you to the top&lt;/p&gt;'))
 
+    def test_self_closing_a_tag(self):
+        m = HTML5FragmentModel()
+        m.html = '<a name="test"/>'
+        m.clean_fields()
+        self.assertEquals(m.html, '<a name="test"></a>')
+
 
 class CKEditorWidgetTest(TestCase):
     def test_default_config(self):
