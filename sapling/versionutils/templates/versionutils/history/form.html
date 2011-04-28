@@ -21,7 +21,13 @@
   <tr>
     <td>
       <label for="id_version_{{ forloop.revcounter }}">
-      <input type="checkbox" name="version" value="{{ forloop.revcounter }}" id="id_version_{{ forloop.revcounter }}"/>
+      <span class="version_checkbox">
+        {% if version_info.type_verbose == 'Deleted' or version_info.type == 'Reverted/Deleted' or version_info.type == 'Reverted/Deleted via cascade' %}
+        &nbsp;
+        {% else %}
+        <input type="checkbox" name="version" value="{{ forloop.revcounter }}" id="id_version_{{ forloop.revcounter }}"/>
+      {% endif %}
+      </span>
       {# We assume a standard url format here. #}
       <a href="{{ forloop.revcounter }}">{{ version_info.date }}</a>
       {{ version_info.type_verbose }} by
