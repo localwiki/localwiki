@@ -1,5 +1,6 @@
 from heapq import merge
 import datetime
+import itertools
 
 from django.views.generic import ListView
 from django.http import Http404
@@ -25,7 +26,7 @@ class RecentChangesView(ListView):
         mapchanges = self._format_mapdata(mapchanges)
 
         # Merge the two sorted-by-date querysets.
-        objs = merge(pagechanges, mapchanges)
+        objs = merge_changes(pagechanges, mapchanges)
 
         return self._group_by_date_then_slug(objs)
 
@@ -92,3 +93,10 @@ class RecentChangesView(ListView):
         # Set to the beginning of that day.
         return datetime.datetime(start_at.year, start_at.month, start_at.day,
             0, 0, 0, 0, start_at.tzinfo)
+
+
+def merge_changes(*objs_lists):
+    # In theory we could use the fact each obj_list is already sorted.
+    # This is fast enough for now.
+    return sorted(itertools.chain(*objs_lists),
+                  key=lambda x: x.history_info.date, reverse=True)
