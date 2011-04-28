@@ -7,50 +7,36 @@
 
 {% block content %}
   <div id="recentchanges">
-  <ul>
-  {% for change_list in changes_grouped_by_slug %}
+  <div id="limit_to">Show all changes in the last <a href="{{ rc_url }}?days_back=1">1</a> | <a href="{{ rc_url}}?days_back=2">2</a> | <a href="{{ rc_url }}?days_back=3">3</a> | <a href="{{ rc_url }}?days_back=7">7</a> days.</div>
+      {% for on_obj, change_list in changes_grouped_by_slug %}
+      {% ifchanged %}<h2>{{ on_obj.history_info.date|date:"l, F j, Y" }}</h3>{% endifchanged %}
+      <h3><a href="{{ on_obj.page.get_absolute_url }}">{{ on_obj.page.name }}</a></h3>
 
-    {% for change in change_list %}
-      {% spaceless %}
-      {# We get the page name and page link by looking at the first change's page name and page link #}
-      {% if forloop.first %}
-        <li><a href="{{ change.get_absolute_url }}">{{ change.name }}</a>
-        <ul>
-      {% endif %}
+      <ul>
+      {% for change in change_list %}
+        <li class="{{ change.classname }}">
+          {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
+          {% if change.history_info.type_verbose == "Added" %}
+          <span class="changelabel added">(new)</span>
+          {% else %}{% if change.history_info.type_verbose == "Deleted" %}
+          <span class="changelabel deleted">(deleted)</span>
+          {% else %}
+          <span class="changelabel updated">(<a href="{% url change.diff_view slug=change.page.pretty_slug date1=change.history_info.date %}">changes</a>)</span>
+          {% endif %}{% endif %}
 
-          <li class="{{ change.classname }}">
+          <span class="comment">{{ change.history_info.comment }}</span>
 
-            {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
-            {% if change.history_info.type_verbose == "Added" %}
-            <span class="changelabel added">(new)</span>
-            {% else %}{% if change.history_info.type_verbose == "Deleted" %}
-            <span class="changelabel deleted">(deleted)</span>
+          <span class="user">
+            {% if change.history_info.user %}
+            <a href="{{ change.history_info.user.get_absolute_url }}">{{ change.history_info.user }}</a>
             {% else %}
-              <span class="changelabel updated">(<a href="{% url change.diff_view slug=change.pretty_slug date1=change.history_info.date %}">changes</a>)</span>
-            {% endif %}{% endif %}
-
-            <span class="comment">{{ change.history_info.comment }}</span>
-
-            <span class="user">
-              {% if change.history_info.user %}
-              <a href="{{ change.history_info.user.get_absolute_url }}">{{ change.history_info.user }}</a>
-              {% else %}
-              {{ change.history_info.user_ip }}
-              {% endif %}
-            </span>
-
-          </li>
-
-      {# Close the list we created with 'forloop.first' #}
-      {% if forloop.last %}
-        </ul>
+            {{ change.history_info.user_ip }}
+            {% endif %}
+          </span>
         </li>
-      {% endif %}
+      {% endfor %}
+      </ul>
 
-     {% endspaceless %}
     {% endfor %}
-
-  {% endfor %}
-  </ul>
   </div>
 {% endblock %}
