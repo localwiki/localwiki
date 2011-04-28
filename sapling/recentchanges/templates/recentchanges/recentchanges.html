@@ -3,6 +3,8 @@
 
 {% block title %}Recent Changes - {{ block.super }}{% endblock %}
 
+{% block head_extra %}<link rel="alternate" href="{% url 'recentchanges-feed' %}" type="application/rss+xml" title="Recent Changes"/>{% endblock %}
+
 {% block header_title %}Recent Changes{% endblock %}
 
 {% block content %}

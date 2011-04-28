@@ -9,13 +9,14 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    (r'^pages/', include(pages.site.urls)),
     (r'^map/', include(maps.site.urls)),
     (r'^users/', include('sapling.users.urls')),
     (r'^search/', include('sapling.search.urls')),
-    (r'^(?i)Recent_Changes/*', include('sapling.recentchanges.urls')),
+    (r'^(?i)Recent_Changes/', include('sapling.recentchanges.urls')),
 
     (r'^admin/', include(admin.site.urls)),
+
+    (r'^pages/', include(pages.site.urls)),
 )
 
 if settings.DEBUG:

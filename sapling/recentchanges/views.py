@@ -9,8 +9,14 @@ from django.core.urlresolvers import reverse
 from pages.models import Page
 from maps.models import MapData
 
+from utils import merge_changes
+
 MAX_DAYS_BACK = 7
 
+# TODO: Eventually we will probably want to break out the explicit calls
+# to Page, MapData, etc here and have each model we want to show up here
+# either 1) register itself or 2) abstract this out to a function or
+# class somewhere else.
 
 class RecentChangesView(ListView):
     template_name = "recentchanges/recentchanges.html"
@@ -93,10 +99,3 @@ class RecentChangesView(ListView):
         # Set to the beginning of that day.
         return datetime.datetime(start_at.year, start_at.month, start_at.day,
             0, 0, 0, 0, start_at.tzinfo)
-
-
-def merge_changes(*objs_lists):
-    # In theory we could use the fact each obj_list is already sorted.
-    # This is fast enough for now.
-    return sorted(itertools.chain(*objs_lists),
-                  key=lambda x: x.history_info.date, reverse=True)
