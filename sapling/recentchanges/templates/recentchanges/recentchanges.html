@@ -7,8 +7,31 @@
 
 {% block content %}
   <ul>
-  {% for change in change_list %}
-    <li>(<a href="{% url change.diff_view slug=change.pretty_slug date1=change.history_info.date %}">diff</a>) <a href="{{ change.get_absolute_url }}">{{ change.name }}</a></li>
+  {% for change_list in changes_grouped_by_slug %}
+    {% for change in change_list %}
+
+      {# We get the page name and page link by looking at the first change's page name and page link #}
+      {% if forloop.first %}
+        <li><a href="{{ change.get_absolute_url }}">{{ change.name }}</a>
+        <ul>
+      {% endif %}
+          {# Generate the change type label. E.g. 'changes', 'added', 'deleted', etc. #}
+          <li>
+            {% if change.history_info.type_verbose == "Added" %}
+              (new)
+            {% else %}{% if change.history_info.type_verbose == "Deleted" %}
+              (deleted)
+            {% else %}
+              (<a href="{% url change.diff_view slug=change.pretty_slug date1=change.history_info.date %}">changes</a>)
+            {% endif %}{% endif %}
+          </li>
+      {# Close the list we created with 'forloop.first' #}
+      {% if forloop.last %}
+        </ul>
+        </li>
+      {% endif %}
+
+    {% endfor %}
   {% endfor %}
   </ul>
 {% endblock %}

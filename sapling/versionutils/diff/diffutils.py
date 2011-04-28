@@ -44,7 +44,6 @@ class BaseFieldDiff():
                 if d['difference'] > 0:
                     return 'New value is larger'
                 return 'New value is smaller'
-                Unchanged
 
         diff.register(models.IntegerField, MyIntegerDiff)
 
@@ -156,10 +155,7 @@ class BaseModelDiff(object):
         if model_class:
             self.model_class = model_class
         else:
-            if self.model1 is not None:
-                self.model_class = self.model1.__class__
-            else:
-                self.model_class = self.model2.__class__
+            self.model_class = self.model1.__class__
         self._diff = None
 
     def as_dict(self):
@@ -230,21 +226,17 @@ class BaseModelDiff(object):
             if field_name in self.excludes:
                 continue
 
-            obj1, obj2 = None, None
-            if self.model1:
-                obj1 = getattr(self.model1, field_name)
-            if self.model2:
-                obj2 = getattr(self.model2, field_name)
+            obj1 = getattr(self.model1, field_name)
+            obj2 = getattr(self.model2, field_name)
             is_model_diff = issubclass(diff_class, BaseModelDiff)
 
             if is_model_diff:
                 # Use the non-versioned class to do the diff on the
                 # versioned fields.
-                base_obj = obj1 or obj2
-                if is_historical_instance(base_obj):
-                    base_class = base_obj.history_info._object.__class__
+                if is_historical_instance(obj1):
+                    base_class = obj1.history_info._object.__class__
                 else:
-                    base_class = base_obj.__class__
+                    base_class = obj1.__class__
                 diff[field_name] = diff_class(obj1, obj2,
                     model_class=base_class)
             else:
@@ -295,10 +287,6 @@ class TextFieldDiff(BaseFieldDiff):
         return render_to_string(self.template, {'diff': d})
 
     def get_diff(self):
-        if self.field1 is None:
-            self.field1 = ''
-        if self.field2 is None:
-            self.field2 = ''
         return get_diff_operations_clean(self.field1, self.field2)
 
 
@@ -324,10 +312,6 @@ class HtmlFieldDiff(BaseFieldDiff):
     def get_diff(self):
         if self.field1 == self.field2:
             return None
-        if self.field1 is None:
-            self.field1 = ''
-        if self.field2 is None:
-            self.field2 = ''
         return {'deleted': self.field1, 'inserted': self.field2}
 
 
@@ -404,11 +388,6 @@ class GeometryFieldDiff(BaseFieldDiff):
 
         if self.field1 == self.field2:
             return None
-
-        if self.field1 is None:
-            self.field1 = GeometryCollection([])
-        if self.field2 is None:
-            self.field2 = GeometryCollection([])
 
         LINE_TYPES = [LineString, LinearRing, MultiLineString]
 
@@ -701,12 +680,10 @@ def diff(object1, object2):
         DiffUtilNotFound: If there's no registered or inferred diff for
         the objects.
     """
-    # We can diff against None, so we grab the provided non-None object.
-    base_object = object1 or object2
-    if is_historical_instance(base_object):
-        base_class = base_object.history_info._object.__class__
+    if is_historical_instance(object1):
+        base_class = object1.history_info._object.__class__
     else:
-        base_class = base_object.__class__
+        base_class = object1.__class__
 
     diff_util = registry.get_diff_util(base_class)
     return diff_util(object1, object2, model_class=base_class)
