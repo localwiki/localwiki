@@ -175,11 +175,11 @@ class LinkNode(Node):
             if self.is_page_link(url):
                 try:
                     page = Page.objects.get(slug__exact=slugify(url))
-                    url = reverse('show-page', args=[page.pretty_slug])
+                    url = reverse('pages:show', args=[page.pretty_slug])
                 except Page.DoesNotExist:
                     cls = ' class="missing_link"'
                     url = name_to_url(url_to_name(url))  # My%20page -> My_page
-                    url = reverse('show-page', args=[url])
+                    url = reverse('pages:show', args=[url])
             return '<a href="%s"%s>%s</a>' % (url, cls,
                                               self.nodelist.render(context))
         except:
