@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 from django.views.generic import ListView
 
 from views import *
+from feeds import PageChangesFeed
 import models
 from utils.constants import DATETIME_REGEXP
 from models import Page
@@ -32,6 +33,10 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>.+)/_revert/(?P<version>[0-9]+)$',
         slugify(PageRevertView.as_view()), name='revert'),
     url(r'^(?P<slug>.+)/_upload', slugify(upload), name='upload-image'),
+
+    # TODO: Non-DRY here. Can break out into something like
+    # ('/_history/',
+    #  include(history_urls(list_view=..,compare_view=..)))?
     url(r'^(?P<slug>.+)/_history/compare$',
         slugify(PageCompareView.as_view())),
     url((r'^(?P<slug>.+)/_history/'
@@ -44,8 +49,11 @@ urlpatterns = patterns('',
         slugify(PageVersionDetailView.as_view()), name='as_of_version'),
     url(r'^(?P<slug>.+)/_history/(?P<date>%s)$' % DATETIME_REGEXP,
         slugify(PageVersionDetailView.as_view()), name='as_of_date'),
+    url(r'^(?P<slug>.+)/_history/_feed/*$', PageChangesFeed(),
+        name='changes-feed'),
     url(r'^(?P<slug>.+)/_history/$', slugify(PageHistoryList.as_view()),
         name='history'),
+
     url(r'^(?P<slug>.+)/_files/$', slugify(PageFilesView.as_view()),
         name='files'),
     url(r'^(?P<slug>.+?)/*$', slugify(PageDetailView.as_view()), name='show'),
