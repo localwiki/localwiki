@@ -7,6 +7,7 @@ from maps.models import MapData
 from versionutils.versioning.constants import *
 
 from utils import merge_changes
+from views import IGNORE_TYPES
 
 MAX_CHANGES = 500
 
@@ -35,7 +36,8 @@ class RecentChangesFeed(Feed):
         mapchanges = MapData.history.all()[:MAX_CHANGES]
         mapchanges = self._format_mapdata(mapchanges)
 
-        return merge_changes(pagechanges, mapchanges)[:MAX_CHANGES]
+        changes = merge_changes(pagechanges, mapchanges)[:MAX_CHANGES]
+        return skip_ignored_change_types(changes)
 
     def item_title(self, item):
         return item.title
@@ -125,7 +127,10 @@ class ChangesOnItemFeed(Feed):
         return "Changes for %s on %s" % (obj.title, self.site().name)
 
     def link(self, obj):
-        return obj.get_absolute_url()
+        print "ABOUT TO GET LINK"
+        linkd = obj.get_absolute_url()
+        print "GOT LINK", linkd
+        return linkd
 
     def description(self, obj):
         return "Changes for %s on %s" % (obj.title, self.site().name)
@@ -180,3 +185,7 @@ class ChangesOnItemFeed(Feed):
     def get_feed(self, obj, request):
         self.request = request
         return super(ChangesOnItemFeed, self).get_feed(obj, request)
+
+
+def skip_ignored_change_types(objs):
+    return [o for o in objs if o.history_info.type not in IGNORE_TYPES]

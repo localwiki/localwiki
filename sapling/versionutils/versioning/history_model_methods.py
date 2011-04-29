@@ -49,6 +49,8 @@ def get_history_fields(self, model):
     fields = {
         'history_id': models.AutoField(primary_key=True),
         'history__object': HistoricalObjectDescriptor(model),
+        'history__object_rel_populated': HistoricalObjectDescriptor(
+            model, populate_related=True),
         'history_date': models.DateTimeField(default=datetime.datetime.now),
         'history_version_number': version_number_of,
         'history_type': models.SmallIntegerField(choices=TYPE_CHOICES),
@@ -229,7 +231,7 @@ def historical_record_getattribute(model, m, name):
         if name in callables:
             # This is a callable so let's do a lookup on the non-historical
             # model instance.
-            return m.history_info._object.__getattribute__(name)
+            return m.history_info._object_rel_populated.__getattribute__(name)
     return model.__getattribute__(m, name)
 
 
@@ -383,8 +385,24 @@ class HistoricalMetaInfo(object):
 
 
 class HistoricalObjectDescriptor(object):
-    def __init__(self, model):
+    def __init__(self, model, populate_related=False):
+        self._populate_related = populate_related
         self.model = model
+
+    def populate_related(self, m, instance):
+        # We set all related, versioned attributes to their
+        # non-versioned *instance* form.  We don't just look them up --
+        # we create the instances.  This makes 'if related..' step
+        # in __get__ redundant, but we need to create the model before
+        # we can do this and in order to create the model we need to
+        # pass it something.
+        for f in self.model._meta.fields:
+            related = getattr(f, 'related', None)
+            if related and is_versioned(related.parent_model):
+                attribute = getattr(instance, f.name)
+                related_direct_obj = attribute.history_info._object
+                setattr(m, f.name, related_direct_obj)
+        return m
 
     def __get__(self, instance, owner):
         values = []
@@ -392,8 +410,8 @@ class HistoricalObjectDescriptor(object):
             related = getattr(f, 'related', None)
             if related and is_versioned(related.parent_model):
                 # If the field points to a related, versioned model then
-                # we need to subsitute an instance of that model (not
-                # versioned) here.  This is because we use the same
+                # we need to subsitute a pk to an instance of that model
+                # not versioned) here.  This is because we use the same
                 # attname for the pointer to the historical, related
                 # object.  For instance, if we have "Map" -> OneToOne ->
                 # "Page", then in Map_hist we have page_id which stores
@@ -406,4 +424,6 @@ class HistoricalObjectDescriptor(object):
             else:
                 values.append(getattr(instance, f.attname))
         m = self.model(*values)
+        if self._populate_related:
+            m = self.populate_related(m, instance)
         return m

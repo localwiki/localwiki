@@ -19,6 +19,8 @@
 
         <ul>
         {% for change in change_list %}
+          {% if change.history_info.type not in ignore_types %}
+
           <li class="{{ change.classname }}">
             {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
             {% if change.history_info.type_verbose == "Added" %}
@@ -39,6 +41,8 @@
               {% endif %}
             </span>
           </li>
+
+          {% endif %}
       {% endfor %}
       </ul>
 

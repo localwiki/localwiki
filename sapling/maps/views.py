@@ -29,7 +29,10 @@ class MapDetailView(Custom404Mixin, DetailView):
 
     def handler404(self, request, *args, **kwargs):
         page_slug = kwargs.get('slug')
-        page = Page.objects.get(slug=slugify(page_slug))
+        try:
+            page = Page.objects.get(slug=slugify(page_slug))
+        except Page.DoesNotExist:
+            page = Page(slug=slugify(page_slug))
         mapdata = MapData(page=page)
         return HttpResponseNotFound(
             direct_to_template(request, 'maps/mapdata_new.html',

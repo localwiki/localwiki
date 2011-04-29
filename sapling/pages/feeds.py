@@ -1,6 +1,7 @@
 from models import Page, slugify
 
 from recentchanges.feeds import ChangesOnItemFeed, MAX_CHANGES
+from recentchanges.feeds import skip_ignored_change_types
 
 
 class PageChangesFeed(ChangesOnItemFeed):
@@ -17,4 +18,4 @@ class PageChangesFeed(ChangesOnItemFeed):
             o.page = o
             o.diff_view = '%s:compare-dates' % o._meta.app_label
             o.as_of_view = '%s:as_of_date' % o._meta.app_label
-        return objs
+        return skip_ignored_change_types(objs)

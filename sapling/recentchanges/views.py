@@ -1,6 +1,4 @@
-from heapq import merge
 import datetime
-import itertools
 
 from django.views.generic import ListView
 from django.http import Http404
@@ -8,10 +6,17 @@ from django.core.urlresolvers import reverse
 
 from pages.models import Page
 from maps.models import MapData
+from versionutils.versioning.constants import *
 
 from utils import merge_changes
 
 MAX_DAYS_BACK = 7
+IGNORE_TYPES = [
+    TYPE_DELETED_CASCADE,
+    TYPE_REVERTED_DELETED_CASCADE,
+    TYPE_REVERTED_CASCADE
+]
+
 
 # TODO: Eventually we will probably want to break out the explicit calls
 # to Page, MapData, etc here and have each model we want to show up here
@@ -26,9 +31,9 @@ class RecentChangesView(ListView):
         start_at = self._get_start_date()
 
         pagechanges = Page.history.filter(history_info__date__gte=start_at)
-        mapchanges = MapData.history.filter(history_info__date__gte=start_at)
-
         pagechanges = self._format_pages(pagechanges)
+
+        mapchanges = MapData.history.filter(history_info__date__gte=start_at)
         mapchanges = self._format_mapdata(mapchanges)
 
         # Merge the two sorted-by-date querysets.
@@ -40,6 +45,7 @@ class RecentChangesView(ListView):
         c = super(RecentChangesView, self).get_context_data(*args, **kwargs)
         c.update({
             'rc_url': reverse('recentchanges'),
+            'ignore_types': IGNORE_TYPES,
         })
         return c
 
