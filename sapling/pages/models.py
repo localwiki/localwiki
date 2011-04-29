@@ -58,6 +58,7 @@ class PageImage(models.Model):
     file = models.ImageField(upload_to='pages/images/')
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False)
+    history = TrackChanges()
 
     class Meta:
         unique_together = ('slug', 'name')
