@@ -107,11 +107,10 @@ class ChangesOnItemFeed(Feed):
 
     Subclass this -- you can't use it directly.  You need to:
 
-      1. Define get_object() and items().
-      2. Make sure you set the following attributes on the returned object in
-         get_object() as well as on all of the items returned by items():
-
-         title, slug, page, diff_view, as_of_view.
+      1. Define get_object().  The object returned should have attributes for:
+         page, title, slug.
+      2. Define items().  The items returned by items() should have
+         attributes for: title, page, diff_view and as_of_view.
     """
     def get_object(self, request, slug):
         raise NotImplementedError(

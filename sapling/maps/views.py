@@ -29,15 +29,11 @@ class MapDetailView(Custom404Mixin, DetailView):
 
     def handler404(self, request, *args, **kwargs):
         page_slug = kwargs.get('slug')
-        try:
-            page = Page.objects.get(slug=slugify(page_slug))
-        except Page.DoesNotExist:
-            page = Page(slug=slugify(page_slug))
-            # XXX Make a message that says "Page doesn't exist. <Create
-            # page>?"
+        page = Page.objects.get(slug=slugify(page_slug))
+        mapdata = MapData(page=page)
         return HttpResponseNotFound(
             direct_to_template(request, 'maps/mapdata_new.html',
-                               {'page': page})
+                {'page': page, 'mapdata': mapdata})
         )
 
     def get_object(self):
@@ -53,8 +49,6 @@ class MapDetailView(Custom404Mixin, DetailView):
         context = super(MapDetailView, self).get_context_data(**kwargs)
 
         context['date'] = self.get_object_date()
-
-        context['page'] = self.object.page
         context['map'] = InfoMap([(self.object.geom, self.object.page.name)],
                                  options=OLWIDGET_OPTIONS)
         return context
@@ -127,7 +121,6 @@ class MapRevertView(MapVersionDetailView, RevertView):
         context = super(DetailView, self).get_context_data(**kwargs)
 
         context['show_revision'] = True
-        context['page'] = self.object.page
         context['map'] = InfoMap([(self.object.geom, self.object.page.name)],
                                  options=OLWIDGET_OPTIONS)
         context['date'] = self.object.history_info.date
