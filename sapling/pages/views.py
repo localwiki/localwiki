@@ -14,6 +14,8 @@ from versionutils.versioning.views import RevertView, HistoryList
 from utils.views import Custom404Mixin, CreateObjectMixin
 from models import Page, PageImage, url_to_name
 from forms import PageForm
+from django.views.generic.base import RedirectView
+from django.shortcuts import get_object_or_404
 
 # Where possible, we subclass similar generic views here.
 
@@ -122,7 +124,7 @@ class PageHistoryList(HistoryList):
         return context
 
 
-class PageFilesView(ListView):
+class PageFileListView(ListView):
     context_object_name = "file_list"
     template_name = "pages/page_files.html"
 
@@ -130,9 +132,18 @@ class PageFilesView(ListView):
         return PageImage.objects.filter(slug__exact=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
-        context = super(PageFilesView, self).get_context_data(**kwargs)
+        context = super(PageFileListView, self).get_context_data(**kwargs)
         context['slug'] = self.kwargs['original_slug']
         return context
+
+
+class PageFileView(RedirectView):
+    permanent = False
+
+    def get_redirect_url(self, slug, file, **kwargs):
+        page_file = get_object_or_404(PageImage, slug__exact=slug,
+                                      name__exact=file)
+        return page_file.file.url
 
 
 class PageCompareView(diff.views.CompareView):
@@ -148,7 +159,8 @@ def upload(request, slug, **kwargs):
     try:
         image = PageImage(file=uploaded, name=uploaded.name, slug=slug)
         image.save()
-        return ck_upload_result(request, url=image.file.url)
+        relative_url = '_files/' + uploaded.name
+        return ck_upload_result(request, url=relative_url)
     except IntegrityError:
         return ck_upload_result(request,
                                 message='A file with this name already exists')
