@@ -7,7 +7,6 @@ import maps
 
 admin.autodiscover()
 
-
 urlpatterns = patterns('',
     (r'^map/', include(maps.site.urls)),
     (r'^Users/', include('sapling.users.urls')),
@@ -15,8 +14,6 @@ urlpatterns = patterns('',
     (r'^', include('sapling.recentchanges.urls')),
 
     (r'^admin/', include(admin.site.urls)),
-
-    (r'^', include(pages.site.urls)),
 )
 
 if settings.DEBUG:
@@ -25,3 +22,8 @@ if settings.DEBUG:
             'document_root': settings.MEDIA_ROOT,
         }),
    )
+
+# Fall back to pages.
+urlpatterns += patterns('',
+    (r'^', include(pages.site.urls)),
+)
