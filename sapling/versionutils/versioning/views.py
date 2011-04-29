@@ -31,18 +31,9 @@ class HistoryList(ListView):
     template_name_suffix = '_history'
     revert_view_name = None
 
-    def get_revert_view_name(self):
-        if self.revert_view_name:
-            return self.revert_view_name
-        # We assume these are historical instances.
-        if hasattr(self.object_list, 'model'):
-            opts = self.object_list.model._original_model._meta
-            return '%s:revert' % opts.app_label
-
     def get_context_data(self, **kwargs):
         context = super(HistoryList, self).get_context_data(**kwargs)
         context['slug'] = self.kwargs.get('slug')
-        context['revert_view'] = self.get_revert_view_name()
         return context
 
     def get_template_names(self):
