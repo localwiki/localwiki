@@ -27,6 +27,7 @@ from django.conf import settings
 
 from pages.models import Page, name_to_url, url_to_name, PageImage
 from pages.models import slugify
+from versionutils.versioning.utils import is_versioned, is_historical_instance
 
 
 def sanitize_intermediate(html):
@@ -102,8 +103,8 @@ _files_url = '_files/'
 
 def handle_image(elem, context=None):
     # only handle resized images
-    do_thumbnail = False
-    style = parse_style(getattr(elem.attrib, 'style', ''))
+    do_thumbnail = True
+    style = parse_style(elem.attrib.get('style', ''))
     if 'width' not in style or 'height' not in style:
         do_thumbnail = False
 
@@ -119,6 +120,12 @@ def handle_image(elem, context=None):
     try:
         file = PageImage.objects.get(slug__exact=page.slug,
                                      name__exact=filename)
+        if is_versioned(page):
+            if is_historical_instance(page):
+                page_date = page.history_info.date
+            else:
+                page_date = page.history.most_recent().history_info.date
+            file = file.history.as_of(date=page_date)
     except PageImage.DoesNotExist:
         return
 
