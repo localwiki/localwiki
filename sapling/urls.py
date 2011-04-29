@@ -10,7 +10,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^map/', include(maps.site.urls)),
-    (r'^users/', include('sapling.users.urls')),
+    (r'^Users/', include('sapling.users.urls')),
     (r'^search/', include('sapling.search.urls')),
     (r'^', include('sapling.recentchanges.urls')),
 
