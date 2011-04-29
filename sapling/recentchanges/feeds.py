@@ -45,11 +45,13 @@ class RecentChangesFeed(Feed):
     def item_description(self, item):
         user = getattr(item.history_info, 'user', item.history_info.user_ip)
         comment = ''
+        change_type = item.history_info.type_verbose().lower()
+        if item.history_info.type in REVERTED_TYPES:
+            change_type = "%s (to version %s)" % (change_type,
+                item.history_info.reverted_to_version.history_info.date)
         if item.history_info.comment:
             comment = ' with comment "%s"' % item.history_info.comment
-        return "%s was %s by %s%s." % (
-            item.title, item.history_info.type_verbose().lower(),
-            user, comment)
+        return "%s was %s by %s%s." % (item.title, change_type, user, comment)
 
     def item_link(self, item):
         as_of_link = reverse(item.as_of_view, args=(), kwargs={
@@ -127,9 +129,7 @@ class ChangesOnItemFeed(Feed):
         return "Changes for %s on %s" % (obj.title, self.site().name)
 
     def link(self, obj):
-        print "ABOUT TO GET LINK"
         linkd = obj.get_absolute_url()
-        print "GOT LINK", linkd
         return linkd
 
     def description(self, obj):
@@ -145,11 +145,13 @@ class ChangesOnItemFeed(Feed):
     def item_description(self, item):
         user = getattr(item.history_info, 'user', item.history_info.user_ip)
         comment = ''
+        change_type = item.history_info.type_verbose().lower()
+        if item.history_info.type in REVERTED_TYPES:
+            change_type = "%s (to version %s)" % (change_type,
+                item.history_info.reverted_to_version.history_info.date)
         if item.history_info.comment:
             comment = ' with comment "%s"' % item.history_info.comment
-        return "%s was %s by %s%s." % (
-            item.title, item.history_info.type_verbose().lower(),
-            user, comment)
+        return "%s was %s by %s%s." % (item.title, change_type, user, comment)
 
     def item_link(self, item):
         as_of_link = reverse(item.as_of_view, args=(), kwargs={

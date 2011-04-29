@@ -46,6 +46,9 @@ class RecentChangesView(ListView):
         c.update({
             'rc_url': reverse('recentchanges'),
             'ignore_types': IGNORE_TYPES,
+            'added_types': ADDED_TYPES,
+            'deleted_types': DELETED_TYPES,
+            'reverted_types': REVERTED_TYPES,
         })
         return c
 
