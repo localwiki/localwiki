@@ -20,8 +20,4 @@ class MapData(models.Model):
     history = TrackChanges()
 
     def get_absolute_url(self):
-        print "on...", self, self.__dict__
-        print ">.>>>>>>>>>>"
-        print self.page
-        print "<<<<<<<<<<<<<<<"
         return reverse('maps:show', args=[self.page.pretty_slug])

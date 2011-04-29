@@ -5,6 +5,8 @@ from feeds import RecentChangesFeed
 
 
 urlpatterns = patterns('',
-    url(r'^$', RecentChangesView.as_view(), name='recentchanges'),
-    url(r'^_feed/*$', RecentChangesFeed(), name='recentchanges-feed'),
+    url(r'^(?i)Recent_Changes/*$', RecentChangesView.as_view(),
+        name='recentchanges'),
+    url(r'^(?i)Recent_Changes/_feed/*$', RecentChangesFeed(),
+        name='recentchanges-feed'),
 )

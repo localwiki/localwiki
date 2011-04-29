@@ -1,6 +1,6 @@
 {% extends "site/base.html" %}
 
-{% block head_extra %}<link rel="alternate" href="{% url pages:changes-feed slug=page.pretty_slug %}" type="application/rss+xml" title="Recent changes on this Page"/>{% endblock %}
+{% block head_extra %}{% if page %}<link rel="alternate" href="{% url pages:changes-feed slug=page.pretty_slug %}" type="application/rss+xml" title="Recent changes on this Page"/>{% endif %}{% endblock %}
   
 {% block media %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/pages.css">
