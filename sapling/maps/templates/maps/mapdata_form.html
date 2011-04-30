@@ -8,6 +8,7 @@
 {% block content %}
     <form method="post" action="">{% csrf_token %}
       {{ form.geom }}
+      {{ form.version_date }}
       <input type="submit" value="Save"/>
       <a href="../">Cancel</a>
     </form>

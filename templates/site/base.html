@@ -47,7 +47,10 @@
         {% block dialog %}{% endblock %}
       {% endblock %}
       </div>
-      {% block content %}{% endblock %}
+
+      {% block content %}
+        {% block content_header %}{% endblock %}
+      {% endblock %}
     {% endblock %}
     </div>
 

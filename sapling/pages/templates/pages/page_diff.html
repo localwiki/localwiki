@@ -30,7 +30,8 @@
 
 {% block content %}
   <table width="100%">
-    <thead>
+    <thead id="content_header">
+    {% block content_header %}
         <tr>
             <td class="revision_details">
                 {% if old %}
@@ -68,10 +69,13 @@
             </td>
         </tr>
     </thead>
+    {% endblock %}
+
     {% diff old new as page_diff %}
     <tbody valign="top">
         {% render_page page_diff.content %}
     </tbody>
+
   </table>
   <p>
       <a href="{% url pages:show slug=page.pretty_slug %}">View page</a>

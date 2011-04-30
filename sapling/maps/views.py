@@ -150,3 +150,9 @@ class MapCompareView(diff.views.CompareView):
         page.name = latest_page.name
 
         return MapData(page=page)
+
+    def get_context_data(self, **kwargs):
+        # Send this in directly because we've wrapped InfoMap.
+        context = super(MapCompareView, self).get_context_data(**kwargs)
+        context['map_diff_media'] = InfoMap([]).media
+        return context
