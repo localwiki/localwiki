@@ -2,13 +2,14 @@
 {% load url from future %}
 
 {% block version_info_extras %}
-  {{ version_info.comment }}
+  {{ version_info.comment|default:'' }}
   </label>
   </td>
   <td>
     {% if not forloop.first %}
     {% ifnotequal version_info.type_verbose "Deleted" %}
-        <a href="{% url revert_view slug=slug version=forloop.revcounter %}">revert</a>
+        {# This assumes a certain URL format #}
+        <a href="../_revert/{{ forloop.revcounter }}">revert</a>
     {% endifnotequal %}
     {% endif %}
   </td>

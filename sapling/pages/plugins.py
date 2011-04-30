@@ -25,8 +25,9 @@ from django.template import Node
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from pages.models import Page, name_to_url, url_to_name
+from pages.models import Page, name_to_url, url_to_name, PageImage
 from pages.models import slugify
+from versionutils.versioning.utils import is_versioned, is_historical_instance
 
 
 def sanitize_intermediate(html):
@@ -68,7 +69,7 @@ def insert_text_before(text, elem):
         elem.getparent().text = (elem.getparent().text or '') + text
 
 
-def handle_link(elem):
+def handle_link(elem, context=None):
     if not 'href' in elem.attrib:
         return
 
@@ -97,26 +98,49 @@ def parse_style(css):
     return style
 
 
-def handle_image(elem):
+_files_url = '_files/'
+
+
+def handle_image(elem, context=None):
     # only handle resized images
-    if  not 'style' in elem.attrib:
-        return
-
-    src = elem.attrib['src'].replace(settings.MEDIA_URL, '')
-    style = parse_style(elem.attrib['style'])
+    do_thumbnail = True
+    style = parse_style(elem.attrib.get('style', ''))
     if 'width' not in style or 'height' not in style:
+        do_thumbnail = False
+
+    src = elem.attrib['src']
+    if not src.startswith(_files_url):
         return
-    width = int(style['width'].replace('px', ''))
-    height = int(style['height'].replace('px', ''))
 
-    before = '{%% thumbnail "%s" "%dx%d" as im %%}' % (escape_quotes(src),
-                                                       width, height)
-    after = '{% endthumbnail %}'
+    if not context or 'page' not in context:
+        return
+    filename = src.replace(_files_url, '')
 
-    elem.attrib['src'] = '{{ im.url }}'
+    page = context['page']
+    try:
+        file = PageImage.objects.get(slug__exact=page.slug,
+                                     name__exact=filename)
+        if is_versioned(page):
+            if is_historical_instance(page):
+                page_date = page.history_info.date
+            else:
+                page_date = page.history.most_recent().history_info.date
+            file = file.history.as_of(date=page_date)
+    except PageImage.DoesNotExist:
+        return
 
-    insert_text_before(before, elem)
-    elem.tail = after + (elem.tail or '')
+    if do_thumbnail:
+        width = int(style['width'].replace('px', ''))
+        height = int(style['height'].replace('px', ''))
+        escaped_filename = escape_quotes(file.file.name)
+        before = '{%% thumbnail "%s" "%dx%d" as im %%}' % (escaped_filename,
+                                                           width, height)
+        after = '{% endthumbnail %}'
+        elem.attrib['src'] = '{{ im.url }}'
+        insert_text_before(before, elem)
+        elem.tail = after + (elem.tail or '')
+    else:
+        elem.attrib['src'] = file.file.url
     return False
 
 
@@ -130,7 +154,7 @@ tag_handlers = {"a": [handle_link],
                }
 
 
-def html_to_template_text(unsafe_html):
+def html_to_template_text(unsafe_html, context=None):
     """
     Parse html and turn it into template text.
     """
@@ -144,13 +168,13 @@ def html_to_template_text(unsafe_html):
         container.text = top_level_elements.pop(0)
     container.extend(top_level_elements)
 
-    context = etree.iterwalk(container, events=('end',))
+    tree = etree.iterwalk(container, events=('end',))
     # walk over all elements
-    for action, elem in context:
+    for action, elem in tree:
         if not elem.tag in tag_handlers:
             continue
         for handler in tag_handlers[elem.tag]:
-            can_continue = handler(elem)
+            can_continue = handler(elem, context)
             if can_continue is False:
                 break
 

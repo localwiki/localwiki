@@ -26,7 +26,9 @@ class CommentMixin(object):
         # It would be ideal if the ModelForm save method took keyword
         # arguments and passed them along.
         save_with = getattr(self.instance, '_save_with', {})
-        save_with['comment'] = self.cleaned_data.get('comment')
+        comment = self.cleaned_data.get('comment')
+        if comment:
+            save_with['comment'] = comment
         self.instance._save_with = save_with
         return super(CommentMixin, self).save(commit=commit)
 
