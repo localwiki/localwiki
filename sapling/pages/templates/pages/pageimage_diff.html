@@ -1,0 +1,71 @@
+{% extends "pages/base.html" %}
+
+{% load diff_tags %}
+{% load pages_tags %}
+
+{% block media %}
+  <style>
+    del {
+      background: #FDC6C6;
+      text-decoration: none;
+    }
+    ins {
+      background: #b4ff78;
+      text-decoration: none;
+    }
+    del img {
+      border: 0.5em #FDC6C6 solid;
+    }
+    ins img{
+      border: 0.5em #b4ff78 solid;
+    }
+    td.revision_details {
+      font-style: italic;
+    }
+  </style>
+{% endblock %}
+
+{% block title %}Differences for {{ new.name }}{% endblock %}
+{% block header_title %}Differences for {{ new.name }}{% endblock %}
+
+{% block content %}
+  <table width="100%">
+    <thead>
+        <tr>
+            <td class="revision_details">
+                {% if old %}
+                  Revision {{ old.history_info.version_number }}
+                  ({{ old.history_info.date }}
+                  by
+                  {% spaceless %}
+                  {% if old.history_info.user %}
+                      <a href="{{ old.history_info.user.get_absolute_url }}">{{ old.history_info.user }}</a>
+                  {% else %}
+                      {{ old.history_info.user_ip }}
+                  {% endif %}
+                  {% endspaceless %})
+                {% endif %}
+            </td>
+            <td class="revision_details">
+                Revision {{ new.history_info.version_number }}
+                ({{ new.history_info.date }}
+                by
+                {% spaceless %}
+                {% if new.history_info.user %}
+                    <a href="{{ new.history_info.user.get_absolute_url }}">{{ new.history_info.user }}</a>
+                {% else %}
+                    {{ new.history_info.user_ip }}
+                {% endif %}
+                {% endspaceless %})
+            </td>
+        </tr>
+    </thead>
+    {% diff old new as pagefile_diff %}
+    <tbody valign="top">
+        {{ pagefile_diff.file }}
+    </tbody>
+  </table>
+  <p>
+      <a href="{% url pages:file-info slug=slug file=pageimage.name %}">File info</a>
+  </p>
+{% endblock %}

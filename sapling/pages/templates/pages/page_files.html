@@ -20,7 +20,7 @@
   <ul class="file_list">
   {% for file in file_list %}
     <li>{% thumbnail file.file "32x32" as im %}
-          <a href="{{ file.file.url }}"><img src={{ im.url }}/>{{ file.name }}</a>
+          <a href="{{ file.name }}/_info/"><img src={{ im.url }}/>{{ file.name }}</a>
         {% endthumbnail %}
     </li>
   {% endfor %}

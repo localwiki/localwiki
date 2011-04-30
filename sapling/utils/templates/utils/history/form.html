@@ -2,7 +2,7 @@
 {% load url from future %}
 
 {% block version_info_extras %}
-  {{ version_info.comment }}
+  {{ version_info.comment|default:'' }}
   </label>
   </td>
   <td>

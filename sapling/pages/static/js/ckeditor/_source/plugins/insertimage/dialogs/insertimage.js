@@ -74,7 +74,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             },
             onOk: function () {
                 // if there is a file to upload, do that first
-                if (this.getContentElement('Upload', 'upload').getValue()) {
+                if (this.getContentElement('Upload', 'file').getValue()) {
                     this.getContentElement('Upload', 'uploadButton').fire('click');
                     return false;
                 }
@@ -115,7 +115,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 label: 'Choose a file from your computer',
                 elements: [{
                     type: 'file',
-                    id: 'upload',
+                    id: 'file',
                     label: 'Choose a file from your computer',
                     style: 'height:40px',
                     size: 34,
@@ -148,7 +148,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                     filebrowser: 'Upload:txtUrl',
                     style: 'display:none',
                     label: editor.lang.image.btnUpload,
-                    'for': ['Upload', 'upload']
+                    'for': ['Upload', 'file']
                 }, {
                     type: 'html',
                     id: 'imagePicker',
@@ -219,7 +219,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         }
                     },
                     validate: function () {
-                        if (this.getValue().length > 0 || this.getDialog().getContentElement('Upload', 'upload').getValue().length > 0) return true;
+                        if (this.getValue().length > 0 || this.getDialog().getContentElement('Upload', 'file').getValue().length > 0) return true;
                         alert(editor.lang.image.urlMissing);
                         return false;
                     }
