@@ -31,6 +31,7 @@ OLWIDGET_DEFAULT_OPTIONS = {
     },
     'overlay_style': {'fillColor': '#ffc868',
                       'strokeColor': '#db9e33'},
+    'map_div_class': 'mapwidget',
 }
 
 DAISYDIFF_URL = 'http://localhost:8081/diff'

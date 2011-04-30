@@ -2,6 +2,8 @@
 
 {% load pages_tags %}
 
+{% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}{% endblock %}
+
 {% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
 {% block header_title %}{{ page.name }}{% endblock %}
 
@@ -21,7 +23,14 @@
     </em>
   {% endif %}
   
-  <div>
+  {% if map %}
+  <div id="map">
+    {{ map }}
+    <div class="info"><a href="{% url maps:show slug=page.pretty_slug %}">View map</a></div>
+  </div>
+  {% endif %}
+
+  <div id="page">
     {% render_page page.content %}
   </div>
   

@@ -3,6 +3,6 @@
 {% block head_extra %}{% if mapdata %}<link rel="alternate" href="{% url maps:changes-feed slug=mapdata.page.pretty_slug %}" type="application/rss+xml" title="Recent changes on this Map"/>{% endif %}{% endblock %}
 
 {% block media %}
-<script type="text/javascript" src="{{ STATIC_URL }}olwidget/js/sapling_utils.js"></script>
+{{ block.super }}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/pages.css">
 {% endblock %}

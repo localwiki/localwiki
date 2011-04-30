@@ -7,13 +7,14 @@ from olwidget.forms import MapModelForm
 from versionutils.merging.forms import MergeMixin
 from versionutils.versioning.forms import CommentMixin
 from models import MapData
+from widgets import MediaMixin
 
 OLWIDGET_OPTIONS = None
 if hasattr(settings, 'OLWIDGET_DEFAULT_OPTIONS'):
     OLWIDGET_OPTIONS = settings.OLWIDGET_DEFAULT_OPTIONS
 
 
-class MapForm(MergeMixin, CommentMixin, MapModelForm):
+class MapForm(MergeMixin, CommentMixin, MediaMixin, MapModelForm):
     class Meta:
         model = MapData
         exclude = ('page', 'points', 'lines', 'polys')

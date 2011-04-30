@@ -11,7 +11,10 @@
   <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
   <link rel="shortcut icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  {% block media %}{% endblock %}
+  {% block media %}
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/reset.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/site.css">
+  {% endblock %}
   {% block head_extra %}{% endblock %}
 </head>
 
@@ -29,7 +32,9 @@
     {% endblock %}
 
     <div id="main">
-      {% block main %}
+    {% block main %}
+      <div id="main_header">
+      {% block main_header %}
         {% block messages %}
           {% if messages %}
           <ul class="messages">
@@ -40,8 +45,10 @@
           {% endif %}
         {% endblock %}
         {% block dialog %}{% endblock %}
-        {% block content %}{% endblock %}
       {% endblock %}
+      </div>
+      {% block content %}{% endblock %}
+    {% endblock %}
     </div>
 
     <div id="footer">
@@ -49,6 +56,7 @@
      <p align="right" style="font-family:Symbol">&#960;</p>
      {% endblock %}
     </div>
+
   </div>
 </body>
 {% endblock %}

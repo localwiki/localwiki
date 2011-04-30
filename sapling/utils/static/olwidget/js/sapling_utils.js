@@ -2,6 +2,14 @@ SaplingMap = {
 
     init_openlayers: function() {
         OpenLayers.Control.LayerSwitcher.prototype.roundedCorner = false;
+        var base_initOptions = olwidget.Map.prototype.initOptions;
+        olwidget.Map.prototype.initOptions = function(options) {
+            var opts = base_initOptions.call(this, options) 
+            var map_height = $(window).height() - $('#header').height() - $('#main_header').height();
+            opts['mapDivStyle']['height'] = map_height + 'px';
+            return opts;
+
+        }
         olwidget.EditableLayerSwitcher.prototype.roundedCorner = false;
         var base_onClick = olwidget.EditingToolbar.prototype.onClick;
         olwidget.EditingToolbar.prototype.onClick = function (ctrl, evt) {

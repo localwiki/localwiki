@@ -7,7 +7,7 @@
     
 {% block content %}
     <form method="post" action="">{% csrf_token %}
-      {{ form.as_ul }}
+      {{ form.geom }}
       <input type="submit" value="Save"/>
       <a href="../">Cancel</a>
     </form>

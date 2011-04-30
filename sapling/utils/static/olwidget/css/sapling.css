@@ -1,5 +1,17 @@
 @import url('olwidget.css'); /* import base CSS */
 
+.mapwidget {
+  width: 100%!important;
+  margin: 0!important;
+}
+
+.mapwidget.small {
+  border: 3px solid #a6a6a6;
+  border-radius: 3px;
+  width: 400px!important;
+  height: 300px!important;
+}
+
 .olMap {
    font-family: Verdana, sans-serif!important;
 }

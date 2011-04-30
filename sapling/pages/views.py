@@ -1,5 +1,7 @@
 from dateutil.parser import parse as dateparser
+import copy
 
+from django.conf import settings
 from django.views.decorators.http import require_POST
 from django.views.generic.simple import direct_to_template
 from django.views.generic import DetailView, ListView
@@ -14,6 +16,7 @@ from versionutils.versioning.views import RevertView, HistoryList
 from utils.views import Custom404Mixin, CreateObjectMixin
 from models import Page, PageImage, url_to_name
 from forms import PageForm
+from maps.widgets import InfoMap
 
 # Where possible, we subclass similar generic views here.
 
@@ -32,6 +35,19 @@ class PageDetailView(Custom404Mixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(PageDetailView, self).get_context_data(**kwargs)
         context['date'] = self.object.history.most_recent().history_info.date
+        if hasattr(self.object, 'mapdata'):
+            # Remove the PanZoomBar on normal page views.
+            olwidget_options = copy.deepcopy(getattr(settings,
+                'OLWIDGET_DEFAULT_OPTIONS', {}))
+            map_opts = olwidget_options.get('map_options', {})
+            map_controls = map_opts.get('controls', [])
+            if 'PanZoomBar' in map_controls:
+                map_controls.remove('PanZoomBar')
+            olwidget_options['map_options'] = map_opts
+            olwidget_options['map_div_class'] = 'mapwidget small'
+            context['map'] = InfoMap(
+                [(self.object.mapdata.geom, self.object.name)],
+                options=olwidget_options)
         return context
 
 

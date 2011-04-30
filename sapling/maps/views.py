@@ -5,9 +5,6 @@ from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
-from django.conf import settings
-
-from olwidget.widgets import InfoMap
 
 from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin
@@ -16,12 +13,9 @@ from versionutils.versioning.views import RevertView, HistoryList
 from pages.models import Page
 from pages.models import slugify
 
+from widgets import InfoMap
 from models import MapData
 from forms import MapForm
-
-OLWIDGET_OPTIONS = None
-if hasattr(settings, 'OLWIDGET_DEFAULT_OPTIONS'):
-    OLWIDGET_OPTIONS = settings.OLWIDGET_DEFAULT_OPTIONS
 
 
 class MapDetailView(Custom404Mixin, DetailView):
@@ -52,8 +46,7 @@ class MapDetailView(Custom404Mixin, DetailView):
         context = super(MapDetailView, self).get_context_data(**kwargs)
 
         context['date'] = self.get_object_date()
-        context['map'] = InfoMap([(self.object.geom, self.object.page.name)],
-                                 options=OLWIDGET_OPTIONS)
+        context['map'] = InfoMap([(self.object.geom, self.object.page.name)])
         return context
 
 
@@ -124,8 +117,7 @@ class MapRevertView(MapVersionDetailView, RevertView):
         context = super(DetailView, self).get_context_data(**kwargs)
 
         context['show_revision'] = True
-        context['map'] = InfoMap([(self.object.geom, self.object.page.name)],
-                                 options=OLWIDGET_OPTIONS)
+        context['map'] = InfoMap([(self.object.geom, self.object.page.name)])
         context['date'] = self.object.history_info.date
         return context
 
