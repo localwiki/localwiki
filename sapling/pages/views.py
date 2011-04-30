@@ -18,7 +18,7 @@ from versionutils.versioning.views import UpdateView, DeleteView
 from versionutils.versioning.views import RevertView, HistoryList
 from utils.views import Custom404Mixin, CreateObjectMixin
 from models import Page, PageImage, url_to_name
-from forms import PageForm, PageImageform
+from forms import PageForm, PageImageForm
 from maps.widgets import InfoMap
 
 # Where possible, we subclass similar generic views here.
