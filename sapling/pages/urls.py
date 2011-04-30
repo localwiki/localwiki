@@ -26,18 +26,18 @@ def slugify(func):
 
 urlpatterns = patterns('',
     url(r'^$', ListView.as_view(**page_list_info), name='title-index'),
-    url(r'^(?P<slug>.+)/_edit$', slugify(PageUpdateView.as_view()),
+    url(r'^(?P<slug>.+)/_edit/$', slugify(PageUpdateView.as_view()),
         name='edit'),
-    url(r'^(?P<slug>.+)/_delete$', slugify(PageDeleteView.as_view()),
+    url(r'^(?P<slug>.+)/_delete/$', slugify(PageDeleteView.as_view()),
         name='delete'),
     url(r'^(?P<slug>.+)/_revert/(?P<version>[0-9]+)$',
         slugify(PageRevertView.as_view()), name='revert'),
-    url(r'^(?P<slug>.+)/_upload', slugify(upload), name='upload-image'),
+    url(r'^(?P<slug>.+)/_upload/$', slugify(upload), name='upload-image'),
 
     # TODO: Non-DRY here. Can break out into something like
     # ('/_history/',
     #  include(history_urls(list_view=..,compare_view=..)))?
-    url(r'^(?P<slug>.+)/_history/compare$',
+    url(r'^(?P<slug>.+)/_history/compare/$',
         slugify(PageCompareView.as_view())),
     url((r'^(?P<slug>.+)/_history/'
             r'(?P<version1>[0-9]+)\.\.\.(?P<version2>[0-9]+)?$'),
