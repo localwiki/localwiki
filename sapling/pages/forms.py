@@ -3,7 +3,7 @@ from django.template.defaultfilters import slugify
 
 from versionutils.merging.forms import MergeMixin
 from versionutils.versioning.forms import CommentMixin
-from pages.models import Page
+from pages.models import Page, PageImage
 from pages.widgets import WikiEditor
 from versionutils.diff.daisydiff.daisydiff import daisydiff_merge
 
@@ -46,3 +46,10 @@ class PageForm(MergeMixin, CommentMixin, forms.ModelForm):
         except Page.DoesNotExist:
             pass
         return name
+
+
+class PageImageForm(CommentMixin, forms.ModelForm):
+
+    class Meta:
+        model = PageImage
+        fields = ('file',)
