@@ -1,6 +1,7 @@
 {% extends "pages/base.html" %}
 
 {% block media %}
+  {{ block.super }}
   {% include "versionutils/history/media.html" %}
 {% endblock %}
 
