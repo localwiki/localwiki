@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
     function size_map() {
-        $('.mapwidget').height(($(window).height() - $('#header').height() - $('#main_header').height()) - $('#content_header').height());
+        $('.mapwidget').height(($(window).height() - $('#header').height() - $('#main_header').height()) - $('#content_header').height()) - $('#content_footer').height();
     }
     $(window).resize(size_map);
 </script>

@@ -8,10 +8,17 @@
 {% block content %}
     <form method="post" action="">{% csrf_token %}
       {{ form.as_ul }}
-      <input type="submit" value="Save"/>
-      <a href=".">Cancel</a>
+
+      {% block content_footer %}
+      <div id="content_footer">
+        <div id="editor_actions">
+          <input type="submit" value="Save"/>
+          <a href=".">Cancel</a>
+          {% with form.instance as page %}
+            {% include "pages/editor_actions.html" %}
+          {% endwith %}
+        </div>
+      </div>
+      {% endblock %}
     </form>
-    {% with form.instance as page %}
-      {% include "pages/editor_actions.html" %}
-    {% endwith %}
 {% endblock %}

@@ -27,8 +27,7 @@ OLWIDGET_DEFAULT_OPTIONS = {
 
     'layers': ['cloudmade.35165'],
     'map_options': {
-        'controls': ['Navigation', 'PanZoomBar', 'KeyboardDefaults',
-                     'Attribution'],
+        'controls': ['Navigation', 'PanZoomBar', 'KeyboardDefaults'],
         'theme': '/static/openlayers/theme/sapling/style.css',
     },
     'overlay_style': {'fillColor': '#ffc868',
