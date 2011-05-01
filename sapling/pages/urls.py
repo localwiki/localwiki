@@ -75,11 +75,12 @@ urlpatterns = patterns('',
         name='history'),
 
     # Basic edit actions.
-    url(r'^(?P<slug>.+)/_edit/$', slugify(PageUpdateView.as_view()),
+    url(r'^(?P<slug>.+)/_edit$', slugify(PageUpdateView.as_view()),
         name='edit'),
-    url(r'^(?P<slug>.+)/_delete/$', slugify(PageDeleteView.as_view()),
+    url(r'^(?P<slug>.+)/_delete$', slugify(PageDeleteView.as_view()),
         name='delete'),
     url(r'^(?P<slug>.+)/_revert/(?P<version>[0-9]+)$',
         slugify(PageRevertView.as_view()), name='revert'),
-    url(r'^(?P<slug>.+?)/*$', slugify(PageDetailView.as_view()), name='show'),
+    url(r'^(?P<slug>(?:(?!/_).)+?)/*$', slugify(PageDetailView.as_view()),
+        name='show'),
 )
