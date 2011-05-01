@@ -6,6 +6,7 @@ from feeds import PageChangesFeed
 import models
 from utils.constants import DATETIME_REGEXP
 from models import Page
+from pages.views import PageFilebrowserView
 
 page_list_info = {
     'model': Page,
@@ -53,6 +54,8 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>.+)/_files/(?P<file>.+)$', slugify(PageFileView.as_view()),
         name='file'),
     url(r'^(?P<slug>.+)/_upload', slugify(upload), name='upload-image'),
+    url(r'^(?P<slug>.+)/_filebrowser$', slugify(PageFilebrowserView.as_view()),
+        name='filebrowser'),
 
     # TODO: Non-DRY here. Can break out into something like
     # ('/_history/',

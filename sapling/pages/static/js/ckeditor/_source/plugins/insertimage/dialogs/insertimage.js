@@ -162,8 +162,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         var image_picker = jQuery('.image_picker', element);
                         var message = jQuery('.image_picker_msg', element);
                         message.empty().append(spinner);
-                        jQuery.get('_files/', function(data){
-                        	var result = jQuery('.file_list', data)
+                        var browseUrl = editor.config.filebrowserInsertimageBrowseUrl;
+                        jQuery.get(browseUrl, function(data){
+                        	var result = jQuery('ul.file_list', data)
                         					.find('a')
                         					.click(function(){
 	                                            txtUrl.setValue(jQuery(this).attr('href'));

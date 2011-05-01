@@ -154,6 +154,10 @@ class PageFileListView(ListView):
         return context
 
 
+class PageFilebrowserView(PageFileListView):
+    template_name = 'pages/cke_filebrowser.html'
+
+
 class PageFileView(RedirectView):
     permanent = False
 

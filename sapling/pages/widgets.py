@@ -10,6 +10,7 @@ class WikiEditor(CKEditor):
         additional = {
             #'skin': 'sapling',
             'filebrowserInsertimageUploadUrl': '_upload/',
+            'filebrowserInsertimageBrowseUrl': '_filebrowser',
             'domcleanupAllowedTags': models.allowed_tags,
             'contentsCss': urljoin(settings.STATIC_URL,
                                    'css/pages.css'),
