@@ -12,8 +12,6 @@ class WikiEditor(CKEditor):
             'filebrowserInsertimageUploadUrl': '_upload/',
             'filebrowserInsertimageBrowseUrl': '_filebrowser',
             'domcleanupAllowedTags': models.allowed_tags,
-            'contentsCss': urljoin(settings.STATIC_URL,
-                                   'css/pages.css'),
             'toolbarCanCollapse': False,
             'enterMode': 1,
         }
@@ -31,7 +29,7 @@ class WikiEditor(CKEditor):
 
     def get_extra_plugins(self):
         plugins = ['insertimage', 'simpleimage', 'domcleanup', 'seamless',
-                   'customenterkey', 'pagelink']
+                   'customenterkey', 'pagelink', 'inheritcss']
         return ','.join(plugins)
 
     def get_toolbar(self):
