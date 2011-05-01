@@ -140,8 +140,18 @@ try:
 except:
     pass
 
-# Allow localsettings.py to define LOCAL_INSTALLED_APPS
+# Allow localsettings.py to define LOCAL_INSTALLED_APPS.
 INSTALLED_APPS = tuple(list(INSTALLED_APPS) + list(LOCAL_INSTALLED_APPS))
+
+# A site theme uses a template directory with a particular name.
+THEME_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'templates')
+TEMPLATE_DIRS = tuple(list(TEMPLATE_DIRS) + list(THEME_TEMPLATE_DIR))
+
+# A site theme uses a static assets directory with a particular name.
+STATICFILES_DIRS = (
+    ('themes/%s' % SITE_THEME, os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'assets')),
+)
+print STATICFILES_DIRS
 
 # Generate a local secret key.
 if not 'SECRET_KEY' in locals():
