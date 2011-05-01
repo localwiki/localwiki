@@ -6,3 +6,8 @@
 {{ block.super }}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/pages.css">
 {% endblock %}
+
+{% block footer %}
+{{ block.super }}
+<div id="map_attribution">Map data CC-BY-SA <a href="http://openstreetmap.org/">OpenStreetMap</a>. Map tiles via <a href="http://cloudmade.com/">CloudMade</a>.</div>
+{% endblock %}

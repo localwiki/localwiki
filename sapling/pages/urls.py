@@ -15,7 +15,8 @@ page_list_info = {
 
 
 def slugify(func):
-    """Applies custom slugify to the slug and stashes original slug
+    """
+    Applies custom slugify to the slug and stashes original slug
     """
     def wrapped(*args, **kwargs):
         if 'slug' in kwargs:

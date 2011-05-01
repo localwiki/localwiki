@@ -49,7 +49,6 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
-
 # staticfiles settings
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
@@ -103,7 +102,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'sapling.urls'
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'templates')
+    os.path.join(PROJECT_ROOT, 'templates'),
 )
 
 INSTALLED_APPS = (
@@ -145,7 +144,8 @@ INSTALLED_APPS = tuple(list(INSTALLED_APPS) + list(LOCAL_INSTALLED_APPS))
 
 # A site theme uses a template directory with a particular name.
 THEME_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'templates')
-TEMPLATE_DIRS = tuple(list(TEMPLATE_DIRS) + list(THEME_TEMPLATE_DIR))
+TEMPLATE_DIRS = tuple(list(TEMPLATE_DIRS) + [THEME_TEMPLATE_DIR])
+print TEMPLATE_DIRS
 
 # A site theme uses a static assets directory with a particular name.
 STATICFILES_DIRS = (
