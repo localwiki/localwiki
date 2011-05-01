@@ -18,6 +18,7 @@ from lxml import etree
 from lxml.html import fragments_fromstring
 from xml.sax.saxutils import escape
 from HTMLParser import HTMLParser
+from urllib import unquote_plus
 from urlparse import urlparse
 import re
 
@@ -113,7 +114,7 @@ def handle_image(elem, context=None):
 
     if not context or 'page' not in context:
         return
-    filename = src.replace(_files_url, '')
+    filename = unquote_plus(src.replace(_files_url, ''))
 
     page = context['page']
     try:
