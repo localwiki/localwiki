@@ -18,6 +18,8 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 1025
 EMAIL_USE_TLS = False
 
+SITE_THEME = 'sapling'
+
 OLWIDGET_DEFAULT_OPTIONS = {
     'default_lat': 37.76,
     'default_lon': -122.43,
