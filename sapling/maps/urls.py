@@ -5,8 +5,8 @@ from views import *
 from feeds import MapChangesFeed
 
 urlpatterns = patterns('',
-    url(r'^(?P<slug>.+)/_edit/$', MapUpdateView.as_view(),  name='edit'),
-    url(r'^(?P<slug>.+)/_delete/$', MapDeleteView.as_view(), name='delete'),
+    url(r'^(?P<slug>.+)/_edit$', MapUpdateView.as_view(),  name='edit'),
+    url(r'^(?P<slug>.+)/_delete$', MapDeleteView.as_view(), name='delete'),
     url(r'^(?P<slug>.+)/_revert/(?P<version>[0-9]+)$',
         MapRevertView.as_view(), name='revert'),
 
