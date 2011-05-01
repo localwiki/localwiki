@@ -25,5 +25,6 @@ urlpatterns = patterns('',
         name='changes-feed'),
     url(r'^(?P<slug>.+)/_history/$', MapHistoryList.as_view(), name='history'),
 
-    url(r'^(?P<slug>.+?)/*$', MapDetailView.as_view(), name='show'),
+    url(r'^(?P<slug>(?:(?!/_).)+?)/*$', MapDetailView.as_view(),
+        name='show'),
 )
