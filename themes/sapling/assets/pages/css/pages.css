@@ -4,13 +4,13 @@
 }
 
 a[href^='http:'], a[href^='https:'] {
-    background: url(../images/external_link.png) no-repeat;
+    background: url(../img/external_link.png) no-repeat;
     background-position: left center;
     padding-left: 16px;
 }
 
 a[href^='mailto:'] {
-    background: url(../images/email_link.png) no-repeat;
+    background: url(../img/email_link.png) no-repeat;
     background-position: left center;
     padding-left: 16px;
 }
