@@ -26,9 +26,18 @@ a[href^='mailto:'] {
     border: 1px solid #cccccc;
 }
 
+.image_left {
+    float: left;
+    clear: left;
+}
+
+.image_right {
+    float: right;
+    clear: right;
+}
+
 .image_caption {
     display: block;
     text-align: center;
-    font-size: 80%;
 }
 

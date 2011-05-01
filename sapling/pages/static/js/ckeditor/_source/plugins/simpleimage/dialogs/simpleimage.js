@@ -834,6 +834,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                                     {
                                                         if ( type == IMAGE )
                                                         {
+                                                        	var frame = this.getDialog().frameElement;
+                                                        	if(frame)
+                                                           		element = frame;
                                                             var value = element.getStyle( 'float' );
                                                             switch( value )
                                                             {
@@ -841,6 +844,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                                                 case 'inherit':
                                                                 case 'none':
                                                                     value = '';
+                                                            }
+                                                            if(!value)
+                                                            {
+                                                            	if(element.hasClass("image_left"))
+                                                            		value = "left";
+                                                            	else if(element.hasClass("image_right"))
+                                                            		value = "right";
                                                             }
 
                                                             !value && ( value = ( element.getAttribute( 'align' ) || '' ).toLowerCase() );
@@ -855,10 +865,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                                         var value = this.getValue();
                                                         if ( type == IMAGE || type == PREVIEW )
                                                         {
+                                                        	element.removeClass("image_left");
+                                                        	element.removeClass("image_right");
                                                             if ( value )
-                                                                element.setStyle( 'float', value );
-                                                            else
-                                                                element.removeStyle( 'float' );
+                                                            	element.addClass("image_" + value);
 
                                                             if ( !internalCommit && type == IMAGE )
                                                             {
