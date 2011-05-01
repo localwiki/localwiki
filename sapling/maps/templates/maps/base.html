@@ -9,5 +9,5 @@
 
 {% block footer %}
 {{ block.super }}
-<div id="map_attribution">Map data CC-BY-SA <a href="http://openstreetmap.org/">OpenStreetMap</a>. Map tiles via <a href="http://cloudmade.com/">CloudMade</a>.</div>
+{% include "maps/attribution.html" %}
 {% endblock %}
