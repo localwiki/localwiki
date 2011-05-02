@@ -55,8 +55,8 @@ CKEDITOR.plugins.add( 'domcleanup',
                             'img' : ['src','alt','title','style','class'],
                             'span' : ['class','style'],
                             'table' : ['class','style'],
-                            'th': ['colspan', 'rowspan'],
-                            'td': ['colspan', 'rowspan']
+                            'th': ['colspan','rowspan','style'],
+                            'td': ['colspan','rowspan','style']
                         };
                         for(attr in element.attributes)
                         {

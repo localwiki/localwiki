@@ -27,23 +27,23 @@ class WikiEditor(CKEditor):
 
     def get_plugins(self):
         # We only want the minimal set of plugins
-        return ('about,basicstyles,clipboard,contextmenu,elementspath,'
-                'enterkey,entities,filebrowser,font,format,horizontalrule,'
-                'htmldataprocessor,indent,justify,keystrokes,list,'
-                'pastetext,removeformat,save,stylescombo,table,'
-                'tabletools,specialchar,tab,toolbar,undo,wysiwygarea,wsc,'
-                'sourcearea,selection')
+        return ('about,basicstyles,clipboard,colordialog,contextmenu,'
+                'elementspath,enterkey,entities,filebrowser,font,format,'
+                'horizontalrule,htmldataprocessor,indent,justify,keystrokes,'
+                'list,pastetext,removeformat,save,stylescombo,specialchar,tab,'
+                'toolbar,undo,wysiwygarea,wsc,sourcearea,selection')
 
     def get_extra_plugins(self):
         plugins = ['insertimage', 'simpleimage', 'domcleanup', 'seamless',
-                   'customenterkey', 'pagelink', 'inheritcss']
+                   'simpletable', 'simpletabletools', 'customenterkey',
+                   'pagelink', 'inheritcss']
         return ','.join(plugins)
 
     def get_toolbar(self):
         basic_styles = ['Bold', 'Italic', 'Underline', 'Strike']
         styles = ['Styles']
         links = ['PageLink', 'PageAnchor']
-        media = ['InsertImage', 'Table', 'HorizontalRule']
+        media = ['InsertImage', 'SimpleTable', 'HorizontalRule']
         lists = ['NumberedList', 'BulletedList']
         align = ['JustifyLeft', 'JustifyCenter', 'JustifyRight']
         indent = ['Outdent', 'Indent']
