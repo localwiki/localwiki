@@ -9,7 +9,8 @@ CKEDITOR.plugins.add( 'domcleanup',
     init : function( editor )
     {
         var allowed_tags = ['p','a','em','strong','u','img','h1','h2','h3',
-        'h4','h5','hr','ul','ol','li','table','thead','tbody','tr','th','td'];
+        'h4','h5','hr','ul','ol','li','table','thead','tbody','tr','th','td',
+        'strike','sub','sup'];
         if(editor.config.domcleanupAllowedTags)
             allowed_tags = editor.config.domcleanupAllowedTags;
         editor.plugins['domcleanup'].allowedTags = allowed_tags;
@@ -49,11 +50,11 @@ CKEDITOR.plugins.add( 'domcleanup',
                             return false;
                         var ok_tags = editor.plugins['domcleanup'].allowedTags;
                         var ok_attributes = {
-                            'a' : ['name','href','id','class'],
-                            'img' : ['src','alt','title',
-                                     'height','style','class'],
-                            'span' : ['class', 'style'],
-                            'table' : ['width'],
+                            'p' : ['style'],
+                            'a' : ['name','href'],
+                            'img' : ['src','alt','title','style','class'],
+                            'span' : ['class','style'],
+                            'table' : ['class','style'],
                             'th': ['colspan', 'rowspan'],
                             'td': ['colspan', 'rowspan']
                         };
@@ -66,7 +67,7 @@ CKEDITOR.plugins.add( 'domcleanup',
                                                 .indexOf(attr) < 0){
                                 delete element.attributes[attr];
                             }
-                                
+                     
                         }
                         if(ok_tags.indexOf(element.name) > -1)
                             return element;
