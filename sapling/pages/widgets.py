@@ -19,7 +19,8 @@ class WikiEditor(CKEditor):
                           {'name': 'Heading 2', 'element': 'h2'},
                           {'name': 'Heading 3', 'element': 'h3'},
                           {'name': 'Formatted', 'element': 'pre'}
-                        ]
+                        ],
+            'indentClasses': ['indent1', 'indent2', 'indent3']
         }
         config.update(additional)
         return config
@@ -43,11 +44,13 @@ class WikiEditor(CKEditor):
         styles = ['Styles']
         links = ['PageLink', 'PageAnchor']
         media = ['InsertImage', 'Table', 'HorizontalRule']
+        lists = ['NumberedList', 'BulletedList']
         align = ['JustifyLeft', 'JustifyCenter', 'JustifyRight']
         indent = ['Outdent', 'Indent']
         sub = ['Subscript', 'Superscript']
 
-        toolbar = [basic_styles, styles, links, media, align, indent, sub]
+        toolbar = [basic_styles, styles, links, media, lists, align, indent,
+                   sub]
         if settings.DEBUG:
             toolbar = [['Source']] + toolbar
         return toolbar
