@@ -52,29 +52,37 @@
 		if ( !editor.window )
 			return;
 		var doc = editor.document,
-		    currentHeight = editor.window.getViewPaneSize().height, docHeight;
+		    currentHeight = editor.window.getViewPaneSize().height, docHeight,
+		    docWidth;
 		if ( doc.$.body.parentNode )
 		{
 			var bodyHeight = jQuery(doc.$.body).outerHeight(true);
+			var bodyWidth = jQuery(doc.$.body).outerWidth(true);
 			var maxBottom = bodyHeight;
+			var maxRight = bodyWidth;
 			jQuery(doc.$.body).find('span').each(function ()
 			{
 			    var element = jQuery(this);
 			    var bottom = element.offset().top + element.outerHeight(true);
+			    var right = element.offset().left + element.outerWidth(true);
 			    if(bottom > maxBottom)
 			       maxBottom = bottom;
+			    if(right > maxRight)
+			       maxRight = right;
 			});
 			bodyHeight = maxBottom;
+			bodyWidth = maxRight;
 			// bodyHeight is inaccurate, plus we want extra room to reduce
 			// flickering
 			docHeight = bodyHeight + 60;
+			docWidth = bodyWidth;
 		}
-		
         docHeight = Math.max(docHeight, 200);
 		if ( Math.abs(docHeight - currentHeight) > 5)
 		{
-		    jQuery('#cke_contents_' + editor.name).height(docHeight);
+		    jQuery('#cke_contents_' + editor.name + '>iframe').height(docHeight);
 		}
+		jQuery('#cke_contents_' + editor.name + '>iframe').width(docWidth);
 	};
 	
 	CKEDITOR.plugins.add( 'seamless',
