@@ -1,0 +1,200 @@
+body {
+    z-index: 0;
+    background: #fafafa url(../img/body-bg.png) top left repeat;
+}
+
+/* XXX TEMPORARY */
+#login_info, #site_search {display:none}
+/* XXX TEMPORARY */
+
+
+/* Type */
+
+body {
+    font: 16px/24px "ff-meta-web-pro-1","ff-meta-web-pro-2", Arial, "Helvetica Neue", sans-serif;
+    color: #444;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #222;
+    font-weight: bold;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+h1 {
+    /*font-size: 28px;*/
+    font-size: 175%;
+    /*line-height: 36px;*/
+    line-height: 130%;
+    /*line-height: 36px;*/
+    /*margin-bottom: 40px;*/
+    margin-bottom: 1.43em;
+}
+h2 {
+    /*font-size: 24px;*/
+    font-size: 150%;
+    /*line-height: 28px;*/
+    line-height: 115%;
+    /*margin-bottom: 10px;*/
+    margin-bottom: 0.45em;
+}
+h3 {
+    /*font-size: 20px;*/
+    font-size: 125%;
+    line-height: 120%;
+    /*line-height: 24px;*/
+    /*margin-bottom: 10px;*/
+    margin-bottom: 0.45em;
+}
+h4 {
+    font-size: 100%;
+    /*line-height: 20px;*/
+    line-height: 125%;
+    /*margin-bottom: 10px;*/
+    margin-bottom: 0.6em;
+}
+h5, h6 {
+    font-size: 100%;
+    /*line-height: 20px;*/
+    line-height: 125%;
+    /*margin-bottom: 10px;*/
+    margin-bottom: 0.6em;
+}
+a {
+    color: #444;
+}
+a:hover {
+    color: #111;
+}
+table {
+    margin-bottom: 1em;
+}
+p { 
+    margin-bottom: 1em;
+}
+pre, code {
+    margin: 15px 0;
+    white-space: pre;
+    overflow: auto;
+    font-family: "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+    line-height: 20px;
+}
+textarea, input, select {
+    font-family: "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+/* Main area */
+
+#main {
+    margin-left: 5em;
+    margin-right: 8em;
+}
+
+/* Content area */
+
+#content_wrapper {
+   /* Border added to make JS height calculation work immediately for
+    * maps */
+   /* Don't remove the border w/o checking that maps still occupy the full window */
+   border: 1px solid #fafafa;
+}
+#content {
+    margin-top: 2em;
+}
+
+/* Header */
+
+#header {
+    background: #E8ECEF url(../img/header-bg.png) top left repeat;
+    border: 1px solid #E8ECEF;
+    border-bottom: 1px solid #DAE1E5;
+}
+#header #title {
+    margin-bottom: 0;
+    margin-left: 2em;
+    margin-top: 2em;
+    margin-bottom: 0.6em;
+}
+
+/* Footer */
+
+#footer { margin: 100px 0; color: #aaa; border: 1px solid green; }
+#footer a { color: #aaa; }
+#footer a:hover { color: #666; }
+
+/* Lists */
+
+ul { list-style-type: disc; }
+ul ul { list-style-type: circle; margin-top: 0.5em;}
+ul ul ul { list-style-type: square; }
+ul ul ul ul { list-style-type: disc; }
+ul ul ul ul ul { list-style-type: circle; }
+ul ul ul ul ul ul { list-style-type: square; }
+ul ul ul ul ul ul ul { list-style-type: circle; }
+ol { list-style-type: decimal ; }
+
+ul, ol { margin-bottom: 1em; }
+
+li {
+    margin-left: 3em;
+    margin-bottom: 0.4em;
+}
+
+/* Tables */
+
+table, td, th {
+    vertical-align: top;
+    border-top: 1px solid #bfbfbf;
+    border-left: 1px solid #bfbfbf;
+}
+td, th {
+    padding: 5px;
+    border-right: 1px solid #bfbfbf;
+    border-bottom: 1px solid #bfbfbf;
+}
+thead, tfoot { background: #f2f2f2; }
+
+/* Forms */
+
+/*
+form p { color: #999; }
+form p label { font-weight: normal; }
+*/
+
+form p.required label { font-weight: bold; }
+textarea, input, button, .button, select { display: block; padding: 5px; color: #444; background-color: #fff; border: 1px solid #BFBFBF; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
+textarea, input, .button { box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; }
+input[type="text"], input[type="password"] { width: 250px; height: 20px; margin-bottom: 5px; background: #fff; }
+select { display: block; max-height: 300px; width: 250px; margin-bottom: 10px; font: 16/20px "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace; }
+input[type="submit"], input[type="button"], button, .button { font-family: "ff-meta-web-pro-1", "ff-meta-web-pro-2", Arial, "Helvetica Neue", sans-serif; color: #666; font-weight: bold; padding: 8px 15px; border: none; background: #e6e6e6 url(../images/gradient.png) repeat-x bottom left; margin: 10px 5px 10px 0; text-shadow: 0 1px 0 rgba(255, 255, 255, 1); border: 1px solid #bfbfbf; display: block; text-decoration: none; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; }
+.button { padding: 6px 10px; float: left; cursor: pointer; }
+
+
+input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:hover { background-color: #8ECC4C; color: #fff; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); border-color: #6B9939; border-bottom-color: #50732B; }
+input[type="submit"]:active, input[type="button"]:active, button:active, .buttonn:active { box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none; }
+fieldset { border: 1px solid #bfbfbf; padding: 15px; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; margin-bottom: 15px; }
+input[type="hidden"] { display: none; }
+input[type="checkbox"], input[type="radio"] { display: inline; }
+label { display: block; margin-bottom: 4px; font-weight: bold; color: #444; }
+
+/* textarea { background: #fff; width: 435px; height: 150px; } */
+
+/* History area */
+
+#compare_form {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
+    border-radius: 5px 5px 5px 5px;
+    padding: 8px;
+    display: table;
+}
+#compare_form thead td, #compare_form tfoot td {
+    padding-left: 1em;
+}
+#compare_form table {
+    background-color: white;
+    margin: 0;
+}
+#compare_form td {
+    vertical-align: middle;
+}
