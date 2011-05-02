@@ -1,5 +1,9 @@
+{% extends "site/base.html" %}
 {% load url from future %}
 
+{% block header_title %}Log in{% endblock %}
+
+{% block content %}
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 <p><a href="{% url 'django.contrib.auth.views.password_reset' %}">Forgot your password?</a></p>
@@ -23,3 +27,5 @@
 </form>
 
 <a href="{% url 'django.contrib.auth.views.password_reset' %}">Forgot your password?</a>
+
+{% endblock %}

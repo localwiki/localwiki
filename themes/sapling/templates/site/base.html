@@ -11,8 +11,11 @@
   <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
   <link rel="shortcut icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script type="text/javascript" src="http://use.typekit.com/xgl8ypn.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
   {% block media %}
   <link rel="stylesheet" href="{{ STATIC_URL }}theme/css/reset.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}theme/css/site.css">
   {% endblock %}
   {% block head_extra %}{% endblock %}
 </head>
@@ -46,11 +49,15 @@
         {% block dialog %}{% endblock %}
       {% endblock %}
       </div>
-
-      {% block content %}
-        {% block content_header %}{% endblock %}
-        {% block content_footer %}{% endblock %}
-      {% endblock %}
+    
+      <div id="content_wrapper">
+        <div id="content">
+        {% block content %}
+          {% block content_header %}{% endblock %}
+          {% block content_footer %}{% endblock %}
+        {% endblock %}
+        </div>
+      </div>
     {% endblock %}
     </div>
 
