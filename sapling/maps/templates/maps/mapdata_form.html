@@ -18,11 +18,18 @@
 
 {% block title %}Editing map for "{{ form.instance.page.name }}" - {{ block.super }}{% endblock %}
 
-{% block header_title %}Editing map for "{{ form.instance.page.name }}"{% endblock %}
-    
+{% block main_wrapper %}
+    <div id="main" class="mapdata_detail">
+        {% block main %}
+            {{ block.super }}
+        {% endblock %}
+    </div>
+{% endblock %}
+
 {% block content %}
     <form method="post" action="">{% csrf_token %}
       {{ form.geom }}
+      {{ form.comment }}
       {{ form.version_date }}
 
       {% block content_footer %}
@@ -37,4 +44,8 @@
       </div>
       {% endblock %}
     </form>
+{% endblock %}
+
+{% block edit_action %}
+  <li><a href="#" class="button">Edit</a></li>
 {% endblock %}

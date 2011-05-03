@@ -27,43 +27,55 @@
     <div id="header">
       <div id="login_info">{% include "site/login_info.html" %}</div>
       <div id="site_search">{% include "site/search_form.html" %}</div>
-      <h1 id="title">{% block header_title %}{% endblock %}</h1>
+      <div id="site_title">{% include "site/site_title.html" %}</div>
+      <div id="header_bar">
+          <h1 id="object_title">{% block header_title %}{% endblock %}</h1>
+          <div id="object_actions">{% block object_actions %}{% endblock %}</div>
+      </div>
     </div>
 
     {% block nav %}
     {% endblock %}
 
+    {% block main_wrapper %}
     <div id="main">
-    {% block main %}
-      <div id="main_header">
-      {% block main_header %}
-        {% block messages %}
-          {% if messages %}
-          <ul class="messages">
-              {% for message in messages %}
-              <li{% if message.tags %} class="{{ message.tags }}"{% endif%}>{{ message|safe }}</li>
-              {% endfor %}
-          </ul>
-          {% endif %}
-        {% endblock %}
-        {% block dialog %}{% endblock %}
-      {% endblock %}
-      </div>
-    
-      <div id="content_wrapper">
-        <div id="content">
-        {% block content %}
-          {% block content_header %}{% endblock %}
-          {% block content_footer %}{% endblock %}
+      {% block main %}
+        <div id="main_header">
+        {% block main_header %}
+          {% block messages %}
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif%}>{{ message|safe }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+          {% endblock %}
+          {% block dialog %}{% endblock %}
         {% endblock %}
         </div>
-      </div>
+      
+        {% block content_wrapper %}
+        <div id="content_wrapper">
+          <div id="content">
+          {% block content %}
+            {% block content_header %}{% endblock %}
+            {% block content_footer %}{% endblock %}
+          {% endblock %}
+          </div>
+        </div>
+        {% endblock %}
+      {% endblock %}
     {% endblock %}
     </div>
 
     <div id="footer">
      {% block footer %}
-     <p align="right" style="font-family:Symbol">&#960;</p>
+     {% endblock %}
+    </div>
+
+    <div id="attributions">
+     {% block attributions %}
      {% endblock %}
     </div>
 

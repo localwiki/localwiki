@@ -6,7 +6,7 @@ SaplingMap = {
         /* Resize map to fit content area */
         olwidget.Map.prototype.initOptions = function(options) {
             var opts = base_initOptions.call(this, options) 
-            var border_height = 1;
+            var border_height = 0;
             var map_height = $(window).height() - $('#header').outerHeight() - $('#main_header').outerHeight() - $('#content_header').outerHeight() - $('#content_footer').outerHeight() - ($('#content_wrapper').outerHeight() - $('#content').outerHeight() - border_height);
             opts['mapDivStyle']['height'] = map_height + 'px';
             return opts;

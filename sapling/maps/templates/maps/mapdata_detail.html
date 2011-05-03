@@ -18,7 +18,14 @@
 {% endblock %}
 
 {% block title %}Map for {{ mapdata.page.name }} - {{ block.super }}{% endblock %}
-{% block header_title %}Map for {{ mapdata.page.name }}{% endblock %}
+
+{% block main_wrapper %}
+    <div id="main" class="mapdata_detail">
+        {% block main %}
+            {{ block.super }}
+        {% endblock %}
+    </div>
+{% endblock %}
 
 {% block main_header %}
     {{ block.super }}
@@ -39,13 +46,14 @@
 {% endblock %}
 
 {% block content %}
-  <div>
-    {{ map }}
-  </div>
-  
-  <p>Modified {{ date|timesince }} ago (<a href="{% url maps:history slug=mapdata.page.pretty_slug %}">History</a>)</p>
-    
-  <p>
-    <a href="{% url maps:edit slug=mapdata.page.pretty_slug %}">Edit this map</a>
-  </p>
+    <div>
+        {{ map }}
+    </div>
 {% endblock %}
+
+{% block footer %}
+  {{ block.super }}
+  <p>
+    <a href="{% url maps:edit slug=mapdata.page.pretty_slug %}">Edit</a> this map (last modified {{ date|timesince }} ago)
+  </p>
+{% endblock %}  

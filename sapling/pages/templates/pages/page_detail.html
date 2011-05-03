@@ -5,7 +5,7 @@
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}{% endblock %}
 
 {% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
-{% block header_title %}{{ page.name }}{% endblock %}
+{% block header_title %}<a href="{% url pages:show slug=page.pretty_slug %}">{{ page.name }}</a>{% endblock %}
 
 {% block content %}
   {% if show_revision %}
@@ -33,10 +33,11 @@
   <div id="page">
     {% render_page page.content %}
   </div>
-  
-  <p>Modified {{ date|timesince }} ago (<a href="{% url pages:history slug=page.pretty_slug %}">History</a>)</p>
-  
+{% endblock %}
+
+{% block footer %}
+  {{ block.super }}
   <p>
-    <a href="{% url pages:edit slug=page.pretty_slug %}">Edit this page</a>
+    <a href="{% url pages:edit slug=page.pretty_slug %}">Edit</a> this page (last modified {{ date|timesince }} ago)
   </p>
 {% endblock %}
