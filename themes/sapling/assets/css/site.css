@@ -4,7 +4,7 @@ body {
 }
 
 /* XXX TEMPORARY */
-#login_info, #site_search {display:none}
+/*#login_info, #site_search {display:none}*/
 /* XXX TEMPORARY */
 
 
@@ -101,6 +101,17 @@ textarea, input, select {
 }
 #content {
     margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+/* Map detail view - we want map to have no margins. */
+#main.mapdata_detail {
+    margin-left: 0;
+    margin-right: 0;
+}
+.mapdata_detail #content {
+    margin-top: 0; 
+    margin-bottom: 0;
 }
 
 /* Header */
@@ -110,18 +121,82 @@ textarea, input, select {
     border: 1px solid #E8ECEF;
     border-bottom: 1px solid #DAE1E5;
 }
-#header #title {
-    margin-bottom: 0;
-    margin-left: 2em;
-    margin-top: 2em;
-    margin-bottom: 0.6em;
+#header_bar {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+}
+#object_title {
+    padding: 0;
+    margin: 0;
+    display: table-cell;
+    vertical-align: top;
+    padding-top: 0.4em;
+}
+
+#site_title {
+    background: #fafafa url(../img/body-bg.png) top left repeat;
+    height: 4em;
+    padding-top: 1em;
+    padding-left: 1.5em;
+    font-size: 130%;
+}
+#site_title a {
+    text-decoration: none;
+}
+
+#object_actions {
+    display: table-cell;
+    height: 100%;
+    padding-left: 1.5em;
+}
+#object_actions ul {
+    list-style-type: none;
+    margin: 0;
+}
+#object_actions li {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#login_info {
+    width: 13em;
+    float: right;
+    clear: right;
+    text-align: right;
+    margin-right: 2em;
+    margin-top: 0.4em;
+}
+
+#site_search {
+    float: right;
+    clear: right;
+    margin-top: 0.6em;
+    margin-right: 2em;
+}
+#site_search input {
+    float: left;
+}
+#site_search input[type="text"], #site_search #id_q {
+    padding: 0;
+    height: 30px;
+    width: 180px;
+    font-size: 15px;
+    line-height: 0;
+    background: #ffffff url(../img/search.png) no-repeat 10px 10px;
+    padding-left: 30px;
+    margin-right: 0.5em;
 }
 
 /* Footer */
 
-#footer { margin: 100px 0; color: #aaa; border: 1px solid green; }
-#footer a { color: #aaa; }
-#footer a:hover { color: #666; }
+#footer {
+    /*margin-left: 4em;
+    margin-right: 7em;*/
+    background: #e1e1e1 url(../img/footer-bg.png) top left repeat;
+    padding: 1.5em;
+}
+#footer p { margin: 0; padding: 0 }
 
 /* Lists */
 
@@ -155,7 +230,7 @@ td, th {
 }
 thead, tfoot { background: #f2f2f2; }
 
-/* Forms */
+/* Forms and buttons */
 
 /*
 form p { color: #999; }
@@ -163,20 +238,83 @@ form p label { font-weight: normal; }
 */
 
 form p.required label { font-weight: bold; }
-textarea, input, button, .button, select { display: block; padding: 5px; color: #444; background-color: #fff; border: 1px solid #BFBFBF; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
-textarea, input, .button { box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; }
-input[type="text"], input[type="password"] { width: 250px; height: 20px; margin-bottom: 5px; background: #fff; }
-select { display: block; max-height: 300px; width: 250px; margin-bottom: 10px; font: 16/20px "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace; }
-input[type="submit"], input[type="button"], button, .button { font-family: "ff-meta-web-pro-1", "ff-meta-web-pro-2", Arial, "Helvetica Neue", sans-serif; color: #666; font-weight: bold; padding: 8px 15px; border: none; background: #e6e6e6 url(../images/gradient.png) repeat-x bottom left; margin: 10px 5px 10px 0; text-shadow: 0 1px 0 rgba(255, 255, 255, 1); border: 1px solid #bfbfbf; display: block; text-decoration: none; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset; }
-.button { padding: 6px 10px; float: left; cursor: pointer; }
+textarea, input, button, .button, select {
+    display: block;
+    padding: 5px;
+    color: #444;
+    background-color: #fff;
+    border: 1px solid #BFBFBF;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+textarea, input, .button {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+}
+input[type="text"], input[type="password"] {
+    width: 250px;
+    height: 20px;
+    margin-bottom: 5px;
+    background: #fff;
+}
+select {
+    display: block;
+    max-height: 300px;
+    width: 250px;
+    margin-bottom: 10px;
+    font: 16/20px "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+}
+input[type="submit"], input[type="button"], button, .button {
+    font-family: "ff-meta-web-pro-1", "ff-meta-web-pro-2", Arial, "Helvetica Neue", sans-serif;
+    color: #666;
+    font-weight: bold;
+    padding: 8px 15px;
+    border: none;
+    /* TODO: explore using purely CSS gradients */
+    background: #e6e6e6 url(../img/gradient.png) repeat-x bottom left;
+    margin: 10px 5px 10px 0;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+    border: 1px solid #bfbfbf;
+    display: block;
+    text-decoration: none;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+}
+.button {
+    padding: 6px 10px;
+    float: left;
+    cursor: pointer;
+}
+.little.button, input.little {
+    padding: 0.1em 0.5em 0.3em 0.5em;
+    line-height: 100%;
+    margin: 0;
+    font-size: 90%;
+}
 
 
-input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:hover { background-color: #8ECC4C; color: #fff; text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); border-color: #6B9939; border-bottom-color: #50732B; }
-input[type="submit"]:active, input[type="button"]:active, button:active, .buttonn:active { box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none; }
-fieldset { border: 1px solid #bfbfbf; padding: 15px; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; margin-bottom: 15px; }
+input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:hover {
+    background-color: #c8cbde;
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    border-color: #c8cbde;
+    border-bottom-color: #757783;
+}
+input[type="submit"]:active, input[type="button"]:active, button:active, .buttonn:active {
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
 input[type="hidden"] { display: none; }
 input[type="checkbox"], input[type="radio"] { display: inline; }
-label { display: block; margin-bottom: 4px; font-weight: bold; color: #444; }
+label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: bold; color: #444;
+}
 
 /* textarea { background: #fff; width: 435px; height: 150px; } */
 
@@ -185,6 +323,8 @@ label { display: block; margin-bottom: 4px; font-weight: bold; color: #444; }
 #compare_form {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
     border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
     padding: 8px;
     display: table;
 }
@@ -197,4 +337,55 @@ label { display: block; margin-bottom: 4px; font-weight: bold; color: #444; }
 }
 #compare_form td {
     vertical-align: middle;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+/* Login form */
+#login_form table td, #login_form table {
+}
+
+/* Messages and alerts */
+
+.messages {
+    border: 1px solid #d2d2d2;
+    background-color: #feffc9;
+    margin-top: 1em;
+    margin-bottom: 0;
+    color: black;
+    padding: 1em 1em 1em 1em;
+    list-style-type: none;h
+}
+.messages li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Recent Changes */
+#recentchanges ul {
+    list-style-type: none;
+}
+#recentchanges h3 {
+    margin-top: 1em;
+}
+
+/* Attributions */
+
+#attributions {
+    margin: 1.5em 1em 1.5em 1em;
+    font-size: 80%;
+    text-align: center;
+}
+
+/* Map customizations for this theme */
+
+/* Map widget in detail view */
+.olControlPanZoomBar {
+    margin-left: 30px;
+    margin-top: 40px;
+}
+.olwidgetEditableLayerSwitcher {
+    position: absolute;
+    left: 130px;
+    margin-top: 10px;
 }

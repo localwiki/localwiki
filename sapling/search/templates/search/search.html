@@ -1,12 +1,12 @@
 {% extends "site/base.html" %}
 {% load highlight %}
 
+{% block title %}Search results for "{{ query }}" - {{ block.super }}{% endblock %}
+{% block header_title %}Search results for "{{ query }}"{% endblock %}
+
 {% block content %}
-    <h2>Search</h2>
 
     {% if query %}
-        <h3>Results</h3>
-
         {% for result in page.object_list %}
             <p>
                 <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a>

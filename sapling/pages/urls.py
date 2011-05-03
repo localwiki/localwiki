@@ -11,6 +11,7 @@ from pages.views import PageFilebrowserView
 page_list_info = {
     'model': Page,
     'context_object_name': 'page_list',
+    'queryset': Page.objects.all().order_by('name'),
 }
 
 
@@ -27,7 +28,7 @@ def slugify(func):
 
 
 urlpatterns = patterns('',
-    url(r'^$', ListView.as_view(**page_list_info), name='title-index'),
+    url(r'^$', ListView.as_view(**page_list_info), name='index'),
 
     # TODO: break out into separate files app with own URLs
     url(r'^(?P<slug>.+)/_files/$', slugify(PageFileListView.as_view()),
