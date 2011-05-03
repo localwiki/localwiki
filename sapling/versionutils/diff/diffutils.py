@@ -400,7 +400,12 @@ class GeometryFieldDiff(BaseFieldDiff):
         # For lines, we do an intersection() and then filter out point
         # intersections.
         lines_same = []
-        for geom in lines1.intersection(lines2):
+        lines_intersection = lines1.intersection(lines2)
+        # Force to be a collection.
+        if not type(lines_intersection) == GeometryCollection:
+            lines_intersection = GeometryCollection(lines_intersection,
+                srid=lines_intersection.srid)
+        for geom in lines_intersection:
             if type(geom) == Point or type(geom) == MultiPoint:
                 continue
             lines_same.append(geom)
@@ -409,7 +414,7 @@ class GeometryFieldDiff(BaseFieldDiff):
         # The intersection of the other_geoms will tell us where
         # they're the same.
         other_geom_same = other_geom1.intersection(other_geom2)
-        # Always wrap in a GeometryCollection.
+        # Force to be a collection. TODO: break out. Non-DRY.
         if not type(other_geom_same) == GeometryCollection:
             other_geom_same = GeometryCollection(other_geom_same,
                                                  srid=other_geom_same.srid)
