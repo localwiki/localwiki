@@ -3,6 +3,17 @@ from django.conf.urls.defaults import *
 from haystack.views import SearchView
 from haystack.forms import SearchForm as DefaultSearchForm
 
+from pages.models import Page, slugify
+
+
+class CreatePageSearchView(SearchView):
+    def extra_context(self):
+        context = super(CreatePageSearchView, self).extra_context()
+        context['page_exists_for_query'] = Page.objects.filter(
+            slug=slugify(self.query))
+        context['query_slug'] = Page(name=self.query).pretty_slug
+        return context
+
 
 class SearchForm(DefaultSearchForm):
     def search(self):
@@ -12,7 +23,7 @@ class SearchForm(DefaultSearchForm):
             return sqs.filter_or(name=cleaned_data['q'])
         return sqs
 
-
 urlpatterns = patterns('',
-    url(r'^$', SearchView(form_class=SearchForm), name='haystack_search'),
+    url(r'^$', CreatePageSearchView(form_class=SearchForm),
+        name='haystack_search'),
 )

@@ -360,6 +360,19 @@ label {
     margin: 0;
     padding: 0;
 }
+#create_page_dialog {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    padding: 1em;
+    color: #000000;
+    margin-bottom: 1em;
+    margin-top: -0.8em;
+}
+#create_page_dialog div {
+    min-height: 3em;
+}
 
 /* Recent Changes */
 #recentchanges ul {

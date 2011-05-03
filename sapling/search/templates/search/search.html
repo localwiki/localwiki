@@ -1,5 +1,6 @@
 {% extends "site/base.html" %}
 {% load highlight %}
+{% load url from future %}
 
 {% block title %}Search results for "{{ query }}" - {{ block.super }}{% endblock %}
 {% block header_title %}Search results for "{{ query }}"{% endblock %}
@@ -7,6 +8,13 @@
 {% block content %}
 
     {% if query %}
+        {% if not page_exists_for_query %}
+          <div id="create_page_dialog">
+              No page with the exact title "{{ query }}" exists.
+              <div><a href="{% url 'pages:edit' slug=query_slug %}" class="button">Create this page</a></div>
+          </div>
+        {% endif %}
+
         {% for result in page.object_list %}
             <p>
                 <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a>
