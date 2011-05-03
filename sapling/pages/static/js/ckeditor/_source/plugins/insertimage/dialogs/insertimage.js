@@ -5,6 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 (function () {
     var insertImageDialog = function (editor) {
+    	this.uploading = false;
         function sizeImage(img) {
             var maxWidth = 300;
             var maxHeight = 300;
@@ -26,6 +27,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 img.setStyle('width', Math.round(newWidth) + 'px');
                 img.setStyle('height', Math.round(newHeight) + 'px');
             }
+            img.removeAttribute( 'width' );
+            img.removeAttribute( 'height' );
         }
         function commitContent() {
             var args = arguments;
@@ -34,6 +37,87 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 if (widget.commit && widget.id) widget.commit.apply(widget, args);
             });
         }
+        
+        var uploadStarted = function (dialog) {
+        	dialog.uploading = true;
+        	showSpinner(dialog.getContentElement('Upload', 'imagePicker'));
+        }
+        
+        var uploadFinished = function (dialog, newUrl) {
+        	if(dialog.uploading)
+        	{
+        		refreshFiles(dialog.getContentElement('Upload', 'imagePicker'),
+        			function(){ selectImage(newUrl) });
+        		dialog.uploading = false;
+        	}
+        };
+        
+        var selectImage = function (src) {
+        	var selected = false;
+        	jQuery('.image_picker a').each(function(){
+        		var el = jQuery(this);
+        		if(el.attr('href') == src)
+        		{
+        			selected = el;
+        			var container = el.parents('.image_picker').first().parent();
+        			container.scrollTop(el.parent().position().top - container.position().top);
+        		}
+        	});
+        	highlight(selected);
+        };
+        
+        var highlight = function (link) {
+        	jQuery('.image_picker a').css('font-weight', '').parent().css('background-color','');
+        	if(link)
+        		link.css('font-weight', 'bold').parent().css('background-color','#ffff99');
+        };
+        
+        var showSpinner = function(picker)
+        {
+        	var element = picker.getElement().$;
+        	var spinner = jQuery('<em>(Uploading your image...)</em>');
+        	var message = jQuery('.image_picker_msg', element);
+            message.empty().append(spinner);
+        }
+        
+        var hideSpinner = function(picker)
+        {
+        	var element = picker.getElement().$;
+        	var message = jQuery('.image_picker_msg', element);
+            message.empty();
+        }
+        
+        var refreshFiles = function (picker, callback) {
+        	var element = picker.getElement().$;
+            var txtUrl = picker.getDialog().getContentElement('Upload', 'txtUrl');
+            var spinner = jQuery('<em>(Loading images...)</em>');
+            var no_images = jQuery('<em>(No images attached to this page)</em>');
+            var image_picker = jQuery('.image_picker', element);
+            var message = jQuery('.image_picker_msg', element);
+            message.empty().append(spinner);
+            var browseUrl = editor.config.filebrowserInsertimageBrowseUrl;
+            jQuery.get(browseUrl, function(data){
+            	var result = jQuery('ul.file_list', data)
+            					.find('a').parent()
+            					.click(function(){
+            						var link = jQuery(this).find('a').first();
+            						var href = link && link.attr('href');
+            						if(!href)
+            							return;
+            						txtUrl.setValue(href);
+                                    highlight(link);
+                                    return false;
+                            	})
+                        		.end().end();
+                message.empty();
+                image_picker.empty();
+                if(result.find('a').length)
+                	image_picker.append(result);
+                else message.append(no_images);
+                if(callback)
+                	callback();
+            });
+        };
 
         var onImgLoadEvent = function () {
             // Image is ready.
@@ -42,7 +126,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             image.removeListener('load', onImgLoadEvent);
             image.removeListener('error', onImgLoadErrorEvent);
             image.removeListener('abort', onImgLoadErrorEvent);
-            this.fire('ok');
         };
 
         var onImgLoadErrorEvent = function () {
@@ -70,28 +153,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
                 this.imageElement = editor.document.createElement('img');
                 this.imageElement.setCustomData('isReady', 'false');
+                highlight('');
                 this.setupContent();
             },
             onOk: function () {
-                // if there is a file to upload, do that first
-                if (this.getContentElement('Upload', 'file').getValue()) {
-                    this.getContentElement('Upload', 'uploadButton').fire('click');
-                    return false;
-                }
-
                 this.commitContent(this.imageElement);
 
                 // Remove empty style attribute.
                 if (!this.imageElement.getAttribute('style')) this.imageElement.removeAttribute('style');
 
                 // Insert a new Image.
+                sizeImage(this.imageElement);
                 var spanElement = editor.document.createElement('span');
                 spanElement.setAttribute('class', 'image_frame image_frame_border');
                 spanElement.append(this.imageElement);
-                sizeImage(this.imageElement);
                 spanElement.setStyle('width', this.imageElement.getStyle('width'));
                 editor.insertElement(spanElement);
-                this.hide();
             },
             onLoad: function () {
                 var doc = this._.element.getDocument();
@@ -121,8 +198,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                     size: 34,
                     onChange: function () {
                         // Patch the upload form before submitting and add the CSRF token
-
-
                         function getCookie(key) {
                             var result;
                             // adapted from the jQuery Cookie plugin
@@ -141,49 +216,40 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         csrf.setAttribute('type', 'hidden');
                         csrf.setAttribute('value', csrf_cookie);
                         uploadForm.appendChild(csrf);
+                        // if there is a file to upload, do that now
+                        if (this.getValue()) {
+                            this.getDialog().getContentElement('Upload', 'uploadButton').fire('click');
+                        	uploadStarted(this.getDialog());
+                        }
                     }
                 }, {
                     type: 'fileButton',
                     id: 'uploadButton',
-                    filebrowser: 'Upload:txtUrl',
+                    filebrowser :
+                    	{
+                    		action : 'QuickUpload',
+                    		target : 'Upload:txtUrl',
+                    		onSelect : function( fileUrl, errorMessage ) //optional
+                    		{
+                    			hideSpinner(this.getDialog().getContentElement('Upload', 'imagePicker'));
+                    		}
+                    	},
                     style: 'display:none',
                     label: editor.lang.image.btnUpload,
                     'for': ['Upload', 'file']
-                }, {
+                },{
                     type: 'html',
                     id: 'imagePicker',
-                    html: 'Select an image: <div style="max-height: 10em; overflow-y: auto;"><div class="image_picker_msg"></div><div class="image_picker"></div></div>',
-                    style: 'margin-top: 10px',
+                    html: 'Select an image: <div style="max-height: 8em; overflow-y: auto;"><div class="image_picker_msg"></div><div class="image_picker"></div></div>',
+                    style: 'margin-top: 5px',
                     setup: function() {
-                        var element = this.getElement().$;
-                        var txtUrl = this.getDialog().getContentElement('Upload', 'txtUrl');
-                        var spinner = jQuery('<em>(Loading...)</em>');
-                        var no_images = jQuery('<em>(No images attached to this page)</em>');
-                        var image_picker = jQuery('.image_picker', element);
-                        var message = jQuery('.image_picker_msg', element);
-                        message.empty().append(spinner);
-                        var browseUrl = editor.config.filebrowserInsertimageBrowseUrl;
-                        jQuery.get(browseUrl, function(data){
-                        	var result = jQuery('ul.file_list', data)
-                        					.find('a')
-                        					.click(function(){
-	                                            txtUrl.setValue(jQuery(this).attr('href'));
-	                                            return false;
-                                        	})
-                                    		.end();
-                            message.empty();
-                            image_picker.empty();
-                            if(result.find('a').length)
-                            	image_picker.append(result);
-                            else message.append(no_images);
-                            
-                        });
+                        refreshFiles(this);
                     }
                 }, {
                     type: 'html',
                     id: 'webImageHint',
                     html: 'or <span style="color:blue;text-decoration:underline;cursor:pointer;">use an image from the web</span>',
-                    style: 'float:left;margin-top:10px',
+                    style: 'float:left;margin-top:5px',
                     onClick: function () {
                         var urlText = this.getDialog().getContentElement('Upload', 'txtUrl');
                         urlText.getElement().show();
@@ -206,6 +272,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         {
                             dialog = this.getDialog();
                             var image = dialog.imageElement;
+                            uploadFinished(dialog, newUrl);
                             image.setCustomData('isReady', 'false');
                             image.on('load', onImgLoadEvent, dialog);
                             image.setAttribute('src', newUrl);
