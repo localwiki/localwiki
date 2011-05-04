@@ -50,7 +50,7 @@ CKEDITOR.plugins.add( 'domcleanup',
                             return false;
                         var ok_tags = editor.plugins['domcleanup'].allowedTags;
                         var ok_attributes = {
-                            'p' : ['style'],
+                            'p' : ['class','style'],
                             'a' : ['name','href'],
                             'img' : ['src','alt','title','style','class'],
                             'span' : ['class','style'],
