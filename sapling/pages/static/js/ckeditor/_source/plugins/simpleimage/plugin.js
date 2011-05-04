@@ -100,34 +100,30 @@ CKEDITOR.plugins.add( 'simpleimage',
 		    editor.document.on( 'keydown', function( evt )
             {
                 var keyCode = evt.data.getKeystroke();
-
                 // Backspace OR Delete.
                 if ( keyCode in { 8 : 1, 46 : 1 } )
                 {
-                    var sel = editor.getSelection(),
-                        control = sel.getSelectedElement();
-
-                    if ( control && control.is('img'))
+					var sel = editor.getSelection(),
+						element = sel.getSelectedElement();
+                    if ( element && element.is('img'))
                     {
-                        control = control.getAscendant('span');
-                        if(!control)
+                        element = element.getAscendant('span');
+                        if(!element)
                             return;
                         // Make undo snapshot.
                         editor.fire( 'saveSnapshot' );
+                        var range = sel.getRanges()[ 0 ];
+                        range.setStartBefore(element);
+                        range.setEndBefore(element);
+                        var bookmark = range.createBookmark();
 
-                        // Delete any element that 'hasLayout' (e.g. hr,table) in IE8 will
-                        // break up the selection, safely manage it here. (#4795)
-                        var bookmark = sel.getRanges()[ 0 ].createBookmark();
-                        // Remove the control manually.
-                        control.remove();
+                        element.remove();
                         sel.selectBookmarks( [ bookmark ] );
-
                         editor.fire( 'saveSnapshot' );
-
                         evt.data.preventDefault();
                     }
                 }
-            } );
+            }, null, null, 1); // make sure we get first dibs
 		});
 
 		// If the "menu" plugin is loaded, register the menu items.
