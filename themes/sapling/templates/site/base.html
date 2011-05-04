@@ -23,6 +23,7 @@
 {% block body %}
 <body>
   <div>
+  {% block everything_wrapper %}
 
     <div id="header">
       <div id="login_info">{% include "site/login_info.html" %}</div>
@@ -79,6 +80,7 @@
      {% endblock %}
     </div>
 
+  {% endblock %}
   </div>
 </body>
 {% endblock %}
