@@ -259,7 +259,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                     type: 'text',
                     id: 'txtUrl',
                     label: 'Image URL',
-                    style: 'height:40px',
+                    style: 'height: 4em',
                     size: 38,
                     hidden: true,
                     required: true,

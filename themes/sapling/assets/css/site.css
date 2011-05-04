@@ -125,7 +125,14 @@ textarea, input, select {
     margin-top: 1em;
     margin-bottom: 1em;
     margin-left: 1.5em;
+    padding-left: 3.5em;
 }
+/* Header is different on mapdata pages */
+.mapdata #header_bar {
+    padding-left: 3.5em;
+    background: url(../img/map-icon.png) 0.95em 56% no-repeat;
+}
+
 #object_title {
     padding: 0;
     margin: 0;
@@ -303,7 +310,7 @@ input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:ho
     border-color: #c8cbde;
     border-bottom-color: #757783;
 }
-input[type="submit"]:active, input[type="button"]:active, button:active, .buttonn:active {
+input[type="submit"]:active, input[type="button"]:active, button:active, .button:active {
     box-shadow: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
@@ -388,6 +395,12 @@ label {
     margin: 1.5em 1em 1.5em 1em;
     font-size: 80%;
     text-align: center;
+}
+
+/* Search results */
+
+#search_results .highlighted {
+    font-weight: bold;
 }
 
 /* Map customizations for this theme */

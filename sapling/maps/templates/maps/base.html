@@ -13,6 +13,16 @@
   {% endif %}
 {% endblock %}
 
+{% block body %}
+<body>
+   <div class="mapdata">
+   {% block everything_wrapper %}
+        {{ block.super }}
+   {% endblock %}
+   </div>
+</body>
+{% endblock %}
+
 {% block object_actions %}
 <ul>
   {% if mapdata %}
