@@ -48,7 +48,7 @@ CKEDITOR.plugins.add( 'simpleimage',
 		            return;
 		        }
 		        var caption = jQuery('<span class="image_caption editor_temp">Add a caption</span>');
-		        caption.click(function(){ jQuery(caption).removeClass('editor_temp'); });
+		        caption.mousedown(function(){ jQuery(caption).removeClass('editor_temp'); });
 		        jQuery(frame.$).append(caption);
 		    }
 		}
@@ -58,7 +58,7 @@ CKEDITOR.plugins.add( 'simpleimage',
 			var editor = evt.editor;
 			
 		    // click on image -> add placeholder caption
-		    editor.document.on('click', function(evt){
+		    editor.document.on('mousedown', function(evt){
 		        var element = evt.data.getTarget();
 		        if(element.is('img'))
 		        {
