@@ -39,7 +39,7 @@
 	                           .addClass('cke_wrapper');
 	    toolBar.wrap(jQuery('<div/>').height(toolBar.parent().height()));
 	    var barTop = toolBar.offset().top;
-	    jQuery(window).scroll(function () {
+	    jQuery(window).bind('scroll resize', function () {
 	       if(jQuery(document).scrollTop() >= barTop)
                toolBar.addClass('fixedBar');
            else
@@ -60,7 +60,7 @@
 			var bodyWidth = jQuery(doc.$.body).outerWidth(true);
 			var maxBottom = bodyHeight;
 			var maxRight = bodyWidth;
-			jQuery(doc.$.body).find('span').each(function ()
+			jQuery('span', doc.$).each(function ()
 			{
 			    var element = jQuery(this);
 			    var bottom = element.offset().top + element.outerHeight(true);
@@ -80,7 +80,7 @@
         docHeight = Math.max(docHeight, 200);
 		if ( Math.abs(docHeight - currentHeight) > 5)
 		{
-		    jQuery('#cke_contents_' + editor.name + '>iframe').height(docHeight);
+		    jQuery('#cke_contents_' + editor.name).height(docHeight).contents('>frame').height(docHeight);
 		}
 		jQuery('#cke_contents_' + editor.name + '>iframe').width(docWidth);
 	};
