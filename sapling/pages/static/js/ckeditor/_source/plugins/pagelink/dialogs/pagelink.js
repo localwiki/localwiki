@@ -218,9 +218,13 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 					ranges = selection.getRanges( true );
 				if ( ranges.length == 1 && ranges[0].collapsed )
 				{
-					// Short mailto link text view (#5736).
-					var text = new CKEDITOR.dom.text( data.type == 'email' ?
-							data.email.address : attributes[ 'data-cke-saved-href' ], editor.document );
+					var textLabel = attributes[ 'data-cke-saved-href' ];
+					if(data.type == 'email')
+						textLabel = data.email.address;
+					else if(data.type == 'page')
+						textLabel = decodeURIComponent(data.url);
+
+					var text = new CKEDITOR.dom.text( textLabel, editor.document );
 					ranges[0].insertNode( text );
 					ranges[0].selectNodeContents( text );
 					selection.selectRanges( ranges );
