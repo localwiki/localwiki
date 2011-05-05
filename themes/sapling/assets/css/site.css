@@ -429,6 +429,12 @@ label {
     list-style-type: none;
     margin-top: 1em;
 }
+#recentchanges h2 {
+    font-size: 180%;
+    margin-top: 0.7em;
+    padding-bottom: 0.1em;
+    border-bottom: 2px solid;
+}
 #recentchanges h3 {
     margin-top: 1em;
 }
@@ -501,9 +507,7 @@ label {
     color: black;
     padding-right: 0.5em;
 }
-#recentchanges .comment .comment_content {
-}
-#recentchanges .map .comment {
+#recentchanges .map .type {
     min-width: 30px;
     padding-left: 30px;
     background: url(../img/map-icon-small.png) 5px 56% no-repeat;
