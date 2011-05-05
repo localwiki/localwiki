@@ -28,9 +28,10 @@ def slugify(func):
 
 
 urlpatterns = patterns('',
-    url(r'^$', ListView.as_view(**page_list_info), name='index'),
-
+    #########################################################
+    # Files URLs
     # TODO: break out into separate files app with own URLs
+    #########################################################
     url(r'^(?P<slug>.+)/_files/$', slugify(PageFileListView.as_view()),
         name='filelist'),
     url(r'^(?P<slug>.+)/_files/(?P<file>.+)/_revert/(?P<version>[0-9]+)$',
@@ -59,9 +60,12 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>.+)/_filebrowser$', slugify(PageFilebrowserView.as_view()),
         name='filebrowser'),
 
-    # TODO: Non-DRY here. Can break out into something like
+    #########################################################
+    # History URLs.
+    # TODO: Non-DRY. Break out into something like
     # ('/_history/',
     #  include(history_urls(list_view=..,compare_view=..)))?
+    #########################################################
     url(r'^(?P<slug>.+)/_history/compare/$',
         slugify(PageCompareView.as_view())),
     url((r'^(?P<slug>.+)/_history/'
@@ -79,13 +83,23 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>.+)/_history/$', slugify(PageHistoryList.as_view()),
         name='history'),
 
+    ##########################################################
     # Basic edit actions.
+    ##########################################################
     url(r'^(?P<slug>.+)/_edit$', slugify(PageUpdateView.as_view()),
         name='edit'),
     url(r'^(?P<slug>.+)/_delete$', slugify(PageDeleteView.as_view()),
         name='delete'),
     url(r'^(?P<slug>.+)/_revert/(?P<version>[0-9]+)$',
         slugify(PageRevertView.as_view()), name='revert'),
+
+    ##########################################################
+    # Basic page URLs.
+    ##########################################################
+    url(r'^/*$', FrontPageView.as_view(), name='frontpage'),
+    url(r'^(?i)All_Pages/*$', ListView.as_view(**page_list_info),
+        name='index'),
+    # Catch-all and route to a page.
     url(r'^(?P<slug>(?:(?!/_).)+?)/*$', slugify(PageDetailView.as_view()),
         name='show'),
 )
