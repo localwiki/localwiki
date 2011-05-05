@@ -3,6 +3,14 @@
 
 {% block title %}Editing page "{{ form.instance.name }}" - {{ block.super }}{% endblock %}
 
+{% block main_wrapper %}
+    <div id="main" class="page_form">
+        {% block main %}
+            {{ block.super }}
+        {% endblock %}
+    </div>
+{% endblock %}
+
 {% block content %}
     <form method="post" action="">{% csrf_token %}
       {{ form.content }}

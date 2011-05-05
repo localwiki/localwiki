@@ -24,21 +24,30 @@ span.cke_skin_sapling
 	display: block;
 }
 
-.cke_skin_sapling .cke_wrapper
+.cke_skin_sapling .cke_toolbox
 {
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	background-color: #d3d3d3;
-	background-image: url(images/sprites.png);
-	background-repeat: repeat-x;
-	background-position: 0 -1950px;
+    background: #e6e6e6 url(images/button-gradient.png) repeat-x bottom left;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+    border: none;
+    border: 1px solid #bfbfbf;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+
 	/* IE Quirks: editor chrome overflow horizontally without an explicit width. */
 	_display: inline-block;
     height: 30px;
 	padding: 5px;
-
 	/*background-color: Red;*/
+}
+
+/* Push the content down from the toolbar a little bit */
+.cke_skin_sapling .cke_contents iframe {
+    margin-top: 10px;
+}
+
+.cke_skin_sapling span.cke_wrapper {
+    border: none;
 }
 
 .cke_shared .cke_skin_sapling .cke_wrapper
