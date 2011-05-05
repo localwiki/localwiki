@@ -46,17 +46,11 @@
 </xsl:template>
 
 <xsl:template match="span[@class='diff-html-changed']">
-<span>
-  <xsl:copy-of select="@*"/>
   <xsl:apply-templates select="node()"/>
-</span>
 </xsl:template>
 
 <xsl:template match="span[@class='diff-html-added']">
-<span>
-  <xsl:copy-of select="@*"/>
   <xsl:apply-templates select="node()"/>
-</span>
 </xsl:template>
 
 <xsl:template match="span[@class='diff-html-removed']">

@@ -57,6 +57,19 @@ class DaisyDiffMergeTest(TestCase):
         self.failUnless('New stuff after' in body)
 
     @skipUnlessHasService
+    def test_poor_quality_merge_style(self):
+        """ This doesn't quite work right but at least shouldn't lose anything
+        """
+        (body, conflict) = daisydiff_merge(
+            '<p><strong>Original</strong></p>',
+            '<p><strong>Original</strong></p><p>New stuff</p>',
+            '<p>Original</p>'
+        )
+        self.failUnless(conflict is False)
+        self.failUnlessEqual(body,
+                            '<p>Original</p><p>New stuff</p>')
+
+    @skipUnlessHasService
     def test_merge_conflict(self):
         (body, conflict) = daisydiff_merge(
             '<p>First version</p>',
