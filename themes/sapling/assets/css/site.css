@@ -3,12 +3,11 @@ body {
     background: #fafafa url(../img/body-bg.png) top left repeat;
 }
 
-/* XXX TEMPORARY */
-/*#login_info, #site_search {display:none}*/
-/* XXX TEMPORARY */
-
-
-/* Type */
+/*
+====================================
+ Type
+====================================
+*/
 
 body {
     font: 16px/24px "ff-meta-web-pro-1","ff-meta-web-pro-2", Arial, "Helvetica Neue", sans-serif;
@@ -21,42 +20,28 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 h1 {
-    /*font-size: 28px;*/
     font-size: 175%;
-    /*line-height: 36px;*/
     line-height: 130%;
-    /*line-height: 36px;*/
-    /*margin-bottom: 40px;*/
     margin-bottom: 1.43em;
 }
 h2 {
-    /*font-size: 24px;*/
     font-size: 150%;
-    /*line-height: 28px;*/
     line-height: 115%;
-    /*margin-bottom: 10px;*/
     margin-bottom: 0.45em;
 }
 h3 {
-    /*font-size: 20px;*/
     font-size: 125%;
     line-height: 120%;
-    /*line-height: 24px;*/
-    /*margin-bottom: 10px;*/
     margin-bottom: 0.45em;
 }
 h4 {
     font-size: 100%;
-    /*line-height: 20px;*/
     line-height: 125%;
-    /*margin-bottom: 10px;*/
     margin-bottom: 0.6em;
 }
 h5, h6 {
     font-size: 100%;
-    /*line-height: 20px;*/
     line-height: 125%;
-    /*margin-bottom: 10px;*/
     margin-bottom: 0.6em;
 }
 a {
@@ -84,14 +69,22 @@ textarea, input, select {
     line-height: 20px;
 }
 
-/* Main area */
+/*
+====================================
+ Main area
+====================================
+*/
 
 #main {
     margin-left: 5em;
     margin-right: 8em;
 }
 
-/* Content area */
+/*
+====================================
+ Content area
+====================================
+*/
 
 #content_wrapper {
    /* Border added to make JS height calculation work immediately for
@@ -100,10 +93,9 @@ textarea, input, select {
    border: 1px solid #fafafa;
 }
 #content {
-    margin-top: 2em;
+    margin-top: 1em;
     margin-bottom: 2em;
 }
-
 /* Map detail view - we want map to have no margins. */
 #main.mapdata_detail {
     margin-left: 0;
@@ -113,8 +105,17 @@ textarea, input, select {
     margin-top: 0; 
     margin-bottom: 0;
 }
+/* Page edit view - we don't want margins. */
+#main.page_form #content {
+    margin-top: 0.9em; 
+}
 
-/* Header */
+/*
+====================================
+ Header
+====================================
+*/
+
 
 #header {
     background: #E8ECEF url(../img/header-bg.png) top left repeat;
@@ -195,17 +196,24 @@ textarea, input, select {
     margin-right: 0.5em;
 }
 
-/* Footer */
+/*
+====================================
+ Footer
+====================================
+*/
+
 
 #footer {
-    /*margin-left: 4em;
-    margin-right: 7em;*/
     background: #e1e1e1 url(../img/footer-bg.png) top left repeat;
     padding: 1.5em;
 }
 #footer p { margin: 0; padding: 0 }
 
-/* Lists */
+/*
+====================================
+ Lists
+====================================
+*/
 
 ul { list-style-type: disc; }
 ul ul { list-style-type: circle; margin-top: 0.5em;}
@@ -222,8 +230,25 @@ li {
     margin-left: 3em;
     margin-bottom: 0.4em;
 }
+/* Text indent styles */
+.indent1 { margin-left: 3em; }
+.indent2 { margin-left: 6em; }
+.indent3 { margin-left: 9em; }
+.indent4 { margin-left: 12em; }
+.indent5 { margin-left: 15em; }
+.indent6 { margin-left: 18em; }
+.indent7 { margin-left: 21em; }
 
-/* Tables */
+/* Sub/Sup */
+sub { vertical-align: sub }
+sup { vertical-align: super }
+
+/*
+====================================
+ Tables
+====================================
+*/
+
 
 table, td, th {
     vertical-align: top;
@@ -237,7 +262,11 @@ td, th {
 }
 thead, tfoot { background: #f2f2f2; }
 
-/* Forms and buttons */
+/*
+====================================
+ Forms and buttons
+====================================
+*/
 
 /*
 form p { color: #999; }
@@ -325,7 +354,12 @@ label {
 
 /* textarea { background: #fff; width: 435px; height: 150px; } */
 
-/* History area */
+/*
+====================================
+ History area
+====================================
+*/
+
 
 #compare_form {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
@@ -352,7 +386,11 @@ label {
 #login_form table td, #login_form table {
 }
 
-/* Messages and alerts */
+/*
+====================================
+ Messages and alerts
+====================================
+*/
 
 .messages {
     border: 1px solid #d2d2d2;
@@ -381,15 +419,101 @@ label {
     min-height: 3em;
 }
 
-/* Recent Changes */
+/*
+====================================
+ Recent Changes
+====================================
+*/
+
 #recentchanges ul {
     list-style-type: none;
+    margin-top: 1em;
 }
 #recentchanges h3 {
     margin-top: 1em;
 }
+#recentchanges #limit_to {
+    margin-bottom: 1em;
+}
+#recentchanges li {
+    margin-left: 0;
+    padding-left: 30px;
+}
 
-/* Attributions */
+#recentchanges .changelabel {
+    width: 3.5em;
+    /* This is basically .little.button */
+    text-align: center;
+    font-weight: bold;
+    font-size: 90%;
+    display: block;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    float: left;
+    padding: 0.1em 0.5em 0.3em 0.5em;
+    line-height: 100%;
+    margin: 0;
+    margin-right: 1em;
+    border: 1px solid #bfbfbf;
+}
+#recentchanges .changelabel.updated {
+    /* .updated is a button */
+    color: #444;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+
+    /* TODO: explore using purely CSS gradients */
+    background: #E8ECEF url(../img/gradient.png) repeat-x bottom left;
+    border: 1px solid #bfbfbf;
+}
+#recentchanges .changelabel.updated:hover
+{
+    background-color: #c8cbde;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    border-color: #c8cbde;
+    border-bottom-color: #757783;
+}
+#recentchanges .changelabel.updated:active {
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+#recentchanges .changelabel.updated:hover a {
+    color: #fff;
+}
+
+#recentchanges .changelabel.added {
+    background-color: #ffff77;
+    color: #6b6945;
+}
+#recentchanges .changelabel.deleted {
+    background-color: #ff9999;
+    color: #794141;
+}
+#recentchanges .changelabel a {
+    text-decoration: none;
+    color: #666;
+}
+#recentchanges .comment {
+    color: black;
+    padding-right: 0.5em;
+}
+#recentchanges .comment .comment_content {
+}
+#recentchanges .map .comment {
+    min-width: 30px;
+    padding-left: 30px;
+    background: url(../img/map-icon-small.png) 5px 56% no-repeat;
+}
+
+/*
+====================================
+ Attributions
+====================================
+*/
 
 #attributions {
     margin: 1.5em 1em 1.5em 1em;
@@ -397,13 +521,24 @@ label {
     text-align: center;
 }
 
-/* Search results */
+/*
+====================================
+ Search results
+====================================
+*/
 
 #search_results .highlighted {
     font-weight: bold;
 }
+#search_results .pagination {
+    height: 3em;
+}
 
-/* Map customizations for this theme */
+/*
+====================================
+ Map customizations for this theme
+====================================
+*/
 
 /* Map widget in detail view */
 .olControlPanZoomBar {

@@ -35,7 +35,11 @@
             <span class="revert">Reverted to version from {{ change.history_info.reverted_to_version.history_info.date|timesince}} ago</span>
             {% endif %}
 
-            <span class="comment">{{ change.history_info.comment }}</span>
+            {% if change.history_info.comment %}
+                <span class="comment">
+                {{ change.history_info.comment }}
+                </span>
+            {% endif %}
 
             <span class="user">
               {% if change.history_info.user %}
