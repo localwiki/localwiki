@@ -274,3 +274,8 @@ def upload(request, slug, **kwargs):
             error = 'A file with this name already exists'
     return ck_upload_result(request,
                             message=error)
+
+
+class FrontPageView(PageDetailView):
+    def get_object(self):
+        return Page.objects.get(slug="front page")
