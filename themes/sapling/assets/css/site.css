@@ -10,7 +10,7 @@ body {
 */
 
 body {
-    font: 16px/24px "ff-meta-web-pro-1","ff-meta-web-pro-2", Arial, "Helvetica Neue", sans-serif;
+    font: 16px/25px "Cabin", Arial, "Helvetica Neue", "Helvetica", sans-serif;
     color: #444;
 }
 
@@ -123,10 +123,12 @@ textarea, input, select {
     border-bottom: 1px solid #DAE1E5;
 }
 #header_bar {
-    margin-top: 1em;
-    margin-bottom: 1em;
     margin-left: 1.5em;
     padding-left: 3.5em;
+    min-height: 4.2em;
+}
+#header_bar .inner {
+    margin-top: 0.5em;
 }
 /* Header is different on mapdata pages */
 .mapdata #header_bar {
@@ -140,6 +142,9 @@ textarea, input, select {
     display: table-cell;
     vertical-align: top;
     padding-top: 0.4em;
+}
+#object_title a {
+    text-decoration: none;
 }
 
 #site_title {
@@ -157,6 +162,7 @@ textarea, input, select {
     display: table-cell;
     height: 100%;
     padding-left: 1.5em;
+    padding-top: 0.8em;
 }
 #object_actions ul {
     list-style-type: none;
@@ -165,6 +171,11 @@ textarea, input, select {
 #object_actions li {
     display: table-cell;
     vertical-align: middle;
+}
+#object_actions .button {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 0.5em;
 }
 
 #login_info {
@@ -332,10 +343,10 @@ select {
     max-height: 300px;
     width: 250px;
     margin-bottom: 10px;
-    font: 16/20px "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+    font: 16/20px "Inconsolata", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
 }
 input[type="submit"], input[type="button"], button, .button {
-    font: 16px/24px "ff-meta-web-pro-1","ff-meta-web-pro-2", Arial, "Helvetica Neue", sans-serif;
+    font: 16px/25px "Cabin", Arial, "Helvetica Neue", "Helvetica", sans-serif;
     color: #666;
     font-weight: bold;
     padding: 6px 10px;
@@ -450,7 +461,7 @@ label {
     padding: 1em;
     color: #000000;
     margin-bottom: 1em;
-    margin-top: -0.8em;
+    margin-top: 0.8em;
 }
 #create_page_dialog div {
     min-height: 3em;
@@ -625,13 +636,13 @@ label {
     width: 30em;
 }
 form #content_footer {
-    border-top: 4px solid #626262;
     padding-top: 0.6em;
+    margin-top: -1em;
 }
 .mapdata form #content_footer {
-    border-top: none;
     padding-left: 5em;
     padding-right: 5em;
+    margin-top: 0;
 }
 
 /*
