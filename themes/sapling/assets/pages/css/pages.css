@@ -15,29 +15,34 @@ a[href^='mailto:'] {
     padding-left: 16px;
 }
 
+/* Images */
 .image_frame {
     display:inline-block;
     vertical-align: top;
-    padding: 3px;
-    margin: 3px;
+    margin-top: 0.5em
+    margin-bottom: 0.3em;
+    line-height: 1;
 }
-
-.image_frame_border {
+.image_frame_border, .image_frame_border img {
     border: 1px solid #cccccc;
 }
-
+.image_frame_border{
+    padding: 2px 4px 2px 2px;
+}
 .image_left {
     float: left;
     clear: left;
+    margin-right: 1.1em;
 }
-
 .image_right {
     float: right;
     clear: right;
+    margin-left: 1.1em;
 }
-
 .image_caption {
     display: block;
     text-align: center;
+    font-size: 80%;
+    margin-top: 0.3em;
+    margin-bottom: 0.4em;
 }
-

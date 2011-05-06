@@ -1,5 +1,3 @@
 {% block editor_actions %}
-<ul class="editor_actions">
-    <li><a href="{% url maps:delete slug=map.page.pretty_slug %}">Delete map</a></li>
-</ul>
+    <li><a href="{% url maps:delete slug=map.page.pretty_slug %}" class="little button">Delete map</a></li>
 {% endblock %}

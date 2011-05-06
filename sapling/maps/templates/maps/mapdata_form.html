@@ -10,8 +10,7 @@
             $('#content_header').height()) - $('#content_footer').height()
         );
     }
-    /* Hacky! */
-    setTimeout('size_map()', 50);
+    $(document).ready(size_map);
     $(window).resize(size_map);
 </script>
 {% endblock %}
@@ -29,17 +28,22 @@
 {% block content %}
     <form method="post" action="">{% csrf_token %}
       {{ form.geom }}
-      {{ form.comment }}
       {{ form.version_date }}
 
       {% block content_footer %}
       <div id="content_footer">
+        <h3>Please comment about this change:</h3>
+        {{ form.comment }}
         <div id="editor_actions">
-          <input type="submit" value="Save"/>
-          <a href=".">Cancel</a>
+          <ul>
+            <li><input type="submit" value="Save changes"/></li>
+            <li><a href="." class="button cancel">Cancel</a></li>
+          </ul>
+          <ul class="extra_actions">
           {% with form.instance as map %}
             {% include "maps/editor_actions.html" %}
           {% endwith %}
+          </ul>
         </div>
       </div>
       {% endblock %}

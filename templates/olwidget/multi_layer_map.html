@@ -3,11 +3,13 @@
 <script type="text/javascript">
     SaplingMap.init_openlayers();
     OpenLayers.ImgPath = "{{STATIC_URL}}img/openlayers/themes/dark/";
-    var map = new olwidget.Map("{{ id }}", [
-            {{ layer_js|join:"," }}
-        ], 
-        {{ map_opts|safe }}
-    );
-    SaplingMap.setup_map(map);
+    $(document).ready(function() {
+        var map = new olwidget.Map("{{ id }}", [
+                {{ layer_js|join:"," }}
+            ], 
+            {{ map_opts|safe }}
+        );
+        SaplingMap.setup_map(map);
+    });
 </script>
 

@@ -335,10 +335,10 @@ select {
     font: 16/20px "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
 }
 input[type="submit"], input[type="button"], button, .button {
-    font-family: "ff-meta-web-pro-1", "ff-meta-web-pro-2", Arial, "Helvetica Neue", sans-serif;
+    font: 16px/24px "ff-meta-web-pro-1","ff-meta-web-pro-2", Arial, "Helvetica Neue", sans-serif;
     color: #666;
     font-weight: bold;
-    padding: 8px 15px;
+    padding: 6px 10px;
     border: none;
     /* TODO: explore using purely CSS gradients */
     background: #e6e6e6 url(../img/gradient.png) repeat-x bottom left;
@@ -352,15 +352,21 @@ input[type="submit"], input[type="button"], button, .button {
     -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
 }
 .button {
-    padding: 6px 10px;
     float: left;
     cursor: pointer;
 }
 .little.button, input.little {
     padding: 0.1em 0.5em 0.3em 0.5em;
-    line-height: 100%;
     margin: 0;
     font-size: 90%;
+}
+.tiny.button, input.tiny {
+    padding: 0.1em 0.5em 0.3em 0.5em;
+    margin: 0;
+    line-height: 1;
+    font-size: 90%;
+}
+.button.cancel {
 }
 
 
@@ -391,7 +397,6 @@ label {
  History area
 ====================================
 */
-
 
 #compare_form {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
@@ -568,6 +573,65 @@ label {
 }
 #search_results .pagination {
     height: 3em;
+}
+
+/*
+====================================
+ Editor
+====================================
+*/
+
+#editor_actions {
+    height: 4em;
+    margin-top: -1em;
+}
+#editor_actions ul, #editor_actions .extra_actions {
+    list-style-type: none;
+    margin: 0
+    padding: 0;
+}
+#editor_actions li {
+    margin: 0;
+    padding: 0;
+    float: left;
+}
+#editor_actions .extra_actions {
+    float: right;
+    margin-top: -4em;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    padding: 0.5em 0 0.5em 0;
+
+}
+#editor_actions .extra_actions li {
+    float: left;
+    margin-right: 0.5em;
+}
+#editor_actions .extra_actions li:first-child {
+    float: left;
+    margin-left: 0.5em;
+}
+#editor_actions input[type="submit"] {
+    padding: 8px 12px;
+}
+#editor_actions .button.cancel {
+    margin-left: 0.6em;
+    margin-top: 0.85em;
+}
+
+#id_comment {
+    width: 30em;
+}
+form #content_footer {
+    border-top: 4px solid #626262;
+    padding-top: 0.6em;
+}
+.mapdata form #content_footer {
+    border-top: none;
+    padding-left: 5em;
+    padding-right: 5em;
 }
 
 /*

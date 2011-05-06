@@ -14,17 +14,22 @@
 {% block content %}
     <form method="post" action="">{% csrf_token %}
       {{ form.content }}
-      {{ form.comment }}
       {{ form.version_date }}
 
       {% block content_footer %}
       <div id="content_footer">
+        <h3>Please comment about this change:</h3>
+        {{ form.comment }}
         <div id="editor_actions">
-          <input type="submit" value="Save"/>
-          <a href=".">Cancel</a>
+          <ul>
+            <li><input class="button" type="submit" value="Save changes"/></li>
+            <li><a href="." class="button cancel">Cancel</a></li>
+          </ul>
+          <ul class="extra_actions">
           {% with form.instance as page %}
             {% include "pages/editor_actions.html" %}
           {% endwith %}
+          </ul>
         </div>
       </div>
       {% endblock %}
