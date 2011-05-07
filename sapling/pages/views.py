@@ -85,7 +85,8 @@ class PageUpdateView(CreateObjectMixin, UpdateView):
         if not hasattr(self.object, 'mapdata'):
             slug = self.object.pretty_slug
             map_create_link = (
-                '<p><a href="%s">[map icon] Create a map for this page?'
+                '<p class="create_map"><a href="%s">'
+                'Create a map for this page?'
                 '</a></p>' % reverse('maps:edit', args=[slug])
             )
         return (

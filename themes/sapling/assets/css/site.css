@@ -133,7 +133,7 @@ textarea, input, select {
 /* Header is different on mapdata pages */
 .mapdata #header_bar {
     padding-left: 3.5em;
-    background: url(../img/map-icon.png) 0.95em 56% no-repeat;
+    background: url(../img/map-icon.png) 0.95em 45% no-repeat;
 }
 
 #object_title {
@@ -367,7 +367,7 @@ input[type="submit"], input[type="button"], button, .button {
     cursor: pointer;
 }
 .little.button, input.little {
-    padding: 0.1em 0.5em 0.3em 0.5em;
+    padding: 0.2em 0.5em 0.3em 0.5em;
     margin: 0;
     font-size: 90%;
 }
@@ -465,6 +465,13 @@ label {
 }
 #create_page_dialog div {
     min-height: 3em;
+}
+.create_map {
+    margin-top: 1em;
+    min-width: 30px;
+    padding-left: 30px;
+    background: url(../img/map-icon-small.png) 6px 66% no-repeat;
+    display: block;
 }
 
 /*
@@ -628,8 +635,7 @@ label {
     padding: 8px 12px;
 }
 #editor_actions .button.cancel {
-    margin-left: 0.6em;
-    margin-top: 0.85em;
+    margin-top: 0.70em;
 }
 
 #id_comment {
