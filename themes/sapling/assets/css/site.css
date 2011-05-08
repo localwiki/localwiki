@@ -220,7 +220,7 @@ textarea, input, select {
 /* The entire-map div */
 #map {
     background: #E8ECEF url(../img/header-bg.png) top left repeat;
-    padding: 10px;
+    padding: 10px 10px 4px 10px;
     border-bottom: 1px solid #DAE1E5;
     border-left: 1px solid #DAE1E5;
     border-right: 1px solid #DAE1E5;
@@ -230,12 +230,21 @@ textarea, input, select {
     float: right;
     margin-top: -1.2em;
     margin-left: 1em;
+    margin-bottom: 0.8em;
 }
 /* Just the widget. Contained in #map. */
 .mapwidget.small {
   border: 1px solid #b5b5b5;
   width: 400px!important;
   height: 300px!important;
+}
+#map .info a {
+  margin-top: 4px;
+  background-image: url(../img/search.png);
+  background-repeat: no-repeat;
+  background-position: 9px 50%;
+  padding-left: 25px;
+  font-size: 90%;
 }
 
 
