@@ -1,6 +1,7 @@
-This setup assumes we're using PostgreSQL.  You should be able to use any
-supported django database.  If you'd like to do something more
-specialized, please see the general Django install instructions here:
+NOTE: This setup assumes we're using PostgreSQL and it's geographic companion,
+PostGIS.  You should in theory be able to use any supported Django database.
+If you'd like to do something more specialized, please see the general Django
+install instructions here:
 
 http://docs.djangoproject.com/en/dev/topics/install/
 
@@ -25,12 +26,7 @@ python-setuptools, virtualenv, gdal, postgresql, postgis, mercurial:
     $ sudo apt-get install mercurial
     $ sudo easy_install virtualenv
 
-NOTE: This setup assumes usage of PostgreSQL and its extension, PostGIS.  You
-could use any of the supported GeoDjango databases -- just install that
-instead of postgresql and postgis.  GeoDjango install instructions are here:
-http://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
 
-	
 2.  Set up virtualenv. For more info, see http://pypi.python.org/pypi/virtualenv
 
 Create an empty environment.  Replace ENV with whatever folder name you want.
