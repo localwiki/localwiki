@@ -96,6 +96,9 @@ textarea, input, select {
     margin-top: 1em;
     margin-bottom: 2em;
 }
+#content.has_map {
+    min-height: 340px;
+}
 /* Map detail view - we want map to have no margins. */
 #main.mapdata_detail {
     margin-left: 0;
@@ -206,6 +209,35 @@ textarea, input, select {
     padding-left: 30px;
     margin-right: 0.5em;
 }
+
+
+/*
+====================================
+ Map widget on a page
+====================================
+*/
+
+/* The entire-map div */
+#map {
+    background: #E8ECEF url(../img/header-bg.png) top left repeat;
+    padding: 10px;
+    border-bottom: 1px solid #DAE1E5;
+    border-left: 1px solid #DAE1E5;
+    border-right: 1px solid #DAE1E5;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    float: right;
+    margin-top: -1.2em;
+    margin-left: 1em;
+}
+/* Just the widget. Contained in #map. */
+.mapwidget.small {
+  border: 1px solid #b5b5b5;
+  width: 400px!important;
+  height: 300px!important;
+}
+
 
 /*
 ====================================

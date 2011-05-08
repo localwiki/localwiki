@@ -7,32 +7,42 @@
 {% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
 {% block header_title %}<a href="{% url pages:show slug=page.pretty_slug %}">{{ page.name }}</a>{% endblock %}
 
-{% block content %}
-  {% if show_revision %}
-    <em class="revision_details">
-        Revision {{ page.history_info.version_number }}
-        ({{ page.history_info.date }}
-        by
-        {% spaceless %}
-        {% if page.history_info.user %}
-            <a href="{{ page.history_info.user.get_absolute_url }}">{{ page.history_info.user }}</a>
-        {% else %}
-            {{ page.history_info.user_ip }}
-        {% endif %}
-        {% endspaceless %})
-    </em>
-  {% endif %}
-  
+{% block content_wrapper %}
+<div id="content_wrapper">
   {% if map %}
-  <div id="map">
-    {{ map }}
-    <div class="info"><a href="{% url maps:show slug=page.pretty_slug %}">View map</a></div>
-  </div>
+    <div id="content" class="has_map">
+  {% else %}
+    <div id="content">
   {% endif %}
+  {% block content %}
+    {% if show_revision %}
+      <em class="revision_details">
+          Revision {{ page.history_info.version_number }}
+          ({{ page.history_info.date }}
+          by
+          {% spaceless %}
+          {% if page.history_info.user %}
+              <a href="{{ page.history_info.user.get_absolute_url }}">{{ page.history_info.user }}</a>
+          {% else %}
+              {{ page.history_info.user_ip }}
+          {% endif %}
+          {% endspaceless %})
+      </em>
+    {% endif %}
+    
+    {% if map %}
+    <div id="map">
+      {{ map }}
+      <div class="info"><a href="{% url maps:show slug=page.pretty_slug %}">View map</a></div>
+    </div>
+    {% endif %}
 
-  <div id="page">
-    {% render_page page.content %}
+    <div id="page">
+      {% render_page page.content %}
+    </div>
+  {% endblock %}
   </div>
+</div>
 {% endblock %}
 
 {% block footer %}
