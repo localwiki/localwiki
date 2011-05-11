@@ -211,6 +211,30 @@ class HtmlFieldTest(TestCase):
 class GeometryFieldTest(BaseFieldDiffTest):
     test_class = GeometryFieldDiff
 
+    def collection_contains_only(self, cls, collection):
+        from django.contrib.gis.geos import GeometryCollection
+        if type(collection) == cls:
+            return True
+        for o in collection:
+            if isinstance(o, GeometryCollection):
+                if not self.collection_contains_only(cls, o):
+                    return False
+            if type(o) != cls:
+                return False
+        return True
+
+    def collection_size(self, collection):
+        from django.contrib.gis.geos import GeometryCollection
+        if not isinstance(collection, GeometryCollection):
+            return 1
+        i = 0
+        for o in collection:
+            if isinstance(o, GeometryCollection):
+                i += self.collection_size(o)
+            else:
+                i += 1
+        return i
+
     def test_deleted_inserted(self):
         from django.contrib.gis.geos import GEOSGeometry
         from django.contrib.gis.geos import Polygon, GeometryCollection
@@ -275,11 +299,27 @@ class GeometryFieldTest(BaseFieldDiffTest):
         d = self.test_class(a, b).as_dict()
 
         # The diff should contain a *single* line segment.
-        self.assertTrue(type(d['inserted']) == LineString or
-                        len(
-                            [l for l in d['inserted'] if type(l) == LineString]
-                        ) == 1
-        )
+        self.assertTrue(self.collection_contains_only(LineString, d['inserted']))
+        self.assertEqual(self.collection_size(d['inserted']), 1)
+
+    def test_collection_handling(self):
+        from django.contrib.gis.geos import GEOSGeometry, Point
+        # A collection with three points.
+        a = GEOSGeometry("""GEOMETRYCOLLECTION (POINT (-122.4171253967300004 37.8168416846629967), POINT (-122.5226971435500047 37.7849668879050000), POINT (-122.4329182433999961 37.7185961029840016))""")
+        # Collection A with a point moved.
+        b = GEOSGeometry("""GEOMETRYCOLLECTION (POINT (-122.4171253967300004 37.8168416846629967), POINT (-122.4749752807600061 37.7958194267970029), POINT (-122.4329182433999961 37.7185961029840016))""")
+
+        d = self.test_class(a, b).as_dict()
+
+        # The diff should have one point added, one point deleted, one
+        # point the same.
+        self.assertTrue(self.collection_contains_only(Point, d['inserted']))
+        self.assertEqual(self.collection_size(d['inserted']), 1)
+        self.assertTrue(self.collection_contains_only(Point, d['deleted']))
+        self.assertEqual(self.collection_size(d['deleted']), 1)
+        self.assertTrue(self.collection_contains_only(Point, d['same']))
+        self.assertEqual(self.collection_size(d['same']), 2)
+
 
 class DiffRegistryTest(TestCase):
     def setUp(self):

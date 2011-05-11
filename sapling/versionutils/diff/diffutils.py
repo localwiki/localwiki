@@ -402,7 +402,7 @@ class GeometryFieldDiff(BaseFieldDiff):
         lines_same = []
         lines_intersection = lines1.intersection(lines2)
         # Force to be a collection.
-        if not type(lines_intersection) == GeometryCollection:
+        if not isinstance(lines_intersection, GeometryCollection):
             lines_intersection = GeometryCollection(lines_intersection,
                 srid=lines_intersection.srid)
         for geom in lines_intersection:
@@ -415,7 +415,7 @@ class GeometryFieldDiff(BaseFieldDiff):
         # they're the same.
         other_geom_same = other_geom1.intersection(other_geom2)
         # Force to be a collection. TODO: break out. Non-DRY.
-        if not type(other_geom_same) == GeometryCollection:
+        if not isinstance(other_geom_same, GeometryCollection):
             other_geom_same = GeometryCollection(other_geom_same,
                                                  srid=other_geom_same.srid)
 
