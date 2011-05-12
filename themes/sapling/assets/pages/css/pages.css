@@ -38,11 +38,13 @@ a[href^='mailto:'] {
     float: left;
     clear: left;
     margin-right: 1.1em;
+    margin-bottom: 0.3em;
 }
 .image_right {
     float: right;
     clear: right;
     margin-left: 1.1em;
+    margin-bottom: 0.3em;
 }
 .image_caption {
     display: block;
@@ -52,13 +54,12 @@ a[href^='mailto:'] {
     margin-bottom: 0.4em;
 }
 
-/* Behavior we want to be specific to page content */
-
-#content #page h1,
-#content #page h2,
-#content #page h3,
-#content #page h4,
-#content #page h5,
-#content #page h6 {
+/* Behavior we want to be specific to page / editor content */
+#content #page h1, .page_editor h1,
+#content #page h2, .page_editor h2,
+#content #page h3, .page_editor h3,
+#content #page h4, .page_editor h4,
+#content #page h5, .page_editor h5,
+#content #page h6, .page_editor h6 {
     clear: both;
 }

@@ -9,6 +9,7 @@ class WikiEditor(CKEditor):
         config = super(WikiEditor, self).get_config()
         additional = {
             'skin': 'sapling',
+            'bodyClass': 'page_editor',
             'filebrowserInsertimageUploadUrl': '_upload/',
             'filebrowserInsertimageBrowseUrl': '_filebrowser',
             'domcleanupAllowedTags': models.allowed_tags,
