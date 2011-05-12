@@ -5,25 +5,9 @@
 
 {% block media %}
   {{ block.super }}
-  <style>
-    del {
-      background: #FDC6C6;
-      text-decoration: none;
-    }
-    ins {
-      background: #b4ff78;
-      text-decoration: none;
-    }
-    del img {
-      border: 0.5em #FDC6C6 solid;
-    }
-    ins img{
-      border: 0.5em #b4ff78 solid;
-    }
-    td.revision_details {
-      font-style: italic;
-    }
-  </style>
+  <link rel="stylesheet" href="{{ STATIC_URL }}theme/pages/css/diff.css">
+  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.5.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}theme/pages/js/diff.js"></script>
 {% endblock %}
 
 {% block title %}Differences for {{ new.name }}{% endblock %}

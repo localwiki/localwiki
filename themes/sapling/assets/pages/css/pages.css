@@ -17,16 +17,21 @@ a[href^='mailto:'] {
 
 /* Images */
 .image_frame {
-    display:inline-block;
+    display: inline-block;
     vertical-align: top;
     margin-top: 0.5em
     margin-bottom: 0.3em;
+    margin-right: 4px;
     line-height: 1;
+}
+.image_frame a {
+    line-height: 0;
+    display: block;
 }
 .image_frame_border, .image_frame_border img {
     border: 1px solid #cccccc;
 }
-.image_frame_border{
+.image_frame_border {
     padding: 2px 4px 2px 2px;
 }
 .image_left {
@@ -45,4 +50,15 @@ a[href^='mailto:'] {
     font-size: 80%;
     margin-top: 0.3em;
     margin-bottom: 0.4em;
+}
+
+/* Behavior we want to be specific to page content */
+
+#content #page h1,
+#content #page h2,
+#content #page h3,
+#content #page h4,
+#content #page h5,
+#content #page h6 {
+    clear: both;
 }

@@ -1,0 +1,33 @@
+del, .del {
+  background: #FDC6C6;
+  text-decoration: none;
+}
+ins, .ins {
+  background: #b4ff78;
+  text-decoration: none;
+}
+del img {
+  border: 0.5em #FDC6C6 solid;
+}
+.image_frame_border ins img, ins img {
+  border: 0.5em #b4ff78 solid;
+}
+.image_frame_border del img, del img {
+  border: 0.5em #FDC6C6 solid;
+}
+
+/* Used in diff.js to reset back to the .image_frame_border status */
+.force_image_frame_border {
+  border: 1px solid #cccccc!important;
+}
+.image_frame.ins, .image_frame.del {
+  padding: 0.5em;
+}
+
+td.revision_details {
+  font-style: italic;
+}
+
+.test {
+  border: 2px solid red!important;
+}
