@@ -35,12 +35,6 @@
 <xsl:template match="img">
 <img>
   <xsl:copy-of select="@*"/>
-  <xsl:if test="@changeType='diff-removed-image' or @changeType='diff-added-image'">
-        <xsl:attribute name="onLoad">updateOverlays()</xsl:attribute>
-        <xsl:attribute name="onError">updateOverlays()</xsl:attribute>
-        <xsl:attribute name="onAbort">updateOverlays()</xsl:attribute>
-  </xsl:if>
-
 </img>
 </xsl:template>
 

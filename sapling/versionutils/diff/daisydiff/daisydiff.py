@@ -38,7 +38,9 @@ def daisydiff(field1, field2, service_url=DAISYDIFF_URL):
                                       % (response.status, response.reason))
     data = response.read()
     conn.close()
-    return extract_table_row(data)
+    row = extract_table_row(data)
+    row.attributes['class'] = 'htmldiff'
+    return row.toxml()
 
 
 def daisydiff_merge(field1, field2, ancestor, service_url=DAISYDIFF_MERGE_URL):
@@ -74,7 +76,7 @@ def extract_merge(xml):
 
 def extract_table_row(html):
     doc = html5lib.parse(html)
-    return find_element_by_tag('tr', doc).toxml()
+    return find_element_by_tag('tr', doc)
 
 
 def find_element_by_tag(tag, node):
