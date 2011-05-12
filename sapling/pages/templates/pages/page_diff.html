@@ -14,7 +14,7 @@
 {% block header_title %}Differences for <a href="{% url pages:show slug=page.pretty_slug %}">{{ new.name }}</a>{% endblock %}
 
 {% block content %}
-  <table width="100%">
+  <table width="100%" id="diff-table">
     <thead id="content_header">
     {% block content_header %}
         <tr>
@@ -56,7 +56,6 @@
     </thead>
     {% endblock %}
 
-    {% diff old new as page_diff %}
     <tbody valign="top">
         {% render_page page_diff.content %}
     </tbody>

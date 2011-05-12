@@ -237,6 +237,11 @@ class PageCompareView(diff.views.CompareView):
     def get_object(self):
         return Page(slug=self.kwargs['slug'])
 
+    def get_context_data(self, **kwargs):
+        context = super(PageCompareView, self).get_context_data(**kwargs)
+        context['page_diff'] = diff.diff(context['old'], context['new'])
+        return context
+
 
 @require_POST
 def upload(request, slug, **kwargs):

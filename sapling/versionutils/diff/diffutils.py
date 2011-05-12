@@ -52,6 +52,7 @@ class BaseFieldDiff():
         field2: The second value you want to diff, against field1.
         template: An optional filename of the template to use when rendering.
     """
+    __metaclass__ = forms.MediaDefiningClass
     template = None
 
     def __init__(self, field1, field2):
@@ -313,6 +314,11 @@ class HtmlFieldDiff(BaseFieldDiff):
         if self.field1 == self.field2:
             return None
         return {'deleted': self.field1, 'inserted': self.field2}
+
+    class Media:
+        js = ('js/jquery/jquery-1.5.min.js', 'js/diff/htmldiff.js',
+              'js/jquery.qtip.min.js')
+        css = {'all': ('css/jquery.qtip.min.css',)}
 
 
 class FileFieldDiff(BaseFieldDiff):
