@@ -23,12 +23,12 @@ function buildTips() {
 		{
 			toolBar = $('<div class="diff-toolbar"></div>');
 			changeText = $('<span class="diff-toolbar-text"/>').appendTo(toolBar);
-			prev = $('<input type="button" value="Previous" />').click(goPrev)
+			prev = $('<input type="button" class="little" value="Previous" />').click(goPrev)
 				.appendTo(toolBar);
-			next = $('<input type="button" value="Next" />').click(goNext)
+			next = $('<input type="button" class="little" value="Next" />').click(goNext)
 				.appendTo(toolBar);
 			$('<span class="close-button" title="Close">&times;</span>').click(function(){
-				toolBar.animate({ 'margin-top': '-30px'}, function(){ toolBar.hide(); });
+				toolBar.animate({ 'margin-top': '-36px'}, function(){ toolBar.hide(); });
 			}).css('cursor', 'pointer').appendTo(toolBar);
 			toolBar.appendTo(document.body).hide();
 		}
@@ -54,7 +54,7 @@ function buildTips() {
 			current--;
 		setupToolbar();
 	};
-	$('<span class="review-changes">Review changes</span>').click(setupToolbar).appendTo('#title');
+	$('<li><span class="button">Review changes</span></li>').click(setupToolbar).appendTo('#object_actions ul');
 	var changes = $("del.diff-html-removed,ins.diff-html-added,span.diff-html-changed")
 		.filter(function(){return this.childNodes})
 		.sort(visualSort)
