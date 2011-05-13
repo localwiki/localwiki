@@ -39,10 +39,17 @@
 </xsl:template>
 
 <xsl:template match="span[@class='diff-html-changed']">
-<span>
-  <xsl:copy-of select="@*"/>
-  <xsl:apply-templates select="node()"/>
-</span>
+<xsl:choose>
+  <xsl:when test="normalize-space(.) or *">
+  	<span>
+      <xsl:copy-of select="@*"/>
+      <xsl:apply-templates select="node()"/>
+    </span>
+  </xsl:when>
+  <xsl:otherwise>
+      <xsl:apply-templates select="node()"/>
+  </xsl:otherwise>
+</xsl:choose>
 </xsl:template>
 
 <xsl:template match="span[@class='diff-html-added']">
