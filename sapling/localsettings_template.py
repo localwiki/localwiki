@@ -1,5 +1,8 @@
 DEBUG = True
-CACHE_BACKEND = 'dummy:///'
+
+#######################################################################
+# Config values you *must* change
+#######################################################################
 
 DATABASES = {
     'default': {
@@ -11,12 +14,19 @@ DATABASES = {
     }
 }
 
+# Get an API key at http://cloudmade.com/start. Click on "Web" then "Get an API Key."
+CLOUDMADE_API_KEY = 'SET THIS TO THE KEY YOU GET'
+
 # Use these email settings when running the python debugging smtp server
 # python -m smtpd -n -c DebuggingServer localhost:1025
 EMAIL_HOST = 'localhost'
 EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 1025
 EMAIL_USE_TLS = False
+
+#######################################################################
+# Other config values.
+#######################################################################
 
 SITE_THEME = 'sapling'
 
@@ -42,4 +52,4 @@ HAYSTACK_SOLR_URL = 'http://localhost:8080/solr'
 
 LOCAL_INSTALLED_APPS = ()
 
-CLOUDMADE_API_KEY = 'Get an API key at http://cloudmade.com'
+CACHE_BACKEND = 'dummy:///'

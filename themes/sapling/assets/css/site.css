@@ -205,7 +205,7 @@ textarea, input, select {
     width: 180px;
     font-size: 15px;
     line-height: 0;
-    background: #ffffff url(../img/search.png) no-repeat 10px 10px;
+    background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 10px;
     padding-left: 30px;
     margin-right: 0.5em;
 }
@@ -239,12 +239,12 @@ textarea, input, select {
   height: 300px!important;
 }
 #map .info a {
-  margin-top: 4px;
-  background-image: url(../img/search.png);
+  background-image: url(../img/magnifying_glass.png);
   background-repeat: no-repeat;
   background-position: 9px 50%;
   padding-left: 25px;
   font-size: 90%;
+  border: 1px solid red;
 }
 
 
