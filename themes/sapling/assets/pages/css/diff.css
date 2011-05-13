@@ -1,3 +1,6 @@
+tr.htmldiff td {
+  width: 50%;
+}
 del, .del {
   background: #FDC6C6;
   text-decoration: none;
@@ -16,6 +19,7 @@ del img {
   border: 0.5em #FDC6C6 solid;
 }
 
+
 /* Used in diff.js to reset back to the .image_frame_border status */
 .force_image_frame_border {
   border: 1px solid #cccccc!important;
@@ -25,34 +29,39 @@ del img {
 }
 
 /* "Review changes" toolbar and tooltips */
-.diff-highlight {
-  background: #FFFFA3;
-}
+
 .diff-toolbar {
   overflow: hidden;
   width: 100%;
-  height: 28px;
+  height: 36px;
   position: fixed;
   background: #EEEEEE;
   text-align: center;
-  margin-top: -30px;
+  margin-top: -36px;
   top: 0;
   left: 0;
 }
+.diff-toolbar input[type="button"] {
+  display: inline;
+  margin-left: .5em;
+}
 span.diff-toolbar-text {
-	margin-right: 1em;
+  margin-right: .5em;
 }
 span.close-button {
-	margin: 1em;
-	vertical-align: middle;
+  margin: .5em;
+  font-size: 1.5em;
+  vertical-align: top;
 }
-span.review-changes {
-	margin-left: 1em;
-	font-size: medium;
-	font-weight: normal;
+div.review-changes {
+  text-align: center;
 }
-td.revision_details {
-  font-style: italic;
+.diff-highlight {
+  background: #FFFFA3;
+}
+.review-changes .button {
+  float: none;
+  display: inline-block;
 }
 
 td.revision_details {

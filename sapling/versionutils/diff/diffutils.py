@@ -316,7 +316,7 @@ class HtmlFieldDiff(BaseFieldDiff):
         return {'deleted': self.field1, 'inserted': self.field2}
 
     class Media:
-        js = ('js/jquery/jquery-1.5.min.js', 'js/diff/htmldiff.js',
+        js = ('js/diff/htmldiff.js',
               'js/jquery.qtip.min.js')
         css = {'all': ('css/jquery.qtip.min.css',)}
 
