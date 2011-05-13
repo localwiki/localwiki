@@ -1,24 +1,21 @@
 $(document).ready(function(){
 	alignChanges();
-	buildTips();
+	addToolTips();
 });
 
 function visualSort(a, b)
 {
 	var aPos = $(a).position(), bPos = $(b).position();
-	if(aPos.top - bPos.top)
-		return aPos.top - bPos.top;
-	if(aPos.left - bPos.left)
-		return aPos.left - bPos.left;
-	return 0;
+	return aPos.top != bPos.top ? aPos.top - bPos.top : aPos.left - bPos.left;
 }
 
-
-function buildTips() {
-	var current = 0;
+function addToolTips() {
+	var current = -1;
 	var toolBar = false, changeText, prev, next;
-	var tips = [];
-	var setupToolbar = function(){
+	var showChange = function(index){
+		if(current > -1 && current != index)
+			$(changes[current]).qtip('api').hide();
+		current = index;
 		if(!toolBar)
 		{
 			toolBar = $('<div class="diff-toolbar"></div>');
@@ -33,10 +30,10 @@ function buildTips() {
 			toolBar.appendTo(document.body).hide();
 		}
 		$(changes[current]).data('qtip').show();
-		changeText.html((current + 1).toString() + ' of ' + changes.length.toString());
+		changeText.empty().append('Change ' + (current + 1) + ' of ' + changes.length);
 		var tipTop = Math.min($(changes[current]).data('qtip').elements.tooltip.position().top,
 							  $(changes[current]).position().top);
-		$(document.body).animate({ scrollTop: tipTop - 40 },
+		$('html,body').animate({ scrollTop: tipTop - 40 },
 							function(){
 								if(toolBar.is(':hidden'))
 									toolBar.show().animate({ 'margin-top': '0px' });
@@ -46,100 +43,115 @@ function buildTips() {
 	};
 	var goNext = function() {
 		if(current + 1 <= changes.length - 1)
-			current++;
-		setupToolbar();
+			showChange(current + 1);
+		else showChange(current);
 	};
 	var goPrev = function() {
 		if(current - 1 >= 0)
-			current--;
-		setupToolbar();
+			showChange(current - 1);
+		else showChange(current);
 	};
-	$('<li><span class="button">Review changes</span></li>').click(setupToolbar).appendTo('#object_actions ul');
+	$('<span class="button">Review changes</span>)')
+		.click(function(){
+			showChange(0);
+		}).insertBefore($('tr.htmldiff').parents('table').first())
+		  .wrap('<div class="review-changes">')
+		  .parent().append('You can use the &larr; and &rarr; keys, too.');
 	var changes = $("del.diff-html-removed,ins.diff-html-added,span.diff-html-changed")
-		.filter(function(){return this.childNodes})
 		.sort(visualSort)
 		.each(function (index){
 			$(this).data('changeIndex', index);
-		});
-	changes.qtip({
-		content: function (api) {
-			switch(api.elements.target[0].nodeName)
-			{
-				case 'DEL': return 'Content was deleted';
-				case 'INS': return 'Content was added';
-				default : return api.elements.target.first().attr('changes');
-			}
-		},
-		position: {
-			my: 'bottom center',
-			at: 'top center'
-		},
-		hide: 'unfocus mouseleave',
-		events: {
-			show: function(event, api) {
-				if(api.elements.target.is('.diff-html-changed'))
-					api.elements.target.addClass('diff-highlight');
+		})
+		.qtip({
+			content: function (api) {
+				switch(api.elements.target[0].nodeName)
+				{
+					case 'DEL': return 'Content was deleted';
+					case 'INS': return 'Content was added';
+					default : return decodeURIComponent(
+								api.elements.target.first().attr('changes'));
+				}
 			},
-			hide: function(event, api) {
-				var willHide = event.originalEvent.type == 'mousedown'
-					|| !toolBar
-					|| toolBar.is(':hidden')
-					|| changes[current] != api.elements.target[0];
-				if(willHide)
-					api.elements.target.removeClass('diff-highlight');
-				return willHide;
+			position: {
+				my: 'bottom center',
+				at: 'top center'
+			},
+			hide: 'unfocus mouseleave',
+			events: {
+				show: function(event, api) {
+					if(api.elements.target.is('.diff-html-changed'))
+						api.elements.target.addClass('diff-highlight');
+				},
+				hide: function(event, api) {
+					var willHide = !event.originalEvent
+						|| event.originalEvent.type == 'mousedown'
+						|| !toolBar
+						|| toolBar.is(':hidden')
+						|| changes[current] != api.elements.target[0];
+					if(willHide)
+						api.elements.target.removeClass('diff-highlight');
+					return willHide;
+				}
 			}
-		}
-	}).click(function(){
-		current = $(this).data('changeIndex');
-		setupToolbar();
+		})
+		.click(function(){
+			showChange($(this).data('changeIndex'));
+		});
+
+	$(document).keydown(function (evt){
+		if(evt.which == 39) // right arrow
+			goNext();
+		if(evt.which == 37) // left arrow
+			goPrev();
 	});
 }
 
+function getWords(elems)
+{
+	if(!elems.length)
+		elems = [elems];
+	var words = [], elem;
+	for ( var i = 0; elems[i]; i++ ) {
+		elem = elems[i];
+		if ( elem.nodeType === 3) {
+			words = words.concat(elem.nodeValue.split(/\s+/));
+		} else if ( elem.nodeType === 1 && elem.nodeName != 'DEL' && elem.nodeName != 'INS') {
+			words = words.concat(getWords(elem.childNodes));
+		}
+	}
+	return words;
+}
+
+function wordNodeMap(root)
+{
+	var map = [];
+	$(root).children().each(function (index, elem){
+		$.each(getWords(elem), function(index, word){
+			word && map.push({ text: word, node: elem});
+		});
+	});
+	return map;
+}
 
 function alignChanges(elem)
 {
 	var left = $("tr.htmldiff").first().children()[0];
 	var right = $("tr.htmldiff").first().children()[1];
-	var leftText = [];
-	var rightText = [];
-	$(left).children().each(function (){
-		var texts = $(this).clone().find('del,ins').remove().end().text().split(/\s+/);
-		for(var i = 0; i < texts.length; i++)
-		{
-			if(texts[i].length)
-				leftText.push({ text: texts[i], node: this});
-		}
-	});
-	$(right).children().each(function (){
-		var texts = $(this).clone().find('del,ins').remove().end().text().split(/\s+/);
-		for(var i = 0; i < texts.length; i++)
-		{
-			if(texts[i].length)
-				rightText.push({ text: texts[i], node: this});
-		}
-	});
-
-	if(leftText.length != rightText.length) // sanity check
-		return;
-
-	for(var i = 0; i < leftText.length; i++)
+	var leftText = wordNodeMap(left);
+	var rightText = wordNodeMap(right);
+	for(var i = 0; i < leftText.length && i < rightText.length; i++)
 	{
-		var leftNode = leftText[i].node;
-		var rightNode = rightText[i].node;
-		if($(leftNode).data('aligned') || $(rightNode).data('aligned'))
-			continue;
-		align(leftNode, rightNode);
+		align(leftText[i].node, rightText[i].node);
 	}
 }
-
 
 function align(a, b)
 {
 	var aPos = $(a).position().top;
 	var bPos = $(b).position().top;
-	var higher = aPos < bPos ? a : b;
-	$(higher).css('margin-top', Math.abs(aPos - bPos));
-	$(a).data('aligned', true);
-	$(b).data('aligned', true);
+	if(aPos != bPos)
+	{
+		var higher = aPos < bPos ? a : b;
+		$(higher).before($('<div/>').height(Math.abs(aPos - bPos)));
+	}
 }
