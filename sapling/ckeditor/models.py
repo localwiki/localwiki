@@ -41,7 +41,7 @@ def sanitize_html(unsafe):
     return tree.toxml()
 
 
-def sanitize_html_fragment(unsafe, allowed_elements=None):
+def sanitize_html_fragment(unsafe, allowed_elements=None, encoding='UTF-8'):
     # TODO: make this more simple / understandable and factor out from
     # plugins.html_to_template_text
     if not allowed_elements:
@@ -49,14 +49,14 @@ def sanitize_html_fragment(unsafe, allowed_elements=None):
     p = html5lib.HTMLParser(tree=treebuilders.getTreeBuilder("lxml"),
                             tokenizer=custom_sanitizer(allowed_elements),
                             namespaceHTMLElements=False)
-    top_level_elements = p.parseFragment(unsafe)
+    top_level_elements = p.parseFragment(unsafe, encoding=encoding)
     # put top level elements in container
     container = etree.Element('div')
     if top_level_elements and not hasattr(top_level_elements[0], 'tag'):
         container.text = top_level_elements.pop(0)
     container.extend(top_level_elements)
 
-    html_bits = [etree.tostring(elem, method='html', encoding='utf-8')
+    html_bits = [etree.tostring(elem, method='html', encoding=encoding)
                      for elem in container]
 
     return ''.join([escape(container.text or '')] + html_bits)
@@ -108,6 +108,7 @@ class HTML5FragmentField(models.TextField):
         )
     """
     description = _("HTML5 fragment text")
+    encoding = 'UTF-8'
 
     def __init__(self, verbose_name=None, name=None, allowed_elements=None,
                  **kwargs):
@@ -116,7 +117,8 @@ class HTML5FragmentField(models.TextField):
 
     def clean(self, value, model_instance):
         value = super(HTML5FragmentField, self).clean(value, model_instance)
-        return sanitize_html_fragment(value, self.allowed_elements)
+        return sanitize_html_fragment(value, self.allowed_elements,
+                                      encoding=self.encoding)
 
     def formfield(self, **kwargs):
         defaults = {

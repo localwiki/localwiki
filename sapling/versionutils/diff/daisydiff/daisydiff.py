@@ -68,7 +68,8 @@ def daisydiff_merge(field1, field2, ancestor, service_url=DAISYDIFF_MERGE_URL):
 
 def extract_merge(xml):
     doc = lxml.etree.fromstring(xml)
-    body_list = [lxml.etree.tostring(child) for child in doc.find('body')]
+    body_list = [lxml.etree.tostring(child, method='html', encoding='UTF-8')
+                                 for child in doc.find('body')]
     body = ''.join(body_list)
     has_conflict = 'true' in doc.find('conflict').text
     return (body, has_conflict)

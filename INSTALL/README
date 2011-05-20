@@ -59,7 +59,7 @@ distribution.  pip makes this super easy.
     (ENV)$ sudo sed -i 's/NO_START=1/NO_START=0/g' /etc/default/jetty
     (ENV)$ sudo cp /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.orig
     (ENV)$ sudo cp INSTALL/solr_schema.xml /etc/solr/conf/schema.xml
-    
+
     Then start the search service:
 
     (ENV)$ sudo service jetty start
@@ -72,24 +72,24 @@ to your liking.
 
 You are now done installing things and you can start the built-in Django
 development server, after running syncdb and collectstatic.
-	(ENV)$ python sapling/manage.py syncdb
-	(ENV)$ python sapling/manage.py collectstatic
-	(ENV)$ python sapling/manage.py rebuild_index
-	(ENV)$ python sapling/manage.py runserver
+    (ENV)$ python sapling/manage.py syncdb
+    (ENV)$ python sapling/manage.py collectstatic
+    (ENV)$ python sapling/manage.py rebuild_index
+    (ENV)$ python sapling/manage.py runserver
 
 Note: by default, the development server listens on 127.0.0.1 only.  To access
 the development server from another machine (a potential security hazard), run:
-	(ENV)$ python sapling/manage.py runserver 0.0.0.0:8000
-	
-To enable pretty diffing and merging, start the html diff server in a new
-terminal:
-	$ cd sapling/versionutils/diff/daisydiff/
-	$ java -jar daisydiff.jar --server --port=8081
-	
+    (ENV)$ python sapling/manage.py runserver 0.0.0.0:8000
+
+To enable pretty diffing and merging, deploy the daisydiff webapp under Jetty:
+    $ cd sapling/versionutils/diff/daisydiff/
+    $ sudo cp daisydiff.war /var/lib/jetty/webapps
+    $ sudo service jetty restart
+
 Hooray!
 
 -------------------------------------------------------------------------------
-NOTE: This setup assumes we're using PostgreSQL and it's geographic companion,
+NOTE: This setup assumes we're using PostgreSQL and its geographic companion,
 PostGIS.  You should in theory be able to use any supported Django database.
 If you'd like to do something more specialized, please see the general Django
 install instructions here:

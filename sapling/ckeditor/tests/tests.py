@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import os
 
 from django.test import TestCase
@@ -79,6 +81,20 @@ class HTML5FragmentField(TestCase):
         m.html = '<a name="test"/>'
         m.clean_fields()
         self.assertEquals(m.html, '<a name="test"></a>')
+
+    def test_nbsp(self):
+        ''' We store UTF-8, so &nbsp; should be stored as \xc2\xa0 (2 chars)
+        '''
+        m = HTML5FragmentModel()
+        m.html = '<p>&nbsp;</p>&nbsp;'
+        m.clean_fields()
+        self.assertEquals(m.html, '<p>\xc2\xa0</p>\xc2\xa0')
+
+    def test_charset(self):
+        m = HTML5FragmentModel()
+        m.html = '<p>Привет</p>'
+        m.clean_fields()
+        self.assertEquals(m.html, '<p>Привет</p>')
 
 
 class CKEditorWidgetTest(TestCase):

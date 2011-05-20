@@ -7,7 +7,8 @@
   <property name="src" location="src/java"/>
   <property name="build" location="build"/>
   <property name="dist"  location="dist"/>
-  <property name="diff_app" location="../sapling/versionutils/diff/daisydiff"/>
+  <property name="build_classes" location="${build}/WEB-INF/classes"/>
+  <property name="webapps" location="/var/lib/jetty/webapps"/>
 
   <path id="project.class.path">
     <fileset dir="lib">
@@ -22,17 +23,25 @@
     <tstamp/>
     <!-- Create the build directory structure used by compile -->
     <mkdir dir="${build}"/>
+  	<mkdir dir="${build_classes}"/>
+  	<mkdir dir="${build}/WEB-INF/lib"/>
   </target>
 
   <target name="compile" depends="init"
         description="compile the source " >
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac srcdir="${src}" destdir="${build}">
+    <javac srcdir="${src}" destdir="${build_classes}">
       <classpath refid="project.class.path"/>
     </javac>
-    <copy todir="${build}">
+    <copy todir="${build_classes}">
       <fileset dir="${src}" excludes="**/*.java"/>
     </copy>
+  	<copy todir="${build}/WEB-INF">
+  		<fileset dir="WEB-INF"/>
+  	</copy>
+  	<copy todir="${build}/WEB-INF/lib">
+  		<fileset dir="lib"/>
+  	</copy>
   </target>
 
   <target name="dist" depends="compile"
@@ -41,15 +50,9 @@
     <mkdir dir="${dist}"/>
 
     <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-    <jar jarfile="${dist}/daisydiff.jar" basedir="${build}">
-      <zipfileset src="lib/eclipse-core-runtime-20070801.jar" />
-      <zipfileset src="lib/nekohtml.jar" />
-      <zipfileset src="lib/xercesImpl-2.8.0.jar" />
-      <manifest>
-        <attribute name="Main-Class" value="org.outerj.daisy.diff.Main"/>
-      </manifest>
+    <jar jarfile="${dist}/daisydiff.war" basedir="${build}">
     </jar>
-    <copy todir="${diff_app}">
+    <copy todir="${webapps}">
       <fileset dir="${dist}"/>
     </copy>
   </target>
