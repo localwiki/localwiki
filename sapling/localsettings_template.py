@@ -45,8 +45,8 @@ OLWIDGET_DEFAULT_OPTIONS = {
     'map_div_class': 'mapwidget',
 }
 
-DAISYDIFF_URL = 'http://localhost:8081/diff'
-DAISYDIFF_MERGE_URL = 'http://localhost:8081/merge'
+DAISYDIFF_URL = 'http://localhost:8080/daisydiff/diff'
+DAISYDIFF_MERGE_URL = 'http://localhost:8080/daisydiff/merge'
 
 HAYSTACK_SOLR_URL = 'http://localhost:8080/solr'
 
