@@ -179,7 +179,7 @@ def html_to_template_text(unsafe_html, context=None):
             if can_continue is False:
                 break
 
-    template_bits = [etree.tostring(elem, method='html', encoding='UTF-8')
+    template_bits = [etree.tostring(elem, encoding='UTF-8')
                      for elem in container]
     return sanitize_final(''.join(tag_imports +
                                   [escape(container.text or '')] +
