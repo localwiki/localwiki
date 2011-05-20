@@ -16,10 +16,9 @@ OUR_CSS = {}
 
 
 class MediaMixin(object):
-    def _media(self):
-        default_media = super(MediaMixin, self).media
-        return default_media + forms.Media(css=OUR_CSS, js=OUR_JS)
-    media = property(_media)
+    class Media:
+        js = OUR_JS
+        css = OUR_CSS
 
 
 class InfoMap(MediaMixin, widgets.InfoMap):
