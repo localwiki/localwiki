@@ -1,16 +1,12 @@
 Here's how to get this code running on Ubuntu Server Edition 10.04 LTS.  For
 more general install instructions see the NOTE at the bottom of this document.
 
-1.  Prerequisites: gcc, libxml2, libxslt, python-dev(the last 4 are
-needed by lxml), java(needed for daisydiff and search), solr, image decoders,
+1.  Prerequisites: libxslt, python-dev, solr + jetty, image decoders,
 python-setuptools, virtualenv, gdal, postgresql, postgis, mercurial:
 
-    $ sudo apt-get install gcc libxslt-dev python-dev python-setuptools
-    $ sudo apt-get install openjdk-6-jdk solr-jetty
-    $ sudo apt-get install libjpeg62 libjpeg62-dev zlib1g-dev
-    $ sudo apt-get install gdal-bin proj
-    $ sudo apt-get install postgresql-8.4-postgis postgresql-client
-    $ sudo apt-get install python-psycopg2 mercurial
+    $ sudo apt-get install libxslt-dev python-dev python-setuptools solr-jetty
+    $ sudo apt-get install libjpeg62-dev zlib1g-dev gdal-bin proj
+    $ sudo apt-get install postgresql-8.4-postgis python-psycopg2
     $ sudo easy_install virtualenv
 
 
@@ -26,22 +22,12 @@ Activate the new environment.
                         Run all of the following commands in this environment.
     
 
-3.  Install pip, if it's not already there.  Recent versions of virtualenv
-come with pip installed.  For more info, see http://pypi.python.org/pypi/pip
-
-Check if pip is installed.
-	(ENV)$ pip --version
-
-If you get "pip: command not found", install it.
-	(ENV)$ easy_install pip
-	
-	
-4.  Install required python packages using requirements.txt, included in this
-distribution.  pip makes this super easy.
+3.  Install required python packages using requirements.txt, included in this
+distribution.  pip makes this super easy:
 	(ENV)$ pip install -r INSTALL/requirements.txt
 
 
-5.  Create the database.  Here's how we do it:
+4.  Create the database.  Here's how we do it:
 
     (ENV)$ sudo -u postgres bash INSTALL/create_template_postgis-debian.sh
     (ENV)$ sudo su - postgres  # Become postgres user, then:
@@ -54,39 +40,35 @@ distribution.  pip makes this super easy.
     local setup, of course.
 
 
-6.  Allow the search service to start and back up existing config:
+5.  Allow the search, diff services to start & back up existing config:
 
     (ENV)$ sudo sed -i 's/NO_START=1/NO_START=0/g' /etc/default/jetty
     (ENV)$ sudo cp /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.orig
     (ENV)$ sudo cp INSTALL/solr_schema.xml /etc/solr/conf/schema.xml
-
-    Then start the search service:
-
-    (ENV)$ sudo service jetty start
+    (ENV)$ sudo cp INSTALL/daisydiff.war /var/lib/jetty/webapps
+    (ENV)$ sudo service jetty restart
 
 
-7.  Copy sapling/localsettings_template.py to sapling/localsettings.py and edit
-to your liking.
+6.  Copy sapling/localsettings_template.py to sapling/localsettings.py and edit
+it, adding your database password and other nice things:
 	(ENV)$ cp sapling/localsettings_template.py sapling/localsettings.py
 
+Initialize the project environment:
 
-You are now done installing things and you can start the built-in Django
-development server, after running syncdb and collectstatic.
     (ENV)$ python sapling/manage.py syncdb
     (ENV)$ python sapling/manage.py collectstatic
     (ENV)$ python sapling/manage.py rebuild_index
+
+You are now done configuring and installing things! You can start the built-in
+Django development server:
+    
     (ENV)$ python sapling/manage.py runserver
 
-Note: by default, the development server listens on 127.0.0.1 only.  To access
-the development server from another machine (a potential security hazard), run:
-    (ENV)$ python sapling/manage.py runserver 0.0.0.0:8000
-
-To enable pretty diffing and merging, deploy the daisydiff webapp under Jetty:
-    $ cd sapling/versionutils/diff/daisydiff/
-    $ sudo cp daisydiff.war /var/lib/jetty/webapps
-    $ sudo service jetty restart
-
 Hooray!
+
+Note: For security/efficiency, the built-in server listens on 127.0.0.1 only.
+      For real deployments you'll want to use an actual webserver.  The code 
+      isn't production ready yet, so don't do that.
 
 -------------------------------------------------------------------------------
 NOTE: This setup assumes we're using PostgreSQL and its geographic companion,
