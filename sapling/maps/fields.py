@@ -90,7 +90,27 @@ class CollectionFrom(models.GeometryCollectionField):
 
     def contribute_to_class(self, cls, name):
         models.signals.class_prepared.connect(self.finalize, sender=cls)
+
+        # Control the geometrycollection-like attribute via a special
+        # descriptor.
         setattr(cls, name, CollectionDescriptor(self))
+
+        # Back up the points, lines, polys attributes and then point them
+        # to descriptors that, when set, clear out the
+        # geometrycollection field.
+        setattr(cls, '_explicit_%s' % self.points_name,
+                getattr(cls, self.points_name))
+        setattr(cls, self.points_name,
+                ClearCollectionOnSet(self, self.points_name))
+        setattr(cls, '_explicit_%s' % self.lines_name,
+                getattr(cls, self.lines_name))
+        setattr(cls, self.lines_name,
+                ClearCollectionOnSet(self, self.lines_name))
+        setattr(cls, '_explicit_%s' % self.polys_name,
+                getattr(cls, self.polys_name))
+        setattr(cls, self.polys_name,
+                ClearCollectionOnSet(self, self.polys_name))
+
         super(models.GeometryField, self).contribute_to_class(cls, name)
 
     def finalize(self, sender, **kws):
@@ -167,7 +187,10 @@ class CollectionDescriptor(object):
             enum_polys = [p for p in polys]
 
         geoms = enum_points + enum_lines + enum_polys
-        return GeometryCollection(geoms, srid=self._field.srid)
+
+        collection = GeometryCollection(geoms, srid=self._field.srid)
+        collection._from_get_on_owner = owner
+        return collection
 
     def __set__(self, obj, value):
         # The OGC Geometry type of the field.
@@ -192,6 +215,28 @@ class CollectionDescriptor(object):
 
         obj.__dict__['_explicit_set_%s' % self._field.attname] = value
         return value
+
+
+class ClearCollectionOnSet(object):
+    """
+    A simple descriptor that, when set, clears out the stored
+    geometry collection.  If we don't clear out the stored geometry
+    collection when, say, the 'points' are set then we will end up
+    with a stale geometry collection.
+    """
+    def __init__(self, field, attrname):
+        self._field = field
+        self._attrname = attrname
+
+    def __get__(self, obj=None, owner=None):
+        return getattr(obj, '_explicit_%s' % self._attrname)
+
+    def __set__(self, obj, value):
+        # If the GeometryCollection was explicitly set then let's clear it out,
+        # as we've now set one of the component fields directly.
+        if ('_explicit_set_%s' % self._field.attname) in obj.__dict__:
+            del obj.__dict__['_explicit_set_%s' % self._field.attname]
+        return setattr(obj, '_explicit_%s' % self._attrname, value)
 
 
 class FlatCollectionFrom(CollectionFrom):
