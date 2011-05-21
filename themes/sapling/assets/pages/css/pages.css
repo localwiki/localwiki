@@ -53,6 +53,9 @@ a[href^='mailto:'] {
     margin-top: 0.3em;
     margin-bottom: 0.4em;
 }
+.image_caption a {
+    display: inline;
+}
 
 /* Behavior we want to be specific to page / editor content */
 #content #page h1, .page_editor h1,
