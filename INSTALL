@@ -1,0 +1,72 @@
+Here's how to get this code running on Ubuntu Server Edition 10.04 LTS.  For
+more general install instructions see the NOTE at the bottom of this document.
+
+1.  Prerequisites: solr + jetty, python imaging library, python lxml bindings,
+python-setuptools, virtualenv, gdal, postgresql with postgis:
+
+    $ sudo apt-get install python-setuptools solr-jetty python-lxml python-imaging
+    $ sudo apt-get install gdal-bin proj postgresql-8.4-postgis python-psycopg2
+    $ sudo easy_install virtualenv
+
+2.  Create a virtualenv. For more info, see http://pypi.python.org/pypi/virtualenv
+    $ virtualenv env
+    
+    Activate the new environment. Run all of the following commands in this environment:
+    $ source env/bin/activate
+
+3.  Install required python packages using requirements.txt:
+	(env)$ pip install -r install_config/requirements.txt
+
+4.  Create the database and database user.  Here's how we do it:
+
+    (env)$ sudo -u postgres bash install_config/create_template_postgis-debian.sh
+    (env)$ sudo -u postgres createuser sapling -PSDR # REMEMBER THE PASSWORD YOU TYPE HERE!
+    (env)$ sudo -u postgres createdb -E UTF8 -T template_postgis -O sapling sapling
+
+    You may want to customize the db privileges based on your local setup.
+
+5.  Allow the search, diff services to start & back up existing config:
+    (env)$ sudo install_config/setup_jetty.sh
+
+6.  Copy sapling/localsettings_template.py to sapling/localsettings.py:
+	(env)$ cp sapling/localsettings_template.py sapling/localsettings.py
+
+    Edit sapling/localsettings.py, adding your db password from step 5.
+
+Initialize the project environment:
+
+    (env)$ python sapling/manage.py syncdb
+    (env)$ python sapling/manage.py collectstatic
+
+You are now done configuring and installing things! You can start the built-in
+Django development server:
+    
+    (env)$ python sapling/manage.py runserver
+
+Hooray!  You can visit the site at http://127.0.0.1:8000/
+
+Note: For security/efficiency, the built-in server listens on 127.0.0.1 only.
+      For real deployments you'll want to use an actual webserver.  The code 
+      isn't production ready yet, so don't do that.
+
+-------------------------------------------------------------------------------
+These instructions are specific to Ubuntu Server Edition 10.04 LTS.  It should
+be very possible to run this on any *nix system.  You'll need to:
+
+  * Hunt down the correct prerequisites for Step 1.
+  * Make sure that Step 5 is completed.  Take a peek at install_config/setup_jetty.sh
+    to see what it's doing.  It's simple stuff, really, but the configuration files
+    may be in a different spot on your system.
+
+== Database Note ==
+This setup assumes we're using PostgreSQL and its geographic companion,
+PostGIS.  You should in theory be able to use any supported Django database.
+If you'd like to do something more specialized, please see the general Django
+install instructions here:
+
+http://docs.djangoproject.com/en/dev/topics/install/
+
+and the GeoDjango install instructions here:
+
+http://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
+-------------------------------------------------------------------------------
