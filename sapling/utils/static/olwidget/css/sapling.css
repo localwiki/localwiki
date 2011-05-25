@@ -117,6 +117,11 @@
 
 .olwidgetEditableLayerSwitcher .container {
     background: none!important;
+    display: table-cell;
+    width: auto;
+}
+.olwidgetEditableLayerSwitcher.olControlNoSelect {
+    display: table;
 }
 
 /* Make a white, no-borders popup box */
