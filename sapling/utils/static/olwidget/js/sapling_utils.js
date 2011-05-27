@@ -30,7 +30,70 @@ SaplingMap = {
     },
 
     setup_map: function(map) {
-        this._open_editing(map);    
+        if(map.opts.dynamic)
+            this.setup_dynamic_map(map);
+        this._open_editing(map);
+    },
+
+    setup_dynamic_map: function(map) {
+        var layer = map.vectorLayers[0];
+        layer.dataExtent = map.getExtent();
+        loadObjects = this._loadObjects;
+        layer.events.register("moveend", null, function(evt) {
+          if(evt.zoomChanged
+             || !layer.dataExtent
+             || !layer.dataExtent.containsBounds(map.getExtent()))
+             loadObjects(map, layer);
+        });
+        layer.events.register("featureselected", null, function(evt) {
+          var feature = evt.feature;
+          map.zoomToExtent(feature.geometry.bounds);
+          map.deleteAllPopups();
+          $('#header_title_detail').empty().append(' for ' + feature.attributes.html);
+          var zoomedStyle = $.extend({}, 
+              layer.styleMap.styles.select.defaultStyle,
+              { fillOpacity: '0', strokeDashstyle: 'dash' });
+          if(feature.geometry.CLASS_NAME != "OpenLayers.Geometry.Point")
+              feature.style = zoomedStyle;
+          loadObjects(map,layer,feature);
+        });
+        layer.events.register("featureunselected", null, function(evt) {
+          evt.feature.style = layer.styleMap.styles['default'].defaultStyle;
+          layer.drawFeature(evt.feature);
+        })
+    },
+
+    _loadObjects: function(map, layer, selectedFeature) {
+        var extent = map.getExtent().scale(1.5);
+        var bbox = extent.clone().transform(layer.projection,
+                       new OpenLayers.Projection('EPSG:4326')).toBBOX();
+              
+        var zoom = map.getZoom();
+        $.get('_objects/', { 'bbox': bbox, 'zoom': zoom }, function(data){
+            layer.dataExtent = extent;
+            var temp = new olwidget.InfoLayer(eval(data));
+            temp.visibility = false;
+            map.addLayer(temp);
+            layer.removeAllFeatures();
+            map.deleteAllPopups();
+            if(selectedFeature)
+              layer.addFeatures(selectedFeature);
+            var viewedArea = map.getExtent().toGeometry().getArea();
+            $.each(temp.features, function(index, feature) {
+              if(selectedFeature && selectedFeature.geometry.toString() == feature.geometry.toString())
+                return;
+              if(feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon")
+              {
+                var alpha =  0.5 - 0.5 * Math.min(1, feature.geometry.getArea()/viewedArea);
+                var polyStyle = $.extend({}, 
+                                  layer.styleMap.styles['default'].defaultStyle,
+                                  { fillOpacity: alpha });
+                feature.style = polyStyle;
+              }
+              layer.addFeatures(feature);
+            });
+            map.removeLayer(temp);
+        })
     },
 
     _registerEvents: function(map, layer) {
@@ -113,7 +176,6 @@ SaplingMap = {
                 layer = map.vectorLayers[0];
                 if (layer.controls) {
                     this._remove_unneeded_controls(layer);
-                    //console.dir(layer.controls);
                     map.controls[i].setEditing(layer);
 
                     this._set_modify_control(layer);

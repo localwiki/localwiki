@@ -1,0 +1,42 @@
+{% extends "maps/base.html" %}
+
+{% block media %}
+{{block.super}}
+{{ map.media }}
+
+<script type="text/javascript">
+    function size_map() {
+        $('.mapwidget').height(($(window).height() -
+            $('#header').outerHeight() - $('#main_header').outerHeight()) -
+            $('#content_header').outerHeight() -
+            $('#content_footer').outerHeight() -
+            ($('#content_wrapper').outerHeight() - $('#content').outerHeight())
+        );
+    }
+    $(window).resize(size_map);
+</script>
+{% endblock %}
+
+{% block title %}Map - {{ block.super }}{% endblock %}
+
+{% block header_title %}
+  Map <span id="header_title_detail"></span>
+{% endblock %}
+
+{% block main_wrapper %}
+    <div id="main" class="mapdata_detail">
+        {% block main %}
+            {{ block.super }}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div>
+        {{ map }}
+    </div>
+{% endblock %}
+
+{% block footer %}
+  {{ block.super }}
+{% endblock %}  

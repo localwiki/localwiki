@@ -1,13 +1,14 @@
 from dateutil.parser import parse as dateparser
 
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 from versionutils import diff
-from utils.views import Custom404Mixin, CreateObjectMixin
+from utils.views import Custom404Mixin, CreateObjectMixin, JSONResponseMixin
 from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, HistoryList
 from pages.models import Page
@@ -16,6 +17,10 @@ from pages.models import slugify
 from widgets import InfoMap
 from models import MapData
 from forms import MapForm
+from django.views.generic.list import BaseListView
+from olwidget import utils
+from django.contrib.gis.geos.polygon import Polygon
+from django.utils.safestring import mark_safe
 
 
 class MapDetailView(Custom404Mixin, DetailView):
@@ -48,6 +53,69 @@ class MapDetailView(Custom404Mixin, DetailView):
         context['date'] = self.get_object_date()
         context['map'] = InfoMap([(self.object.geom, self.object.page.name)])
         return context
+
+
+def filter_by_bounds(queryset, bbox):
+    return queryset.filter(Q(points__intersects=bbox)
+                         | Q(lines__intersects=bbox)
+                         | Q(polys__intersects=bbox))
+
+
+def filter_by_zoom(queryset, zoom):
+    if zoom < 14:
+        queryset = queryset.exclude(Q(lines=None) & Q(polys=None))
+    queryset = queryset.length()
+    min_length = 100 * pow(2, 0 - zoom)
+
+    def long_enough(md):
+        measurable = md.polys or md.lines
+        return not measurable or measurable.length > min_length
+    queryset = filter(long_enough, queryset)
+    return queryset
+
+
+def popup_html(map_data):
+    page = map_data.page
+    return mark_safe('<a href="%s">%s</a>' %
+                     (page.get_absolute_url(), page.name))
+
+
+class MapGlobalView(ListView):
+    model = MapData
+    template_name = 'maps/mapdata_list.html'
+
+    def get_queryset(self):
+        queryset = super(MapGlobalView, self).get_queryset()
+        return filter_by_zoom(queryset, 12)
+
+    def get_context_data(self, **kwargs):
+        context = super(MapGlobalView, self).get_context_data(**kwargs)
+        map_objects = [(obj.geom, popup_html(obj)) for obj in self.object_list]
+        context['map'] = InfoMap(map_objects, options={'dynamic': True})
+        context['dynamic_map'] = True
+        return context
+
+
+class MapObjectsForBounds(JSONResponseMixin, BaseListView):
+    model = MapData
+
+    def get_queryset(self):
+        queryset = MapData.objects.all()
+        bbox = self.request.GET.get('bbox', None)
+        if bbox:
+            bbox = Polygon.from_bbox([float(x) for x in bbox.split(',')])
+            queryset = filter_by_bounds(queryset, bbox)
+        zoom = self.request.GET.get('zoom', None)
+        if zoom:
+            queryset = filter_by_zoom(queryset, int(zoom))
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        map_objects = [(obj.geom, popup_html(obj)) for obj in self.object_list]
+        return self.objects_to_wkt(map_objects)
+
+    def objects_to_wkt(self, info):
+        return [[utils.get_ewkt(geom), attr] for geom, attr in info]
 
 
 class MapVersionDetailView(MapDetailView):

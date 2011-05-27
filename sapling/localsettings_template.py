@@ -41,7 +41,8 @@ OLWIDGET_DEFAULT_OPTIONS = {
         'theme': '/static/openlayers/theme/sapling/style.css',
     },
     'overlay_style': {'fillColor': '#ffc868',
-                      'strokeColor': '#db9e33'},
+                      'strokeColor': '#db9e33',
+                      'strokeDashstyle': 'solid'},
     'map_div_class': 'mapwidget',
 }
 
