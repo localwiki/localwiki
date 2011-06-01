@@ -126,3 +126,9 @@ class HTML5FragmentField(models.TextField):
         }
         defaults.update(kwargs)
         return super(HTML5FragmentField, self).formfield(**defaults)
+
+try:
+    from south.modelsinspector import add_introspection_rules
+    add_introspection_rules([], ["^ckeditor\.models"])
+except ImportError:
+    pass

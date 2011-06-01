@@ -19,3 +19,9 @@ class AutoIPAddressField(models.IPAddressField):
         super(AutoIPAddressField, self).contribute_to_class(cls, name)
         registry = FieldRegistry('ip')
         registry.add_field(cls, self)
+
+try:
+    from south.modelsinspector import add_introspection_rules
+    add_introspection_rules([], ["^versionutils\.versioning\.fields"])
+except ImportError:
+    pass
