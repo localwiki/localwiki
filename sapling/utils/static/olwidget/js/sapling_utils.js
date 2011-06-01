@@ -39,6 +39,8 @@ SaplingMap = {
         var layer = map.vectorLayers[0];
         layer.dataExtent = map.getExtent();
         loadObjects = this._loadObjects;
+        // make popups persistent when zooming
+        map.events.remove('zoomend');
         layer.events.register("moveend", null, function(evt) {
           if(evt.zoomChanged
              || !layer.dataExtent
@@ -47,23 +49,26 @@ SaplingMap = {
         });
         layer.events.register("featureselected", null, function(evt) {
           var feature = evt.feature;
-          map.zoomToExtent(feature.geometry.bounds);
-          map.deleteAllPopups();
+          var featureBounds = feature.geometry.bounds;
+          map.zoomToExtent(featureBounds);
           $('#header_title_detail').empty().append(' for ' + feature.attributes.html);
           var zoomedStyle = $.extend({}, 
               layer.styleMap.styles.select.defaultStyle,
               { fillOpacity: '0', strokeDashstyle: 'dash' });
           if(feature.geometry.CLASS_NAME != "OpenLayers.Geometry.Point")
+          {
               feature.style = zoomedStyle;
-          loadObjects(map,layer,feature);
+              layer.drawFeature(feature);
+          }
         });
         layer.events.register("featureunselected", null, function(evt) {
-          evt.feature.style = layer.styleMap.styles['default'].defaultStyle;
+          evt.feature.style = evt.feature.defaultStyle;
           layer.drawFeature(evt.feature);
         })
     },
 
-    _loadObjects: function(map, layer, selectedFeature) {
+    _loadObjects: function(map, layer) {
+        var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
         var extent = map.getExtent().scale(1.5);
         var bbox = extent.clone().transform(layer.projection,
                        new OpenLayers.Projection('EPSG:4326')).toBBOX();
@@ -75,9 +80,11 @@ SaplingMap = {
             temp.visibility = false;
             map.addLayer(temp);
             layer.removeAllFeatures();
-            map.deleteAllPopups();
             if(selectedFeature)
+            {
               layer.addFeatures(selectedFeature);
+              layer.selectedFeatures = [selectedFeature];
+            }
             var viewedArea = map.getExtent().toGeometry().getArea();
             $.each(temp.features, function(index, feature) {
               if(selectedFeature && selectedFeature.geometry.toString() == feature.geometry.toString())
@@ -89,6 +96,7 @@ SaplingMap = {
                                   layer.styleMap.styles['default'].defaultStyle,
                                   { fillOpacity: alpha });
                 feature.style = polyStyle;
+                feature.defaultStyle = polyStyle;
               }
               layer.addFeatures(feature);
             });
