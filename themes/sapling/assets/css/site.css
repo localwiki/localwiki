@@ -321,6 +321,9 @@ li {
 .indent5 { margin-left: 15em; }
 .indent6 { margin-left: 18em; }
 .indent7 { margin-left: 21em; }
+.indent8 { margin-left: 24em; }
+.indent9 { margin-left: 27em; }
+.indent10 { margin-left: 30em; }
 
 /* Sub/Sup */
 sub { vertical-align: sub }

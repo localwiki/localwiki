@@ -51,6 +51,7 @@ CKEDITOR.plugins.add( 'domcleanup',
                         var ok_tags = editor.plugins['domcleanup'].allowedTags;
                         var ok_attributes = {
                             'p' : ['class','style'],
+                            'ul' : ['class'],
                             'a' : ['name','href'],
                             'img' : ['src','alt','title','style','class'],
                             'span' : ['class','style'],

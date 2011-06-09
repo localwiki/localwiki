@@ -21,7 +21,9 @@ class WikiEditor(CKEditor):
                           {'name': 'Heading 3', 'element': 'h3'},
                           {'name': 'Formatted', 'element': 'pre'}
                         ],
-            'indentClasses': ['indent1', 'indent2', 'indent3']
+            'indentClasses': ['indent1', 'indent2', 'indent3', 'indent4',
+                              'indent5', 'indent6', 'indent7', 'indent8',
+                              'indent9', 'indent10'],
         }
         config.update(additional)
         return config
