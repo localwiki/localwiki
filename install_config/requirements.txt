@@ -5,5 +5,6 @@ sorl-thumbnail>=11.01
 python-dateutil==1.5
 pysolr
 django-haystack
+django-randomfilenamestorage
 https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration
 -e git+git://github.com/philipn/olwidget.git#egg=django-olwidget

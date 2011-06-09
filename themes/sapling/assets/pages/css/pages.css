@@ -15,6 +15,81 @@ a[href^='mailto:'] {
     padding-left: 16px;
 }
 
+/* File icons */
+.no_icon {
+   background: inherit !important;
+   padding-left: inherit !important;
+}
+
+.file_unknown, a[href^='_files/'] {
+    background-image: url(../img/file_icons/document-block.png);
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_pdf, a[href$='.pdf'], a[href$='.PDF'] {
+    background: url(../img/file_icons/document-pdf.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_audio, a[href$='.mp3'], a[href$='.MP3'], a[href$='.wav'], a[href$='.WAV'],
+a[href$='.aif'], a[href$='.AIF'], a[href$='.aiff'], a[href$='.AIFF'],
+a[href$='.au'], a[href$='.AU'], a[href$='.mid'], a[href$='.MID'] {
+    background: url(../img/file_icons/document-music.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_video, a[href$='.mp4'], a[href$='.MP4'], a[href$='.mov'], a[href$='.MOV'],
+a[href$='.flv'], a[href$='.FLV'], a[href$='.avi'], a[href$='.AVI'],
+a[href$='.wmv'], a[href$='.WMV'] {
+    background: url(../img/file_icons/document-film.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+
+.file_image, a[href$='.jpg'], a[href$='.JPG'], a[href$='.jpeg'],
+a[href$='.JPEG'], a[href$='.png'], a[href$='.PNG'], a[href$='.gif'],
+a[href$='.GIF'] {
+    background: url(../img/file_icons/document-image.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_html, a[href$='.htm'], a[href$='.HTM'], a[href$='.html'],
+a[href$='.HTML'] {
+    background: url(../img/file_icons/document-globe.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_word, a[href$='.doc'], a[href$='.DOC'], a[href$='.docx'],
+a[href$='.DOCX'] {
+    background: url(../img/file_icons/document-word.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_excel, a[href$='.xls'], a[href$='.XLS'] {
+    background: url(../img/file_icons/document-excel.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_powerpoint, a[href$='.ppt'], a[href$='.PPT'] {
+    background: url(../img/file_icons/document-powerpoint.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_text, a[href$='.txt'], a[href$='.TXT'] {
+    background: url(../img/file_icons/document-text.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
 /* Images */
 .image_frame {
     display: inline-block;

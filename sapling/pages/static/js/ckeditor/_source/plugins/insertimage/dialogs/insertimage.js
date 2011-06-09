@@ -4,7 +4,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 (function () {
-    var insertImageDialog = function (editor) {
+    var insertImageDialog = function (editor, type) {
+    	var dialogType = type || 'insertimage';
     	this.uploading = false;
         function sizeImage(img) {
             var maxWidth = 300;
@@ -75,7 +76,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         var showSpinner = function(picker)
         {
         	var element = picker.getElement().$;
-        	var spinner = jQuery('<em>(Uploading your image...)</em>');
+        	var spinner = jQuery('<em>(Uploading your file...)</em>');
         	var message = jQuery('.image_picker_msg', element);
             message.empty().append(spinner);
         }
@@ -88,14 +89,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         }
         
         var refreshFiles = function (picker, callback) {
+        	var filekind = dialogType == 'attachfile' ? 'files' : 'images'
         	var element = picker.getElement().$;
             var txtUrl = picker.getDialog().getContentElement('Upload', 'txtUrl');
-            var spinner = jQuery('<em>(Loading images...)</em>');
-            var no_images = jQuery('<em>(No images attached to this page)</em>');
+            var spinner = jQuery('<em>(Loading ' + filekind + '...)</em>');
+            
+            var no_images = jQuery('<em>(No ' + filekind + ' attached to this page)</em>');
             var image_picker = jQuery('.image_picker', element);
             var message = jQuery('.image_picker_msg', element);
             message.empty().append(spinner);
-            var browseUrl = editor.config.filebrowserInsertimageBrowseUrl;
+            var browseUrl = filekind == 'images' ? 
+                        editor.config.filebrowserInsertimageBrowseUrl :
+                        editor.config.filebrowserAttachfileBrowseUrl;
             jQuery.get(browseUrl, function(data){
             	var result = jQuery('ul.file_list', data)
             					.find('a').parent()
@@ -137,7 +142,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         };
 
         return {
-            title: 'Insert Image',
+            title: dialogType == 'attachfile' ? 'Attach File' : 'Insert Image',
             minWidth: 420,
             minHeight: 150,
             onShow: function () {
@@ -157,18 +162,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 this.setupContent();
             },
             onOk: function () {
-                this.commitContent(this.imageElement);
-
-                // Remove empty style attribute.
-                if (!this.imageElement.getAttribute('style')) this.imageElement.removeAttribute('style');
-
-                // Insert a new Image.
-                sizeImage(this.imageElement);
-                var spanElement = editor.document.createElement('span');
-                spanElement.setAttribute('class', 'image_frame image_frame_border');
-                spanElement.append(this.imageElement);
-                spanElement.setStyle('width', this.imageElement.getStyle('width'));
-                editor.insertElement(spanElement);
+                if(dialogType == 'attachfile') {
+                	var linkElement = editor.document.createElement('a');
+                	this.commitContent(linkElement);
+                	editor.insertElement(linkElement);
+                }
+                else {
+                	this.commitContent(this.imageElement);
+                    // Remove empty style attribute.
+	                if (!this.imageElement.getAttribute('style')) this.imageElement.removeAttribute('style');
+	
+	                // Insert a new Image.
+	                sizeImage(this.imageElement);
+	                var spanElement = editor.document.createElement('span');
+	                spanElement.setAttribute('class', 'image_frame image_frame_border');
+	                spanElement.append(this.imageElement);
+	                spanElement.setStyle('width', this.imageElement.getStyle('width'));
+	                editor.insertElement(spanElement);
+                }
             },
             onLoad: function () {
                 var doc = this._.element.getDocument();
@@ -231,7 +242,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                     		target : 'Upload:txtUrl',
                     		onSelect : function( fileUrl, errorMessage ) //optional
                     		{
-                    			hideSpinner(this.getDialog().getContentElement('Upload', 'imagePicker'));
+                    			var dialog = this.getDialog();
+                    			hideSpinner(dialog.getContentElement('Upload', 'imagePicker'));
+                    			if(dialogType == 'insertimage')
+                    			{
+                    				var imgRegex = /(.png|.jpg|.jpeg|.gif)$/;
+                    				if(!imgRegex.test(fileUrl.toLowerCase()))
+                    				{
+                    					dialog.hide();
+                    					editor.openDialog('attachfile');
+                    				}
+                    			} 
                     		}
                     	},
                     style: 'display:none',
@@ -240,7 +261,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 },{
                     type: 'html',
                     id: 'imagePicker',
-                    html: 'Select an image: <div style="max-height: 8em; overflow-y: auto;"><div class="image_picker_msg"></div><div class="image_picker"></div></div>',
+                    html: 'Select ' + (dialogType == 'attachfile' ? 'a file' : 'an image') + ': <div style="max-height: 8em; overflow-y: auto;"><div class="image_picker_msg"></div><div class="image_picker"></div></div>',
                     style: 'margin-top: 5px',
                     setup: function() {
                         refreshFiles(this);
@@ -248,7 +269,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 }, {
                     type: 'html',
                     id: 'webImageHint',
-                    html: 'or <span style="color:blue;text-decoration:underline;cursor:pointer;">use an image from the web</span>',
+                    html: 'or <span style="color:blue;text-decoration:underline;cursor:pointer;">use ' + (dialogType == 'attachfile' ? 'a file' : 'an image') + ' from the web</span>',
                     style: 'float:left;margin-top:5px',
                     onClick: function () {
                         var urlText = this.getDialog().getContentElement('Upload', 'txtUrl');
@@ -258,7 +279,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 }, {
                     type: 'text',
                     id: 'txtUrl',
-                    label: 'Image URL',
+                    label: dialogType == 'attachfile' ? 'File URL' : 'Image URL',
                     style: 'height: 4em',
                     size: 38,
                     hidden: true,
@@ -273,22 +294,32 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                             dialog = this.getDialog();
                             var image = dialog.imageElement;
                             uploadFinished(dialog, newUrl);
-                            image.setCustomData('isReady', 'false');
-                            image.on('load', onImgLoadEvent, dialog);
-                            image.setAttribute('src', newUrl);
+                            if(image)
+                            {
+                              image.setCustomData('isReady', 'false');
+                              image.on('load', onImgLoadEvent, dialog);
+                              image.setAttribute('src', newUrl);
+                            }
                         }
                     },
                     commit: function (element) {
                         if (this.getValue() || this.isChanged()) {
-                            element.setCustomData('isReady', 'false');
-                            element.on('load', onImgLoadEvent, this.getDialog());
-                            element.setAttribute('_cke_saved_src', decodeURI(this.getValue()));
-                            element.setAttribute('src', decodeURI(this.getValue()));
+                        	if(dialogType == 'attachfile') {
+                        		element.setAttribute('href', this.getValue());
+                        		element.setText(this.getValue().substring('_files/'.length));
+                        	}
+                        	else {
+                        		element.setCustomData('isReady', 'false');
+	                            element.on('load', onImgLoadEvent, this.getDialog());
+	                            element.setAttribute('_cke_saved_src', decodeURI(this.getValue()));
+	                            element.setAttribute('src', decodeURI(this.getValue()));
+                        	}
+                            
                         }
                     },
                     validate: function () {
                         if (this.getValue().length > 0 || this.getDialog().getContentElement('Upload', 'file').getValue().length > 0) return true;
-                        alert(editor.lang.image.urlMissing);
+                        alert('No file selected');
                         return false;
                     }
                 }]
@@ -298,5 +329,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
     CKEDITOR.dialog.add('insertimage', function (editor) {
         return insertImageDialog(editor);
+    });
+    
+    CKEDITOR.dialog.add('attachfile', function (editor) {
+        return insertImageDialog(editor, type='attachfile');
     });
 })();

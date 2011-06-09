@@ -13,6 +13,7 @@ class MapData(models.Model):
     lines = models.MultiLineStringField(null=True, blank=True)
     polys = models.MultiPolygonField(null=True, blank=True)
     geom = FlatCollectionFrom(points='points', lines='lines', polys='polys')
+    length = models.FloatField(null=True, editable=False)
 
     page = models.OneToOneField(Page)
 
@@ -21,3 +22,7 @@ class MapData(models.Model):
 
     def get_absolute_url(self):
         return reverse('maps:show', args=[self.page.pretty_slug])
+
+    def save(self, *args, **kwargs):
+        self.length = self.geom.length
+        super(MapData, self).save(*args, **kwargs)

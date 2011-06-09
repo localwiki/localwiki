@@ -17,8 +17,8 @@ from versionutils import diff
 from versionutils.versioning.views import UpdateView, DeleteView
 from versionutils.versioning.views import RevertView, HistoryList
 from utils.views import Custom404Mixin, CreateObjectMixin
-from models import Page, PageImage, url_to_name
-from forms import PageForm, PageImageForm
+from models import Page, PageFile, url_to_name
+from forms import PageForm, PageFileForm
 from maps.widgets import InfoMap
 
 # Where possible, we subclass similar generic views here.
@@ -147,7 +147,7 @@ class PageFileListView(ListView):
     template_name = "pages/page_files.html"
 
     def get_queryset(self):
-        return PageImage.objects.filter(slug__exact=self.kwargs['slug'])
+        return PageFile.objects.filter(slug__exact=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
         context = super(PageFileListView, self).get_context_data(**kwargs)
@@ -158,12 +158,20 @@ class PageFileListView(ListView):
 class PageFilebrowserView(PageFileListView):
     template_name = 'pages/cke_filebrowser.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(PageFilebrowserView, self).get_context_data(**kwargs)
+        filter = self.kwargs.get('filter', 'files')
+        if filter == 'images':
+            self.object_list = [f for f in self.object_list if f.is_image()]
+            context['thumbnail'] = True
+        return context
+
 
 class PageFileView(RedirectView):
     permanent = False
 
     def get_redirect_url(self, slug, file, **kwargs):
-        page_file = get_object_or_404(PageImage, slug__exact=slug,
+        page_file = get_object_or_404(PageFile, slug__exact=slug,
                                       name__exact=file)
         return page_file.file.url
 
@@ -171,7 +179,7 @@ class PageFileView(RedirectView):
 class PageFileVersionDetailView(RedirectView):
 
     def get_redirect_url(self, slug, file, **kwargs):
-        page_file = PageImage(slug=slug, name=file)
+        page_file = PageFile(slug=slug, name=file)
         version = self.kwargs.get('version')
         date = self.kwargs.get('date')
 
@@ -184,10 +192,10 @@ class PageFileVersionDetailView(RedirectView):
 
 
 class PageFileCompareView(diff.views.CompareView):
-    model = PageImage
+    model = PageFile
 
     def get_object(self):
-        return PageImage(slug=self.kwargs['slug'], name=self.kwargs['file'])
+        return PageFile(slug=self.kwargs['slug'], name=self.kwargs['file'])
 
     def get_context_data(self, **kwargs):
         context = super(PageFileCompareView, self).get_context_data(**kwargs)
@@ -196,11 +204,11 @@ class PageFileCompareView(diff.views.CompareView):
 
 
 class PageFileRevertView(RevertView):
-    model = PageImage
+    model = PageFile
     context_object_name = 'file'
 
     def get_object(self):
-        file = PageImage(slug=self.kwargs['slug'], name=self.kwargs['file'])
+        file = PageFile(slug=self.kwargs['slug'], name=self.kwargs['file'])
         return file.history.as_of(version=int(self.kwargs['version']))
 
     def get_success_url(self):
@@ -213,21 +221,21 @@ class PageFileInfo(HistoryList):
     template_name_suffix = '_info'
 
     def get_queryset(self):
-        all_file_history = PageImage(slug=self.kwargs['slug'],
-                                     name=self.kwargs['file']).history.all()
+        all_file_history = PageFile(slug=self.kwargs['slug'],
+                                    name=self.kwargs['file']).history.all()
         # We set self.file to the most recent historical instance of the
         # file.
         if all_file_history:
             self.file = all_file_history[0]
         else:
-            self.file = PageImage(slug=self.kwargs['slug'],
-                                  name=self.kwargs['file'])
+            self.file = PageFile(slug=self.kwargs['slug'],
+                                 name=self.kwargs['file'])
         return all_file_history
 
     def get_context_data(self, **kwargs):
         context = super(PageFileInfo, self).get_context_data(**kwargs)
         context['file'] = self.file
-        context['form'] = PageImageForm()
+        context['form'] = PageFileForm()
         return context
 
 
@@ -246,38 +254,36 @@ class PageCompareView(diff.views.CompareView):
 @require_POST
 def upload(request, slug, **kwargs):
     error = None
-    non_image_error = ('Non-image file selected. '
-                       'Please upload an image file')
-    image_form = PageImageForm(request.POST, request.FILES)
-    if not image_form.is_valid():
-        error = non_image_error
+    file_form = PageFileForm(request.POST, request.FILES)
 
     uploaded = request.FILES['file']
     if 'file' in kwargs:
         # Replace existing file if exists
+        try:
+            file = PageFile.objects.get(slug__exact=slug,
+                                        name__exact=kwargs['file'])
+            file.file = uploaded
+        except PageFile.DoesNotExist:
+            file = PageFile(file=uploaded, name=uploaded.name, slug=slug)
+        file_form.instance = file
+        if not file_form.is_valid():
+            error = file_form.errors.values()[0]
+        else:
+            file_form.save()
+
         if error is not None:
             return HttpResponseBadRequest(error)
-
-        try:
-            image = PageImage.objects.get(slug__exact=slug,
-                                          name__exact=kwargs['file'])
-            image.file = uploaded
-        except PageImage.DoesNotExist:
-            image = PageImage(file=uploaded, name=uploaded.name, slug=slug)
-        image_form.instance = image
-        image_form.save()
         return HttpResponseRedirect(reverse('pages:file-info',
                                             args=[slug, kwargs['file']]))
 
     # uploaded from ckeditor
-    if error is None:
-        try:
-            image = PageImage(file=uploaded, name=uploaded.name, slug=slug)
-            image.save()
-            relative_url = '_files/' + uploaded.name
-            return ck_upload_result(request, url=relative_url)
-        except IntegrityError:
-            error = 'A file with this name already exists'
+    try:
+        file = PageFile(file=uploaded, name=uploaded.name, slug=slug)
+        file.save()
+        relative_url = '_files/' + uploaded.name
+        return ck_upload_result(request, url=relative_url)
+    except IntegrityError:
+        error = 'A file with this name already exists'
     return ck_upload_result(request,
                             message=error)
 

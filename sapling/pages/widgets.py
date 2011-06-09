@@ -11,7 +11,9 @@ class WikiEditor(CKEditor):
             'skin': 'sapling',
             'bodyClass': 'page_editor',
             'filebrowserInsertimageUploadUrl': '_upload/',
-            'filebrowserInsertimageBrowseUrl': '_filebrowser',
+            'filebrowserInsertimageBrowseUrl': '_filebrowser/images',
+            'filebrowserAttachfileUploadUrl': '_upload/',
+            'filebrowserAttachfileBrowseUrl': '_filebrowser/files',
             'domcleanupAllowedTags': models.allowed_tags,
             'toolbarCanCollapse': False,
             'enterMode': 1,
@@ -46,7 +48,7 @@ class WikiEditor(CKEditor):
         basic_styles = ['Bold', 'Italic', 'Underline', 'Strike']
         styles = ['Styles']
         links = ['PageLink', 'PageAnchor']
-        media = ['InsertImage', 'SimpleTable', 'HorizontalRule']
+        media = ['InsertImage', 'AttachFile', 'SimpleTable', 'HorizontalRule']
         lists = ['NumberedList', 'BulletedList']
         align = ['JustifyLeft', 'JustifyCenter', 'JustifyRight']
         indent = ['Outdent', 'Indent']

@@ -26,7 +26,7 @@ from django.template import Node
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
-from pages.models import Page, name_to_url, url_to_name, PageImage
+from pages.models import Page, name_to_url, url_to_name, PageFile
 from pages.models import slugify
 
 
@@ -101,6 +101,10 @@ def parse_style(css):
 _files_url = '_files/'
 
 
+def file_url_to_name(url):
+    return unquote_plus(url.replace(_files_url, ''))
+
+
 def handle_image(elem, context=None):
     # only handle resized images
     do_thumbnail = True
@@ -114,13 +118,12 @@ def handle_image(elem, context=None):
 
     if not context or 'page' not in context:
         return
-    filename = unquote_plus(src.replace(_files_url, ''))
 
     page = context['page']
     try:
-        file = PageImage.objects.get(slug__exact=page.slug,
-                                     name__exact=filename)
-    except PageImage.DoesNotExist:
+        file = PageFile.objects.get(slug__exact=page.slug,
+                                     name__exact=file_url_to_name(src))
+    except PageFile.DoesNotExist:
         return
 
     if do_thumbnail:
@@ -197,20 +200,33 @@ class LinkNode(Node):
         try:
             cls = ''
             url = self.href
-            if self.is_page_link(url):
-                try:
-                    page = Page.objects.get(slug__exact=slugify(url))
-                    url = reverse('pages:show', args=[page.pretty_slug])
-                except Page.DoesNotExist:
-                    cls = ' class="missing_link"'
-                    url = name_to_url(url_to_name(url))  # My%20page -> My_page
-                    url = reverse('pages:show', args=[url])
+            page = context['page']
+            if self.is_relative_link(url):
+                if url.startswith('_files/'):
+                    filename = file_url_to_name(url)
+                    url = reverse('pages:file-info', args=[page.pretty_slug,
+                                                       filename])
+                    try:
+                        file = PageFile.objects.get(slug__exact=page.slug,
+                                                    name__exact=filename)
+                        cls = ' class="file_%s"' % file.rough_type
+                    except PageFile.DoesNotExist:
+                        cls = ' class="missing_link"'
+                else:
+                    try:
+                        page = Page.objects.get(slug__exact=slugify(url))
+                        url = reverse('pages:show', args=[page.pretty_slug])
+                    except Page.DoesNotExist:
+                        cls = ' class="missing_link"'
+                        # Convert to proper URL: My%20page -> My_page
+                        url = name_to_url(url_to_name(url))
+                        url = reverse('pages:show', args=[url])
             return '<a href="%s"%s>%s</a>' % (url, cls,
                                               self.nodelist.render(context))
         except:
             return ''
 
-    def is_page_link(self, url):
+    def is_relative_link(self, url):
         url_parts = urlparse(url)
         return (not url_parts.scheme and not url_parts.netloc
                 and not url_parts.fragment)

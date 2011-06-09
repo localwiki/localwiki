@@ -20,9 +20,12 @@
 {% block content %}
   <ul class="file_list">
   {% for file in file_list %}
-    <li>{% thumbnail file.file "32x32" as im %}
-          <a href="{{ file.name }}/_info/"><img src="{{ im.url }}"/>{{ file.name }}</a>
-        {% endthumbnail %}
+    <li>
+      {% thumbnail file.file "16x16" as im %}
+      <a style="background: url({{ im.url }}) no-repeat left center; padding-left: 16px;" href="{{ file.name }}/_info/">{{ file.name }}</a>
+      {% empty %}
+      <a class="file_{{ file.rough_type }}" href="{{ file.name }}/_info/">{{ file.name }}</a>
+      {% endthumbnail %}
     </li>
   {% endfor %}
   </ul>

@@ -1,9 +1,11 @@
+import mimetypes
+
 from django import forms
 from django.template.defaultfilters import slugify
 
 from versionutils.merging.forms import MergeMixin
 from versionutils.versioning.forms import CommentMixin
-from pages.models import Page, PageImage
+from pages.models import Page, PageFile
 from pages.widgets import WikiEditor
 from versionutils.diff.daisydiff.daisydiff import daisydiff_merge
 
@@ -48,8 +50,18 @@ class PageForm(MergeMixin, CommentMixin, forms.ModelForm):
         return name
 
 
-class PageImageForm(CommentMixin, forms.ModelForm):
+class PageFileForm(CommentMixin, forms.ModelForm):
+
+    def clean(self):
+        self.cleaned_data = super(PageFileForm, self).clean()
+        if self.instance.name:
+            filename = self.cleaned_data['file'].name
+            (mime_type, enc) = mimetypes.guess_type(filename)
+            if mime_type != self.instance.mime_type:
+                raise forms.ValidationError(
+                    'The new file should be of the same type')
+        return self.cleaned_data
 
     class Meta:
-        model = PageImage
+        model = PageFile
         fields = ('file',)

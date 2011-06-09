@@ -261,3 +261,9 @@ class FlatCollectionFrom(CollectionFrom):
         setattr(instance, self.attname, flatten_collection(geom))
 
         super(FlatCollectionFrom, self).pre_model_save(instance, raw, **kws)
+
+try:
+    from south.modelsinspector import add_introspection_rules
+    add_introspection_rules([], ["^maps\.fields"])
+except ImportError:
+    pass

@@ -63,14 +63,10 @@ def filter_by_bounds(queryset, bbox):
 
 def filter_by_zoom(queryset, zoom):
     if zoom < 14:
+        # exclude points
         queryset = queryset.exclude(Q(lines=None) & Q(polys=None))
-    queryset = queryset.length()
     min_length = 100 * pow(2, 0 - zoom)
-
-    def long_enough(md):
-        measurable = md.polys or md.lines
-        return not measurable or measurable.length > min_length
-    queryset = filter(long_enough, queryset)
+    queryset = queryset.exclude(Q(points=None) & Q(length__lt=min_length))
     return queryset
 
 

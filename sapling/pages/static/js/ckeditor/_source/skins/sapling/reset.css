@@ -6,11 +6,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 /**
  * Reset and Default Values
  */
-.cke_skin_sapling *,
-.cke_skin_sapling a:hover,
-.cke_skin_sapling a:link,
-.cke_skin_sapling a:visited,
-.cke_skin_sapling a:active
+.cke_skin_sapling *
 {
 	margin: 0;
 	padding: 0;
@@ -25,6 +21,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	white-space: nowrap;
 
     font-size: 14px;
+}
+
+.cke_skin_sapling a:hover,
+.cke_skin_sapling a:link,
+.cke_skin_sapling a:visited,
+.cke_skin_sapling a:active
+{
+    text-decoration: none;
 }
 
 .cke_skin_sapling .cke_rtl *,
