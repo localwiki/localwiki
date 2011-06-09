@@ -12,7 +12,8 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 		emailSubjectRegex = /subject=([^;?:@&=$,\/]*)/,
 		emailBodyRegex = /body=([^;?:@&=$,\/]*)/,
 		anchorRegex = /^#(.*)$/,
-		urlRegex = /^(?:http|https|ftp):\/\/(.+)$/;
+		urlRegex = /^(?:http|https|ftp):\/\/(.+)$/,
+		fileRegex = /^_files\//;
 
 	var parseLink = function(href)
 	{
@@ -43,6 +44,11 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 		else if ( ( externalMatch = href.match( urlRegex ) ) )
 		{
 			retval.type = 'external';
+			retval.url = href;
+		}
+		else if ( ( fileMatch = href.match( fileRegex ) ) )
+		{
+			retval.type = 'file';
 			retval.url = href;
 		}
 		else

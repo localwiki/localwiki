@@ -1,5 +1,6 @@
 from urllib import quote
 from urllib import unquote_plus
+import mimetypes
 import re
 
 from django.contrib.gis.db import models
@@ -7,6 +8,9 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import stringfilter
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
+
+from django_randomfilenamestorage.storage import\
+    RandomFilenameFileSystemStorage
 
 from ckeditor.models import HTML5FragmentField
 from versionutils import diff
@@ -54,11 +58,39 @@ class PageDiff(diff.BaseModelDiff):
 diff.register(Page, PageDiff)
 
 
-class PageImage(models.Model):
-    file = models.ImageField(upload_to='pages/images/')
+class PageFile(models.Model):
+    file = models.FileField(upload_to='pages/files/',
+                            storage=RandomFilenameFileSystemStorage())
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False)
     history = TrackChanges()
+
+    _rough_type_map = [(r'^audio', 'audio'),
+                       (r'^video', 'video'),
+                       (r'^application/pdf', 'pdf'),
+                       (r'^application/msword', 'word'),
+                       (r'^text/html', 'html'),
+                       (r'^text', 'text'),
+                       (r'^image', 'image'),
+                       (r'^application/vnd.ms-powerpoint', 'powerpoint'),
+                       (r'^application/vnd.ms-excel', 'excel')
+                      ]
+
+    @property
+    def rough_type(self):
+        mime = self.mime_type
+        if mime:
+            for regex, rough_type in self._rough_type_map:
+                if re.match(regex, mime):
+                    return rough_type
+        return 'unknown'
+
+    @property
+    def mime_type(self):
+        return mimetypes.guess_type(self.name)[0]
+
+    def is_image(self):
+        return self.rough_type == 'image'
 
     class Meta:
         unique_together = ('slug', 'name')

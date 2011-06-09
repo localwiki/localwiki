@@ -57,8 +57,8 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>.+)/_files/(?P<file>.+)$', slugify(PageFileView.as_view()),
         name='file'),
     url(r'^(?P<slug>.+)/_upload', slugify(upload), name='upload-image'),
-    url(r'^(?P<slug>.+)/_filebrowser$', slugify(PageFilebrowserView.as_view()),
-        name='filebrowser'),
+    url(r'^(?P<slug>.+)/_filebrowser/(?P<filter>(files|images))$',
+        slugify(PageFilebrowserView.as_view()), name='filebrowser'),
 
     #########################################################
     # History URLs.

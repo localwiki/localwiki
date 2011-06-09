@@ -1,10 +1,10 @@
-{% extends "pages/pageimage_info.html" %}
+{% extends "pages/pagefile_info.html" %}
 
 {% block dialog %}
 <div id="dialog">
  <form method="post" action="">{% csrf_token %}
     {{ form.as_ul }}
-    <input type="submit" value="Delete"/>
+    <input type="submit" value="Revert"/>
  </form>
 </div>
 {% endblock %}

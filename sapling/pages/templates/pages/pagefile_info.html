@@ -11,10 +11,16 @@
 {% block content %}
 {% load thumbnail %}
   <p>
-    <a href="{% url pages:file slug=file.slug file=file.name %}">
+  	{% spaceless %}
+    <a class="no_icon" href="{% url pages:file slug=file.slug file=file.name %}">
     	{% thumbnail file.file "500x500" as im %}
     	<img src="{{ im.url }}" />
     	{% endthumbnail %}
+    </a>
+    {% endspaceless %}
+    <br/>
+    <a class="file_{{ file.rough_type }}" href="{% url pages:file slug=file.slug file=file.name %}">
+    	Download {{ file.name }}
     </a>
   </p>
   

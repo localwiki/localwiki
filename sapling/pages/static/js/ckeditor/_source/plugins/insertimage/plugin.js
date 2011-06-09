@@ -15,9 +15,11 @@ CKEDITOR.plugins.add( 'insertimage',
 
 		// Register the dialog.
 		CKEDITOR.dialog.add( pluginName, this.path + 'dialogs/insertimage.js' );
+		CKEDITOR.dialog.add( 'attachfile', this.path + 'dialogs/insertimage.js' );
 
 		// Register the command.
 		editor.addCommand( pluginName, new CKEDITOR.dialogCommand( pluginName ) );
+		editor.addCommand( 'attachfile', new CKEDITOR.dialogCommand( 'attachfile' ) );
 
 		// Register the toolbar button.
 		editor.ui.addButton( 'InsertImage',
@@ -25,6 +27,13 @@ CKEDITOR.plugins.add( 'insertimage',
 				label : editor.lang.common.image,
 				command : pluginName,
 				className : 'cke_button_image'
+			});
+
+		editor.ui.addButton( 'AttachFile',
+			{
+				label : 'Attach file',
+				command : 'attachfile',
+				icon : this.path + 'images/paper-clip.png'
 			});
 
 		editor.on( 'doubleclick', function( evt )
