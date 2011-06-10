@@ -86,6 +86,7 @@ a[href$='.DOCX'] {
     margin-bottom: 0.3em;
     margin-right: 4px;
     line-height: 1;
+    width: auto;
 }
 .image_frame a {
     line-height: 0;
@@ -95,7 +96,7 @@ a[href$='.DOCX'] {
     border: 1px solid #cccccc;
 }
 .image_frame_border {
-    padding: 2px 4px 2px 2px;
+    padding: 2px;
 }
 .image_left {
     float: left;

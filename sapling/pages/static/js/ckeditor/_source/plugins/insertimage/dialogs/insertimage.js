@@ -177,7 +177,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	                var spanElement = editor.document.createElement('span');
 	                spanElement.setAttribute('class', 'image_frame image_frame_border');
 	                spanElement.append(this.imageElement);
-	                spanElement.setStyle('width', this.imageElement.getStyle('width'));
+	                //spanElement.setStyle('width', this.imageElement.getStyle('width'));
 	                editor.insertElement(spanElement);
                 }
             },

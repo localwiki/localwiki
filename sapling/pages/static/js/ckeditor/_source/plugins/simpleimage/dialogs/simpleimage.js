@@ -660,8 +660,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 																    var frame = element.getAscendant('span');
 																	if ( value )
 																	{
-																	    if( frame )
-																	       frame.setStyle( 'width', CKEDITOR.tools.cssLength( value )) ;
+																	    if( frame ) {
+                                                                           if(jQuery(frame.$).find('span.image_caption').length)
+		                                                                    {
+		                                                                        caption = jQuery(frame.$).find('span.image_caption');
+                                                                                // Set the caption width to the image width.
+                                                                                caption.css('width', CKEDITOR.tools.cssLength( value ));
+		                                                                    }
+                                                                        }
 																		element.setStyle( 'width', CKEDITOR.tools.cssLength( value ) );
 																	} else if ( !value && this.isChanged( ) )
 																		element.removeStyle( 'width' );

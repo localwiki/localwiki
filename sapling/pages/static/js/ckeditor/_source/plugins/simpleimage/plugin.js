@@ -48,6 +48,8 @@ CKEDITOR.plugins.add( 'simpleimage',
 		            return;
 		        }
 		        var caption = jQuery('<span class="image_caption editor_temp">Add a caption</span>');
+                // Set caption width to the image width.
+                caption.css('width', CKEDITOR.tools.cssLength(jQuery(img.$).width()));
 		        caption.mousedown(function(){ jQuery(caption).removeClass('editor_temp'); });
 		        jQuery(frame.$).append(caption);
 		    }
