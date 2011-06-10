@@ -3,18 +3,6 @@
     border-bottom: 1px dashed;
 }
 
-a[href^='http:'], a[href^='https:'] {
-    background: url(../img/external_link.png) no-repeat;
-    background-position: left center;
-    padding-left: 16px;
-}
-
-a[href^='mailto:'] {
-    background: url(../img/email_link.png) no-repeat;
-    background-position: left center;
-    padding-left: 16px;
-}
-
 /* File icons */
 .no_icon {
    background: inherit !important;
@@ -130,6 +118,20 @@ a[href$='.DOCX'] {
 }
 .image_caption a {
     display: inline;
+}
+
+/* External links */
+a[href^='http:'], a[href^='https:'] {
+    background: url(../img/external_link.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+/* Mailto links */
+a[href^='mailto:'] {
+    background: url(../img/email_link.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
 }
 
 /* Behavior we want to be specific to page / editor content */
