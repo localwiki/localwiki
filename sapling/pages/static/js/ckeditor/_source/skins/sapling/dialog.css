@@ -941,3 +941,16 @@ body .cke_dialog
 .file_list li, .file_list li a {
     cursor: pointer;
 }
+
+.loading {
+    width: 300px;
+    min-height: 100px;
+    margin-top: 5px;
+
+    background-image: url(images/loading_spinner.gif);
+	background-repeat: no-repeat;
+	background-position: 20px 0;
+
+    padding-top: 20px;
+    font-style: italic;
+}

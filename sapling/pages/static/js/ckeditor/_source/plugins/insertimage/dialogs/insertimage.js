@@ -76,7 +76,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         var showSpinner = function(picker)
         {
         	var element = picker.getElement().$;
-        	var spinner = jQuery('<em>(Uploading your file...)</em>');
+        	var spinner = jQuery('<div class="loading">Uploading your file...</div>');
         	var message = jQuery('.image_picker_msg', element);
             message.empty().append(spinner);
         }
@@ -92,7 +92,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         	var filekind = dialogType == 'attachfile' ? 'files' : 'images'
         	var element = picker.getElement().$;
             var txtUrl = picker.getDialog().getContentElement('Upload', 'txtUrl');
-            var spinner = jQuery('<em>(Loading ' + filekind + '...)</em>');
+            var spinner = jQuery('<div class="loading">Loading ' + filekind + '...</div>');
             
             var no_images = jQuery('<em>(No ' + filekind + ' attached to this page)</em>');
             var image_picker = jQuery('.image_picker', element);
