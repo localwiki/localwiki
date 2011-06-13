@@ -41,7 +41,7 @@ class WikiEditor(CKEditor):
     def get_extra_plugins(self):
         plugins = ['insertimage', 'simpleimage', 'domcleanup', 'seamless',
                    'simpletable', 'simpletabletools', 'customenterkey',
-                   'pagelink', 'inheritcss']
+                   'pagelink', 'inheritcss', 'ckfixes']
         return ','.join(plugins)
 
     def get_toolbar(self):
