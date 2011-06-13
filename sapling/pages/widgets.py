@@ -21,7 +21,8 @@ class WikiEditor(CKEditor):
                           {'name': 'Heading 1', 'element': 'h1'},
                           {'name': 'Heading 2', 'element': 'h2'},
                           {'name': 'Heading 3', 'element': 'h3'},
-                          {'name': 'Formatted', 'element': 'pre'}
+                          {'name': 'Formatted', 'element': 'pre'},
+                          {'name': 'Typewriter', 'element': 'tt'}
                         ],
             'indentClasses': ['indent1', 'indent2', 'indent3', 'indent4',
                               'indent5', 'indent6', 'indent7', 'indent8',
