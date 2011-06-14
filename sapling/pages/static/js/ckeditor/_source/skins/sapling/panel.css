@@ -66,14 +66,14 @@ ul.cke_panel_list
 
 li.cke_panel_listItem
 {
-	margin: 0px;
+	margin: 0px!important;
 }
 
 .cke_panel_listItem a
 {
-	padding: 2px;
+    margin: 0!important;
+	padding: 2px!important;
 	display: block;
-	border: 1px solid #fff;
 	color: inherit !important;
 	text-decoration: none;
 	overflow: hidden;
@@ -126,6 +126,11 @@ li.cke_panel_listItem
 	background-color: #dcdcdc;
 	margin:0px;
 	padding:3px;
+}
+
+/* sapling change: we want to hide this ugly title */
+.cke_panel_block .cke_panel_grouptitle {
+    display: none!important;
 }
 
 .cke_panel_listItem p,

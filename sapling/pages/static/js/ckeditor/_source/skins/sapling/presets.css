@@ -12,8 +12,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 /* "Styles" panel size */
 .cke_skin_sapling .cke_styles_panel
 {
-	width: 150px;
-	height: 170px;
+	width: 150px!important;
+	height: 18em!important;
 }
 
 /* "Format" panel size */

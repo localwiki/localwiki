@@ -16,13 +16,29 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 .cke_skin_sapling .cke_rcombopanel
 {
-	border: 1px solid #8F8F73;
-	-moz-border-radius-topleft: 0;
-	-webkit-border-top-left-radius: 0;
-	border-top-left-radius: 0;
-	height: auto;
-	_height: 100px;
-}
+    margin-top: -2px!important;
+    margin-left: -1px!important;
+
+	padding: 5px!important;
+    padding-top: 0!important;
+
+	border: 1px solid #ddd!important;
+    border-top: 0!important;
+    -webkit-border-radius: 5px!important;
+    -webkit-border-top-left-radius: 0!important;
+    -webkit-border-top-right-radius: 0!important;
+    -moz-border-radius: 5px!important;
+    -moz-border-radius-topleft: 0!important;
+    -moz-border-radius-topright: 0!important;
+    border-radius: 5px!important;
+    border-top-left-radius: 0!important;
+    border-top-right-radius: 0!important;
+
+    height: auto!important;
+	_height: 100px!important;
+
+    background-color: white!important;
+ }
 
 /* IE6 workaround, shouldn't be here */
 .cke_skin_sapling .cke_browser_iequirks .cke_rcombopanel,
@@ -124,6 +140,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 .cke_skin_sapling .cke_rcombo .cke_openbutton
 {
 	display: inline-block;
+    height: 23px;
+    margin-top: -1px;
 }
 
 .cke_skin_sapling .cke_rcombo .cke_openbutton .cke_icon

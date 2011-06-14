@@ -36,13 +36,13 @@ class WikiEditor(CKEditor):
         return ('about,basicstyles,clipboard,colordialog,contextmenu,'
                 'elementspath,enterkey,entities,filebrowser,font,format,'
                 'horizontalrule,htmldataprocessor,indent,justify,keystrokes,'
-                'list,pastetext,removeformat,save,stylescombo,specialchar,tab,'
+                'list,pastetext,removeformat,save,specialchar,tab,'
                 'toolbar,undo,wysiwygarea,wsc,sourcearea,selection')
 
     def get_extra_plugins(self):
         plugins = ['insertimage', 'simpleimage', 'domcleanup', 'seamless',
                    'simpletable', 'simpletabletools', 'customenterkey',
-                   'pagelink', 'inheritcss']
+                   'pagelink', 'inheritcss', 'stylescombo']
         return ','.join(plugins)
 
     def get_toolbar(self):
