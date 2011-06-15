@@ -11,7 +11,7 @@
             $('#content_header').outerHeight() -
             $('#content_footer').outerHeight() -
             ($('#content_wrapper').outerHeight() - $('#content').outerHeight())
-        );
+        ).width($('.mapwidget').parent().width() - $('#results_pane:visible').outerWidth());
     }
     $(window).resize(size_map);
 </script>
@@ -32,9 +32,9 @@
 {% endblock %}
 
 {% block content %}
-    <div>
+        <div id="results_pane">
+        </div>
         {{ map }}
-    </div>
 {% endblock %}
 
 {% block footer %}
