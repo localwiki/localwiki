@@ -9,8 +9,7 @@ SaplingMap = {
             var border_height = 0;
             var map_height = $(window).height() - $('#header').outerHeight() - $('#main_header').outerHeight() - $('#content_header').outerHeight() - $('#content_footer').outerHeight() - ($('#content_wrapper').outerHeight() - $('#content').outerHeight() - border_height);
             opts['mapDivStyle']['height'] = map_height + 'px';
-            var map_width = $('.mapwidget').parent().width() - $('#results_pane').outerWidth();
-            opts['mapDivStyle']['width'] = map_width + 'px';
+            opts['mapDivStyle']['width'] = '100%';
             return opts;
 
         }
@@ -32,8 +31,9 @@ SaplingMap = {
     },
 
     setup_map: function(map) {
-        if(map.opts.dynamic)
+        if(map.opts.dynamic) {
             this.setup_dynamic_map(map);
+        }
         this._open_editing(map);
     },
 
@@ -110,7 +110,7 @@ SaplingMap = {
         };
         $.get('_objects/', { 'bbox': bbox, 'zoom': zoom }, function(data){
             layer.dataExtent = extent;
-            var temp = new olwidget.InfoLayer(eval(data));
+            var temp = new olwidget.InfoLayer(data);
             temp.visibility = false;
             map.addLayer(temp);
             layer.removeAllFeatures();
