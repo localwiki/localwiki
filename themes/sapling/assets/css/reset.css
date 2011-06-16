@@ -30,6 +30,9 @@ content: none;
 }
 
 /* Don't kill focus outline for keyboard users: http://24ways.org/2009/dont-lose-your-focus */
+a:focus {
+    outline: thin dotted;
+}
 a:hover, a:active {
     outline: none;
 }
