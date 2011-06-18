@@ -54,6 +54,8 @@ SaplingMap = {
           var featureBounds = feature.geometry.bounds;
           $('#results_pane').css('display', 'inline-block');
           $(window).resize();
+          size_map();
+          map.updateSize();
           map.zoomToExtent(featureBounds);
           $('#header_title_detail').empty().append(' for ' + feature.attributes.html);
           var zoomedStyle = $.extend({}, 
@@ -66,8 +68,6 @@ SaplingMap = {
           }
         });
         layer.events.register("featureunselected", null, function(evt) {
-          console.log('unselected');
-          console.log(evt.feature.attributes.html);
           evt.feature.style = evt.feature.defaultStyle;
           layer.drawFeature(evt.feature);
         })
