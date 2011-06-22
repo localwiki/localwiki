@@ -55,8 +55,8 @@ CKEDITOR.plugins.add( 'simpleimage',
 		    }
 		}
 		
-		editor.on('instanceReady', function( evt )
-		{
+        var set_img_cleanup_events = function( evt )
+        {
 			var editor = evt.editor;
 			
 		    // click on image -> add placeholder caption
@@ -72,8 +72,10 @@ CKEDITOR.plugins.add( 'simpleimage',
 		        }
 		    });
 			
+            console.log('IN THIS PKUGIN');
 		   	jQuery(editor.document.$.body).bind('dragstart', function(evt){
 		   		editor.fire('saveSnapshot');
+                console.log('dragstart');
 		   		var img = jQuery(evt.target);
 	   			if(!img.is('img'))
 	   				return;
@@ -81,6 +83,7 @@ CKEDITOR.plugins.add( 'simpleimage',
 	   			var oldHtml = oldFrame.length ? oldFrame.outerHTML() : img.outerHTML();
 	   			img.attr('dragged', '1');
 	   			var moveImage = function(evt){
+                    console.log('moveImage');
 	   				var dropped = jQuery('img[dragged="1"]', editor.document.$);
 	   				if(dropped.length)
 	   				{
@@ -90,6 +93,7 @@ CKEDITOR.plugins.add( 'simpleimage',
 	   					var frame = dropped.parent('span.image_frame');
 	   					if(frame.length)
 	   						dropped = frame;
+                        console.log('setting html to' + oldHtml);
 	   					dropped.outerHTML(oldHtml);
 	   				}
 	   				jQuery(this).unbind('dragend');
@@ -126,7 +130,16 @@ CKEDITOR.plugins.add( 'simpleimage',
                     }
                 }
             }, null, null, 1); // make sure we get first dibs
-		});
+		}
+
+		editor.on('instanceReady', set_img_cleanup_events);
+        /* Pressing the "view source" button and then un-pressing it
+         * should re-register this, as view source clears out
+         * editor.document.body, which is where we attach various events
+        */
+		editor.on('viewSourceUnloaded', function () {
+                editor.on('contentDom', set_img_cleanup_events);
+        });
 
 		// If the "menu" plugin is loaded, register the menu items.
 		if ( editor.addMenuItems )

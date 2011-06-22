@@ -37,12 +37,12 @@ class WikiEditor(CKEditor):
                 'elementspath,enterkey,entities,filebrowser,font,format,'
                 'horizontalrule,htmldataprocessor,indent,justify,keystrokes,'
                 'list,pastetext,removeformat,save,specialchar,tab,'
-                'toolbar,undo,wysiwygarea,wsc,sourcearea,selection')
+                'toolbar,undo,wysiwygarea,wsc,selection')
 
     def get_extra_plugins(self):
         plugins = ['insertimage', 'simpleimage', 'domcleanup', 'seamless',
                    'simpletable', 'simpletabletools', 'customenterkey',
-                   'pagelink', 'inheritcss', 'stylescombo']
+                   'pagelink', 'inheritcss', 'stylescombo', 'customsourcearea']
         return ','.join(plugins)
 
     def get_toolbar(self):
