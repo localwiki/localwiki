@@ -72,10 +72,8 @@ CKEDITOR.plugins.add( 'simpleimage',
 		        }
 		    });
 			
-            console.log('IN THIS PKUGIN');
 		   	jQuery(editor.document.$.body).bind('dragstart', function(evt){
 		   		editor.fire('saveSnapshot');
-                console.log('dragstart');
 		   		var img = jQuery(evt.target);
 	   			if(!img.is('img'))
 	   				return;
@@ -83,7 +81,6 @@ CKEDITOR.plugins.add( 'simpleimage',
 	   			var oldHtml = oldFrame.length ? oldFrame.outerHTML() : img.outerHTML();
 	   			img.attr('dragged', '1');
 	   			var moveImage = function(evt){
-                    console.log('moveImage');
 	   				var dropped = jQuery('img[dragged="1"]', editor.document.$);
 	   				if(dropped.length)
 	   				{
@@ -93,7 +90,6 @@ CKEDITOR.plugins.add( 'simpleimage',
 	   					var frame = dropped.parent('span.image_frame');
 	   					if(frame.length)
 	   						dropped = frame;
-                        console.log('setting html to' + oldHtml);
 	   					dropped.outerHTML(oldHtml);
 	   				}
 	   				jQuery(this).unbind('dragend');
