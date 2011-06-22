@@ -866,15 +866,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                                     commit : function( type, element, internalCommit )
                                                     {
                                                         var frame = element.getAscendant('span');
-                                                        if(frame)
-                                                           element = frame;
+                                                        if(!frame)
+                                                            return;
+                                                        element = frame;
                                                         var value = this.getValue();
                                                         if ( type == IMAGE || type == PREVIEW )
                                                         {
                                                         	element.removeClass("image_left");
                                                         	element.removeClass("image_right");
-                                                            if ( value )
+                                                            if ( value ) {
                                                             	element.addClass("image_" + value);
+                                                            }
 
                                                             if ( !internalCommit && type == IMAGE )
                                                             {

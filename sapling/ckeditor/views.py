@@ -8,7 +8,8 @@ from django.views.generic.simple import direct_to_template
 
 
 def ck_upload(request, upload_folder):
-    """ Save file uploaded via CKEditor.
+    """
+    Save file uploaded via CKEditor.
     """
     error_message = 'Unable to upload'
 
@@ -31,7 +32,8 @@ def ck_upload(request, upload_folder):
 
 
 def ck_upload_result(request, url='', message=''):
-    """ Notify CKEditor of upload via JS callback
+    """
+    Notify CKEditor of upload via JS callback
     """
     try:
         callback = request.GET['CKEditorFuncNum']
