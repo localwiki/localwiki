@@ -120,7 +120,6 @@ SaplingMap = {
             {
               layer.addFeatures(selectedFeature);
               layer.selectedFeatures = [selectedFeature];
-              results_html = '<h3>Things inside ' + selectedFeature.attributes.html + ':</h3>'
             }
             
             var viewedArea = map.getExtent().toGeometry().getArea();
@@ -138,12 +137,35 @@ SaplingMap = {
                 feature.defaultStyle = polyStyle;
               }
               layer.addFeatures(feature);
-              var result = $('<li class="map_result">')
+              var listResult = false;
+              if(selectedFeature)
+              {
+                  if(selectedFeature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon")
+                  {
+                      results_html = '<h3>Things inside ' + selectedFeature.attributes.html + ':</h3>'
+                      $.each(feature.geometry.getVertices(), function(ind, vertex){
+                          if(selectedFeature.geometry.containsPoint(vertex))
+                          {
+                              listResult = true;
+                              return false;
+                          }
+                      });
+                  } else {
+                      var threshold = 1000; // TODO: what units is this?
+                      results_html = '<h3>Things near ' + selectedFeature.attributes.html + ':</h3>';
+                      listResult = selectedFeature.geometry.distanceTo(feature.geometry) < threshold;
+                  }
+              }
+              if(listResult || !selectedFeature)
+              {
+                  var result = $('<li class="map_result">')
                                .html(feature.attributes.html)
                                .bind('mouseover', function (){
                                    highlightResult(this, feature);
                                });
-              results.append(result);
+                  results.append(result);
+              }
+              
             });
             $('#results_pane').html(results_html).append(results);
             map.removeLayer(temp);
