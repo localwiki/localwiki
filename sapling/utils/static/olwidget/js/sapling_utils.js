@@ -53,7 +53,6 @@ SaplingMap = {
           var feature = evt.feature;
           var featureBounds = feature.geometry.bounds;
           $('#results_pane').css('display', 'inline-block');
-          $(window).resize();
           size_map();
           map.updateSize();
           map.zoomToExtent(featureBounds);
