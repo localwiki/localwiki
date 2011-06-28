@@ -101,6 +101,7 @@ SaplingMap = {
                     map.removePopup(existingPopup);
                 map.addPopup(popup);
                 $(result).bind('mouseout', function(){
+                    $(this).unbind('mouseout');
                     map.removePopup(popup);
                     if(existingPopup)
                         map.addPopup(existingPopup);
