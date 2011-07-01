@@ -116,7 +116,8 @@ class FakeFieldDiffTest(TestCase):
 
 
 class BaseFieldDiffTest(TestCase):
-    test_class = BaseFieldDiff
+    def setUp(self):
+        self.test_class = BaseFieldDiff
 
     def test_identical_fields_dict(self):
         """
@@ -145,7 +146,8 @@ class BaseFieldDiffTest(TestCase):
 
 
 class TextFieldDiffTest(BaseFieldDiffTest):
-    test_class = TextFieldDiff
+    def setUp(self):
+        self.test_class = TextFieldDiff
 
     def test_deleted_inserted(self):
         a = 'abc'
@@ -164,7 +166,8 @@ class TextFieldDiffTest(BaseFieldDiffTest):
 
 
 class FileFieldDiffTest(BaseFieldDiffTest):
-    test_class = FileFieldDiff
+    def setUp(self):
+        self.test_class = FileFieldDiff
 
     def test_deleted_inserted(self):
         m1 = M2()
@@ -182,7 +185,8 @@ class FileFieldDiffTest(BaseFieldDiffTest):
 
 
 class ImageFieldDiffTest(FileFieldDiffTest):
-    test_class = ImageFieldDiff
+    def setUp(self):
+        self.test_class = ImageFieldDiff
 
 
 class HtmlFieldTest(TestCase):
@@ -208,8 +212,9 @@ class HtmlFieldTest(TestCase):
         HtmlFieldDiff.DAISYDIFF_URL = backup
 
 
-class GeometryFieldTest(BaseFieldDiffTest):
-    test_class = GeometryFieldDiff
+class GeometryFieldDiffTest(BaseFieldDiffTest):
+    def setUp(self):
+        self.test_class = GeometryFieldDiff
 
     def collection_contains_only(self, cls, collection):
         from django.contrib.gis.geos import GeometryCollection

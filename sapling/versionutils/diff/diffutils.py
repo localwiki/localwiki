@@ -19,7 +19,7 @@ class DiffUtilNotFound(Exception):
     pass
 
 
-class BaseFieldDiff():
+class BaseFieldDiff(object):
     """
     Simplest diff possible, used when no better option is available.
     Just shows two fields side-by-side, in the case of HTML output.
