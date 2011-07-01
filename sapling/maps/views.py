@@ -82,7 +82,10 @@ class MapGlobalView(ListView):
 
     def get_queryset(self):
         queryset = super(MapGlobalView, self).get_queryset()
-        return filter_by_zoom(queryset, 12)
+        # We order by -length so that the geometries are in that
+        # order when rendered by OpenLayers -- this creates the
+        # correct stacking order.
+        return filter_by_zoom(queryset, 12).order_by('-length')
 
     def get_context_data(self, **kwargs):
         context = super(MapGlobalView, self).get_context_data(**kwargs)
@@ -103,7 +106,10 @@ class MapObjectsForBounds(JSONResponseMixin, BaseListView):
             queryset = filter_by_bounds(queryset, bbox)
         zoom = self.request.GET.get('zoom', None)
         if zoom:
-            queryset = filter_by_zoom(queryset, int(zoom))
+            # We order by -length so that the geometries are in that
+            # order when rendered by OpenLayers -- this creates the
+            # correct stacking order.
+            queryset = filter_by_zoom(queryset, int(zoom)).order_by('-length')
         return queryset
 
     def get_context_data(self, **kwargs):

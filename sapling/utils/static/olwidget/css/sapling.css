@@ -1,8 +1,18 @@
 @import url('olwidget.css'); /* import base CSS */
 
 .mapwidget {
-  width: 100%!important;
-  margin: 0!important;
+  width: 100%;
+  margin: 0 !important;
+  display: inline-block;
+}
+
+#results_pane {
+	display: inline-block;
+	padding: 0em 1em;
+	overflow-y: auto;
+	float: left;
+	width: 400px;
+	display: none;
 }
 
 .olMap {
