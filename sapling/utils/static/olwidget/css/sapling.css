@@ -8,8 +8,10 @@
 
 #results_pane {
 	display: inline-block;
+	padding: 0em 1em;
+	overflow-y: auto;
 	float: left;
-	width: 360px;
+	width: 400px;
 	display: none;
 }
 

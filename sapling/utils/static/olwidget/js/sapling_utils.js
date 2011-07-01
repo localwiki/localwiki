@@ -41,13 +41,18 @@ SaplingMap = {
         var layer = map.vectorLayers[0];
         layer.dataExtent = map.getExtent();
         loadObjects = this._loadObjects;
+        displayRelated = this._displayRelated;
         // make popups persistent when zooming
         map.events.remove('zoomend');
         layer.events.register("moveend", null, function(evt) {
           if(evt.zoomChanged
              || !layer.dataExtent
-             || !layer.dataExtent.containsBounds(map.getExtent()))
-             loadObjects(map, layer);
+             || !layer.dataExtent.containsBounds(map.getExtent())) {
+             loadObjects(map, layer, function(){ displayRelated(map); });
+          }
+          else {
+              displayRelated(map);
+          }
         });
         layer.events.register("featureselected", null, function(evt) {
           var feature = evt.feature;
@@ -55,7 +60,10 @@ SaplingMap = {
           $('#results_pane').css('display', 'inline-block');
           size_map();
           map.updateSize();
-          map.zoomToExtent(featureBounds);
+          if(feature.geometry.CLASS_NAME != "OpenLayers.Geometry.Point")
+          {
+              map.zoomToExtent(featureBounds);
+          }
           $('#header_title_detail').empty().append(' for ' + feature.attributes.html);
           var zoomedStyle = $.extend({}, 
               layer.styleMap.styles.select.defaultStyle,
@@ -65,6 +73,7 @@ SaplingMap = {
               feature.style = zoomedStyle;
               layer.drawFeature(feature);
           }
+          displayRelated(map);
         });
         layer.events.register("featureunselected", null, function(evt) {
           evt.feature.style = evt.feature.defaultStyle;
@@ -73,102 +82,123 @@ SaplingMap = {
         loadObjects(map, layer);
     },
 
-    _loadObjects: function(map, layer) {
+    _displayRelated: function(map) {
+        var layer = map.vectorLayers[0];
+        var highlightResult = function (result, feature) {
+            var lonlat = feature.geometry.getBounds().getCenterLonLat();
+            var infomap = map;
+            var popup = new olwidget.Popup(null,
+                lonlat, null, feature.attributes.html, null, false,
+                null,
+                map.opts.popupDirection,
+                map.opts.popupPaginationSeparator);
+            popup.panMapIfOutOfView = false;
+            var existingPopup = map.popups.length && map.popups[0];
+            if(existingPopup)
+                map.removePopup(existingPopup);
+            map.addPopup(popup);
+            feature.style = layer.styleMap.styles.select.defaultStyle;
+            layer.drawFeature(feature);
+            $(result).bind('mouseout', function(){
+                $(this).unbind('mouseout');
+                map.removePopup(popup);
+                feature.style = feature.defaultStyle;
+                layer.drawFeature(feature);
+                if(existingPopup)
+                    map.addPopup(existingPopup);
+            });
+        };
+        var setAlpha = function(feature, viewedArea) {
+            if(feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon")
+            {
+                var alpha =  0.5 - 0.5 * Math.min(1, feature.geometry.getArea()/viewedArea);
+                var polyStyle = $.extend({}, 
+                          feature.layer.styleMap.styles['default'].defaultStyle,
+                          { fillOpacity: alpha });
+                feature.style = polyStyle;
+                feature.defaultStyle = polyStyle;
+                feature.layer.drawFeature(feature);
+            }
+        };
         var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
+        var header = 'Things on this map:';
+        var results = $('<ol>');
+        var viewedArea = map.getExtent().toGeometry().getArea();
+        $.each(layer.features, function(index, feature) {
+            if(feature == selectedFeature)
+                return;
+           setAlpha(feature, viewedArea);
+           var listResult = false;
+           if(selectedFeature)
+           {
+               if(selectedFeature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon")
+               {
+                   header = 'Things inside ' + selectedFeature.attributes.html + ':';
+                   $.each(feature.geometry.getVertices(), function(ind, vertex){
+                       if(selectedFeature.geometry.containsPoint(vertex))
+                       {
+                           listResult = true;
+                           return false;
+                       }
+                   });
+               } else {
+                   var threshold = 500; // TODO: what units is this?
+                   header = 'Things near ' + selectedFeature.attributes.html + ':';
+                   listResult = selectedFeature.geometry.distanceTo(feature.geometry) < threshold;
+                   if(feature.geometry.containsPoint)
+                       listResult = listResult && !feature.geometry.containsPoint(selectedFeature.geometry);
+               }
+           }
+           if(listResult || !selectedFeature)
+           {
+               var result = $('<li class="map_result">')
+                            .html(feature.attributes.html)
+                            .bind('mouseover', function (){
+                                highlightResult(this, feature);
+                            })
+                            .bind('click', function (evt){
+                                // hack to prevent olwidget from placing popup incorrectly
+                                var mapSize = map.getSize();
+                                var center = { x: mapSize.w / 2, y: mapSize.h / 2};
+                                map.selectControl.handlers.feature.evt.xy = center;
+                                map.selectControl.unselectAll();
+                                map.selectControl.select(feature);
+                            });
+               results.append(result);
+           }
+        });
+        $('#results_pane').empty().append($('<h4/>').html(header)).append(results);
+    },
+
+    _loadObjects: function(map, layer, callback) {
+        var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
+        var setAlpha = this._setAlpha;
         var extent = map.getExtent().scale(1.5);
         var bbox = extent.clone().transform(layer.projection,
                        new OpenLayers.Projection('EPSG:4326')).toBBOX();
               
         var zoom = map.getZoom();
-        var highlightResult = function (result, feature) {
-            var lonlat = feature.geometry.getBounds().getCenterLonLat();
-            var popupHTML = [];
-            if (feature.attributes.html) {
-                popupHTML.push(feature.attributes.html);
-            }
-            if (popupHTML.length > 0) {
-                var infomap = map;
-                var popup = new olwidget.Popup(null,
-                    lonlat, null, popupHTML, null, false,
-                    null,
-                    map.opts.popupDirection,
-                    map.opts.popupPaginationSeparator);
-                if (map.opts.popupsOutside) {
-                   popup.panMapIfOutOfView = false;
-                }
-                var existingPopup = map.popups.length && map.popups[0];
-                if(existingPopup)
-                    map.removePopup(existingPopup);
-                map.addPopup(popup);
-                $(result).bind('mouseout', function(){
-                    $(this).unbind('mouseout');
-                    map.removePopup(popup);
-                    if(existingPopup)
-                        map.addPopup(existingPopup);
-                });
-            }
-        };
         $.get('_objects/', { 'bbox': bbox, 'zoom': zoom }, function(data){
             layer.dataExtent = extent;
             var temp = new olwidget.InfoLayer(data);
             temp.visibility = false;
             map.addLayer(temp);
             layer.removeAllFeatures();
-            var results_html = '<h3>Things on this map:</h3>';
-            var results = $('<ol>');
             if(selectedFeature)
             {
               layer.addFeatures(selectedFeature);
               layer.selectedFeatures = [selectedFeature];
             }
-            
-            var viewedArea = map.getExtent().toGeometry().getArea();
             $.each(temp.features, function(index, feature) {
               feature.map = map;
               if(selectedFeature && selectedFeature.geometry.toString() == feature.geometry.toString())
                 return;
-              if(feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon")
-              {
-                var alpha =  0.5 - 0.5 * Math.min(1, feature.geometry.getArea()/viewedArea);
-                var polyStyle = $.extend({}, 
-                                  layer.styleMap.styles['default'].defaultStyle,
-                                  { fillOpacity: alpha });
-                feature.style = polyStyle;
-                feature.defaultStyle = polyStyle;
-              }
               layer.addFeatures(feature);
-              var listResult = false;
-              if(selectedFeature)
-              {
-                  if(selectedFeature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon")
-                  {
-                      results_html = '<h3>Things inside ' + selectedFeature.attributes.html + ':</h3>'
-                      $.each(feature.geometry.getVertices(), function(ind, vertex){
-                          if(selectedFeature.geometry.containsPoint(vertex))
-                          {
-                              listResult = true;
-                              return false;
-                          }
-                      });
-                  } else {
-                      var threshold = 1000; // TODO: what units is this?
-                      results_html = '<h3>Things near ' + selectedFeature.attributes.html + ':</h3>';
-                      listResult = selectedFeature.geometry.distanceTo(feature.geometry) < threshold;
-                  }
-              }
-              if(listResult || !selectedFeature)
-              {
-                  var result = $('<li class="map_result">')
-                               .html(feature.attributes.html)
-                               .bind('mouseover', function (){
-                                   highlightResult(this, feature);
-                               });
-                  results.append(result);
-              }
-              
             });
-            $('#results_pane').html(results_html).append(results);
             map.removeLayer(temp);
+            if(callback){
+                callback();
+            }
         })
     },
 
