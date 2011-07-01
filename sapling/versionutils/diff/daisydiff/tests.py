@@ -38,6 +38,12 @@ class DaisyDiffTest(TestCase):
         self.failUnless('abc</del>' in tr)
         self.failUnless('def</ins>' in tr)
 
+    @skipUnlessHasService
+    def test_nbsp(self):
+        tr = daisydiff(u'Hello \xa0 World', u'Hello World')
+        self.assertEquals(tr,
+            u'<tr class="htmldiff">\n<td>Hello <del class="diff-html-removed">\xa0 </del>World</td><td>Hello World</td>\n</tr>')
+
 
 class DaisyDiffMergeTest(TestCase):
     def test_bad_url_throws_exception(self):
