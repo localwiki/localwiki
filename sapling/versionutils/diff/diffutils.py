@@ -371,14 +371,6 @@ class FileFieldDiff(BaseFieldDiff):
         return render_to_string(self.template, {'diff': d})
 
 
-class DeepFileFieldDiff(FileFieldDiff):
-    """
-    We render the diff inline for files we know how to diff. For everything
-    else we simply link to the two versions of the file.
-    """
-    template = 'diff/deep_file_diff.html'
-
-
 class ImageFieldDiff(FileFieldDiff):
     """
     Compares the fields as image file paths and renders the images.
