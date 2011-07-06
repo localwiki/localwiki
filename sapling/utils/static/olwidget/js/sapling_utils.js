@@ -179,12 +179,12 @@ SaplingMap = {
               
         var zoom = map.getZoom();
         var myDataToken = Math.random();
-        map.dataToken = myDataToken;
+        layer.dataToken = myDataToken;
         $.get('_objects/', { 'bbox': bbox, 'zoom': zoom }, function(data){
-        	if(map.dataToken != myDataToken)
-        	{
-        		return;
-        	}
+            if(layer.dataToken != myDataToken)
+            {
+                return;
+            }
             layer.dataExtent = extent;
             var temp = new olwidget.InfoLayer(data);
             temp.visibility = false;
