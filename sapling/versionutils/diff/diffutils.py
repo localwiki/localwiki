@@ -1,4 +1,6 @@
 import difflib
+import re
+import mimetypes
 
 from django.db import models
 from django.template.loader import render_to_string
@@ -323,9 +325,29 @@ class HtmlFieldDiff(BaseFieldDiff):
 
 class FileFieldDiff(BaseFieldDiff):
     """
-    Compares the fields as file paths and renders links to the files.
+    Simply renders links to the two versions of the file.
     """
     template = 'diff/file_diff.html'
+
+    _rough_type_map = [(r'^audio', 'audio'),
+                       (r'^video', 'video'),
+                       (r'^application/pdf', 'pdf'),
+                       (r'^application/msword', 'word'),
+                       (r'^text/html', 'html'),
+                       (r'^text', 'text'),
+                       (r'^image', 'image'),
+                       (r'^application/vnd.ms-powerpoint', 'powerpoint'),
+                       (r'^application/vnd.ms-excel', 'excel')
+    ]
+
+    def _get_rough_type(self):
+        mime_type = mimetypes.guess_type(self.field1.name)[0]
+        rough_type = None
+        if mime_type:
+            for regex, rough_type in self._rough_type_map:
+                if re.match(regex, mime_type):
+                    return rough_type
+        return None
 
     def get_diff(self):
         """
@@ -334,20 +356,27 @@ class FileFieldDiff(BaseFieldDiff):
         """
         if self.field1 == self.field2:
             return None
-
+        
         diff = {
-                'name': {'deleted': self.field1.name,
-                         'inserted': self.field2.name},
-                'url': {'deleted': self.field1.url,
-                        'inserted': self.field2.url},
-               }
+            'deleted': self.field1,
+            'inserted': self.field2,
+            'file_rough_type': self._get_rough_type(),
+        }
         return diff
-
+    
     def as_html(self):
         d = self.get_diff()
         if d is None:
             return '<tr><td colspan="2">(No differences found)</td></tr>'
         return render_to_string(self.template, {'diff': d})
+
+
+class DeepFileFieldDiff(FileFieldDiff):
+    """
+    We render the diff inline for files we know how to diff. For everything
+    else we simply link to the two versions of the file.
+    """
+    template = 'diff/deep_file_diff.html'
 
 
 class ImageFieldDiff(FileFieldDiff):

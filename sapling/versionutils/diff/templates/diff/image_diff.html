@@ -2,13 +2,13 @@
 {% load thumbnail %}
 <tr>
 <td>
-	{% thumbnail diff.name.deleted "300x300" as im %} 
-		<img src="{{ im.url }}"/>
+	{% thumbnail diff.deleted.name "300x300" upscale=False as im %} 
+		<a href="{{ diff.deleted.url }}" class="no_icon"><img src="{{ im.url }}"/></a>
 	{% endthumbnail %}
 </td>
 <td>
-	{% thumbnail diff.name.inserted "300x300" as im %} 
-		<img src="{{ im.url }}"/>
+	{% thumbnail diff.inserted.name "300x300" upscale=False as im %} 
+		<a href=" {{ diff.inserted.url }}" class="no_icon"><img src="{{ im.url }}"/></a>
 	{% endthumbnail %}
 </td>
 </tr>

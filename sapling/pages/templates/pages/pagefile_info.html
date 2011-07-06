@@ -13,7 +13,7 @@
   <p>
   	{% spaceless %}
     <a class="no_icon" href="{% url pages:file slug=file.slug file=file.name %}">
-    	{% thumbnail file.file "500x500" as im %}
+    	{% thumbnail file.file "500x500" upscale=False as im %}
     	<img src="{{ im.url }}" />
     	{% endthumbnail %}
     </a>

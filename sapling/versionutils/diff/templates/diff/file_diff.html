@@ -1,8 +1,10 @@
+{% ifequal diff.file_rough_type 'image' %}
+  {% include "diff/image_diff.html" %}
+{% endifequal %}
+
 {% spaceless %}
-{% for field, del_ins in diff.items %}
   <tr>
-  <td>{{ del_ins.deleted }}</td>
-  <td>{{ del_ins.inserted }}</td>
+  <td><a class="file_{{ diff.file_rough_type }}" href="{{ diff.deleted.url }}">Download deleted version</a></td>
+  <td><a class="file_{{ diff.file_rough_type }}" href="{{ diff.inserted.url }}">Download added version</a></td>
   </tr>
-{% endfor %}
 {% endspaceless %}
