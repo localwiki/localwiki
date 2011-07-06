@@ -97,7 +97,7 @@ textarea, input, select {
 }
 #content {
     margin-top: 1em;
-    margin-bottom: 2em;
+    margin-bottom: 1em;
 }
 #content.has_map {
     min-height: 340px;
