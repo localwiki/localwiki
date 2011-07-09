@@ -15,8 +15,18 @@ changes_registry = Registry()
 
 
 def register(changes_class):
+    """
+    Register a RecentChanges subclass to appear on the Recent Changes page.
+
+    Args:
+        changes_class: A subclass of RecentChanges.
+    """
     changes_registry.register(changes_class)
 
 
 def get_changes_classes():
+    """
+    Returns:
+        A list of the registered changes classes.
+    """
     return changes_registry.get_changes_classes()
