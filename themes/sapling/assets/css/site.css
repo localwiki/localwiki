@@ -613,6 +613,11 @@ label {
     padding-left: 30px;
     background: url(../img/map-icon-small.png) 5px 56% no-repeat;
 }
+#recentchanges .file .type {
+    min-width: 30px;
+    padding-left: 30px;
+    background: url(../pages/img/file_icons/document-block.png) 5px 56% no-repeat;
+}
 
 /*
 ====================================

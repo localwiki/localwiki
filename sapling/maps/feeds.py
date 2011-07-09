@@ -1,8 +1,19 @@
 from models import MapData
 from pages.models import Page, slugify
 
+import recentchanges
+from recentchanges import RecentChanges
 from recentchanges.feeds import ChangesOnItemFeed, MAX_CHANGES
 from recentchanges.feeds import skip_ignored_change_types
+
+
+class MapChanges(RecentChanges):
+    classname = 'map'
+
+    def queryset(self, start_at):
+        return MapData.history.filter(history_info__date__gte=start_at)
+
+recentchanges.register(MapChanges)
 
 
 class MapChangesFeed(ChangesOnItemFeed):

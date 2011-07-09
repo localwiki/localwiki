@@ -4,11 +4,11 @@ from django.views.generic import ListView
 from django.http import Http404
 from django.core.urlresolvers import reverse
 
-from pages.models import Page
-from maps.models import MapData
 from versionutils.versioning.constants import *
+from pages.models import Page
 
 from utils import merge_changes
+from recentchanges import get_changes_classes
 
 MAX_DAYS_BACK = 7
 IGNORE_TYPES = [
@@ -18,26 +18,30 @@ IGNORE_TYPES = [
 ]
 
 
-# TODO: Eventually we will probably want to break out the explicit calls
-# to Page, MapData, etc here and have each model we want to show up here
-# either 1) register itself or 2) abstract this out to a function or
-# class somewhere else.
-
 class RecentChangesView(ListView):
     template_name = "recentchanges/recentchanges.html"
     context_object_name = 'changes_grouped_by_slug'
 
+    def format_change_set(self, change_obj, change_set):
+        for obj in change_set:
+            obj.classname = change_obj.classname
+            obj.page = change_obj.page(obj)
+            obj.slug = obj.page.slug
+            obj.diff_url = change_obj.diff_url(obj)
+        return change_set
+
     def get_queryset(self):
+        change_sets = []
         start_at = self._get_start_date()
 
-        pagechanges = Page.history.filter(history_info__date__gte=start_at)
-        pagechanges = self._format_pages(pagechanges)
+        for change_class in get_changes_classes():
+            change_obj = change_class()
+            change_set = change_obj.queryset(start_at)
+            change_sets.append(
+                self.format_change_set(change_obj, change_set))
 
-        mapchanges = MapData.history.filter(history_info__date__gte=start_at)
-        mapchanges = self._format_mapdata(mapchanges)
-
-        # Merge the two sorted-by-date querysets.
-        objs = merge_changes(pagechanges, mapchanges)
+        # Merge the sorted-by-date querysets.
+        objs = merge_changes(change_sets)
 
         return self._group_by_date_then_slug(objs)
 
@@ -52,18 +56,6 @@ class RecentChangesView(ListView):
         })
         return c
 
-    def _format_pages(self, objs):
-        for o in objs:
-            o.page = o
-            o.classname = 'page'
-        return objs
-
-    def _format_mapdata(self, objs):
-        for o in objs:
-            o.slug = o.page.slug
-            o.classname = 'map'
-        return objs
-
     def _group_by_date_then_slug(self, objs):
         """
         Returns a list of the form [ (first_change, [change1, change2, ...]) ].
@@ -73,7 +65,8 @@ class RecentChangesView(ListView):
         # objs is currently ordered by date.  Group together by slug.
         for obj in objs:
             # For use in the template.
-            obj.diff_view = '%s:compare-dates' % obj._meta.app_label
+            if not hasattr(obj, 'diff_view'):
+                obj.diff_view = '%s:compare-dates' % obj._meta.app_label
 
             changes_for_slug = slug_dict.get(obj.slug, [])
             changes_for_slug.append(obj)

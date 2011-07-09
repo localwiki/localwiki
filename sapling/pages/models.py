@@ -108,7 +108,8 @@ def clean_name(name):
 
 
 def slugify(value, keep=r"\-\.,'\"/!@$%&*()"):
-    """Normalizes page name for db lookup
+    """
+    Normalizes page name for db lookup
 
     Args:
         value: String or unicode object to normalize.

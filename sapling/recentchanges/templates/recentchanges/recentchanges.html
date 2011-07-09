@@ -28,7 +28,7 @@
             {% else %}{% if change.history_info.type in deleted_types %}
             <span class="changelabel deleted">deleted</span>
             {% else %}
-            <span class="changelabel updated"><a href="{% url change.diff_view slug=change.page.pretty_slug date1=change.history_info.date %}">changes</a></span>
+            <span class="changelabel updated"><a href="{{ change.diff_url }}">changes</a></span>
             {% endif %}{% endif %}
 
             {% if change.history_info.type in reverted_types %}

@@ -1,7 +1,7 @@
 import itertools
 
 
-def merge_changes(*objs_lists):
+def merge_changes(objs_lists):
     """
     Given a list of arguments (*objs_lists), each of which is an iterable
     of historical objects, we return an iterable of the provided
