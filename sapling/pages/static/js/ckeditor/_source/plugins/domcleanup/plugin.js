@@ -8,9 +8,9 @@ CKEDITOR.plugins.add( 'domcleanup',
 {
     init : function( editor )
     {
-        var allowed_tags = ['p','a','em','strong','u','img','h1','h2','h3',
-        'h4','h5','hr','ul','ol','li','table','thead','tbody','tr','th','td',
-        'strike','sub','sup'];
+        var allowed_tags = ['p','br','a','em','strong','u','img','h1','h2',
+        'h3','h4','h5','hr','ul','ol','li','table','thead','tbody','tr','th',
+        'td','strike','sub','sup'];
         if(editor.config.domcleanupAllowedTags)
             allowed_tags = editor.config.domcleanupAllowedTags;
         editor.plugins['domcleanup'].allowedTags = allowed_tags;
@@ -72,18 +72,13 @@ CKEDITOR.plugins.add( 'domcleanup',
                         }
                         if(ok_tags.indexOf(element.name) > -1)
                             return element;
-                        var remap = {'br':'p',
-                                     'i': 'em',
-                                     'b': 'strong'
+                        var remap = {'i': 'em',
+                                     'b': 'strong',
+                                     'div': 'p'
                                     };
                         if(remap[element.name])
                         {
                             element.name = remap[element.name];
-                            if(element.isEmpty &&
-                              !(element.children && element.children.length) &&
-                              element.parent && element.parent.name == 'p' &&
-                              element.parent.children.length == 1)
-                                element.name = '';
                         }
                         else element.name = '';
                         return element;

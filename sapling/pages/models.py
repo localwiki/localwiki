@@ -16,10 +16,10 @@ from ckeditor.models import HTML5FragmentField
 from versionutils import diff
 from versionutils.versioning import TrackChanges
 
-allowed_tags = ['p', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3', 'h4',
-                'h5', 'h6', 'hr', 'ul', 'ol', 'li', 'pre', 'table', 'thead',
-                'tbody', 'tr', 'th', 'td', 'span', 'strike', 'sub', 'sup',
-                'tt']
+allowed_tags = ['p', 'br', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3',
+                'h4', 'h5', 'h6', 'hr', 'ul', 'ol', 'li', 'pre', 'table',
+                'thead', 'tbody', 'tr', 'th', 'td', 'span', 'strike', 'sub',
+                'sup', 'tt']
 
 
 class Page(models.Model):
