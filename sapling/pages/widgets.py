@@ -1,5 +1,7 @@
 from urlparse import urljoin
+
 from django.conf import settings
+
 from ckeditor.widgets import CKEditor
 import models
 
@@ -64,4 +66,5 @@ class WikiEditor(CKEditor):
     class Media:
         js = (
               urljoin(settings.STATIC_URL, 'js/jquery/jquery-1.5.min.js'),
+              urljoin(settings.STATIC_URL, 'js/ckeditor/sapling_utils.js'),
         )

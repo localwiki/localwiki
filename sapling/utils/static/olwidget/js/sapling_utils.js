@@ -1,5 +1,7 @@
 SaplingMap = {
 
+    is_dirty: false,
+
     init_openlayers: function() {
         OpenLayers.Control.LayerSwitcher.prototype.roundedCorner = false;
         var base_initOptions = olwidget.Map.prototype.initOptions;
@@ -31,6 +33,13 @@ SaplingMap = {
     },
 
     setup_map: function(map) {
+        if (window.addEventListener) {
+            window.addEventListener('beforeunload', this.beforeUnload, false);
+        }
+        else {
+            window.attachEvent('onbeforeunload', this.beforeUnload);
+        } 
+
         if(map.opts.dynamic) {
             this.setup_dynamic_map(map);
         }
@@ -80,6 +89,12 @@ SaplingMap = {
           layer.drawFeature(evt.feature);
         })
         loadObjects(map, layer);
+    },
+
+    beforeUnload: function(e) {
+        if(SaplingMap.is_dirty) {
+            return e.returnValue = "You've made changes but haven't saved.  Are you sure you want to leave this page?";
+        }
     },
 
     _displayRelated: function(map) {
@@ -212,7 +227,8 @@ SaplingMap = {
         // Switch to "modify" mode after adding a feature.
         var self = this;
         layer.events.register("featureadded", null, function () {
-                self._set_modify_control(layer);
+            self.is_dirty = true;
+            self._set_modify_control(layer);
         });
 
         // Key commands for undo/redo.
