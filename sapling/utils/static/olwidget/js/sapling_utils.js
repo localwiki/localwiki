@@ -39,6 +39,8 @@ SaplingMap = {
         else {
             window.attachEvent('onbeforeunload', this.beforeUnload);
         } 
+        $('#content form').submit(function() { SaplingMap.is_dirty = false; });
+        $('#editor_actions .cancel').click(function() { SaplingMap.is_dirty = false; });
 
         if(map.opts.dynamic) {
             this.setup_dynamic_map(map);

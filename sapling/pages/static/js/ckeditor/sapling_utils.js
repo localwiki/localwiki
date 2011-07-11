@@ -8,9 +8,19 @@ function beforeUnload(e)
     }
 }
 
-if (window.addEventListener) {
-    window.addEventListener('beforeunload', beforeUnload, false);
+function resetDirty() {
+    for (var i in CKEDITOR.instances) {
+        CKEDITOR.instances[i].resetDirty();
+    }
 }
-else {
-    window.attachEvent('onbeforeunload', beforeUnload);
-}
+
+$(document).ready(function() {
+    if (window.addEventListener) {
+        window.addEventListener('beforeunload', beforeUnload, false);
+    }
+    else {
+        window.attachEvent('onbeforeunload', beforeUnload);
+    }
+    $('#content form').submit(resetDirty);
+    $('#editor_actions .cancel').click(resetDirty);
+});
