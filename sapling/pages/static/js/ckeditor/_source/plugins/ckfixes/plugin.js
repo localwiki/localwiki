@@ -21,6 +21,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var table = element.getAscendant('table', true);
 			if(table)
 				return editor.plugins.ckfixes.fixLeftUpArrowInTable(editor, element, selection);
+			var frame = element.getAscendant('span', true);
+			if(frame && frame.hasClass('image_frame'))
+			{
+				return editor.plugins.ckfixes.fixLeftUpArrowInImage(editor, frame, selection);
+			}
 		},
 		
 		deleteOrBackspace : function ( editor )
@@ -50,6 +55,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			p.insertBefore(table);
 			ranges[0].moveToElementEditablePosition(p);
 			selection.selectRanges(ranges);
+		},
+		
+		fixLeftUpArrowInImage : function ( editor, element, selection )
+		{
+			var ranges = selection.getRanges();
+			ranges[0].setStartBefore(element);
+			ranges[0].setEndBefore(element);
+			selection.selectRanges(ranges);
+			return true;
 		},
 		
 		fixDeleteInFirstParagraph : function ( editor, element, selection )
