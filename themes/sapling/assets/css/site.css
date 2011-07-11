@@ -426,6 +426,10 @@ input[type="submit"], input[type="button"], button, .button {
 .button.cancel {
 }
 
+.button.active {
+    background: #dcdcdc url(../img/gradient.png) repeat-x bottom left;
+}
+
 
 input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:hover {
     background-color: #c8cbde;
