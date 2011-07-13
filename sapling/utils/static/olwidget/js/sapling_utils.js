@@ -233,6 +233,10 @@ SaplingMap = {
             self._set_modify_control(layer);
         });
 
+        layer.events.register("featuremodified", null, function () {
+            self.is_dirty = true;
+        });
+
         // Key commands for undo/redo.
         var undo_button = this._get_undo_button(layer.controls);
         var redo_button = this._get_redo_button(layer.controls);
