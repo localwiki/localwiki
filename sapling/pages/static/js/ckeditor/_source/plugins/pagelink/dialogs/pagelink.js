@@ -13,6 +13,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 		emailBodyRegex = /body=([^;?:@&=$,\/]*)/,
 		anchorRegex = /^#(.*)$/,
 		urlRegex = /^(?:http|https|ftp):\/\/(.+)$/,
+        userRegex = /^Users\/(.+)/i;
 		fileRegex = /^_files\//;
 
 	var parseLink = function(href)
@@ -225,10 +226,16 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 				if ( ranges.length == 1 && ranges[0].collapsed )
 				{
 					var textLabel = attributes[ 'data-cke-saved-href' ];
-					if(data.type == 'email')
+					if (data.type == 'email') {
 						textLabel = data.email.address;
-					else if(data.type == 'page')
+                    }
+					else if(data.type == 'page') {
 						textLabel = decodeURIComponent(data.url);
+                        if (textLabel.match(userRegex)) {
+                            // Replace "Users/name" with "name".
+                            textLabel = textLabel.match(userRegex)[1];
+                        }
+                    }
 
 					var text = new CKEDITOR.dom.text( textLabel, editor.document );
 					ranges[0].insertNode( text );
