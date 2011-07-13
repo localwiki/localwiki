@@ -20,18 +20,17 @@ from xml.sax.saxutils import escape
 from HTMLParser import HTMLParser
 from urllib import unquote_plus
 from urlparse import urlparse
-import re
 
 from django.template import Node
 from django.core.urlresolvers import reverse
-from django.conf import settings
 
 from pages.models import Page, name_to_url, url_to_name, PageFile
 from pages.models import slugify
 
 
 def sanitize_intermediate(html):
-    """ Sanitizes template tags and escapes entities.
+    """
+    Sanitizes template tags and escapes entities.
     """
     return html.replace('{', '&#123;')\
                .replace('}', '&#125;')\
@@ -42,7 +41,8 @@ _unescape_util = HTMLParser()
 
 
 def desanitize(fragment):
-    """ Undo sanitization, when we need the original contents.
+    """
+    Undo sanitization, when we need the original contents.
     """
     fragment = sanitize_final(fragment)
     fragment = _unescape_util.unescape(fragment)
@@ -50,13 +50,15 @@ def desanitize(fragment):
 
 
 def sanitize_final(html):
-    """ Fixes escaped entities.
+    """
+    Fixes escaped entities.
     """
     return html.replace('{amp}', '&')  # unescape entities
 
 
 def escape_quotes(s):
-    """ Escapes double quotes for use in template tags.
+    """
+    Escapes double quotes for use in template tags.
     """
     return s.replace('"', '\\"')
 
