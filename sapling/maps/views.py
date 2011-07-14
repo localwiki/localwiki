@@ -90,7 +90,8 @@ class MapGlobalView(ListView):
     def get_context_data(self, **kwargs):
         context = super(MapGlobalView, self).get_context_data(**kwargs)
         map_objects = [(obj.geom, popup_html(obj)) for obj in self.object_list]
-        context['map'] = InfoMap(map_objects, options={'dynamic': True})
+        context['map'] = InfoMap(map_objects, options={
+            'dynamic': True, 'zoomToDataExtent': False})
         context['dynamic_map'] = True
         return context
 
