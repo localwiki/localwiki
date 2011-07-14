@@ -144,3 +144,22 @@ a[href^='mailto:'] {
 #content #page h6, .page_editor h6 {
     clear: both;
 }
+
+/* Making it easier to select a horizontal rule */
+hr {
+    height: 3px;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top-width: 2px;
+    border-top-style: groove;
+}
+hr:hover {
+    cursor: default;
+}
+
+hr.selected {
+    border-color: #318DFD;
+    background-color: #318DFD;
+    color: #318DFD;
+}

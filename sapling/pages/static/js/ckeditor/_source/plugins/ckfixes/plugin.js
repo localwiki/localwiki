@@ -12,6 +12,28 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var specialKeys = editor.specialKeys;
 			specialKeys[ 37 ] = specialKeys[ 38 ] = this.leftOrUpArrow;
 			specialKeys[ 8 ] = specialKeys[ 46 ] = this.deleteOrBackspace;
+			
+			editor.on( 'instanceReady', function( evt )
+			{
+				jQuery('hr', editor.document.$).live('mousedown', function() {
+					var element = CKEDITOR.dom.element.get(this);
+					editor.getSelection().selectElement(element);
+					return false;
+				});
+			} );
+			editor.on('selectionChange', function( evt ){
+				var command = editor.getCommand( 'horizontalrule' ),
+					element = evt.data.path.lastElement && evt.data.path.lastElement.getAscendant( 'hr', true );
+				jQuery('hr.selected', editor.document.$).removeClass('selected');
+				if ( element && element.getName() == 'hr')
+				{
+					command.setState( CKEDITOR.TRISTATE_ON );
+					element.addClass('selected');
+				}
+				else
+					command.setState( CKEDITOR.TRISTATE_OFF );
+				
+			});
 		},
 		
 		leftOrUpArrow : function ( editor )
@@ -32,7 +54,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var selection = editor.getSelection();
 			var element = selection.getStartElement();
-			if(element.getName() == 'p')
+			if(element && element.getName() == 'hr')
+				return editor.plugins.ckfixes.fixDeleteHr(editor, element, selection);
+			if(element && element.getName() == 'p')
 				return editor.plugins.ckfixes.fixDeleteInFirstParagraph(editor, element, selection);
 		},
 		
@@ -84,6 +108,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				element.remove();
 				return true;
 			}
+		},
+		
+		fixDeleteHr : function (editor, element, selection)
+		{
+			var ranges = selection.getRanges();
+			ranges[0].setStartBefore(element);
+			ranges[0].setEndBefore(element);
+			selection.selectRanges(ranges);
+			element.remove();
+			return true;
 		}
 	});
 })();
