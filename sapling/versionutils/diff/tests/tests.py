@@ -177,8 +177,8 @@ class FileFieldDiffTest(BaseFieldDiffTest):
         m2.a.save("b.txt", ContentFile("TEST FILE"), save=False)
 
         d = self.test_class(m1.a, m2.a).as_dict()
-        self.assertTrue(d['name']['deleted'] == m1.a.name)
-        self.assertTrue(d['name']['inserted'] == m2.a.name)
+        self.assertTrue(d['deleted'].name == m1.a.name)
+        self.assertTrue(d['inserted'].name == m2.a.name)
 
         m1.a.delete()
         m2.a.delete()
