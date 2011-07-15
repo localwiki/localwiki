@@ -32,6 +32,20 @@ CKEDITOR.plugins.add( 'simpleimage',
 				if ( element.is( 'img' ) && !element.getAttribute( '_cke_realelement' ) )
 					evt.data.dialog = 'simpleimage';
 			});
+
+		// Clean up text pasted into caption
+		editor.on( 'paste', function( evt )
+		{
+			var selection = editor.getSelection();
+			var element = selection.getStartElement();
+			if(element && jQuery(element.$).closest('.image_frame').length)
+				editor.plugins['domcleanup'].removeBlocks = true;
+		}, null, null, 1);
+		
+		editor.on( 'paste', function( evt ) {
+			editor.plugins['domcleanup'].removeBlocks = false;
+		}, null, null, 99999);
+
 		// outerHTML plugin for jQuery
 		jQuery.fn.outerHTML = function(s) {
 		return (s)

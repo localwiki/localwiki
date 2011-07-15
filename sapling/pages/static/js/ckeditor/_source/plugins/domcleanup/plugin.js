@@ -14,12 +14,19 @@ CKEDITOR.plugins.add( 'domcleanup',
         if(editor.config.domcleanupAllowedTags)
             allowed_tags = editor.config.domcleanupAllowedTags;
         editor.plugins['domcleanup'].allowedTags = allowed_tags;
-
-        editor.on( 'paste', function( evt )
-        {
-        // haven't had to customize this, yet
-        });
         
+        // Clean up text pasted into 'pre'
+		editor.on( 'paste', function( evt )
+		{
+			var selection = editor.getSelection();
+			var element = selection.getStartElement();
+			if(element && jQuery(element.$).closest('pre').length)
+				editor.plugins['domcleanup'].removeBlocks = true;
+		}, null, null, 1);
+		
+		editor.on( 'paste', function( evt ) {
+			editor.plugins['domcleanup'].removeBlocks = false;
+		}, null, null, 99999);
     },
     afterInit : function( editor )
     {
@@ -59,6 +66,31 @@ CKEDITOR.plugins.add( 'domcleanup',
                             'th': ['colspan','rowspan','style'],
                             'td': ['colspan','rowspan','style']
                         };
+                        var block_elements = {
+                            'div': 1,
+                            'p': 1,
+                            'pre': 1,
+                            'h1': 1,
+                            'h2': 1, 
+                            'h3': 1, 
+                            'h4': 1, 
+                            'h5': 1, 
+                            'h6': 1,
+                            'hr': 1,
+                            'li': 1,
+                            'ol': 1,
+                            'ul': 1,
+                            'dl': 1,
+                            'dt': 1,
+                            'dd': 1,
+                            'table': 1,
+                            'tr': 1,
+                            'td': 1,
+                            'th': 1,
+                            'thead': 1,
+                            'tbody': 1,
+                            'tfoot': 1
+                        };
                         for(attr in element.attributes)
                         {
                         	if(attr.indexOf('data-cke-') == 0)
@@ -69,6 +101,15 @@ CKEDITOR.plugins.add( 'domcleanup',
                                 delete element.attributes[attr];
                             }
                      
+                        }
+                        if(editor.plugins['domcleanup'].removeBlocks)
+                        {
+                            if(block_elements[element.name])
+                            {
+                                element.name = '';
+                                element.add(new CKEDITOR.htmlParser.element('br'));
+                                return element;
+                            }
                         }
                         if(ok_tags.indexOf(element.name) > -1)
                             return element;
