@@ -3,7 +3,7 @@
 .mapwidget {
   width: 100%;
   margin: 0 !important;
-  display: inline-block;
+  display: block;
 }
 
 #results_pane {
