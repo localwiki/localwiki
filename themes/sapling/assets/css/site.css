@@ -58,10 +58,13 @@ p {
 }
 pre, code {
     margin: 15px 0;
+    padding: .5em;
     white-space: pre;
     overflow: auto;
     font-family: "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
     line-height: 20px;
+    border: 1px solid #CBCBCB;
+    background-color: #FFF8ED;
 }
 textarea, input, select {
     font-family: "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
@@ -91,11 +94,10 @@ textarea, input, select {
     * maps */
    /* Don't remove the border w/o checking that maps still occupy the full window */
    border: 1px solid #fafafa;
-   border-bottom: none;
 }
 #content {
     margin-top: 1em;
-    margin-bottom: 2em;
+    margin-bottom: 1em;
 }
 #content.has_map {
     min-height: 340px;
@@ -240,8 +242,9 @@ textarea, input, select {
   height: 300px!important;
 }
 #map .info {
-  padding-top: 0.4em;
-  padding-bottom: 0.2em;
+  padding-top: 0.3em;
+  padding-bottom: 0.15em;
+
 }
 #map .info a {
   background-image: url(../img/magnifying_glass.png);
@@ -326,6 +329,9 @@ li {
 .indent5 { margin-left: 15em; }
 .indent6 { margin-left: 18em; }
 .indent7 { margin-left: 21em; }
+.indent8 { margin-left: 24em; }
+.indent9 { margin-left: 27em; }
+.indent10 { margin-left: 30em; }
 
 /* Sub/Sup */
 sub { vertical-align: sub }
@@ -423,6 +429,10 @@ input[type="submit"], input[type="button"], button, .button {
     font-size: 90%;
 }
 .button.cancel {
+}
+
+.button.active {
+    background: #dcdcdc url(../img/gradient.png) repeat-x bottom left;
 }
 
 
@@ -611,6 +621,11 @@ label {
     min-width: 30px;
     padding-left: 30px;
     background: url(../img/map-icon-small.png) 5px 56% no-repeat;
+}
+#recentchanges .file .type {
+    min-width: 30px;
+    padding-left: 30px;
+    background: url(../pages/img/file_icons/document-block.png) 5px 56% no-repeat;
 }
 
 /*
