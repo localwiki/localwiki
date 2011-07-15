@@ -7,7 +7,6 @@
 }
 
 #results_pane {
-	display: inline-block;
 	padding: 0em 1em;
 	overflow-y: auto;
 	float: left;

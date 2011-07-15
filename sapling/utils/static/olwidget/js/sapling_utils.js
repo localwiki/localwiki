@@ -68,7 +68,8 @@ SaplingMap = {
         layer.events.register("featureselected", null, function(evt) {
           var feature = evt.feature;
           var featureBounds = feature.geometry.bounds;
-          $('#results_pane').css('display', 'inline-block');
+          $('#results_pane').css('display', 'block');
+          $('.mapwidget').css('float', 'left');
           size_map();
           map.updateSize();
           if(feature.geometry.CLASS_NAME != "OpenLayers.Geometry.Point")

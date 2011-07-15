@@ -97,7 +97,7 @@ textarea, input, select {
 }
 #content {
     margin-top: 1em;
-    margin-bottom: 1em;
+    margin-bottom: 1.4em;
 }
 #content.has_map {
     min-height: 340px;
@@ -297,6 +297,7 @@ textarea, input, select {
 #footer {
     background: #e1e1e1 url(../img/footer-bg.png) top left repeat;
     padding: 1.5em;
+    clear: both;
 }
 #footer p { margin: 0; padding: 0 }
 
@@ -708,7 +709,7 @@ form #content_footer {
 .mapdata form #content_footer {
     padding-left: 5em;
     padding-right: 5em;
-    margin-top: 0.4em;
+    margin-top: 0.16em;
 }
 
 /*
