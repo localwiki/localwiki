@@ -56,6 +56,7 @@ CKEDITOR.plugins.add( 'domcleanup',
                         if(drop_tags.indexOf(element.name) != -1)
                             return false;
                         var ok_tags = editor.plugins['domcleanup'].allowedTags;
+                        var custom_tags = editor.plugins['domcleanup'].customAllowedTags
                         var ok_attributes = {
                             'p' : ['class','style'],
                             'ul' : ['class'],
@@ -112,7 +113,10 @@ CKEDITOR.plugins.add( 'domcleanup',
                             }
                         }
                         if(ok_tags.indexOf(element.name) > -1)
-                            return element;
+                        {
+                            if(!custom_tags || custom_tags.indexOf(element.name) > -1 )
+                                return element;
+                        }
                         var remap = {'i': 'em',
                                      'b': 'strong',
                                      'div': 'p'
