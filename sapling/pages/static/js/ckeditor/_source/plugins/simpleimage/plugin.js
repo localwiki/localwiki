@@ -38,12 +38,30 @@ CKEDITOR.plugins.add( 'simpleimage',
 		{
 			var selection = editor.getSelection();
 			var element = selection.getStartElement();
-			if(element && jQuery(element.$).closest('.image_frame').length)
+			var frame = jQuery(element.$).closest('.image_frame');
+			if(element && frame.length)
+			{
 				editor.plugins['domcleanup'].removeBlocks = true;
+				editor.plugins['domcleanup'].customAllowedTags = ['a', 'br', 'strong', 'em'];
+				var cleanHtml = editor.dataProcessor.toHtml( evt.data.html );
+				var fragment = CKEDITOR.htmlParser.fragment.fromHtml(cleanHtml);
+				var writer = new CKEDITOR.htmlWriter();
+				var range = selection.getRanges()[0];
+				range.deleteContents();
+				jQuery.each(fragment.children, function(index, child) {
+					var writer = new CKEDITOR.htmlWriter();
+					child.writeHtml(writer);
+					range.insertNode(CKEDITOR.dom.element.createFromHtml(writer.getHtml()));
+					range.collapse(false);
+					selection.selectRanges([range]);
+				});
+				evt.stop();
+			}
 		}, null, null, 1);
 		
 		editor.on( 'paste', function( evt ) {
 			editor.plugins['domcleanup'].removeBlocks = false;
+			editor.plugins['domcleanup'].customAllowedTags = false;
 		}, null, null, 99999);
 
 		// outerHTML plugin for jQuery
