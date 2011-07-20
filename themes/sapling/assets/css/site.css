@@ -357,6 +357,13 @@ td, th {
 }
 thead, tfoot { background: #f2f2f2; }
 
+/* We don't want margin inside <p> inside table cells.  The editor has a
+ * tendency to add <p> to table cells when editing, so in order to keep
+ * tables looking consistent we zero this out. */
+#content #page td p, .page_editor td p {
+    margin-bottom: 0;
+}
+
 /*
 ====================================
  Forms and buttons
