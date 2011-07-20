@@ -15,51 +15,53 @@
 {% block header_title %}Differences for <a href="{% url pages:show slug=page.pretty_slug %}">{{ new.name }}</a>{% endblock %}
 
 {% block content %}
-  <table width="100%">
-    <thead id="content_header">
-    {% block content_header %}
-        <tr>
-            <td class="revision_details">
-                {% if old %}
-                  Revision {{ old.history_info.version_number }}
-                  ({{ old.history_info.date }}
+  <div id="page">
+    <table width="100%">
+      <thead id="content_header">
+      {% block content_header %}
+          <tr>
+              <td class="revision_details">
+                  {% if old %}
+                    Revision {{ old.history_info.version_number }}
+                    ({{ old.history_info.date }}
+                    by
+                    {% spaceless %}
+                    {% if old.history_info.user %}
+                        <a href="{{ old.history_info.user.get_absolute_url }}">{{ old.history_info.user }}</a>
+                    {% else %}
+                        {{ old.history_info.user_ip }}
+                    {% endif %}
+                    {% endspaceless %})
+                  {% endif %}
+              </td>
+              <td class="revision_details">
+                  Revision {{ new.history_info.version_number }}
+                  ({{ new.history_info.date }}
                   by
                   {% spaceless %}
-                  {% if old.history_info.user %}
-                      <a href="{{ old.history_info.user.get_absolute_url }}">{{ old.history_info.user }}</a>
+                  {% if new.history_info.user %}
+                      <a href="{{ new.history_info.user.get_absolute_url }}">{{ new.history_info.user }}</a>
                   {% else %}
-                      {{ old.history_info.user_ip }}
+                      {{ new.history_info.user_ip }}
                   {% endif %}
                   {% endspaceless %})
-                {% endif %}
-            </td>
-            <td class="revision_details">
-                Revision {{ new.history_info.version_number }}
-                ({{ new.history_info.date }}
-                by
-                {% spaceless %}
-                {% if new.history_info.user %}
-                    <a href="{{ new.history_info.user.get_absolute_url }}">{{ new.history_info.user }}</a>
-                {% else %}
-                    {{ new.history_info.user_ip }}
-                {% endif %}
-                {% endspaceless %})
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <del>Deletions are marked like this</del>
-            </td>
-            <td>
-                <ins>Additions are marked like this</ins>
-            </td>
-        </tr>
-    </thead>
-    {% endblock %}
+              </td>
+          </tr>
+          <tr>
+              <td>
+                  <del>Deletions are marked like this</del>
+              </td>
+              <td>
+                  <ins>Additions are marked like this</ins>
+              </td>
+          </tr>
+      </thead>
+      {% endblock %}
 
-    <tbody valign="top">
-        {% render_page page_diff.content %}
-    </tbody>
+      <tbody valign="top">
+          {% render_page page_diff.content %}
+      </tbody>
 
-  </table>
+    </table>
+  </div>
 {% endblock %}
