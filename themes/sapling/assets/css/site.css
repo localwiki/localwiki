@@ -363,6 +363,10 @@ thead, tfoot { background: #f2f2f2; }
 #content #page td p, .page_editor td p {
     margin-bottom: 0;
 }
+/* Reset the <p> behavior inside the diff table's immediate <td>s */
+#content #page .htmldiff > td > p {
+    margin-bottom: 1em;
+}
 
 /*
 ====================================
