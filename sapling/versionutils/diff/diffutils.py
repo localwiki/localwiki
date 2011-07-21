@@ -356,14 +356,14 @@ class FileFieldDiff(BaseFieldDiff):
         """
         if self.field1 == self.field2:
             return None
-        
+
         diff = {
             'deleted': self.field1,
             'inserted': self.field2,
             'file_rough_type': self._get_rough_type(),
         }
         return diff
-    
+
     def as_html(self):
         d = self.get_diff()
         if d is None:
@@ -463,6 +463,7 @@ class GeometryFieldDiff(BaseFieldDiff):
 
     def as_html(self):
         from django.contrib.gis.geos import Polygon, MultiPolygon
+        from django.contrib.gis.geos import GeometryCollection
         from olwidget.widgets import InfoMap
 
         def _convert_to_multipolygon(field):
@@ -494,6 +495,22 @@ class GeometryFieldDiff(BaseFieldDiff):
         poly_inserted, other_geom_inserted = self._split_out_geometry(
             POLY_TYPES, d['inserted'])
 
+        # Remove items from other_geom_same that are fully contained
+        # inside deleted, inserted.  If we didn't do this we would see
+        # things like a point marked as "stayed the same" inside of a
+        # newly-added polygon, when the polygon is really just replacing
+        # the point.
+        other_geom_same_for_del, other_geom_same_for_insert = [], []
+        for geom in other_geom_same:
+            if not d['deleted'].contains(geom):
+                other_geom_same_for_del.append(geom)
+            if not d['inserted'].contains(geom):
+                other_geom_same_for_insert.append(geom)
+        other_geom_same_for_del = GeometryCollection(
+            other_geom_same_for_del, srid=d['deleted'].srid)
+        other_geom_same_for_insert = GeometryCollection(
+            other_geom_same_for_insert, srid=d['inserted'].srid)
+
         # We need to convert from GeometryCollection to MultiPolygon to
         # compute boundary.
         poly_field1 = _convert_to_multipolygon(poly_field1)
@@ -509,7 +526,7 @@ class GeometryFieldDiff(BaseFieldDiff):
                 }
             ),
             (poly_field1.boundary, {}),
-            (other_geom_same,
+            (other_geom_same_for_del,
                 {'html': 'Stayed the same',
                  'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
                            'stroke_opacity': '1'}}
@@ -532,7 +549,7 @@ class GeometryFieldDiff(BaseFieldDiff):
                 }
             ),
             (poly_field2.boundary, {}),
-            (other_geom_same,
+            (other_geom_same_for_insert,
                 {'html': 'Stayed the same',
                  'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
                            'stroke_opacity': '1'}}
