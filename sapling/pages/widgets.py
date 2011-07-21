@@ -61,7 +61,7 @@ class WikiEditor(CKEditor):
         toolbar = [basic_styles, styles, links, media, lists, align, indent,
                    sub]
         if settings.DEBUG:
-            toolbar = [['Source']] + toolbar
+            toolbar = toolbar + [['Source']]
         return toolbar
 
     class Media:
