@@ -10,7 +10,7 @@ class RecentChanges(object):
     """
     classname = None
 
-    def queryset(self, start_at):
+    def queryset(self, start_at=None):
         """
         Returns:
             A queryset of historical instances that make up the recent
@@ -18,6 +18,7 @@ class RecentChanges(object):
 
         Args:
             start_at: A datetime that the queryset is expected to start at.
+                      Can also be None.
         """
         pass
 
@@ -32,16 +33,41 @@ class RecentChanges(object):
         """
         return obj.page
 
-    def diff_url(self, obj):
+    def title(self, obj):
         """
         Args:
-            obj: The historical instance, taken from your queryset(),
+            obj: The historical instance, taken from queryset(),
                  that we are displaying on Recent Changes.
 
         Returns:
-            The diff url associated with obj.
+            The title of this object.
+        """
+        return obj.name
+
+    def diff_url(self, obj):
+        """
+        args:
+            obj: the historical instance, taken from your queryset(),
+                 that we are displaying on recent changes.
+
+        returns:
+            the diff url associated with obj.
         """
         return reverse('%s:compare-dates' % obj._meta.app_label, kwargs={
             'slug': self.page(obj).pretty_slug,
             'date1': obj.history_info.date,
+        })
+
+    def as_of_url(self, obj):
+        """
+        args:
+            obj: the historical instance, taken from your queryset(),
+                 that we are displaying on recent changes.
+
+        returns:
+            the url to display the version of the obj specified.
+        """
+        return reverse('%s:as_of_date' % obj._meta.app_label, kwargs={
+            'slug': self.page(obj).pretty_slug,
+            'date': obj.history_info.date,
         })

@@ -11,8 +11,10 @@ from django.core.urlresolvers import reverse
 class PageChanges(RecentChanges):
     classname = 'page'
 
-    def queryset(self, start_at):
-        return Page.history.filter(history_info__date__gte=start_at)
+    def queryset(self, start_at=None):
+        if start_at:
+            return Page.history.filter(history_info__date__gte=start_at)
+        return Page.history.all()
 
     def page(self, obj):
         return obj
@@ -21,8 +23,11 @@ class PageChanges(RecentChanges):
 class PageFileChanges(RecentChanges):
     classname = 'file'
 
-    def queryset(self, start_at):
-        return PageFile.history.filter(history_info__date__gte=start_at)
+    def queryset(self, start_at=None):
+        if start_at:
+            return PageFile.history.filter(history_info__date__gte=start_at)
+        else:
+            return PageFile.history.all()
 
     def page(self, obj):
         try:
@@ -31,10 +36,20 @@ class PageFileChanges(RecentChanges):
             page = Page(slug=obj.slug, name=obj.slug.capitalize())
         return page
 
+    def title(self, obj):
+        return 'File %s on page "%s"' % (obj.name, self.page(obj).name)
+
     def diff_url(self, obj):
         return reverse('pages:file-compare-dates', kwargs={
             'slug': self.page(obj).pretty_slug,
             'date1': obj.history_info.date,
+            'file': obj.name,
+        })
+
+    def as_of_url(self, obj):
+        return reverse('pages:file-as_of_date', kwargs={
+            'slug': self.page(obj).pretty_slug,
+            'date': obj.history_info.date,
             'file': obj.name,
         })
 

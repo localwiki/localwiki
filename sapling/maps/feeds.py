@@ -10,8 +10,13 @@ from recentchanges.feeds import skip_ignored_change_types
 class MapChanges(RecentChanges):
     classname = 'map'
 
-    def queryset(self, start_at):
-        return MapData.history.filter(history_info__date__gte=start_at)
+    def queryset(self, start_at=None):
+        if start_at:
+            return MapData.history.filter(history_info__date__gte=start_at)
+        return MapData.history.all()
+
+    def title(self, obj):
+        obj.title = 'Map for "%s"' % obj.page.name
 
 recentchanges.register(MapChanges)
 
