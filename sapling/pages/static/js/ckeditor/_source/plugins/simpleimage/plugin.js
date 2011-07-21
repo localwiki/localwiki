@@ -103,7 +103,15 @@ CKEDITOR.plugins.add( 'simpleimage',
 		          jQuery(evt.sender.$).find('.editor_temp').remove();
 		        }
 		    });
-			
+		    // resize caption when image resized using handles (FF, IE)
+			jQuery('span.image_frame', editor.document.$.body).live('mousedown', function(evt){
+				var frame = this;
+				jQuery(editor.document.$).one('mouseup', function(evt){
+					var caption = jQuery(frame).css({'width':'', 'height':''}).find('span.image_caption');
+					var img = jQuery(frame).find('img');
+					caption.css({'width':img.css('width'), 'height':''});
+				});
+			});
 		   	jQuery(editor.document.$.body).bind('dragstart', function(evt){
 		   		editor.fire('saveSnapshot');
 		   		var img = jQuery(evt.target);
