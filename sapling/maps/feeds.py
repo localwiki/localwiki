@@ -16,7 +16,7 @@ class MapChanges(RecentChanges):
         return MapData.history.all()
 
     def title(self, obj):
-        obj.title = 'Map for "%s"' % obj.page.name
+        return 'Map for "%s"' % obj.page.name
 
 recentchanges.register(MapChanges)
 
@@ -39,8 +39,9 @@ class MapChangesFeed(ChangesOnItemFeed):
 
     def items(self, obj):
         objs = obj.history.all()[:MAX_CHANGES]
+        change_obj = MapChanges()
         for o in objs:
             o.title = obj.page.name
-            o.diff_view = '%s:compare-dates' % o._meta.app_label
-            o.as_of_view = '%s:as_of_date' % o._meta.app_label
+            o.diff_url = change_obj.diff_url(o)
+            o.as_of_url = change_obj.as_of_url(o)
         return skip_ignored_change_types(objs)

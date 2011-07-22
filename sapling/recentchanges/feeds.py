@@ -92,22 +92,6 @@ class RecentChangesFeed(Feed):
         self.request = request
         return super(RecentChangesFeed, self).get_feed(obj, request)
 
-    def _format_pages(self, objs):
-        for o in objs:
-            o.page = o
-            o.title = o.name
-            o.diff_view = '%s:compare-dates' % o._meta.app_label
-            o.as_of_view = '%s:as_of_date' % o._meta.app_label
-        return objs
-
-    def _format_mapdata(self, objs):
-        for o in objs:
-            o.title = 'Map for "%s"' % o.page.name
-            o.slug = o.page.slug
-            o.diff_view = '%s:compare-dates' % o._meta.app_label
-            o.as_of_view = '%s:as_of_date' % o._meta.app_label
-        return objs
-
 
 class ChangesOnItemFeed(Feed):
     """
@@ -118,9 +102,9 @@ class ChangesOnItemFeed(Feed):
       1. Define get_object().  The object returned should have attributes for:
          page, title, slug.
       2. Define items().  The items returned by items() should have
-         attributes for: title, page, diff_view and as_of_view.
+         attributes for: title, page, diff_url and as_of_url.
     """
-    def get_object(self, request, slug):
+    def get_object(self, request, *args, **kwargs):
         raise NotImplementedError(
             "You must subclass ItemChangesFeed and define get_object()")
 
@@ -133,8 +117,7 @@ class ChangesOnItemFeed(Feed):
         return "Changes for %s on %s" % (obj.title, self.site().name)
 
     def link(self, obj):
-        linkd = obj.get_absolute_url()
-        return linkd
+        return obj.get_absolute_url()
 
     def description(self, obj):
         return "Changes for %s on %s" % (obj.title, self.site().name)
@@ -158,20 +141,12 @@ class ChangesOnItemFeed(Feed):
         return "%s was %s by %s%s." % (item.title, change_type, user, comment)
 
     def item_link(self, item):
-        as_of_link = reverse(item.as_of_view, args=(), kwargs={
-                'slug': item.page.pretty_slug,
-                'date': item.history_info.date}
-        )
-        diff_link = reverse(item.diff_view, args=(), kwargs={
-                'slug': item.page.pretty_slug,
-                'date1': item.history_info.date}
-        )
         if item.history_info.type == TYPE_ADDED:
-            return as_of_link
+            return item.as_of_url
         if item.history_info.type in [
                 TYPE_DELETED, TYPE_DELETED_CASCADE, TYPE_REVERTED_DELETED]:
             return item.get_absolute_url()
-        return diff_link
+        return item.diff_url
 
     def item_author_name(self, item):
         if item.history_info.user:

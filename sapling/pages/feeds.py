@@ -61,15 +61,35 @@ recentchanges.register(PageFileChanges)
 class PageChangesFeed(ChangesOnItemFeed):
     def get_object(self, request, slug):
         obj = Page(slug=slugify(slug))
-        obj .title = obj.history.most_recent().name
+        obj.title = obj.history.most_recent().name
         obj.page = obj
         return obj
 
     def items(self, obj):
         objs = obj.history.all()[:MAX_CHANGES]
+        changes_obj = PageChanges()
         for o in objs:
             o.title = o.name
             o.page = o
-            o.diff_view = '%s:compare-dates' % o._meta.app_label
-            o.as_of_view = '%s:as_of_date' % o._meta.app_label
+            o.diff_url = changes_obj.diff_url(o)
+            o.as_of_url = changes_obj.as_of_url(o)
+        return skip_ignored_change_types(objs)
+
+
+class PageFileChangesFeed(ChangesOnItemFeed):
+    def get_object(self, request, slug='', file=''):
+        obj = PageFile(slug=slugify(slug), name=file)
+        page = Page(slug=slugify(slug))
+        obj.page = page.history.most_recent()
+        obj.title = 'File %s on page "%s"' % (obj.name, obj.page.name)
+        return obj
+
+    def items(self, obj):
+        objs = obj.history.all()[:MAX_CHANGES]
+        changes_obj = PageFileChanges()
+        for o in objs:
+            o.title = obj.title
+            o.page = obj.page
+            o.diff_url = changes_obj.diff_url(o)
+            o.as_of_url = changes_obj.as_of_url(o)
         return skip_ignored_change_types(objs)

@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.views.generic import ListView
 
 from views import *
-from feeds import PageChangesFeed
+from feeds import PageChangesFeed, PageFileChangesFeed
 import models
 from utils.constants import DATETIME_REGEXP
 from models import Page
@@ -28,10 +28,11 @@ def slugify(func):
 
 
 urlpatterns = patterns('',
-    #########################################################
+    ###########################################################
     # Files URLs
     # TODO: break out into separate files app with own URLs
-    #########################################################
+    # TODO: shouldn't some of these be _history and not _info?
+    ###########################################################
     url(r'^(?P<slug>.+)/_files/$', slugify(PageFileListView.as_view()),
         name='filelist'),
     url(r'^(?P<slug>.+)/_files/(?P<file>.+)/_revert/(?P<version>[0-9]+)$',
@@ -40,6 +41,8 @@ urlpatterns = patterns('',
         slugify(upload), name='file-upload'),
     url(r'^(?P<slug>.+)/_files/(?P<file>.+)/_info/$',
         slugify(PageFileInfo.as_view()), name='file-info'),
+    url(r'^(?P<slug>.+)/_files/(?P<file>.+)/_info/_feed/*$',
+        PageFileChangesFeed(), name='file-changes-feed'),
     url(r'^(?P<slug>.+)/_files/(?P<file>.+)/_info/compare$',
         slugify(PageFileCompareView.as_view())),
     url((r'^(?P<slug>.+)/_files/(?P<file>.+)/_info/'

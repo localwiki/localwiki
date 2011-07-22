@@ -9,8 +9,8 @@ from django.template.defaultfilters import stringfilter
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
 
-from django_randomfilenamestorage.storage import\
-    RandomFilenameFileSystemStorage
+from django_randomfilenamestorage.storage import (
+    RandomFilenameFileSystemStorage)
 
 from ckeditor.models import HTML5FragmentField
 from versionutils import diff
@@ -76,6 +76,10 @@ class PageFile(models.Model):
                        (r'^application/vnd.ms-powerpoint', 'powerpoint'),
                        (r'^application/vnd.ms-excel', 'excel')
                       ]
+
+    def get_absolute_url(self):
+        return reverse('pages:file',
+            kwargs={'slug': self.slug, 'file': self.name})
 
     @property
     def rough_type(self):

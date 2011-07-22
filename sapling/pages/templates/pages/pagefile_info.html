@@ -1,5 +1,7 @@
 {% extends "pages/base.html" %}
 
+{% block head_extra %}{{ block.super }}<link rel="alternate" href="{% url pages:file-changes-feed slug=file.slug file=file.name %}" type="application/rss+xml" title="Recent changes for this file"/>{% endblock %}
+
 {% block media %}
   {{ block.super }}
   {% include "versionutils/history/media.html" %}
