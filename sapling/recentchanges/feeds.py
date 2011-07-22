@@ -99,10 +99,10 @@ class ChangesOnItemFeed(Feed):
 
     Subclass this -- you can't use it directly.  You need to:
 
-      1. Define get_object().  The object returned should have attributes for:
+      1. Define recentchanges_class.  This should be set to the
+         RecentChanges class you've defined for the object.
+      2. Define get_object().  The object returned should have attributes for:
          page, title, slug.
-      2. Define items().  The items returned by items() should have
-         attributes for: title, page, diff_url and as_of_url.
     """
     def get_object(self, request, *args, **kwargs):
         raise NotImplementedError(
@@ -123,9 +123,16 @@ class ChangesOnItemFeed(Feed):
         return "Changes for %s on %s" % (obj.title, self.site().name)
 
     def items(self, obj):
-        raise NotImplementedError(
-            "You must subclass ItemChangesFeed and define items()")
-
+        changes_obj = self.recentchanges_class()
+        
+        objs = obj.history.all()[:MAX_CHANGES]
+        for o in objs:
+            o.title = obj.title
+            o.page = obj.page
+            o.diff_url = changes_obj.diff_url(o)
+            o.as_of_url = changes_obj.as_of_url(o)
+        return skip_ignored_change_types(objs)
+        
     def item_title(self, item):
         return item.title
 
