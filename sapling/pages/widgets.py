@@ -29,6 +29,11 @@ class WikiEditor(CKEditor):
             'indentClasses': ['indent1', 'indent2', 'indent3', 'indent4',
                               'indent5', 'indent6', 'indent7', 'indent8',
                               'indent9', 'indent10'],
+            'removeFormatAttributes': '',
+            'removeFormatTags': (
+                'a,h1,h2,h3,h4,h5,h6,b,big,code,del,dfn,em,'
+                'font,i,ins,kbd,q,samp,small,strike,strong,sub,'
+                'sup,tt,u,var'),
         }
         config.update(additional)
         return config
@@ -57,11 +62,12 @@ class WikiEditor(CKEditor):
         align = ['JustifyLeft', 'JustifyCenter', 'JustifyRight']
         indent = ['Outdent', 'Indent']
         sub = ['Subscript', 'Superscript']
+        advanced = ['RemoveFormat']
 
         toolbar = [basic_styles, styles, links, media, lists, align, indent,
-                   sub]
+                   sub, advanced]
         if settings.DEBUG:
-            toolbar = toolbar + [['Source']]
+            toolbar.append(['Source'])
         return toolbar
 
     class Media:
