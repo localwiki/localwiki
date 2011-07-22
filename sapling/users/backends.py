@@ -2,6 +2,9 @@ from django.contrib.auth.models import User
 
 
 class CaseInsensitiveModelBackend(object):
+    supports_object_permissions = True
+    supports_anonymous_user = True
+
     def authenticate(self, username=None, password=None):
         try:
             user = User.objects.get(username__iexact=username)
