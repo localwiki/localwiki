@@ -104,7 +104,7 @@ _files_url = '_files/'
 
 
 def file_url_to_name(url):
-    return unquote_plus(url.replace(_files_url, ''))
+    return unquote_plus(url.replace(_files_url, '').encode('utf-8'))
 
 
 def handle_image(elem, context=None):
@@ -205,7 +205,9 @@ class LinkNode(Node):
             page = context['page']
             if self.is_relative_link(url):
                 if url.startswith('_files/'):
+                    print "URL", url
                     filename = file_url_to_name(url)
+                    print "FILENAME", filename
                     url = reverse('pages:file-info', args=[page.pretty_slug,
                                                        filename])
                     try:
