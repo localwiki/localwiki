@@ -205,9 +205,7 @@ class LinkNode(Node):
             page = context['page']
             if self.is_relative_link(url):
                 if url.startswith('_files/'):
-                    print "URL", url
                     filename = file_url_to_name(url)
-                    print "FILENAME", filename
                     url = reverse('pages:file-info', args=[page.pretty_slug,
                                                        filename])
                     try:
