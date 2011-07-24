@@ -277,15 +277,14 @@ def upload(request, slug, **kwargs):
                                             args=[slug, kwargs['file']]))
 
     # uploaded from ckeditor
+    relative_url = '_files/' + uploaded.name
     try:
         file = PageFile(file=uploaded, name=uploaded.name, slug=slug)
         file.save()
-        relative_url = '_files/' + uploaded.name
         return ck_upload_result(request, url=relative_url)
     except IntegrityError:
         error = 'A file with this name already exists'
-    return ck_upload_result(request,
-                            message=error)
+    return ck_upload_result(request, url=relative_url, message=error)
 
 
 class FrontPageView(PageDetailView):

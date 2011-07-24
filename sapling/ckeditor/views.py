@@ -1,7 +1,6 @@
 import os
 import urlparse
 
-from django.http import HttpResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.views.generic.simple import direct_to_template
