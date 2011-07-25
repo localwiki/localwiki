@@ -18,6 +18,8 @@ class WikiEditor(CKEditor):
             'filebrowserAttachfileBrowseUrl': '_filebrowser/files',
             'domcleanupAllowedTags': models.allowed_tags,
             'toolbarCanCollapse': False,
+            'disableNativeSpellChecker': False,
+            'browserContextMenuOnCtrl': True,
             'enterMode': 1,
             'stylesSet': [{'name': 'Normal', 'element': 'p'},
                           {'name': 'Heading 1', 'element': 'h1'},
