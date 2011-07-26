@@ -29,10 +29,10 @@ class PageDetailView(Custom404Mixin, DetailView):
     context_object_name = 'page'
 
     def handler404(self, request, *args, **kwargs):
+        name = url_to_name(kwargs['original_slug'])
         return HttpResponseNotFound(
             direct_to_template(request, 'pages/page_new.html',
-                               {'name': url_to_name(kwargs['original_slug']),
-                                'page': Page(slug=kwargs['slug'])})
+                               {'page': Page(name=name, slug=kwargs['slug'])})
         )
 
     def get_context_data(self, **kwargs):
