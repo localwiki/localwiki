@@ -338,6 +338,13 @@ li {
 sub { vertical-align: sub }
 sup { vertical-align: super }
 
+/* We don't want margin inside <p> inside list items.  The editor has a
+ * tendency to occasionally add <p> to list items when editing, so in order to
+ * keep tables looking consistent we zero this out. */
+#content #page li p, .page_editor li p {
+    margin-bottom: 0;
+}
+
 /*
 ====================================
  Tables
