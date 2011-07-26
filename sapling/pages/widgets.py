@@ -12,9 +12,9 @@ class WikiEditor(CKEditor):
         additional = {
             'skin': 'sapling',
             'bodyClass': 'page_editor',
-            'filebrowserInsertimageUploadUrl': '_upload/',
+            'filebrowserInsertimageUploadUrl': '_upload',
             'filebrowserInsertimageBrowseUrl': '_filebrowser/images',
-            'filebrowserAttachfileUploadUrl': '_upload/',
+            'filebrowserAttachfileUploadUrl': '_upload',
             'filebrowserAttachfileBrowseUrl': '_filebrowser/files',
             'domcleanupAllowedTags': models.allowed_tags,
             'toolbarCanCollapse': False,
