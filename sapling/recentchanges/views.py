@@ -83,21 +83,30 @@ class RecentChangesView(ListView):
         return l
 
     def _get_start_date(self):
-        days_back = int(self.request.GET.get('days_back', '1'))
+        days_back = int(self.request.GET.get('days_back', '2'))
         if days_back > MAX_DAYS_BACK:
             raise Http404("Days must be less than %s" % MAX_DAYS_BACK)
-        days_back = datetime.timedelta(days=days_back)
 
-        # We always want to show some changes on the Recent Changes
-        # page.  So we grab the latest Page change and use that as the
-        # ending point for time, day-wise.  We just want to show
-        # something, so using just Page here is fine.
+        # If days_back is N we will (try and) show N days worth of changes,
+        # not simply the latest N days' changes.  We always want to show as
+        # many changes on the RC page as possible to encourage more wiki
+        # activity.
         try:
-            end_at = Page.history.all()[0].history_info.date
-        except IndexError:
-            end_at = datetime.datetime.now()
+            latest_changes = Page.history.all()[0:300]
+            start_at = Page.history.all()[0].history_info.date
+            num_days_total = 1
 
-        start_at = end_at - days_back
+            for change in latest_changes:
+                if change.history_info.date.day != start_at.day:
+                    start_at = change.history_info.date
+                    num_days_total += 1
+                if num_days_total == days_back:
+                    break
+        except IndexError:
+            start_at = datetime.datetime.now()
+
+        days_back = datetime.timedelta(days=num_days_total)
+
         # Set to the beginning of that day.
         return datetime.datetime(start_at.year, start_at.month, start_at.day,
             0, 0, 0, 0, start_at.tzinfo)
