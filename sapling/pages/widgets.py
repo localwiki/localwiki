@@ -70,6 +70,10 @@ class WikiEditor(CKEditor):
                    sub, advanced]
         if settings.DEBUG:
             toolbar.append(['Source'])
+        # XXX TODO once everything's working near-perfectly, remove the
+        # Source button here:
+        else:
+            toolbar.append(['Source'])
         return toolbar
 
     class Media:
