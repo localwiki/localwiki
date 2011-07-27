@@ -110,6 +110,7 @@ CKEDITOR.plugins.add( 'simpleimage',
 					var caption = jQuery(frame).css({'width':'', 'height':''}).find('span.image_caption');
 					var img = jQuery(frame).find('img');
 					caption.css({'width':img.css('width'), 'height':''});
+					jQuery(window).resize();
 				});
 			});
 		   	jQuery(editor.document.$.body).bind('dragstart', function(evt){
