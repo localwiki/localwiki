@@ -285,8 +285,3 @@ def upload(request, slug, **kwargs):
     except IntegrityError:
         error = 'A file with this name already exists'
     return ck_upload_result(request, url=relative_url, message=error)
-
-
-class FrontPageView(PageDetailView):
-    def get_object(self):
-        return Page.objects.get(slug="front page")

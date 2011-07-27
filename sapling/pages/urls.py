@@ -100,7 +100,8 @@ urlpatterns = patterns('',
     ##########################################################
     # Basic page URLs.
     ##########################################################
-    url(r'^/*$', FrontPageView.as_view(), name='frontpage'),
+    url(r'^/*$', slugify(PageDetailView.as_view()),
+        kwargs={'slug': 'Front Page'}, name='frontpage'),
     url(r'^(?i)All_Pages/*$', ListView.as_view(**page_list_info),
         name='index'),
     # Catch-all and route to a page.
