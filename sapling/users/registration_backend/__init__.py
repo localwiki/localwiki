@@ -3,6 +3,7 @@ A simple registration backend for django-registration.
 """
 from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.core.urlresolvers import reverse
 
 import registration
 from registration.backends.simple import SimpleBackend
@@ -26,8 +27,14 @@ class SaplingBackend(SimpleBackend):
 
 
 def registration_complete_msg(sender, user, request, **kwargs):
+    user_slug = 'Users/%s' % user.username
+    users_edit_url = reverse('pages:edit', args=[user_slug])
     messages.add_message(request, messages.SUCCESS,
-        "Sign up complete. You are now logged in!")
+        'Sign up complete. You are now logged in!')
+    messages.add_message(request, messages.SUCCESS,
+        'Tell us who you are by '
+           '<a href="%s">creating a page for yourself!</a>' %
+        users_edit_url)
 
 registration.signals.user_registered.connect(registration_complete_msg,
     dispatch_uid='registration_complete_msg')
