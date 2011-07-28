@@ -30,7 +30,7 @@ def registration_complete_msg(sender, user, request, **kwargs):
     user_slug = 'Users/%s' % user.username
     users_edit_url = reverse('pages:edit', args=[user_slug])
     messages.add_message(request, messages.SUCCESS,
-        'Sign up complete. You are now logged in!')
+        'You are signed up and logged in!')
     messages.add_message(request, messages.SUCCESS,
         'Tell us who you are by '
            '<a href="%s">creating a page for yourself!</a>' %
