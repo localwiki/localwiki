@@ -10,51 +10,59 @@
 {% block content %}
   <div id="recentchanges">
   <div id="limit_to">Show all changes in the last <a href="{{ rc_url }}?days_back=1">1</a> | <a href="{{ rc_url}}?days_back=2">2</a> | <a href="{{ rc_url }}?days_back=3">3</a> | <a href="{{ rc_url }}?days_back=7">7</a> days.</div>
-      {% for on_obj, change_list in changes_grouped_by_slug %}
+      {% for changes_for_day in changes_grouped_by_day %}
 
-        {% ifchanged %}<h2>{{ on_obj.history_info.date|date:"l, F j, Y" }}</h3>{% endifchanged %}
+        <h2>{{ changes_for_day.day|date:"l, F j, Y" }}</h3>
 
-        <h3><a href="{{ on_obj.page.get_absolute_url }}">{{ on_obj.page.name }}</a>
-            last modified {{ on_obj.history_info.date|timesince }} ago</h3>
+        {% for changes_on_item in changes_for_day.changes %}
 
-        <ul>
-        {% for change in change_list %}
-          {% if change.history_info.type not in ignore_types %}
-
-          <li class="{{ change.classname }}">
-            {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
-            {% if change.history_info.type in added_types %}
-            <span class="changelabel added">new</span>
-            {% else %}{% if change.history_info.type in deleted_types %}
-            <span class="changelabel deleted">deleted</span>
-            {% else %}
-            <span class="changelabel updated"><a href="{{ change.diff_url }}">changes</a></span>
-            {% endif %}{% endif %}
-
-            {% if change.history_info.type in reverted_types %}
-            <span class="revert">Reverted to version from {{ change.history_info.reverted_to_version.history_info.date|timesince}} ago</span>
+          {% for change in changes_on_item %}
+            {% if forloop.first %}
+              <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a>
+                  last modified {{ change.history_info.date|timesince }} ago</h3>
+              <ul>
             {% endif %}
 
-            <span class="type"></span>
+            {% if change.history_info.type not in ignore_types %}
+              <li class="{{ change.classname }}">
+                {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
+                {% if change.history_info.type in added_types %}
+                <span class="changelabel added">new</span>
+                {% else %}{% if change.history_info.type in deleted_types %}
+                <span class="changelabel deleted">deleted</span>
+                {% else %}
+                <span class="changelabel updated"><a href="{{ change.diff_url }}">changes</a></span>
+                {% endif %}{% endif %}
 
-            {% if change.history_info.comment %}
-                <span class="comment">
-                  {{ change.history_info.comment }}
+                {% if change.history_info.type in reverted_types %}
+                <span class="revert">Reverted to version from {{ change.history_info.reverted_to_version.history_info.date|timesince}} ago</span>
+                {% endif %}
+
+                <span class="type"></span>
+
+                {% if change.history_info.comment %}
+                    <span class="comment">
+                      {{ change.history_info.comment }}
+                    </span>
+                {% endif %}
+
+                <span class="user">
+                  {% if change.history_info.user %}
+                  <a href="{{ change.history_info.user.get_absolute_url }}">{{ change.history_info.user }}</a>
+                  {% else %}
+                  {{ change.history_info.user_ip }}
+                  {% endif %}
                 </span>
+              </li>
             {% endif %}
+            
+          {% endfor %}
 
-            <span class="user">
-              {% if change.history_info.user %}
-              <a href="{{ change.history_info.user.get_absolute_url }}">{{ change.history_info.user }}</a>
-              {% else %}
-              {{ change.history_info.user_ip }}
-              {% endif %}
-            </span>
-          </li>
+        {% if forloop.first %}
+          </ul>
+        {% endif %}
 
-          {% endif %}
-      {% endfor %}
-      </ul>
+        {% endfor %}
 
     {% endfor %}
   </div>

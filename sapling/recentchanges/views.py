@@ -1,4 +1,5 @@
 import datetime
+from itertools import groupby
 
 from django.views.generic import ListView
 from django.http import Http404
@@ -20,7 +21,7 @@ IGNORE_TYPES = [
 
 class RecentChangesView(ListView):
     template_name = "recentchanges/recentchanges.html"
-    context_object_name = 'changes_grouped_by_slug'
+    context_object_name = 'changes_grouped_by_day'
 
     def format_change_set(self, change_obj, change_set):
         for obj in change_set:
@@ -43,7 +44,7 @@ class RecentChangesView(ListView):
         # Merge the sorted-by-date querysets.
         objs = merge_changes(change_sets)
 
-        return self._group_by_date_then_slug(objs)
+        return self._changes_grouped_by_day(objs)
 
     def get_context_data(self, *args, **kwargs):
         c = super(RecentChangesView, self).get_context_data(*args, **kwargs)
@@ -56,30 +57,52 @@ class RecentChangesView(ListView):
         })
         return c
 
-    def _group_by_date_then_slug(self, objs):
+    def _changes_grouped_by_day(self, objs):
         """
-        Returns a list of the form [ (first_change, [change1, change2, ...]) ].
-        The list is grouped by the slug.
+        Args:
+            objs: A grouped-by-day list of changes.
+
+        Returns:
+            A list of the form:
+            [
+              {'day': datetime representing the day,
+               'changes': a slug-grouped list of changes
+              },
+              ...
+            ]
+
+            the slug-grouped list of changes is of the form:
+            [ changes, changes, ...]
+
+            where 'changes' are each a list of changes associated
+            with a given slug.  The list-of-changes-lists is ordered
+            by the most recent edit in each 'changes' list.
         """
-        slug_dict = {}
-        # objs is currently ordered by date.  Group together by slug.
-        for obj in objs:
-            # For use in the template.
-            if not hasattr(obj, 'diff_view'):
-                obj.diff_view = '%s:compare-dates' % obj._meta.app_label
-
-            changes_for_slug = slug_dict.get(obj.slug, [])
-            changes_for_slug.append(obj)
-            slug_dict[obj.slug] = changes_for_slug
-
-        # Sort the grouped slugs by the first date in the slug's change
-        # list.
-        objs_by_slug = sorted(slug_dict.values(),
-               key=lambda x: x[0].history_info.date, reverse=True)
-
+        def _the_day(o):
+            date = o.history_info.date
+            return (date.year, date.month, date.day)
+       
         l = []
-        for items in objs_by_slug:
-            l.append((items[0], items))
+        # Group objs by day.
+        for day, changes in groupby(objs, _the_day):
+            slug_dict = {}
+            # For each day, group changes by slug.
+            for change in changes:
+                changes_for_slug = slug_dict.get(change.slug, [])
+                changes_for_slug.append(change)
+                slug_dict[change.slug] = changes_for_slug
+
+            # Sort the slug_dict by the most recent edit date of each
+            # slug's set of changes.
+            by_most_recent_edit = sorted(slug_dict.values(),
+                key=lambda x: x[0].history_info.date, reverse=True)
+
+            # Without loss of generality, grab a datetime object
+            # representing the day.
+            the_day = slug_dict.values()[0][0].history_info.date
+
+            l.append({'day': the_day, 'changes': by_most_recent_edit})
+
         return l
 
     def _get_start_date(self):
