@@ -34,9 +34,61 @@
 </xsl:template>
 
 <xsl:template match="@*|node()">
+  <xsl:choose>
+    <xsl:when test="descendant::span[@class='diff-html-conflict-yours'] and not(preceding::span[1][@class='diff-html-conflict-yours']) and not(descendant::span[@class='diff-html-conflict-theirs'])">
+        <xsl:call-template name="insertmessage">
+          <xsl:with-param name="side">Your</xsl:with-param>
+        </xsl:call-template>
+    </xsl:when>
+    <xsl:when test="descendant::span[@class='diff-html-conflict-theirs'] and not(preceding::span[1][@class='diff-html-conflict-theirs']) and not(descendant::span[@class='diff-html-conflict-yours'])">
+        <xsl:call-template name="insertmessage">
+          <xsl:with-param name="side">Other</xsl:with-param>
+        </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()"/>
+      </xsl:copy>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template name="insertmessage">
+  <xsl:param name="side"/>
+  <xsl:choose>
+    <xsl:when test="ancestor::table and not(name()='td')">
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()"/>
+      </xsl:copy>
+    </xsl:when>
+    <xsl:when test="self::td or self::span[@class='image_caption']">
+      <xsl:copy>
+        <xsl:apply-templates select="@*" mode="nomessage"/>
+        <strong class="editConflict">Edit conflict! <xsl:value-of select="$side"/> version:</strong>
+        <xsl:apply-templates select="node()" mode="nomessage"/>
+      </xsl:copy>
+    </xsl:when>
+    <xsl:otherwise>
+      <strong class="editConflict">Edit conflict! <xsl:value-of select="$side"/> version:</strong>
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()" mode="nomessage"/>
+      </xsl:copy>
+    </xsl:otherwise>
+  </xsl:choose>
+  
+</xsl:template>
+
+
+<xsl:template match="@*|node()" mode="nomessage">
 <xsl:copy>
-  <xsl:apply-templates select="@*|node()"/>
+  <xsl:apply-templates select="@*|node()" mode="nomessage"/>
 </xsl:copy>
+</xsl:template>
+
+<xsl:template match="img" mode="nomessage">
+<img>
+  <xsl:copy-of select="@*"/>
+</img>
 </xsl:template>
 
 <xsl:template match="img">
@@ -56,17 +108,17 @@
 <xsl:template match="span[@class='diff-html-removed']">
 </xsl:template>
 
-<xsl:template match="span[@class='diff-html-conflict-yours']">
-  <xsl:if test="not(preceding::span[1][@class='diff-html-conflict-yours'])">
-  	<strong class="editConflict">Edit conflict! Your version:</strong>
-  </xsl:if>
+<xsl:template match="span[@class='diff-html-conflict-yours']|span[@class='diff-html-conflict-theirs']" mode="nomessage">
+  <xsl:apply-templates select="node()" mode="nomessage"/>
+</xsl:template>
+
+<xsl:template match="span[@class='diff-html-conflict-yours']" >
+  <strong>Edit conflict! Your version:</strong>
   <xsl:apply-templates select="node()"/>
 </xsl:template>
 
-<xsl:template match="span[@class='diff-html-conflict-theirs']">
-  <xsl:if test="not(preceding::span[1][@class='diff-html-conflict-theirs'])">
-  	<strong class="editConflict">Edit conflict! Other version:</strong>
-  </xsl:if>
+<xsl:template match="span[@class='diff-html-conflict-theirs']" >
+  <strong>Edit conflict! Other version:</strong>
   <xsl:apply-templates select="node()"/>
 </xsl:template>
 
