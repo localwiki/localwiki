@@ -13,6 +13,10 @@ from forms import RegistrationForm
 
 class SaplingBackend(SimpleBackend):
     def post_registration_redirect(self, request, user):
+        if self._redirect_to == reverse('auth_login'):
+            # They clicked "login" and then clicked "register," so
+            # let's redirect to the front page.
+            self._redirect_to = '/'
         return (self._redirect_to, (), {})
 
     def get_form_class(self, request):
