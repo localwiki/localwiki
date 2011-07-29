@@ -59,7 +59,7 @@ def sanitize_html_fragment(unsafe, allowed_elements=None, encoding='UTF-8'):
     html_bits = [etree.tostring(elem, method='html', encoding=encoding)
                      for elem in container]
 
-    return ''.join([escape(container.text or '')] + html_bits)
+    return ''.join([escape(container.text or '').encode(encoding)] + html_bits)
 
 
 class XMLField(models.TextField):
