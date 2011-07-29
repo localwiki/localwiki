@@ -11,6 +11,19 @@
     </div>
 {% endblock %}
 
+{% block messages %}
+  {% if form.errors %}
+    <ul class="messages">
+      {% for errors in form.errors.values %}
+        {% for msg in errors %}
+          <li>{{ msg }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}
+
 {% block content %}
     <form method="post" action="">{% csrf_token %}
       {{ form.content }}
