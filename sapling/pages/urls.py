@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 
 from views import *
@@ -96,6 +97,8 @@ urlpatterns = patterns('',
         name='delete'),
     url(r'^(?P<slug>.+)/_revert/(?P<version>[0-9]+)$',
         slugify(PageRevertView.as_view()), name='revert'),
+
+    url(r'^_create$', PageCreateView.as_view(), name='create'),
 
     ##########################################################
     # Basic page URLs.

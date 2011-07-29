@@ -2,11 +2,24 @@
 {% load highlight %}
 {% load url from future %}
 
-{% block title %}Search results for "{{ query }}" - {{ block.super }}{% endblock %}
-{% block header_title %}Search results for "{{ query }}"{% endblock %}
+{% block title %}
+   {% if query %}
+      Search results for "{{ query }}" - {{ block.super }}
+   {% else %}
+      Search or create page
+   {% endif %}
+{% endblock %}
+
+{% block header_title %}
+   {% if query %}
+     Search results for "{{ query }}"
+   {% else %}
+     Search or create a new page
+   {% endif %}
+{% endblock %}
 
 {% block content %}
-
+    <div id="search_results">
     {% if query %}
         {% if not page_exists_for_query %}
           <div id="create_page_dialog">
@@ -15,32 +28,46 @@
           </div>
         {% endif %}
 
-        <div id="search_results">
-          {% for result in page.object_list %}
-              <h3>
-                  <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a>
-              </h3>
-              <p>
-                  {% with result.object.content|striptags as content %}
-                  {% highlight content with query %}
-                  {% endwith %}
-              </p>
-          {% empty %}
-              <p>No results found.</p>
-          {% endfor %}
+        {% for result in page.object_list %}
+            <h3>
+                <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a>
+            </h3>
+            <p>
+                {% with result.object.content|striptags as content %}
+                {% highlight content with query %}
+                {% endwith %}
+            </p>
+        {% empty %}
+            <p>No results found.</p>
+        {% endfor %}
 
-          {% if page.has_previous or page.has_next %}
-              <div class="pagination">
-                  {% if page.has_previous %}
-                  <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}" class="button">&laquo; Previous</a>
-                  {% endif %}
-                  {% if page.has_next %}
-                  <a href="?q={{ query }}&amp;page={{ page.next_page_number }}" class="button">Next &raquo;</a>
-                  {% endif %}
-              </div>
-          {% endif %}
-        </div>
+        {% if page.has_previous or page.has_next %}
+            <div class="pagination">
+                {% if page.has_previous %}
+                <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}" class="button">&laquo; Previous</a>
+                {% endif %}
+                {% if page.has_next %}
+                <a href="?q={{ query }}&amp;page={{ page.next_page_number }}" class="button">Next &raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
     {% else %}
         {# Show some example queries to run, maybe query syntax, something else? #}
+        <div id="create_page_dialog">
+            <h3>Create a new page:</h3>
+            <form method="GET" action="{% url 'pages:create' %}">
+              <input type="text" name="pagename" id="id_pagename" />
+              <input type="submit" value="Create this page">
+            </form>
+        </div>
+        <div class="site_search">
+          <h3>Search for pages:</h3>
+          <form method="GET" action="{% url 'haystack_search' %}">
+            <input type="text" name="q" value="{% if query and form.q.value %}{{ form.q.value }}{% endif %}" id="id_q" />
+            <input type="submit" value="Search">
+          </form>
+        </div>
+
     {% endif %}
+    </div>
 {% endblock %}

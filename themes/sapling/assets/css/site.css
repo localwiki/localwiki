@@ -193,16 +193,16 @@ textarea, input, select {
     margin-top: 0.4em;
 }
 
-#site_search {
+#header .site_search {
     float: right;
     clear: right;
     margin-top: 0.6em;
     margin-right: 2em;
 }
-#site_search input {
+#header .site_search input {
     float: left;
 }
-#site_search input[type="text"], #site_search #id_q {
+#header .site_search input[type="text"], #header .site_search #id_q {
     padding: 0;
     height: 30px;
     width: 180px;
@@ -670,6 +670,28 @@ label {
 }
 #search_results .pagination {
     height: 3em;
+}
+
+#search_results #create_page_dialog input[type="submit"] {
+    margin-bottom: 0;
+}
+
+#search_results .site_search {
+    padding: 1em;
+    padding-bottom: 0.3em;
+}
+#search_results .site_search input {
+}
+#search_results .site_search input[type="text"], #search_results .site_search #id_q {
+    padding: 0;
+    height: 30px;
+    width: 25em;
+    font-size: 15px;
+    line-height: 0;
+    background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 10px;
+    padding-left: 30px;
+    margin-right: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 /*

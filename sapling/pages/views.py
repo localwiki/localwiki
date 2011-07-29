@@ -21,6 +21,8 @@ from models import Page, PageFile, url_to_name
 from forms import PageForm, PageFileForm
 from maps.widgets import InfoMap
 
+from models import slugify
+
 # Where possible, we subclass similar generic views here.
 
 
@@ -249,6 +251,19 @@ class PageCompareView(diff.views.CompareView):
         context = super(PageCompareView, self).get_context_data(**kwargs)
         context['page_diff'] = diff.diff(context['old'], context['new'])
         return context
+
+
+class PageCreateView(RedirectView):
+    """
+    A convenience view that redirects either to the editor (for a new
+    page) or to the page (if it already exists).
+    """
+    def get_redirect_url(self, **kwargs):
+        pagename = self.request.GET.get('pagename')
+        if Page.objects.filter(slug=slugify(pagename)):
+            return Page.objects.get(slug=slugify(pagename)).get_absolute_url()
+        else:
+            return reverse('pages:edit', args=[pagename])
 
 
 @require_POST
