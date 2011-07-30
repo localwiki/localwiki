@@ -88,6 +88,9 @@ a[href$='.DOCX'] {
     line-height: 1;
     width: auto;
 }
+.image_frame img {
+    display: block; 
+}
 .image_frame a {
     line-height: 0;
     display: block;
