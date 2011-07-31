@@ -102,6 +102,15 @@ class PageFile(models.Model):
         ordering = ['-id']
 
 
+class PageRedirect(models.Model):
+    from_page = models.ForeignKey(Page, unique=True,
+        related_name='redirects_from_set')
+    to_page = models.ForeignKey(Page, related_name='redirects_to_set')
+
+    def __unicode__(self):
+        return "%s ---> %s" % (self.from_page.name, self.to_page.name)
+
+
 def clean_name(name):
     # underscores are used to namespace special URLs, so let's remove them
     name = re.sub('_', ' ', name).strip()
