@@ -103,7 +103,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				var next = element.getNext();
 				var ranges = selection.getRanges();
-				ranges[0].moveToElementEditablePosition(next);
+				if(next){
+					ranges[0].moveToElementEditablePosition(next);
+				}
 				selection.selectRanges(ranges);
 				element.remove();
 				return true;
