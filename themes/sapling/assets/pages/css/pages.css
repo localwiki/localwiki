@@ -91,7 +91,7 @@ a[href$='.DOCX'] {
 .image_frame img {
     display: block; 
 }
-.image_frame a {
+.image_frame > a {
     line-height: 0;
     display: block;
 }
@@ -114,6 +114,7 @@ a[href$='.DOCX'] {
     margin-bottom: 0.3em;
 }
 .image_caption {
+    line-height: 1;
     display: block;
     text-align: center;
     font-size: 80%;
