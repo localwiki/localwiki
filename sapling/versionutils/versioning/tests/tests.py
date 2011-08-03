@@ -17,6 +17,7 @@ from versionutils.versioning.constants import *
 mgr = TestSettingsManager()
 INSTALLED_APPS = list(settings.INSTALLED_APPS)
 INSTALLED_APPS.append('versionutils.versioning.tests')
+INSTALLED_APPS.append('django.contrib.comments')
 mgr.set(INSTALLED_APPS=INSTALLED_APPS)
 
 
@@ -1052,6 +1053,22 @@ class TrackChangesTest(TestCase):
         self.assertEqual(len(A.objects.filter(a="child")), 0)
         self.assertEqual(len(B.history.filter(a="child")), 0)
 
+    def test_comment_inheritance(self):
+        from django.contrib.sites.models import Site
+
+        site = Site.objects.all()[0]
+
+        obj = NonVersionedModel(a="hi")
+        obj.save()
+
+        c = OurComment(comment="Hello world", content_object=obj, site=site)
+        c.save()
+        c.comment = "Hello world 2"
+        c.save()
+
+        self.assertEqual(c.history.as_of(version=1).comment, "Hello world")
+        self.assertEqual(c.history.as_of(version=2).comment, "Hello world")
+        
 ##
 #    def test_reverse_related_name(self):
 #        # custom ForeignKey related_name

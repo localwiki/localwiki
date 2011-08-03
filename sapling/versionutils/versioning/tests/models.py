@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.comments.models import Comment
 
 from versionutils.versioning import TrackChanges
 
@@ -302,6 +303,14 @@ class M26SubclassConcreteC(M26ConcreteModelC):
     history = TrackChanges()
 
 
+class NonVersionedModel(models.Model):
+    a = models.CharField(max_length=100)
+
+
+class OurComment(Comment):
+    history = TrackChanges()
+
+
 TEST_MODELS = [
     M1, M2, M3BigInteger, M4Date, M5Decimal, M6Email, M7Numbers,
     M8Time, M9URL, M10File, M11Image, M12ForeignKey, M13ForeignKeySelf,
@@ -313,4 +322,5 @@ TEST_MODELS = [
     M26SubclassConcreteA, M26ConcreteModelB,
     M26SubclassConcreteB, M26ConcreteModelC, M26SubclassConcreteC,
     MUniqueAndFK, MUniqueAndFK2,
+    OurComment, NonVersionedModel,
 ]
