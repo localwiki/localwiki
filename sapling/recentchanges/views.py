@@ -81,7 +81,7 @@ class RecentChangesView(ListView):
         def _the_day(o):
             date = o.history_info.date
             return (date.year, date.month, date.day)
-       
+
         l = []
         # Group objs by day.
         for day, changes in groupby(objs, _the_day):
@@ -115,8 +115,8 @@ class RecentChangesView(ListView):
         # many changes on the RC page as possible to encourage more wiki
         # activity.
         try:
-            latest_changes = Page.history.all()[0:300]
-            start_at = Page.history.all()[0].history_info.date
+            latest_changes = Page.versions.all()[0:300]
+            start_at = Page.versions.all()[0].history_info.date
             num_days_total = 1
 
             for change in latest_changes:

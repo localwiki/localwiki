@@ -124,15 +124,15 @@ class ChangesOnItemFeed(Feed):
 
     def items(self, obj):
         changes_obj = self.recentchanges_class()
-        
-        objs = obj.history.all()[:MAX_CHANGES]
+
+        objs = obj.versions.all()[:MAX_CHANGES]
         for o in objs:
             o.title = obj.title
             o.page = obj.page
             o.diff_url = changes_obj.diff_url(o)
             o.as_of_url = changes_obj.as_of_url(o)
         return skip_ignored_change_types(objs)
-        
+
     def item_title(self, item):
         return item.title
 

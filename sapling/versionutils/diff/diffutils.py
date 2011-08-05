@@ -708,8 +708,8 @@ def diff(object1, object2):
 
     This can work with versioned models, e.g.::
 
-        >> diff(m1.history.as_of(version=2),
-        >>      m2.history.as_of(version=3)).as_html()
+        >> diff(m1.versions.as_of(version=2),
+        >>      m2.versions.as_of(version=3)).as_html()
         u('<tr>'
             '<td colspan="2">name</td>'
           '</tr>

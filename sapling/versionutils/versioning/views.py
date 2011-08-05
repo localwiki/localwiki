@@ -21,7 +21,7 @@ class HistoryList(ListView):
     Example::
 
         def get_queryset(self):
-            all_page_history = Page(slug=self.kwargs['slug']).history.all()
+            all_page_history = Page(slug=self.kwargs['slug']).versions.all()
             # We set self.page to the most recent historical instance of the
             # page.
             self.page = all_page_history[0]
@@ -138,7 +138,7 @@ class RevertView(DeleteView):
 
     def get_object(self):
         obj = super(RevertView, self).get_object()
-        return obj.history.as_of(version=int(self.kwargs['version']))
+        return obj.versions.as_of(version=int(self.kwargs['version']))
 
     def success_msg(self):
         version_number = self.object.history_info.version_number()

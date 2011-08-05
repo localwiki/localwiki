@@ -39,7 +39,7 @@ class PageDetailView(Custom404Mixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(PageDetailView, self).get_context_data(**kwargs)
-        context['date'] = self.object.history.most_recent().history_info.date
+        context['date'] = self.object.versions.most_recent().history_info.date
         if hasattr(self.object, 'mapdata'):
             # Remove the PanZoomBar on normal page views.
             olwidget_options = copy.deepcopy(getattr(settings,
@@ -64,9 +64,9 @@ class PageVersionDetailView(PageDetailView):
         version = self.kwargs.get('version')
         date = self.kwargs.get('date')
         if version:
-            return page.history.as_of(version=int(version))
+            return page.versions.as_of(version=int(version))
         if date:
-            return page.history.as_of(date=dateparser(date))
+            return page.versions.as_of(date=dateparser(date))
 
     def get_context_data(self, **kwargs):
         # we don't want PageDetailView's context, skip to DetailView's
@@ -119,7 +119,7 @@ class PageRevertView(RevertView):
 
     def get_object(self):
         page = Page(slug=self.kwargs['slug'])
-        return page.history.as_of(version=int(self.kwargs['version']))
+        return page.versions.as_of(version=int(self.kwargs['version']))
 
     def get_success_url(self):
         # Redirect back to the page.
@@ -128,7 +128,7 @@ class PageRevertView(RevertView):
 
 class PageHistoryList(HistoryList):
     def get_queryset(self):
-        all_page_history = Page(slug=self.kwargs['slug']).history.all()
+        all_page_history = Page(slug=self.kwargs['slug']).versions.all()
         # We set self.page to the most recent historical instance of the
         # page.
         if all_page_history:
@@ -186,9 +186,9 @@ class PageFileVersionDetailView(RedirectView):
         date = self.kwargs.get('date')
 
         if version:
-            page_file = page_file.history.as_of(version=int(version))
+            page_file = page_file.versions.as_of(version=int(version))
         if date:
-            page_file = page_file.history.as_of(date=dateparser(date))
+            page_file = page_file.versions.as_of(date=dateparser(date))
 
         return page_file.file.url
 
@@ -211,7 +211,7 @@ class PageFileRevertView(RevertView):
 
     def get_object(self):
         file = PageFile(slug=self.kwargs['slug'], name=self.kwargs['file'])
-        return file.history.as_of(version=int(self.kwargs['version']))
+        return file.versions.as_of(version=int(self.kwargs['version']))
 
     def get_success_url(self):
         # Redirect back to the file info page.
@@ -224,7 +224,7 @@ class PageFileInfo(HistoryList):
 
     def get_queryset(self):
         all_file_history = PageFile(slug=self.kwargs['slug'],
-                                    name=self.kwargs['file']).history.all()
+                                    name=self.kwargs['file']).versions.all()
         # We set self.file to the most recent historical instance of the
         # file.
         if all_file_history:

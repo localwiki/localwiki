@@ -123,7 +123,8 @@ def _wrap_reverse_lookups(m):
 
         # Grab parent history objects that are less than the as_of date
         # that point at the base model.
-        qs = parent_model.history.filter(
+        hist_name = getattr(parent_model, '_history_manager_name')
+        qs = getattr(parent_model, hist_name).filter(
             history_date__lte=as_of,
             **unique_values
         )
@@ -133,7 +134,8 @@ def _wrap_reverse_lookups(m):
         ids = qs.annotate(Max('history_id'))
         history_ids = [v['history_id__max'] for v in ids]
         # return a QuerySet containing the proper history objects
-        return parent_model.history.filter(history_id__in=history_ids)
+        return getattr(parent_model, hist_name).filter(
+            history_id__in=history_ids)
 
     def _reverse_attr_lookup(m, rel_o):
         attr = rel_o.field.name
@@ -168,15 +170,16 @@ def _wrap_reverse_lookups(m):
             new_unique_values['%s%s%s' % (attr, LOOKUP_SEP, k)] = v
         unique_values = new_unique_values
 
+        hist_name = getattr(parent_model, '_history_manager_name')
         try:
-            obj = parent_model.history.filter(
+            obj = getattr(parent_model, hist_name).filter(
                 history_date__lte=as_of,
                 **unique_values
             )[0]
         except IndexError:
-            raise parent_model.history.model.DoesNotExist(
+            raise getattr(parent_model, hist_name).model.DoesNotExist(
                 "%s matching query does not exist." %
-                parent_model.history.model._meta.object_name)
+                getattr(parent_model, hist_name).model._meta.object_name)
         return obj
 
     model_meta = m.history_info._object._meta
@@ -241,7 +244,9 @@ def _cascade_revert(current_hm, m, **kws):
     them if they were deleted via a cascaded delete.
     """
     version_before_delete = current_hm.history_info.version_number() - 1
-    hm = m.history.as_of(version=version_before_delete)
+
+    hist_name = getattr(m, '_history_manager_name')
+    hm = getattr(m, hist_name).as_of(version=version_before_delete)
 
     related_objs_versioned = [
         o for o in m._meta.get_all_related_objects() if is_versioned(o.model)
@@ -256,7 +261,10 @@ def _cascade_revert(current_hm, m, **kws):
             rel_hms = [rel_lookup]
 
         for rel_hm in rel_hms:
-            latest_rel_hm = rel_hm.history_info._object.history.most_recent()
+            hist_name = getattr(rel_hm.history_info._object,
+                '_history_manger_name')
+            latest_rel_hm = getattr(
+                rel_hm.history_info._object, hist_name).most_recent()
             if latest_rel_hm.history_info.type in [TYPE_DELETED_CASCADE,
                     TYPE_REVERTED_DELETED_CASCADE]:
                 # The related object was most recently deleted via a
@@ -270,7 +278,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     This is used on a *historical instance* - e.g. something you get
     using history.get(..) rather than an instance of the model.  Like::
 
-        >> ph = p.history.as_of(..)
+        >> ph = p.versions.as_of(..)
         >> ph.revert_to()
 
     Reverts to this version of the model.
@@ -302,7 +310,9 @@ def revert_to(hm, delete_newer_versions=False, **kws):
             m.pk = ms[0].pk
 
     if delete_newer_versions:
-        newer = m.history.filter(history_info__date__gt=hm.history_info.date)
+        hist_name = getattr(m, '_history_manager_name')
+        newer = getattr(m, hist_name).filter(
+            history_info__date__gt=hm.history_info.date)
         for v in newer:
             v.delete()
 
@@ -322,7 +332,8 @@ def revert_to(hm, delete_newer_versions=False, **kws):
         for field in get_related_versioned_fields(m):
             rel_hist = getattr(hm, field.name)
             rel_o = rel_hist.history_info._object
-            latest_version = rel_o.history.most_recent()
+            hist_name = getattr(rel_o, '_history_manager_name')
+            latest_version = getattr(rel_o, hist_name).most_recent()
             if latest_version.history_info.type == TYPE_DELETED:
                 # This means the related, versioned object is
                 # currently deleted.  In this case we want to throw
@@ -334,7 +345,8 @@ def revert_to(hm, delete_newer_versions=False, **kws):
                     "referenced model and try again." %
                     (field.name, rel_o.__class__))
 
-        current_hm = m.history.most_recent()
+        hist_name = getattr(m, '_history_manager_name')
+        current_hm = getattr(m, hist_name).most_recent()
 
         m.save(reverted_to_version=hm, **kws)
 
@@ -357,8 +369,9 @@ def version_number_of(hm):
     if getattr(hm.history_info.instance, '_version_number', None) is None:
         date = hm.history_info.date
         obj = hm.history_info._object
+        hist_name = getattr(obj, '_history_manager_name')
         hm.history_info.instance._version_number = len(
-            obj.history.filter(history_date__lte=date)
+            getattr(obj, hist_name).filter(history_date__lte=date)
         )
     return hm.history_info.instance._version_number
 

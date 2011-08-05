@@ -79,7 +79,9 @@ class MergeMixin(object):
         # if using versioning, return most recent version date
         if is_versioned(instance):
             try:
-                return instance.history.most_recent().history_info.date
+                hist_name = getattr(instance, '_history_manager_name')
+                return getattr(instance, hist_name).most_recent().\
+                    history_info.date
             except:
                 return ''
 
@@ -137,7 +139,9 @@ class MergeMixin(object):
         if current_version_date != form_version_date:
             ancestor = None
             if is_versioned(self.instance) and form_version_date:
-                ancestor_model = self.instance.history.as_of(form_version_date)
+                hist_name = getattr(self.instance, '_history_manager_name')
+                ancestor_model = getattr(self.instance, hist_name).\
+                    as_of(form_version_date)
                 ancestor = model_to_dict(ancestor_model)
             try:
                 self.cleaned_data = self.merge(self.cleaned_data, self.initial,

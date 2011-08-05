@@ -14,7 +14,7 @@ from django_randomfilenamestorage.storage import (
 
 from ckeditor.models import HTML5FragmentField
 from versionutils import diff
-from versionutils.versioning import TrackChanges
+from versionutils import versioning
 
 allowed_tags = ['p', 'br', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3',
                 'h4', 'h5', 'h6', 'hr', 'ul', 'ol', 'li', 'pre', 'table',
@@ -26,7 +26,6 @@ class Page(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False, unique=True)
     content = HTML5FragmentField(allowed_elements=allowed_tags)
-    history = TrackChanges()
 
     def __unicode__(self):
         return self.name
@@ -57,6 +56,7 @@ class PageDiff(diff.BaseModelDiff):
 
 
 diff.register(Page, PageDiff)
+versioning.register(Page)
 
 
 class PageFile(models.Model):
@@ -64,7 +64,6 @@ class PageFile(models.Model):
                             storage=RandomFilenameFileSystemStorage())
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False)
-    history = TrackChanges()
 
     _rough_type_map = [(r'^audio', 'audio'),
                        (r'^video', 'video'),
@@ -100,6 +99,9 @@ class PageFile(models.Model):
     class Meta:
         unique_together = ('slug', 'name')
         ordering = ['-id']
+
+
+versioning.register(PageFile)
 
 
 def clean_name(name):

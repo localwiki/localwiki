@@ -102,7 +102,7 @@ def unique_lookup_values_for(m):
             # because on historical models, foreign keys to versioned
             # models point right to their historical model form.  So we
             # normally do things like
-            # p.history.filter(fk=historical_fk).  To build this unique
+            # p.versions.filter(fk=historical_fk).  To build this unique
             # dictionary we need to use the pk of the provided
             # NON-historical object, m.
 
@@ -115,7 +115,9 @@ def unique_lookup_values_for(m):
                 # the most recent historical version and use that to get
                 # the unique fields.
                 pk_name = parent_model._meta.pk.name
-                parent_hist_instance = parent_model.history.filter(
+                hist_name = getattr(parent_model, '_history_manager_name')
+                versions = getattr(parent_model, hist_name)
+                parent_hist_instance = versions.filter(
                     **{pk_name: getattr(m, field.attname)})[0]
                 parent_instance = parent_hist_instance.history_info._object
 

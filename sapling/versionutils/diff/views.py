@@ -17,6 +17,7 @@ class CompareView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CompareView, self).get_context_data(**kwargs)
+        hist_name = getattr(self.object, '_history_manager_name')
 
         if self.kwargs.get('date1'):
             # Using datetimes to display diff.
@@ -29,14 +30,15 @@ class CompareView(DetailView):
             dates = [dateparser(v) for v in dates]
             old = min(dates)
             new = max(dates)
-            new_version = self.object.history.as_of(date=new)
+            new_version = getattr(self.object, hist_name).as_of(date=new)
             prev_version = new_version.history_info.version_number() - 1
             if len(dates) == 1 and prev_version > 0:
-                old_version = self.object.history.as_of(version=prev_version)
+                old_version = getattr(self.object, hist_name).as_of(
+                    version=prev_version)
             elif prev_version <= 0:
                 old_version = None
             else:
-                old_version = self.object.history.as_of(date=old)
+                old_version = getattr(self.object, hist_name).as_of(date=old)
         else:
             # Using version numbers to display diff.
             version1 = self.kwargs.get('version1')
@@ -53,10 +55,11 @@ class CompareView(DetailView):
             if len(versions) == 1:
                 old = max(new - 1, 1)
             if old > 0:
-                old_version = self.object.history.as_of(version=old)
+                old_version = getattr(self.object, hist_name).as_of(
+                    version=old)
             else:
                 old_version = None
-            new_version = self.object.history.as_of(version=new)
+            new_version = getattr(self.object, hist_name).as_of(version=new)
 
         context.update({'old': old_version, 'new': new_version})
         return context

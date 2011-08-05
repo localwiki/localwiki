@@ -45,7 +45,7 @@ class MapDetailView(Custom404Mixin, DetailView):
         return mapdata
 
     def get_object_date(self):
-        return self.object.history.most_recent().history_info.date
+        return self.object.versions.most_recent().history_info.date
 
     def get_context_data(self, **kwargs):
         context = super(MapDetailView, self).get_context_data(**kwargs)
@@ -127,7 +127,7 @@ class MapVersionDetailView(MapDetailView):
 
     def get_object(self):
         page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
-        latest_page = page.history.most_recent()
+        latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
@@ -137,9 +137,9 @@ class MapVersionDetailView(MapDetailView):
         version = self.kwargs.get('version')
         date = self.kwargs.get('date')
         if version:
-            return mapdata.history.as_of(version=int(version))
+            return mapdata.versions.as_of(version=int(version))
         if date:
-            return mapdata.history.as_of(date=dateparser(date))
+            return mapdata.versions.as_of(date=dateparser(date))
 
     def get_object_date(self):
         return self.object.history_info.date
@@ -196,13 +196,13 @@ class MapRevertView(MapVersionDetailView, RevertView):
 class MapHistoryList(HistoryList):
     def get_queryset(self):
         page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
-        latest_page = page.history.most_recent()
+        latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
 
         self.mapdata = MapData(page=page)
-        return self.mapdata.history.all()
+        return self.mapdata.versions.all()
 
     def get_context_data(self, **kwargs):
         context = super(MapHistoryList, self).get_context_data(**kwargs)
@@ -215,7 +215,7 @@ class MapCompareView(diff.views.CompareView):
 
     def get_object(self):
         page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
-        latest_page = page.history.most_recent()
+        latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
