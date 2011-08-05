@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from registry import *
+from registry import FieldRegistry
 
 
 class AutoUserField(models.ForeignKey):
