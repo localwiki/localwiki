@@ -17,7 +17,7 @@ import manager
 class TrackChanges(object):
     def contribute_to_class(self, cls, name):
         self.manager_name = name
-        models.signals.class_prepared.connect(self.finalize, sender=cls)
+        models.signals.class_prepared.connect(self.connect_to, sender=cls)
 
     def connect_to(self, sender, **kws):
         if sender._meta.abstract:
@@ -459,11 +459,11 @@ class TrackChanges(object):
         for field in instance._meta.many_to_many:
             if is_versioned(field.related.parent_model):
                 current_objs = getattr(instance, field.attname).all()
-                hist_name = getattr(o, '_history_manager_name')
-                setattr(hist_instance, field.attname,
-                        [getattr(o, hist_name).most_recent()
-                         for o in current_objs]
-                )
+                m2m_items = []
+                for o in current_objs:
+                    hist_name = getattr(o, '_history_manager_name')
+                    m2m_items.append(getattr(o, hist_name).most_recent())
+                setattr(hist_instance, field.attname, m2m_items)
 
     def m2m_changed(self, attname, sender, instance, action, reverse,
                     model, pk_set, **kwargs):
@@ -476,10 +476,11 @@ class TrackChanges(object):
         """
         if pk_set:
             changed_ms = [model.objects.get(pk=pk) for pk in pk_set]
-            hist_name = getattr(m, '_history_manager_name')
-            hist_changed_ms = [
-                getattr(m, hist_name).most_recent() for m in changed_ms
-            ]
+            hist_changed_ms = []
+            for m in changed_ms:
+                hist_name = getattr(m, '_history_manager_name')
+                hist_changed_ms.append(getattr(m, hist_name).most_recent())
+
         hist_name = getattr(instance, '_history_manager_name')
         hist_instance = getattr(instance, hist_name).most_recent()
         hist_through = getattr(hist_instance, attname)

@@ -262,7 +262,7 @@ def _cascade_revert(current_hm, m, **kws):
 
         for rel_hm in rel_hms:
             hist_name = getattr(rel_hm.history_info._object,
-                '_history_manger_name')
+                '_history_manager_name')
             latest_rel_hm = getattr(
                 rel_hm.history_info._object, hist_name).most_recent()
             if latest_rel_hm.history_info.type in [TYPE_DELETED_CASCADE,
