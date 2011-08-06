@@ -1,5 +1,6 @@
 from utils import is_versioned
 
+
 def register(cls, manager_name='versions'):
     """
     Registers the model class `cls` as a versioned model.  After

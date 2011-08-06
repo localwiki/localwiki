@@ -11,7 +11,23 @@ def is_versioned(m):
     Returns:
         True if the model has changes tracked.
     """
-    return (getattr(m, '_history_manager_name', None) is not None)
+    history_manager_name = getattr(m, '_history_manager_name', None)
+    if history_manager_name is None:
+        return False
+
+    # If all we did was check for the existance of the
+    # history_manager_name manager on m then we'd get tripped up in the
+    # case of model inheritance. E.g. we could have model B extending
+    # model A, with model A versioned -- and so A would pass along its
+    # _history_manager_name attribute to B via inheritance but B isn't
+    # itself versioned.
+    versions = getattr(m, history_manager_name)
+    model_thats_versioned = versions.model._original_model
+
+    if isinstance(m, models.Model):
+        return type(m) == model_thats_versioned
+    else:
+        return m == model_thats_versioned
 
 
 def is_directly_versioned(m):
