@@ -25,8 +25,8 @@ def get_history_methods(self, model):
     """
     fields = {
         # lookup function for cleaniness. Instead of doing
-        # h.history_ip_address we can write h.history_info.ip_address
-        'history_info': HistoricalMetaInfo(),
+        # h.history_ip_address we can write h.version_info.ip_address
+        'version_info': HistoricalMetaInfo(),
         'revert_to': revert_to,
         '__init__': historical_record_init,
         '__getattribute__':
@@ -66,7 +66,7 @@ def get_history_fields(self, model):
 
 
 def type_to_verbose(m):
-    return TYPE_CHOICES[m.history_info.type][1]
+    return TYPE_CHOICES[m.version_info.type][1]
 
 
 def historical_record_init(m, *args, **kws):
@@ -101,17 +101,17 @@ def _wrap_reverse_lookups(m):
     def _reverse_set_lookup(m, rel_o):
         attr = rel_o.field.name
         parent_model = rel_o.model
-        as_of = m.history_info.date
+        as_of = m.version_info.date
         parent_pk_att = parent_model._meta.pk.attname
 
         # Find unique fields of the base (non-historical) model
         # or use the pk.  We use unique fields, if available, because
         # the underlying pk can change through delete -> recreation
         # cycles while the unique fields stay the same.
-        unique_values = unique_lookup_values_for(m.history_info._object)
+        unique_values = unique_lookup_values_for(m.version_info._object)
         if not unique_values:
-            pk_att = m.history_info._object._meta.pk.attname
-            pk_val = getattr(m.history_info._object, pk_att)
+            pk_att = m.version_info._object._meta.pk.attname
+            pk_val = getattr(m.version_info._object, pk_att)
             unique_values = {pk_att: pk_val}
 
         # Construct something like {'b__email':'a@example.org', ...}
@@ -140,11 +140,11 @@ def _wrap_reverse_lookups(m):
     def _reverse_attr_lookup(m, rel_o):
         attr = rel_o.field.name
         parent_model = rel_o.model
-        as_of = m.history_info.date
+        as_of = m.version_info.date
         is_subclass = False
 
         # Find unique values of the base (non-historical) model.
-        unique_values = unique_lookup_values_for(m.history_info._object)
+        unique_values = unique_lookup_values_for(m.version_info._object)
         if not unique_values:
             # Check to see if this is a subclass relation with a
             # historical model.
@@ -153,14 +153,14 @@ def _wrap_reverse_lookups(m):
                     # Cheap comparison hack.
                     is_subclass = v.related.__dict__ == rel_o.__dict__
 
-            pk_att = m.history_info._object._meta.pk.attname
+            pk_att = m.version_info._object._meta.pk.attname
             if is_subclass:
                 # For subclassed historical models' implicit OneToOne
                 # relation we want to use the id of the historical
                 # model when the related object is also versioned.
                 pk_val = getattr(m, 'history_id')
             else:
-                pk_val = getattr(m.history_info._object, pk_att)
+                pk_val = getattr(m.version_info._object, pk_att)
             unique_values = {pk_att: pk_val}
 
         # Construct something like {'b__email':'a@example.org', ...}
@@ -182,7 +182,7 @@ def _wrap_reverse_lookups(m):
                 getattr(parent_model, hist_name).model._meta.object_name)
         return obj
 
-    model_meta = m.history_info._object._meta
+    model_meta = m.version_info._object._meta
     related_objects = model_meta.get_all_related_objects()
     related_objects += model_meta.get_all_related_many_to_many_objects()
     related_versioned = [o for o in related_objects if is_versioned(o.model)]
@@ -234,7 +234,7 @@ def historical_record_getattribute(model, m, name):
         if name in callables:
             # This is a callable so let's do a lookup on the non-historical
             # model instance.
-            return m.history_info._object_rel_populated.__getattribute__(name)
+            return m.version_info._object_rel_populated.__getattribute__(name)
     return model.__getattribute__(m, name)
 
 
@@ -243,7 +243,7 @@ def _cascade_revert(current_hm, m, **kws):
     Iterates through (reverse) related objects and calls revert_to() on
     them if they were deleted via a cascaded delete.
     """
-    version_before_delete = current_hm.history_info.version_number() - 1
+    version_before_delete = current_hm.version_info.version_number() - 1
 
     hist_name = getattr(m, '_history_manager_name')
     hm = getattr(m, hist_name).as_of(version=version_before_delete)
@@ -261,11 +261,11 @@ def _cascade_revert(current_hm, m, **kws):
             rel_hms = [rel_lookup]
 
         for rel_hm in rel_hms:
-            hist_name = getattr(rel_hm.history_info._object,
+            hist_name = getattr(rel_hm.version_info._object,
                 '_history_manager_name')
             latest_rel_hm = getattr(
-                rel_hm.history_info._object, hist_name).most_recent()
-            if latest_rel_hm.history_info.type in [TYPE_DELETED_CASCADE,
+                rel_hm.version_info._object, hist_name).most_recent()
+            if latest_rel_hm.version_info.type in [TYPE_DELETED_CASCADE,
                     TYPE_REVERTED_DELETED_CASCADE]:
                 # The related object was most recently deleted via a
                 # delete cascade.  So we revert it.
@@ -294,9 +294,9 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     Returns:
         The new model instance.
     """
-    m = hm.history_info._object
+    m = hm.version_info._object
 
-    # If we simply save hm.history_info._object we may hit a uniqueness
+    # If we simply save hm.version_info._object we may hit a uniqueness
     # exception.  If we save the model and it already exists.  This is because
     # the pk of the model may have changed if it was deleted at some time.
 
@@ -312,7 +312,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     if delete_newer_versions:
         hist_name = getattr(m, '_history_manager_name')
         newer = getattr(m, hist_name).filter(
-            history_info__date__gt=hm.history_info.date)
+            version_info__date__gt=hm.version_info.date)
         for v in newer:
             v.delete()
 
@@ -323,7 +323,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     if getattr(hm, '_from_cascade_revert', False):
         m._history_type = TYPE_REVERTED_CASCADE
 
-    if hm.history_info.type == TYPE_DELETED:
+    if hm.version_info.type == TYPE_DELETED:
         # Delete the model when reverting to a deleted version.
         m.delete(reverted_to_version=hm, **kws)
     else:
@@ -331,10 +331,10 @@ def revert_to(hm, delete_newer_versions=False, **kws):
         # currently deleted.
         for field in get_related_versioned_fields(m):
             rel_hist = getattr(hm, field.name)
-            rel_o = rel_hist.history_info._object
+            rel_o = rel_hist.version_info._object
             hist_name = getattr(rel_o, '_history_manager_name')
             latest_version = getattr(rel_o, hist_name).most_recent()
-            if latest_version.history_info.type == TYPE_DELETED:
+            if latest_version.version_info.type == TYPE_DELETED:
                 # This means the related, versioned object is
                 # currently deleted.  In this case we want to throw
                 # an exception, as reverting doesn't make any sense
@@ -353,7 +353,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
         # If we are reverting from a deleted state to a restored state
         # then we should cascade the revert to children that were
         # deleted during the initial delete().
-        if current_hm.history_info.type in DELETED_TYPES:
+        if current_hm.version_info.type in DELETED_TYPES:
             _cascade_revert(current_hm, m, **kws)
 
     return m
@@ -366,14 +366,14 @@ def version_number_of(hm):
     Args:
         hm: Historical record instance.
     """
-    if getattr(hm.history_info.instance, '_version_number', None) is None:
-        date = hm.history_info.date
-        obj = hm.history_info._object
+    if getattr(hm.version_info.instance, '_version_number', None) is None:
+        date = hm.version_info.date
+        obj = hm.version_info._object
         hist_name = getattr(obj, '_history_manager_name')
-        hm.history_info.instance._version_number = len(
+        hm.version_info.instance._version_number = len(
             getattr(obj, hist_name).filter(history_date__lte=date)
         )
-    return hm.history_info.instance._version_number
+    return hm.version_info.instance._version_number
 
 
 class HistoricalMetaInfo(object):
@@ -385,7 +385,7 @@ class HistoricalMetaInfo(object):
         try:
             return getattr(self.__dict__['instance'], 'history_%s' % name)
         except AttributeError, s:
-            raise AttributeError("history_info has no attribute %s" % name)
+            raise AttributeError("version_info has no attribute %s" % name)
 
     def __setattr__(self, name, val):
         if name == 'instance':
@@ -394,7 +394,7 @@ class HistoricalMetaInfo(object):
         try:
             self.__dict__['instance'].__setattr__('history_%s' % name, val)
         except AttributeError, s:
-            raise AttributeError("history_info has no attribute %s" % name)
+            raise AttributeError("version_info has no attribute %s" % name)
 
 
 class HistoricalObjectDescriptor(object):
@@ -413,7 +413,7 @@ class HistoricalObjectDescriptor(object):
             related = getattr(f, 'related', None)
             if related and is_versioned(related.parent_model):
                 attribute = getattr(instance, f.name)
-                related_direct_obj = attribute.history_info._object
+                related_direct_obj = attribute.version_info._object
                 setattr(m, f.name, related_direct_obj)
         return m
 
@@ -431,7 +431,7 @@ class HistoricalObjectDescriptor(object):
                 # the value of the Page_hist object.
                 attribute = getattr(instance, f.name)
                 if attribute is not None:
-                    values.append(attribute.history_info._object.pk)
+                    values.append(attribute.version_info._object.pk)
                 else:
                     values.append(None)
             else:

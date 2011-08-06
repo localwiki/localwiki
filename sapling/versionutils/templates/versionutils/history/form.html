@@ -17,7 +17,7 @@
   </tfoot>
   <tbody>
 {% for version in version_list %}
-{% with version.history_info as version_info %}
+{% with version.version_info as version_info %}
   <tr>
     <td>
       <label for="id_version_{{ forloop.revcounter }}">

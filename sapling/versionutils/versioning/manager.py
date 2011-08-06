@@ -41,9 +41,9 @@ class HistoricalMetaInfoQuerySet(QuerySet):
         for k, v in kws.iteritems():
             k_new = k
             parts = k.split(models.sql.constants.LOOKUP_SEP)
-            # Replace all instances of history_info__whatever with
+            # Replace all instances of version_info__whatever with
             # history_whatever.
-            if len(parts) > 1 and parts[0] == 'history_info':
+            if len(parts) > 1 and parts[0] == 'version_info':
                 rest = models.sql.constants.LOOKUP_SEP.join(parts[2:])
                 if rest:
                     rest = "%s%s" % (models.sql.constants.LOOKUP_SEP, rest)

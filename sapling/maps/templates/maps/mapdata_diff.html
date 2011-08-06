@@ -51,27 +51,27 @@
         <tr>
             <td class="revision_details">
                 {% if old %}
-                  Revision {{ old.history_info.version_number }}
-                  ({{ old.history_info.date }}
+                  Revision {{ old.version_info.version_number }}
+                  ({{ old.version_info.date }}
                   by
                   {% spaceless %}
-                  {% if old.history_info.user %}
-                      <a href="{{ old.history_info.user.get_absolute_url }}">{{ old.history_info.user }}</a>
+                  {% if old.version_info.user %}
+                      <a href="{{ old.version_info.user.get_absolute_url }}">{{ old.version_info.user }}</a>
                   {% else %}
-                      {{ old.history_info.user_ip }}
+                      {{ old.version_info.user_ip }}
                   {% endif %}
                   {% endspaceless %})
                 {% endif %}
             </td>
             <td class="revision_details">
-                Revision {{ new.history_info.version_number }}
-                ({{ new.history_info.date }}
+                Revision {{ new.version_info.version_number }}
+                ({{ new.version_info.date }}
                 by
                 {% spaceless %}
-                {% if new.history_info.user %}
-                    <a href="{{ new.history_info.user.get_absolute_url }}">{{ new.history_info.user }}</a>
+                {% if new.version_info.user %}
+                    <a href="{{ new.version_info.user.get_absolute_url }}">{{ new.version_info.user }}</a>
                 {% else %}
-                    {{ new.history_info.user_ip }}
+                    {{ new.version_info.user_ip }}
                 {% endif %}
                 {% endspaceless %})
             </td>

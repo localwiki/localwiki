@@ -45,7 +45,7 @@ class MapDetailView(Custom404Mixin, DetailView):
         return mapdata
 
     def get_object_date(self):
-        return self.object.versions.most_recent().history_info.date
+        return self.object.versions.most_recent().version_info.date
 
     def get_context_data(self, **kwargs):
         context = super(MapDetailView, self).get_context_data(**kwargs)
@@ -142,7 +142,7 @@ class MapVersionDetailView(MapDetailView):
             return mapdata.versions.as_of(date=dateparser(date))
 
     def get_object_date(self):
-        return self.object.history_info.date
+        return self.object.version_info.date
 
     def get_context_data(self, **kwargs):
         context = super(MapVersionDetailView, self).get_context_data(**kwargs)
@@ -189,7 +189,7 @@ class MapRevertView(MapVersionDetailView, RevertView):
 
         context['show_revision'] = True
         context['map'] = InfoMap([(self.object.geom, self.object.page.name)])
-        context['date'] = self.object.history_info.date
+        context['date'] = self.object.version_info.date
         return context
 
 

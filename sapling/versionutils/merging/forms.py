@@ -81,7 +81,7 @@ class MergeMixin(object):
             try:
                 hist_name = getattr(instance, '_history_manager_name')
                 return getattr(instance, hist_name).most_recent().\
-                    history_info.date
+                    version_info.date
             except:
                 return ''
 

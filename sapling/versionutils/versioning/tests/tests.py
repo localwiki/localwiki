@@ -142,7 +142,7 @@ class TrackChangesTest(TestCase):
         self.assertEqual(m.versions.most_recent().c, m_old.c)
         self.assertEqual(m.versions.most_recent().d, m_old.d)
 
-        recent_obj = m.versions.most_recent().history_info._object
+        recent_obj = m.versions.most_recent().version_info._object
         vals_recent = [getattr(recent_obj, field)
                        for field in recent_obj._meta.get_all_field_names()
         ]
@@ -166,9 +166,9 @@ class TrackChangesTest(TestCase):
         m = M16Unique.objects.get(a="What")
         m.delete()
         del_m = m.versions.most_recent()
-        del_m_obj = del_m.history_info._object
+        del_m_obj = del_m.version_info._object
 
-        self.assertEqual(del_m.history_info.type, TYPE_DELETED)
+        self.assertEqual(del_m.version_info.type, TYPE_DELETED)
         self.assertEqual(del_m_obj.a, m.a)
         self.assertEqual(del_m_obj.b, m.b)
         self.assertEqual(del_m_obj.c, m.c)
@@ -267,8 +267,8 @@ class TrackChangesTest(TestCase):
         m.save()
         for i in range(1, 100):
             v_cur = m.versions.most_recent()
-            date = v_cur.history_info.date
-            self.assertEqual(v_cur.history_info.version_number(), i)
+            date = v_cur.version_info.date
+            self.assertEqual(v_cur.version_info.version_number(), i)
             m.b += "."
             m.save()
 
@@ -413,12 +413,12 @@ class TrackChangesTest(TestCase):
         qs.delete()
 
         h_objs = M2.versions.filter(a="a oh a")
-        self.assertEqual(h_objs[0].history_info.type, TYPE_DELETED)
-        self.assertEqual(h_objs[1].history_info.type, TYPE_ADDED)
+        self.assertEqual(h_objs[0].version_info.type, TYPE_DELETED)
+        self.assertEqual(h_objs[1].version_info.type, TYPE_ADDED)
 
         h_objs = M12ForeignKey.versions.filter(b="ratatat")
-        self.assertEqual(h_objs[0].history_info.type, TYPE_DELETED)
-        self.assertEqual(h_objs[1].history_info.type, TYPE_ADDED)
+        self.assertEqual(h_objs[0].version_info.type, TYPE_DELETED)
+        self.assertEqual(h_objs[1].version_info.type, TYPE_ADDED)
 
         # Bulk updates don't work yet and it's not clear
         # they will unless Django fixes update behavior
@@ -603,7 +603,7 @@ class TrackChangesTest(TestCase):
         # latest version in the history should be logged as Reverted/Deleted
         # entry.
         mh = M16Unique.versions.filter(a="Gonna get", b="deleted", c=0)[0]
-        self.assertEqual(mh.history_info.type, TYPE_REVERTED_DELETED)
+        self.assertEqual(mh.version_info.type, TYPE_REVERTED_DELETED)
 
         # ====================================================================
         # Now with a revert when the object is also currently deleted
@@ -631,7 +631,7 @@ class TrackChangesTest(TestCase):
         mh = M16Unique.versions.filter(
             a="About to get", b="really deleted", c=0
         )[0]
-        self.assertEqual(mh.history_info.type, TYPE_REVERTED_DELETED)
+        self.assertEqual(mh.version_info.type, TYPE_REVERTED_DELETED)
 
     def test_revert_grab_reverted_version(self):
         m = M16Unique(a="Gonna get", b="reverted", c=0)
@@ -644,7 +644,7 @@ class TrackChangesTest(TestCase):
 
         m = M16Unique.objects.get(a="Gonna get")
 
-        r_m = m.versions.most_recent().history_info.reverted_to_version
+        r_m = m.versions.most_recent().version_info.reverted_to_version
         self.assertEqual(r_m, m.versions.all()[2])
 
     def test_copy_custom_attributes(self):
@@ -851,7 +851,7 @@ class TrackChangesTest(TestCase):
         child.delete(comment="the comment")
         # delete comment should cascade to parent's delete
         latest_m12 = M12ForeignKey.versions.filter(b="i am the parent")[0]
-        self.assertEqual(latest_m12.history_info.comment, "the comment")
+        self.assertEqual(latest_m12.version_info.comment, "the comment")
 
         child = M2(a="oh yes 2", b="uh huh 2", c=10)
         child.save()
@@ -862,7 +862,7 @@ class TrackChangesTest(TestCase):
         # We shouldn't have a historical instance stored for the
         # parent's delete.
         latest_m12 = M12ForeignKey.versions.filter(b="i am the parent 2")[0]
-        self.assertNotEqual(latest_m12.history_info.type, TYPE_DELETED)
+        self.assertNotEqual(latest_m12.version_info.type, TYPE_DELETED)
 
     def test_fk_reverse_proper_instance(self):
         """

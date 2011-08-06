@@ -12,7 +12,7 @@ class MapChanges(RecentChanges):
 
     def queryset(self, start_at=None):
         if start_at:
-            return MapData.versions.filter(history_info__date__gte=start_at)
+            return MapData.versions.filter(version_info__date__gte=start_at)
         return MapData.versions.all()
 
     def title(self, obj):

@@ -141,7 +141,7 @@ class RevertView(DeleteView):
         return obj.versions.as_of(version=int(self.kwargs['version']))
 
     def success_msg(self):
-        version_number = self.object.history_info.version_number()
+        version_number = self.object.version_info.version_number()
         return 'Reverted to version %s.' % version_number
 
     def revert(self, *args, **kwargs):
@@ -163,7 +163,7 @@ class RevertView(DeleteView):
         orig_object = self.object
         # Temporarily swap out self.object with an instance of the
         # non-historical object for template-finding purposes.
-        self.object = orig_object.history_info._object
+        self.object = orig_object.version_info._object
         names = super(RevertView, self).get_template_names()
         self.object = orig_object
         return names

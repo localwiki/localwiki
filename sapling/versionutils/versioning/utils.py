@@ -135,7 +135,7 @@ def unique_lookup_values_for(m):
                 versions = getattr(parent_model, hist_name)
                 parent_hist_instance = versions.filter(
                     **{pk_name: getattr(m, field.attname)})[0]
-                parent_instance = parent_hist_instance.history_info._object
+                parent_instance = parent_hist_instance.version_info._object
 
             parent_unique = unique_lookup_values_for(parent_instance)
             if not parent_unique:

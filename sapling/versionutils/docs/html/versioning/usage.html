@@ -73,16 +73,16 @@
 </pre></div>
 </div>
 <p>Historical instances have all the same fields as the normal model.  They
-also have <a class="reference internal" href="reference.html#history_info" title="history_info"><tt class="xref py py-attr docutils literal"><span class="pre">the</span> <span class="pre">history_info</span> <span class="pre">field</span></tt></a> which has information on the
+also have <a class="reference internal" href="reference.html#version_info" title="version_info"><tt class="xref py py-attr docutils literal"><span class="pre">the</span> <span class="pre">version_info</span> <span class="pre">field</span></tt></a> which has information on the
 revision:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">m_hist</span><span class="o">.</span><span class="n">history_info</span><span class="o">.</span><span class="n">date</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">m_hist</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">date</span>
 <span class="go">datetime.datetime(2011, 2, 15, 17, 23, 20, 483243)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m_hist</span><span class="o">.</span><span class="n">history_info</span><span class="o">.</span><span class="n">version_number</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m_hist</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">version_number</span><span class="p">()</span>
 <span class="go">1</span>
 </pre></div>
 </div>
 <p>If you enable the <a class="reference internal" href="install.html"><em>AutoTrackUserInfoMiddleware</em></a> then the optional
-<tt class="docutils literal"><span class="pre">history_info.user</span></tt> and <tt class="docutils literal"><span class="pre">history_info.user_ip</span></tt> attributes be
+<tt class="docutils literal"><span class="pre">version_info.user</span></tt> and <tt class="docutils literal"><span class="pre">version_info.user_ip</span></tt> attributes be
 automatically added.</p>
 </div>
 <div class="section" id="reverting-objects">
@@ -131,7 +131,7 @@ most recently deleted:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Person</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Mike&quot;</span><span class="p">)</span>
 <span class="go">[&lt;Person_hist: Person object as of 2011-02-15 21:53:15.613445&gt;]</span>
 <span class="go"># And we can filter based on historical info attributes, too.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Person</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">history_info__date__gte</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Person</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">version_info__date__gte</span><span class="o">=</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
 <span class="go">[&lt;Person_hist: Person object as of 2011-02-15 21:53:15.613445&gt;, &lt;Person_hist: Person object as of 2011-02-15 20:33:03.409725&gt;]</span>
 </pre></div>
 </div>
@@ -202,10 +202,10 @@ to be passed into <tt class="docutils literal"><span class="pre">save()</span></
 <div class="highlight-python"><pre>&gt;&gt; p = Person(name="Arlen", description="Likes beer")
 &gt;&gt; p.save(comment="creating this person for the first time")
 &gt;&gt; ph = p.history.most_recent()
-&gt;&gt; ph.history_info.comment
+&gt;&gt; ph.version_info.comment
 u'creating this person for the first time'</pre>
 </div>
-<p>You can pass in any of the <em>optional fields</em> on the <a class="reference internal" href="reference.html#history_info" title="history_info"><tt class="xref py py-attr docutils literal"><span class="pre">history_info</span>
+<p>You can pass in any of the <em>optional fields</em> on the <a class="reference internal" href="reference.html#version_info" title="version_info"><tt class="xref py py-attr docutils literal"><span class="pre">version_info</span>
 <span class="pre">attribute</span></tt></a> into the <tt class="docutils literal"><span class="pre">save()</span></tt> and <tt class="docutils literal"><span class="pre">delete()</span></tt> methods on your
 models.  In theory you can pass in non-optional fields (like <tt class="docutils literal"><span class="pre">date</span></tt>),
 but you probably won&#8217;t need to do that.</p>
@@ -215,7 +215,7 @@ but you probably won&#8217;t need to do that.</p>
 <p>Get all historical versions where the model was added, not just
 updated:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">versionutils.versioning.constants</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Person</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">history_info__type</span><span class="o">=</span><span class="n">TYPE_ADDED</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Person</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">version_info__type</span><span class="o">=</span><span class="n">TYPE_ADDED</span><span class="p">)</span>
 <span class="go">[&lt;Person_hist: Person object as of 2011-02-15 21:53:15.613445&gt;,</span>
 <span class="go"> &lt;Person_hist: Person object as of 2011-02-15 17:23:20.483243&gt;]</span>
 </pre></div>

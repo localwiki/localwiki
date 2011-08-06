@@ -31,7 +31,7 @@ class CompareView(DetailView):
             old = min(dates)
             new = max(dates)
             new_version = getattr(self.object, hist_name).as_of(date=new)
-            prev_version = new_version.history_info.version_number() - 1
+            prev_version = new_version.version_info.version_number() - 1
             if len(dates) == 1 and prev_version > 0:
                 old_version = getattr(self.object, hist_name).as_of(
                     version=prev_version)

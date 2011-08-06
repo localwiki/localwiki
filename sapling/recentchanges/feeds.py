@@ -55,38 +55,38 @@ class RecentChangesFeed(Feed):
         return item.title
 
     def item_description(self, item):
-        user = getattr(item.history_info, 'user', item.history_info.user_ip)
+        user = getattr(item.version_info, 'user', item.version_info.user_ip)
         comment = ''
-        change_type = item.history_info.type_verbose().lower()
-        if item.history_info.type in REVERTED_TYPES:
+        change_type = item.version_info.type_verbose().lower()
+        if item.version_info.type in REVERTED_TYPES:
             change_type = "%s (to version %s)" % (change_type,
-                item.history_info.reverted_to_version.history_info.date)
-        if item.history_info.comment:
-            comment = ' with comment "%s"' % item.history_info.comment
+                item.version_info.reverted_to_version.version_info.date)
+        if item.version_info.comment:
+            comment = ' with comment "%s"' % item.version_info.comment
         return "%s was %s by %s%s." % (item.title, change_type, user, comment)
 
     def item_link(self, item):
-        if item.history_info.type == TYPE_ADDED:
+        if item.version_info.type == TYPE_ADDED:
             return item.as_of_url
-        if item.history_info.type in [
+        if item.version_info.type in [
                 TYPE_DELETED, TYPE_DELETED_CASCADE, TYPE_REVERTED_DELETED]:
             return item.get_absolute_url()
         return item.diff_url
 
     def item_author_name(self, item):
-        if item.history_info.user:
-            return item.history_info.user.username
+        if item.version_info.user:
+            return item.version_info.user.username
         else:
-            return item.history_info.user_ip
+            return item.version_info.user_ip
 
     def item_author_link(self, item):
-        if item.history_info.user:
-            return item.history_info.user.get_absolute_url()
+        if item.version_info.user:
+            return item.version_info.user.get_absolute_url()
         else:
             return ""
 
     def item_pubdate(self, item):
-        return item.history_info.date
+        return item.version_info.date
 
     def get_feed(self, obj, request):
         self.request = request
@@ -137,38 +137,38 @@ class ChangesOnItemFeed(Feed):
         return item.title
 
     def item_description(self, item):
-        user = getattr(item.history_info, 'user', item.history_info.user_ip)
+        user = getattr(item.version_info, 'user', item.version_info.user_ip)
         comment = ''
-        change_type = item.history_info.type_verbose().lower()
-        if item.history_info.type in REVERTED_TYPES:
+        change_type = item.version_info.type_verbose().lower()
+        if item.version_info.type in REVERTED_TYPES:
             change_type = "%s (to version %s)" % (change_type,
-                item.history_info.reverted_to_version.history_info.date)
-        if item.history_info.comment:
-            comment = ' with comment "%s"' % item.history_info.comment
+                item.version_info.reverted_to_version.version_info.date)
+        if item.version_info.comment:
+            comment = ' with comment "%s"' % item.version_info.comment
         return "%s was %s by %s%s." % (item.title, change_type, user, comment)
 
     def item_link(self, item):
-        if item.history_info.type == TYPE_ADDED:
+        if item.version_info.type == TYPE_ADDED:
             return item.as_of_url
-        if item.history_info.type in [
+        if item.version_info.type in [
                 TYPE_DELETED, TYPE_DELETED_CASCADE, TYPE_REVERTED_DELETED]:
             return item.get_absolute_url()
         return item.diff_url
 
     def item_author_name(self, item):
-        if item.history_info.user:
-            return item.history_info.user.username
+        if item.version_info.user:
+            return item.version_info.user.username
         else:
-            return item.history_info.user_ip
+            return item.version_info.user_ip
 
     def item_author_link(self, item):
-        if item.history_info.user:
-            return item.history_info.user.get_absolute_url()
+        if item.version_info.user:
+            return item.version_info.user.get_absolute_url()
         else:
             return ""
 
     def item_pubdate(self, item):
-        return item.history_info.date
+        return item.version_info.date
 
     def get_feed(self, obj, request):
         self.request = request
@@ -176,4 +176,4 @@ class ChangesOnItemFeed(Feed):
 
 
 def skip_ignored_change_types(objs):
-    return [o for o in objs if o.history_info.type not in IGNORE_TYPES]
+    return [o for o in objs if o.version_info.type not in IGNORE_TYPES]

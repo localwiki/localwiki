@@ -12,7 +12,7 @@ class PageChanges(RecentChanges):
 
     def queryset(self, start_at=None):
         if start_at:
-            return Page.versions.filter(history_info__date__gte=start_at)
+            return Page.versions.filter(version_info__date__gte=start_at)
         return Page.versions.all()
 
     def page(self, obj):
@@ -24,7 +24,7 @@ class PageFileChanges(RecentChanges):
 
     def queryset(self, start_at=None):
         if start_at:
-            return PageFile.versions.filter(history_info__date__gte=start_at)
+            return PageFile.versions.filter(version_info__date__gte=start_at)
         else:
             return PageFile.versions.all()
 
@@ -41,14 +41,14 @@ class PageFileChanges(RecentChanges):
     def diff_url(self, obj):
         return reverse('pages:file-compare-dates', kwargs={
             'slug': self.page(obj).pretty_slug,
-            'date1': obj.history_info.date,
+            'date1': obj.version_info.date,
             'file': obj.name,
         })
 
     def as_of_url(self, obj):
         return reverse('pages:file-as_of_date', kwargs={
             'slug': self.page(obj).pretty_slug,
-            'date': obj.history_info.date,
+            'date': obj.version_info.date,
             'file': obj.name,
         })
 

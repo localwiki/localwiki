@@ -19,38 +19,38 @@
           {% for change in changes_on_item %}
             {% if forloop.first %}
               <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a>
-                  last modified {{ change.history_info.date|timesince }} ago</h3>
+                  last modified {{ change.version_info.date|timesince }} ago</h3>
               <ul>
             {% endif %}
 
-            {% if change.history_info.type not in ignore_types %}
+            {% if change.version_info.type not in ignore_types %}
               <li class="{{ change.classname }}">
                 {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
-                {% if change.history_info.type in added_types %}
+                {% if change.version_info.type in added_types %}
                 <span class="changelabel added">new</span>
-                {% else %}{% if change.history_info.type in deleted_types %}
+                {% else %}{% if change.version_info.type in deleted_types %}
                 <span class="changelabel deleted">deleted</span>
                 {% else %}
                 <span class="changelabel updated"><a href="{{ change.diff_url }}">changes</a></span>
                 {% endif %}{% endif %}
 
-                {% if change.history_info.type in reverted_types %}
-                <span class="revert">Reverted to version from {{ change.history_info.reverted_to_version.history_info.date|timesince}} ago</span>
+                {% if change.version_info.type in reverted_types %}
+                <span class="revert">Reverted to version from {{ change.version_info.reverted_to_version.version_info.date|timesince}} ago</span>
                 {% endif %}
 
                 <span class="type"></span>
 
-                {% if change.history_info.comment %}
+                {% if change.version_info.comment %}
                     <span class="comment">
-                      {{ change.history_info.comment }}
+                      {{ change.version_info.comment }}
                     </span>
                 {% endif %}
 
                 <span class="user">
-                  {% if change.history_info.user %}
-                  <a href="{{ change.history_info.user.get_absolute_url }}">{{ change.history_info.user }}</a>
+                  {% if change.version_info.user %}
+                  <a href="{{ change.version_info.user.get_absolute_url }}">{{ change.version_info.user }}</a>
                   {% else %}
-                  {{ change.history_info.user_ip }}
+                  {{ change.version_info.user_ip }}
                   {% endif %}
                 </span>
               </li>

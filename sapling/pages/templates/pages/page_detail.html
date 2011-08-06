@@ -17,14 +17,14 @@
   {% block content %}
     {% if show_revision %}
       <em class="revision_details">
-          Revision {{ page.history_info.version_number }}
-          ({{ page.history_info.date }}
+          Revision {{ page.version_info.version_number }}
+          ({{ page.version_info.date }}
           by
           {% spaceless %}
-          {% if page.history_info.user %}
-              <a href="{{ page.history_info.user.get_absolute_url }}">{{ page.history_info.user }}</a>
+          {% if page.version_info.user %}
+              <a href="{{ page.version_info.user.get_absolute_url }}">{{ page.version_info.user }}</a>
           {% else %}
-              {{ page.history_info.user_ip }}
+              {{ page.version_info.user_ip }}
           {% endif %}
           {% endspaceless %})
       </em>

@@ -12,4 +12,4 @@ def merge_changes(objs_lists):
     # This is fast enough for now.  heapq.merge does this, but it
     # doesn't take a key parameter.
     return sorted(itertools.chain(*objs_lists),
-                  key=lambda x: x.history_info.date, reverse=True)
+                  key=lambda x: x.version_info.date, reverse=True)

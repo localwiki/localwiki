@@ -39,7 +39,7 @@ class PageDetailView(Custom404Mixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(PageDetailView, self).get_context_data(**kwargs)
-        context['date'] = self.object.versions.most_recent().history_info.date
+        context['date'] = self.object.versions.most_recent().version_info.date
         if hasattr(self.object, 'mapdata'):
             # Remove the PanZoomBar on normal page views.
             olwidget_options = copy.deepcopy(getattr(settings,
@@ -71,7 +71,7 @@ class PageVersionDetailView(PageDetailView):
     def get_context_data(self, **kwargs):
         # we don't want PageDetailView's context, skip to DetailView's
         context = super(DetailView, self).get_context_data(**kwargs)
-        context['date'] = self.object.history_info.date
+        context['date'] = self.object.version_info.date
         context['show_revision'] = True
         return context
 
