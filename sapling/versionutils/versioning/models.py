@@ -29,8 +29,7 @@ class TrackChanges(object):
             while base._meta.proxy:
                 base = base._meta.proxy_for_model
             if hasattr(base, '_history_manager_name'):
-                hist_attr = getattr(base, '_history_manager_name')
-                history_model = getattr(sender, hist_attr).model
+                history_model = get_versions(sender).model
         else:
             history_model = self.create_history_model(sender)
 
@@ -125,9 +124,8 @@ class TrackChanges(object):
         # models in the exact same fashion as non-historical models.
         if model._meta.parents:
             if is_versioned(model.__base__):
-                hist_name = getattr(model.__base__, '_history_manager_name')
                 return type(
-                    name, (getattr(model.__base__, hist_name).model,), attrs)
+                    name, (get_versions(model.__base__).model,), attrs)
             return type(name, (model.__base__,), attrs)
         return type(name, (models.Model,), attrs)
 
@@ -307,9 +305,7 @@ class TrackChanges(object):
                     else:
                         # Make the field into a foreignkey pointed at the
                         # history model.
-                        hist_attr = getattr(
-                            parent_model, '_history_manager_name')
-                        fk_hist_obj = getattr(parent_model, hist_attr).model
+                        fk_hist_obj = get_versions(parent_model).model
                         hist_field = model_type(fk_hist_obj, **options)
 
                     hist_field.name = field.name
@@ -461,8 +457,7 @@ class TrackChanges(object):
                 current_objs = getattr(instance, field.attname).all()
                 m2m_items = []
                 for o in current_objs:
-                    hist_name = getattr(o, '_history_manager_name')
-                    m2m_items.append(getattr(o, hist_name).most_recent())
+                    m2m_items.append(get_versions(o).most_recent())
                 setattr(hist_instance, field.attname, m2m_items)
 
     def m2m_changed(self, attname, sender, instance, action, reverse,
@@ -478,11 +473,9 @@ class TrackChanges(object):
             changed_ms = [model.objects.get(pk=pk) for pk in pk_set]
             hist_changed_ms = []
             for m in changed_ms:
-                hist_name = getattr(m, '_history_manager_name')
-                hist_changed_ms.append(getattr(m, hist_name).most_recent())
+                hist_changed_ms.append(get_versions(m).most_recent())
 
-        hist_name = getattr(instance, '_history_manager_name')
-        hist_instance = getattr(instance, hist_name).most_recent()
+        hist_instance = get_versions(instance).most_recent()
         hist_through = getattr(hist_instance, attname)
         if action == 'post_add':
             for hist_m in hist_changed_ms:
@@ -516,8 +509,7 @@ class TrackChanges(object):
                     # recent version of that object.
                     # The object the FK id refers to may have been
                     # deleted so we can't simply do Model.objects.get().
-                    hist_name = getattr(field.rel.to, '_history_manager_name')
-                    fk_hist_model = getattr(field.rel.to, hist_name).model
+                    fk_hist_model = get_versions(field.rel.to).model
                     fk_id_name = field.rel.field_name
                     fk_id_val = getattr(instance, field.attname)
                     fk_objs = fk_hist_model.objects.filter(

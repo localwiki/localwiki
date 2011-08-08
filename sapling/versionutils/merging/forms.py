@@ -1,8 +1,10 @@
 from django.db import models
 from django import forms
 
-from versionutils.versioning.utils import is_versioned
 from django.forms.models import model_to_dict
+
+from versionutils.versioning.utils import is_versioned
+from versionutils.versioning import get_versions
 
 
 class MergeMixin(object):
@@ -79,9 +81,7 @@ class MergeMixin(object):
         # if using versioning, return most recent version date
         if is_versioned(instance):
             try:
-                hist_name = getattr(instance, '_history_manager_name')
-                return getattr(instance, hist_name).most_recent().\
-                    version_info.date
+                return get_versions(instance).most_recent().version_info.date
             except:
                 return ''
 
@@ -139,9 +139,8 @@ class MergeMixin(object):
         if current_version_date != form_version_date:
             ancestor = None
             if is_versioned(self.instance) and form_version_date:
-                hist_name = getattr(self.instance, '_history_manager_name')
-                ancestor_model = getattr(self.instance, hist_name).\
-                    as_of(form_version_date)
+                ancestor_model = get_versions(self.instance).as_of(
+                    form_version_date)
                 ancestor = model_to_dict(ancestor_model)
             try:
                 self.cleaned_data = self.merge(self.cleaned_data, self.initial,

@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.db.models.sql.constants import LOOKUP_SEP
 
+import exceptions
+
 
 def is_versioned(m):
     """
@@ -28,6 +30,25 @@ def is_versioned(m):
         return type(m) == model_thats_versioned
     else:
         return m == model_thats_versioned
+
+
+def get_versions(m):
+    """
+    Args:
+        m: A model instance or model class.
+
+    Returns:
+        The historical manager for m.
+
+    Raises:
+        versioning.exceptions.ModelNotVersioned exception if m is not
+            versioned.
+    """
+    history_manager_name = getattr(m, '_history_manager_name', None)
+    if history_manager_name is None:
+        raise exceptions.ModelNotVersioned(
+            "%s is not a versioned model" % m)
+    return getattr(m, history_manager_name)
 
 
 def is_directly_versioned(m):

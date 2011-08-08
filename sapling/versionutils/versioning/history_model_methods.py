@@ -123,8 +123,7 @@ def _wrap_reverse_lookups(m):
 
         # Grab parent history objects that are less than the as_of date
         # that point at the base model.
-        hist_name = getattr(parent_model, '_history_manager_name')
-        qs = getattr(parent_model, hist_name).filter(
+        qs = get_versions(parent_model).filter(
             history_date__lte=as_of,
             **unique_values
         )
@@ -134,8 +133,7 @@ def _wrap_reverse_lookups(m):
         ids = qs.annotate(Max('history_id'))
         history_ids = [v['history_id__max'] for v in ids]
         # return a QuerySet containing the proper history objects
-        return getattr(parent_model, hist_name).filter(
-            history_id__in=history_ids)
+        return get_versions(parent_model).filter(history_id__in=history_ids)
 
     def _reverse_attr_lookup(m, rel_o):
         attr = rel_o.field.name
@@ -170,9 +168,8 @@ def _wrap_reverse_lookups(m):
             new_unique_values['%s%s%s' % (attr, LOOKUP_SEP, k)] = v
         unique_values = new_unique_values
 
-        hist_name = getattr(parent_model, '_history_manager_name')
         try:
-            obj = getattr(parent_model, hist_name).filter(
+            obj = get_versions(parent_model).filter(
                 history_date__lte=as_of,
                 **unique_values
             )[0]
@@ -245,8 +242,7 @@ def _cascade_revert(current_hm, m, **kws):
     """
     version_before_delete = current_hm.version_info.version_number() - 1
 
-    hist_name = getattr(m, '_history_manager_name')
-    hm = getattr(m, hist_name).as_of(version=version_before_delete)
+    hm = get_versions(m).as_of(version=version_before_delete)
 
     related_objs_versioned = [
         o for o in m._meta.get_all_related_objects() if is_versioned(o.model)
@@ -261,10 +257,8 @@ def _cascade_revert(current_hm, m, **kws):
             rel_hms = [rel_lookup]
 
         for rel_hm in rel_hms:
-            hist_name = getattr(rel_hm.version_info._object,
-                '_history_manager_name')
-            latest_rel_hm = getattr(
-                rel_hm.version_info._object, hist_name).most_recent()
+            latest_rel_hm = get_versions(
+                rel_hm.version_info._object).most_recent()
             if latest_rel_hm.version_info.type in [TYPE_DELETED_CASCADE,
                     TYPE_REVERTED_DELETED_CASCADE]:
                 # The related object was most recently deleted via a
@@ -310,8 +304,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
             m.pk = ms[0].pk
 
     if delete_newer_versions:
-        hist_name = getattr(m, '_history_manager_name')
-        newer = getattr(m, hist_name).filter(
+        newer = get_versions(m).filter(
             version_info__date__gt=hm.version_info.date)
         for v in newer:
             v.delete()
@@ -332,8 +325,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
         for field in get_related_versioned_fields(m):
             rel_hist = getattr(hm, field.name)
             rel_o = rel_hist.version_info._object
-            hist_name = getattr(rel_o, '_history_manager_name')
-            latest_version = getattr(rel_o, hist_name).most_recent()
+            latest_version = get_versions(rel_o).most_recent()
             if latest_version.version_info.type == TYPE_DELETED:
                 # This means the related, versioned object is
                 # currently deleted.  In this case we want to throw
@@ -345,8 +337,7 @@ def revert_to(hm, delete_newer_versions=False, **kws):
                     "referenced model and try again." %
                     (field.name, rel_o.__class__))
 
-        hist_name = getattr(m, '_history_manager_name')
-        current_hm = getattr(m, hist_name).most_recent()
+        current_hm = get_versions(m).most_recent()
 
         m.save(reverted_to_version=hm, **kws)
 
@@ -369,9 +360,8 @@ def version_number_of(hm):
     if getattr(hm.version_info.instance, '_version_number', None) is None:
         date = hm.version_info.date
         obj = hm.version_info._object
-        hist_name = getattr(obj, '_history_manager_name')
         hm.version_info.instance._version_number = len(
-            getattr(obj, hist_name).filter(history_date__lte=date)
+            get_versions(obj).filter(history_date__lte=date)
         )
     return hm.version_info.instance._version_number
 
