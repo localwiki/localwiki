@@ -54,14 +54,15 @@ class WikiEditor(CKEditor):
         plugins = ['insertimage', 'simpleimage', 'domcleanup', 'seamless',
                    'simpletable', 'simpletabletools', 'customenterkey',
                    'pagelink', 'inheritcss', 'customstylescombo',
-                   'customsourcearea', 'ckfixes']
+                   'customsourcearea', 'ckfixes', 'wikiplugins']
         return ','.join(plugins)
 
     def get_toolbar(self):
         basic_styles = ['Bold', 'Italic', 'Underline', 'Strike']
         styles = ['Styles']
         links = ['PageLink', 'PageAnchor']
-        media = ['InsertImage', 'AttachFile', 'SimpleTable', 'HorizontalRule']
+        media = ['InsertImage', 'AttachFile', 'SimpleTable', 'HorizontalRule',
+                 'Plugins']
         lists = ['NumberedList', 'BulletedList']
         align = ['JustifyLeft', 'JustifyCenter', 'JustifyRight']
         indent = ['Outdent', 'Indent']
