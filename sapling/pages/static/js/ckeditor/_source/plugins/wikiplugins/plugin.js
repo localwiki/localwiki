@@ -4,20 +4,12 @@
 	{
 		var menuGroup = 'wikipluginsButton';
 		editor.addMenuGroup( menuGroup );
-		var uiMenuItems = {
-			includePage :
-				{
-					label : 'Include Page',
-					command : 'includepage',
-					group : menuGroup,
-					className : 'cke_button_includepage',
-					onClick: function(){
-						// TODO: bring up dialog
-					}
-				}
-		};
+		var menuItems = editor.config.wikiplugins_menu;
+		jQuery.each(menuItems, function(itemName, item){
+			item.group = menuGroup;
+		});
 
-		editor.addMenuItems( uiMenuItems );
+		editor.addMenuItems( menuItems );
 		editor.ui.add( 'Plugins', CKEDITOR.UI_MENUBUTTON,
 			{
 				label : 'Insert Object',
@@ -30,9 +22,11 @@
 				},
 				onMenu : function()
 				{
-					return {
-						includePage: CKEDITOR.TRISTATE_OFF
-					}
+					var states = {};
+					jQuery.each(menuItems, function(itemName){
+						states[itemName] = CKEDITOR.TRISTATE_OFF;
+					});
+					return states;
 					// TODO: turn buttons on/off depending on selection
 				}
 			});
@@ -41,7 +35,10 @@
 	CKEDITOR.plugins.add( 'wikiplugins',
 	{
 		requires : [ 'menubutton' ],
-
+		beforeInit : function( editor )
+		{
+			editor.config.wikiplugins_menu = {};
+		},
 		init : function( editor )
 		{
 			addPluginsButton( editor );
