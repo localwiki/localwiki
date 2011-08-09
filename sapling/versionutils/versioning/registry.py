@@ -1,7 +1,7 @@
 from utils import is_versioned
 
 
-def register(cls, manager_name='versions'):
+def register(cls, manager_name='versions', changes_tracker=None):
     """
     Registers the model class `cls` as a versioned model.  After
     registration (and a call to syncdb) changes to the model will be
@@ -11,15 +11,18 @@ def register(cls, manager_name='versions'):
         cls: The class to be versioned
         manager_name: Optional name of the manager that's added to cls
             and instances of cls. This is set to 'versions' by default.
+        versionifier: 
     """
-    from models import TrackChanges
+    from models import ChangesTracker 
+
+    if changes_tracker is None:
+        changes_tracker = ChangesTracker
 
     if is_versioned(cls):
         return
 
-    t = TrackChanges()
-    t.manager_name = manager_name
-    t.connect_to(cls)
+    tracker = changes_tracker()
+    tracker.connect(cls, manager_name=manager_name)
 
 
 class FieldRegistry(object):

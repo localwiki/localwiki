@@ -24,7 +24,7 @@ class MergeMixin(object):
     To perform a merge in this case, simply subclass MergeMixin and provide
     your own merge() method.
 
-    As long as the associated model is versioned using versioning.TrackChanges
+    As long as the associated model is versioned using versioning.register
     or has a DateTimeField with auto_now=True this will work automatically.
     Otherwise you'll want to subclass MergeMixin and override
     get_version_date().
@@ -44,7 +44,7 @@ class MergeMixin(object):
             merge successfully occurs.
         version_date_field: Optional field name to use for figuring out
             the version date.  We infer this automatically if the associated
-            model is versioned using versioning.TrackChanges or has an
+            model is versioned using versioning.register or has an
             auto_now=True DateTimeField.  You probably want to override
             get_version_date() instead of using this attribute.
     """

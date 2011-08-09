@@ -1,7 +1,6 @@
 from django.db import models
 
 from versionutils import versioning
-from versionutils.versioning.models import TrackChanges
 
 """
 TODO: It would be cool to write a little thing to randomly generate
@@ -303,7 +302,6 @@ versioning.register(M26ConcreteModelC)
 
 class M26SubclassConcreteC(M26ConcreteModelC):
     b = models.CharField(max_length=100)
-    #versions = TrackChanges()
 
 versioning.register(M26SubclassConcreteC)
 

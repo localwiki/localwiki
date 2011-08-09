@@ -14,31 +14,29 @@ import fields
 import manager
 
 
-class TrackChanges(object):
-    def contribute_to_class(self, cls, name):
-        self.manager_name = name
-        models.signals.class_prepared.connect(self.connect_to, sender=cls)
+class ChangesTracker(object):
+    def connect(self, m, manager_name=None):
+        self.manager_name = manager_name
 
-    def connect_to(self, sender, **kws):
-        if sender._meta.abstract:
+        if m._meta.abstract:
             # We can't do anything on the abstract model.
             return
-        elif sender._meta.proxy:
+        elif m._meta.proxy:
             # Get the history model from the base class.
-            base = sender
+            base = m 
             while base._meta.proxy:
                 base = base._meta.proxy_for_model
             if hasattr(base, '_history_manager_name'):
-                history_model = get_versions(sender).model
+                history_model = get_versions(m).model
         else:
-            history_model = self.create_history_model(sender)
+            history_model = self.create_history_model(m)
 
-        setattr(sender, '_track_changes', True)
+        setattr(m, '_track_changes', True)
 
         # Over-ride the save, delete methods to allow arguments to be passed in
         # such as comment="Made a small change."
-        setattr(sender, 'save', save_func(sender.save))
-        setattr(sender, 'delete', delete_func(sender.delete))
+        setattr(m, 'save', save_func(m.save))
+        setattr(m, 'delete', delete_func(m.delete))
 
         # We also attach signal handlers to the save, delete methods.  It's
         # easier to have two things going on (signal, and an overridden method)
@@ -48,27 +46,21 @@ class TrackChanges(object):
         # is issued -- custom delete() and save() methods aren't called
         # in that case.
 
-        _post_save = partial(self.post_save, sender)
-        _pre_delete = partial(self.pre_delete, sender)
-        _post_delete = partial(self.post_delete, sender)
-        # The TrackChanges object will be discarded, so the signal handlers
+        _post_save = partial(self.post_save, m)
+        _pre_delete = partial(self.pre_delete, m)
+        _post_delete = partial(self.post_delete, m)
+        # The ChangesTracker object will be discarded, so the signal handlers
         # can't use weak references.
-        models.signals.post_save.connect(
-            _post_save, weak=False
-        )
-        models.signals.pre_delete.connect(
-            _pre_delete, weak=False
-        )
-        models.signals.post_delete.connect(
-            _post_delete, weak=False
-        )
+        models.signals.post_save.connect(_post_save, weak=False)
+        models.signals.pre_delete.connect(_pre_delete, weak=False)
+        models.signals.post_delete.connect(_post_delete, weak=False)
 
-        self.wrap_model_fields(sender)
+        self.wrap_model_fields(m)
 
         descriptor = manager.HistoryDescriptor(history_model)
-        setattr(sender, self.manager_name, descriptor)
+        setattr(m, self.manager_name, descriptor)
         # Being able to look this up is intensely helpful.
-        setattr(sender, '_history_manager_name', self.manager_name)
+        setattr(m, '_history_manager_name', self.manager_name)
 
     def ineligible_for_history_model(self, model):
         """
@@ -186,7 +178,7 @@ class TrackChanges(object):
         # for a call to a metaclass with __instancecheck__ /
         # __subclasscheck__ defined (a'la python 2.6)
         d = copy.copy(dict(model.__dict__))
-        for k in TrackChanges.MEMBERS_TO_SKIP:
+        for k in ChangesTracker.MEMBERS_TO_SKIP:
             if d.get(k, None) is not None:
                 del d[k]
         # Modify fields and remove some fields we know we'll re-add in
@@ -215,7 +207,7 @@ class TrackChanges(object):
         d = {}
         attrs = dict(model.__dict__)
         for k in attrs:
-            if (k in TrackChanges.MEMBERS_TO_SKIP or k in skip):
+            if (k in ChangesTracker.MEMBERS_TO_SKIP or k in skip):
                 continue
             if callable(attrs[k]):
                 d[k] = attrs[k]
@@ -231,7 +223,7 @@ class TrackChanges(object):
         """
         def _get_fk_opts(field):
             opts = {}
-            for k in TrackChanges.FK_FIELDS_TO_COPY:
+            for k in ChangesTracker.FK_FIELDS_TO_COPY:
                 if hasattr(field, k):
                     opts[k] = getattr(field, k, None)
             return opts
@@ -240,7 +232,7 @@ class TrackChanges(object):
             # Always set symmetrical to False as there's no disadvantage
             # to allowing reverse lookups.
             opts = {'symmetrical': False}
-            for k in TrackChanges.M2M_FIELDS_TO_COPY:
+            for k in ChangesTracker.M2M_FIELDS_TO_COPY:
                 if hasattr(field, k):
                     opts[k] = getattr(field, k, None)
             # XXX TODO deal with intermediate tables
@@ -320,7 +312,7 @@ class TrackChanges(object):
         """
         Extra, non-essential fields for the historical models.
 
-        If you subclass TrackChanges this is a good method to over-ride:
+        If you subclass ChangesTracker this is a good method to over-ride:
         simply add your own values to the fields for custom fields.
 
         NOTE: Your custom fields should start with history_ if you want them
@@ -352,7 +344,7 @@ class TrackChanges(object):
         """
         meta = {'ordering': ('-history_date',)}
         for k in ALL_META_OPTIONS:
-            if k in TrackChanges.META_TO_SKIP:
+            if k in ChangesTracker.META_TO_SKIP:
                 continue
             meta[k] = getattr(model._meta, k)
         return meta
@@ -646,8 +638,7 @@ def save_with_arguments(model_save, m, force_insert=False, force_update=False,
     m._save_with.update(kws)
 
     return model_save(m, force_insert=force_insert,
-                                      force_update=force_update,
-                                      using=using,
+        force_update=force_update, using=using,
     )
 
 

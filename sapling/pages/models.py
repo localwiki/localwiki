@@ -21,7 +21,6 @@ allowed_tags = ['p', 'br', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3',
                 'thead', 'tbody', 'tr', 'th', 'td', 'span', 'strike', 'sub',
                 'sup', 'tt']
 
-
 class Page(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False, unique=True)
@@ -57,7 +56,6 @@ class PageDiff(diff.BaseModelDiff):
 
 diff.register(Page, PageDiff)
 versioning.register(Page)
-
 
 class PageFile(models.Model):
     file = models.FileField(upload_to='pages/files/',

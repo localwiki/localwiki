@@ -57,9 +57,9 @@ def is_directly_versioned(m):
         m: A Model instance or a model class.
 
     Returns:
-        True if the model is *directly* versioned by having TrackChanges
-        on its own class definition.  Generally speaking, you want to use
-        is_versioned rather than this method.
+        True if the model is registered *directly* with versioning.register.
+        Generally speaking, you want to use is_versioned rather than this
+        method.
     """
     if not is_versioned(m):
         return False

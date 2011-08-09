@@ -20,7 +20,7 @@ INSTALLED_APPS.append('versionutils.versioning.tests')
 mgr.set(INSTALLED_APPS=INSTALLED_APPS)
 
 
-class TrackChangesTest(TestCase):
+class ChangesTrackingTest(TestCase):
     def _create_test_models(self):
         """
         Creates some instances of the test models.
