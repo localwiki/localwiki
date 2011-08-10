@@ -27,14 +27,13 @@ If you want to automatically track user information during saves, simply add
     )
 
 Now you've got the app installed!  But you probably want to track changes on
-some models, right?  Simply add ``TrackChanges()`` to a model you want to
-version::
+some models, right?  Simply register the model you want to version::
 
-    from versionutils.versioning import TrackChanges
+    from versionutils import versioning
     
     class MyModel(models.Model):
         ...
     
-        history = TrackChanges()
+    versioning.register(MyModel)
 
 Then run ``manage.py syncdb`` and you're set!
