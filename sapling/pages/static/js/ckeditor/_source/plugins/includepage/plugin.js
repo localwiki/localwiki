@@ -1,6 +1,6 @@
 (function()
 {
-	CKEDITOR.plugins.add( 'insertpage',
+	CKEDITOR.plugins.add( 'includepage',
 	{
 		requires : [ 'wikiplugins' ],
 
