@@ -5,9 +5,11 @@ Extending
 Adding extra fields to historical models
 ----------------------------------------
 
-You can subclass :class:`TrackChanges` to provide extra fields on
-historical record models.  Simply override the
-:func:`get_extra_history_fields` method:
+You can subclass :class:`ChangesTracker` to provide extra fields on
+historical record models.  Then, when doing `versioning.register`, pass
+in your custom changes tracker class.  You'll want to override the
+:func:`get_extra_history_fields` method in your :class:`ChangesTracker`
+subclass:
 
     .. method:: get_extra_history_fields(model):
 
