@@ -1,3 +1,10 @@
+/*
+ * Menu button for "wiki plugins", which are usually placeholders for some
+ * kind of dynamic content, but can really be anything.
+ * 
+ * To register a wiki plugin, just add its menu item definition to the
+ * wikiplugins_menu object in the config.
+ */
 (function()
 {
 	function addPluginsButton( editor )
