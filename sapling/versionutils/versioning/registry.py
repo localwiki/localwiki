@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from utils import is_versioned
 
 
@@ -11,9 +13,9 @@ def register(cls, manager_name='versions', changes_tracker=None):
         cls: The class to be versioned
         manager_name: Optional name of the manager that's added to cls
             and instances of cls. This is set to 'versions' by default.
-        versionifier: 
+        changes_tracker: An optional instance of ChangesTracker.
     """
-    from models import ChangesTracker 
+    from models import ChangesTracker
 
     if changes_tracker is None:
         changes_tracker = ChangesTracker

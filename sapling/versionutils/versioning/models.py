@@ -3,6 +3,7 @@ from functools import partial
 from collections import defaultdict
 
 from django.db import models
+from django.conf import settings
 from django.db.models.options import DEFAULT_NAMES as ALL_META_OPTIONS
 
 from utils import *
@@ -23,13 +24,20 @@ class ChangesTracker(object):
             return
         elif m._meta.proxy:
             # Get the history model from the base class.
-            base = m 
+            base = m
             while base._meta.proxy:
                 base = base._meta.proxy_for_model
             if hasattr(base, '_history_manager_name'):
                 history_model = get_versions(m).model
         else:
             history_model = self.create_history_model(m)
+
+        do_versioning = getattr(
+            settings, 'VERSIONUTILS_VERSIONING_ENABLED', True)
+        if not do_versioning:
+            # We still create the historical models but don't set any
+            # signals for saving/deleting.
+            return
 
         setattr(m, '_track_changes', True)
 
