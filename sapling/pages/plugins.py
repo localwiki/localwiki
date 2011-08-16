@@ -3,6 +3,25 @@ Conversion of HTML into template with dynamic parts.
 
 We want to allow some dynamic content that gets inserted as the HTML is
 rendered. This is done by converting certain HTML tags into template tags.
+There are two mechanisms to do this: plugin handlers and tag handlers.
+
+Plugin handlers work with HTML elements that have the class "plugin".  When
+an element has the class "plugin", it will be passed to registered handlers
+based on the other classes it has.
+
+For example, the following element will be passed to the handler registered for
+the "includepage" class:
+
+<a href="Navigation" class="plugin includepage">Include Navigation</a>
+
+which will convert it to this:
+
+{% include_page "Navigation %}
+
+to be rendered by the include_page template tag.
+
+Tag handlers work similarly, but they are applied by element tag instead of by
+class.  They are best used for routine processing of content, such as styling.
 
 For example, to mark links to non-existant pages with a different style, this:
     <a href="My Page">My Page</a>
@@ -70,6 +89,15 @@ def insert_text_before(text, elem):
         prev.tail = (prev.tail or '') + text
     else:
         elem.getparent().text = (elem.getparent().text or '') + text
+
+
+def include_page(elem, context=None):
+    if not 'href' in elem.attrib:
+        return
+    href = desanitize(elem.attrib['href'])
+    before = '{%% include_page "%s" %%}' % escape_quotes(href)
+    insert_text_before(before, elem)
+    elem.getparent().remove(elem)
 
 
 def handle_link(elem, context=None):
@@ -150,6 +178,9 @@ tag_handlers = {"a": [handle_link],
                }
 
 
+plugin_handlers = {"includepage": include_page}
+
+
 def html_to_template_text(unsafe_html, context=None):
     """
     Parse html and turn it into template text.
@@ -167,6 +198,13 @@ def html_to_template_text(unsafe_html, context=None):
     tree = etree.iterwalk(container, events=('end',))
     # walk over all elements
     for action, elem in tree:
+        if 'class' in elem.attrib:
+            classes = elem.attrib['class'].split()
+            if 'plugin' in classes:
+                for p in classes:
+                    if p in plugin_handlers:
+                        plugin_handlers[p](elem, context)
+            continue
         if not elem.tag in tag_handlers:
             continue
         for handler in tag_handlers[elem.tag]:

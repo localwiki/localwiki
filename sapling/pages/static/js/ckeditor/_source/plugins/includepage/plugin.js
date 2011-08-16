@@ -2,7 +2,7 @@
 {
 	CKEDITOR.plugins.add( 'includepage',
 	{
-		requires : [ 'wikiplugins' ],
+		requires : [ 'wikiplugins', 'pagelink' ],
 
 		beforeInit : function( editor )
 		{
@@ -11,13 +11,28 @@
 				{
 					label : 'Include Page',
 					command : 'includepage',
-					className : 'cke_button_includepage',
-					onClick: function(){
-						// TODO: bring up dialog
-						alert('hey');
-					}
+					icon : this.path + 'images/document-import.png'
 				}
 			
+		},
+		
+		init : function( editor )
+		{
+			editor.addCommand( 'includepage', new CKEDITOR.dialogCommand( 'includepage' ) );
+			CKEDITOR.dialog.add( 'includepage', this.path + 'dialogs/includepage.js' );
+			editor.on( 'doubleclick', function( evt )
+			{
+				var element = CKEDITOR.plugins.pagelink.getSelectedLink( editor ) || evt.data.element;
+
+				if ( !element.isReadOnly() )
+				{
+					if ( element.is( 'a' ) )
+					{
+						if( element.hasClass('plugin') && element.hasClass('includepage') )
+							evt.data.dialog =  'includepage';
+					}
+				}
+			});
 		}
 	});
 })();

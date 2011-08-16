@@ -17,11 +17,13 @@
 		});
 
 		editor.addMenuItems( menuItems );
+		console.log('thing');
+		var iconPath = editor.plugins.wikiplugins.path + 'images/puzzle.png';
 		editor.ui.add( 'Plugins', CKEDITOR.UI_MENUBUTTON,
 			{
 				label : 'Insert Object',
 				title : 'Insert Object',
-				className : 'cke_button_plugins',
+				icon :  iconPath,
 				modes : { wysiwyg : 1 },
 				onRender: function()
 				{

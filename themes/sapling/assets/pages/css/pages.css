@@ -167,3 +167,11 @@ hr.selected {
     background-color: #318DFD;
     color: #318DFD;
 }
+
+/* Page plugins */
+.plugin {
+    display: block;
+    background-color: #E5F0FB;
+    border: 1px dashed #318DFD;
+    padding: 10px;
+}
