@@ -114,7 +114,7 @@ def handle_image(elem, context=None):
     if 'width' not in style or 'height' not in style:
         do_thumbnail = False
 
-    src = elem.attrib['src']
+    src = elem.attrib.get('src', '')
     if not src.startswith(_files_url):
         return
 
