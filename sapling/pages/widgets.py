@@ -17,6 +17,8 @@ class WikiEditor(CKEditor):
             'filebrowserAttachfileUploadUrl': '_upload',
             'filebrowserAttachfileBrowseUrl': '_filebrowser/files',
             'domcleanupAllowedTags': models.allowed_tags,
+            'domcleanupAllowedAttributes': models.allowed_attributes_map,
+            'domcleanupAllowedStyles': models.allowed_styles_map,
             'toolbarCanCollapse': False,
             'disableNativeSpellChecker': False,
             'browserContextMenuOnCtrl': True,

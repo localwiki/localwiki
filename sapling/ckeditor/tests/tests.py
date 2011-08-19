@@ -27,7 +27,10 @@ class HTML5FragmentModel(models.Model):
 
 
 class RestrictedHTML5FragmentModel(models.Model):
-    html = HTML5FragmentField(allowed_elements=['a'])
+    html = HTML5FragmentField(allowed_elements=['a', 'span'],
+                              allowed_attributes_map={'a': ['href'],
+                                                      'span': ['style']},
+                              allowed_styles_map={'span': ['width']})
 
 
 class XHTMLFieldTest(TestCase):
@@ -75,6 +78,21 @@ class HTML5FragmentField(TestCase):
         m.clean_fields()
         self.assertEquals(m.html, ('&lt;p&gt;<a href="#top">This link</a>'
                                    ' takes you to the top&lt;/p&gt;'))
+
+    def test_allowed_attributes(self):
+        m = RestrictedHTML5FragmentModel()
+        m.html = ('<span style="width: 300px;" class="myclass">'
+                  'Click <a href="www.example.com" target="_top">here</a>'
+                  '</span>')
+        m.clean_fields()
+        self.assertEquals(m.html, ('<span style="width: 300px;">'
+                            'Click <a href="www.example.com">here</a></span>'))
+
+    def test_allowed_styles(self):
+        m = RestrictedHTML5FragmentModel()
+        m.html = ('<span style="width: 300px; height:100px">Blah</span>')
+        m.clean_fields()
+        self.assertEquals(m.html, '<span style="width: 300px;">Blah</span>')
 
     def test_self_closing_a_tag(self):
         m = HTML5FragmentModel()

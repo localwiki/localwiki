@@ -26,6 +26,7 @@ from django.core.urlresolvers import reverse
 
 from pages.models import Page, name_to_url, url_to_name, PageFile
 from pages.models import slugify
+from ckeditor.models import parse_style
 
 
 def sanitize_intermediate(html):
@@ -87,17 +88,6 @@ def handle_link(elem, context=None):
 
     elem.getparent().remove(elem)
     return False
-
-
-def parse_style(css):
-    style = {}
-    for line in css.split(';'):
-        try:
-            bits = line.split(':')
-            style[bits[0].strip()] = bits[1].strip()
-        except:
-            pass
-    return style
 
 
 _files_url = '_files/'
