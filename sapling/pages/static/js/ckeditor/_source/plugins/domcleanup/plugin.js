@@ -114,7 +114,7 @@ CKEDITOR.plugins.add( 'domcleanup',
                         		k = $.trim(style[0]);
                         		v = $.trim(style[1]);
                         		if (k.length > 0 && v.length > 0
-                        			&& ok_styles[element.name].indexOf[k] >= 0)
+                        			&& ok_styles[element.name].indexOf(k) >= 0)
                         		{
                         			ok_css.push(k + ': ' + v + ';');
                         		}
