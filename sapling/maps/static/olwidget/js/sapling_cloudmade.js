@@ -16,7 +16,6 @@
 // http://developers.cloudmade.com/wiki/openlayers-api/CloudMade_Tiles
 OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
     initialize: function(name, options) {
-        alert(CLOUDMADE_API_KEY);
         var key = CLOUDMADE_API_KEY;
 
         options = OpenLayers.Util.extend({
@@ -32,7 +31,6 @@ OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
 			styleId: 1
         }, options);
 		var prefix = [key, options.styleId, 256].join('/') + '/';
-        alert(prefix);
         var url = [
             "http://a.tile.cloudmade.com/" + prefix,
             "http://b.tile.cloudmade.com/" + prefix,
