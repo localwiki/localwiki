@@ -16,6 +16,7 @@
 // http://developers.cloudmade.com/wiki/openlayers-api/CloudMade_Tiles
 OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
     initialize: function(name, options) {
+        alert(CLOUDMADE_API_KEY);
         var key = CLOUDMADE_API_KEY;
 
         options = OpenLayers.Util.extend({
@@ -31,6 +32,7 @@ OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
 			styleId: 1
         }, options);
 		var prefix = [key, options.styleId, 256].join('/') + '/';
+        alert(prefix);
         var url = [
             "http://a.tile.cloudmade.com/" + prefix,
             "http://b.tile.cloudmade.com/" + prefix,
@@ -68,4 +70,31 @@ OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
     },
 
     CLASS_NAME: "OpenLayers.Layer.CloudMade"
+});
+
+// CachedCloudMade is the same as CloudMade, except we require a URL
+// parameter when the object is constructed.  The URL is expected to
+// point to tiles in cloudmade's ZXY.png format and already have the
+// required API key, style id, and size in it.  E.g.:
+// http://a.tile.map.localwiki.org/ca694687020d468283a545db191bcb81/35165/256/
+OpenLayers.Layer.CachedCloudMade = OpenLayers.Class(OpenLayers.Layer.CloudMade, {
+    // Our initialize method requires a URL parameter.
+    initialize: function(name, url, options) {
+        options = OpenLayers.Util.extend({
+            attribution: "&copy; <a href=\"http://openstreetmap.org/\">OpenStreetMap</a> CC-BY-SA, &copy; <a href=\"http://cloudmade.com\">CloudMade</a>",
+            maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
+            maxResolution: 156543.0339,
+            units: "m",
+            projection: "EPSG:900913",
+			isBaseLayer: true,
+			numZoomLevels: 19,
+			displayOutsideMaxExtent: true,
+			wrapDateLine: true,
+			styleId: 1
+        }, options);
+        var newArguments = [name, url, options];
+        OpenLayers.Layer.TMS.prototype.initialize.apply(this, newArguments);
+    },
+
+    CLASS_NAME: "OpenLayers.Layer.CachedCloudMade"
 });
