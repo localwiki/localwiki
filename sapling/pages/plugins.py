@@ -45,7 +45,8 @@ from django.core.urlresolvers import reverse
 
 from pages.models import Page, name_to_url, url_to_name, PageFile
 from pages.models import slugify
-from ckeditor.models import parse_style
+from ckeditor.models import parse_style, sanitize_html_fragment
+from django.utils.text import unescape_entities
 
 
 def sanitize_intermediate(html):
@@ -96,6 +97,12 @@ def include_page(elem, context=None):
         return
     href = desanitize(elem.attrib['href'])
     before = '{%% include_page "%s" %%}' % escape_quotes(href)
+    insert_text_before(before, elem)
+    elem.getparent().remove(elem)
+
+
+def embed_code(elem, context=None):
+    before = '{%% embed_code %%} %s {%% endembed_code %%}' % elem.text
     insert_text_before(before, elem)
     elem.getparent().remove(elem)
 
@@ -178,7 +185,9 @@ tag_handlers = {"a": [handle_link],
                }
 
 
-plugin_handlers = {"includepage": include_page}
+plugin_handlers = {"includepage": include_page,
+                   "embed": embed_code
+                  }
 
 
 def html_to_template_text(unsafe_html, context=None):
@@ -260,3 +269,21 @@ class LinkNode(Node):
         url_parts = urlparse(url)
         return (not url_parts.scheme and not url_parts.netloc
                 and not url_parts.fragment)
+
+
+class EmbedCodeNode(Node):
+    def __init__(self, nodelist):
+        self.nodelist = nodelist
+
+    def sanitize(self, html):
+        ok_tags = ['iframe']
+        ok_attributes = {'iframe': ['allowfullscreen', 'width', 'height',
+                                    'src']}
+        return sanitize_html_fragment(html, ok_tags, ok_attributes)
+
+    def render(self, context):
+        try:
+            html = unescape_entities(self.nodelist.render(context))
+            return self.sanitize(html)
+        except:
+            return ''

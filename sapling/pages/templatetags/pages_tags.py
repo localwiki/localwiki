@@ -4,7 +4,7 @@ from django.template import Template
 from django.conf import settings
 
 from pages.plugins import html_to_template_text
-from pages.plugins import LinkNode
+from pages.plugins import LinkNode, EmbedCodeNode
 from pages import models
 from django.utils.text import unescape_string_literal
 from pages.models import Page, slugify, url_to_name
@@ -82,6 +82,13 @@ def do_include_page(parser, token):
 
 def is_quoted(text):
     return text[0] == text[-1] and text[0] in ('"', "'")
+
+
+@register.tag(name='embed_code')
+def do_embed_code(parser, token):
+    nodelist = parser.parse(('endembed_code',))
+    parser.delete_first_token()
+    return EmbedCodeNode(nodelist)
 
 
 @register.tag(name='link')

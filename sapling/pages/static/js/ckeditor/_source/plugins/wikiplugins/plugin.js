@@ -17,7 +17,6 @@
 		});
 
 		editor.addMenuItems( menuItems );
-		console.log('thing');
 		var iconPath = editor.plugins.wikiplugins.path + 'images/puzzle.png';
 		editor.ui.add( 'Plugins', CKEDITOR.UI_MENUBUTTON,
 			{
