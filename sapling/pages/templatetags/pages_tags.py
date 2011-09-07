@@ -46,11 +46,25 @@ class IncludePageNode(BaseIncludeNode):
                 content = '<h2><a href="%s">%s</a></h2>' % (page.pretty_slug,
                                                             page.name)
                 content = content + page.content
+                # prevent endless loops
+                context_page = context['page']
+                include_stack = context.get('_include_stack', [])
+                include_stack.append(context_page.name)
+                if page.name in include_stack:
+                    content = ('<p class="plugin includepage">Unable to'
+                               ' include <a href="%s">%s</a>: endless include'
+                               ' loop.</p>' % (self.page_name, self.page_name))
+                context['_include_stack'] = include_stack
+                context['page'] = page
             except Page.DoesNotExist:
                 content = ('<p class="plugin includepage">Unable to include '
                            '<a href="%s">%s</a></p>'
                            % (self.page_name, self.page_name))
-            template = Template(html_to_template_text(content))
+            template = Template(html_to_template_text(content, context))
+            # restore context
+            if context_page and '_include_stack' in context:
+                context['_include_stack'].pop()
+                context['page'] = context_page
             return self.render_template(template, context)
         except:
             if settings.TEMPLATE_DEBUG:
