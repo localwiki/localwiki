@@ -11,6 +11,8 @@ from forms import PageForm
 from pages.models import Page, slugify, url_to_name, clean_name, name_to_url
 from pages.plugins import html_to_template_text
 from pages.plugins import tag_imports
+from django.template.base import Template
+from django.template.context import Context
 
 
 class PageTest(TestCase):
@@ -282,3 +284,79 @@ class HTMLToTemplateTextTest(TestCase):
         self.assertEqual(template_text,
             imports +
             '<div>{% link "http://example.org" %}hi!{% endlink %}</div>')
+
+
+class PluginTest(TestCase):
+    def test_include_tag(self):
+        html = '<a class="plugin includepage" href="Front_Page">Front Page</a>'
+        template_text = html_to_template_text(html)
+        imports = ''.join(tag_imports)
+        self.assertEqual(template_text,
+                         imports + '{% include_page "Front_Page" %}')
+
+    def test_include_plugin(self):
+        a = Page(name='Front Page')
+        a.content = '<a class="plugin includepage" href="Explore">dummy</a>'
+        a.save()
+
+        b = Page(name='Explore')
+        b.content = '<p>Some text</p>'
+        b.save()
+
+        context = Context({'page': a})
+        template = Template(html_to_template_text(a.content, context))
+        html = template.render(context)
+        self.assertEqual(html,
+                    '<h2><a href="/Explore">Explore</a></h2><p>Some text</p>')
+
+    def test_include_nonexistant(self):
+        """ Should give an error message when including nonexistant page
+        """
+        a = Page(name='Front Page')
+        a.content = '<a class="plugin includepage" href="New page">dummy</a>'
+        a.save()
+        context = Context({'page': a})
+        template = Template(html_to_template_text(a.content, context))
+        html = template.render(context)
+        self.failUnless(('Unable to include <a href="/New_page"'
+                         ' class="missing_link">New page</a>') in html)
+
+    def test_endless_include(self):
+        """ Should detect endless loops and give an error message
+        """
+        a = Page(name='Front Page')
+        a.content = '<a class="plugin includepage" href="Front_Page">dummy</a>'
+        a.save()
+        context = Context({'page': a})
+        template = Template(html_to_template_text(a.content, context))
+        html = template.render(context)
+        self.failUnless(('Unable to include <a href="/Front_Page">Front Page'
+                         '</a>: endless include loop') in html)
+
+    def test_double_include(self):
+        """ Multiple includes are ok
+        """
+        a = Page(name='Front Page')
+        a.content = ('<a class="plugin includepage" href="Explore">dummy</a>'
+                     '<a class="plugin includepage" href="Explore">dummy</a>')
+        a.save()
+
+        b = Page(name='Explore')
+        b.content = '<p>Some text</p>'
+        b.save()
+
+        context = Context({'page': a})
+        template = Template(html_to_template_text(a.content, context))
+        html = template.render(context)
+        self.assertEqual(html,
+            ('<h2><a href="/Explore">Explore</a></h2><p>Some text</p>'
+             '<h2><a href="/Explore">Explore</a></h2><p>Some text</p>'))
+
+    def test_embed_tag(self):
+        html = ('<span class="plugin embed">&lt;strong&gt;Hello&lt;/strong&gt;'
+                '</span>')
+        template_text = html_to_template_text(html)
+        imports = ''.join(tag_imports)
+        self.assertEqual(template_text,
+                         imports + ('{% embed_code %} &lt;strong&gt;Hello&lt;'
+                                    '/strong&gt; {% endembed_code %}'))

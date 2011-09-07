@@ -8,6 +8,7 @@ from pages.plugins import LinkNode, EmbedCodeNode
 from pages import models
 from django.utils.text import unescape_string_literal
 from pages.models import Page, slugify, url_to_name
+from django.core.urlresolvers import reverse
 
 register = template.Library()
 
@@ -56,15 +57,17 @@ class IncludePageNode(BaseIncludeNode):
                                ' loop.</p>' % (self.page_name, self.page_name))
                 context['_include_stack'] = include_stack
                 context['page'] = page
-            except Page.DoesNotExist:
-                content = ('<p class="plugin includepage">Unable to include '
-                           '<a href="%s">%s</a></p>'
-                           % (self.page_name, self.page_name))
-            template = Template(html_to_template_text(content, context))
-            # restore context
-            if context_page and '_include_stack' in context:
+                template_text = html_to_template_text(content, context)
+                # restore context
                 context['_include_stack'].pop()
                 context['page'] = context_page
+            except Page.DoesNotExist:
+                page_url = reverse('pages:show',
+                                   args=[name_to_url(self.page_name)])
+                template_text = ('<p class="plugin includepage">Unable to'
+                        ' include <a href="%s" class="missing_link">%s</a></p>'
+                        % (page_url, self.page_name))
+            template = Template(template_text)
             return self.render_template(template, context)
         except:
             if settings.TEMPLATE_DEBUG:
