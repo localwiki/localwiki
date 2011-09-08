@@ -20,14 +20,16 @@ name_to_url.is_safe = True
 
 
 class PageContentNode(BaseIncludeNode):
-    def __init__(self, html_var, *args, **kwargs):
+    def __init__(self, html_var, render_plugins=True, *args, **kwargs):
         super(PageContentNode, self).__init__(*args, **kwargs)
         self.html_var = template.Variable(html_var)
+        self.render_plugins = render_plugins
 
     def render(self, context):
         try:
             html = unicode(self.html_var.resolve(context))
-            t = Template(html_to_template_text(html, context))
+            t = Template(html_to_template_text(html, context,
+                                               self.render_plugins))
             return self.render_template(t, context)
         except:
             if settings.TEMPLATE_DEBUG:
@@ -75,14 +77,23 @@ class IncludePageNode(BaseIncludeNode):
             return ''
 
 
-@register.tag(name='render_page')
-def do_render_page(parser, token):
+@register.tag(name='render_plugins')
+def do_render_plugins(parser, token, render_plugins=True):
+    """ Render tags and plugins
+    """
     try:
         tag, html_var = token.split_contents()
     except ValueError:
         raise template.TemplateSyntaxError, ("%r tag requires one argument" %
                                              token.contents.split()[0])
-    return PageContentNode(html_var)
+    return PageContentNode(html_var, render_plugins)
+
+
+@register.tag(name='render_tags')
+def do_render_tags(parser, token):
+    """ Render tags only, does not render plugins
+    """
+    return do_render_plugins(parser, token, render_plugins=False)
 
 
 @register.tag(name='include_page')

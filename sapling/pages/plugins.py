@@ -5,7 +5,14 @@ We want to allow some dynamic content that gets inserted as the HTML is
 rendered. This is done by converting certain HTML tags into template tags.
 There are two mechanisms to do this: plugin handlers and tag handlers.
 
-Plugin handlers work with HTML elements that have the class "plugin".  When
+Plugins are meant for inserting bits of dynamic content at specific places on
+the final rendered page marked by a placeholder element. The output can be
+whatever you like: widgets, bits of JavaScript, anything. Tag handlers, on the
+other hand, are meant for fixing up the HTML slightly and transparently, i.e.,
+fixing links and adding helpful visual styles and the like. When in doubt, use
+plugins.
+
+Plugin handlers work with HTML elements that have the class "plugin". When
 an element has the class "plugin", it will be passed to registered handlers
 based on the other classes it has.
 
@@ -190,7 +197,7 @@ plugin_handlers = {"includepage": include_page,
                   }
 
 
-def html_to_template_text(unsafe_html, context=None):
+def html_to_template_text(unsafe_html, context=None, render_plugins=True):
     """
     Parse html and turn it into template text.
     """
@@ -209,7 +216,7 @@ def html_to_template_text(unsafe_html, context=None):
     for action, elem in tree:
         if 'class' in elem.attrib:
             classes = elem.attrib['class'].split()
-            if 'plugin' in classes:
+            if 'plugin' in classes and render_plugins:
                 for p in classes:
                     if p in plugin_handlers:
                         plugin_handlers[p](elem, context)
