@@ -7,6 +7,8 @@
 		beforeInit : function( editor )
 		{
 			var config = editor.config;
+			if(!config.wikiplugins_menu)
+				config.wikiplugins_menu = {};
 			config.wikiplugins_menu.includePage =
 				{
 					label : 'Include Page',

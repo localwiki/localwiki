@@ -45,7 +45,6 @@
 		requires : [ 'menubutton' ],
 		beforeInit : function( editor )
 		{
-			editor.config.wikiplugins_menu = {};
 		},
 		init : function( editor )
 		{
