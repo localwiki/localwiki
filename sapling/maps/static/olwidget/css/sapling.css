@@ -32,16 +32,15 @@
     color: inherit;
 }
 
-/* Hide layers toggle */
-.baseLayersDiv, .baseLbl {
-    display: none;
-}
-
 /* Hide Data overlay description */
 .dataLbl {
     display: none;
 }
 
+.dataLayersDiv {
+   margin-top: 0.5em;
+   margin-bottom: 0.5em;
+}
 .dataLayersDiv .labelSpan {
     display: none;
 }
