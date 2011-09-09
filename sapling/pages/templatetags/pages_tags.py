@@ -38,17 +38,28 @@ class PageContentNode(BaseIncludeNode):
 
 
 class IncludePageNode(BaseIncludeNode):
-    def __init__(self, page_name, *args, **kwargs):
+    def __init__(self, parser, token, *args, **kwargs):
         super(IncludePageNode, self).__init__(*args, **kwargs)
+        bits = token.split_contents()
+        if len(bits) < 2:
+            raise template.TemplateSyntaxError, ('%r tag requires at least one'
+                                    ' argument' % token.contents.split()[0])
+        page_name = bits[1]
+        if is_quoted(page_name):
+            page_name = unescape_string_literal(page_name)
         self.page_name = url_to_name(page_name)
+        self.args = bits[2:]
 
     def render(self, context):
         try:
             try:
                 page = Page.objects.get(slug__exact=slugify(self.page_name))
-                content = '<h2><a href="%s">%s</a></h2>' % (page.pretty_slug,
-                                                            page.name)
-                content = content + page.content
+                header = ''
+                if 'showtitle' in self.args:
+                    header = ('<h2><a href="%s">%s</a></h2>'
+                                % (page.pretty_slug, page.name))
+                content = header + page.content
+
                 # prevent endless loops
                 context_page = context['page']
                 include_stack = context.get('_include_stack', [])
@@ -98,14 +109,7 @@ def do_render_tags(parser, token):
 
 @register.tag(name='include_page')
 def do_include_page(parser, token):
-    try:
-        tag, page_name = token.split_contents()
-    except ValueError:
-        raise template.TemplateSyntaxError, ("%r tag requires one argument" %
-                                             token.contents.split()[0])
-    if is_quoted(page_name):
-        page_name = unescape_string_literal(page_name)
-    return IncludePageNode(page_name)
+    return IncludePageNode(parser, token)
 
 
 def is_quoted(text):

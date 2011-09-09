@@ -103,7 +103,13 @@ def include_page(elem, context=None):
     if not 'href' in elem.attrib:
         return
     href = desanitize(elem.attrib['href'])
-    before = '{%% include_page "%s" %%}' % escape_quotes(href)
+    args = []
+    if 'class' in elem.attrib:
+        classes = elem.attrib['class'].split()
+        args = [c[len('includepage_'):] for c in classes
+                    if c.startswith('includepage_')]
+    args = ['"%s"' % escape_quotes(href)] + args
+    before = '{%% include_page %s %%}' % ' '.join(args)
     insert_text_before(before, elem)
     elem.getparent().remove(elem)
 

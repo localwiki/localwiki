@@ -57,6 +57,22 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 							data.page = this.getValue();
 							this.allowOnChange = false;
 						}
+					},
+					{
+						type : 'checkbox',
+						id : 'showtitle',
+						label : 'Show page title',
+						setup : function( data )
+						{
+							if ( data.showtitle )
+								this.setValue( true );
+							else
+								this.setValue( false );
+						},
+						commit : function( data )
+						{
+							data.showtitle = this.getValue();
+						}
 					}
 				]
 			}
@@ -78,6 +94,8 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 			{
 				this._.selectedElement = element;
 				data.page = decodeURIComponent(element.getAttribute( 'href' ));
+				if(element.hasClass('includepage_showtitle'))
+					data.showtitle = true;
 			}
 			this.setupContent( data );
 		},
@@ -87,12 +105,16 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				data = {},
 				me = this,
 				editor = this.getParentEditor(),
-				href;
+				href,
+				classes = [];
 
 			this.commitContent( data );
 			href = encodeURIComponent(data.page);
-
-			attributes['class'] = 'plugin includepage';
+	
+			classes.push('plugin includepage');
+			if(data.showtitle)
+				classes.push('includepage_showtitle');
+			attributes['class'] = classes.join(' ');
 			attributes[ 'href' ] = attributes[ 'data-cke-saved-href' ] = href;
 			
 			if ( !this._.selectedElement )
