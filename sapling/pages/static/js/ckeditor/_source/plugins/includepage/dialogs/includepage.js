@@ -73,6 +73,27 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 						{
 							data.showtitle = this.getValue();
 						}
+					},
+					{
+						type : 'radio',
+						id : 'align',
+						label : 'Align',
+						'default' : '',
+						items :
+						[
+							[ editor.lang.common.alignLeft , 'left'],
+							[ 'None' , ''],
+							[ editor.lang.common.alignRight , 'right']
+						],
+						setup : function( data )
+						{
+							if ( data.align )
+								this.setValue( data.align );
+						},
+						commit : function( data )
+						{
+							data.align = this.getValue();
+						}
 					}
 				]
 			}
@@ -96,6 +117,10 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				data.page = decodeURIComponent(element.getAttribute( 'href' ));
 				if(element.hasClass('includepage_showtitle'))
 					data.showtitle = true;
+				if(element.hasClass('includepage_left'))
+					data.align = 'left';
+				if(element.hasClass('includepage_right'))
+					data.align = 'right';
 			}
 			this.setupContent( data );
 		},
@@ -114,6 +139,8 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 			classes.push('plugin includepage');
 			if(data.showtitle)
 				classes.push('includepage_showtitle');
+			if(data.align)
+				classes.push('includepage_' + data.align);
 			attributes['class'] = classes.join(' ');
 			attributes[ 'href' ] = attributes[ 'data-cke-saved-href' ] = href;
 			

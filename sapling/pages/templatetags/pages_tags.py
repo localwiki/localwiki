@@ -60,6 +60,11 @@ class IncludePageNode(BaseIncludeNode):
                                 % (page.pretty_slug, page.name))
                 content = header + page.content
 
+                align = [a for a in self.args if a in ['left', 'right']]
+                if len(align):
+                    content = ('<div class="includepage_%s">%s</div>'
+                                                    % (align[0], content))
+
                 # prevent endless loops
                 context_page = context['page']
                 include_stack = context.get('_include_stack', [])

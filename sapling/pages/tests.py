@@ -325,6 +325,22 @@ class PluginTest(TestCase):
         self.assertEqual(html,
                     '<h2><a href="/Explore">Explore</a></h2><p>Some text</p>')
 
+    def test_include_left(self):
+        a = Page(name='Front Page')
+        a.content = ('<a class="plugin includepage includepage_left"'
+                     ' href="Explore">dummy</a>')
+        a.save()
+
+        b = Page(name='Explore')
+        b.content = '<p>Some text</p>'
+        b.save()
+
+        context = Context({'page': a})
+        template = Template(html_to_template_text(a.content, context))
+        html = template.render(context)
+        self.assertEqual(html,
+                    '<div class="includepage_left"><p>Some text</p></div>')
+
     def test_include_nonexistant(self):
         """ Should give an error message when including nonexistant page
         """

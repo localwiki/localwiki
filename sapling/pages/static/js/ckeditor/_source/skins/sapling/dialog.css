@@ -230,7 +230,6 @@ body .cke_dialog
 
 /* From Sapling's site.css */
 .cke_skin_sapling textarea, .cke_skin_sapling input, .cke_skin_sapling button {
-    display: block;
     padding: 5px;
     color: #444;
     background-color: #fff;
