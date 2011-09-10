@@ -57,6 +57,89 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 							data.page = this.getValue();
 							this.allowOnChange = false;
 						}
+					},
+					{
+						type : 'checkbox',
+						id : 'showtitle',
+						label : 'Show page title',
+						setup : function( data )
+						{
+							if ( data.showtitle )
+								this.setValue( true );
+							else
+								this.setValue( false );
+						},
+						commit : function( data )
+						{
+							data.showtitle = this.getValue();
+						}
+					},
+					{
+						type : 'hbox',
+						children :
+						[
+							{
+								type : 'text',
+								id : 'width',
+								label : 'Width',
+								setup : function( data )
+								{
+									if ( data.width )
+										this.setValue( parseInt( data.width, 10 ) );
+								},
+								commit : function( data )
+								{
+									if(!this.getValue())
+									{
+										data.width = '';
+										return;
+									}
+									var value = parseInt( this.getValue(), 10 ),
+									unit = this.getDialog().getValueOf( 'info', 'widthType' );
+									data.width = '' + value + unit; 
+								}
+							},
+							{
+								type : 'select',
+								id : 'widthType',
+								label : editor.lang.table.widthUnit,
+								labelStyle: 'visibility:hidden',
+								'default' : 'px',
+								items :
+								[
+									[ 'pixels', 'px' ],
+									[ 'percent', '%' ]
+								],
+								setup : function( data )
+								{
+									var widthPattern = /^(\d+(?:\.\d+)?)(px|%)$/;
+									var widthMatch = widthPattern.exec( data.width );
+									if ( widthMatch )
+										this.setValue( widthMatch[2] );
+								}
+							}
+						]
+					},
+					{
+						type : 'radio',
+						id : 'align',
+						label : 'Align',
+						'default' : '',
+						items :
+						[
+							[ editor.lang.common.alignLeft , 'left'],
+							[ 'None' , ''],
+							[ editor.lang.common.alignRight , 'right']
+						],
+						setup : function( data )
+						{
+							if ( data.align )
+								this.setValue( data.align );
+						},
+						commit : function( data )
+						{
+							data.align = this.getValue();
+						}
 					}
 				]
 			}
@@ -78,6 +161,15 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 			{
 				this._.selectedElement = element;
 				data.page = decodeURIComponent(element.getAttribute( 'href' ));
+				if(element.hasClass('includepage_showtitle'))
+					data.showtitle = true;
+				if(element.hasClass('includepage_left'))
+					data.align = 'left';
+				if(element.hasClass('includepage_right'))
+					data.align = 'right';
+				var width = element.getStyle('width');
+				if(width)
+					data.width = width;
 			}
 			this.setupContent( data );
 		},
@@ -87,13 +179,21 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				data = {},
 				me = this,
 				editor = this.getParentEditor(),
-				href;
+				href,
+				classes = [];
 
 			this.commitContent( data );
 			href = encodeURIComponent(data.page);
-
-			attributes['class'] = 'plugin includepage';
+	
+			classes.push('plugin includepage');
+			if(data.showtitle)
+				classes.push('includepage_showtitle');
+			if(data.align)
+				classes.push('includepage_' + data.align);
+			attributes['class'] = classes.join(' ');
 			attributes[ 'href' ] = attributes[ 'data-cke-saved-href' ] = href;
+			if(data.width)
+				attributes[ 'style' ] = 'width:' + data.width;
 			
 			if ( !this._.selectedElement )
 			{

@@ -469,7 +469,6 @@ input[type="submit"]:active, input[type="button"]:active, button:active, .button
 input[type="hidden"] { display: none; }
 input[type="checkbox"], input[type="radio"] { display: inline; }
 label {
-    display: block;
     margin-bottom: 4px;
     font-weight: bold; color: #444;
 }

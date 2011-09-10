@@ -103,8 +103,22 @@ def include_page(elem, context=None):
     if not 'href' in elem.attrib:
         return
     href = desanitize(elem.attrib['href'])
-    before = '{%% include_page "%s" %%}' % escape_quotes(href)
-    insert_text_before(before, elem)
+    args = []
+    if 'class' in elem.attrib:
+        classes = elem.attrib['class'].split()
+        args = [c[len('includepage_'):] for c in classes
+                    if c.startswith('includepage_')]
+    args = ['"%s"' % escape_quotes(href)] + args
+    container = etree.Element('div')
+    align = [a for a in args if a in ['left', 'right']]
+    if len(align):
+        container.attrib['class'] = 'includepage_' + align[0]
+    style = parse_style(elem.attrib.get('style', ''))
+    if 'width' in style:
+        container.attrib['style'] = 'width: ' + style['width'] + ';'
+    tag_text = '{%% include_page %s %%}' % ' '.join(args)
+    container.text = tag_text
+    elem.addprevious(container)
     elem.getparent().remove(elem)
 
 

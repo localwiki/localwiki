@@ -176,3 +176,11 @@ hr.selected {
     padding: 10px;
     resize: none;
 }
+
+.includepage_left {
+    float: left;
+}
+
+.includepage_right {
+    float: right;
+}
