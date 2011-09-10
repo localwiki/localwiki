@@ -109,8 +109,16 @@ def include_page(elem, context=None):
         args = [c[len('includepage_'):] for c in classes
                     if c.startswith('includepage_')]
     args = ['"%s"' % escape_quotes(href)] + args
-    before = '{%% include_page %s %%}' % ' '.join(args)
-    insert_text_before(before, elem)
+    container = etree.Element('div')
+    align = [a for a in args if a in ['left', 'right']]
+    if len(align):
+        container.attrib['class'] = 'includepage_' + align[0]
+    style = parse_style(elem.attrib.get('style', ''))
+    if 'width' in style:
+        container.attrib['style'] = 'width: ' + style['width'] + ';'
+    tag_text = '{%% include_page %s %%}' % ' '.join(args)
+    container.text = tag_text
+    elem.addprevious(container)
     elem.getparent().remove(elem)
 
 

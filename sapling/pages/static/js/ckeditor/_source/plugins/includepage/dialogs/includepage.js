@@ -75,6 +75,52 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 						}
 					},
 					{
+						type : 'hbox',
+						children :
+						[
+							{
+								type : 'text',
+								id : 'width',
+								label : 'Width',
+								setup : function( data )
+								{
+									if ( data.width )
+										this.setValue( parseInt( data.width, 10 ) );
+								},
+								commit : function( data )
+								{
+									if(!this.getValue())
+									{
+										data.width = '';
+										return;
+									}
+									var value = parseInt( this.getValue(), 10 ),
+									unit = this.getDialog().getValueOf( 'info', 'widthType' );
+									data.width = '' + value + unit; 
+								}
+							},
+							{
+								type : 'select',
+								id : 'widthType',
+								label : editor.lang.table.widthUnit,
+								labelStyle: 'visibility:hidden',
+								'default' : 'px',
+								items :
+								[
+									[ 'pixels', 'px' ],
+									[ 'percent', '%' ]
+								],
+								setup : function( data )
+								{
+									var widthPattern = /^(\d+(?:\.\d+)?)(px|%)$/;
+									var widthMatch = widthPattern.exec( data.width );
+									if ( widthMatch )
+										this.setValue( widthMatch[2] );
+								}
+							}
+						]
+					},
+					{
 						type : 'radio',
 						id : 'align',
 						label : 'Align',
@@ -121,6 +167,9 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 					data.align = 'left';
 				if(element.hasClass('includepage_right'))
 					data.align = 'right';
+				var width = element.getStyle('width');
+				if(width)
+					data.width = width;
 			}
 			this.setupContent( data );
 		},
@@ -143,6 +192,8 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				classes.push('includepage_' + data.align);
 			attributes['class'] = classes.join(' ');
 			attributes[ 'href' ] = attributes[ 'data-cke-saved-href' ] = href;
+			if(data.width)
+				attributes[ 'style' ] = 'width:' + data.width;
 			
 			if ( !this._.selectedElement )
 			{

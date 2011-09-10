@@ -25,7 +25,7 @@ allowed_tags = ['p', 'br', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3',
 
 allowed_attributes_map = {'p': ['class', 'style'],
                           'ul': ['class'],
-                          'a': ['class', 'name', 'href'],
+                          'a': ['class', 'name', 'href', 'style'],
                           'img': ['class', 'src', 'alt', 'title', 'style'],
                           'span': ['class', 'style'],
                           'table': ['class', 'style'],
@@ -39,7 +39,8 @@ allowed_styles_map = {'p': ['text-align'],
                       'span': ['width', 'height'],
                       'table': ['width', 'height'],
                       'th': ['text-align', 'background-color'],
-                      'td': ['text-align', 'background-color']
+                      'td': ['text-align', 'background-color'],
+                      'a': ['width']
                      }
 
 
