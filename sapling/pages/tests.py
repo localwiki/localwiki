@@ -13,6 +13,7 @@ from pages.plugins import html_to_template_text
 from pages.plugins import tag_imports
 from django.template.base import Template
 from django.template.context import Context
+from django.conf import settings
 
 
 class PageTest(TestCase):
@@ -287,6 +288,14 @@ class HTMLToTemplateTextTest(TestCase):
 
 
 class PluginTest(TestCase):
+    def setUp(self):
+        self.old_allowed_src = settings.EMBED_ALLOWED_SRC
+        settings.EMBED_ALLOWED_SRC = ['http://www.youtube.com/embed/.*',
+                                     'http://player.vimeo.com/video/.*']
+
+    def tearDown(self):
+        settings.EMBED_ALLOWED_SRC = self.old_allowed_src
+
     def test_include_tag(self):
         html = '<a class="plugin includepage" href="Front_Page">Front Page</a>'
         template_text = html_to_template_text(html)
@@ -410,3 +419,11 @@ class PluginTest(TestCase):
         self.assertEqual(template_text,
                          imports + ('{% embed_code %} &lt;strong&gt;Hello&lt;'
                                     '/strong&gt; {% endembed_code %}'))
+
+    def test_embed_whitelist(self):
+        html = ('<span class="plugin embed">&lt;iframe src="http://evil.com"'
+                '&gt;&lt;/iframe&gt;</span>')
+        template = Template(html_to_template_text(html))
+        rendered = template.render(Context())
+        self.failUnless(('The embedded URL is not on the list of approved '
+                         'providers') in rendered)

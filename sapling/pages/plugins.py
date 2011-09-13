@@ -40,6 +40,7 @@ The function html_to_template_text parses the HTML and lets each registered
 handler a chance to do something with an element, such as replace it with a
 template tag.
 """
+import re
 from lxml import etree
 from lxml.html import fragments_fromstring
 from xml.sax.saxutils import escape
@@ -49,11 +50,12 @@ from urlparse import urlparse
 
 from django.template import Node
 from django.core.urlresolvers import reverse
+from django.utils.text import unescape_entities
+from django.conf import settings
 
 from pages.models import Page, name_to_url, url_to_name, PageFile
 from pages.models import slugify
 from ckeditor.models import parse_style, sanitize_html_fragment
-from django.utils.text import unescape_entities
 
 
 def sanitize_intermediate(html):
@@ -304,7 +306,19 @@ class EmbedCodeNode(Node):
 
     def render(self, context):
         try:
+            msg = 'Invalid embed code'
             html = unescape_entities(self.nodelist.render(context))
-            return self.sanitize(html)
+            safe_html = self.sanitize(html)
+            top_level_elements = fragments_fromstring(safe_html)
+            if len(top_level_elements):
+                iframe = top_level_elements[0]
+                src = iframe.attrib.get('src', '')
+                allowed_src = getattr(settings, 'EMBED_ALLOWED_SRC', ['.*'])
+                if any(re.match(regex, src) for regex in allowed_src):
+                    return etree.tostring(iframe, encoding='UTF-8')
+                else:
+                    msg = ('The embedded URL is not on the list of approved '
+                       'providers.  Contact the site administrator to add it.')
+            return '<span class="plugin embed">%s</span>' % msg
         except:
             return ''
