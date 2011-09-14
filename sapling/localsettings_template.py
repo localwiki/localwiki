@@ -35,7 +35,7 @@ OLWIDGET_DEFAULT_OPTIONS = {
     'default_lon': -122.43,
     'default_zoom': 12,
 
-    'layers': ['cloudmade.35165'],
+    'layers': ['cloudmade.35165', 've.aerial'],
     'map_options': {
         'controls': ['Navigation', 'PanZoomBar', 'KeyboardDefaults'],
         'theme': '/static/openlayers/theme/sapling/style.css',
