@@ -420,10 +420,20 @@ class PluginTest(TestCase):
                          imports + ('{% embed_code %} &lt;strong&gt;Hello&lt;'
                                     '/strong&gt; {% endembed_code %}'))
 
-    def test_embed_whitelist(self):
+    def test_embed_whitelist_reject(self):
         html = ('<span class="plugin embed">&lt;iframe src="http://evil.com"'
                 '&gt;&lt;/iframe&gt;</span>')
         template = Template(html_to_template_text(html))
         rendered = template.render(Context())
         self.failUnless(('The embedded URL is not on the list of approved '
                          'providers') in rendered)
+
+    def test_embed_whitelist_accept(self):
+        html = ('<span class="plugin embed">&lt;iframe '
+                'src="http://www.youtube.com/embed/JVRsWAjvQSg"'
+                '&gt;&lt;/iframe&gt;</span>')
+        template = Template(html_to_template_text(html))
+        rendered = template.render(Context())
+        self.failUnless(
+                    '<iframe src="http://www.youtube.com/embed/JVRsWAjvQSg"/>'
+                    in rendered)
