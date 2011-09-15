@@ -28,7 +28,8 @@ OpenLayers.Layer.CloudMade = OpenLayers.Class(OpenLayers.Layer.TMS, {
 			numZoomLevels: 19,
 			displayOutsideMaxExtent: true,
 			wrapDateLine: true,
-			styleId: 1
+			styleId: 1,
+            transitionEffect: 'resize'
         }, options);
 		var prefix = [key, options.styleId, 256].join('/') + '/';
         var url = [
@@ -88,7 +89,8 @@ OpenLayers.Layer.CachedCloudMade = OpenLayers.Class(OpenLayers.Layer.CloudMade, 
 			numZoomLevels: 19,
 			displayOutsideMaxExtent: true,
 			wrapDateLine: true,
-			styleId: 1
+			styleId: 1,
+            transitionEffect: 'resize'
         }, options);
         var newArguments = [name, url, options];
         OpenLayers.Layer.TMS.prototype.initialize.apply(this, newArguments);
