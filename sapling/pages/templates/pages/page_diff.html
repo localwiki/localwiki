@@ -23,28 +23,12 @@
               <td class="revision_details">
                   {% if old %}
                     Revision {{ old.history_info.version_number }}
-                    ({{ old.history_info.date }}
-                    by
-                    {% spaceless %}
-                    {% if old.history_info.user %}
-                        <a href="{{ old.history_info.user.get_absolute_url }}">{{ old.history_info.user }}</a>
-                    {% else %}
-                        {{ old.history_info.user_ip }}
-                    {% endif %}
-                    {% endspaceless %})
+                    ({{ old.history_info.date }} by {{ old.history_info.user_link|safe }})
                   {% endif %}
               </td>
               <td class="revision_details">
                   Revision {{ new.history_info.version_number }}
-                  ({{ new.history_info.date }}
-                  by
-                  {% spaceless %}
-                  {% if new.history_info.user %}
-                      <a href="{{ new.history_info.user.get_absolute_url }}">{{ new.history_info.user }}</a>
-                  {% else %}
-                      {{ new.history_info.user_ip }}
-                  {% endif %}
-                  {% endspaceless %})
+                  ({{ new.history_info.date }} by {{ new.history_info.user_link|safe }})
               </td>
           </tr>
           <tr>

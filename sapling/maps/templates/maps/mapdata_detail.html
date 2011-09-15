@@ -32,15 +32,7 @@
     {% if show_revision %}
         <em class="revision_details">
             Revision {{ mapdata.history_info.version_number }}
-            ({{ mapdata.history_info.date }}
-            by
-            {% spaceless %}
-            {% if mapdata.history_info.user %}
-                <a href="{{ mapdata.history_info.user.get_absolute_url }}">{{ mapdata.history_info.user }}</a>
-            {% else %}
-                {{ mapdata.history_info.user_ip }}
-            {% endif %}
-            {% endspaceless %})
+            ({{ mapdata.history_info.date }} by {{ mapdata.history_info.user_link|safe }})
         </em>
     {% endif %}
 {% endblock %}

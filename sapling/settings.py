@@ -63,6 +63,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# Should we display user's IP addresses to non-admin users?
+SHOW_IP_ADDRESSES = True
+
 LOGIN_REDIRECT_URL = '/'
 
 HAYSTACK_SITECONF = 'sapling.search_sites'

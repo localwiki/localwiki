@@ -46,13 +46,7 @@
                     </span>
                 {% endif %}
 
-                <span class="user">
-                  {% if change.history_info.user %}
-                  <a href="{{ change.history_info.user.get_absolute_url }}">{{ change.history_info.user }}</a>
-                  {% else %}
-                  {{ change.history_info.user_ip }}
-                  {% endif %}
-                </span>
+                <span class="user">{{ change.history_info.user_link|safe }}</span>
               </li>
             {% endif %}
             
