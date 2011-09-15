@@ -48,3 +48,6 @@ class AutoTrackUserInfoMiddleware(object):
     def process_response(self, request, response):
         signals.pre_save.disconnect(dispatch_uid=request)
         return response
+
+    def process_exception(self, request, exception):
+        signals.pre_save.disconnect(dispatch_uid=request)
