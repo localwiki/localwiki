@@ -170,12 +170,3 @@ class CustomCKEditorTest(TestCase):
                     '-->\n'
                     '</script>')
         self.assertEqual(rendered, expected)
-
-
-class XSSTest(TestCase):
-    def test_xss_attacks_xhtml(self):
-        for doc in xssattacks.xss_attacks():
-            m = XHTMLModel()
-            m.html = doc
-            print doc
-            self.assertRaises(exceptions.ValidationError, m.clean_fields)

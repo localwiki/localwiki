@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from urllib import quote
+from lxml.html import fragments_fromstring
 
 from django.test import TestCase
 from django.db import models
@@ -14,6 +15,7 @@ from pages.plugins import tag_imports
 from django.template.base import Template
 from django.template.context import Context
 from django.conf import settings
+from pages.xsstests import xss_exploits
 
 
 class PageTest(TestCase):
@@ -437,3 +439,58 @@ class PluginTest(TestCase):
         self.failUnless(
                     '<iframe src="http://www.youtube.com/embed/JVRsWAjvQSg"/>'
                     in rendered)
+
+
+class XSSTest(TestCase):
+    """ Test for tricky attempts to inject scripts into a page
+    Exploits adapted from http://ha.ckers.org/xss.html
+    """
+    def encode_hex_entities(self, string):
+        return''.join('&#x%02X;' % ord(c) for c in string)
+
+    def encode_decimal_entities(self, string):
+        return''.join('&#%i' % ord(c) for c in string)
+
+    def test_encode_hex_entities(self):
+        encoded = self.encode_hex_entities('\'\';!--"<XSS>=&{()}')
+        self.assertEqual(encoded, '&#x27;&#x27;&#x3B;&#x21;&#x2D;&#x2D;&#x22;'
+                                  '&#x3C;&#x58;&#x53;&#x53;&#x3E;&#x3D;&#x26;'
+                                  '&#x7B;&#x28;&#x29;&#x7D;')
+
+    def test_encode_decimal_entities(self):
+        encoded = self.encode_decimal_entities('\'\';!--"<XSS>=&{()}')
+        self.assertEqual(encoded, '&#39&#39&#59&#33&#45&#45&#34&#60&#88&#83'
+                         '&#83&#62&#61&#38&#123&#40&#41&#125')
+
+    def test_xss_all(self):
+        for exploit in xss_exploits:
+            for e in [exploit, exploit.lower(), exploit.upper()]:
+                self.failIf(self.is_exploitable(e), 'XSS exploit: ' + e)
+                hex = self.encode_hex_entities(e)
+                self.failIf(self.is_exploitable(hex), 'XSS exploit hex: ' + e)
+                dec = self.encode_decimal_entities(e)
+                self.failIf(self.is_exploitable(dec), 'XSS exploit dec: ' + e)
+
+    def is_exploitable(self, exploit):
+        p = Page(name='XSS Test', content=exploit)
+        p.clean_fields()
+        t = Template(html_to_template_text(p.content))
+        html = t.render(Context())
+        return self.contains_script(html)
+
+    def contains_script(self, html):
+        fragments = fragments_fromstring(html)
+        for frag in fragments:
+            if not hasattr(frag, 'tag'):
+                continue
+            for e in frag.iter():
+                if e.tag.lower() == 'script' or e.tag.lower() == 'xss':
+                    return True
+                for a, v in e.attrib.items():
+                    if a.lower().startswith('on'):
+                        # event handler
+                        return True
+                    if v.lower().startswith('jav'):
+                        # script protocol
+                        return True
+        return False
