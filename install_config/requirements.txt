@@ -7,4 +7,4 @@ pysolr
 django-haystack
 django-randomfilenamestorage
 https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration
--e git+git://github.com/philipn/olwidget.git#egg=django-olwidget
+-e git+git://github.com/philipn/olwidget.git@08beca04a0a2c71bbc72ad732b12520e62da9098#egg=django-olwidget

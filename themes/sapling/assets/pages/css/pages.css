@@ -91,7 +91,7 @@ a[href$='.DOCX'] {
 .image_frame img {
     display: block; 
 }
-.image_frame a {
+.image_frame > a {
     line-height: 0;
     display: block;
 }
@@ -114,6 +114,7 @@ a[href$='.DOCX'] {
     margin-bottom: 0.3em;
 }
 .image_caption {
+    line-height: 1;
     display: block;
     text-align: center;
     font-size: 80%;
@@ -165,4 +166,21 @@ hr.selected {
     border-color: #318DFD;
     background-color: #318DFD;
     color: #318DFD;
+}
+
+/* Page plugins */
+.plugin {
+    display: block;
+    background-color: #E5F0FB;
+    border: 1px dashed #318DFD;
+    padding: 10px;
+    resize: none;
+}
+
+.includepage_left {
+    float: left;
+}
+
+.includepage_right {
+    float: right;
 }

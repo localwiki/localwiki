@@ -41,6 +41,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         
         var uploadStarted = function (dialog) {
         	dialog.uploading = true;
+        	dialog.disableButton('ok');
         	showSpinner(dialog.getContentElement('Upload', 'imagePicker'));
         }
         
@@ -50,6 +51,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         		refreshFiles(dialog.getContentElement('Upload', 'imagePicker'),
         			function(){ selectImage(newUrl) });
         		dialog.uploading = false;
+        		dialog.enableButton('ok');
         	}
         };
         
@@ -162,6 +164,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 this.setupContent();
             },
             onOk: function () {
+            	if(this.uploading)
+            		return false;
                 if(dialogType == 'attachfile') {
                 	var linkElement = editor.document.createElement('a');
                 	this.commitContent(linkElement);

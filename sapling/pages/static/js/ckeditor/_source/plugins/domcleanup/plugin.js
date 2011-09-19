@@ -14,6 +14,8 @@ CKEDITOR.plugins.add( 'domcleanup',
         if(editor.config.domcleanupAllowedTags)
             allowed_tags = editor.config.domcleanupAllowedTags;
         editor.plugins['domcleanup'].allowedTags = allowed_tags;
+        editor.plugins['domcleanup'].allowedAttributes = editor.config.domcleanupAllowedAttributes;
+        editor.plugins['domcleanup'].allowedStyles = editor.config.domcleanupAllowedStyles;
         
         // Clean up text pasted into 'pre'
 		editor.on( 'paste', function( evt )
@@ -56,17 +58,9 @@ CKEDITOR.plugins.add( 'domcleanup',
                         if(drop_tags.indexOf(element.name) != -1)
                             return false;
                         var ok_tags = editor.plugins['domcleanup'].allowedTags;
-                        var custom_tags = editor.plugins['domcleanup'].customAllowedTags
-                        var ok_attributes = {
-                            'p' : ['class','style'],
-                            'ul' : ['class'],
-                            'a' : ['name','href'],
-                            'img' : ['src','alt','title','style','class'],
-                            'span' : ['class','style'],
-                            'table' : ['class','style'],
-                            'th': ['colspan','rowspan','style'],
-                            'td': ['colspan','rowspan','style']
-                        };
+                        var custom_tags = editor.plugins['domcleanup'].customAllowedTags;
+                        var ok_attributes = editor.plugins['domcleanup'].allowedAttributes;
+                        var ok_styles = editor.plugins['domcleanup'].allowedStyles;
                         var block_elements = {
                             'div': 1,
                             'p': 1,
@@ -92,16 +86,43 @@ CKEDITOR.plugins.add( 'domcleanup',
                             'tbody': 1,
                             'tfoot': 1
                         };
-                        for(attr in element.attributes)
+                        if(ok_attributes)
                         {
-                        	if(attr.indexOf('data-cke-') == 0)
-                        		continue;
-                            if(!ok_attributes[element.name] ||
-                                ok_attributes[element.name]
-                                                .indexOf(attr) < 0){
-                                delete element.attributes[attr];
+                        	for(attr in element.attributes)
+                            {
+                            	if(attr.indexOf('data-cke-') == 0)
+                            		continue;
+                                if(!ok_attributes[element.name] ||
+                                    ok_attributes[element.name]
+                                                    .indexOf(attr) < 0){
+                                    delete element.attributes[attr];
+                                }
                             }
-                     
+                        }
+                        if(ok_styles && element.attributes && element.attributes['style']
+                        	&& ok_styles[element.name])
+                        {
+                        	var css = element.attributes['style'];
+                        	var ok_css = [];
+                        	var styles = css.split(';'),
+                        		i,
+                        		style, k, v;
+
+                        	for (i = 0; i < styles.length; i++)
+                        	{
+                        		style = styles[i].split(':');
+                        		k = $.trim(style[0]);
+                        		v = $.trim(style[1]);
+                        		if (k.length > 0 && v.length > 0
+                        			&& ok_styles[element.name].indexOf(k) >= 0)
+                        		{
+                        			ok_css.push(k + ': ' + v + ';');
+                        		}
+                        	}
+                        	if(!ok_css.length)
+                        		delete element.attributes['style'];
+                        	else
+                        		element.attributes['style'] = ok_css.join(' ');
                         }
                         if(editor.plugins['domcleanup'].removeBlocks)
                         {

@@ -326,15 +326,33 @@ class ChangesTracker(object):
         NOTE: Your custom fields should start with history_ if you want them
               to be looked up via hm.version_info.fieldname
 
+        Here's an example of extending to add a descriptive textfield::
+
+            def get_extra_history_fields(self, model):
+                # Keep base_attrs -- we like user tracking!
+                attrs = super(MyTrackChanges, self).get_extra_history_fields()
+                attrs['history_long_description'] = models.TextField(blank=True, null=True)
+                return attrs
+
         Returns:
             A dictionary of fields that will be added to the historical
             record model.
         """
+        def _history_user_link(m):
+            if m.version_info.user:
+                user = m.version_info.user
+                return '<a href="%s">%s</a>' % (user.get_absolute_url(), user)
+            else:
+                if getattr(settings, 'SHOW_IP_ADDRESSES', True):
+                    return m.version_info.user_ip
+                else:
+                    return 'unknown'
         attrs = {
             'history_comment': models.CharField(max_length=200, blank=True,
                 null=True),
             'history_user': fields.AutoUserField(null=True),
             'history_user_ip': fields.AutoIPAddressField(null=True),
+            'history_user_link': _history_user_link,
             '__unicode__': lambda self: u'%s as of %s' % (
                 self.history__object, self.history_date),
         }

@@ -52,28 +52,12 @@
             <td class="revision_details">
                 {% if old %}
                   Revision {{ old.version_info.version_number }}
-                  ({{ old.version_info.date }}
-                  by
-                  {% spaceless %}
-                  {% if old.version_info.user %}
-                      <a href="{{ old.version_info.user.get_absolute_url }}">{{ old.version_info.user }}</a>
-                  {% else %}
-                      {{ old.version_info.user_ip }}
-                  {% endif %}
-                  {% endspaceless %})
+                  ({{ old.version_info.date }} by {{ old.version_info.user_link|safe }})
                 {% endif %}
             </td>
             <td class="revision_details">
                 Revision {{ new.version_info.version_number }}
-                ({{ new.version_info.date }}
-                by
-                {% spaceless %}
-                {% if new.version_info.user %}
-                    <a href="{{ new.version_info.user.get_absolute_url }}">{{ new.version_info.user }}</a>
-                {% else %}
-                    {{ new.version_info.user_ip }}
-                {% endif %}
-                {% endspaceless %})
+                ({{ new.version_info.date }} by {{ new.version_info.user_link|safe }})
             </td>
         </tr>
         <tr>

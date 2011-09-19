@@ -30,12 +30,7 @@
       </span>
       {# We assume a standard url format here. #}
       <a href="{{ forloop.revcounter }}">{{ version_info.date }}</a>
-      {{ version_info.type_verbose }} by
-      {% if version_info.user %}
-        <a href="{{ version_info.user.get_absolute_url }}">{{ version_info.user }}</a>
-      {% else %}
-        {{ version_info.user_ip }}
-      {% endif %}
+      {{ version_info.type_verbose }} by {{ version_info.user_link|safe }}
       {% block version_info_extras %}{% endblock %}
       </label>
     </td>

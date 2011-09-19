@@ -46,13 +46,7 @@
                     </span>
                 {% endif %}
 
-                <span class="user">
-                  {% if change.version_info.user %}
-                  <a href="{{ change.version_info.user.get_absolute_url }}">{{ change.version_info.user }}</a>
-                  {% else %}
-                  {{ change.version_info.user_ip }}
-                  {% endif %}
-                </span>
+                <span class="user">{{ change.version_info.user_link|safe }}</span>
               </li>
             {% endif %}
             

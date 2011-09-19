@@ -114,10 +114,10 @@ class RecentChangesView(ListView):
         # not simply the latest N days' changes.  We always want to show as
         # many changes on the RC page as possible to encourage more wiki
         # activity.
+        num_days_total = 1
         try:
             latest_changes = Page.versions.all()[0:300]
             start_at = Page.versions.all()[0].version_info.date
-            num_days_total = 1
 
             for change in latest_changes:
                 if change.version_info.date.day != start_at.day:

@@ -1,8 +1,12 @@
 <div id="{{ id }}"></div>
 {{ layer_html|join:"" }}
+
 <script type="text/javascript">
     SaplingMap.init_openlayers();
     OpenLayers.ImgPath = "{{STATIC_URL}}img/openlayers/themes/dark/";
+
+    olwidget.registerCustomBaseLayers({{ custom_base_layers|safe }});
+
     $(document).ready(function() {
         var map = new olwidget.Map("{{ id }}", [
                 {{ layer_js|join:"," }}
