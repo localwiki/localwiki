@@ -75,8 +75,7 @@ def desanitize(fragment):
     Undo sanitization, when we need the original contents.
     """
     fragment = sanitize_final(fragment)
-    fragment = _unescape_util.unescape(fragment)
-    return sanitize_intermediate(fragment)
+    return _unescape_util.unescape(fragment)
 
 
 def sanitize_final(html):
@@ -162,7 +161,7 @@ def handle_image(elem, context=None):
     if 'width' not in style or 'height' not in style:
         do_thumbnail = False
 
-    src = elem.attrib.get('src', '')
+    src = desanitize(elem.attrib.get('src', ''))
     if not src.startswith(_files_url):
         return
 
