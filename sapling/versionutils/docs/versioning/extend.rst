@@ -19,7 +19,7 @@ subclass:
         simply add your own values to the fields for custom fields.
 
         NOTE: Your custom fields should start with history_ if you want them
-              to be looked up via hm.history_info.fieldname
+              to be looked up via hm.version_info.fieldname
 
         Returns:
             A dictionary of fields that will be added to the historical
