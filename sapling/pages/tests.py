@@ -291,7 +291,7 @@ class HTMLToTemplateTextTest(TestCase):
 
 class PluginTest(TestCase):
     def setUp(self):
-        self.old_allowed_src = settings.EMBED_ALLOWED_SRC
+        self.old_allowed_src = getattr(settings, 'EMBED_ALLOWED_SRC', ['.*'])
         settings.EMBED_ALLOWED_SRC = ['http://www.youtube.com/embed/.*',
                                      'http://player.vimeo.com/video/.*']
 
