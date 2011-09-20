@@ -185,7 +185,6 @@ textarea, input, select {
 }
 
 #login_info {
-    width: 13em;
     float: right;
     clear: right;
     text-align: right;
@@ -194,6 +193,7 @@ textarea, input, select {
 }
 #login_info .welcome {
     float: left;
+    margin-right: 0.8em;
 }
 
 #header .site_search {
