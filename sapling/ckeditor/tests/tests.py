@@ -11,7 +11,6 @@ from ckeditor.models import XMLField
 from ckeditor.models import HTML5Field
 from ckeditor.models import HTML5FragmentField
 from ckeditor.widgets import CKEditor
-import xssattacks
 
 
 class XHTMLModel(models.Model):
