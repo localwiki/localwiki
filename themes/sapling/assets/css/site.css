@@ -192,6 +192,9 @@ textarea, input, select {
     margin-right: 2em;
     margin-top: 0.4em;
 }
+#login_info .welcome {
+    float: left;
+}
 
 #header .site_search {
     float: right;
