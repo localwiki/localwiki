@@ -12,7 +12,7 @@ from django.views.generic.edit import FormMixin
 from forms import DeleteForm, RevertForm
 
 
-class HistoryList(ListView):
+class VersionsList(ListView):
     """
     A subclass of django.views.generic.ListView.
 
@@ -27,12 +27,12 @@ class HistoryList(ListView):
             self.page = all_page_history[0]
             return all_page_history
     """
-    context_object_name = 'version_list'
-    template_name_suffix = '_history'
+    context_object_name = 'versions_list'
+    template_name_suffix = '_versions'
     revert_view_name = None
 
     def get_context_data(self, **kwargs):
-        context = super(HistoryList, self).get_context_data(**kwargs)
+        context = super(VersionsList, self).get_context_data(**kwargs)
         context['slug'] = self.kwargs.get('slug')
         return context
 
@@ -41,7 +41,7 @@ class HistoryList(ListView):
         if hasattr(self.object_list, 'model'):
             hist_model = self.object_list.model
             self.object_list.model = hist_model._original_model
-            names = super(HistoryList, self).get_template_names()
+            names = super(VersionsList, self).get_template_names()
             self.object_list.model = hist_model
         return names
 

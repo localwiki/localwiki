@@ -1,4 +1,4 @@
-{% if version_list %}
+{% if versions_list %}
 <form method="GET" action="compare" name="compare_form" id="compare_form">
 <table>
   <thead>
@@ -16,7 +16,7 @@
     </tr>
   </tfoot>
   <tbody>
-{% for version in version_list %}
+{% for version in versions_list %}
 {% with version.version_info as version_info %}
   <tr>
     <td>

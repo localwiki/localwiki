@@ -10,7 +10,7 @@ from django.db.models import Q
 from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin, JSONResponseMixin
 from versionutils.versioning.views import DeleteView, UpdateView
-from versionutils.versioning.views import RevertView, HistoryList
+from versionutils.versioning.views import RevertView, VersionsList
 from pages.models import Page
 from pages.models import slugify
 
@@ -193,7 +193,7 @@ class MapRevertView(MapVersionDetailView, RevertView):
         return context
 
 
-class MapHistoryList(HistoryList):
+class MapVersionsList(VersionsList):
     def get_queryset(self):
         page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
         latest_page = page.versions.most_recent()
@@ -205,7 +205,7 @@ class MapHistoryList(HistoryList):
         return self.mapdata.versions.all()
 
     def get_context_data(self, **kwargs):
-        context = super(MapHistoryList, self).get_context_data(**kwargs)
+        context = super(MapVersionsList, self).get_context_data(**kwargs)
         context['mapdata'] = self.mapdata
         return context
 

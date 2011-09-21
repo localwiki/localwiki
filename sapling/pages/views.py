@@ -15,7 +15,7 @@ from django.shortcuts import get_object_or_404
 from ckeditor.views import ck_upload_result
 from versionutils import diff
 from versionutils.versioning.views import UpdateView, DeleteView
-from versionutils.versioning.views import RevertView, HistoryList
+from versionutils.versioning.views import RevertView, VersionsList
 from utils.views import Custom404Mixin, CreateObjectMixin
 from models import Page, PageFile, url_to_name
 from forms import PageForm, PageFileForm
@@ -126,20 +126,20 @@ class PageRevertView(RevertView):
         return reverse('pages:show', args=[self.kwargs.get('original_slug')])
 
 
-class PageHistoryList(HistoryList):
+class PageVersionsList(VersionsList):
     def get_queryset(self):
-        all_page_history = Page(slug=self.kwargs['slug']).versions.all()
+        all_page_versions = Page(slug=self.kwargs['slug']).versions.all()
         # We set self.page to the most recent historical instance of the
         # page.
-        if all_page_history:
-            self.page = all_page_history[0]
+        if all_page_versions:
+            self.page = all_page_versions[0]
         else:
             self.page = Page(slug=self.kwargs['slug'],
                              name=self.kwargs['original_slug'])
-        return all_page_history
+        return all_page_versions
 
     def get_context_data(self, **kwargs):
-        context = super(PageHistoryList, self).get_context_data(**kwargs)
+        context = super(PageVersionsList, self).get_context_data(**kwargs)
         context['page'] = self.page
         return context
 
@@ -219,20 +219,20 @@ class PageFileRevertView(RevertView):
                                                 self.kwargs['file']])
 
 
-class PageFileInfo(HistoryList):
+class PageFileInfo(VersionsList):
     template_name_suffix = '_info'
 
     def get_queryset(self):
-        all_file_history = PageFile(slug=self.kwargs['slug'],
-                                    name=self.kwargs['file']).versions.all()
+        all_file_versions = PageFile(slug=self.kwargs['slug'],
+                                     name=self.kwargs['file']).versions.all()
         # We set self.file to the most recent historical instance of the
         # file.
-        if all_file_history:
-            self.file = all_file_history[0]
+        if all_file_versions:
+            self.file = all_file_versions[0]
         else:
             self.file = PageFile(slug=self.kwargs['slug'],
                                  name=self.kwargs['file'])
-        return all_file_history
+        return all_file_versions
 
     def get_context_data(self, **kwargs):
         context = super(PageFileInfo, self).get_context_data(**kwargs)

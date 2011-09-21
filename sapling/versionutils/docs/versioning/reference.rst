@@ -190,7 +190,7 @@ class-based generic views.
         By default this is `RevertForm`, which can be found in
         `versioning.forms`.
 
-.. class:: versionutils.versioning.views.HistoryView
+.. class:: versionutils.versioning.views.VersionsList
 
     A subclass of django.views.generic.ListView.
 
@@ -200,19 +200,19 @@ class-based generic views.
         containing historical instances.  For instance::
 
             def get_queryset(self):
-                all_page_history = Page(slug=self.kwargs['slug']).history.all()
+                all_page_versions = Page(slug=self.kwargs['slug']).versions.all()
                 # We set self.page to the most recent historical instance of the
                 # page.
-                self.page = all_page_history[0]
-                return all_page_history
+                self.page = all_page_versions[0]
+                return all_page_versions
 
     .. attribute:: context_object_name
        
-        By default this is `version_list`.
+        By default this is `versions_list`.
 
     .. attribute:: template_name_suffix
        
-        By default this is `_history`.
+        By default this is `_versions`.
     
     .. attribute:: revert_view_name
 
