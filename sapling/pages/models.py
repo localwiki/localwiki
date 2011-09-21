@@ -65,6 +65,15 @@ class Page(models.Model):
         if not slugify(self.name):
             raise ValidationError('Page name is invalid.')
 
+    def exists(self):
+        """
+        Returns:
+            True if the Page currently exists in the database.
+        """
+        if Page.objects.filter(slug=self.slug):
+            return True
+        return False
+
     def pretty_slug(self):
         if not self.name:
             return self.slug

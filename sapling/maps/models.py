@@ -26,5 +26,13 @@ class MapData(models.Model):
         self.length = self.geom.length
         super(MapData, self).save(*args, **kwargs)
 
+    def exists(self):
+        """
+        Returns:
+            True if the MapData currently exists in the database.
+        """
+        if MapData.objects.filter(page=self.page):
+            return True
+        return False
 
 versioning.register(MapData)

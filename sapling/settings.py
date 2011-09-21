@@ -71,6 +71,8 @@ LOGIN_REDIRECT_URL = '/'
 HAYSTACK_SITECONF = 'sapling.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'
 
+THUMBNAIL_BACKEND = 'utils.sorl_backends.AutoFormatBackend'
+
 OL_API = STATIC_URL + 'openlayers/OpenLayers.js'
 OLWIDGET_CSS = '%solwidget/css/sapling.css' % STATIC_URL
 CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js' % STATIC_URL
