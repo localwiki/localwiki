@@ -313,6 +313,9 @@ class EmbedCodeNode(Node):
                 iframe = top_level_elements[0]
                 src = iframe.attrib.get('src', '')
                 allowed_src = getattr(settings, 'EMBED_ALLOWED_SRC', ['.*'])
+                # We don't want a self-closing iframe tag.
+                if iframe.text is None:
+                    iframe.text = ''
                 if any(re.match(regex, src) for regex in allowed_src):
                     return etree.tostring(iframe, encoding='UTF-8')
                 else:
