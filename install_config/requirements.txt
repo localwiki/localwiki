@@ -8,4 +8,4 @@ django-haystack
 django-randomfilenamestorage
 django-guardian
 https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration
--e git+git://github.com/philipn/olwidget.git@4fc93f964f9ebc89e2cbfd62c44754ef47b86284#egg=django-olwidget
+-e git+git://github.com/philipn/olwidget.git@23cb7b604d3ae5c12149528cab472338708b7d87#egg=django-olwidget
