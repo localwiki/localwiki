@@ -63,9 +63,10 @@ AUTHENTICATION_BACKENDS = (
     'sapling.users.backends.RestrictiveBackend',
 )
 
-# RestrictiveBackend settings
+# users app settings
 BANNED_GROUP = 'Banned'
 LOGGED_IN_HAS_PERM = False
+USERS_DEFAULT_GROUP = 'Authenticated'
 
 # django-guardian setting
 ANONYMOUS_USER_ID = -1
