@@ -5,7 +5,7 @@
     SaplingMap.init_openlayers();
     OpenLayers.ImgPath = "{{STATIC_URL}}img/openlayers/themes/dark/";
 
-    olwidget.registerCustomBaseLayers({{ custom_base_layers|safe }});
+    {{ setup_custom_layer_types|safe }}
 
     $(document).ready(function() {
         var map = new olwidget.Map("{{ id }}", [
