@@ -36,6 +36,7 @@ python-setuptools, virtualenv, gdal, postgresql with postgis:
 Initialize the project environment:
 
     (env)$ python sapling/manage.py syncdb
+    (env)$ python sapling/manage.py migrate
     (env)$ python sapling/manage.py collectstatic
 
 You are now done configuring and installing things! You can start the built-in
