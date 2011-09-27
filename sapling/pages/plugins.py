@@ -332,6 +332,9 @@ class EmbedCodeNode(Node):
             html = unescape_entities(self.nodelist.render(context))
             safe_html = self.sanitize(html)
             top_level_elements = fragments_fromstring(safe_html)
+            # TODO: We need to remember to patch in whatever pre-save
+            #       HTML processing we eventually do here, too.  E.g.
+            #       a spam URL blacklist.
             out = []
             for elem in top_level_elements:
                 if elem.tag == 'iframe':
