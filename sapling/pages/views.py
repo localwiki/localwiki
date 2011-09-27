@@ -16,14 +16,12 @@ from ckeditor.views import ck_upload_result
 from versionutils import diff
 from versionutils.versioning.views import UpdateView, DeleteView
 from versionutils.versioning.views import RevertView, HistoryList
-from utils.views import Custom404Mixin, CreateObjectMixin,\
-    PermissionRequiredMixin
+from utils.views import Custom404Mixin, CreateObjectMixin
 from models import Page, PageFile, url_to_name
 from forms import PageForm, PageFileForm
 from maps.widgets import InfoMap
 
 from models import slugify
-from users.decorators import permission_required
 
 # Where possible, we subclass similar generic views here.
 
@@ -78,10 +76,9 @@ class PageVersionDetailView(PageDetailView):
         return context
 
 
-class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin, UpdateView):
+class PageUpdateView(CreateObjectMixin, UpdateView):
     model = Page
     form_class = PageForm
-    permission = 'pages.change_page'
 
     def success_msg(self):
         # NOTE: This is eventually marked as safe when rendered in our
@@ -107,20 +104,18 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin, UpdateView):
         return Page(name=url_to_name(self.kwargs['original_slug']))
 
 
-class PageDeleteView(PermissionRequiredMixin, DeleteView):
+class PageDeleteView(DeleteView):
     model = Page
     context_object_name = 'page'
-    permission = 'pages.delete_page'
 
     def get_success_url(self):
         # Redirect back to the page.
         return reverse('pages:show', args=[self.kwargs.get('original_slug')])
 
 
-class PageRevertView(PermissionRequiredMixin, RevertView):
+class PageRevertView(RevertView):
     model = Page
     context_object_name = 'page'
-    permission = 'pages.delete_page'
 
     def get_object(self):
         page = Page(slug=self.kwargs['slug'])
@@ -210,17 +205,13 @@ class PageFileCompareView(diff.views.CompareView):
         return context
 
 
-class PageFileRevertView(PermissionRequiredMixin, RevertView):
+class PageFileRevertView(RevertView):
     model = PageFile
     context_object_name = 'file'
-    permission = 'pages.change_page'
 
     def get_object(self):
         file = PageFile(slug=self.kwargs['slug'], name=self.kwargs['file'])
         return file.history.as_of(version=int(self.kwargs['version']))
-
-    def get_protected_object(self):
-        return Page.objects.get(slug=self.object.slug)
 
     def get_success_url(self):
         # Redirect back to the file info page.
@@ -276,7 +267,6 @@ class PageCreateView(RedirectView):
 
 
 @require_POST
-@permission_required('pages.change_page', (Page, 'slug', 'slug'))
 def upload(request, slug, **kwargs):
     error = None
     file_form = PageFileForm(request.POST, request.FILES)

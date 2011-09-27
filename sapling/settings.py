@@ -60,15 +60,8 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 AUTHENTICATION_BACKENDS = (
     'sapling.users.backends.CaseInsensitiveModelBackend',
-    'sapling.users.backends.RestrictiveBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
-
-# RestrictiveBackend settings
-BANNED_GROUP = 'Banned'
-LOGGED_IN_HAS_PERM = False
-
-# django-guardian setting
-ANONYMOUS_USER_ID = -1
 
 # Should we display user's IP addresses to non-admin users?
 SHOW_IP_ADDRESSES = True
@@ -135,7 +128,6 @@ INSTALLED_APPS = (
     'olwidget',
     'registration',
     'sorl.thumbnail',
-    'guardian',
 
     # Our apps
     'versionutils.versioning',
