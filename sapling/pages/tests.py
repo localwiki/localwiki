@@ -437,8 +437,8 @@ class PluginTest(TestCase):
         template = Template(html_to_template_text(html))
         rendered = template.render(Context())
         self.failUnless(
-                    '<iframe src="http://www.youtube.com/embed/JVRsWAjvQSg"/>'
-                    in rendered)
+            '<iframe src="http://www.youtube.com/embed/JVRsWAjvQSg"></iframe>'
+            in rendered)
 
 
 class XSSTest(TestCase):

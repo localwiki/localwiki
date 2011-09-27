@@ -47,15 +47,21 @@ from xml.sax.saxutils import escape
 from HTMLParser import HTMLParser
 from urllib import unquote_plus
 from urlparse import urlparse
+from copy import copy
 
 from django.template import Node
 from django.core.urlresolvers import reverse
 from django.utils.text import unescape_entities
 from django.conf import settings
 
-from pages.models import Page, name_to_url, url_to_name, PageFile
-from pages.models import slugify
 from ckeditor.models import parse_style, sanitize_html_fragment
+
+from models import Page, name_to_url, url_to_name, PageFile
+from models import allowed_tags as pages_allowed_tags
+from models import allowed_attributes_map as pages_allowed_attributes_map
+from models import allowed_styles_map as pages_allowed_styles_map
+from models import slugify
+from exceptions import IFrameSrcNotApproved
 
 
 def sanitize_intermediate(html):
@@ -294,33 +300,50 @@ class LinkNode(Node):
 
 
 class EmbedCodeNode(Node):
+    allowed_tags = copy(pages_allowed_tags)
+    allowed_attributes = copy(pages_allowed_attributes_map)
+    allowed_styles_map = copy(pages_allowed_styles_map)
+
+    # We allow the iframe tag in embeds.
+    allowed_tags.append('iframe')
+    allowed_attributes['iframe'] = [
+        'allowfullscreen', 'width', 'height', 'src']
+
     def __init__(self, nodelist):
         self.nodelist = nodelist
 
     def sanitize(self, html):
-        ok_tags = ['iframe']
-        ok_attributes = {'iframe': ['allowfullscreen', 'width', 'height',
-                                    'src']}
-        return sanitize_html_fragment(html, ok_tags, ok_attributes)
+        return sanitize_html_fragment(html, self.allowed_tags,
+            self.allowed_attributes, self.allowed_styles_map)
+
+    def _process_iframe(self, iframe):
+        src = iframe.attrib.get('src', '')
+        allowed_src = getattr(settings, 'EMBED_ALLOWED_SRC', ['.*'])
+        # We don't want a self-closing iframe tag.
+        if iframe.text is None:
+            iframe.text = ''
+        if any(re.match(regex, src) for regex in allowed_src):
+            return iframe
+        else:
+            raise IFrameSrcNotApproved
 
     def render(self, context):
         try:
-            msg = 'Invalid embed code'
             html = unescape_entities(self.nodelist.render(context))
             safe_html = self.sanitize(html)
             top_level_elements = fragments_fromstring(safe_html)
-            if len(top_level_elements):
-                iframe = top_level_elements[0]
-                src = iframe.attrib.get('src', '')
-                allowed_src = getattr(settings, 'EMBED_ALLOWED_SRC', ['.*'])
-                # We don't want a self-closing iframe tag.
-                if iframe.text is None:
-                    iframe.text = ''
-                if any(re.match(regex, src) for regex in allowed_src):
-                    return etree.tostring(iframe, encoding='UTF-8')
-                else:
-                    msg = ('The embedded URL is not on the list of approved '
-                       'providers.  Contact the site administrator to add it.')
-            return '<span class="plugin embed">%s</span>' % msg
+            out = []
+            for elem in top_level_elements:
+                if elem.tag == 'iframe':
+                    elem = self._process_iframe(elem)
+                out.append(etree.tostring(elem, encoding='UTF-8'))
+            return ''.join(out)
+
+        except IFrameSrcNotApproved:
+            return (
+                '<span class="plugin embed">'
+                'The embedded URL is not on the list of approved providers.  '
+                'Contact the site administrator to add it.'
+                '</span>')
         except:
-            return ''
+            return '<span class="plugin embed">Invalid embed code</span>'
