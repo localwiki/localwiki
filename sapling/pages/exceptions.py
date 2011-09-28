@@ -1,0 +1,2 @@
+class IFrameSrcNotApproved(Exception):
+    pass

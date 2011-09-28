@@ -16,16 +16,40 @@ from ckeditor.models import HTML5FragmentField
 from versionutils import diff
 from versionutils.versioning import TrackChanges
 
+
 allowed_tags = ['p', 'br', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3',
                 'h4', 'h5', 'h6', 'hr', 'ul', 'ol', 'li', 'pre', 'table',
                 'thead', 'tbody', 'tr', 'th', 'td', 'span', 'strike', 'sub',
                 'sup', 'tt']
 
 
+allowed_attributes_map = {'p': ['class', 'style'],
+                          'ul': ['class'],
+                          'a': ['class', 'name', 'href', 'style'],
+                          'img': ['class', 'src', 'alt', 'title', 'style'],
+                          'span': ['class', 'style'],
+                          'table': ['class', 'style'],
+                          'th': ['class', 'colspan', 'rowspan', 'style'],
+                          'td': ['class', 'colspan', 'rowspan', 'style']
+                         }
+
+
+allowed_styles_map = {'p': ['text-align'],
+                      'img': ['width', 'height'],
+                      'span': ['width', 'height'],
+                      'table': ['width', 'height'],
+                      'th': ['text-align', 'background-color'],
+                      'td': ['text-align', 'background-color'],
+                      'a': ['width']
+                     }
+
+
 class Page(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False, unique=True)
-    content = HTML5FragmentField(allowed_elements=allowed_tags)
+    content = HTML5FragmentField(allowed_elements=allowed_tags,
+                                 allowed_attributes_map=allowed_attributes_map,
+                                 allowed_styles_map=allowed_styles_map)
     history = TrackChanges()
 
     def __unicode__(self):
@@ -42,6 +66,15 @@ class Page(models.Model):
         self.name = clean_name(self.name)
         if not slugify(self.name):
             raise ValidationError('Page name is invalid.')
+
+    def exists(self):
+        """
+        Returns:
+            True if the Page currently exists in the database.
+        """
+        if Page.objects.filter(slug=self.slug):
+            return True
+        return False
 
     def pretty_slug(self):
         if not self.name:

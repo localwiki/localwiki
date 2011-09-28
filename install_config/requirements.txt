@@ -6,5 +6,7 @@ python-dateutil==1.5
 pysolr
 django-haystack
 django-randomfilenamestorage
+django-guardian
+South
 https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration
--e git+git://github.com/philipn/olwidget.git#egg=django-olwidget
+-e git+git://github.com/philipn/olwidget.git@9137a50b691e10a6db63ec600135e484457d21d6#egg=django-olwidget

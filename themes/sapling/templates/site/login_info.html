@@ -1,9 +1,16 @@
 {% load url from future %}
 <div>
 {% if request.user.is_authenticated %}
-<a href="{% url 'django.contrib.auth.views.logout' %}?next={{ request.path }}">log out</a>
+    <span class="welcome">
+        Welcome, <a href="{{ request.user.get_absolute_url }}">{{ request.user }}!</a>
+    </span>
+    <span class="actions">
+        <a href="{% url 'django.contrib.auth.views.logout' %}?next={{ request.path }}">log out</a>
+    </span>
 {% else %}
-<a href="{% url 'django.contrib.auth.views.login' %}?next={{ request.path }}">log in</a> or <a href="{% url 'registration_register' %}?next={{ request.path }}">create account</a>
+    <span class="actions">
+        <a href="{% url 'django.contrib.auth.views.login' %}?next={{ request.path }}">log in</a> or <a href="{% url 'registration_register' %}?next={{ request.path }}">create account</a>
+    </span>
 {% endif %}
 
 </div>

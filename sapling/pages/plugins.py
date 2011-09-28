@@ -3,6 +3,32 @@ Conversion of HTML into template with dynamic parts.
 
 We want to allow some dynamic content that gets inserted as the HTML is
 rendered. This is done by converting certain HTML tags into template tags.
+There are two mechanisms to do this: plugin handlers and tag handlers.
+
+Plugins are meant for inserting bits of dynamic content at specific places on
+the final rendered page marked by a placeholder element. The output can be
+whatever you like: widgets, bits of JavaScript, anything. Tag handlers, on the
+other hand, are meant for fixing up the HTML slightly and transparently, i.e.,
+fixing links and adding helpful visual styles and the like. When in doubt, use
+plugins.
+
+Plugin handlers work with HTML elements that have the class "plugin". When
+an element has the class "plugin", it will be passed to registered handlers
+based on the other classes it has.
+
+For example, the following element will be passed to the handler registered for
+the "includepage" class:
+
+<a href="Navigation" class="plugin includepage">Include Navigation</a>
+
+which will convert it to this:
+
+{% include_page "Navigation %}
+
+to be rendered by the include_page template tag.
+
+Tag handlers work similarly, but they are applied by element tag instead of by
+class.  They are best used for routine processing of content, such as styling.
 
 For example, to mark links to non-existant pages with a different style, this:
     <a href="My Page">My Page</a>
@@ -14,18 +40,28 @@ The function html_to_template_text parses the HTML and lets each registered
 handler a chance to do something with an element, such as replace it with a
 template tag.
 """
+import re
 from lxml import etree
 from lxml.html import fragments_fromstring
 from xml.sax.saxutils import escape
 from HTMLParser import HTMLParser
 from urllib import unquote_plus
 from urlparse import urlparse
+from copy import copy
 
 from django.template import Node
 from django.core.urlresolvers import reverse
+from django.utils.text import unescape_entities
+from django.conf import settings
 
-from pages.models import Page, name_to_url, url_to_name, PageFile
-from pages.models import slugify
+from ckeditor.models import parse_style, sanitize_html_fragment
+
+from models import Page, name_to_url, url_to_name, PageFile
+from models import allowed_tags as pages_allowed_tags
+from models import allowed_attributes_map as pages_allowed_attributes_map
+from models import allowed_styles_map as pages_allowed_styles_map
+from models import slugify
+from exceptions import IFrameSrcNotApproved
 
 
 def sanitize_intermediate(html):
@@ -45,8 +81,7 @@ def desanitize(fragment):
     Undo sanitization, when we need the original contents.
     """
     fragment = sanitize_final(fragment)
-    fragment = _unescape_util.unescape(fragment)
-    return sanitize_intermediate(fragment)
+    return _unescape_util.unescape(fragment)
 
 
 def sanitize_final(html):
@@ -71,6 +106,35 @@ def insert_text_before(text, elem):
         elem.getparent().text = (elem.getparent().text or '') + text
 
 
+def include_page(elem, context=None):
+    if not 'href' in elem.attrib:
+        return
+    href = desanitize(elem.attrib['href'])
+    args = []
+    if 'class' in elem.attrib:
+        classes = elem.attrib['class'].split()
+        args = [c[len('includepage_'):] for c in classes
+                    if c.startswith('includepage_')]
+    args = ['"%s"' % escape_quotes(href)] + args
+    container = etree.Element('div')
+    align = [a for a in args if a in ['left', 'right']]
+    if len(align):
+        container.attrib['class'] = 'includepage_' + align[0]
+    style = parse_style(elem.attrib.get('style', ''))
+    if 'width' in style:
+        container.attrib['style'] = 'width: ' + style['width'] + ';'
+    tag_text = '{%% include_page %s %%}' % ' '.join(args)
+    container.text = tag_text
+    elem.addprevious(container)
+    elem.getparent().remove(elem)
+
+
+def embed_code(elem, context=None):
+    before = '{%% embed_code %%} %s {%% endembed_code %%}' % elem.text
+    insert_text_before(before, elem)
+    elem.getparent().remove(elem)
+
+
 def handle_link(elem, context=None):
     if not 'href' in elem.attrib:
         return
@@ -89,17 +153,6 @@ def handle_link(elem, context=None):
     return False
 
 
-def parse_style(css):
-    style = {}
-    for line in css.split(';'):
-        try:
-            bits = line.split(':')
-            style[bits[0].strip()] = bits[1].strip()
-        except:
-            pass
-    return style
-
-
 _files_url = '_files/'
 
 
@@ -114,7 +167,7 @@ def handle_image(elem, context=None):
     if 'width' not in style or 'height' not in style:
         do_thumbnail = False
 
-    src = elem.attrib['src']
+    src = desanitize(elem.attrib.get('src', ''))
     if not src.startswith(_files_url):
         return
 
@@ -160,7 +213,12 @@ tag_handlers = {"a": [handle_link],
                }
 
 
-def html_to_template_text(unsafe_html, context=None):
+plugin_handlers = {"includepage": include_page,
+                   "embed": embed_code
+                  }
+
+
+def html_to_template_text(unsafe_html, context=None, render_plugins=True):
     """
     Parse html and turn it into template text.
     """
@@ -177,6 +235,13 @@ def html_to_template_text(unsafe_html, context=None):
     tree = etree.iterwalk(container, events=('end',))
     # walk over all elements
     for action, elem in tree:
+        if 'class' in elem.attrib:
+            classes = elem.attrib['class'].split()
+            if 'plugin' in classes and render_plugins:
+                for p in classes:
+                    if p in plugin_handlers:
+                        plugin_handlers[p](elem, context)
+            continue
         if not elem.tag in tag_handlers:
             continue
         for handler in tag_handlers[elem.tag]:
@@ -232,3 +297,56 @@ class LinkNode(Node):
         url_parts = urlparse(url)
         return (not url_parts.scheme and not url_parts.netloc
                 and not url_parts.fragment)
+
+
+class EmbedCodeNode(Node):
+    allowed_tags = copy(pages_allowed_tags)
+    allowed_attributes = copy(pages_allowed_attributes_map)
+    allowed_styles_map = copy(pages_allowed_styles_map)
+
+    # We allow the iframe tag in embeds.
+    allowed_tags.append('iframe')
+    allowed_attributes['iframe'] = [
+        'allowfullscreen', 'width', 'height', 'src']
+
+    def __init__(self, nodelist):
+        self.nodelist = nodelist
+
+    def sanitize(self, html):
+        return sanitize_html_fragment(html, self.allowed_tags,
+            self.allowed_attributes, self.allowed_styles_map)
+
+    def _process_iframe(self, iframe):
+        src = iframe.attrib.get('src', '')
+        allowed_src = getattr(settings, 'EMBED_ALLOWED_SRC', ['.*'])
+        # We don't want a self-closing iframe tag.
+        if iframe.text is None:
+            iframe.text = ''
+        if any(re.match(regex, src) for regex in allowed_src):
+            return iframe
+        else:
+            raise IFrameSrcNotApproved
+
+    def render(self, context):
+        try:
+            html = unescape_entities(self.nodelist.render(context))
+            safe_html = self.sanitize(html)
+            top_level_elements = fragments_fromstring(safe_html)
+            # TODO: We need to remember to patch in whatever pre-save
+            #       HTML processing we eventually do here, too.  E.g.
+            #       a spam URL blacklist.
+            out = []
+            for elem in top_level_elements:
+                if elem.tag == 'iframe':
+                    elem = self._process_iframe(elem)
+                out.append(etree.tostring(elem, encoding='UTF-8'))
+            return ''.join(out)
+
+        except IFrameSrcNotApproved:
+            return (
+                '<span class="plugin embed">'
+                'The embedded URL is not on the list of approved providers.  '
+                'Contact the site administrator to add it.'
+                '</span>')
+        except:
+            return '<span class="plugin embed">Invalid embed code</span>'

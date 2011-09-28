@@ -25,9 +25,12 @@ class AutoTrackUserInfoMiddleware(object):
             user = request.user
         ip = request.META.get('REMOTE_ADDR', None)
 
+        # Disconnect a possibly un-cleaned up prior signal
+        signals.pre_save.disconnect(dispatch_uid='update_fields')
+
         update_fields = functools.partial(self.update_fields, user, ip)
         signals.pre_save.connect(
-            update_fields, dispatch_uid=request, weak=False
+            update_fields, dispatch_uid='update_fields', weak=False
         )
 
     def update_fields(self, user, ip, sender, instance, **kws):
@@ -46,5 +49,8 @@ class AutoTrackUserInfoMiddleware(object):
                     setattr(instance, field.name, ip)
 
     def process_response(self, request, response):
-        signals.pre_save.disconnect(dispatch_uid=request)
+        signals.pre_save.disconnect(dispatch_uid='update_fields')
         return response
+
+    def process_exception(self, request, exception):
+        signals.pre_save.disconnect(dispatch_uid='update_fields')

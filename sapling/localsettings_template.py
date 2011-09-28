@@ -35,7 +35,7 @@ OLWIDGET_DEFAULT_OPTIONS = {
     'default_lon': -122.43,
     'default_zoom': 12,
 
-    'layers': ['cloudmade.35165'],
+    'layers': ['cloudmade.35165', 've.aerial'],
     'map_options': {
         'controls': ['Navigation', 'PanZoomBar', 'KeyboardDefaults'],
         'theme': '/static/openlayers/theme/sapling/style.css',
@@ -48,6 +48,9 @@ OLWIDGET_DEFAULT_OPTIONS = {
 
 DAISYDIFF_URL = 'http://localhost:8080/daisydiff/diff'
 DAISYDIFF_MERGE_URL = 'http://localhost:8080/daisydiff/merge'
+
+# list of regular expressions for white listing embedded URLs
+EMBED_ALLOWED_SRC = ['.*']
 
 HAYSTACK_SOLR_URL = 'http://localhost:8080/solr'
 

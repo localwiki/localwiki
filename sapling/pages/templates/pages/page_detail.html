@@ -18,15 +18,7 @@
     {% if show_revision %}
       <em class="revision_details">
           Revision {{ page.history_info.version_number }}
-          ({{ page.history_info.date }}
-          by
-          {% spaceless %}
-          {% if page.history_info.user %}
-              <a href="{{ page.history_info.user.get_absolute_url }}">{{ page.history_info.user }}</a>
-          {% else %}
-              {{ page.history_info.user_ip }}
-          {% endif %}
-          {% endspaceless %})
+          ({{ page.history_info.date }} by {{ page.history_info.user_link|safe }})
       </em>
     {% endif %}
     
@@ -38,7 +30,7 @@
     {% endif %}
 
     <div id="page">
-      {% render_page page.content %}
+      {% render_plugins page.content %}
     <div style="clear:both;"></div>
     </div>
   {% endblock %}

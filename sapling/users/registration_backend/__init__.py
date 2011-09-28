@@ -9,6 +9,8 @@ import registration
 from registration.backends.simple import SimpleBackend
 
 from forms import RegistrationForm
+from django.conf import settings
+from django.contrib.auth.models import Group
 
 
 class SaplingBackend(SimpleBackend):
@@ -26,6 +28,9 @@ class SaplingBackend(SimpleBackend):
         self._redirect_to = request.REQUEST.get(REDIRECT_FIELD_NAME, '')
         user = super(SaplingBackend, self).register(request, **kwargs)
         user.name = kwargs['name']
+        all_group, created = Group.objects.get_or_create(
+                                            name=settings.USERS_DEFAULT_GROUP)
+        user.groups.add(all_group)
         user.save()
         return user
 

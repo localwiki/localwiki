@@ -60,13 +60,57 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 AUTHENTICATION_BACKENDS = (
     'sapling.users.backends.CaseInsensitiveModelBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    'sapling.users.backends.RestrictiveBackend',
 )
+
+# users app settings
+BANNED_GROUP = 'Banned'
+LOGGED_IN_HAS_PERM = False
+USERS_DEFAULT_GROUP = 'Authenticated'
+USERS_DEFAULT_PERMISSIONS = {'auth.group':
+                                [{'name': USERS_DEFAULT_GROUP,
+                                  'permissions':
+                                    [['add_mapdata', 'maps', 'mapdata'],
+                                     ['change_mapdata', 'maps', 'mapdata'],
+                                     ['delete_mapdata', 'maps', 'mapdata'],
+                                     ['add_page', 'pages', 'page'],
+                                     ['change_page', 'pages', 'page'],
+                                     ['delete_page', 'pages', 'page'],
+                                     ['add_pagefile', 'pages', 'pagefile'],
+                                     ['change_pagefile', 'pages', 'pagefile'],
+                                     ['delete_pagefile', 'pages', 'pagefile']
+                                    ]
+                                 }
+                                ],
+                             'auth.user':
+                                [{'username': 'AnonymousUser',
+                                  'user_permissions':
+                                    [['add_mapdata', 'maps', 'mapdata'],
+                                     ['change_mapdata', 'maps', 'mapdata'],
+                                     ['delete_mapdata', 'maps', 'mapdata'],
+                                     ['add_page', 'pages', 'page'],
+                                     ['change_page', 'pages', 'page'],
+                                     ['delete_page', 'pages', 'page'],
+                                     ['add_pagefile', 'pages', 'pagefile'],
+                                     ['change_pagefile', 'pages', 'pagefile'],
+                                     ['delete_pagefile', 'pages', 'pagefile']
+                                    ]
+                                 }
+                                ]
+                            }
+
+# django-guardian setting
+ANONYMOUS_USER_ID = -1
+
+# Should we display user's IP addresses to non-admin users?
+SHOW_IP_ADDRESSES = True
 
 LOGIN_REDIRECT_URL = '/'
 
 HAYSTACK_SITECONF = 'sapling.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'
+
+THUMBNAIL_BACKEND = 'utils.sorl_backends.AutoFormatBackend'
 
 OL_API = STATIC_URL + 'openlayers/OpenLayers.js'
 OLWIDGET_CSS = '%solwidget/css/sapling.css' % STATIC_URL
@@ -123,6 +167,8 @@ INSTALLED_APPS = (
     'olwidget',
     'registration',
     'sorl.thumbnail',
+    'guardian',
+    'south',
 
     # Our apps
     'versionutils.versioning',

@@ -247,6 +247,10 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 				var style = new CKEDITOR.style( { element : 'a', attributes : attributes } );
 				style.type = CKEDITOR.STYLE_INLINE;		// need to override... dunno why.
 				style.apply( editor.document );
+				var selected = selection.getStartElement();
+				ranges[0].setStartAfter( selected );
+				ranges[0].setEndAfter( selected );
+				selection.selectRanges( ranges );
 			}
 			else
 			{
