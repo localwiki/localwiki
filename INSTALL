@@ -35,6 +35,7 @@ python-setuptools, virtualenv, gdal, postgresql with postgis:
 
 Initialize the project environment:
 
+	(env)$ python sapling/manage.py syncdb
     (env)$ python sapling/manage.py migrate
     (env)$ python sapling/manage.py collectstatic
     (env)$ python sapling/manage.py reset_permissions
