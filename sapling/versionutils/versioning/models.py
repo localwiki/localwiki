@@ -373,6 +373,7 @@ class ChangesTracker(object):
             if k in ChangesTracker.META_TO_SKIP:
                 continue
             meta[k] = getattr(model._meta, k)
+        meta['verbose_name'] = meta['verbose_name'] + ' history'
         return meta
 
     def post_save(self, parent, instance, created, **kws):

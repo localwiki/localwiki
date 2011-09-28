@@ -18,13 +18,13 @@ class RegistrationForm(forms.Form):
     registration backend.
     """
     username = forms.RegexField(
-        regex=r'^\w+$',
+        regex=r'^[a-zA-Z0-9.+-]+$',
         max_length=30,
         widget=forms.TextInput(attrs=attrs_dict),
         label=_("Username"),
         error_messages={'invalid':
-                        _("This value must contain only letters, "
-                          "numbers and underscores.")})
+                        _("This value may contain only letters (a-z), "
+                          "numbers, +, - and .")})
     email = forms.EmailField(
         widget=forms.TextInput(attrs=dict(attrs_dict,
                                maxlength=75)),
