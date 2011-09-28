@@ -99,8 +99,8 @@ can be used to render the differences between the two objects.</p>
 </pre></div>
 </div>
 <p>This can work with versioned models, e.g.:</p>
-<div class="highlight-python"><pre>&gt;&gt; diff(m1.history.as_of(version=2),
-&gt;&gt;      m2.history.as_of(version=3)).as_html()
+<div class="highlight-python"><pre>&gt;&gt; diff(m1.versions.as_of(version=2),
+&gt;&gt;      m2.versions.as_of(version=3)).as_html()
 u('&lt;tr&gt;'
     '&lt;td colspan="2"&gt;name&lt;/td&gt;'
   '&lt;/tr&gt;
@@ -169,7 +169,6 @@ a field type:</p>
         <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;difference&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="s">&#39;New value is larger&#39;</span>
         <span class="k">return</span> <span class="s">&#39;New value is smaller&#39;</span>
-        <span class="n">Unchanged</span>
 
 <span class="n">diff</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">,</span> <span class="n">MyIntegerDiff</span><span class="p">)</span>
 </pre></div>

@@ -9,11 +9,11 @@ def register(cls, manager_name='versions', changes_tracker=None):
     registration (and a call to syncdb) changes to the model will be
     tracked.
 
-    Attrs:
-        cls: The class to be versioned
-        manager_name: Optional name of the manager that's added to cls
-            and instances of cls. This is set to 'versions' by default.
-        changes_tracker: An optional instance of ChangesTracker.
+    Args:
+      cls: The class to be versioned.
+      manager_name: Optional name of the manager that's added to cls
+        instances of cls. This is set to 'versions' by default.
+      changes_tracker: An optional instance of ChangesTracker.
     """
     from models import ChangesTracker
 

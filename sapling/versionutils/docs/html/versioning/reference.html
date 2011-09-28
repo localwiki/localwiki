@@ -54,30 +54,50 @@
 <h1>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="versionutils-versioning">
 <h2><tt class="xref py py-mod docutils literal"><span class="pre">versionutils.versioning</span></tt><a class="headerlink" href="#versionutils-versioning" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="TrackChanges">
-<em class="property">class </em><tt class="descname">TrackChanges</tt><a class="headerlink" href="#TrackChanges" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add an instance of this class as an attribute on your models to
-track changes to the model.</p>
-<p><tt class="docutils literal"><span class="pre">TrackChanges</span></tt> is a manager, so standard queryset functions like
-<tt class="docutils literal"><span class="pre">all()</span></tt> and <tt class="docutils literal"><span class="pre">filter()</span></tt> work.</p>
-<p>Please <a class="reference internal" href="usage.html"><em>read the usage documentation.</em></a></p>
+<dl class="function">
+<dt>
+<tt class="descname">register(cls[, manager_name='versions'[, changes_tracker=None]]):</tt></dt>
+<dd><p>Registers the model class <cite>cls</cite> as a versioned model.  After
+registration (and a call to syncdb) changes to the model will be
+tracked.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">cls: The class to be versioned.</p>
+<dl class="last docutils">
+<dt>manager_name: Optional name of the attribute that&#8217;s added to</dt>
+<dd>instances of <cite>cls</cite>. This is set to <cite>versions</cite> by default.</dd>
+<dt>changes_tracker: An optional instance of <tt class="xref py py-class docutils literal"><span class="pre">ChangesTracker</span></tt>.</dt>
+<dd>See the <a class="reference internal" href="extend.html"><em>documentation on extending</em></a> for more information.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="versioning-manager">
+<h3>Versioning manager<a class="headerlink" href="#versioning-manager" title="Permalink to this headline">¶</a></h3>
+<p>Versioned models have a versioning manager associated with them.  Unless
+you&#8217;ve provided a special <tt class="docutils literal"><span class="pre">manager_name</span></tt> when using <tt class="xref py py-func docutils literal"><span class="pre">register()</span></tt>,
+this manager is named <tt class="docutils literal"><span class="pre">versions</span></tt>.</p>
+<p>You can access the manager on both instances and model classes.  The
+manager has all the standard <tt class="xref py py-class docutils literal"><span class="pre">QuerySet</span></tt> methods like <tt class="docutils literal"><span class="pre">all()</span></tt> and
+<tt class="docutils literal"><span class="pre">filter()</span></tt> plus some methods and shortcuts specific to versioning.</p>
 <p>Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">versionutils.versioning</span> <span class="kn">import</span> <span class="n">TrackChanges</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Display all versions of MyModel</span>
+<span class="n">MyModel</span><span class="o">.</span><span class="n">versions</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 
-<span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
-    <span class="o">...</span>
-
-    <span class="n">history</span> <span class="o">=</span> <span class="n">TrackChanges</span><span class="p">()</span>
+<span class="c"># Display all versions of instance of MyModel</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">MyModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Foo&quot;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">versions</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Then run <tt class="docutils literal"><span class="pre">manage.py</span> <span class="pre">syncdb</span></tt> and you’re set!</p>
+<p>Please <a class="reference internal" href="usage.html"><em>see the usage documentation.</em></a></p>
+<p>In addition to the standard <tt class="xref py py-class docutils literal"><span class="pre">QuerySet</span></tt> methods, we also provide:</p>
 <dl class="method">
-<dt id="TrackChanges.most_recent">
-<tt class="descname">most_recent</tt><big>(</big><big>)</big><a class="headerlink" href="#TrackChanges.most_recent" title="Permalink to this definition">¶</a></dt>
+<dt id="most_recent">
+<tt class="descname">most_recent</tt><big>(</big><big>)</big><a class="headerlink" href="#most_recent" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method must be called via an instance of the model rather
 than from the class.  E.g. <tt class="docutils literal"><span class="pre">m.history.most_recent()</span></tt> rather
-than <tt class="docutils literal"><span class="pre">Model.history.most_recent()</span></tt>.</p>
+than <tt class="docutils literal"><span class="pre">MyModel.history.most_recent()</span></tt>.</p>
 <dl class="docutils">
 <dt>Returns:</dt>
 <dd>The most recent <a class="reference internal" href="#historical-instance"><em>historical record
@@ -88,11 +108,11 @@ instance</em></a>.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="TrackChanges.as_of">
-<tt class="descname">as_of</tt><big>(</big><em>[date=None][, version=None]</em><big>)</big><a class="headerlink" href="#TrackChanges.as_of" title="Permalink to this definition">¶</a></dt>
+<dt id="as_of">
+<tt class="descname">as_of</tt><big>(</big><em>[date=None][, version=None]</em><big>)</big><a class="headerlink" href="#as_of" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method must be called via an instance of the model rather
 than from the class.  E.g. <tt class="docutils literal"><span class="pre">m.history.as_of(..)</span></tt> rather
-than <tt class="docutils literal"><span class="pre">Model.history.as_of(..)</span></tt>.</p>
+than <tt class="docutils literal"><span class="pre">MyModel.history.as_of(..)</span></tt>.</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd><dl class="first docutils">
@@ -111,19 +131,21 @@ provided.</dd>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<div class="section" id="historical-instance">
-<span id="id1"></span><h3>Historical instance<a class="headerlink" href="#historical-instance" title="Permalink to this headline">¶</a></h3>
-<p>Methods on <a class="reference internal" href="#TrackChanges" title="TrackChanges"><tt class="xref py py-class docutils literal"><span class="pre">TrackChanges</span></tt></a> return either historical instances or
-QuerySets of historical instances.</p>
-<p>A historical instance represents a model at some point in time.  A historical model contains all the same fields, attributes and methods as the usual model, but also has some extra methods and historical metadata:</p>
-<blockquote>
-<div><dl class="method">
+</div>
+<div class="section" id="historical-instances">
+<span id="historical-instance"></span><h3>Historical instances<a class="headerlink" href="#historical-instances" title="Permalink to this headline">¶</a></h3>
+<p>Methods on the versioned manager produce either <em>historical instances</em> or
+<em>QuerySets of historical instances</em>.</p>
+<p>A <em>historical instance</em> represents a model instance at some point in time.  A
+historical model contains all the same fields, attributes and methods as the
+usual model, but also has some extra methods and version metadata.</p>
+<p>Here are the extra methods and version metadata that we provide on
+historial instances:</p>
+<dl class="method">
 <dt>
 <tt class="descname">revert_to([delete_newer_versions=False][, **kws]):</tt></dt>
 <dd><p>Reverts to this version of the model.  Example:</p>
-<div class="highlight-python"><pre>&gt;&gt; ph = p.history.as_of(..)
+<div class="highlight-python"><pre>&gt;&gt; ph = p.versions.as_of(..)
 &gt;&gt; ph.revert_to()</pre>
 </div>
 <dl class="docutils">
@@ -143,7 +165,7 @@ QuerySets of historical instances.</p>
 <dl class="attribute">
 <dt id="version_info">
 <tt class="descname">version_info</tt><a class="headerlink" href="#version_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Historical metadata for the the historical model.  You can
+<dd><p>Versioning metadata for the the historical instance.  You can
 <a class="reference internal" href="extend.html"><em>easily define new fields to track here.</em></a></p>
 <p>Built-in attributes are:</p>
 <dl class="attribute">
@@ -191,7 +213,8 @@ the change action.</p>
 </dd></dl>
 
 <p>Fields you probably don&#8217;t need to use:</p>
-<dl class="attribute">
+<blockquote>
+<div><dl class="attribute">
 <dt id="type">
 <tt class="descname">type</tt><a class="headerlink" href="#type" title="Permalink to this definition">¶</a></dt>
 <dd><p>An integer representing the type of action the historical
@@ -202,15 +225,15 @@ instance refers to.  You should probably use
 <dl class="attribute">
 <dt id="id">
 <tt class="descname">id</tt><a class="headerlink" href="#id" title="Permalink to this definition">¶</a></dt>
-<dd><p>A <em>global</em> historic id for the instance.  This is global for
-the whole historical model&#8217;s table.  Use
+<dd><p>A <em>global</em> versioning id for the instance.  This is global for
+the whole versioned model&#8217;s table.  Use
 <a class="reference internal" href="#version_number" title="version_number"><tt class="xref py py-func docutils literal"><span class="pre">version_number()</span></tt></a>, it&#8217;s almost certainly what you
 want.</p>
 </dd></dl>
 
+</div></blockquote>
 </dd></dl>
 
-</div></blockquote>
 </div>
 </div>
 <div class="section" id="versionutils-versioning-forms">
@@ -316,39 +339,39 @@ template_name_suffix of &#8216;_confirm_revert&#8217;.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="versionutils.versioning.views.HistoryView">
-<em class="property">class </em><tt class="descclassname">versionutils.versioning.views.</tt><tt class="descname">HistoryView</tt><a class="headerlink" href="#versionutils.versioning.views.HistoryView" title="Permalink to this definition">¶</a></dt>
+<dt id="versionutils.versioning.views.VersionsList">
+<em class="property">class </em><tt class="descclassname">versionutils.versioning.views.</tt><tt class="descname">VersionsList</tt><a class="headerlink" href="#versionutils.versioning.views.VersionsList" title="Permalink to this definition">¶</a></dt>
 <dd><p>A subclass of django.views.generic.ListView.</p>
 <dl class="method">
-<dt id="versionutils.versioning.views.HistoryView.get_queryset">
-<tt class="descname">get_queryset</tt><big>(</big><big>)</big><a class="headerlink" href="#versionutils.versioning.views.HistoryView.get_queryset" title="Permalink to this definition">¶</a></dt>
+<dt id="versionutils.versioning.views.VersionsList.get_queryset">
+<tt class="descname">get_queryset</tt><big>(</big><big>)</big><a class="headerlink" href="#versionutils.versioning.views.VersionsList.get_queryset" title="Permalink to this definition">¶</a></dt>
 <dd><p>You need to provide this method.  It should return a queryset
 containing historical instances.  For instance:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="n">all_page_history</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">slug</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;slug&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">all_page_versions</span> <span class="o">=</span> <span class="n">Page</span><span class="p">(</span><span class="n">slug</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;slug&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">versions</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
     <span class="c"># We set self.page to the most recent historical instance of the</span>
     <span class="c"># page.</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">page</span> <span class="o">=</span> <span class="n">all_page_history</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">all_page_history</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">page</span> <span class="o">=</span> <span class="n">all_page_versions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">all_page_versions</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="versionutils.versioning.views.HistoryView.context_object_name">
-<tt class="descname">context_object_name</tt><a class="headerlink" href="#versionutils.versioning.views.HistoryView.context_object_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>By default this is <cite>version_list</cite>.</p>
+<dt id="versionutils.versioning.views.VersionsList.context_object_name">
+<tt class="descname">context_object_name</tt><a class="headerlink" href="#versionutils.versioning.views.VersionsList.context_object_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default this is <cite>versions_list</cite>.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="versionutils.versioning.views.HistoryView.template_name_suffix">
-<tt class="descname">template_name_suffix</tt><a class="headerlink" href="#versionutils.versioning.views.HistoryView.template_name_suffix" title="Permalink to this definition">¶</a></dt>
-<dd><p>By default this is <cite>_history</cite>.</p>
+<dt id="versionutils.versioning.views.VersionsList.template_name_suffix">
+<tt class="descname">template_name_suffix</tt><a class="headerlink" href="#versionutils.versioning.views.VersionsList.template_name_suffix" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default this is <cite>_versions</cite>.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="versionutils.versioning.views.HistoryView.revert_view_name">
-<tt class="descname">revert_view_name</tt><a class="headerlink" href="#versionutils.versioning.views.HistoryView.revert_view_name" title="Permalink to this definition">¶</a></dt>
+<dt id="versionutils.versioning.views.VersionsList.revert_view_name">
+<tt class="descname">revert_view_name</tt><a class="headerlink" href="#versionutils.versioning.views.VersionsList.revert_view_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>By default we look for a view with the name
 <cite>app_label:revert</cite>.  If you provide a string for
 <cite>revert_view_name</cite> we&#8217;ll use that as our revert view.</p>
@@ -369,7 +392,8 @@ containing historical instances.  For instance:</p>
   <ul>
 <li><a class="reference internal" href="#">Reference</a><ul>
 <li><a class="reference internal" href="#versionutils-versioning"><tt class="docutils literal"><span class="pre">versionutils.versioning</span></tt></a><ul>
-<li><a class="reference internal" href="#historical-instance">Historical instance</a></li>
+<li><a class="reference internal" href="#versioning-manager">Versioning manager</a></li>
+<li><a class="reference internal" href="#historical-instances">Historical instances</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#versionutils-versioning-forms"><tt class="docutils literal"><span class="pre">versionutils.versioning.forms</span></tt></a></li>

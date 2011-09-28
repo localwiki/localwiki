@@ -54,9 +54,11 @@
 <h1>Extending<a class="headerlink" href="#extending" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="adding-extra-fields-to-historical-models">
 <h2>Adding extra fields to historical models<a class="headerlink" href="#adding-extra-fields-to-historical-models" title="Permalink to this headline">¶</a></h2>
-<p>You can subclass <a class="reference internal" href="reference.html#TrackChanges" title="TrackChanges"><tt class="xref py py-class docutils literal"><span class="pre">TrackChanges</span></tt></a> to provide extra fields on
-historical record models.  Simply override the
-<tt class="xref py py-func docutils literal"><span class="pre">get_extra_history_fields()</span></tt> method:</p>
+<p>You can subclass <tt class="xref py py-class docutils literal"><span class="pre">ChangesTracker</span></tt> to provide extra fields on
+historical record models.  Then, when doing <cite>versioning.register</cite>, pass
+in your custom changes tracker class.  You&#8217;ll want to override the
+<tt class="xref py py-func docutils literal"><span class="pre">get_extra_history_fields()</span></tt> method in your <tt class="xref py py-class docutils literal"><span class="pre">ChangesTracker</span></tt>
+subclass:</p>
 <blockquote>
 <div><dl class="method">
 <dt>
@@ -96,7 +98,7 @@ record model.</dd>
                         title="previous chapter">Notes</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="../diff/index.html"
-                        title="next chapter"><tt class="docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.diff</span></tt></a></p>
+                        title="next chapter"><tt class="docutils literal docutils literal docutils literal"><span class="pre">versionutils.diff</span></tt></a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/versioning/extend.txt"

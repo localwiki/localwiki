@@ -76,14 +76,13 @@
 </pre></div>
 </div>
 <p>Now you&#8217;ve got the app installed!  But you probably want to track changes on
-some models, right?  Simply add <tt class="docutils literal"><span class="pre">TrackChanges()</span></tt> to a model you want to
-version:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">versionutils.versioning</span> <span class="kn">import</span> <span class="n">TrackChanges</span>
+some models, right?  Simply register the model you want to version:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">versionutils</span> <span class="kn">import</span> <span class="n">versioning</span>
 
 <span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
     <span class="o">...</span>
 
-    <span class="n">history</span> <span class="o">=</span> <span class="n">TrackChanges</span><span class="p">()</span>
+<span class="n">versioning</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Then run <tt class="docutils literal"><span class="pre">manage.py</span> <span class="pre">syncdb</span></tt> and you&#8217;re set!</p>
