@@ -1,7 +1,7 @@
 from django.db.models import signals
 from django.contrib.auth.models import User, Group
 from django.conf import settings
-from guardian import models as guardian_app
+from guardian.management import create_anonymous_user
 
 from users import models as users_app
 
@@ -35,6 +35,7 @@ def add_anonymous_user_to_anonymous_group(sender, **kwargs):
     """
     anon_group, created = Group.objects.get_or_create(
                                         name=settings.USERS_ANONYMOUS_GROUP)
+    create_anonymous_user(sender, **kwargs)  # we need AnonymousUser to exist
     print 'Adding AnonymousUser to the group "%s"' % anon_group.name
     u = User.objects.get(pk=settings.ANONYMOUS_USER_ID)
     u.groups.add(anon_group)
@@ -42,7 +43,7 @@ def add_anonymous_user_to_anonymous_group(sender, **kwargs):
 
 
 signals.post_syncdb.connect(add_anonymous_user_to_anonymous_group,
-    sender=guardian_app,  # we need guardian to create AnonymousUser first
+    sender=users_app,
     dispatch_uid="users.management.add_anonymous_user_to_anonymous_group")
 
 signals.post_syncdb.connect(add_all_users_to_group, sender=users_app,
