@@ -17,7 +17,7 @@ from versionutils import diff
 from versionutils.versioning.views import UpdateView, DeleteView
 from versionutils.versioning.views import RevertView, VersionsList
 from utils.views import Custom404Mixin, CreateObjectMixin
-from models import Page, PageFile, PageRedirect, url_to_name
+from models import Page, PageFile, url_to_name
 from forms import PageForm, PageFileForm
 from maps.widgets import InfoMap
 
@@ -32,11 +32,6 @@ class PageDetailView(Custom404Mixin, DetailView):
 
     def get(self, request, **kwargs):
         self.object = self.get_object()
-        if PageRedirect.objects.filter(from_page=self.object):
-            # Redirect to the page specified by the PageRedirect
-            to_page = PageRedirect.objects.get(from_page=self.object).to_page
-            return HttpResponseRedirect(to_page.get_absolute_url())
-
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)
 
