@@ -12,7 +12,7 @@ mgr = TestSettingsManager()
 INSTALLED_APPS = list(settings.INSTALLED_APPS)
 INSTALLED_APPS.append('users.tests')
 mgr.set(INSTALLED_APPS=INSTALLED_APPS)
-mgr.set(BANNED_GROUP='Banned')
+mgr.set(USERS_BANNED_GROUP='Banned')
 
 
 class RestrictiveBackendTest(TestCase):
@@ -20,7 +20,7 @@ class RestrictiveBackendTest(TestCase):
         self.user = User(username='TestUser', email='blah@blah.com',
                           password='test123')
         self.user.save()
-        self.group = Group.objects.create(name='Logged in')
+        self.group = Group.objects.create(name='Cool group')
         self.user.groups.add(self.group)
         self.user.save()
 
@@ -37,8 +37,7 @@ class RestrictiveBackendTest(TestCase):
         self.assertFalse(self.user.has_perm('tests.change_thing', t))
 
     def test_banned_user_blocked(self):
-        backends.BANNED_GROUP = 'Banned'
-        banned = Group.objects.create(name='Banned')
+        banned = Group.objects.get(name=settings.USERS_BANNED_GROUP)
         t = Thing(name='Test thing')
         t.save()
         assign('change_thing', self.user, t)
@@ -48,7 +47,6 @@ class RestrictiveBackendTest(TestCase):
         self.assertFalse(self.user.has_perm('tests.change_thing', t))
 
     def test_admin_not_blocked(self):
-        backends.BANNED_GROUP = 'Banned'
         t = Thing(name='Test thing')
         t.save()
         self.user.is_superuser = True
@@ -57,7 +55,7 @@ class RestrictiveBackendTest(TestCase):
         self.assertTrue(self.user.has_perm('tests.change_thing', t))
 
         # let's ban the admin, should still have access
-        banned = Group.objects.create(name='Banned')
+        banned = Group.objects.get(name=settings.USERS_BANNED_GROUP)
         self.user.groups.add(banned)
         self.user.save()
         self.assertTrue(self.user.has_perm('tests.change_thing', t))

@@ -34,13 +34,19 @@ class RestrictiveBackend(object):
     permissions or it won't work, since Django will ask all backends and just
     needs one backend to return True in order to grant the permission.
 
-    If no permissions are found at all, returns the LOGGED_IN_HAS_PERM setting,
-    or False if it's not set.  Set this to True if you want to allow everything
-    that is not restricted on a per-object level, as long as the user is logged
-    in.  Remember, you can control anonymous user permissions separately. See
-    the ANONYMOUS_USER_ID setting (from django-guardian).
+    If no permissions are found at all, returns the value of the
+    USERS_LOGGED_IN_HAS_PERM setting, or False if it's not set.  Set this to
+    True if you want to allow everything that is not restricted on a per-object
+    level, as long as the user is logged in.  Remember, you can control
+    anonymous user permissions separately. See the ANONYMOUS_USER_ID setting
+    (from django-guardian) and the USERS_ANONYMOUS_GROUP setting.
 
-    Supports ban list through the optional BANNED_GROUP setting.
+    Supports ban list through the optional USERS_BANNED_GROUP setting. Note
+    that users in this group will not have ANY permissions, regardless of
+    what the group's permissions are set to. It is only a way to indicate which
+    users are banned and does not behave like a regular group when it comes
+    to permissions.
+
     Uses django-guardian internally to check object permissions and the default
     django.contrib.auth.backends.ModelBackend for model permissions.
     """
@@ -80,5 +86,5 @@ class RestrictiveBackend(object):
                 UserObjectPermission.objects.filter(object_pk=obj.pk).exists())
 
 ANONYMOUS_USER_ID = settings.ANONYMOUS_USER_ID  # we *want* error if not set
-BANNED_GROUP = getattr(settings, "BANNED_GROUP", None)
-LOGGED_IN_HAS_PERM = getattr(settings, "LOGGED_IN_HAS_PERM", False)
+BANNED_GROUP = getattr(settings, "USERS_BANNED_GROUP", None)
+LOGGED_IN_HAS_PERM = getattr(settings, "USERS_LOGGED_IN_HAS_PERM", False)

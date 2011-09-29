@@ -64,8 +64,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # users app settings
-BANNED_GROUP = 'Banned'
-LOGGED_IN_HAS_PERM = False
+USERS_ANONYMOUS_GROUP = 'Anonymous'
+USERS_BANNED_GROUP = 'Banned'
 USERS_DEFAULT_GROUP = 'Authenticated'
 USERS_DEFAULT_PERMISSIONS = {'auth.group':
                                 [{'name': USERS_DEFAULT_GROUP,
@@ -80,11 +80,9 @@ USERS_DEFAULT_PERMISSIONS = {'auth.group':
                                      ['change_pagefile', 'pages', 'pagefile'],
                                      ['delete_pagefile', 'pages', 'pagefile']
                                     ]
-                                 }
-                                ],
-                             'auth.user':
-                                [{'username': 'AnonymousUser',
-                                  'user_permissions':
+                                 },
+                                 {'name': USERS_ANONYMOUS_GROUP,
+                                  'permissions':
                                     [['add_mapdata', 'maps', 'mapdata'],
                                      ['change_mapdata', 'maps', 'mapdata'],
                                      ['delete_mapdata', 'maps', 'mapdata'],
@@ -95,7 +93,7 @@ USERS_DEFAULT_PERMISSIONS = {'auth.group':
                                      ['change_pagefile', 'pages', 'pagefile'],
                                      ['delete_pagefile', 'pages', 'pagefile']
                                     ]
-                                 }
+                                 },
                                 ]
                             }
 
