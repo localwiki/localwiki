@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.db.models.sql.constants import LOOKUP_SEP
 
+import exceptions
+
 
 def is_versioned(m):
     """
@@ -11,7 +13,42 @@ def is_versioned(m):
     Returns:
         True if the model has changes tracked.
     """
-    return (getattr(m, '_history_manager_name', None) is not None)
+    history_manager_name = getattr(m, '_history_manager_name', None)
+    if history_manager_name is None:
+        return False
+
+    # If all we did was check for the existance of the
+    # history_manager_name manager on m then we'd get tripped up in the
+    # case of model inheritance. E.g. we could have model B extending
+    # model A, with model A versioned -- and so A would pass along its
+    # _history_manager_name attribute to B via inheritance but B isn't
+    # itself versioned.
+    versions = getattr(m, history_manager_name)
+    model_thats_versioned = versions.model._original_model
+
+    if isinstance(m, models.Model):
+        return type(m) == model_thats_versioned
+    else:
+        return m == model_thats_versioned
+
+
+def get_versions(m):
+    """
+    Args:
+        m: A model instance or model class.
+
+    Returns:
+        The historical manager for m.
+
+    Raises:
+        versioning.exceptions.ModelNotVersioned exception if m is not
+            versioned.
+    """
+    history_manager_name = getattr(m, '_history_manager_name', None)
+    if history_manager_name is None:
+        raise exceptions.ModelNotVersioned(
+            "%s is not a versioned model" % m)
+    return getattr(m, history_manager_name)
 
 
 def is_directly_versioned(m):
@@ -20,9 +57,9 @@ def is_directly_versioned(m):
         m: A Model instance or a model class.
 
     Returns:
-        True if the model is *directly* versioned by having TrackChanges
-        on its own class definition.  Generally speaking, you want to use
-        is_versioned rather than this method.
+        True if the model is registered *directly* with versioning.register.
+        Generally speaking, you want to use is_versioned rather than this
+        method.
     """
     if not is_versioned(m):
         return False
@@ -102,7 +139,7 @@ def unique_lookup_values_for(m):
             # because on historical models, foreign keys to versioned
             # models point right to their historical model form.  So we
             # normally do things like
-            # p.history.filter(fk=historical_fk).  To build this unique
+            # p.versions.filter(fk=historical_fk).  To build this unique
             # dictionary we need to use the pk of the provided
             # NON-historical object, m.
 
@@ -115,9 +152,11 @@ def unique_lookup_values_for(m):
                 # the most recent historical version and use that to get
                 # the unique fields.
                 pk_name = parent_model._meta.pk.name
-                parent_hist_instance = parent_model.history.filter(
+                hist_name = getattr(parent_model, '_history_manager_name')
+                versions = getattr(parent_model, hist_name)
+                parent_hist_instance = versions.filter(
                     **{pk_name: getattr(m, field.attname)})[0]
-                parent_instance = parent_hist_instance.history_info._object
+                parent_instance = parent_hist_instance.version_info._object
 
             parent_unique = unique_lookup_values_for(parent_instance)
             if not parent_unique:

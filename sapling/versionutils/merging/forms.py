@@ -1,8 +1,10 @@
 from django.db import models
 from django import forms
 
-from versionutils.versioning.utils import is_versioned
 from django.forms.models import model_to_dict
+
+from versionutils.versioning.utils import is_versioned
+from versionutils.versioning import get_versions
 
 
 class MergeMixin(object):
@@ -22,7 +24,7 @@ class MergeMixin(object):
     To perform a merge in this case, simply subclass MergeMixin and provide
     your own merge() method.
 
-    As long as the associated model is versioned using versioning.TrackChanges
+    As long as the associated model is versioned using versioning.register
     or has a DateTimeField with auto_now=True this will work automatically.
     Otherwise you'll want to subclass MergeMixin and override
     get_version_date().
@@ -42,7 +44,7 @@ class MergeMixin(object):
             merge successfully occurs.
         version_date_field: Optional field name to use for figuring out
             the version date.  We infer this automatically if the associated
-            model is versioned using versioning.TrackChanges or has an
+            model is versioned using versioning.register or has an
             auto_now=True DateTimeField.  You probably want to override
             get_version_date() instead of using this attribute.
     """
@@ -79,7 +81,7 @@ class MergeMixin(object):
         # if using versioning, return most recent version date
         if is_versioned(instance):
             try:
-                return instance.history.most_recent().history_info.date
+                return get_versions(instance).most_recent().version_info.date
             except:
                 return ''
 
@@ -137,7 +139,8 @@ class MergeMixin(object):
         if current_version_date != form_version_date:
             ancestor = None
             if is_versioned(self.instance) and form_version_date:
-                ancestor_model = self.instance.history.as_of(form_version_date)
+                ancestor_model = get_versions(self.instance).as_of(
+                    form_version_date)
                 ancestor = model_to_dict(ancestor_model)
             try:
                 self.cleaned_data = self.merge(self.cleaned_data, self.initial,

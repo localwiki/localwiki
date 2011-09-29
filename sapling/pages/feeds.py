@@ -12,8 +12,8 @@ class PageChanges(RecentChanges):
 
     def queryset(self, start_at=None):
         if start_at:
-            return Page.history.filter(history_info__date__gte=start_at)
-        return Page.history.all()
+            return Page.versions.filter(version_info__date__gte=start_at)
+        return Page.versions.all()
 
     def page(self, obj):
         return obj
@@ -24,9 +24,9 @@ class PageFileChanges(RecentChanges):
 
     def queryset(self, start_at=None):
         if start_at:
-            return PageFile.history.filter(history_info__date__gte=start_at)
+            return PageFile.versions.filter(version_info__date__gte=start_at)
         else:
-            return PageFile.history.all()
+            return PageFile.versions.all()
 
     def page(self, obj):
         try:
@@ -41,14 +41,14 @@ class PageFileChanges(RecentChanges):
     def diff_url(self, obj):
         return reverse('pages:file-compare-dates', kwargs={
             'slug': self.page(obj).pretty_slug,
-            'date1': obj.history_info.date,
+            'date1': obj.version_info.date,
             'file': obj.name,
         })
 
     def as_of_url(self, obj):
         return reverse('pages:file-as_of_date', kwargs={
             'slug': self.page(obj).pretty_slug,
-            'date': obj.history_info.date,
+            'date': obj.version_info.date,
             'file': obj.name,
         })
 
@@ -62,7 +62,7 @@ class PageChangesFeed(ChangesOnItemFeed):
 
     def get_object(self, request, slug):
         obj = Page(slug=slugify(slug))
-        obj.title = obj.history.most_recent().name
+        obj.title = obj.versions.most_recent().name
         obj.page = obj
         return obj
 
@@ -73,6 +73,6 @@ class PageFileChangesFeed(ChangesOnItemFeed):
     def get_object(self, request, slug='', file=''):
         obj = PageFile(slug=slugify(slug), name=file)
         page = Page(slug=slugify(slug))
-        obj.page = page.history.most_recent()
+        obj.page = page.versions.most_recent()
         obj.title = 'File %s on page "%s"' % (obj.name, obj.page.name)
         return obj

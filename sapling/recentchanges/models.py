@@ -55,7 +55,7 @@ class RecentChanges(object):
         """
         return reverse('%s:compare-dates' % obj._meta.app_label, kwargs={
             'slug': self.page(obj).pretty_slug,
-            'date1': obj.history_info.date,
+            'date1': obj.version_info.date,
         })
 
     def as_of_url(self, obj):
@@ -69,5 +69,5 @@ class RecentChanges(object):
         """
         return reverse('%s:as_of_date' % obj._meta.app_label, kwargs={
             'slug': self.page(obj).pretty_slug,
-            'date': obj.history_info.date,
+            'date': obj.version_info.date,
         })

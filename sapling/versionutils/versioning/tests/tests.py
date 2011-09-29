@@ -20,7 +20,7 @@ INSTALLED_APPS.append('versionutils.versioning.tests')
 mgr.set(INSTALLED_APPS=INSTALLED_APPS)
 
 
-class TrackChangesTest(TestCase):
+class ChangesTrackingTest(TestCase):
     def _create_test_models(self):
         """
         Creates some instances of the test models.
@@ -114,22 +114,22 @@ class TrackChangesTest(TestCase):
     def test_new_save(self):
         for m in self.all_test_objects():
             m.save()
-            self.assertEqual(len(m.history.all()), 2)
+            self.assertEqual(len(m.versions.all()), 2)
 
         new_m = M1(a="ayesyes!", b="bbb", c="cx", d="dddd")
         new_m.save()
-        self.assertEqual(len(new_m.history.all()), 1)
+        self.assertEqual(len(new_m.versions.all()), 1)
 
     def test_empty_save(self):
         history_before = {}
         for m in self.all_test_objects():
-            history_before[m] = (m, len(m.history.all()))
+            history_before[m] = (m, len(m.versions.all()))
         for m in self.all_test_objects():
             m.save()
         for m in self.all_test_objects():
             # saving should add a single history entry
             old_m, old_m_history_len = history_before[m]
-            self.assertEqual(len(m.history.all()), old_m_history_len + 1)
+            self.assertEqual(len(m.versions.all()), old_m_history_len + 1)
 
     def test_most_recent(self):
         m = M1.objects.get(a="A!")
@@ -137,12 +137,12 @@ class TrackChangesTest(TestCase):
         m.b = "Bnew!"
         m.save()
 
-        self.assertEqual(m.history.most_recent().a, m_old.a)
-        self.assertEqual(m.history.most_recent().b, "Bnew!")
-        self.assertEqual(m.history.most_recent().c, m_old.c)
-        self.assertEqual(m.history.most_recent().d, m_old.d)
+        self.assertEqual(m.versions.most_recent().a, m_old.a)
+        self.assertEqual(m.versions.most_recent().b, "Bnew!")
+        self.assertEqual(m.versions.most_recent().c, m_old.c)
+        self.assertEqual(m.versions.most_recent().d, m_old.d)
 
-        recent_obj = m.history.most_recent().history_info._object
+        recent_obj = m.versions.most_recent().version_info._object
         vals_recent = [getattr(recent_obj, field)
                        for field in recent_obj._meta.get_all_field_names()
         ]
@@ -165,10 +165,10 @@ class TrackChangesTest(TestCase):
         """
         m = M16Unique.objects.get(a="What")
         m.delete()
-        del_m = m.history.most_recent()
-        del_m_obj = del_m.history_info._object
+        del_m = m.versions.most_recent()
+        del_m_obj = del_m.version_info._object
 
-        self.assertEqual(del_m.history_info.type, TYPE_DELETED)
+        self.assertEqual(del_m.version_info.type, TYPE_DELETED)
         self.assertEqual(del_m_obj.a, m.a)
         self.assertEqual(del_m_obj.b, m.b)
         self.assertEqual(del_m_obj.c, m.c)
@@ -184,7 +184,7 @@ class TrackChangesTest(TestCase):
         del m
 
         # A filter on the unique field should do the trick
-        history_entries = M16Unique.history.filter(a="What")
+        history_entries = M16Unique.versions.filter(a="What")
         m = history_entries[0]
         self.assertEqual(m.a, "What")
         self.assertEqual(m.b, "This is the new long text")
@@ -193,8 +193,8 @@ class TrackChangesTest(TestCase):
         # And we should also be able to look up based on a new object
         # with the same unique fields
         m = M16Unique(a="What", b="something else")
-        self.assertEqual(m.history.all()[0].a, "What")
-        self.assertEqual(m.history.all()[0].b, "This is the new long text")
+        self.assertEqual(m.versions.all()[0].a, "What")
+        self.assertEqual(m.versions.all()[0].b, "This is the new long text")
 
     def test_deleted_object_recreate(self):
         """
@@ -206,7 +206,7 @@ class TrackChangesTest(TestCase):
         m.b = "This is the new long text"
         m.save()
         m.delete()
-        old_history_len = len(m.history.all())
+        old_history_len = len(m.versions.all())
         del m
         m2 = M16Unique(a="Something", b="Else", c=75)
         m2.save()
@@ -219,11 +219,11 @@ class TrackChangesTest(TestCase):
         # now deleted object included.
 
         # all the history entries should have the same unique field
-        self.assertEqual([x.a for x in m.history.all()],
-                         ["What"] * len(m.history.all())
+        self.assertEqual([x.a for x in m.versions.all()],
+                         ["What"] * len(m.versions.all())
         )
         # and the history should be old_history_len+1 entries long
-        self.assertEqual(len(m.history.all()), old_history_len + 1)
+        self.assertEqual(len(m.versions.all()), old_history_len + 1)
 
     def test_deleted_object_nonunique(self):
         """
@@ -240,7 +240,7 @@ class TrackChangesTest(TestCase):
         m2 = M2(a="new m2!", b="new text!", c=54)
         m2.save()
 
-        self.assertEqual(len(m2.history.all()), 1)
+        self.assertEqual(len(m2.versions.all()), 1)
 
     def test_deleted_file(self):
         m = M10File()
@@ -266,9 +266,9 @@ class TrackChangesTest(TestCase):
         m = M2(a="Newz!", b="B!", c=666)
         m.save()
         for i in range(1, 100):
-            v_cur = m.history.most_recent()
-            date = v_cur.history_info.date
-            self.assertEqual(v_cur.history_info.version_number(), i)
+            v_cur = m.versions.most_recent()
+            date = v_cur.version_info.date
+            self.assertEqual(v_cur.version_info.version_number(), i)
             m.b += "."
             m.save()
 
@@ -281,7 +281,7 @@ class TrackChangesTest(TestCase):
             m.save()
 
         for i in range(1, 100):
-            m_old = m.history.as_of(version=i)
+            m_old = m.versions.as_of(version=i)
             self.assertEqual(m_old.c, i)
 
     def test_version_date_grab(self):
@@ -294,12 +294,12 @@ class TrackChangesTest(TestCase):
 
         # exact dates
         for i in range(1, 20):
-            m_old = m.history.as_of(date=datetime.datetime(2010, 10, i))
+            m_old = m.versions.as_of(date=datetime.datetime(2010, 10, i))
             self.assertEqual(m_old.c, i)
 
         # a date in-between two revisions should yield the earlier revision
         for i in range(1, 20):
-            m_old = m.history.as_of(date=datetime.datetime(2010, 10, i, 10))
+            m_old = m.versions.as_of(date=datetime.datetime(2010, 10, i, 10))
             self.assertEqual(m_old.c, i)
 
     def test_revert_to(self):
@@ -310,14 +310,14 @@ class TrackChangesTest(TestCase):
             m.c = i
             m.save()
 
-        m_old = m.history.filter(c=4)[0]
+        m_old = m.versions.filter(c=4)[0]
         m_old.revert_to()
 
         m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
         self.assertEqual(m_cur.c, 4)
 
         # version before most recent is what we expect
-        self.assertEqual(m_cur.history.all()[1].c, 19)
+        self.assertEqual(m_cur.versions.all()[1].c, 19)
 
     def test_revert_to_delete_newer(self):
         m = M2(a="Sup", b="Dude", c=0)
@@ -329,28 +329,28 @@ class TrackChangesTest(TestCase):
 
         # should be:
         # c=19, 18, 17, .. 5, 4, 3, 2 1, 0
-        m_old = m.history.filter(c=4)[0]
+        m_old = m.versions.filter(c=4)[0]
         m_old.revert_to(delete_newer_versions=True)
 
         m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
         self.assertEqual([4, 4, 3, 2, 1, 0],
-                         [obj.c for obj in m_cur.history.all()]
+                         [obj.c for obj in m_cur.versions.all()]
         )
 
-        m_old = m_cur.history.filter(c=1)[0]
+        m_old = m_cur.versions.filter(c=1)[0]
         m_old.revert_to(delete_newer_versions=True)
 
         m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
         self.assertEqual([1, 1, 0],
-                         [obj.c for obj in m_cur.history.all()]
+                         [obj.c for obj in m_cur.versions.all()]
         )
 
-        m_old = m_cur.history.filter(c=0)[0]
+        m_old = m_cur.versions.filter(c=0)[0]
         m_old.revert_to(delete_newer_versions=True)
 
         m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
         self.assertEqual([0, 0],
-                         [obj.c for obj in m_cur.history.all()]
+                         [obj.c for obj in m_cur.versions.all()]
         )
 
     def test_trackchanges_off(self):
@@ -359,11 +359,11 @@ class TrackChangesTest(TestCase):
 
         m.c = 11
         m.save(track_changes=False)
-        self.assertEqual(len(m.history.all()), 1)
+        self.assertEqual(len(m.versions.all()), 1)
 
-        mh = m.history.all()[0]
+        mh = m.versions.all()[0]
         mh.revert_to(track_changes=False)
-        self.assertEqual(len(m.history.all()), 1)
+        self.assertEqual(len(m.versions.all()), 1)
 
     def test_revert_to_delete_newer_no_record(self):
         m = M2(a="Sup", b="Dude", c=0)
@@ -375,29 +375,29 @@ class TrackChangesTest(TestCase):
 
         # should be:
         # c=19, 18, 17, .. 5, 4, 3, 2 1, 0
-        m.history.track_changes = False
-        m_old = m.history.filter(c=4)[0]
+        m.versions.track_changes = False
+        m_old = m.versions.filter(c=4)[0]
         m_old.revert_to(delete_newer_versions=True)
 
         m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
         self.assertEqual([4, 4, 3, 2, 1, 0],
-                         [obj.c for obj in m_cur.history.all()]
+                         [obj.c for obj in m_cur.versions.all()]
         )
 
-        m_old = m_cur.history.filter(c=1)[0]
+        m_old = m_cur.versions.filter(c=1)[0]
         m_old.revert_to(delete_newer_versions=True)
 
         m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
         self.assertEqual([1, 1, 0],
-                         [obj.c for obj in m_cur.history.all()]
+                         [obj.c for obj in m_cur.versions.all()]
         )
 
-        m_old = m_cur.history.filter(c=0)[0]
+        m_old = m_cur.versions.filter(c=0)[0]
         m_old.revert_to(delete_newer_versions=True)
 
         m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
         self.assertEqual([0, 0],
-                         [obj.c for obj in m_cur.history.all()]
+                         [obj.c for obj in m_cur.versions.all()]
         )
 
     @skipIf(settings.DATABASE_ENGINE == 'sqlite3',
@@ -412,13 +412,13 @@ class TrackChangesTest(TestCase):
         qs = M2.objects.filter(a="a oh a")
         qs.delete()
 
-        h_objs = M2.history.filter(a="a oh a")
-        self.assertEqual(h_objs[0].history_info.type, TYPE_DELETED)
-        self.assertEqual(h_objs[1].history_info.type, TYPE_ADDED)
+        h_objs = M2.versions.filter(a="a oh a")
+        self.assertEqual(h_objs[0].version_info.type, TYPE_DELETED)
+        self.assertEqual(h_objs[1].version_info.type, TYPE_ADDED)
 
-        h_objs = M12ForeignKey.history.filter(b="ratatat")
-        self.assertEqual(h_objs[0].history_info.type, TYPE_DELETED)
-        self.assertEqual(h_objs[1].history_info.type, TYPE_ADDED)
+        h_objs = M12ForeignKey.versions.filter(b="ratatat")
+        self.assertEqual(h_objs[0].version_info.type, TYPE_DELETED)
+        self.assertEqual(h_objs[1].version_info.type, TYPE_ADDED)
 
         # Bulk updates don't work yet and it's not clear
         # they will unless Django fixes update behavior
@@ -433,7 +433,7 @@ class TrackChangesTest(TestCase):
         m = M16Unique(a="Me me!", b="I am newer", c=0)
         m.save()
 
-        mh = m.history.filter(a="Me me!", b="I am older")[1]
+        mh = m.versions.filter(a="Me me!", b="I am older")[1]
 
         # so if we attempt a revert_to() on this older version
         # we shouldn't get a uniqueness error and it should exist only
@@ -463,7 +463,7 @@ class TrackChangesTest(TestCase):
         m.delete()
         n.delete()
 
-        m_h = m.history.as_of(version=2)
+        m_h = m.versions.as_of(version=2)
         self.assertRaises(ObjectDoesNotExist, m_h.revert_to)
 
         # Case 2:
@@ -490,15 +490,15 @@ class TrackChangesTest(TestCase):
         m.delete()
         n.delete()
 
-        n = n.history.as_of(version=2).revert_to()
-        m = m.history.as_of(version=2).revert_to()
+        n = n.versions.as_of(version=2).revert_to()
+        m = m.versions.as_of(version=2).revert_to()
 
         n.b += "?"
         n.save()
         m.b += "?"
         m.save()
 
-        m = m.history.as_of(version=1).revert_to()
+        m = m.versions.as_of(version=1).revert_to()
         self.assertEqual(m.c.b, n.b)
 
         # Case 3(a):
@@ -518,7 +518,7 @@ class TrackChangesTest(TestCase):
         m.save()
 
         n.delete()  # Will cause m to be deleted via cascade.
-        n.history.as_of(version=1).revert_to()
+        n.versions.as_of(version=1).revert_to()
 
         self.assertEquals(len(MUniqueAndFK.objects.filter(a="my name3a")), 1)
 
@@ -544,7 +544,7 @@ class TrackChangesTest(TestCase):
         l.save()
 
         n.delete() # Will cause m, l to be deleted via cascade.
-        n.history.as_of(version=1).revert_to()
+        n.versions.as_of(version=1).revert_to()
 
         self.assertEquals(len(MUniqueAndFK2.objects.filter(a="oh name3b")), 1)
 
@@ -566,7 +566,7 @@ class TrackChangesTest(TestCase):
         m.delete()
         n.delete()
 
-        n.history.as_of(version=2).revert_to()
+        n.versions.as_of(version=2).revert_to()
         self.assertEquals(len(MUniqueAndFK.objects.filter(a="my name4")), 0)
 
     def test_revert_to_deleted_version(self):
@@ -581,7 +581,7 @@ class TrackChangesTest(TestCase):
         m.delete()
 
         # history record for deleted instance
-        mh = M16Unique.history.filter(a="Gonna get", b="deleted", c=0)[0]
+        mh = M16Unique.versions.filter(a="Gonna get", b="deleted", c=0)[0]
 
         # re-create the model
         m = M16Unique(a="Gonna get", b="deleted", c=0)
@@ -602,8 +602,8 @@ class TrackChangesTest(TestCase):
 
         # latest version in the history should be logged as Reverted/Deleted
         # entry.
-        mh = M16Unique.history.filter(a="Gonna get", b="deleted", c=0)[0]
-        self.assertEqual(mh.history_info.type, TYPE_REVERTED_DELETED)
+        mh = M16Unique.versions.filter(a="Gonna get", b="deleted", c=0)[0]
+        self.assertEqual(mh.version_info.type, TYPE_REVERTED_DELETED)
 
         # ====================================================================
         # Now with a revert when the object is also currently deleted
@@ -614,7 +614,7 @@ class TrackChangesTest(TestCase):
 
         m.delete()
 
-        mh = M16Unique.history.filter(
+        mh = M16Unique.versions.filter(
             a="About to get", b="really deleted", c=0
         )[0]
 
@@ -628,10 +628,10 @@ class TrackChangesTest(TestCase):
 
         # latest version in the history should be logged as a Reverted/Deleted
         # entry.
-        mh = M16Unique.history.filter(
+        mh = M16Unique.versions.filter(
             a="About to get", b="really deleted", c=0
         )[0]
-        self.assertEqual(mh.history_info.type, TYPE_REVERTED_DELETED)
+        self.assertEqual(mh.version_info.type, TYPE_REVERTED_DELETED)
 
     def test_revert_grab_reverted_version(self):
         m = M16Unique(a="Gonna get", b="reverted", c=0)
@@ -639,18 +639,18 @@ class TrackChangesTest(TestCase):
         m.b = "not yet!"
         m.save()
 
-        mh = m.history.all()[1]
+        mh = m.versions.all()[1]
         mh.revert_to()
 
         m = M16Unique.objects.get(a="Gonna get")
 
-        r_m = m.history.most_recent().history_info.reverted_to_version
-        self.assertEqual(r_m, m.history.all()[2])
+        r_m = m.versions.most_recent().version_info.reverted_to_version
+        self.assertEqual(r_m, m.versions.all()[2])
 
     def test_copy_custom_attributes(self):
         m21 = M21CustomAttribute(name="oh")
         m21.save()
-        h = m21.history.most_recent()
+        h = m21.versions.most_recent()
         self.assertTrue(hasattr(h, 'magic'))
 
         # We don't copy custom managers because it's not clear we
@@ -658,20 +658,20 @@ class TrackChangesTest(TestCase):
         # accessed on a historical instance?
         m20 = M20CustomManager(name="BEST EVER")
         m20.save()
-        h = m20.history.most_recent()
-        self.assertTrue(hasattr(M20CustomManager.history.model, 'myman'))
-        self.assertEqual("bar", M20CustomManager.history.model.myman.foo())
+        h = m20.versions.most_recent()
+        self.assertTrue(hasattr(M20CustomManager.versions.model, 'myman'))
+        self.assertEqual("bar", M20CustomManager.versions.model.myman.foo())
 
         # This model has 'objects' set to the custom manager.
         m = M20CustomManagerDirect(name="Yup")
         m.save()
         self.assertEqual("bar",
-                         M20CustomManagerDirect.history.model.objects.foo())
+                         M20CustomManagerDirect.versions.model.objects.foo())
 
     def test_copy_custom_methods(self):
         m21 = M21CustomMethod(name="oh")
         m21.save()
-        h = m21.history.most_recent()
+        h = m21.versions.most_recent()
 
         self.assertEqual(h.myfunc(), h.name)
 
@@ -703,16 +703,16 @@ class TrackChangesTest(TestCase):
         m17.name = m17.name + "!"
         m17.save()
 
-        m17_h = m17.history.as_of(version=1)
+        m17_h = m17.versions.as_of(version=1)
         self.assertEqual(m17_h.m2.c, 1)
 
-        m17_h = m17.history.as_of(version=2)
+        m17_h = m17.versions.as_of(version=2)
         self.assertEqual(m17_h.m2.c, 1)
 
-        m17_h = m17.history.as_of(version=3)
+        m17_h = m17.versions.as_of(version=3)
         self.assertEqual(m17_h.m2.c, 2)
 
-        m17_h = m17.history.as_of(version=4)
+        m17_h = m17.versions.as_of(version=4)
         self.assertEqual(m17_h.m2.c, 3)
 
         ###############################
@@ -739,16 +739,16 @@ class TrackChangesTest(TestCase):
         m18.name = m18.name + "!"
         m18.save()
 
-        m18_h = m18.history.as_of(version=1)
+        m18_h = m18.versions.as_of(version=1)
         self.assertEqual(m18_h.m2.c, 1)
 
-        m18_h = m18.history.as_of(version=2)
+        m18_h = m18.versions.as_of(version=2)
         self.assertEqual(m18_h.m2.c, 1)
 
-        m18_h = m18.history.as_of(version=3)
+        m18_h = m18.versions.as_of(version=3)
         self.assertEqual(m18_h.m2.c, 2)
 
-        m18_h = m18.history.as_of(version=4)
+        m18_h = m18.versions.as_of(version=4)
         self.assertEqual(m18_h.m2.c, 3)
 
         ###############################
@@ -766,7 +766,7 @@ class TrackChangesTest(TestCase):
         t2.name += "!"
         t2.save()
 
-        m19_h = m19.history.most_recent()
+        m19_h = m19.versions.most_recent()
         tags = m19_h.tags.all()
         self.assertEqual(set([t.name for t in tags]), set(["T1", "T2"]))
 
@@ -778,7 +778,7 @@ class TrackChangesTest(TestCase):
         m.b += "!"
         m.save()
 
-        m2_h = m2.history.most_recent()
+        m2_h = m2.versions.most_recent()
         self.assertEqual(m2_h.a.b, "Yo!")
 
     def test_fk_reverse_no_interference(self):
@@ -805,7 +805,7 @@ class TrackChangesTest(TestCase):
         # because m2 was created before m17, the related set
         # of the most recent historical version of m2 should be
         # empty
-        m2_h = m2.history.most_recent()
+        m2_h = m2.versions.most_recent()
         self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 0)
 
         m2.a += "!"
@@ -814,7 +814,7 @@ class TrackChangesTest(TestCase):
         m17.save()
         # now the related set of the most recent entry should be the
         # current m17
-        m2_h = m2.history.most_recent()
+        m2_h = m2.versions.most_recent()
         self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 1)
         m17_h = m2_h.m17foreignkeyversioned_set.all()[0]
         self.assertEqual(m17_h.name, "relatedtest")
@@ -822,7 +822,7 @@ class TrackChangesTest(TestCase):
         m2.a += "!"
         m2.save()
 
-        m2_h = m2.history.most_recent()
+        m2_h = m2.versions.most_recent()
         self.assertEqual(len(m2_h.m17foreignkeyversioned_set.all()), 1)
         m17_h = m2_h.m17foreignkeyversioned_set.all()[0]
         self.assertEqual(m17_h.name, "relatedtest!")
@@ -834,7 +834,7 @@ class TrackChangesTest(TestCase):
         m2.a += "!"
         m2.save()
 
-        m2_h = m2.history.most_recent()
+        m2_h = m2.versions.most_recent()
         related_set = m2_h.m17foreignkeyversioned_set
         self.assertEqual(len(related_set.all()), 2)
         self.assertEqual(len(related_set.filter(name="relatedtest2")), 1)
@@ -850,8 +850,8 @@ class TrackChangesTest(TestCase):
 
         child.delete(comment="the comment")
         # delete comment should cascade to parent's delete
-        latest_m12 = M12ForeignKey.history.filter(b="i am the parent")[0]
-        self.assertEqual(latest_m12.history_info.comment, "the comment")
+        latest_m12 = M12ForeignKey.versions.filter(b="i am the parent")[0]
+        self.assertEqual(latest_m12.version_info.comment, "the comment")
 
         child = M2(a="oh yes 2", b="uh huh 2", c=10)
         child.save()
@@ -861,8 +861,8 @@ class TrackChangesTest(TestCase):
         child.delete(track_changes=False)
         # We shouldn't have a historical instance stored for the
         # parent's delete.
-        latest_m12 = M12ForeignKey.history.filter(b="i am the parent 2")[0]
-        self.assertNotEqual(latest_m12.history_info.type, TYPE_DELETED)
+        latest_m12 = M12ForeignKey.versions.filter(b="i am the parent 2")[0]
+        self.assertNotEqual(latest_m12.version_info.type, TYPE_DELETED)
 
     def test_fk_reverse_proper_instance(self):
         """
@@ -873,7 +873,7 @@ class TrackChangesTest(TestCase):
                                  v
         fk_version1 ---------> m_version2
 
-        then doing a reverse lookup in m.history should only
+        then doing a reverse lookup in m.versions should only
         return a single historical fk instance - not two.
         """
         m2 = M2(a="aaaa!", b="bbbb!", c=1)
@@ -886,39 +886,39 @@ class TrackChangesTest(TestCase):
         m2.a += "!"
         m2.save()
 
-        m2_h = m2.history.most_recent()
+        m2_h = m2.versions.most_recent()
         self.assertEqual(len(m2_h.m12foreignkey_set.all()), 1)
 
     def test_fk_versioned_filters(self):
         m2 = M2(a="bats", b="cats", c=1)
         m2.save()
-        m2_h0 = m2.history.most_recent()
+        m2_h0 = m2.versions.most_recent()
 
         m12 = M12ForeignKey(a=m2, b="drats")
         m12.save()
-        m12_h0 = m12.history.most_recent()
+        m12_h0 = m12.versions.most_recent()
         m12.b += "!"
         m12.save()
-        m12_h1 = m12.history.most_recent()
+        m12_h1 = m12.versions.most_recent()
 
         # Two versions of m12 are pointed at the current version of m2
-        self.assertEqual(len(M12ForeignKey.history.filter(a=m2_h0)), 2)
+        self.assertEqual(len(M12ForeignKey.versions.filter(a=m2_h0)), 2)
 
         # There are two versions of m12 pointed at m2, but this is
         # Many->One relationship, so only one m2 should appear here.
-        self.assertEqual(len(M2.history.filter(m12foreignkey=m12_h0)), 1)
-        self.assertEqual(len(M2.history.filter(m12foreignkey=m12_h1)), 1)
+        self.assertEqual(len(M2.versions.filter(m12foreignkey=m12_h0)), 1)
+        self.assertEqual(len(M2.versions.filter(m12foreignkey=m12_h1)), 1)
 
         # ==== Filter on instances ====
 
         # Two historical versions of m12 are pointed at the current historical
         # instance of m2.
-        self.assertEqual(len(m12.history.filter(a=m2_h0)), 2)
+        self.assertEqual(len(m12.versions.filter(a=m2_h0)), 2)
 
         # There are two versions of m12 pointed at m2, but this is
         # Many->One relationship, so only one m2 should appear here.
-        self.assertEqual(len(m2.history.filter(m12foreignkey=m12_h0)), 1)
-        self.assertEqual(len(m2.history.filter(m12foreignkey=m12_h1)), 1)
+        self.assertEqual(len(m2.versions.filter(m12foreignkey=m12_h0)), 1)
+        self.assertEqual(len(m2.versions.filter(m12foreignkey=m12_h1)), 1)
 
     def test_onetoone_reverse_lookup(self):
         # Reverse onetoone field lookups on historical models should,
@@ -934,7 +934,7 @@ class TrackChangesTest(TestCase):
         m15.a += "!"
         m15.save()
 
-        child_h = child.history.most_recent()
+        child_h = child.versions.most_recent()
         self.assertEqual(child_h.m15onetoone.a, "i have a onetoone field")
 
     def test_manytomany_reverse_lookup(self):
@@ -960,16 +960,16 @@ class TrackChangesTest(TestCase):
         t2.save()
 
         # reverse set on these should be empty
-        t1_h = t1.history.all()[2]
-        t2_h = t2.history.all()[2]
+        t1_h = t1.versions.all()[2]
+        t2_h = t2.versions.all()[2]
         reverse_set = t1_h.m19manytomanyfieldversioned_set
         self.assertEqual(len(reverse_set.all()), 0)
         reverse_set = t2_h.m19manytomanyfieldversioned_set
         self.assertEqual(len(reverse_set.all()), 0)
 
         # reverse set on these should be "best m19"
-        t1_h = t1.history.all()[1]
-        t2_h = t2.history.all()[1]
+        t1_h = t1.versions.all()[1]
+        t2_h = t2.versions.all()[1]
         reverse_set = t1_h.m19manytomanyfieldversioned_set
         self.assertEqual(len(reverse_set.all()), 1)
         self.assertEqual(reverse_set.all()[0].a, "best m19")
@@ -978,8 +978,8 @@ class TrackChangesTest(TestCase):
         self.assertEqual(reverse_set.all()[0].a, "best m19")
 
         # reverse set on these should be "best m19!"
-        t1_h = t1.history.all()[0]
-        t2_h = t2.history.all()[0]
+        t1_h = t1.versions.all()[0]
+        t2_h = t2.versions.all()[0]
         reverse_set = t1_h.m19manytomanyfieldversioned_set
         self.assertEqual(len(reverse_set.all()), 1)
         self.assertEqual(reverse_set.all()[0].a, "best m19!")
@@ -991,7 +991,7 @@ class TrackChangesTest(TestCase):
         m = M23AutoNow(b="sup")
         for i in range(0, 10):
             m.save()
-            m_h = m.history.most_recent()
+            m_h = m.versions.most_recent()
             self.assertEqual(m.a, m_h.a)
 
     def test_inheritance(self):
@@ -1000,35 +1000,53 @@ class TrackChangesTest(TestCase):
         # instance types are being returned for various cases.
         m = M24SubclassProxy(a="dude")
         m.save()
-        self.assertEqual(type(m.history.most_recent()), m.history.model)
+        self.assertEqual(type(m.versions.most_recent()), m.versions.model)
+        m.a += "!"
+        m.save()
+        self.assertEqual(m.versions.most_recent().a, "dude!")
+        self.assertEqual(m.versions.as_of(version=1).a, "dude")
 
         m = M25SubclassAbstract(a="new", b="test")
         m.save()
-        self.assertEqual(type(m.history.most_recent()), m.history.model)
+        self.assertEqual(type(m.versions.most_recent()), m.versions.model)
+        m.a += "!"
+        m.save()
+        self.assertEqual(m.versions.most_recent().a, "new!")
+        self.assertEqual(m.versions.as_of(version=1).a, "new")
 
         m = M26SubclassConcreteA(a="hi", b="there")
         m.save()
-        self.assertEqual(type(m.history.most_recent()), m.history.model)
+        self.assertEqual(type(m.versions.most_recent()), m.versions.model)
+        m.a += "!"
+        m.b += "!"
+        m.save()
+        # The fields on the versioned class should be versioned.
+        self.assertEqual(m.versions.most_recent().b, "there!")
+        self.assertEqual(m.versions.as_of(version=1).b, "there")
+        # But the fields on the base class, which isn't versioned,
+        # shouldn't be tracked.
+        self.assertEqual(m.versions.most_recent().a, "hi!")
+        self.assertEqual(m.versions.as_of(version=1).a, "hi!")
 
         m = M26SubclassConcreteB(a="hi", b="there")
         m.save()
         parent = M26ConcreteModelB.objects.get(a="hi")
-        self.assertEqual(type(parent.history.most_recent()),
-                         M26ConcreteModelB.history.model)
+        self.assertEqual(type(parent.versions.most_recent()),
+                         M26ConcreteModelB.versions.model)
 
         child = M26SubclassConcreteC(a="hi", b="there")
         child.save()
-        self.assertEqual(type(child.history.most_recent()),
-                         child.history.model)
+        self.assertEqual(type(child.versions.most_recent()),
+                         child.versions.model)
         parent = M26ConcreteModelC.objects.get(a="hi")
-        self.assertEqual(type(parent.history.most_recent()),
-                         parent.history.model)
+        self.assertEqual(type(parent.versions.most_recent()),
+                         parent.versions.model)
         # Can we get to the child model from the parent?
         parent.a += "!"
         parent.save()
         child.b += "!"
         child.save()
-        parent_h = parent.history.as_of(version=1)
+        parent_h = parent.versions.as_of(version=1)
         child_h = parent_h.m26subclassconcretec
         # Child has old version of b attribute.
         self.assertEqual(child_h.b, "there")
@@ -1050,7 +1068,7 @@ class TrackChangesTest(TestCase):
 
         self.assertEqual(len(B.objects.filter(a="child")), 0)
         self.assertEqual(len(A.objects.filter(a="child")), 0)
-        self.assertEqual(len(B.history.filter(a="child")), 0)
+        self.assertEqual(len(B.versions.filter(a="child")), 0)
 
 ##
 #    def test_reverse_related_name(self):

@@ -17,8 +17,8 @@
   {% block content %}
     {% if show_revision %}
       <em class="revision_details">
-          Revision {{ page.history_info.version_number }}
-          ({{ page.history_info.date }} by {{ page.history_info.user_link|safe }})
+          Revision {{ page.version_info.version_number }}
+          ({{ page.version_info.date }} by {{ page.version_info.user_link|safe }})
       </em>
     {% endif %}
     

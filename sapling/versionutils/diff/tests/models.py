@@ -1,7 +1,7 @@
 from django.db import models
 
 from versionutils import diff
-from versionutils.versioning import TrackChanges
+from versionutils import versioning
 
 """
 TODO: It would be cool to write a little thing to randomly generate
@@ -39,7 +39,7 @@ class M4ForeignKey(models.Model):
 class M5Versioned(models.Model):
     a = models.CharField(max_length=200)
 
-    history = TrackChanges()
+versioning.register(M5Versioned)
 
 
 class FakeFieldModel(models.Model):

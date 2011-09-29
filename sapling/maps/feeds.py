@@ -12,8 +12,8 @@ class MapChanges(RecentChanges):
 
     def queryset(self, start_at=None):
         if start_at:
-            return MapData.history.filter(history_info__date__gte=start_at)
-        return MapData.history.all()
+            return MapData.versions.filter(version_info__date__gte=start_at)
+        return MapData.versions.all()
 
     def title(self, obj):
         return 'Map for "%s"' % obj.page.name
@@ -26,7 +26,7 @@ class MapChangesFeed(ChangesOnItemFeed):
         # TODO: Break out this MapData-get-page pattern into a function.
         # Non-DRY.
         page = Page(slug=slugify(slug))
-        latest_page = page.history.most_recent()
+        latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
@@ -38,7 +38,7 @@ class MapChangesFeed(ChangesOnItemFeed):
         return obj
 
     def items(self, obj):
-        objs = obj.history.all()[:MAX_CHANGES]
+        objs = obj.versions.all()[:MAX_CHANGES]
         change_obj = MapChanges()
         for o in objs:
             o.title = obj.page.name

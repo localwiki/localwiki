@@ -22,13 +22,13 @@
           <tr>
               <td class="revision_details">
                   {% if old %}
-                    Revision {{ old.history_info.version_number }}
-                    ({{ old.history_info.date }} by {{ old.history_info.user_link|safe }})
+                    Revision {{ old.version_info.version_number }}
+                    ({{ old.version_info.date }} by {{ old.version_info.user_link|safe }})
                   {% endif %}
               </td>
               <td class="revision_details">
-                  Revision {{ new.history_info.version_number }}
-                  ({{ new.history_info.date }} by {{ new.history_info.user_link|safe }})
+                  Revision {{ new.version_info.version_number }}
+                  ({{ new.version_info.date }} by {{ new.version_info.user_link|safe }})
               </td>
           </tr>
           <tr>

@@ -13,7 +13,7 @@ Using ``versionutils.versioning`` is extremely simple.  Here's a little usage ex
     >>> m.description = "Just some guy"
     >>> m.save()
     # Look up the first historical version.
-    >>> m_hist = m.history.as_of(version=1)
+    >>> m_hist = m.versions.as_of(version=1)
     >>> m_hist
     <Person_hist: Person object as of 2011-02-15 17:23:20.483243>
     # The historical object has all the same attributes
@@ -24,16 +24,16 @@ Using ``versionutils.versioning`` is extremely simple.  Here's a little usage ex
     u'Some dude'
 
 Historical instances have all the same fields as the normal model.  They
-also have :attr:`the history_info field<history_info>` which has information on the
+also have :attr:`the version_info field<version_info>` which has information on the
 revision::
 
-    >>> m_hist.history_info.date
+    >>> m_hist.version_info.date
     datetime.datetime(2011, 2, 15, 17, 23, 20, 483243)
-    >>> m_hist.history_info.version_number()
+    >>> m_hist.version_info.version_number()
     1
 
 If you enable the :doc:`AutoTrackUserInfoMiddleware<install>` then the optional
-``history_info.user`` and ``history_info.user_ip`` attributes be
+``version_info.user`` and ``version_info.user_ip`` attributes be
 automatically added.
 
 Reverting objects
@@ -44,7 +44,7 @@ instance::
 
     >>> m.description
     u'Just some guy'
-    >>> m_hist = m.history.as_of(version=1)
+    >>> m_hist = m.versions.as_of(version=1)
     >>> m_hist
     <Person_hist: Person object as of 2011-02-15 17:23:20.483243>
     >>> m_hist.revert_to()
@@ -56,19 +56,19 @@ Getting historical objects
 --------------------------
 
 Sometimes we just want the most recent historical instance.  Calling
-``history.most_recent()`` will do the trick::
+``versions.most_recent()`` will do the trick::
 
-    >>> m.history.most_recent()
+    >>> m.versions.most_recent()
     <Person_hist: Person object as of 2011-02-15 23:48:09.507812>
 
 We've seen ``as_of()`` already.  ``as_of()`` can also take a ``date``
 parameter::
 
-    >>> m.history.as_of(date=datetime(2011, 2, 15, 17, 23, 20, 483243))
+    >>> m.versions.as_of(date=datetime(2011, 2, 15, 17, 23, 20, 483243))
     <Person_hist: Person object as of 2011-02-15 17:23:20.483243>
     # The datetime doesn't have to be exact.  We will return the historical
     # instance that's most recent, moving backward in time.
-    >>> m.history.as_of(date=datetime(2011, 2, 15, 17, 23, 21))
+    >>> m.versions.as_of(date=datetime(2011, 2, 15, 17, 23, 21))
     <Person_hist: Person object as of 2011-02-15 17:23:20.483243>
 
 We can also do lookups on the *model class itself*.  This is especially
@@ -77,14 +77,14 @@ most recently deleted::
 
     >>> m2 = Person(name="Mike")
     >>> m2.save()
-    >>> Person.history.all()
+    >>> Person.vesions.all()
     [<Person_hist: Person object as of 2011-02-15 21:53:15.613445>, <Person_hist: Person object as of 2011-02-15 20:33:03.409725>, <Person_hist: Person object as of 2011-02-15 18:07:40.645975>, <Person_hist: Person object as of 2011-02-15 17:23:40.416443>, <Person_hist: Person object as of 2011-02-15 17:23:20.483243>]
     # We can also do a filter on all historical instances of the Person
     # model.
-    >>> Person.history.filter(name="Mike")
+    >>> Person.versions.filter(name="Mike")
     [<Person_hist: Person object as of 2011-02-15 21:53:15.613445>]
     # And we can filter based on historical info attributes, too.
-    >>> Person.history.filter(history_info__date__gte=datetime(2011, 2, 15, 20))
+    >>> Person.versions.filter(version_info__date__gte=datetime(2011, 2, 15, 20))
     [<Person_hist: Person object as of 2011-02-15 21:53:15.613445>, <Person_hist: Person object as of 2011-02-15 20:33:03.409725>]
 
 Smart related object lookup
@@ -101,7 +101,7 @@ Suppose we have::
         details = models.TextField()
         person = models.ForeignKey(Person)
     
-        history = TrackChanges()
+    versioning.register(Profile)
 
 then::
 
@@ -112,7 +112,7 @@ then::
     >>> philip.description = "Runs fast, writes code"
     >>> philip.save()
     # We get the most recent historical instance of the Profile object.
-    >>> profile_hist = profile.history.most_recent()
+    >>> profile_hist = profile.versions.most_recent()
     # This gives us a historical instance of the Person model at the
     # correct point in time:
     >>> profile_hist.person
@@ -135,12 +135,12 @@ lookup::
     # At the time 'bob' was originally created, no Profiles were pointed to
     # him.  So if we do a reverse lookup on the original historical instance
     # we should expect to see no Profiles in the lookup.
-    >>> bob_original = bob.history.as_of(version=1)
+    >>> bob_original = bob.versions.as_of(version=1)
     >>> bob_original.profile_set.all()
     []
     # If we do a lookup on the most recent historical instance, we should
     see the "Most boring" profile pointed at it.
-    >>> bob_most_recent = bob.history.most_recent()
+    >>> bob_most_recent = bob.versions.most_recent()
     >>> for h in bob_most_recent.profile_set.all(): print h.details
     Most boring
 
@@ -157,12 +157,12 @@ to be passed into ``save()`` and ``delete()``::
 
     >> p = Person(name="Arlen", description="Likes beer")
     >> p.save(comment="creating this person for the first time")
-    >> ph = p.history.most_recent()
-    >> ph.history_info.comment
+    >> ph = p.versions.most_recent()
+    >> ph.version_info.comment
     u'creating this person for the first time'
 
-You can pass in any of the *optional fields* on the :attr:`history_info
-attribute<history_info>` into the ``save()`` and ``delete()`` methods on your
+You can pass in any of the *optional fields* on the :attr:`version_info
+attribute<version_info>` into the ``save()`` and ``delete()`` methods on your
 models.  In theory you can pass in non-optional fields (like ``date``),
 but you probably won't need to do that.
 
@@ -173,6 +173,6 @@ Get all historical versions where the model was added, not just
 updated::
 
     >>> from versionutils.versioning.constants import *
-    >>> Person.history.filter(history_info__type=TYPE_ADDED)
+    >>> Person.versions.filter(version_info__type=TYPE_ADDED)
     [<Person_hist: Person object as of 2011-02-15 21:53:15.613445>,
      <Person_hist: Person object as of 2011-02-15 17:23:20.483243>]

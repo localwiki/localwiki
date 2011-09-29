@@ -14,14 +14,13 @@ from django_randomfilenamestorage.storage import (
 
 from ckeditor.models import HTML5FragmentField
 from versionutils import diff
-from versionutils.versioning import TrackChanges
+from versionutils import versioning
 
 
 allowed_tags = ['p', 'br', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3',
                 'h4', 'h5', 'h6', 'hr', 'ul', 'ol', 'li', 'pre', 'table',
                 'thead', 'tbody', 'tr', 'th', 'td', 'span', 'strike', 'sub',
                 'sup', 'tt']
-
 
 allowed_attributes_map = {'p': ['class', 'style'],
                           'ul': ['class'],
@@ -50,7 +49,6 @@ class Page(models.Model):
     content = HTML5FragmentField(allowed_elements=allowed_tags,
                                  allowed_attributes_map=allowed_attributes_map,
                                  allowed_styles_map=allowed_styles_map)
-    history = TrackChanges()
 
     def __unicode__(self):
         return self.name
@@ -90,6 +88,7 @@ class PageDiff(diff.BaseModelDiff):
 
 
 diff.register(Page, PageDiff)
+versioning.register(Page)
 
 
 class PageFile(models.Model):
@@ -97,7 +96,6 @@ class PageFile(models.Model):
                             storage=RandomFilenameFileSystemStorage())
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False)
-    history = TrackChanges()
 
     _rough_type_map = [(r'^audio', 'audio'),
                        (r'^video', 'video'),
@@ -135,13 +133,7 @@ class PageFile(models.Model):
         ordering = ['-id']
 
 
-class PageRedirect(models.Model):
-    from_page = models.ForeignKey(Page, unique=True,
-        related_name='redirects_from_set')
-    to_page = models.ForeignKey(Page, related_name='redirects_to_set')
-
-    def __unicode__(self):
-        return "%s ---> %s" % (self.from_page.name, self.to_page.name)
+versioning.register(PageFile)
 
 
 def clean_name(name):

@@ -10,7 +10,7 @@ from django.db.models import Q
 from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin, JSONResponseMixin
 from versionutils.versioning.views import DeleteView, UpdateView
-from versionutils.versioning.views import RevertView, HistoryList
+from versionutils.versioning.views import RevertView, VersionsList
 from pages.models import Page
 from pages.models import slugify
 
@@ -45,7 +45,7 @@ class MapDetailView(Custom404Mixin, DetailView):
         return mapdata
 
     def get_object_date(self):
-        return self.object.history.most_recent().history_info.date
+        return self.object.versions.most_recent().version_info.date
 
     def get_context_data(self, **kwargs):
         context = super(MapDetailView, self).get_context_data(**kwargs)
@@ -127,7 +127,7 @@ class MapVersionDetailView(MapDetailView):
 
     def get_object(self):
         page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
-        latest_page = page.history.most_recent()
+        latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
@@ -137,12 +137,12 @@ class MapVersionDetailView(MapDetailView):
         version = self.kwargs.get('version')
         date = self.kwargs.get('date')
         if version:
-            return mapdata.history.as_of(version=int(version))
+            return mapdata.versions.as_of(version=int(version))
         if date:
-            return mapdata.history.as_of(date=dateparser(date))
+            return mapdata.versions.as_of(date=dateparser(date))
 
     def get_object_date(self):
-        return self.object.history_info.date
+        return self.object.version_info.date
 
     def get_context_data(self, **kwargs):
         context = super(MapVersionDetailView, self).get_context_data(**kwargs)
@@ -189,23 +189,23 @@ class MapRevertView(MapVersionDetailView, RevertView):
 
         context['show_revision'] = True
         context['map'] = InfoMap([(self.object.geom, self.object.page.name)])
-        context['date'] = self.object.history_info.date
+        context['date'] = self.object.version_info.date
         return context
 
 
-class MapHistoryList(HistoryList):
+class MapVersionsList(VersionsList):
     def get_queryset(self):
         page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
-        latest_page = page.history.most_recent()
+        latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
 
         self.mapdata = MapData(page=page)
-        return self.mapdata.history.all()
+        return self.mapdata.versions.all()
 
     def get_context_data(self, **kwargs):
-        context = super(MapHistoryList, self).get_context_data(**kwargs)
+        context = super(MapVersionsList, self).get_context_data(**kwargs)
         context['mapdata'] = self.mapdata
         return context
 
@@ -215,7 +215,7 @@ class MapCompareView(diff.views.CompareView):
 
     def get_object(self):
         page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
-        latest_page = page.history.most_recent()
+        latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name

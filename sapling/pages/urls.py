@@ -85,7 +85,7 @@ urlpatterns = patterns('',
         slugify(PageVersionDetailView.as_view()), name='as_of_date'),
     url(r'^(?P<slug>.+)/_history/_feed/*$', PageChangesFeed(),
         name='changes-feed'),
-    url(r'^(?P<slug>.+)/_history/$', slugify(PageHistoryList.as_view()),
+    url(r'^(?P<slug>.+)/_history/$', slugify(PageVersionsList.as_view()),
         name='history'),
 
     ##########################################################

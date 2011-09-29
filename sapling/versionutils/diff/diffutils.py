@@ -237,7 +237,7 @@ class BaseModelDiff(object):
                 # Use the non-versioned class to do the diff on the
                 # versioned fields.
                 if is_historical_instance(obj1):
-                    base_class = obj1.history_info._object.__class__
+                    base_class = obj1.version_info._object.__class__
                 else:
                     base_class = obj1.__class__
                 diff[field_name] = diff_class(obj1, obj2,
@@ -708,8 +708,8 @@ def diff(object1, object2):
 
     This can work with versioned models, e.g.::
 
-        >> diff(m1.history.as_of(version=2),
-        >>      m2.history.as_of(version=3)).as_html()
+        >> diff(m1.versions.as_of(version=2),
+        >>      m2.versions.as_of(version=3)).as_html()
         u('<tr>'
             '<td colspan="2">name</td>'
           '</tr>
@@ -730,7 +730,7 @@ def diff(object1, object2):
         the objects.
     """
     if is_historical_instance(object1):
-        base_class = object1.history_info._object.__class__
+        base_class = object1.version_info._object.__class__
     else:
         base_class = object1.__class__
 

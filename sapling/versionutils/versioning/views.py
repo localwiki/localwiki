@@ -12,7 +12,7 @@ from django.views.generic.edit import FormMixin
 from forms import DeleteForm, RevertForm
 
 
-class HistoryList(ListView):
+class VersionsList(ListView):
     """
     A subclass of django.views.generic.ListView.
 
@@ -21,18 +21,18 @@ class HistoryList(ListView):
     Example::
 
         def get_queryset(self):
-            all_page_history = Page(slug=self.kwargs['slug']).history.all()
+            all_page_history = Page(slug=self.kwargs['slug']).versions.all()
             # We set self.page to the most recent historical instance of the
             # page.
             self.page = all_page_history[0]
             return all_page_history
     """
-    context_object_name = 'version_list'
-    template_name_suffix = '_history'
+    context_object_name = 'versions_list'
+    template_name_suffix = '_versions'
     revert_view_name = None
 
     def get_context_data(self, **kwargs):
-        context = super(HistoryList, self).get_context_data(**kwargs)
+        context = super(VersionsList, self).get_context_data(**kwargs)
         context['slug'] = self.kwargs.get('slug')
         return context
 
@@ -41,7 +41,7 @@ class HistoryList(ListView):
         if hasattr(self.object_list, 'model'):
             hist_model = self.object_list.model
             self.object_list.model = hist_model._original_model
-            names = super(HistoryList, self).get_template_names()
+            names = super(VersionsList, self).get_template_names()
             self.object_list.model = hist_model
         return names
 
@@ -138,10 +138,10 @@ class RevertView(DeleteView):
 
     def get_object(self):
         obj = super(RevertView, self).get_object()
-        return obj.history.as_of(version=int(self.kwargs['version']))
+        return obj.versions.as_of(version=int(self.kwargs['version']))
 
     def success_msg(self):
-        version_number = self.object.history_info.version_number()
+        version_number = self.object.version_info.version_number()
         return 'Reverted to version %s.' % version_number
 
     def revert(self, *args, **kwargs):
@@ -163,7 +163,7 @@ class RevertView(DeleteView):
         orig_object = self.object
         # Temporarily swap out self.object with an instance of the
         # non-historical object for template-finding purposes.
-        self.object = orig_object.history_info._object
+        self.object = orig_object.version_info._object
         names = super(RevertView, self).get_template_names()
         self.object = orig_object
         return names
