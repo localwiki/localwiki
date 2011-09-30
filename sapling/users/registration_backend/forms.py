@@ -10,7 +10,7 @@ class RegistrationForm(forms.Form):
     Form for registering a new user account.
 
     Validates that the requested username and email address are not
-    already in use.
+    already in use.  Also presents a checkbox to agree to Terms of Service.
 
     Subclasses should feel free to add any additional validation they
     need, but should avoid defining a ``save()`` method -- the actual
@@ -33,6 +33,10 @@ class RegistrationForm(forms.Form):
         widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
         label=_("Password"))
     name = forms.CharField(required=False, label=_("Your name"))
+
+    tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
+            label=_(u'I have read and agree to the Terms of Service'),
+            error_messages={'required': _("You must agree to the terms to register")})
 
     def clean_username(self):
         """
