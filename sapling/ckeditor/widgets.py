@@ -101,7 +101,8 @@ class CKEditor(forms.Textarea):
             config_str = ''
         context = {
             'name': name,
-            'config': config_str
+            'config': config_str,
+            'STATIC_URL': settings.STATIC_URL,
         }
         return rendered + mark_safe(render_to_string(
             'ckeditor/ckeditor_script.html', context
