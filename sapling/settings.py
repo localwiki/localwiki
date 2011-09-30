@@ -119,9 +119,9 @@ HAYSTACK_SEARCH_ENGINE = 'solr'
 
 THUMBNAIL_BACKEND = 'utils.sorl_backends.AutoFormatBackend'
 
-OL_API = STATIC_URL + 'openlayers/OpenLayers.js'
-OLWIDGET_CSS = '%solwidget/css/sapling.css' % STATIC_URL
-CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js' % STATIC_URL
+OL_API = STATIC_URL + 'openlayers/OpenLayers.js?tm=1317359250'
+OLWIDGET_CSS = '%solwidget/css/sapling.css?tm=1317359250' % STATIC_URL
+CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js?tm=1317359250' % STATIC_URL
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
