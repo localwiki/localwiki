@@ -1,6 +1,11 @@
-from django.utils.decorators import classonlymethod
-from django.http import HttpResponse, Http404
+from django.utils.decorators import classonlymethod, method_decorator
+from guardian.decorators import permission_required
+from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.utils import simplejson as json
+
+
+class ForbiddenException:
+    pass
 
 
 class Custom404Mixin(object):
@@ -45,3 +50,38 @@ class JSONResponseMixin(object):
         Note: Make sure that the entire context dictionary is serializable
         '''
         return json.dumps(context)
+
+
+class PermissionRequiredMixin(object):
+    """
+    View mixin for verifying permissions before updating an existing object
+    """
+    permission = None
+    forbidden_message = 'Sorry, you are not allowed to perform this action.'
+
+    def get_protected_object(self):
+        """ Returns the object that should be used to check permissions.
+        Override this to use a different object as the "guard".
+        """
+        return self.object
+
+    def get_object_idempotent(self):
+        return self.object
+
+    def patch_get_object(self):
+        # Since get_object will get called again, we want it to be idempotent
+        self.get_object = self.get_object_idempotent
+
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        self.args = args
+        self.kwargs = kwargs
+        protected_object = None
+        if hasattr(self, 'get_object'):
+            self.object = self.get_object()
+            self.patch_get_object()
+            protected_object = self.get_protected_object()
+        if not request.user.has_perm(self.permission, protected_object):
+            return HttpResponseForbidden(self.forbidden_message)
+        return super(PermissionRequiredMixin, self).dispatch(request, *args,
+                                                        **kwargs)

@@ -6,7 +6,26 @@
 {% block content %}
 <form method="post" action="{% url 'registration_register' %}?next={{ request.GET.next }}">
 {% csrf_token %}
-{{ form.as_p }}
+<p>
+{{ form.username.errors }}
+{{ form.username.label_tag }}: {{ form.username }}
+</p>
+<p>
+{{ form.email.errors }}
+{{ form.email.label_tag }}: {{ form.email }}
+</p>
+<p>
+{{ form.password1.errors }}
+{{ form.password1.label_tag }}: {{ form.password1 }}
+</p>
+<p>
+{{ form.name.errors }}
+{{ form.name.label_tag }}: {{ form.name }}
+</p>
+<p>
+{{ form.tos.errors }}
+{{ form.tos }} {{ form.tos.label_tag }}
+</p>
 
 <input type="submit" value="login" />
 </form>

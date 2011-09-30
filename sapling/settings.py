@@ -53,6 +53,15 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
+# TODO: Temporary until we upgrade to the next Django release and have
+# the latest staticfiles changes.
+STATICFILES_FINDERS = (
+    'staticfiles.finders.FileSystemFinder',
+    'staticfiles.finders.AppDirectoriesFinder'
+)
+
+STATICFILES_STORAGE = 'staticfiles.storage.CachedStaticFilesStorage'
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash. For integration with staticfiles, this should be the same as
 # STATIC_URL followed by 'admin/'
@@ -64,8 +73,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # users app settings
-BANNED_GROUP = 'Banned'
-LOGGED_IN_HAS_PERM = False
+USERS_ANONYMOUS_GROUP = 'Anonymous'
+USERS_BANNED_GROUP = 'Banned'
 USERS_DEFAULT_GROUP = 'Authenticated'
 USERS_DEFAULT_PERMISSIONS = {'auth.group':
                                 [{'name': USERS_DEFAULT_GROUP,
@@ -80,11 +89,9 @@ USERS_DEFAULT_PERMISSIONS = {'auth.group':
                                      ['change_pagefile', 'pages', 'pagefile'],
                                      ['delete_pagefile', 'pages', 'pagefile']
                                     ]
-                                 }
-                                ],
-                             'auth.user':
-                                [{'username': 'AnonymousUser',
-                                  'user_permissions':
+                                 },
+                                 {'name': USERS_ANONYMOUS_GROUP,
+                                  'permissions':
                                     [['add_mapdata', 'maps', 'mapdata'],
                                      ['change_mapdata', 'maps', 'mapdata'],
                                      ['delete_mapdata', 'maps', 'mapdata'],
@@ -95,7 +102,7 @@ USERS_DEFAULT_PERMISSIONS = {'auth.group':
                                      ['change_pagefile', 'pages', 'pagefile'],
                                      ['delete_pagefile', 'pages', 'pagefile']
                                     ]
-                                 }
+                                 },
                                 ]
                             }
 
@@ -112,9 +119,10 @@ HAYSTACK_SEARCH_ENGINE = 'solr'
 
 THUMBNAIL_BACKEND = 'utils.sorl_backends.AutoFormatBackend'
 
-OL_API = STATIC_URL + 'openlayers/OpenLayers.js'
-OLWIDGET_CSS = '%solwidget/css/sapling.css' % STATIC_URL
-CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js' % STATIC_URL
+OL_API = STATIC_URL + 'openlayers/OpenLayers.js?tm=1317359250'
+OLWIDGET_CSS = '%solwidget/css/sapling.css?tm=1317359250' % STATIC_URL
+OLWIDGET_CSS = '%solwidget/js/olwidget.js?tm=1317359250' % STATIC_URL
+CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js?tm=1317359250' % STATIC_URL
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -131,7 +139,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.csrf",
     "django.core.context_processors.media",
-    "django.core.context_processors.static",
+    #"django.core.context_processors.static",
+    "staticfiles.context_processors.static",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
 )
@@ -160,13 +169,14 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.sites',
-    'django.contrib.staticfiles',
+    #'django.contrib.staticfiles',
 
     # Other third-party apps
     'haystack',
     'olwidget',
     'registration',
     'sorl.thumbnail',
+    'staticfiles',
     'guardian',
     'south',
 

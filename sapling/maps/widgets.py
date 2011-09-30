@@ -7,10 +7,11 @@ from urlparse import urljoin
 from django.conf import settings
 
 from olwidget import widgets
+from utils.static import static_url
 
 OUR_JS = [
-    urljoin(settings.STATIC_URL, 'js/jquery/jquery-1.5.min.js'),
-    urljoin(settings.STATIC_URL, 'olwidget/js/sapling_utils.js'),
+    static_url('js/jquery/jquery-1.5.min.js'),
+    static_url('olwidget/js/sapling_utils.js'),
 ]
 OUR_CSS = {}
 

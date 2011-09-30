@@ -9,6 +9,7 @@ from django import forms
 from django.conf import settings
 from django.contrib.gis.db import models as gis_models
 
+from utils.static import static_url
 import diff_match_patch
 import daisydiff
 from versionutils.versioning.utils import is_historical_instance
@@ -318,9 +319,9 @@ class HtmlFieldDiff(BaseFieldDiff):
         return {'deleted': self.field1, 'inserted': self.field2}
 
     class Media:
-        js = ('js/diff/htmldiff.js',
-              'js/jquery.qtip.min.js')
-        css = {'all': ('css/jquery.qtip.min.css',)}
+        js = (static_url('js/diff/htmldiff.js'),
+              static_url('js/jquery.qtip.min.js'))
+        css = {'all': (static_url('css/jquery.qtip.min.css'),)}
 
 
 class FileFieldDiff(BaseFieldDiff):
