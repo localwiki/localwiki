@@ -1,10 +1,10 @@
-from models import Page, PageFile, slugify
+from django.core.urlresolvers import reverse
 
 import recentchanges
 from recentchanges import RecentChanges
 from recentchanges.feeds import ChangesOnItemFeed
 
-from django.core.urlresolvers import reverse
+from models import Page, PageFile, slugify
 
 
 class PageChanges(RecentChanges):
@@ -17,6 +17,8 @@ class PageChanges(RecentChanges):
 
     def page(self, obj):
         return obj
+
+recentchanges.register(PageChanges)
 
 
 class PageFileChanges(RecentChanges):
@@ -53,7 +55,6 @@ class PageFileChanges(RecentChanges):
         })
 
 
-recentchanges.register(PageChanges)
 recentchanges.register(PageFileChanges)
 
 

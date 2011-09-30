@@ -1,12 +1,10 @@
 from django.test import TestCase
 from django.conf import settings
-from django import db
 
 from utils import TestSettingsManager
 from models import *
 from django.contrib.auth.models import User, Permission, Group
 from guardian.shortcuts import assign
-from users import backends
 
 mgr = TestSettingsManager()
 INSTALLED_APPS = list(settings.INSTALLED_APPS)

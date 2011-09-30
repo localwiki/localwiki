@@ -36,3 +36,5 @@ class MapData(models.Model):
         return False
 
 versioning.register(MapData)
+
+import feeds # To fire register() calls.

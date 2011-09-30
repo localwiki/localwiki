@@ -5,11 +5,13 @@ from django.conf.urls.static import static
 
 import pages
 import maps
+import redirects
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^map/', include(maps.site.urls)),
+    (r'^_redirect/', include(redirects.site.urls)),
     (r'^(?i)Users/', include('sapling.users.urls')),
     (r'^search/', include('sapling.search.urls')),
     (r'^', include('sapling.recentchanges.urls')),

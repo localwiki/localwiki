@@ -40,6 +40,10 @@
 
                 <span class="type"></span>
 
+                {% if change.classname == 'redirect' %}
+                <span class="revert">Redirected to <a href="{{ change.destination.get_absolute_url }}">{{ change.destination.name }}</a></span>
+                {% endif %}
+
                 {% if change.version_info.comment %}
                     <span class="comment">
                       {{ change.version_info.comment }}

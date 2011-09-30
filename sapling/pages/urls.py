@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import *
-from django.views.decorators.http import require_POST
 from django.views.generic import ListView
 
 from views import *
@@ -7,7 +6,7 @@ from feeds import PageChangesFeed, PageFileChangesFeed
 import models
 from utils.constants import DATETIME_REGEXP
 from models import Page
-from pages.views import PageFilebrowserView
+from views import PageFilebrowserView
 
 page_list_info = {
     'model': Page,

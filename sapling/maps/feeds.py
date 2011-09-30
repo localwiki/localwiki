@@ -1,10 +1,11 @@
-from models import MapData
 from pages.models import Page, slugify
 
 import recentchanges
 from recentchanges import RecentChanges
 from recentchanges.feeds import ChangesOnItemFeed, MAX_CHANGES
 from recentchanges.feeds import skip_ignored_change_types
+
+from models import MapData
 
 
 class MapChanges(RecentChanges):
