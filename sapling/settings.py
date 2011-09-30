@@ -152,6 +152,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'versionutils.versioning.middleware.AutoTrackUserInfoMiddleware',
+    'redirects.middleware.RedirectFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'sapling.urls'
@@ -189,6 +190,7 @@ INSTALLED_APPS = (
     'users',
     'recentchanges',
     'search',
+    'redirects',
     'utils',
 )
 
