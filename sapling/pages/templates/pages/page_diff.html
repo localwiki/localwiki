@@ -1,13 +1,14 @@
 {% extends "pages/base.html" %}
+{% load static from staticfiles %}
 
 {% load diff_tags %}
 {% load pages_tags %}
 
 {% block media %}
   {{ block.super }}
-  <link rel="stylesheet" href="{{ STATIC_URL }}theme/pages/css/diff.css">
-  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.5.min.js"></script>
-  <script type="text/javascript" src="{{ STATIC_URL }}theme/pages/js/diff.js"></script>
+  <link rel="stylesheet" href="{% static "theme/pages/css/diff.css" %}">
+  <script type="text/javascript" src="{% static "js/jquery/jquery-1.5.min.js" %}"></script>
+  <script type="text/javascript" src="{% static "theme/pages/js/diff.js" %}"></script>
   {{ page_diff.media }}
 {% endblock %}
 

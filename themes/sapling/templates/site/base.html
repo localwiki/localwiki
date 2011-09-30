@@ -1,3 +1,4 @@
+{% load static from staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,8 +17,8 @@
   <link href="//fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css">
 
   {% block media %}
-  <link rel="stylesheet" href="{{ STATIC_URL }}theme/css/reset.css">
-  <link rel="stylesheet" href="{{ STATIC_URL }}theme/css/site.css">
+  <link rel="stylesheet" href="{% static "theme/css/reset.css" %}">
+  <link rel="stylesheet" href="{% static "theme/css/site.css" %}">
   {% endblock %}
   {% block head_extra %}{% endblock %}
 </head>

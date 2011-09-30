@@ -53,6 +53,13 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
+# TODO: Temporary until we upgrade to the next Django release and have
+# the latest staticfiles changes.
+STATICFILES_FINDERS = (
+    'staticfiles.finders.FileSystemFinder',
+    'staticfiles.finders.AppDirectoriesFinder'
+)
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash. For integration with staticfiles, this should be the same as
 # STATIC_URL followed by 'admin/'
@@ -129,7 +136,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.csrf",
     "django.core.context_processors.media",
-    "django.core.context_processors.static",
+    #"django.core.context_processors.static",
+    "staticfiles.context_processors.static",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
 )
@@ -158,13 +166,14 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.sites',
-    'django.contrib.staticfiles',
+    #'django.contrib.staticfiles',
 
     # Other third-party apps
     'haystack',
     'olwidget',
     'registration',
     'sorl.thumbnail',
+    'staticfiles',
     'guardian',
     'south',
 

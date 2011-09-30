@@ -1,3 +1,4 @@
+{% load static from staticfiles %}
 <style type="text/css">
     .version_highlight {
         background: #FFFFBE;
@@ -13,7 +14,7 @@
         text-align: center;
     }
 </style>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.5.min.js"></script>
+<script type="text/javascript" src="{% static "js/jquery/jquery-1.5.min.js" %}"></script>
 <script type="text/javascript">
   function highlight(){
       var selected = $('input:checked[name="version"]').length;
