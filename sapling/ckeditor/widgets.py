@@ -10,6 +10,8 @@ from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
+from utils.static import static_url
+
 ckeditor_path = 'js/ckeditor/ckeditor.js'
 if settings.DEBUG:
     ckeditor_path = 'js/ckeditor/ckeditor_source.js'
@@ -107,5 +109,5 @@ class CKEditor(forms.Textarea):
 
     class Media:
         js = (
-                urljoin(settings.STATIC_URL, ckeditor_path),
+                static_url(ckeditor_path),
         )
