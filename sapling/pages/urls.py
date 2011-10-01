@@ -1,13 +1,14 @@
 from django.conf.urls.defaults import *
-from django.views.decorators.http import require_POST
 from django.views.generic import ListView
+
+from redirects.views import RedirectUpdateView
 
 from views import *
 from feeds import PageChangesFeed, PageFileChangesFeed
 import models
 from utils.constants import DATETIME_REGEXP
 from models import Page
-from pages.views import PageFilebrowserView
+from views import PageFilebrowserView
 
 page_list_info = {
     'model': Page,
@@ -99,6 +100,12 @@ urlpatterns = patterns('',
         slugify(PageRevertView.as_view()), name='revert'),
 
     url(r'^_create$', PageCreateView.as_view(), name='create'),
+
+    ##########################################################
+    # Page utility actions
+    ##########################################################
+    url(r'^(?P<slug>.+)/_redirect$', slugify(RedirectUpdateView.as_view()),
+        name='redirect'),
 
     ##########################################################
     # Basic page URLs.

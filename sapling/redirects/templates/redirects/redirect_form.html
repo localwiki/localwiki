@@ -1,0 +1,10 @@
+{% extends "pages/page_detail.html" %}
+
+{% block dialog %}
+<div id="dialog">
+ <form method="post" action="">{% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit" value="Redirect"/>
+ </form>
+</div>
+{% endblock %}
