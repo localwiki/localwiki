@@ -3,4 +3,5 @@
       <li><a href="{% url maps:edit slug=page.pretty_slug %}" class="little button">Edit map</a></li>
       <li><a href="{% url pages:delete slug=page.pretty_slug %}" class="little button">Delete page</a></li>
     {% endif %}
+    <li><a href="{% url pages:redirect slug=page.pretty_slug %}" class="little button">Redirect page</a></li>
 {% endblock %}
