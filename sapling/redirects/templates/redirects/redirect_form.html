@@ -4,7 +4,12 @@
 <div id="dialog">
  <form method="post" action="">{% csrf_token %}
     {{ form.as_ul }}
-    <input type="submit" value="Create redirect"/>
+    {% if exists %}
+      <input type="submit" value="Update redirect"/> 
+      <a class="button" href="{% url pages:redirect-delete slug=page.slug %}">Delete redirect</a>
+    {% else %}
+      <input type="submit" value="Create redirect"/> 
+    {% endif %}
  </form>
 </div>
 {% endblock %}

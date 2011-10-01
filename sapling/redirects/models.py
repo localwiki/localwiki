@@ -1,6 +1,10 @@
 from django.db import models
 
 from pages.models import Page
+from versionutils import versioning
+import recentchanges
+
+import feeds
 
 
 class Redirect(models.Model):
@@ -9,3 +13,6 @@ class Redirect(models.Model):
 
     def __unicode__(self):
         return "%s ---> %s" % (self.source, self.destination)
+
+versioning.register(Redirect)
+recentchanges.register(feeds.RedirectChanges)

@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 
-from versionutils.versioning.views import UpdateView
+from versionutils.versioning.views import UpdateView, DeleteView
+from versionutils import diff
 from utils.views import CreateObjectMixin
 from pages.models import Page, slugify
 
@@ -25,7 +26,9 @@ class RedirectUpdateView(CreateObjectMixin, UpdateView):
         if p:
             context['page'] = p[0]
         else:
-            context['page'] = Page(slug=self.object.source, name=self.object.source)
+            context['page'] = Page(slug=self.object.source,
+                name=self.object.source)
+        context['exists'] = Redirect.objects.filter(source=self.object.source)
         return context
 
     def success_msg(self):
@@ -43,3 +46,45 @@ class RedirectUpdateView(CreateObjectMixin, UpdateView):
 
     def create_object(self):
         return Redirect(source=slugify(self.kwargs['slug']))
+
+
+class RedirectDeleteView(DeleteView):
+    model = Redirect
+
+    def get_object(self):
+        source = slugify(self.kwargs.get('slug'))
+        return Redirect.objects.get(source=source)
+
+    def get_context_data(self, **kwargs):
+        context = super(RedirectDeleteView, self).get_context_data(**kwargs)
+        p = Page.objects.filter(slug=self.object.source)
+        if p:
+            context['page'] = p[0]
+        else:
+            context['page'] = Page(slug=self.object.source,
+                name=self.object.source)
+        return context
+
+    def success_msg(self):
+        # NOTE: This is eventually marked as safe when rendered in our
+        # template.  So do *not* allow unescaped user input!
+        return (
+            '<div>Thank you for your changes. '
+            'The redirect has been deleted</div>'
+        )
+
+    def get_success_url(self):
+        return reverse('pages:show', args=[self.object.source])
+
+
+class RedirectCompareView(diff.views.CompareView):
+    model = Redirect
+
+    def get_object(self):
+        return Redirect(source=slugify(self.kwargs.get('slug')))
+
+    def get_context_data(self, **kwargs):
+        context = super(RedirectCompareView, self).get_context_data(**kwargs)
+        context['page'] = Page(slug=self.object.source,
+            name=self.object.source)
+        return context
