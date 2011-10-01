@@ -152,6 +152,14 @@ textarea, input, select {
 #object_title a {
     text-decoration: none;
 }
+#object_subtitle {
+    position: relative;
+    margin-top: -0.4em;
+    margin-left: 1em;
+    margin-bottom: 0.4em;
+    font-size: 80%;
+    color: #747474;
+}
 
 #site_title {
     background: #fafafa url(../img/body-bg.png) top left repeat;

@@ -7,6 +7,12 @@
 {% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
 {% block header_title %}<a href="{% url pages:show slug=page.pretty_slug %}">{{ page.name }}</a>{% endblock %}
 
+{% block header_subtitle %}
+  {% if request.GET.redirected_from %}
+    Redirected from <a href="{% url pages:show slug=request.GET.redirected_from %}?show=1">{{ request.GET.redirected_from }}</a>
+  {% endif %}
+{% endblock %}
+
 {% block content_wrapper %}
 <div id="content_wrapper">
   {% if map %}

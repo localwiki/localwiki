@@ -4,7 +4,7 @@ from pages.models import Page
 
 
 class Redirect(models.Model):
-    source = models.SlugField(max_length=255, unique=True)
+    source = models.SlugField(max_length=255, unique=True, editable=False)
     destination = models.ForeignKey(Page)
 
     def __unicode__(self):
