@@ -55,6 +55,7 @@ from django.utils.text import unescape_entities
 from django.conf import settings
 
 from ckeditor.models import parse_style, sanitize_html_fragment
+from redirects.models import Redirect
 
 from models import Page, name_to_url, url_to_name, PageFile
 from models import allowed_tags as pages_allowed_tags
@@ -284,7 +285,9 @@ class LinkNode(Node):
                         page = Page.objects.get(slug__exact=slugify(url))
                         url = reverse('pages:show', args=[page.pretty_slug])
                     except Page.DoesNotExist:
-                        cls = ' class="missing_link"'
+                        # Check if Redirect exists.
+                        if not Redirect.objects.filter(source=slugify(url)):
+                            cls = ' class="missing_link"'
                         # Convert to proper URL: My%20page -> My_page
                         url = name_to_url(url_to_name(url))
                         url = reverse('pages:show', args=[url])
