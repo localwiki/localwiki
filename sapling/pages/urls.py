@@ -1,9 +1,6 @@
 from django.conf.urls.defaults import *
 from django.views.generic import ListView
 
-from redirects.views import RedirectUpdateView, RedirectDeleteView
-from redirects.views import RedirectCompareView
-
 from views import *
 from feeds import PageChangesFeed, PageFileChangesFeed
 import models
@@ -66,17 +63,6 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>.+)/_upload', slugify(upload), name='upload-image'),
     url(r'^(?P<slug>.+)/_filebrowser/(?P<filter>(files|images))$',
         slugify(PageFilebrowserView.as_view()), name='filebrowser'),
-
-    ##########################################################
-    # Page utility actions
-    ##########################################################
-    url(r'^(?P<slug>.+)/_redirect$', slugify(RedirectUpdateView.as_view()),
-        name='redirect'),
-    url(r'^(?P<slug>.+)/_redirect/_delete$',
-        slugify(RedirectDeleteView.as_view()), name='redirect-delete'),
-    url(r'^(?P<slug>.+)/_redirect/_history/(?P<date1>%s)\.\.\.(?P<date2>%s)?$'
-        % (DATETIME_REGEXP, DATETIME_REGEXP),
-        slugify(RedirectCompareView.as_view()), name='redirect-compare-dates'),
 
     #########################################################
     # History URLs.

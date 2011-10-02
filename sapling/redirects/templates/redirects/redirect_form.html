@@ -6,7 +6,7 @@
     {{ form.as_ul }}
     {% if exists %}
       <input type="submit" value="Update redirect"/> 
-      <a class="button" href="{% url pages:redirect-delete slug=page.slug %}">Delete redirect</a>
+      <a class="button" href="{% url redirects:delete slug=page.slug %}">Delete redirect</a>
     {% else %}
       <input type="submit" value="Create redirect"/> 
     {% endif %}

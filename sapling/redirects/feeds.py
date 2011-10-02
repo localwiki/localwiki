@@ -1,14 +1,15 @@
 from django.core.urlresolvers import reverse
 
+import recentchanges
 from recentchanges import RecentChanges
+
+from models import Redirect
 
 
 class RedirectChanges(RecentChanges):
     classname = 'redirect'
 
     def queryset(self, start_at=None):
-        from models import Redirect
-
         if start_at:
             return Redirect.versions.filter(version_info__date__gte=start_at)
         else:
@@ -23,7 +24,7 @@ class RedirectChanges(RecentChanges):
         return 'Redirect %s --> %s' % (obj.source, obj.destination)
 
     def diff_url(self, obj):
-        return reverse('pages:redirect-compare-dates', kwargs={
+        return reverse('redirects:compare-dates', kwargs={
             'slug': obj.source,
             'date1': obj.version_info.date,
         })
@@ -31,3 +32,5 @@ class RedirectChanges(RecentChanges):
     def as_of_url(self, obj):
         # Don't bother.  Just return the source URL.
         return reverse('pages:show', kwargs={'slug': obj.source})
+
+recentchanges.register(RedirectChanges)
