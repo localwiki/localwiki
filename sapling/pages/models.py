@@ -38,7 +38,8 @@ allowed_styles_map = {'p': ['text-align'],
                       'span': ['width', 'height'],
                       'table': ['width', 'height'],
                       'th': ['text-align', 'background-color'],
-                      'td': ['text-align', 'background-color'],
+                      'td': ['text-align', 'background-color', 'width',
+                             'height', 'vertical-align'],
                       'a': ['width']
                      }
 
