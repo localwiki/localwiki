@@ -155,7 +155,7 @@ textarea, input, select {
 #object_subtitle {
     position: relative;
     margin-top: 0.3em;
-    margin-left: 1em;
+    margin-left: 0;
     margin-bottom: 0.5em;
     font-size: 80%;
     color: #747474;
