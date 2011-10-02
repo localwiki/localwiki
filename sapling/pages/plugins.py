@@ -136,6 +136,13 @@ def embed_code(elem, context=None):
     elem.getparent().remove(elem)
 
 
+def searchbox(elem, context=None):
+    before = '{%% searchbox "%s" %%} %s' % (elem.attrib['value'],
+                                            elem.tail or '')
+    insert_text_before(before, elem)
+    elem.getparent().remove(elem)
+
+
 def handle_link(elem, context=None):
     if not 'href' in elem.attrib:
         return
@@ -215,7 +222,8 @@ tag_handlers = {"a": [handle_link],
 
 
 plugin_handlers = {"includepage": include_page,
-                   "embed": embed_code
+                   "embed": embed_code,
+                   "searchbox": searchbox,
                   }
 
 
@@ -353,3 +361,28 @@ class EmbedCodeNode(Node):
                 '</span>')
         except:
             return '<span class="plugin embed">Invalid embed code</span>'
+
+
+class SearchBoxNode(Node):
+    def __init__(self, query=None):
+        self.query = query
+
+    def render(self, context):
+        try:
+            # TODO: put the JS in an external file, import via Media object
+            html = ('<span class="searchbox">'
+                    '<input type="text" name="q" value="%s">'
+                    '<input type="submit" value="Search or create page">'
+                    '<script>$(function(){'
+                    '$(".searchbox input[name=\'q\']").keypress(function(evt){'
+                    'if(evt.which == 13)'
+                    '$(".searchbox input[type=\'submit\']").click();});'
+                    '$(".searchbox input[type=\'submit\']").click(function(){'
+                    '  $("#header .site_search input[name=\'q\']").val('
+                    '    $(this).parent().children("input[name=\'q\']").val()'
+                    '  ).closest("form").submit();'
+                    '})});</script>'
+                    '</span>') % escape(self.query)
+            return html
+        except Exception, e:
+            return e

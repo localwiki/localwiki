@@ -184,3 +184,23 @@ hr.selected {
 .includepage_right {
     float: right;
 }
+
+.plugin.searchbox{
+    display: inline;
+}
+
+.searchbox input {
+    display: inline;
+}
+
+.searchbox input[type="text"], .plugin.searchbox{
+    padding: 0;
+    height: 30px;
+    width: 180px;
+    font-size: 15px;
+    line-height: 0;
+    background: #ffffff url(../../img/magnifying_glass.png) no-repeat 10px 10px;
+    padding-left: 30px;
+    margin-right: 0.5em;
+    margin-bottom: 0.5em;
+}

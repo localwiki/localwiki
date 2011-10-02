@@ -20,7 +20,7 @@ from versionutils import versioning
 allowed_tags = ['p', 'br', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3',
                 'h4', 'h5', 'h6', 'hr', 'ul', 'ol', 'li', 'pre', 'table',
                 'thead', 'tbody', 'tr', 'th', 'td', 'span', 'strike', 'sub',
-                'sup', 'tt']
+                'sup', 'tt', 'input']
 
 allowed_attributes_map = {'p': ['class', 'style'],
                           'ul': ['class'],
@@ -29,7 +29,8 @@ allowed_attributes_map = {'p': ['class', 'style'],
                           'span': ['class', 'style'],
                           'table': ['class', 'style'],
                           'th': ['class', 'colspan', 'rowspan', 'style'],
-                          'td': ['class', 'colspan', 'rowspan', 'style']
+                          'td': ['class', 'colspan', 'rowspan', 'style'],
+                          'input': ['class', 'type', 'value']
                          }
 
 
