@@ -112,7 +112,7 @@ CKEDITOR.plugins.add( 'domcleanup',
                         	{
                         		style = styles[i].split(':');
                         		k = $.trim(style[0]);
-                        		v = $.trim(style[1]);
+                        		v = $.trim(style.slice(1).join(':'));
                         		if (k.length > 0 && v.length > 0
                         			&& ok_styles[element.name].indexOf(k) >= 0)
                         		{
