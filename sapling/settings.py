@@ -87,7 +87,10 @@ USERS_DEFAULT_PERMISSIONS = {'auth.group':
                                      ['delete_page', 'pages', 'page'],
                                      ['add_pagefile', 'pages', 'pagefile'],
                                      ['change_pagefile', 'pages', 'pagefile'],
-                                     ['delete_pagefile', 'pages', 'pagefile']
+                                     ['delete_pagefile', 'pages', 'pagefile'],
+                                     ['add_redirect', 'redirects', 'redirect'],
+                                     ['change_redirect', 'redirects', 'redirect'],
+                                     ['delete_redirect', 'redirects', 'redirect'],
                                     ]
                                  },
                                  {'name': USERS_ANONYMOUS_GROUP,
@@ -100,7 +103,10 @@ USERS_DEFAULT_PERMISSIONS = {'auth.group':
                                      ['delete_page', 'pages', 'page'],
                                      ['add_pagefile', 'pages', 'pagefile'],
                                      ['change_pagefile', 'pages', 'pagefile'],
-                                     ['delete_pagefile', 'pages', 'pagefile']
+                                     ['delete_pagefile', 'pages', 'pagefile'],
+                                     ['add_redirect', 'redirects', 'redirect'],
+                                     ['change_redirect', 'redirects', 'redirect'],
+                                     ['delete_redirect', 'redirects', 'redirect'],
                                     ]
                                  },
                                 ]

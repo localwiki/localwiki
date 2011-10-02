@@ -1,5 +1,10 @@
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
 
 from models import Redirect
 
-admin.site.register(Redirect)
+
+class RedirectAdmin(GuardedModelAdmin):
+    pass
+
+admin.site.register(Redirect, RedirectAdmin)

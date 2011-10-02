@@ -1,0 +1,55 @@
+{% extends "pages/base.html" %}
+
+{% load diff_tags %}
+{% load pages_tags %}
+
+{% block media %}
+  {{ block.super }}
+  <style>
+    del {
+      background: #FDC6C6;
+      text-decoration: none;
+    }
+    ins {
+      background: #b4ff78;
+      text-decoration: none;
+    }
+    del img {
+      border: 0.5em #FDC6C6 solid;
+    }
+    ins img{
+      border: 0.5em #b4ff78 solid;
+    }
+    td.revision_details {
+      font-style: italic;
+    }
+  </style>
+{% endblock %}
+
+{% block title %}Differences for {{ new.source }} redirect{% endblock %}
+{% block header_title %}Differences for {{ new.source }} redirect{% endblock %}
+
+{% block content %}
+  <table width="100%">
+    <thead>
+        <tr>
+            <td class="revision_details">
+                {% if old %}
+                  Revision {{ old.version_info.version_number }}
+                  ({{ old.version_info.date }} by {{ old.version_info.user_link|safe }})
+                {% endif %}
+            </td>
+            <td class="revision_details">
+                Revision {{ new.version_info.version_number }}
+                ({{ new.version_info.date }} by {{ new.version_info.user_link|safe }})
+            </td>
+        </tr>
+    </thead>
+    <tbody valign="top">
+        <tr>
+            <td><del><a href="{{ old.destination.get_absolute_url }}">{{ old.destination.name }}</a></del></td>
+            <td><ins><a href="{{ new.destination.get_absolute_url }}">{{ new.destination.name }}</a></ins></td>
+        </tr>
+    </tbody>
+  </table>
+{% endblock %}

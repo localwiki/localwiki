@@ -1,5 +1,4 @@
-from django.utils.decorators import classonlymethod, method_decorator
-from guardian.decorators import permission_required
+from django.utils.decorators import classonlymethod
 from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.utils import simplejson as json
 
@@ -46,24 +45,47 @@ class JSONResponseMixin(object):
                             **httpresponse_kwargs)
 
     def convert_context_to_json(self, context):
-        '''Convert the context dictionary into a JSON object.
+        """
+        Convert the context dictionary into a JSON object.
         Note: Make sure that the entire context dictionary is serializable
-        '''
+        """
         return json.dumps(context)
 
 
 class PermissionRequiredMixin(object):
     """
     View mixin for verifying permissions before updating an existing object
+
+    Attrs:
+        permission: A string representing the permission that's required
+           on the object.  E.g. 'page.change_page'.  Override
+           permission_for_object() to allow more complex permission
+           relationships.
+        forbidden_message: A string to display when the permisson is not
+            allowed.
     """
     permission = None
     forbidden_message = 'Sorry, you are not allowed to perform this action.'
 
     def get_protected_object(self):
-        """ Returns the object that should be used to check permissions.
+        """
+        Returns the object that should be used to check permissions.
         Override this to use a different object as the "guard".
         """
         return self.object
+
+    def get_protected_objects(self):
+        """
+        Returns the objects that should be used to check permissions.
+        """
+        return [self.get_protected_object()]
+
+    def permission_for_object(self, obj):
+        """
+        Gets the permission that's required for `obj`.
+        Override this to allow more complex permission relationships.
+        """
+        return self.permission
 
     def get_object_idempotent(self):
         return self.object
@@ -76,12 +98,12 @@ class PermissionRequiredMixin(object):
         self.request = request
         self.args = args
         self.kwargs = kwargs
-        protected_object = None
         if hasattr(self, 'get_object'):
             self.object = self.get_object()
             self.patch_get_object()
-            protected_object = self.get_protected_object()
-        if not request.user.has_perm(self.permission, protected_object):
-            return HttpResponseForbidden(self.forbidden_message)
+            protected_objects = self.get_protected_objects()
+        for obj in protected_objects:
+            if not request.user.has_perm(self.permission_for_object(obj), obj):
+                return HttpResponseForbidden(self.forbidden_message)
         return super(PermissionRequiredMixin, self).dispatch(request, *args,
                                                         **kwargs)

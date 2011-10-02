@@ -2,14 +2,15 @@ from django.core.urlresolvers import reverse
 
 from versionutils.versioning.views import UpdateView, DeleteView
 from versionutils import diff
-from utils.views import CreateObjectMixin
+from utils.views import CreateObjectMixin, PermissionRequiredMixin
 from pages.models import Page, slugify
 
 from models import Redirect
 from forms import RedirectForm
 
 
-class RedirectUpdateView(CreateObjectMixin, UpdateView):
+class RedirectUpdateView(PermissionRequiredMixin, CreateObjectMixin,
+        UpdateView):
     model = Redirect
     form_class = RedirectForm
 
@@ -46,6 +47,30 @@ class RedirectUpdateView(CreateObjectMixin, UpdateView):
 
     def create_object(self):
         return Redirect(source=slugify(self.kwargs['slug']))
+
+    def get_protected_objects(self):
+        protected = []
+        slug = slugify(self.kwargs['slug'])
+
+        page = Page.objects.filter(slug=slug)
+        if page:
+            protected.append(page[0])
+        redirect = Redirect.objects.filter(source=slug)
+        if redirect:
+            protected.append(redirect[0])
+
+        return protected
+
+    def permission_for_object(self, obj):
+        # We want to tie the redirect permissions to the Redirect object
+        # -and- the Page object that's associated with the redirect.
+        # This is so that if, for instance, Page(name="Front Page") is
+        # only editable by a certain group, creating a Redirect from
+        # "Front Page" to somewhere is similarly protected.
+        if isinstance(obj, Redirect):
+            return 'redirects.change_redirect'
+        elif isinstance(obj, Page):
+            return 'pages.change_page'
 
 
 class RedirectDeleteView(DeleteView):
