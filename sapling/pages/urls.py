@@ -99,6 +99,8 @@ urlpatterns = patterns('',
 
     url(r'^_create$', PageCreateView.as_view(), name='create'),
 
+    url(r'^(?P<slug>.+)/_rename$', PageRenameView.as_view(), name='rename'),
+
     ##########################################################
     # Basic page URLs.
     ##########################################################

@@ -2,6 +2,7 @@ from urllib import quote
 from urllib import unquote_plus
 import mimetypes
 import re
+from copy import copy
 
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
@@ -80,6 +81,68 @@ class Page(models.Model):
             return self.slug
         return name_to_url(self.name)
     pretty_slug = property(pretty_slug)
+
+    def _get_slug_related_objs(self):
+        # Right now this is simply hard-coded.
+        # TODO: generalize this slug pattern, perhaps with some kind of
+        # AttachedSlugField or something.
+        return PageFile.objects.filter(slug=self.slug)
+
+    def rename_to(self, pagename):
+        """
+        Renames the page to `pagename`.  Moves related objects around
+        accordingly.
+        """
+        from redirects.models import Redirect
+
+        # Copy the current page into the new page, zeroing out the
+        # primay key and setting a new name and slug.
+        new_p = copy(self)
+        new_p.pk = None
+        new_p.name = pagename
+        new_p.slug = slugify(pagename)
+        new_p.save(comment="Renamed from XXX")
+
+        # Get all related objects before the original page is deleted.
+        related_objs = []
+        for r in self._meta.get_all_related_objects():
+            try:
+                rel_obj = getattr(self, r.get_accessor_name())
+            except:
+                continue # No object for this relation.
+
+            # Is this a related /set/, e.g. redirect_set?
+            if isinstance(rel_obj, models.Manager):
+                # list() freezes the QuerySet, which we don't want to be
+                # fetched /after/ we delete the page.
+                related_objs.append((r.get_accessor_name(), list(rel_obj.all())))
+            else:
+                related_objs.append(r.get_accessor_name(), rel_obj)
+
+        # Create a redirect from the starting pagename to the new pagename.
+        redirect = Redirect(source=self.slug, destination=new_p)
+        # Creating the redirect causes the starting page to be deleted.
+        redirect.save()
+
+        # Point each related object to the new page and save the object with a
+        # 'was renamed' comment.
+        for attname, rel_obj in related_objs:
+            if isinstance(rel_obj, list):
+                for obj in rel_obj:
+                    obj.pk = None # Reset the primary key before saving.
+                    getattr(new_p, attname).add(obj)
+                    obj.save(comment="Parent page renamed")
+            else:
+                # This is an easy way to set obj to point to new_p.
+                setattr(new_p, attname, rel_obj)
+                rel_obj.pk = None # Reset the primary key before saving.
+                rel_obj.save(comment="Parent page renamed")
+
+        # Do the same with related-via-slug objects.
+        for obj in self._get_slug_related_objs():
+            obj.slug = new_p.slug
+            obj.pk = None # Reset the primary key before saving.
+            obj.save(comment="Parent page renamed")
 
 
 class PageDiff(diff.BaseModelDiff):

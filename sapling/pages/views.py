@@ -5,9 +5,11 @@ from django.conf import settings
 from django.views.decorators.http import require_POST
 from django.views.generic.base import RedirectView
 from django.views.generic.simple import direct_to_template
-from django.views.generic import DetailView, ListView
+from django.views.generic import (DetailView, ListView,
+    FormView)
 from django.http import (HttpResponseNotFound, HttpResponseRedirect,
-                         HttpResponseBadRequest)
+    HttpResponseBadRequest)
+from django import forms
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
@@ -16,8 +18,8 @@ from ckeditor.views import ck_upload_result
 from versionutils import diff
 from versionutils.versioning.views import UpdateView, DeleteView
 from versionutils.versioning.views import RevertView, VersionsList
-from utils.views import Custom404Mixin, CreateObjectMixin,\
-    PermissionRequiredMixin
+from utils.views import (Custom404Mixin, CreateObjectMixin,
+    PermissionRequiredMixin)
 from models import Page, PageFile, url_to_name
 from forms import PageForm, PageFileForm
 from maps.widgets import InfoMap
@@ -189,7 +191,6 @@ class PageFileView(RedirectView):
 
 
 class PageFileVersionDetailView(RedirectView):
-
     def get_redirect_url(self, slug, file, **kwargs):
         page_file = PageFile(slug=slug, name=file)
         version = self.kwargs.get('version')
@@ -315,3 +316,30 @@ def upload(request, slug, **kwargs):
     except IntegrityError:
         error = 'A file with this name already exists'
     return ck_upload_result(request, url=relative_url, message=error)
+
+
+class RenameForm(forms.Form):
+    pagename = forms.CharField(max_length=255)
+    comment = forms.CharField(max_length=150, required=False)
+
+
+class PageRenameView(FormView):
+    form_class = RenameForm
+    template_name = 'pages/page_rename.html'
+
+    def form_valid(self, form):
+        try:
+            p = Page.objects.get(slug=slugify(self.kwargs['slug']))
+            p.rename_to(form.cleaned_data['pagename'])
+        except Page.DoesNotExist:
+            pass
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_context_data(self, **kwargs):
+        context = super(PageRenameView, self).get_context_data(**kwargs)
+        context['page'] = Page.objects.get(slug=slugify(self.kwargs['slug']))
+        return context
+
+    def get_success_url(self):
+        # Redirect back to the page.
+        return reverse('pages:show', args=['lolcats'])
