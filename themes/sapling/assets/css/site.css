@@ -89,12 +89,6 @@ textarea, input, select {
 ====================================
 */
 
-#content_wrapper {
-   /* Border added to make JS height calculation work immediately for
-    * maps */
-   /* Don't remove the border w/o checking that maps still occupy the full window */
-   border: 1px solid #fafafa;
-}
 #content {
     margin-top: 1em;
     margin-bottom: 1.4em;
@@ -262,6 +256,33 @@ textarea, input, select {
   background-position: 9px 50%;
   padding-left: 25px;
   font-size: 90%;
+}
+
+/* Overview map */
+.mapdata #results_pane {
+  background: #E8ECEF url(../img/header-bg.png) top left repeat;
+  padding-top: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
+  width: 15em;
+  margin-top: -2px;
+  border-right: 1px solid #DAE1E5;
+}
+
+/* Border added to make JS height calculation work immediately for
+* maps */
+.mapdata #content_wrapper {
+   /* Don't remove the border w/o checking that maps still occupy the full window */
+   border: 1px solid #fafafa;
+}
+
+/*
+====================================
+ Files
+====================================
+*/
+.pagefile form table td, .pagefile form table, .pagefile form th {
+    border: none;
 }
 
 
@@ -532,11 +553,34 @@ label {
     padding: 1em 1em 0 1em;
     list-style-type: none;
 }
+.mapdata .messages {
+    border-top: none;
+    margin-top: 0;
+}
 .messages li {
     margin: 0;
     padding: 0;
     margin-bottom: 1em;
 }
+
+#dialog {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    padding: 1em;
+    padding-bottom: 0.5em;
+    color: #000000;
+    margin-bottom: 1em;
+    margin-top: 0.8em;
+}
+#dialog ul {
+    list-style-type: none;
+}
+#dialog ul li {
+    margin-left: 0;
+}
+
 #create_page_dialog {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
     border-radius: 5px 5px 5px 5px;

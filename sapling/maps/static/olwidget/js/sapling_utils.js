@@ -12,6 +12,9 @@ SaplingMap = {
             var map_height = $(window).height() - $('#header').outerHeight() - $('#main_header').outerHeight() - $('#content_header').outerHeight() - $('#content_footer').outerHeight() - ($('#content_wrapper').outerHeight() - $('#content').outerHeight() - border_height);
             opts['mapDivStyle']['height'] = map_height + 'px';
             opts['mapDivStyle']['width'] = '100%';
+            // Remove the dummy CSS border we put in to get the map
+            // height immediately.
+            $('#content_wrapper').css('border', 'none');
             return opts;
 
         }
@@ -185,7 +188,7 @@ SaplingMap = {
                results.append(result);
            }
         });
-        $('#results_pane').empty().append($('<h4/>').html(header)).append(results);
+        $('#results_pane').empty().append($('<h3/>').html(header)).append(results);
     },
 
     _loadObjects: function(map, layer, callback) {
