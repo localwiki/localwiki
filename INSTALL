@@ -6,16 +6,16 @@ python-setuptools, virtualenv, gdal, postgresql with postgis:
 
     $ sudo apt-get install python-setuptools solr-jetty python-lxml python-imaging
     $ sudo apt-get install gdal-bin proj postgresql-8.4-postgis python-psycopg2
-    $ sudo easy_install virtualenv
+    $ sudo easy_install --upgrade virtualenv
 
 2.  Create a virtualenv. For more info, see http://pypi.python.org/pypi/virtualenv
     $ virtualenv env
     
-    Activate the new environment. Run all of the following commands in this environment:
+    Activate the new environment: Run all of the following commands in this environment:
     $ source env/bin/activate
 
 3.  Install required python packages using requirements.txt:
-	(env)$ pip install -r install_config/requirements.txt
+	(env)$ pip install --upgrade -r install_config/requirements.txt
 
 4.  Create the database and database user.  Here's how we do it:
 
