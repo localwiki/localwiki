@@ -225,14 +225,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							}
 						}
 					}
-
+					// Set the classes
+					if (info.txtClass)
+					{
+						table.setAttribute('class', info.txtClass);
+					} else {
+						table.removeAttribute('class');
+					}
 					// Set the width and height.
 					var styles = [];
 					if ( info.txtHeight )
 						table.setStyle( 'height', CKEDITOR.tools.cssLength( info.txtHeight ) );
 					else
 						table.removeStyle( 'height' );
-
 					if ( info.txtWidth )
 					{
 						var type = info.cmbWidthType || 'pixels';
@@ -322,10 +327,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 												this.setValue( selectedTable.$.rows[0].cells.length);
 											},
 											commit : commitValue
-										},
-										{
-											type : 'html',
-											html : '&nbsp;'
 										}
 									]
 								},
@@ -461,6 +462,30 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									]
 								}
 							]
+						},
+						{
+							type: 'html',
+							id : 'htmlAdvanced',
+							html : '<a href="#">Advanced settings...</a>',
+							onClick: function () {
+								var txtClass = this.getDialog().getContentElement('info', 'txtClass');
+								txtClass.getElement().show();
+							}
+						},
+						{
+							type: 'text',
+							id : 'txtClass',
+							label : 'CSS classes',
+							hidden : true,
+							'default' : '',
+							setup : function (selectedTable)
+							{
+								this.setValue(jQuery(selectedTable.$).attr('class'));
+							},
+							commit : commitValue,
+							onHide : function () {
+								this.getElement().hide();
+							}
 						}
 					]
 				},
