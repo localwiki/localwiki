@@ -7,7 +7,7 @@ from django.views.generic.base import RedirectView
 from django.views.generic.simple import direct_to_template
 from django.views.generic import DetailView, ListView
 from django.http import (HttpResponseNotFound, HttpResponseRedirect,
-                         HttpResponseBadRequest)
+                         HttpResponseBadRequest, HttpResponse)
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
@@ -280,9 +280,10 @@ class PageCreateView(RedirectView):
             return reverse('pages:edit', args=[pagename])
 
 
-@require_POST
 @permission_required('pages.change_page', (Page, 'slug', 'slug'))
 def upload(request, slug, **kwargs):
+    if request.method != 'POST':
+        return HttpResponse('')
     error = None
     file_form = PageFileForm(request.POST, request.FILES)
 

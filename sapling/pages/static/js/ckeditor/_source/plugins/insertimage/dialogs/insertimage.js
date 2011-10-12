@@ -211,6 +211,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                     label: 'Choose a file from your computer',
                     style: 'height:40px',
                     size: 34,
+                    setup: function () {
+                        var widget = this;
+                        jQuery('#' + this._.frameId).bind('load',
+                             function(){
+                                 $(this).unbind('load');
+                                   widget.reset();
+                                   delete widget.setup;
+                         });
+                         if(this.getInputElement().$.form)
+                         {
+                             this.getInputElement().$.form.method = 'GET';
+                             this.getInputElement().$.form.submit();
+                         }
+                    },
                     onChange: function () {
                         // Patch the upload form before submitting and add the CSRF token
                         function getCookie(key) {
