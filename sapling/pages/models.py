@@ -101,7 +101,7 @@ class Page(models.Model):
         new_p.pk = None
         new_p.name = pagename
         new_p.slug = slugify(pagename)
-        new_p.save(comment="Renamed from XXX")
+        new_p.save(comment='Renamed from "%s"' % self.name)
 
         # Get all related objects before the original page is deleted.
         related_objs = []
@@ -109,13 +109,14 @@ class Page(models.Model):
             try:
                 rel_obj = getattr(self, r.get_accessor_name())
             except:
-                continue # No object for this relation.
+                continue  # No object for this relation.
 
             # Is this a related /set/, e.g. redirect_set?
             if isinstance(rel_obj, models.Manager):
                 # list() freezes the QuerySet, which we don't want to be
                 # fetched /after/ we delete the page.
-                related_objs.append((r.get_accessor_name(), list(rel_obj.all())))
+                related_objs.append(
+                    (r.get_accessor_name(), list(rel_obj.all())))
             else:
                 related_objs.append(r.get_accessor_name(), rel_obj)
 
@@ -129,19 +130,19 @@ class Page(models.Model):
         for attname, rel_obj in related_objs:
             if isinstance(rel_obj, list):
                 for obj in rel_obj:
-                    obj.pk = None # Reset the primary key before saving.
+                    obj.pk = None  # Reset the primary key before saving.
                     getattr(new_p, attname).add(obj)
                     obj.save(comment="Parent page renamed")
             else:
                 # This is an easy way to set obj to point to new_p.
                 setattr(new_p, attname, rel_obj)
-                rel_obj.pk = None # Reset the primary key before saving.
+                rel_obj.pk = None  # Reset the primary key before saving.
                 rel_obj.save(comment="Parent page renamed")
 
         # Do the same with related-via-slug objects.
         for obj in self._get_slug_related_objs():
             obj.slug = new_p.slug
-            obj.pk = None # Reset the primary key before saving.
+            obj.pk = None  # Reset the primary key before saving.
             obj.save(comment="Parent page renamed")
 
 

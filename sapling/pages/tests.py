@@ -6,16 +6,19 @@ from lxml.html import fragments_fromstring
 from django.test import TestCase
 from django.db import models
 from django import forms
-
-from versionutils.merging.forms import MergeMixin
-from forms import PageForm
-from pages.models import Page, slugify, url_to_name, clean_name, name_to_url
-from pages.plugins import html_to_template_text
-from pages.plugins import tag_imports
 from django.template.base import Template
 from django.template.context import Context
 from django.conf import settings
+
+from versionutils.merging.forms import MergeMixin
+from forms import PageForm
+from redirects.models import Redirect
+
+from pages.models import Page, slugify, url_to_name, clean_name, name_to_url
+from pages.plugins import html_to_template_text
+from pages.plugins import tag_imports
 from pages.xsstests import xss_exploits
+from pages import exceptions
 
 
 class PageTest(TestCase):
@@ -114,6 +117,58 @@ class PageTest(TestCase):
         a.save()
         p = Page.objects.get(pk=p.pk)
         self.failUnless('Edit conflict!' in p.content)
+
+    def test_page_rename(self):
+        p = Page()
+        p.content = "<p>The page content.</p>"
+        p.name = "Original page"
+        p.save()
+
+        p.rename_to("New page")
+
+        # Renamed-to page should exist.
+        new_p = Page.objects.get(name="New page")
+        # new_p should have the same content.
+        self.assertEqual(new_p.content, p.content)
+
+        # "Original page" should no longer exist.
+        pgs = Page.objects.filter(name="Original page")
+        self.assertEqual(len(pgs), 0)
+        # and a redirect from "original page" to "New page" should exist.
+        Redirect.objects.filter(source="original page", destination=new_p)
+
+        ###########################################################
+        # Renaming to a page that already exists should raise an
+        # exception and not affect the original page. 
+        ###########################################################
+        p = Page()
+        p.content = "<p>Hello, world.</p>"
+        p.name = "Page A"
+        p.save()
+
+        self.assertRaises(exceptions.PageExistsError, p.rename_to, "New page")
+        # p should be unaffected.  No redirect should be created.
+        p = Page.objects.get(name="Page A")
+        self.assertEqual(p.content, "<p>Hello, world.</p>")
+        self.assertEqual(len(Redirect.objects.filter(source="page a")), 0)
+
+        ###########################################################
+        # Renaming should carry along files and FK'ed items that
+        # point to it.
+        ###########################################################
+
+        ###########################################################
+        # Renaming should keep slugs pointed at old page /and/ copy
+        # them to the new page.
+        ###########################################################
+
+        ###########################################################
+        # Reverting a renamed page should be possible and should
+        # restore files and FK'ed items that were pointed at the
+        # original page.  The renamed-to page should still exist
+        # after the revert and should still have its own files and
+        # FK'ed items pointed at it.
+        ###########################################################
 
 
 class TestModel(models.Model):
