@@ -282,6 +282,7 @@ class PageCreateView(RedirectView):
 
 @permission_required('pages.change_page', (Page, 'slug', 'slug'))
 def upload(request, slug, **kwargs):
+    # For GET, just return blank response. See issue #327.
     if request.method != 'POST':
         return HttpResponse('')
     error = None
