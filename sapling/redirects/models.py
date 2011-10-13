@@ -1,7 +1,10 @@
 from django.db import models
+from django.db.models.signals import pre_save
 
 from pages.models import Page
 from versionutils import versioning
+
+import exceptions
 
 
 class Redirect(models.Model):
@@ -12,5 +15,12 @@ class Redirect(models.Model):
         return "%s ---> %s" % (self.source, self.destination)
 
 versioning.register(Redirect)
+
+
+def _validate_redirect(sender, instance, raw, **kws):
+    if instance.source == instance.destination.slug:
+        raise exceptions.RedirectToSelf("You cannot redirect a page to itself")
+
+pre_save.connect(_validate_redirect, sender=Redirect)
 
 import feeds # To fire register() calls.
