@@ -141,7 +141,11 @@ function alignChanges(elem)
 	var rightText = wordNodeMap(right);
 	for(var i = 0; i < leftText.length && i < rightText.length; i++)
 	{
-		align(leftText[i].node, rightText[i].node);
+		var leftNode = leftText[i].node;
+		var rightNode = rightText[i].node;
+		if($(leftNode).data('aligned') || $(rightNode).data('aligned'))
+			continue;
+		align(leftNode, rightNode);
 	}
 }
 
@@ -154,4 +158,6 @@ function align(a, b)
 		var higher = aPos < bPos ? a : b;
 		$(higher).before($('<div/>').height(Math.abs(aPos - bPos)));
 	}
+	$(a).data('aligned', true);
+	$(b).data('aligned', true);
 }
