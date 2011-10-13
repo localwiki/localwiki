@@ -345,7 +345,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													id : 'txtWidth',
 													style : 'width:5em',
 													label : editor.lang.common.width,
-													'default' : 500,
+													'default' : '',
 													validate : CKEDITOR.dialog.validate['number']( editor.lang.table.invalidWidth ),
 
 													// Extra labelling of width unit type.
