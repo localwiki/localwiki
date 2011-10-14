@@ -11,8 +11,10 @@ from django.http import (HttpResponseNotFound, HttpResponseRedirect,
     HttpResponseBadRequest)
 from django import forms
 from django.core.urlresolvers import reverse
+from django.contrib import messages
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
+from django.utils.html import escape
 
 from ckeditor.views import ck_upload_result
 from versionutils import diff
@@ -330,7 +332,8 @@ class PageRenameView(FormView):
     def form_valid(self, form):
         try:
             p = Page.objects.get(slug=slugify(self.kwargs['slug']))
-            p.rename_to(form.cleaned_data['pagename'])
+            self.new_pagename = form.cleaned_data['pagename']
+            p.rename_to(self.new_pagename)
         except Page.DoesNotExist:
             pass
         return HttpResponseRedirect(self.get_success_url())
@@ -340,6 +343,13 @@ class PageRenameView(FormView):
         context['page'] = Page.objects.get(slug=slugify(self.kwargs['slug']))
         return context
 
+    def success_msg(self):
+        # NOTE: This is eventually marked as safe when rendered in our
+        # template.  So do *not* allow unescaped user input!
+        return ('<div>Page renamed to "%s"</div>' % escape(self.new_pagename))
+
     def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS,
+            self.success_msg())
         # Redirect back to the page.
-        return reverse('pages:show', args=['lolcats'])
+        return reverse('pages:show', args=[self.new_pagename])
