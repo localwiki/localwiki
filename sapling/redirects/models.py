@@ -19,7 +19,8 @@ versioning.register(Redirect)
 
 def _validate_redirect(sender, instance, raw, **kws):
     if instance.source == instance.destination.slug:
-        raise exceptions.RedirectToSelf("You cannot redirect a page to itself")
+            raise exceptions.RedirectToSelf(
+                    "You cannot redirect a page to itself")
 
 pre_save.connect(_validate_redirect, sender=Redirect)
 
