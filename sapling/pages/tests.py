@@ -236,17 +236,22 @@ class PageTest(TestCase):
         points = GEOSGeometry("""MULTIPOINT (-122.4378964233400069 37.7971758820830033, -122.3929211425700032 37.7688207875790027, -122.3908612060599950 37.7883584775320003, -122.4056240844700056 37.8013807351830025, -122.4148937988299934 37.8002956347170027, -122.4183270263600036 37.8051784612779969)""")
         map = MapData(points=points, page=p)
         map.save()
+        # Create a file that points at the page.
+        pf = PageFile(file=ContentFile("foooo"), name="file_foo.txt", slug=p.slug)
+        pf.save()
 
         p.rename_to("Page Y2")
         p_new = Page.objects.get(name="Page Y2")
         # FK points at the page we renamed to.
         self.assertEqual(len(MapData.objects.filter(page=p_new)), 1)
+        self.assertEqual(len(PageFile.objects.filter(slug=p_new.slug)), 1)
 
         # Now rename it back.
         p_new.rename_to("Page X2")
         p = Page.objects.get(name="Page X2")
         # After rename-back-to, FK points to the renamed-back-to page.
         self.assertEqual(len(MapData.objects.filter(page=p)), 1)
+        self.assertEqual(len(PageFile.objects.filter(slug=p.slug)), 1)
 
         ###########################################################
         # Renaming a page but keeping the same slug
@@ -254,7 +259,7 @@ class PageTest(TestCase):
         p = Page(name="Foo A", content="<p>Foo A</p>")
         p.save()
         p.rename_to("FOO A")
-        
+
         # Name has changed.
         self.assertEqual(len(Page.objects.filter(name="FOO A")), 1)
         # Has the same history, with a new entry for the name change.

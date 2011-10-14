@@ -161,6 +161,12 @@ class Page(models.Model):
 
         # Do the same with related-via-slug objects.
         for obj in self._get_slug_related_objs():
+            # If we already have an object with this slug then skip it.
+            # This happens when there's, say, a PageFile that's got the
+            # same name that's attached to the page -- which can happen
+            # during a page rename -> rename back cycle.
+            if obj.__class__.objects.filter(slug=new_p.slug):
+                continue
             obj.slug = new_p.slug
             obj.pk = None  # Reset the primary key before saving.
             obj.save(comment="Parent page renamed")
