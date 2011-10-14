@@ -10,4 +10,4 @@ django-guardian
 South
 django-staticfiles>=1.1.2
 https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration
--e git+git://github.com/philipn/olwidget.git@9137a50b691e10a6db63ec600135e484457d21d6#egg=django-olwidget
+-e git+git://github.com/philipn/olwidget.git@72de64cd25ffdc3644bc92d14668c145533d6d45#egg=django-olwidget

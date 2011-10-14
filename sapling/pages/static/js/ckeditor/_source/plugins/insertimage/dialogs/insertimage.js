@@ -211,6 +211,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                     label: 'Choose a file from your computer',
                     style: 'height:40px',
                     size: 34,
+                    setup: function () {
+                        /* Fix for #327.  Referer header not sent on first
+                         * upload.  When dialog is first shown, we load a blank
+                         * page from the server in the iframe (same as form
+                         * action but using GET method) and reset the form.
+                         */
+                        if(CKEDITOR.env.gecko) // issue doesn't affect Firefox
+                            return;
+                        var widget = this;
+                        jQuery('#' + this._.frameId).bind('load',
+                             function(){
+                                 $(this).unbind('load');
+                                 widget.reset();
+                                 delete widget.setup;
+                             }).attr('src', this.action);
+                    },
                     onChange: function () {
                         // Patch the upload form before submitting and add the CSRF token
                         function getCookie(key) {

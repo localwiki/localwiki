@@ -2,13 +2,12 @@ from dateutil.parser import parse as dateparser
 import copy
 
 from django.conf import settings
-from django.views.decorators.http import require_POST
 from django.views.generic.base import RedirectView
 from django.views.generic.simple import direct_to_template
 from django.views.generic import (DetailView, ListView,
     FormView)
 from django.http import (HttpResponseNotFound, HttpResponseRedirect,
-    HttpResponseBadRequest)
+                         HttpResponseBadRequest, HttpResponse)
 from django import forms
 from django.core.urlresolvers import reverse
 from django.contrib import messages
@@ -283,9 +282,11 @@ class PageCreateView(RedirectView):
             return reverse('pages:edit', args=[pagename])
 
 
-@require_POST
 @permission_required('pages.change_page', (Page, 'slug', 'slug'))
 def upload(request, slug, **kwargs):
+    # For GET, just return blank response. See issue #327.
+    if request.method != 'POST':
+        return HttpResponse('')
     error = None
     file_form = PageFileForm(request.POST, request.FILES)
 

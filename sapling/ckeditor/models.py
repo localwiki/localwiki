@@ -118,7 +118,7 @@ def parse_style(css):
     for line in css.split(';'):
         try:
             bits = line.split(':')
-            style[bits[0].strip()] = bits[1].strip()
+            style[bits[0].strip()] = ':'.join(bits[1:]).strip()
         except:
             pass
     return style

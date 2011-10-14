@@ -35,8 +35,8 @@ class ModelDiffTest(TestCase):
         """
         vals = {'a': 'Lorem', 'b': 'Ipsum',
                 'c': datetime.datetime.now(), 'd': 123}
-        m1 = M1.objects.create(**vals)
-        m2 = M1.objects.create(**vals)
+        m1 = Diff_M1.objects.create(**vals)
+        m2 = Diff_M1.objects.create(**vals)
 
         d = diff.diff(m1, m1).as_dict()
         self.assertEqual(d, None)
@@ -51,9 +51,9 @@ class ModelDiffTest(TestCase):
         """
         vals = {'a': 'Lorem', 'b': 'Ipsum',
                 'c': datetime.datetime.now(), 'd': 123}
-        m1 = M1.objects.create(**vals)
+        m1 = Diff_M1.objects.create(**vals)
         vals['a'] = 'Ipsum'
-        m2 = M1.objects.create(**vals)
+        m2 = Diff_M1.objects.create(**vals)
         d = diff.diff(m1, m2).as_dict()
         self.assertTrue(len(d) == 1)
 
@@ -64,10 +64,10 @@ class ModelDiffTest(TestCase):
         """
         vals = {'a': 'Lorem', 'b': 'Ipsum',
                 'c': datetime.datetime.now(), 'd': 123}
-        m1 = M1.objects.create(**vals)
+        m1 = Diff_M1.objects.create(**vals)
 
-        m3 = M4ForeignKey.objects.create(a=m1)
-        m4 = M4ForeignKey.objects.create(a=m1)
+        m3 = Diff_M4ForeignKey.objects.create(a=m1)
+        m4 = Diff_M4ForeignKey.objects.create(a=m1)
 
         d = diff.diff(m3, m4).as_dict()
         self.assertTrue(d is None)
@@ -79,13 +79,13 @@ class ModelDiffTest(TestCase):
         """
         vals = {'a': 'Lorem', 'b': 'Ipsum',
                 'c': datetime.datetime.now(), 'd': 123}
-        m1 = M1.objects.create(**vals)
+        m1 = Diff_M1.objects.create(**vals)
         vals = {'a': 'Dolor', 'b': 'Ipsum',
                 'c': datetime.datetime.now(), 'd': 123}
-        m2 = M1.objects.create(**vals)
+        m2 = Diff_M1.objects.create(**vals)
 
-        m3 = M4ForeignKey.objects.create(a=m1)
-        m4 = M4ForeignKey.objects.create(a=m2)
+        m3 = Diff_M4ForeignKey.objects.create(a=m1)
+        m4 = Diff_M4ForeignKey.objects.create(a=m2)
 
         d1 = diff.diff(m3, m4).as_dict()
         self.assertTrue(d1['a'])
@@ -95,9 +95,9 @@ class ModelDiffTest(TestCase):
         self.assertEqual(d1['a'], d2)
 
     def test_historical_instance(self):
-        o1 = M5Versioned(a="O1")
+        o1 = Diff_M5Versioned(a="O1")
         o1.save()
-        o2 = M5Versioned(a="O2")
+        o2 = Diff_M5Versioned(a="O2")
         o2.save()
 
 
@@ -170,10 +170,10 @@ class FileFieldDiffTest(BaseFieldDiffTest):
         self.test_class = FileFieldDiff
 
     def test_deleted_inserted(self):
-        m1 = M2()
+        m1 = Diff_M2()
         m1.a.save("a.txt", ContentFile("TEST FILE"), save=False)
 
-        m2 = M2()
+        m2 = Diff_M2()
         m2.a.save("b.txt", ContentFile("TEST FILE"), save=False)
 
         d = self.test_class(m1.a, m2.a).as_dict()
@@ -332,7 +332,7 @@ class DiffRegistryTest(TestCase):
 
         vals = {'a': 'Lorem', 'b': 'Ipsum',
                 'c': datetime.datetime.now(), 'd': 123}
-        m1 = M1.objects.create(**vals)
+        m1 = Diff_M1.objects.create(**vals)
 
     def test_can_handle_any_field(self):
         """
@@ -371,17 +371,17 @@ class DiffRegistryTest(TestCase):
         If we register a diff for a model, we should get that and not
         BaseModelDiff.
         """
-        self.registry.register(M1, M1Diff)
-        self.failUnlessEqual(self.registry.get_diff_util(M1), M1Diff)
+        self.registry.register(Diff_M1, Diff_M1Diff)
+        self.failUnlessEqual(self.registry.get_diff_util(Diff_M1), Diff_M1Diff)
 
     def test_register_field(self):
         """
         If we register a fielddiff for a model, we should get that and not
         BaseFieldDiff.
         """
-        self.registry.register(db.models.CharField, M1FieldDiff)
+        self.registry.register(db.models.CharField, Diff_M1FieldDiff)
         self.failUnlessEqual(self.registry.get_diff_util(db.models.CharField),
-                             M1FieldDiff)
+                             Diff_M1FieldDiff)
 
     def test_cannot_diff_something_random(self):
         """

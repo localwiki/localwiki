@@ -3,7 +3,9 @@
 {% block dialog %}
 <div id="dialog">
  <form method="post" action="">{% csrf_token %}
+    <ul>
     {{ form.as_ul }}
+    </ul>
     {% if exists %}
       <input type="submit" value="Update redirect"/> 
       <a class="button" href="{% url redirects:delete slug=page.slug %}">Delete redirect</a>

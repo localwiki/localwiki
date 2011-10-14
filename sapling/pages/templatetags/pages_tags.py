@@ -3,7 +3,7 @@ from django.template.loader_tags import BaseIncludeNode
 from django.template import Template
 from django.conf import settings
 
-from pages.plugins import html_to_template_text
+from pages.plugins import html_to_template_text, SearchBoxNode
 from pages.plugins import LinkNode, EmbedCodeNode
 from pages import models
 from django.utils.text import unescape_string_literal
@@ -121,6 +121,20 @@ def do_embed_code(parser, token):
     nodelist = parser.parse(('endembed_code',))
     parser.delete_first_token()
     return EmbedCodeNode(nodelist)
+
+
+@register.tag(name='searchbox')
+def do_searchbox(parser, token):
+    try:
+        tag, query = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError('%r tag requires one argument' %
+                                           token.contents.split()[0])
+    if not is_quoted(query):
+        raise template.TemplateSyntaxError(
+                                    "%r tag's argument should be in quotes" %
+                                     token.contents.split()[0])
+    return SearchBoxNode(query=unescape_string_literal(query))
 
 
 @register.tag(name='link')

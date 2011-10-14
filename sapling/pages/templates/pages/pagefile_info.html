@@ -10,6 +10,16 @@
 {% block title %}Information about "{{ file.name }}" - {{ block.super }}{% endblock %}
 {% block header_title %}Information about "{{ file.name }}"{% endblock %}
 
+{% block body %}
+<body>
+   <div class="pagefile">
+   {% block everything_wrapper %}
+        {{ block.super }}
+   {% endblock %}
+   </div>
+</body>
+{% endblock %}
+
 {% block content %}
 {% load thumbnail %}
   <p>
