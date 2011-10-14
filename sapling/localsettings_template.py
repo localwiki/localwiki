@@ -14,7 +14,7 @@ DATABASES = {
     }
 }
 
-# Get an API key at http://cloudmade.com/start. Click on "Web" then "Get an API Key."
+# Get an API key at http://cloudmade.com/start.
 CLOUDMADE_API_KEY = 'SET THIS TO THE KEY YOU GET'
 
 # Use these email settings when running the python debugging smtp server

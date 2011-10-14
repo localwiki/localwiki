@@ -17,6 +17,8 @@ from ckeditor.models import HTML5FragmentField
 from versionutils import diff
 from versionutils import versioning
 
+import exceptions
+
 
 allowed_tags = ['p', 'br', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3',
                 'h4', 'h5', 'h6', 'hr', 'ul', 'ol', 'li', 'pre', 'table',
@@ -94,9 +96,21 @@ class Page(models.Model):
         accordingly.
         """
         from redirects.models import Redirect
+        from redirects.exceptions import RedirectToSelf
+
+        if Page.objects.filter(slug=slugify(pagename)):
+            if slugify(pagename) == self.slug:
+                # The slug is the same but we're changing the name.
+                old_name = self.name
+                self.name = pagename
+                self.save(comment='Renamed from "%s"' % old_name)
+                return
+            else:
+                raise exceptions.PageExistsError(
+                    "The page '%s' already exists!" % pagename)
 
         # Copy the current page into the new page, zeroing out the
-        # primay key and setting a new name and slug.
+        # primary key and setting a new name and slug.
         new_p = copy(self)
         new_p.pk = None
         new_p.name = pagename
@@ -118,7 +132,7 @@ class Page(models.Model):
                 related_objs.append(
                     (r.get_accessor_name(), list(rel_obj.all())))
             else:
-                related_objs.append(r.get_accessor_name(), rel_obj)
+                related_objs.append((r.get_accessor_name(), rel_obj))
 
         # Create a redirect from the starting pagename to the new pagename.
         redirect = Redirect(source=self.slug, destination=new_p)
@@ -131,8 +145,14 @@ class Page(models.Model):
             if isinstance(rel_obj, list):
                 for obj in rel_obj:
                     obj.pk = None  # Reset the primary key before saving.
-                    getattr(new_p, attname).add(obj)
-                    obj.save(comment="Parent page renamed")
+                    try:
+                        getattr(new_p, attname).add(obj)
+                        obj.save(comment="Parent page renamed")
+                    except RedirectToSelf, s:
+                        # We don't want to create a redirect to ourself.
+                        # This happens during a rename -> rename-back
+                        # cycle.
+                        continue
             else:
                 # This is an easy way to set obj to point to new_p.
                 setattr(new_p, attname, rel_obj)

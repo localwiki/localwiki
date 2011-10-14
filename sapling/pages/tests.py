@@ -2,6 +2,7 @@
 
 from urllib import quote
 from lxml.html import fragments_fromstring
+from cStringIO import StringIO
 
 from django.test import TestCase
 from django.db import models
@@ -9,12 +10,16 @@ from django import forms
 from django.template.base import Template
 from django.template.context import Context
 from django.conf import settings
+from django.core.files.base import ContentFile
+from django.contrib.gis.geos import GEOSGeometry
 
 from versionutils.merging.forms import MergeMixin
 from forms import PageForm
 from redirects.models import Redirect
+from maps.models import MapData
 
-from pages.models import Page, slugify, url_to_name, clean_name, name_to_url
+from pages.models import (Page, PageFile, slugify,
+    url_to_name, clean_name, name_to_url)
 from pages.plugins import html_to_template_text
 from pages.plugins import tag_imports
 from pages.xsstests import xss_exploits
@@ -119,56 +124,145 @@ class PageTest(TestCase):
         self.failUnless('Edit conflict!' in p.content)
 
     def test_page_rename(self):
-        p = Page()
-        p.content = "<p>The page content.</p>"
-        p.name = "Original page"
+        #p = Page()
+        #p.content = "<p>The page content.</p>"
+        #p.name = "Original page"
+        #p.save()
+
+        #p.rename_to("New page")
+
+        ## Renamed-to page should exist.
+        #new_p = Page.objects.get(name="New page")
+        ## new_p should have the same content.
+        #self.assertEqual(new_p.content, p.content)
+
+        ## "Original page" should no longer exist.
+        #pgs = Page.objects.filter(name="Original page")
+        #self.assertEqual(len(pgs), 0)
+        ## and a redirect from "original page" to "New page" should exist.
+        #Redirect.objects.filter(source="original page", destination=new_p)
+
+        ############################################################
+        ## Renaming to a page that already exists should raise an
+        ## exception and not affect the original page.
+        ############################################################
+        #p = Page()
+        #p.content = "<p>Hello, world.</p>"
+        #p.name = "Page A"
+        #p.save()
+
+        #self.assertRaises(exceptions.PageExistsError, p.rename_to, "New page")
+        ## p should be unaffected.  No redirect should be created.
+        #p = Page.objects.get(name="Page A")
+        #self.assertEqual(p.content, "<p>Hello, world.</p>")
+        #self.assertEqual(len(Redirect.objects.filter(source="page a")), 0)
+
+        ############################################################
+        ## Renaming should carry along files and FK'ed items that
+        ## point to it.
+        ############################################################
+        #p = Page()
+        #p.content = "<p>A page with files and a map.</p>"
+        #p.name = "Page With FKs"
+        #p.save()
+        ## Create a file that points at the page.
+        #pf = PageFile(file=ContentFile("foo"), name="file.txt", slug=p.slug)
+        #pf.save()
+        ## Create a redirect that points at the page.
+        #redirect = Redirect(source="foobar", destination=p)
+        #redirect.save()
+        ## Create a map that points at the page.
+        #points = GEOSGeometry("""MULTIPOINT (-122.4378964233400069 37.7971758820830033, -122.3929211425700032 37.7688207875790027, -122.3908612060599950 37.7883584775320003, -122.4056240844700056 37.8013807351830025, -122.4148937988299934 37.8002956347170027, -122.4183270263600036 37.8051784612779969)""")
+        #map = MapData(points=points, page=p)
+        #map.save()
+
+        #p.rename_to("New Page With FKs")
+
+        #new_p = Page.objects.get(name="New Page With FKs")
+        #self.assertEqual(len(MapData.objects.filter(page=new_p)), 1)
+        ## Two redirects: one we created explicitly and one that was
+        ## created during rename_to()
+        #self.assertEqual(len(Redirect.objects.filter(destination=new_p)), 2)
+        #self.assertEqual(len(PageFile.objects.filter(slug=new_p.slug)), 1)
+
+        ## Renaming should keep slugs pointed at old page /and/ copy
+        ## them to the new page.
+        #self.assertEqual(len(PageFile.objects.filter(slug=p.slug)), 1)
+
+        ############################################################
+        ## Reverting a renamed page should be possible and should
+        ## restore files and FK'ed items that were pointed at the
+        ## original page.  The renamed-to page should still exist
+        ## after the revert and should still have its own files and
+        ## FK'ed items pointed at it.
+        ############################################################
+        #p = Page(name="Page With FKs", slug="page with fks")
+        ## get the version right before it was deleted
+        #v_before_deleted = len(p.versions.all()) - 1
+        #p_h = p.versions.as_of(version=v_before_deleted)
+        #p_h.revert_to()
+        #p = Page.objects.get(name="Page With FKs")
+        #self.assertEqual(len(MapData.objects.filter(page=p)), 1)
+        #self.assertEqual(len(PageFile.objects.filter(slug=p.slug)), 1)
+
+        #p2 = Page.objects.get(name="New Page With FKs")
+        #self.assertEqual(len(MapData.objects.filter(page=p2)), 1)
+        #self.assertEqual(len(PageFile.objects.filter(slug=p2.slug)), 1)
+
+        ## The explicit redirect should point at the new page.
+        ## len == 2 b/c we have our explicit redirect + rename_to()
+        ## redirect.
+        #self.assertEqual(len(Redirect.objects.filter(destination=p2)), 2)
+
+        ###########################################################
+        # Renaming a page and then renaming it back.
+        ###########################################################
+        # 1. Simple case
+        p = Page(name="Page X", content="<p>Foobar</p>")
         p.save()
+        p.rename_to("Page Y")
+        self.assertEqual(len(Page.objects.filter(name="Page X")), 0)
+        self.assertEqual(len(Page.objects.filter(name="Page Y")), 1)
 
-        p.rename_to("New page")
+        p_new = Page.objects.get(name="Page Y")
+        p_new.rename_to("Page X")
+        self.assertEqual(len(Page.objects.filter(name="Page X")), 1)
+        self.assertEqual(len(Page.objects.filter(name="Page Y")), 0)
 
-        # Renamed-to page should exist.
-        new_p = Page.objects.get(name="New page")
-        # new_p should have the same content.
-        self.assertEqual(new_p.content, p.content)
-
-        # "Original page" should no longer exist.
-        pgs = Page.objects.filter(name="Original page")
-        self.assertEqual(len(pgs), 0)
-        # and a redirect from "original page" to "New page" should exist.
-        Redirect.objects.filter(source="original page", destination=new_p)
-
-        ###########################################################
-        # Renaming to a page that already exists should raise an
-        # exception and not affect the original page. 
-        ###########################################################
-        p = Page()
-        p.content = "<p>Hello, world.</p>"
-        p.name = "Page A"
+        # 2. If we have FKs pointed at the page this shouldn't be
+        # totally fucked.
+        p = Page(name="Page X2", content="<p>Foo X</p>")
         p.save()
+        points = GEOSGeometry("""MULTIPOINT (-122.4378964233400069 37.7971758820830033, -122.3929211425700032 37.7688207875790027, -122.3908612060599950 37.7883584775320003, -122.4056240844700056 37.8013807351830025, -122.4148937988299934 37.8002956347170027, -122.4183270263600036 37.8051784612779969)""")
+        map = MapData(points=points, page=p)
+        map.save()
 
-        self.assertRaises(exceptions.PageExistsError, p.rename_to, "New page")
-        # p should be unaffected.  No redirect should be created.
-        p = Page.objects.get(name="Page A")
-        self.assertEqual(p.content, "<p>Hello, world.</p>")
-        self.assertEqual(len(Redirect.objects.filter(source="page a")), 0)
+        p.rename_to("Page Y2")
+        p_new = Page.objects.get(name="Page Y2")
+        # FK points at the page we renamed to.
+        self.assertEqual(len(MapData.objects.filter(page=p_new)), 1)
 
-        ###########################################################
-        # Renaming should carry along files and FK'ed items that
-        # point to it.
-        ###########################################################
-
-        ###########################################################
-        # Renaming should keep slugs pointed at old page /and/ copy
-        # them to the new page.
-        ###########################################################
+        # Now rename it back.
+        p_new.rename_to("Page X2")
+        p = Page.objects.get(name="Page X2")
+        # After rename-back-to, FK points to the renamed-back-to page.
+        self.assertEqual(len(MapData.objects.filter(page=p)), 1)
 
         ###########################################################
-        # Reverting a renamed page should be possible and should
-        # restore files and FK'ed items that were pointed at the
-        # original page.  The renamed-to page should still exist
-        # after the revert and should still have its own files and
-        # FK'ed items pointed at it.
+        # Renaming a page but keeping the same slug
         ###########################################################
+        p = Page(name="Foo A", content="<p>Foo A</p>")
+        p.save()
+        p.rename_to("FOO A")
+        
+        # Name has changed.
+        self.assertEqual(len(Page.objects.filter(name="FOO A")), 1)
+        # Has the same history, with a new entry for the name change.
+        p = Page.objects.get(name="FOO A")
+        p1, p0 = p.versions.all()
+        self.assertEqual(p1.name, 'FOO A')
+        self.assertEqual(p0.name, 'Foo A')
+        self.assertEqual(p0.content, p1.content)
 
 
 class TestModel(models.Model):
