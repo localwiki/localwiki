@@ -147,10 +147,6 @@ them.  At the time of writing this, the setting looks like this::
                                  ]
                                 }
 
-.. note ::
-   The format is very similar to the result of running the command
-   ``python manage.py dumpdata --natural auth.group``
-
 You can edit this setting by adding or removing permissions for certain groups
 or adding your own groups.  To apply these permissions (and overwrite the
 previously set defaults), run the following command::
