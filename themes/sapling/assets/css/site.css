@@ -504,7 +504,13 @@ label {
     margin-bottom: 4px;
     font-weight: bold; color: #444;
 }
-
+div.templates {
+    clear: both;
+}
+div.templates li {
+    list-style: none;
+    margin-left: 1em;
+}
 /* textarea { background: #fff; width: 435px; height: 150px; } */
 
 /*

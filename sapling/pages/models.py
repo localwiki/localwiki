@@ -85,6 +85,10 @@ class Page(models.Model):
         return name_to_url(self.name)
     pretty_slug = property(pretty_slug)
 
+    def name_parts(self):
+        return self.name.split('/')
+    name_parts = property(name_parts)
+
     def _get_slug_related_objs(self):
         # Right now this is simply hard-coded.
         # TODO: generalize this slug pattern, perhaps with some kind of
@@ -286,5 +290,5 @@ def url_to_name(value):
 url_to_name = stringfilter(url_to_name)
 
 
-import feeds # To fire register() calls.
-import signals # To fire signal calls.
+import feeds  # To fire register() calls.
+import signals  # To fire signal calls.

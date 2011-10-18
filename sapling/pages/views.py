@@ -42,9 +42,12 @@ class PageDetailView(Custom404Mixin, DetailView):
 
     def handler404(self, request, *args, **kwargs):
         name = url_to_name(kwargs['original_slug'])
+        page_templates = Page.objects.filter(slug__startswith='templates/')\
+                                     .order_by('name')
         return HttpResponseNotFound(
             direct_to_template(request, 'pages/page_new.html',
-                               {'page': Page(name=name, slug=kwargs['slug'])})
+                               {'page': Page(name=name, slug=kwargs['slug']),
+                                'page_templates': page_templates})
         )
 
     def get_context_data(self, **kwargs):
@@ -112,7 +115,15 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin, UpdateView):
         return reverse('pages:show', args=[self.object.pretty_slug])
 
     def create_object(self):
-        return Page(name=url_to_name(self.kwargs['original_slug']))
+        content = '<p>Describe %s here</p>' % self.kwargs['original_slug']
+        if 'template' in self.request.GET:
+            try:
+                p = Page.objects.get(slug=self.request.GET['template'])
+                content = p.content
+            except Page.DoesNotExist:
+                pass
+        return Page(name=url_to_name(self.kwargs['original_slug']),
+                    content=content)
 
 
 class PageDeleteView(PermissionRequiredMixin, DeleteView):
