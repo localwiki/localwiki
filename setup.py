@@ -116,12 +116,8 @@ setup(
     author_email='philip@localwiki.org',
     packages=find_packages(),
     package_dir={'sapling': 'sapling'},
-    #data_files=gen_data_files('docs'),
-    data_files=[
-        ('docs', ['docs/test.txt']),
-    ],
+    data_files=gen_data_files('install_config', 'templates', 'themes'),
     package_data=find_package_data(),
-    include_package_data=True,
     install_requires=[
         'setuptools',
         'django>=1.3',
@@ -143,7 +139,7 @@ setup(
         'https://github.com/philipn/olwidget/tarball/custom_base_layers_fixed#egg=django-olwidget-0.46-custom1',
     ],
     entry_points={
-        'console_scripts':['localwiki-manage=sapling.manage:main']
+        'console_scripts': ['localwiki-manage=sapling.manage:main'],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',
