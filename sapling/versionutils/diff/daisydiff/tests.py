@@ -64,7 +64,8 @@ class DaisyDiffMergeTest(TestCase):
 
     @skipUnlessHasService
     def test_poor_quality_merge_style(self):
-        """ This doesn't quite work right but at least shouldn't lose anything
+        """
+        This doesn't quite work right but at least shouldn't lose anything.
         """
         (body, conflict) = daisydiff_merge(
             '<p><strong>Original</strong></p>',
@@ -87,3 +88,49 @@ class DaisyDiffMergeTest(TestCase):
         self.failUnless('First version' in body)
         self.failUnless('Second version' in body)
         self.failUnless('Original' not in body)
+
+    ##################################################################
+    # These tests are probably a bit too strict, but it's better than
+    # nothing for now.
+    ##################################################################
+    @skipUnlessHasService
+    def test_merge_conflict_is_readable(self):
+        original = """<p>Para 1</p>
+<p>Para 2</p>
+<p>Para 3</p>"""
+        field1 = """<p>Para 1</p>
+<p>Totally new 2</p>
+<p>Para 3</p>"""
+        field2 = """<p>Para 1</p>
+<p>Also a new 2</p>
+<p>Para 3</p>"""
+        (body, conflict) = daisydiff_merge(original, field1, field2)
+        self.failUnless(conflict is True)
+        self.assertEqual(body,
+            ('<strong class="editConflict">Edit conflict! Your version:</strong>'
+             '<p>Para 1Para </p>'
+             '<strong class="editConflict">Edit conflict! Other version:</strong>'
+             '<p>Totally new <span class="diff-html-removed">Also a new </span>2</p>'
+             '<p>Para 3</p>')
+        )
+
+    @skipUnlessHasService
+    def test_merge_conflict_is_readable(self):
+        original = """<p>Para 1</p>
+<p>Para 2</p>
+<p>Para 3</p>"""
+        field1 = """<p>Para 1</p>
+<p>Totally new 2</p>
+<p>Para 3</p>"""
+        field2 = """<p>Para 1</p>
+<p>Also a new 2</p>
+<p>Para 3</p>"""
+        (body, conflict) = daisydiff_merge(original, field1, field2)
+        self.failUnless(conflict is True)
+        self.assertEqual(body,
+            ('<strong class="editConflict">Edit conflict! Your version:</strong>'
+             '<p>Para 1Para </p>'
+             '<strong class="editConflict">Edit conflict! Other version:</strong>'
+             '<p>Totally new <span class="diff-html-removed">Also a new </span>2</p>'
+             '<p>Para 3</p>')
+        )
