@@ -42,7 +42,8 @@ class DaisyDiffTest(TestCase):
     def test_nbsp(self):
         tr = daisydiff(u'Hello \xa0 World', u'Hello World')
         self.assertEquals(tr,
-            u'<tr class="htmldiff">\n<td>Hello <del class="diff-html-removed">\xa0 </del>World</td><td>Hello World</td>\n</tr>')
+             (u'<tr class="htmldiff">\n<td>Hello <del class="diff-html-removed'
+              u'">\xa0 </del>World</td><td>Hello World</td>\n</tr>'))
 
 
 class DaisyDiffMergeTest(TestCase):
@@ -95,42 +96,35 @@ class DaisyDiffMergeTest(TestCase):
     ##################################################################
     @skipUnlessHasService
     def test_merge_conflict_is_readable(self):
-        original = """<p>Para 1</p>
-<p>Para 2</p>
-<p>Para 3</p>"""
-        field1 = """<p>Para 1</p>
-<p>Totally new 2</p>
-<p>Para 3</p>"""
-        field2 = """<p>Para 1</p>
-<p>Also a new 2</p>
-<p>Para 3</p>"""
-        (body, conflict) = daisydiff_merge(original, field1, field2)
-        self.failUnless(conflict is True)
-        self.assertEqual(body,
-            ('<strong class="editConflict">Edit conflict! Your version:</strong>'
-             '<p>Para 1Para </p>'
-             '<strong class="editConflict">Edit conflict! Other version:</strong>'
-             '<p>Totally new <span class="diff-html-removed">Also a new </span>2</p>'
-             '<p>Para 3</p>')
-        )
+        ancestor = ('<p>Rosamunde sells delicious gourmet sausages!</p>'
+                    '<p>Vegans and beer-lovers are invited!</p>')
+        mine = ('<p>Rosamunde sells delicious gourmet sausages!</p>'
+                '<p>Vegans and beer-lovers are invited!</p>'
+                '<p>Their "mission street" sausage is a $6.50 play on the '
+                'classic <a href="/Bacon-wrapped_hot_dogs">bacon wrapped hot '
+                'dog</a>.</p>')
+        theirs = ('<p>Rosamunde sells delicious gourmet sausages!</p>'
+                  '<p>Vegans and beer-lovers are invited!</p>'
+                  '<p><a href="http://rosamundesausagegrill.com/haight-street"'
+                  '>Menu</a> (Haight Street)</p>'
+                  '<p><a href="http://rosamundesausagegrill.com/mission-street'
+                  '">Menu</a> (Mission Street)</p>')
+        (body, conflict) = daisydiff_merge(mine, theirs, ancestor)
 
-    @skipUnlessHasService
-    def test_merge_conflict_is_readable(self):
-        original = """<p>Para 1</p>
-<p>Para 2</p>
-<p>Para 3</p>"""
-        field1 = """<p>Para 1</p>
-<p>Totally new 2</p>
-<p>Para 3</p>"""
-        field2 = """<p>Para 1</p>
-<p>Also a new 2</p>
-<p>Para 3</p>"""
-        (body, conflict) = daisydiff_merge(original, field1, field2)
+        expected = ('<p>Rosamunde sells delicious gourmet sausages!</p>'
+                '<p>Vegans and beer-lovers are invited!</p>'
+                '<strong class="editConflict">Edit conflict! Other version:'
+                '</strong>'
+                '<p><a href="http://rosamundesausagegrill.com/haight-street">'
+                'Menu</a> (Haight Street)</p><p>'
+                '<a href="http://rosamundesausagegrill.com/mission-street"'
+                '>Menu</a> (Mission Street)</p>'
+                '<strong class="editConflict">Edit conflict! Your version:'
+                '</strong>'
+                '<p>Their "mission street" sausage is a $6.50 play on the '
+                'classic <a href="/Bacon-wrapped_hot_dogs">bacon wrapped hot '
+                'dog</a>.</p>')
+
         self.failUnless(conflict is True)
-        self.assertEqual(body,
-            ('<strong class="editConflict">Edit conflict! Your version:</strong>'
-             '<p>Para 1Para </p>'
-             '<strong class="editConflict">Edit conflict! Other version:</strong>'
-             '<p>Totally new <span class="diff-html-removed">Also a new </span>2</p>'
-             '<p>Para 3</p>')
-        )
+        self.failUnlessEqual(body, expected)
+
