@@ -59,7 +59,7 @@ p {
 pre, code {
     margin: 15px 0;
     padding: .5em;
-    white-space: pre;
+    white-space: pre-wrap;
     overflow: auto;
     font-family: "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
     line-height: 20px;
