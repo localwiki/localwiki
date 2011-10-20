@@ -39,6 +39,7 @@ Initialize the project environment:
     (env)$ python sapling/manage.py migrate
     (env)$ python sapling/manage.py collectstatic
     (env)$ python sapling/manage.py reset_permissions
+    (env)$ python sapling/manage.py loaddata basic_pages
 
 You are now done configuring and installing things! You can start the built-in
 Django development server:
