@@ -189,6 +189,25 @@ class PageTest(TestCase):
         self.assertEqual(len(PageFile.objects.filter(slug=p.slug)), 1)
 
         ###########################################################
+        # Renaming with multiple files.
+        ###########################################################
+        p = Page()
+        p.content = "<p>A new page with multiple files.</p>"
+        p.name = "Page with multiple files"
+        p.save()
+        # Create a file that points at the page.
+        pf = PageFile(file=ContentFile("foo"), name="file.txt", slug=p.slug)
+        pf.save()
+        pf = PageFile(file=ContentFile("foo2"), name="file2.txt", slug=p.slug)
+        pf.save()
+        pf = PageFile(file=ContentFile("foo3"), name="file3.txt", slug=p.slug)
+        pf.save()
+        p.rename_to("A page with multiple files 2")
+
+        p = Page.objects.get(name="A page with multiple files 2")
+        self.assertEqual(len(PageFile.objects.filter(slug=p.slug)), 3)
+
+        ###########################################################
         # Reverting a renamed page should be possible and should
         # restore files and FK'ed items that were pointed at the
         # original page.  The renamed-to page should still exist
