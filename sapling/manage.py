@@ -4,7 +4,7 @@ import sys
 
 from django.core.management import execute_manager, setup_environ
 
-from utils.management.commands import init_data_dir
+from utils.management.commands import init_data_dir, init_db
 
 try:
     import settings  # Assumed to be in the same directory.
@@ -23,6 +23,15 @@ def data_dir_command():
     c.handle()
 
 
+def db_init_command():
+    # Have to init django settings directly.
+    setup_environ(settings)
+    c = init_db.Command()
+    c.stderr = sys.stderr
+    c.stdout = sys.stdout
+    c.handle()
+
+
 def main(set_apps_path=True):
     if set_apps_path:
         # Add local apps path.
@@ -30,13 +39,21 @@ def main(set_apps_path=True):
         if apps_path not in sys.path:
             sys.path.append(apps_path)
 
-    if len(sys.argv) >= 2 and sys.argv[1] == 'init_data_dir':
-        # We have to special-case this command, as it happens before the
-        # install's localsettings.py are installed, so the usual django
-        # management machinery will throw errors about settings not
-        # being set yet.
-        data_dir_command()
-        return
+    if len(sys.argv) >= 2:
+        if sys.argv[1] == 'init_data_dir':
+            # We have to special-case this command, as it happens before the
+            # install's localsettings.py are installed, so the usual django
+            # management machinery will throw errors about settings not
+            # being set yet.
+            data_dir_command()
+            return
+        elif sys.argv[1] == 'init_db':
+            # We have to special-case this command, as it happens before the
+            # install's localsettings.py are installed, so the usual django
+            # management machinery will throw errors about settings not
+            # being set yet.
+            db_init_command()
+            return
 
     execute_manager(settings)
 

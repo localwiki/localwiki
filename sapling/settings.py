@@ -1,6 +1,11 @@
 # Django settings for sapling project.
+import sys
+import os
 
-DEBUG = False
+# By default, let's turn DEBUG on.  It should be set to False in
+# localsettings.py.  We leave it set to True here so that our
+# init_data_dir command can run correctly.
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -9,7 +14,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-import os
+DATA_ROOT = os.path.join(sys.prefix, 'share', 'localwiki')
 PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..')
 
 DATABASES = {
@@ -42,7 +47,7 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+MEDIA_ROOT = os.path.join(DATA_ROOT, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -51,7 +56,7 @@ MEDIA_URL = '/media/'
 
 # staticfiles settings
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATIC_ROOT = os.path.join(DATA_ROOT, 'static')
 
 # TODO: Temporary until we upgrade to the next Django release and have
 # the latest staticfiles changes.
@@ -164,6 +169,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'sapling.urls'
 
 TEMPLATE_DIRS = (
+    os.path.join(DATA_ROOT, 'templates'),
     os.path.join(PROJECT_ROOT, 'templates'),
 )
 
@@ -200,6 +206,12 @@ INSTALLED_APPS = (
     'utils',
 )
 
+LOCAL_INSTALLED_APPS = ()
+
+SITE_THEME = 'sapling'
+
+# Where localsettings.py lives
+sys.path.append(os.path.join(DATA_ROOT, 'conf'))
 try:
     from localsettings import *
 except:
@@ -209,19 +221,28 @@ except:
 INSTALLED_APPS = tuple(list(INSTALLED_APPS) + list(LOCAL_INSTALLED_APPS))
 
 # A site theme uses a template directory with a particular name.
-THEME_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'templates')
-TEMPLATE_DIRS = tuple(list(TEMPLATE_DIRS) + [THEME_TEMPLATE_DIR])
+# Site themes can live in either the global themes/ directory
+# or in the local themes/ directory (in DATA_ROOT).
+GLOBAL_THEME_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'templates')
+LOCAL_THEME_TEMPLATE_DIR = os.path.join(DATA_ROOT, 'themes', SITE_THEME, 'templates')
+TEMPLATE_DIRS = tuple([LOCAL_THEME_TEMPLATE_DIR, GLOBAL_THEME_TEMPLATE_DIR] +
+                      list(TEMPLATE_DIRS))
 
 # A site theme uses a static assets directory with a particular name.
+# Site themes can live in either the global themes/ directory
+# or in the local themes/ directory (in DATA_ROOT).
 STATICFILES_DIRS = (
+    ('theme', os.path.join(DATA_ROOT, 'themes', SITE_THEME, 'assets')),
     ('theme', os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'assets')),
 )
 
-# Generate a local secret key.
-if not 'SECRET_KEY' in locals():
-    from random import choice
-    SECRET_KEY = ''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
-    fname = os.path.join(os.path.dirname(__file__), 'localsettings.py')
-    f = open(fname, 'a')
-    f.write("SECRET_KEY = '%s'" % SECRET_KEY)
-    f.close()
+## XXX
+## XXX must fix this to update the correct localsettings file!
+## Generate a local secret key.
+#if not 'SECRET_KEY' in locals():
+#    from random import choice
+#    SECRET_KEY = ''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
+#    fname = os.path.join(os.path.dirname(__file__), 'localsettings.py')
+#    f = open(fname, 'a')
+#    f.write("SECRET_KEY = '%s'" % SECRET_KEY)
+#    f.close()
