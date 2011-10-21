@@ -105,13 +105,23 @@ class Page(models.Model):
         # Right now this is simply hard-coded.
         # TODO: generalize this slug pattern, perhaps with some kind of
         # AttachedSlugField or something.
-        return PageFile.objects.filter(slug=self.slug)
+        return [
+            {'objs': PageFile.objects.filter(slug=self.slug),
+             'unique_together': ('name', 'slug')},
+        ]
 
     def rename_to(self, pagename):
         """
         Renames the page to `pagename`.  Moves related objects around
         accordingly.
         """
+        def _get_slug_lookup(unique_together, obj, new_p):
+            d = {}
+            for field in unique_together:
+                d[field] = getattr(obj, field)
+            d['slug'] = new_p.slug
+            return d
+
         from redirects.models import Redirect
         from redirects.exceptions import RedirectToSelf
 
@@ -177,16 +187,20 @@ class Page(models.Model):
                 rel_obj.save(comment="Parent page renamed")
 
         # Do the same with related-via-slug objects.
-        for obj in self._get_slug_related_objs():
-            # If we already have an object with this slug then skip it.
-            # This happens when there's, say, a PageFile that's got the
-            # same name that's attached to the page -- which can happen
-            # during a page rename -> rename back cycle.
-            if obj.__class__.objects.filter(slug=new_p.slug):
-                continue
-            obj.slug = new_p.slug
-            obj.pk = None  # Reset the primary key before saving.
-            obj.save(comment="Parent page renamed")
+        for info in self._get_slug_related_objs():
+            unique_together = info['unique_together']
+            objs = info['objs']
+            for obj in objs:
+                # If we already have the same object with this slug then
+                # skip it. This happens when there's, say, a PageFile that's
+                # got the same name that's attached to the page -- which can
+                # happen during a page rename -> rename back cycle.
+                obj_lookup = _get_slug_lookup(unique_together, obj, new_p)
+                if obj.__class__.objects.filter(**obj_lookup):
+                    continue
+                obj.slug = new_p.slug
+                obj.pk = None  # Reset the primary key before saving.
+                obj.save(comment="Parent page renamed")
 
 
 class PageDiff(diff.BaseModelDiff):
