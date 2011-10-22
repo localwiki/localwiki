@@ -228,21 +228,14 @@ LOCAL_THEME_TEMPLATE_DIR = os.path.join(DATA_ROOT, 'themes', SITE_THEME, 'templa
 TEMPLATE_DIRS = tuple([LOCAL_THEME_TEMPLATE_DIR, GLOBAL_THEME_TEMPLATE_DIR] +
                       list(TEMPLATE_DIRS))
 
+
+STATICFILES_DIRS = []
 # A site theme uses a static assets directory with a particular name.
 # Site themes can live in either the global themes/ directory
 # or in the local themes/ directory (in DATA_ROOT).
-STATICFILES_DIRS = (
-    ('theme', os.path.join(DATA_ROOT, 'themes', SITE_THEME, 'assets')),
-    ('theme', os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'assets')),
-)
-
-## XXX
-## XXX must fix this to update the correct localsettings file!
-## Generate a local secret key.
-#if not 'SECRET_KEY' in locals():
-#    from random import choice
-#    SECRET_KEY = ''.join([choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)])
-#    fname = os.path.join(os.path.dirname(__file__), 'localsettings.py')
-#    f = open(fname, 'a')
-#    f.write("SECRET_KEY = '%s'" % SECRET_KEY)
-#    f.close()
+_local_theme_dir = os.path.join(DATA_ROOT, 'themes', SITE_THEME, 'assets')
+_global_theme_dir = os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'assets')
+if os.path.exists(_local_theme_dir):
+    STATICFILES_DIRS.append(('theme', _local_theme_dir))
+if os.path.exists(_global_theme_dir):
+    STATICFILES_DIRS.append(('theme', _global_theme_dir))

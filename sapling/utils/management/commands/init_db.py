@@ -4,13 +4,12 @@ import string
 from random import choice
 import tempfile
 
-from django.core.management.base import BaseCommand
-from django.conf import settings
 
-
-class Command(BaseCommand):
-    help = ('Creates a DB user, DB name, and strong, random DB password.  '
-            'Also creates a spatial DB template if needed.')
+class Command(object):
+    """
+    Creates a DB user, DB name, and strong, random DB password.
+    Also creates a spatial DB template if needed.
+    """
 
     def _is_debian(self):
         if not os.path.exists('/etc/issue'):
@@ -37,7 +36,7 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
             elif which_pgis == '3':
                 script = 'create_template_postgis-1.3.sh'
 
-        script_path = os.path.join(settings.PROJECT_ROOT,
+        script_path = os.path.join(self.PROJECT_ROOT,
             'install_config', 'postgis_template_scripts', script)
         # Make a temp file so postgres user can always read it.
         fd, temp_path = tempfile.mkstemp()
@@ -117,12 +116,12 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
         print "Database '%s' with username '%s' created!" % (dbname, username)
 
     def update_settings(self):
-        localsettings = open(os.path.join(settings.DATA_ROOT, 'conf',
+        localsettings = open(os.path.join(self.DATA_ROOT, 'conf',
             'localsettings.py')).read()
         localsettings = localsettings.replace('DBNAMEHERE', self.dbname)
         localsettings = localsettings.replace('DBUSERNAMEHERE', self.username)
         localsettings = localsettings.replace('DBPASSWORDHERE', self.password)
-        f = open(os.path.join(settings.DATA_ROOT, 'conf',
+        f = open(os.path.join(self.DATA_ROOT, 'conf',
             'localsettings.py'), 'w')
         f.write(localsettings)
         f.close()
@@ -131,3 +130,10 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
         self.create_spatial_template()
         self.create_db()
         self.update_settings()
+
+
+def run(DATA_ROOT=None, PROJECT_ROOT=None):
+    c = Command()
+    c.DATA_ROOT = DATA_ROOT
+    c.PROJECT_ROOT = PROJECT_ROOT
+    c.handle()

@@ -7,15 +7,15 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'sapling',
-        'USER': 'sapling',
-        'PASSWORD': '** PASSWORD GOES HERE **',
+        'NAME': 'DBNAMEHERE',
+        'USER': 'DBUSERNAMEHERE',
+        'PASSWORD': 'DBPASSWORDHERE',
         'HOST': '127.0.0.1',
     }
 }
 
 # Get an API key at http://cloudmade.com/start.
-CLOUDMADE_API_KEY = 'SET THIS TO THE KEY YOU GET'
+CLOUDMADE_API_KEY = 'CLOUDMADEAPIKEYHERE'
 
 # Use these email settings when running the python debugging smtp server
 # python -m smtpd -n -c DebuggingServer localhost:1025
@@ -57,3 +57,6 @@ HAYSTACK_SOLR_URL = 'http://localhost:8080/solr'
 LOCAL_INSTALLED_APPS = ()
 
 CACHE_BACKEND = 'dummy:///'
+
+# This is auto-generated.
+SECRET_KEY = 'SECRETKEYHERE'
