@@ -9,7 +9,8 @@ from utils.management.commands import init_data_dir, init_db, init_settings
 # We have to hard-code these here, as we run a few setup commands (in
 # setup_all) that execute before the settings can be safely loaded.
 DATA_ROOT = os.path.join(sys.prefix, 'share', 'localwiki')
-PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..')
+PROJECT_ROOT = os.path.split(os.path.abspath(__file__))[0]
+
 
 def main(set_apps_path=True):
     if set_apps_path:

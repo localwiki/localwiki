@@ -36,7 +36,7 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
             elif which_pgis == '3':
                 script = 'create_template_postgis-1.3.sh'
 
-        script_path = os.path.join(self.PROJECT_ROOT,
+        script_path = os.path.join(self.PROJECT_ROOT, 'etc',
             'install_config', 'postgis_template_scripts', script)
         # Make a temp file so postgres user can always read it.
         fd, temp_path = tempfile.mkstemp()

@@ -19,7 +19,6 @@ standard_exclude_directories = ('.*', 'CVS', '_darcs', './build',
 # you can't import this from another package, when you don't know if
 # that package is installed yet.
 def find_package_data(
-
     where='.', package='',
     exclude=standard_exclude,
     exclude_directories=standard_exclude_directories,
@@ -51,8 +50,6 @@ def find_package_data(
     Note patterns use wildcards, or can be exact paths (including
     leading ``./``), and all searching is case-insensitive.
     """
-    
-
     out = {}
     stack = [(convert_path(where), '', package, only_in_packages)]
     while stack:
@@ -101,11 +98,39 @@ def find_package_data(
 
 def gen_data_files(*dirs):
     results = []
-    for src_dir in dirs:
+    for dir_info in dirs:
+        if type(dir_info) == tuple:
+            src_dir, name = dir_info
+        else:
+            name = dir_info
+            src_dir = dir_info
+        top_root = None
         for root, dirs, files in os.walk(src_dir):
-            results.append((root, map(lambda f: root + "/" + f, files)))
+            if top_root is None:
+                top_root = root
+            root_name = root.replace(top_root, name, 1)
+            results.append((root_name, map(lambda f: root + "/" + f, files)))
     return results
 
+
+install_requires = [
+    'setuptools',
+    'django>=1.3',
+    'html5lib>=0.90',
+    'Sphinx>=1.0.7',
+    'sorl-thumbnail>=11.01',
+    'python-dateutil>=1.5',
+    'pysolr',
+    'django-haystack',
+    'django-randomfilenamestorage',
+    'django-guardian',
+    'South',
+    'django-staticfiles>=1.1.2',
+    'django-registration==0.8.0-alpha-1',
+    'django-olwidget==0.46-custom1',
+]
+if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
+    install_requires = None
 
 setup(
     name='localwiki',
@@ -116,24 +141,11 @@ setup(
     author_email='philip@localwiki.org',
     packages=find_packages(),
     package_dir={'sapling': 'sapling'},
-    data_files=gen_data_files('install_config', 'templates', 'themes'),
+    data_files=gen_data_files(
+        ('docs', 'share/localwiki/docs')
+    ),
     package_data=find_package_data(),
-    install_requires=[
-        'setuptools',
-        'django>=1.3',
-        'html5lib>=0.90',
-        'Sphinx>=1.0.7',
-        'sorl-thumbnail>=11.01',
-        'python-dateutil==1.5',
-        'pysolr',
-        'django-haystack',
-        'django-randomfilenamestorage',
-        'django-guardian',
-        'South',
-        'django-staticfiles>=1.1.2',
-        'django-registration==0.8.0-alpha-1',
-        'django-olwidget==0.46-custom1',
-    ],
+    install_requires=install_requires,
     dependency_links=[
         'https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration-0.8.0-alpha-1',
         'https://github.com/philipn/olwidget/tarball/custom_base_layers_fixed#egg=django-olwidget-0.46-custom1',
