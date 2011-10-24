@@ -25,7 +25,7 @@ from models import Page, PageFile, url_to_name
 from forms import PageForm, PageFileForm
 from maps.widgets import InfoMap
 
-from models import slugify
+from models import slugify, clean_name
 from users.decorators import permission_required
 
 # Where possible, we subclass similar generic views here.
@@ -115,7 +115,8 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin, UpdateView):
         return reverse('pages:show', args=[self.object.pretty_slug])
 
     def create_object(self):
-        content = '<p>Describe %s here</p>' % self.kwargs['original_slug']
+        pagename = clean_name(self.kwargs['original_slug'])
+        content = '<p>Describe %s here</p>' % pagename
         if 'template' in self.request.GET:
             try:
                 p = Page.objects.get(slug=self.request.GET['template'])
