@@ -36,12 +36,7 @@ class AutoTrackUserInfoMiddleware(object):
         ip = request.META.get('REMOTE_ADDR', None)
         self._set_lookup_fields(user=user, ip=ip)
 
-        # Disconnect a possibly un-cleaned up prior signal
-        signals.pre_save.disconnect(self.update_fields)
-
-        signals.pre_save.connect(
-            self.update_fields, dispatch_uid='update_fields', weak=False
-        )
+        signals.pre_save.connect(self.update_fields, weak=False)
 
     def _set_lookup_fields(self, **kws):
         for k, v in kws.iteritems():
@@ -66,10 +61,3 @@ class AutoTrackUserInfoMiddleware(object):
                 # only set the field if it's currently empty
                 if getattr(instance, field.name) is None:
                     setattr(instance, field.name, ip)
-
-    def process_response(self, request, response):
-        signals.pre_save.disconnect(self.update_fields)
-        return response
-
-    def process_exception(self, request, exception):
-        signals.pre_save.disconnect(self.update_fields)
