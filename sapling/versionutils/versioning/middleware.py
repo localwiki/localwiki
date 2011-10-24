@@ -20,13 +20,13 @@ class AutoTrackUserInfoMiddleware(object):
         if request.method in IGNORE_USER_INFO_METHODS:
             pass
 
+        # Disconnect a possibly un-cleaned up prior signal
+        signals.pre_save.disconnect(dispatch_uid='update_fields')
+
         user = None
         if hasattr(request, 'user') and request.user.is_authenticated():
             user = request.user
         ip = request.META.get('REMOTE_ADDR', None)
-
-        # Disconnect a possibly un-cleaned up prior signal
-        signals.pre_save.disconnect(dispatch_uid='update_fields')
 
         update_fields = functools.partial(self.update_fields, user, ip)
         signals.pre_save.connect(
