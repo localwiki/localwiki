@@ -1,9 +1,8 @@
-import functools
 import threading
 
 from django.db.models import signals
 
-from registry import FieldRegistry
+from fields import AutoSetField, AutoUserField, AutoIPAddressField
 
 # Ignore auto-tracking of user info on these HTTP methods
 IGNORE_USER_INFO_METHODS = (
@@ -42,22 +41,19 @@ class AutoTrackUserInfoMiddleware(object):
         for k, v in kws.iteritems():
             setattr(_threadlocal, '_userinfo_%s' % k, v)
 
-    def _lookup_field_value(self, v):
-        return getattr(_threadlocal, '_userinfo_%s' % v)
+    def _lookup_field_value(self, field):
+        if isinstance(field, AutoUserField):
+            field_type = 'user'
+        elif isinstance(field, AutoIPAddressField):
+            field_type = 'ip'
+
+        return getattr(_threadlocal, '_userinfo_%s' % field_type)
 
     def update_fields(self, sender, instance, **kws):
-        user = self._lookup_field_value('user')
-        registry = FieldRegistry('user')
-        if sender in registry:
-            for field in registry.get_fields(sender):
+        for field in instance._meta.fields:
+            # Find our automatically-set-fields.
+            if isinstance(field, AutoSetField):
                 # only set the field if it's currently empty
-                if getattr(instance, field.name) is None:
-                    setattr(instance, field.name, user)
-
-        ip = self._lookup_field_value('ip')
-        registry = FieldRegistry('ip')
-        if sender in registry:
-            for field in registry.get_fields(sender):
-                # only set the field if it's currently empty
-                if getattr(instance, field.name) is None:
-                    setattr(instance, field.name, ip)
+                if getattr(instance, field.attname) is None:
+                    val = self._lookup_field_value(field)
+                    setattr(instance, field.name, val)
