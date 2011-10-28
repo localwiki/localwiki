@@ -44,8 +44,11 @@ h5, h6 {
     line-height: 125%;
     margin-bottom: 0.6em;
 }
-a {
-    color: #444;
+a, a:link {
+    color: #333c94;
+    color: #4c54a4;
+    color: #333c94;
+    color: #4e58b5;
 }
 a:hover {
     color: #111;
@@ -127,6 +130,12 @@ textarea, input, select {
     padding-left: 3.5em;
     min-height: 4.2em;
 }
+#header_bar a, #header_bar a:link {
+    color: #444;
+}
+#header_bar a:hover {
+    color: #111;
+}
 #header_bar .inner {
     margin-top: 0.5em;
 }
@@ -162,8 +171,12 @@ textarea, input, select {
     padding-left: 1.5em;
     font-size: 130%;
 }
-#site_title a {
+#site_title a, #site_title a:link {
     text-decoration: none;
+    color: #444
+}
+#site_title a:hover {
+    color: #111;
 }
 
 #object_actions {
@@ -239,6 +252,12 @@ textarea, input, select {
     margin-left: 1em;
     margin-bottom: 0.8em;
 }
+#map a, #map a:link {
+    color: #444;
+}
+#map a:hover {
+    color: #111;
+}
 /* Just the widget. Contained in #map. */
 .mapwidget.small {
   border: 1px solid #b5b5b5;
@@ -297,6 +316,9 @@ textarea, input, select {
     margin-left: 2em;
     margin-top: -2em;
 }
+#nav a, #nav a:link {
+    color: #444;
+}
 #nav li {
     margin: 0;
     margin-right: 0.4em;
@@ -316,6 +338,11 @@ textarea, input, select {
     border: 1px solid #e1e1e1;
     background-color: #e1e1e1;
     text-decoration: none;
+}
+#nav li a:hover {
+    background-color: #bfbfbf;
+    border: 1px solid #bfbfbf;
+    color: #111;
 }
 
 /*
@@ -421,7 +448,7 @@ form p.required label { font-weight: bold; }
 textarea, input, button, .button, select {
     display: block;
     padding: 5px;
-    color: #444;
+    color: #444!important;
     background-color: #fff;
     border: 1px solid #BFBFBF;
     border-radius: 3px;
@@ -448,7 +475,7 @@ select {
 }
 input[type="submit"], input[type="button"], button, .button {
     font: 16px/25px "Cabin", Arial, "Helvetica Neue", "Helvetica", sans-serif;
-    color: #666;
+    color: #666!important;
     font-weight: bold;
     padding: 6px 10px;
     border: none;
@@ -488,7 +515,7 @@ input[type="submit"], input[type="button"], button, .button {
 
 input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:hover {
     background-color: #c8cbde;
-    color: #fff;
+    color: #fff!important;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
     border-color: #c8cbde;
     border-bottom-color: #757783;
@@ -502,7 +529,8 @@ input[type="hidden"] { display: none; }
 input[type="checkbox"], input[type="radio"] { display: inline; }
 label {
     margin-bottom: 4px;
-    font-weight: bold; color: #444;
+    font-weight: bold;
+    color: #444;
 }
 div.templates {
     clear: both;
@@ -526,6 +554,24 @@ div.templates li {
     -webkit-border-radius: 5px 5px 5px 5px;
     padding: 8px;
     display: table;
+}
+#compare_form label {
+    font-weight: normal;
+    color: #999999; /* On white bg, so let's go lighter */
+}
+#compare_form label a {
+    text-decoration: none; /* Underline is too intense here */
+    color: #5d66bf; /* on white bg, so let's go lighter */
+}
+#compare_form label a:hover {
+    color: #444;
+}
+#compare_form .date {
+    color: #444;
+    font-weight: bold;
+}
+#compare_form .date:hover {
+    color: #111;
 }
 #compare_form thead td, #compare_form tfoot td {
     padding-left: 1em;
@@ -626,6 +672,12 @@ div.templates li {
 }
 #recentchanges h3 {
     margin-top: 1em;
+}
+#recentchanges h3 a, #recentchanges h3 a:link {
+    color: #444;
+}
+#recentchanges h3 a:hover {
+    color: #111;
 }
 #recentchanges #limit_to {
     margin-bottom: 1em;
