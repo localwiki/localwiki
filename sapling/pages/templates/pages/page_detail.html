@@ -3,7 +3,7 @@
 {% load pages_tags %}
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.5.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.6.4.min.js"></script>
 {% endblock %}
 
 {% block title %}{{ page.name }} - {{ block.super }}{% endblock %}

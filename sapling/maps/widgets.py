@@ -10,7 +10,7 @@ from olwidget import widgets
 from utils.static import static_url
 
 OUR_JS = [
-    static_url('js/jquery/jquery-1.5.min.js'),
+    static_url('js/jquery/jquery-1.6.4.min.js'),
     static_url('olwidget/js/sapling_utils.js'),
 ]
 OUR_CSS = {}
