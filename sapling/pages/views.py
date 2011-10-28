@@ -26,6 +26,7 @@ from forms import PageForm, PageFileForm
 from maps.widgets import InfoMap
 
 from models import slugify, clean_name
+from exceptions import PageExistsError
 from users.decorators import permission_required
 
 # Where possible, we subclass similar generic views here.
@@ -347,8 +348,10 @@ class PageRenameView(FormView):
             p = Page.objects.get(slug=slugify(self.kwargs['slug']))
             self.new_pagename = form.cleaned_data['pagename']
             p.rename_to(self.new_pagename)
-        except Page.DoesNotExist:
-            pass
+        except PageExistsError, s:
+            messages.add_message(self.request, messages.SUCCESS, s)
+            return HttpResponseRedirect(reverse('pages:show', args=[p.slug]))
+
         return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):

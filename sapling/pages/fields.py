@@ -18,10 +18,13 @@ class PageChoiceField(forms.ModelChoiceField):
             return self.queryset.filter(slug=slugify(value)).get()
         except self.queryset.model.DoesNotExist:
             raise forms.ValidationError(
-                "Please enter a valid %s." % (
+                "Page %s does not exist!  Please enter a valid page name." % (
                     self.queryset.model._meta.verbose_name,))
 
     def prepare_value(self, value):
+        if isinstance(value, basestring):
+            # already a page name
+            return
         value = super(PageChoiceField, self).prepare_value(value)
         # Turn it into a page name rather than a pk integer.
         if value:
