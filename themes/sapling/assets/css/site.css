@@ -212,7 +212,7 @@ textarea, input, select {
     height: 30px;
     width: 180px;
     font-size: 15px;
-    line-height: 0;
+    line-height: 30px;
     background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 10px;
     padding-left: 30px;
     margin-right: 0.5em;
@@ -753,7 +753,7 @@ div.templates li {
     height: 30px;
     width: 25em;
     font-size: 15px;
-    line-height: 0;
+    line-height: 30px;
     background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 10px;
     padding-left: 30px;
     margin-right: 0.5em;
