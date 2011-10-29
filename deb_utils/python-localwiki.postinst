@@ -1,0 +1,18 @@
+#! /bin/sh
+
+set -e
+
+#DEBHELPER#
+
+case "$1" in
+    configure)
+    cd /usr/share/pyshared/sapling/etc/install_config/
+    echo "Installing required python packages ..."
+    pip install --upgrade -r requirements.txt
+    echo "Configuring jetty ..."
+    ./setup_jetty.sh
+    echo "Configuring localwiki ..."
+    localwiki-manage setup_all
+;;
+esac
+

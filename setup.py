@@ -137,14 +137,14 @@ setup(
     version=get_version(),
     description="LocalWiki is a tool for collaboration in local, geographic communities",
     long_description=open('README').read(),
-    author='Philip Neustrom',
-    author_email='philip@localwiki.org',
-    packages=find_packages(),
+    author='Mike Ivanov',
+    author_email='mivanov@gmail.com',
+    packages=find_packages(exclude=['deb_utils']),
     package_dir={'sapling': 'sapling'},
     data_files=gen_data_files(
         ('docs', 'share/localwiki/docs')
     ),
-    package_data=find_package_data(),
+    package_data=find_package_data(exclude_directories=standard_exclude_directories + ('./deb_utils',) ),
     install_requires=install_requires,
     dependency_links=[
         'https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration-0.8.0-alpha-1',

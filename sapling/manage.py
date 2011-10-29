@@ -25,9 +25,12 @@ def main(set_apps_path=True):
         # management machinery will throw errors about settings not
         # being set yet.  But after we have run the setup commands we
         # let it fall through to the normal django method.
-        init_data_dir.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
-        init_db.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
-        init_settings.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
+        if not os.path.exists(os.path.join(DATA_ROOT, 'conf')):
+            init_data_dir.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
+            init_db.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
+            init_settings.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
+        else:
+            print "Existing localwiki data directory found! Using %s\n" % DATA_ROOT
 
     try:
         import settings  # Assumed to be in the same directory.

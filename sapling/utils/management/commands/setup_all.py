@@ -9,5 +9,5 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         call_command('syncdb')
         call_command('migrate')
-        call_command('collectstatic', interactive=False)
+        call_command('collectstatic', interactive=False, verbosity=0)
         call_command('reset_permissions')

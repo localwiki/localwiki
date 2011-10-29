@@ -12,3 +12,5 @@ South
 django-staticfiles>=1.1.2
 https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration
 -e git+git://github.com/philipn/olwidget.git@custom_base_layers_fixed#egg=django-olwidget
+django-extensions
+
