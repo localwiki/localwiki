@@ -42,7 +42,7 @@
         {% endfor %}
 
         {% if page.has_previous or page.has_next %}
-            <div class="pagination">
+            <div class="simple_pagination">
                 {% if page.has_previous %}
                 <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}" class="button">&laquo; Previous</a>
                 {% endif %}

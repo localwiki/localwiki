@@ -9,10 +9,26 @@
 
 {% block content %}
   <div id="recentchanges">
-  <div id="limit_to">Show all changes in the last <a href="{{ rc_url }}?days_back=1">1</a> | <a href="{{ rc_url}}?days_back=2">2</a> | <a href="{{ rc_url }}?days_back=3">3</a> | <a href="{{ rc_url }}?days_back=7">7</a> days.</div>
+      {% with request.GET.days_back as days_back %}
+      <div id="limit_to">
+        <span>Show all changes in the last</span>
+        <span class="pagination">
+            <a href="{{ rc_url }}?days_back=1"{% ifequal days_back '1' %}class="current"{% endifequal %}>1</a>
+            <a href="{{ rc_url }}?days_back=2"{% ifequal days_back '2' %}class="current"{% else %}{% if not days_back %}class="current"{% endif %}{% endifequal %}>2</a>
+            <a href="{{ rc_url }}?days_back=3"{% ifequal days_back '3' %}class="current"{% endifequal %}>3</a>
+            <a href="{{ rc_url }}?days_back=7"{% ifequal days_back '7' %}class="current"{% endifequal %}>7</a>
+        </span>
+        <span>days.</span>
+      </div>
+      {% endwith %}
+
       {% for changes_for_day in changes_grouped_by_day %}
 
-        <h2>{{ changes_for_day.day|date:"l, F j, Y" }}</h3>
+        {% comment %}<h2>{{ changes_for_day.day|date:"l, F j, Y"
+        }}</h3>{% endcomment %}
+        {% if not forloop.first %}
+        <hr/>
+        {% endif %}
 
         {% for changes_on_item in changes_for_day.changes %}
 
@@ -27,21 +43,21 @@
               <li class="{{ change.classname }}">
                 {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
                 {% if change.version_info.type in added_types %}
-                <span class="changelabel added">new</span>
+                    <span class="changelabel added"><span>new</span></span>
                 {% else %}{% if change.version_info.type in deleted_types %}
-                <span class="changelabel deleted">deleted</span>
+                    <span class="changelabel deleted"><span>deleted</span></span>
                 {% else %}
-                <span class="changelabel updated"><a href="{{ change.diff_url }}">changes</a></span>
+                    <span class="changelabel updated"><span><a href="{{ change.diff_url }}">changes</a></span></span>
                 {% endif %}{% endif %}
 
                 {% if change.version_info.type in reverted_types %}
-                <span class="revert">Reverted to version from {{ change.version_info.reverted_to_version.version_info.date|timesince}} ago</span>
+                    <span class="revert">Reverted to version from {{ change.version_info.reverted_to_version.version_info.date|timesince}} ago</span>
                 {% endif %}
 
                 <span class="type"></span>
 
                 {% if change.classname == 'redirect' %}
-                <span class="revert">Redirected to <a href="{{ change.destination.get_absolute_url }}">{{ change.destination.name }}</a></span>
+                    <span class="revert">Redirected to <a href="{{ change.destination.get_absolute_url }}">{{ change.destination.name }}</a></span>
                 {% endif %}
 
                 {% if change.version_info.comment %}

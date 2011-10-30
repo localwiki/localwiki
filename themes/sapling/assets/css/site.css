@@ -1,3 +1,5 @@
+/* LICENSE and credits: please see LICENSE.txt in this directory */
+
 body {
     z-index: 0;
     background: #fafafa url(../img/body-bg.png) top left repeat;
@@ -48,7 +50,12 @@ a, a:link {
     color: #333c94;
     color: #4c54a4;
     color: #333c94;
+
     color: #4e58b5;
+
+    /*color: #406d8f;
+    color: #4c668e;*/
+
 }
 a:hover {
     color: #111;
@@ -495,15 +502,15 @@ input[type="submit"], input[type="button"], button, .button {
     cursor: pointer;
 }
 .little.button, input.little {
-    padding: 0.2em 0.5em 0.3em 0.5em;
+    padding: 0.3em 0.5em 0.3em 0.5em;
     margin: 0;
     font-size: 90%;
 }
 .tiny.button, input.tiny {
-    padding: 0.1em 0.5em 0.3em 0.5em;
+    padding: 0.7em 0.5em 0.7em 0.5em;
     margin: 0;
-    line-height: 1;
     font-size: 90%;
+    line-height: 0;
 }
 .button.cancel {
 }
@@ -572,6 +579,7 @@ div.templates li {
 }
 #compare_form .date:hover {
     color: #111;
+    text-decoration: underline;
 }
 #compare_form thead td, #compare_form tfoot td {
     padding-left: 1em;
@@ -647,11 +655,23 @@ div.templates li {
     min-height: 3em;
 }
 .create_map {
-    margin-top: 1em;
+    padding-top: 1em;
     min-width: 30px;
-    padding-left: 30px;
-    background: url(../img/map-icon-small.png) 6px 66% no-repeat;
-    display: block;
+    display: table;
+    vertical-align: top;
+    margin-bottom: 0;
+}
+.create_map .button {
+    margin-right: 0.5em;
+    margin-top: -0.35em;
+}
+.button.map .text {
+    background: url(../img/map-icon-small.png) 0px 66% no-repeat;
+    padding-left: 20px;
+}
+.button.redirect .text {
+    background: url(../img/arrow-turn-left.png) 2px 2px no-repeat;
+    padding-left: 20px;
 }
 
 /*
@@ -679,16 +699,39 @@ div.templates li {
 #recentchanges h3 a:hover {
     color: #111;
 }
-#recentchanges #limit_to {
-    margin-bottom: 1em;
+#recentchanges hr {
+    height: 5px;
+    border: none;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
+    margin-top: 2em;
+    margin-bottom: 1.5em;
+
+    /* Copied from #main margin: */
+    margin-left: -5em;
+    margin-right: -8em;
 }
+#recentchanges #limit_to {
+    float: right;
+    margin-top: 0.1em;
+}
+#recentchanges #limit_to span {
+    float: left;
+}
+#recentchanges #limit_to .pagination {
+    margin-left: 0.4em;
+    margin-right: 0.4em;
+    margin-top: -0.6em;
+}
+
+
 #recentchanges li {
     margin-left: 0;
     padding-left: 30px;
+    margin-bottom: 0.7em;
 }
 
 #recentchanges .changelabel {
-    width: 3.5em;
+    width: 5.2em;
     /* This is basically .little.button */
     text-align: center;
     font-weight: bold;
@@ -698,7 +741,7 @@ div.templates li {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     float: left;
-    padding: 0.1em 0.5em 0.3em 0.5em;
+    padding: 7px 10px 8px 10px;
     line-height: 100%;
     margin: 0;
     margin-right: 1em;
@@ -715,6 +758,10 @@ div.templates li {
     /* TODO: explore using purely CSS gradients */
     background: #E8ECEF url(../img/gradient.png) repeat-x bottom left;
     border: 1px solid #bfbfbf;
+
+    /* Slightly different padding*/
+    padding-top: 6px;
+    padding-bottom: 7px;
 }
 #recentchanges .changelabel.updated:hover
 {
@@ -733,12 +780,21 @@ div.templates li {
 }
 
 #recentchanges .changelabel.added {
-    background-color: #ffff77;
+    background-color: #fdfab4;
     color: #6b6945;
+    border-color: #e1e1e1;
+    border: none;
+    border-radius: 0px;
 }
 #recentchanges .changelabel.deleted {
-    background-color: #ff9999;
-    color: #794141;
+    background-color: #f3d8d8;
+    border-color: #dedede;
+    color: #808080;
+    color: #767676;
+    color: #6b6b6b;
+    color: #646464;
+    border: none;
+    border-radius: 0px;
 }
 #recentchanges .changelabel a {
     text-decoration: none;
@@ -748,21 +804,18 @@ div.templates li {
     color: black;
     padding-right: 0.5em;
 }
-#recentchanges .map .type {
-    min-width: 30px;
-    padding-left: 30px;
-    background: url(../img/map-icon-small.png) 5px 56% no-repeat;
-}
-#recentchanges .file .type {
-    min-width: 30px;
-    padding-left: 30px;
-    background: url(../pages/img/file_icons/document-block.png) 5px 56% no-repeat;
-}
 
-#recentchanges .redirect .type {
-    min-width: 30px;
-    padding-left: 30px;
-    background: url(../img/arrow-turn-left.png) 5px 56% no-repeat;
+#recentchanges .map .changelabel span {
+    background: url(../img/map-icon-small.png) 0px 66% no-repeat;
+    padding-left: 20px;
+}
+#recentchanges .file .changelabel span {
+    background: url(../img/document-block-light.png) 2px 66% no-repeat;
+    padding-left: 20px;
+}
+#recentchanges .redirect .changelabel span {
+    background: url(../img/arrow-turn-left.png) 2px 2px no-repeat;
+    padding-left: 20px;
 }
 
 /*
@@ -786,7 +839,7 @@ div.templates li {
 #search_results .highlighted {
     font-weight: bold;
 }
-#search_results .pagination {
+#search_results .simple_pagination {
     height: 3em;
 }
 
@@ -811,6 +864,21 @@ div.templates li {
     margin-right: 0.5em;
     margin-bottom: 0.5em;
 }
+
+/*
+====================================
+ Pagination
+====================================
+*/
+
+.pagination { float: left; background: #e6e6e6; padding: 8px; border-radius: 5px; -moz-border-radius: 5px; webkit-border-radius: 5px; }
+.pagination a, .pagination span { background: #fff; display: block; color: #444; text-decoration: none; float: left; padding: 2px 10px; border: 1px solid #bfbfbf; border-left: none; }
+.pagination a.disabled, .pagination span.disabled,
+.pagination a.disabled:hover, .pagination span.disabled:hover { color: #999; background: #fff; }
+.pagination a:hover { background: url("../img/gradient-light.png") repeat-x scroll left bottom #f6f6f6; }
+.pagination .next { border-right: 1px solid #bfbfbf; }
+.pagination a:first-child { border-left: 1px solid #bfbfbf; }
+.pagination .current, .pagination .current:hover { color: #444; background: url("../img/gradient-light.png") repeat-x scroll left bottom #d9d9d9; }
 
 /*
 ====================================
@@ -869,6 +937,16 @@ form #content_footer {
     padding-right: 5em;
     margin-top: 0.16em;
 }
+
+/*
+=======================================
+ Page specific (not stuff in page css)
+=======================================
+*/
+#create_page {
+    min-height: 4em;
+}
+
 
 /*
 ====================================

@@ -102,9 +102,10 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin, UpdateView):
         if not hasattr(self.object, 'mapdata'):
             slug = self.object.pretty_slug
             map_create_link = (
-                '<p class="create_map"><a href="%s">'
-                'Create a map for this page?'
-                '</a></p>' % reverse('maps:edit', args=[slug])
+                '<p class="create_map"><a href="%s" class="button little map">'
+                '<span class="text">Create a map</span></a> '
+                'for this page?</p>' %
+                reverse('maps:edit', args=[slug])
             )
         return (
             '<div>Thank you for your changes. '
