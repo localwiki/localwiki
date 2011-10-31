@@ -84,6 +84,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	display: inline;
 }
 
+.cke_skin_sapling .cke_toolbar a {
+   color: #444;
+}
+
 .cke_skin_sapling .cke_separator
 {
 	display: none;
