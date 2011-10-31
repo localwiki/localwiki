@@ -69,12 +69,12 @@
                 <span class="user">{{ change.version_info.user_link|safe }}</span>
               </li>
             {% endif %}
-            
-          {% endfor %}
 
-        {% if forloop.first %}
-          </ul>
-        {% endif %}
+            {% if forloop.first %}
+              </ul>
+            {% endif %}
+
+          {% endfor %}
 
         {% endfor %}
 

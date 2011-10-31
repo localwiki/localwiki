@@ -733,6 +733,7 @@ div.templates li {
 
 
 #recentchanges li {
+    list-style-type: none;
     margin-left: 0;
     padding-left: 30px;
     margin-bottom: 0.7em;
