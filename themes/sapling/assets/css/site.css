@@ -232,7 +232,7 @@ textarea, input, select {
 }
 #header .site_search input[type="text"], #header .site_search #id_q {
     padding: 0;
-    height: 30px;
+    height: 2em;
     width: 180px;
     font-size: 15px;
     line-height: 30px;
@@ -505,12 +505,17 @@ input[type="submit"], input[type="button"], button, .button {
     cursor: pointer;
 }
 .little.button, input.little {
-    padding: 0.3em 0.5em 0.3em 0.5em;
+    padding: 0.2em 0.5em 0.3em 0.5em;
     margin: 0;
     font-size: 90%;
 }
+input.little {
+    /* values are slightly different to make it look the same as
+     * non-input little button. Not sure why this works but it does. */
+    height: 2.2em;
+}
 .tiny.button, input.tiny {
-    padding: 0.7em 0.5em 0.7em 0.5em;
+    padding: 10px 8px 11px 8px;
     margin: 0;
     font-size: 90%;
     line-height: 0;
