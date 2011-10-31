@@ -185,6 +185,9 @@ textarea, input, select {
 #site_title a:hover {
     color: #111;
 }
+#site_title img {
+    margin-top: -14px;
+}
 
 #object_actions {
     display: table-cell;
