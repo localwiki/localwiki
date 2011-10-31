@@ -7,7 +7,7 @@ class Command(BaseCommand):
             'Only run this command on a fresh install.')
 
     def handle(self, *args, **options):
-        call_command('syncdb')
-        call_command('migrate')
+        call_command('syncdb', verbosity=0)
+        call_command('migrate', verbosity=0)
         call_command('collectstatic', interactive=False, verbosity=0)
-        call_command('reset_permissions')
+        call_command('reset_permissions', verbosity=0)

@@ -4,15 +4,34 @@ set -e
 
 #DEBHELPER#
 
+confdir=/usr/share/pyshared/sapling/etc/install_config
+datadir=/usr/share/localwiki
+
 case "$1" in
     configure)
-    cd /usr/share/pyshared/sapling/etc/install_config/
-    echo "Installing required python packages ..."
-    pip install --upgrade -r requirements.txt
-    echo "Configuring jetty ..."
-    ./setup_jetty.sh
-    echo "Configuring localwiki ..."
-    localwiki-manage setup_all
+        # we want our setup to run last, so just activate our trigger
+        dpkg-trigger localwiki-setup
+;;
+    triggered)
+        # do the real work here
+        cd "$confdir"
+        echo "Configuring jetty ..."
+        ./setup_jetty.sh
+
+        if [ ! -d "$datadir/env" ]; then
+            echo "Creating virtualenv ..."
+            cd "$datadir"
+            virtualenv --quiet env
+        fi
+
+        . "$datadir/env/bin/activate"
+        cd "$confdir"
+        echo "Installing required python packages ..."
+        pip install --upgrade -r requirements.txt
+        deactivate
+
+        echo "Configuring localwiki ..."
+        localwiki-manage setup_all
 ;;
 esac
 

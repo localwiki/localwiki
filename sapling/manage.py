@@ -1,15 +1,20 @@
 #!/usr/bin/python
 import os
+import site
 import sys
-
-from django.core.management import execute_manager
-from utils.management.commands import init_data_dir, init_db, init_settings
-
 
 # We have to hard-code these here, as we run a few setup commands (in
 # setup_all) that execute before the settings can be safely loaded.
 DATA_ROOT = os.path.join(sys.prefix, 'share', 'localwiki')
 PROJECT_ROOT = os.path.split(os.path.abspath(__file__))[0]
+
+# Add virtualenv packages
+site_packages = os.path.join(DATA_ROOT, 'env', 'lib',
+                    'python%s' % sys.version[:3], 'site-packages')
+site.addsitedir(site_packages)
+
+from django.core.management import execute_manager
+from utils.management.commands import init_data_dir, init_db, init_settings
 
 
 def main(set_apps_path=True):
