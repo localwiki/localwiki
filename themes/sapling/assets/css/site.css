@@ -771,6 +771,8 @@ div.templates li {
     /* Slightly different padding*/
     padding-top: 6px;
     padding-bottom: 7px;
+
+    text-decoration: none;
 }
 #recentchanges .changelabel.updated:hover
 {
@@ -778,14 +780,12 @@ div.templates li {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
     border-color: #c8cbde;
     border-bottom-color: #757783;
+    color: #fff;
 }
 #recentchanges .changelabel.updated:active {
     box-shadow: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
-}
-#recentchanges .changelabel.updated:hover a {
-    color: #fff;
 }
 
 #recentchanges .changelabel.added {
