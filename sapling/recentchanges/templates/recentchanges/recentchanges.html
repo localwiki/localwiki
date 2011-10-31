@@ -47,7 +47,7 @@
                 {% else %}{% if change.version_info.type in deleted_types %}
                     <span class="changelabel deleted"><span>deleted</span></span>
                 {% else %}
-                    <span class="changelabel updated"><span><a href="{{ change.diff_url }}">changes</a></span></span>
+                    <a class="changelabel updated" href="{{ change.diff_url }}">changes</a></span>
                 {% endif %}{% endif %}
 
                 {% if change.version_info.type in reverted_types %}
