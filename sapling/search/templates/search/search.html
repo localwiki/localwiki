@@ -24,7 +24,7 @@
         {% if not page_exists_for_query %}
           <div id="create_page_dialog">
               No page with the exact title "{{ query }}" exists.
-              <div><a href="{% url 'pages:edit' slug=query_slug %}" class="button">Create this page</a></div>
+              <div><a href="{% url 'pages:show' slug=query_slug %}" class="button">Create this page</a></div>
           </div>
         {% endif %}
 
