@@ -24,3 +24,11 @@ class MediaMixin(object):
 
 class InfoMap(MediaMixin, widgets.InfoMap):
     pass
+
+    def __init__(self, *args, **kwargs):
+        val = super(InfoMap, self).__init__(*args, **kwargs)
+        # Just display one layer for InfoMaps, for now.
+        if len(self.options['layers']) > 1:
+            self.options['layers'] = self.options['layers'][:1]
+        return val
+
