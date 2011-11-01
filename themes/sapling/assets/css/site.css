@@ -838,6 +838,13 @@ div.templates li {
     font-size: 80%;
     text-align: center;
 }
+#powered_by a img {
+    border: none;
+}
+#powered_by a {
+    background-image: none;
+}
+
 
 /*
 ====================================
