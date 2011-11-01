@@ -132,6 +132,18 @@ a[href^='http:'], a[href^='https:'] {
     padding-left: 16px;
 }
 
+a[href^='http://www.facebook.com/'], a[href^='https://www.facebook.com/'] {
+    background: url(../img/facebook_link.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+a[href^='http://twitter.com/'], a[href^='https://twitter.com/'] {
+    background: url(../img/twitter_link.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
 /* Mailto links */
 a[href^='mailto:'] {
     background: url(../img/email_link.png) no-repeat;
