@@ -59,8 +59,13 @@ class RecentChangesFeed(Feed):
         comment = ''
         change_type = item.version_info.type_verbose().lower()
         if item.version_info.type in REVERTED_TYPES:
-            change_type = "%s (to version %s)" % (change_type,
-                item.version_info.reverted_to_version.version_info.date)
+            try:
+                change_type = "%s (to version %s)" % (change_type,
+                    item.version_info.reverted_to_version.version_info.date)
+            except AttributeError:
+                # On old wikis that we've imported we didn't set
+                # reverted_to_version.
+                pass
         if item.version_info.comment:
             comment = ' with comment "%s"' % item.version_info.comment
         return "%s was %s by %s%s." % (item.title, change_type, user, comment)
@@ -140,9 +145,14 @@ class ChangesOnItemFeed(Feed):
         user = getattr(item.version_info, 'user', item.version_info.user_ip)
         comment = ''
         change_type = item.version_info.type_verbose().lower()
-        if item.version_info.type in REVERTED_TYPES:
-            change_type = "%s (to version %s)" % (change_type,
-                item.version_info.reverted_to_version.version_info.date)
+        try:
+            if item.version_info.type in REVERTED_TYPES:
+                change_type = "%s (to version %s)" % (change_type,
+                    item.version_info.reverted_to_version.version_info.date)
+        except AttributeError:
+            # On old wikis that we've imported we didn't set
+            # reverted_to_version.
+            pass
         if item.version_info.comment:
             comment = ' with comment "%s"' % item.version_info.comment
         return "%s was %s by %s%s." % (item.title, change_type, user, comment)
