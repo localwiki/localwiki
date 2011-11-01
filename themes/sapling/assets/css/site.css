@@ -366,8 +366,19 @@ textarea, input, select {
     background: #e1e1e1 url(../img/footer-bg.png) top left repeat;
     padding: 1.5em;
     clear: both;
+    min-height: 30px;
 }
 #footer p { margin: 0; padding: 0 }
+
+#powered_by {
+    float: right;
+}
+#powered_by a img {
+    border: none;
+}
+#powered_by a {
+    background-image: none;
+}
 
 /*
 ====================================
@@ -838,12 +849,6 @@ div.templates li {
     font-size: 80%;
     text-align: center;
 }
-#powered_by a img {
-    border: none;
-}
-#powered_by a {
-    background-image: none;
-}
 
 
 /*
@@ -980,3 +985,4 @@ form #content_footer {
     left: 130px;
     margin-top: 10px;
 }
+
