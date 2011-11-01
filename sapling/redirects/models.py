@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models.signals import pre_save
+from django.core.urlresolvers import reverse
 
 from pages.models import Page
 from versionutils import versioning
@@ -13,6 +14,10 @@ class Redirect(models.Model):
 
     def __unicode__(self):
         return "%s ---> %s" % (self.source, self.destination)
+
+    def get_absolute_url(self):
+        return reverse('pages:show', args=[self.source])
+
 
 versioning.register(Redirect)
 
