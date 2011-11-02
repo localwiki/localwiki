@@ -28,6 +28,7 @@ from maps.widgets import InfoMap
 from models import slugify, clean_name
 from exceptions import PageExistsError
 from users.decorators import permission_required
+from django.template.loader import render_to_string
 
 # Where possible, we subclass similar generic views here.
 
@@ -98,6 +99,18 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin, UpdateView):
     def success_msg(self):
         # NOTE: This is eventually marked as safe when rendered in our
         # template.  So do *not* allow unescaped user input!
+        message = ('Thank you for your changes. '
+                   'Your attention to detail is appreciated.')
+        if not self.request.user.is_authenticated():
+            message = ('Changes saved! To use your name when editing, please '
+                '<a href="%s?next=%s"><strong>log in</strong></a> or '
+                '<a href="%s?next=%s"><strong>create an account</strong></a>.'
+                % (reverse('django.contrib.auth.views.login'),
+                   self.request.path,
+                   reverse('registration_register'),
+                   self.request.path
+                   )
+                )
         map_create_link = ''
         if not hasattr(self.object, 'mapdata'):
             slug = self.object.pretty_slug
@@ -107,11 +120,7 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin, UpdateView):
                 'for this page?</p>' %
                 reverse('maps:edit', args=[slug])
             )
-        return (
-            '<div>Thank you for your changes. '
-            'Your attention to detail is appreciated.</div>'
-            '%s' % map_create_link
-        )
+        return '<div>%s</div>%s' % (message, map_create_link)
 
     def get_success_url(self):
         return reverse('pages:show', args=[self.object.pretty_slug])
