@@ -139,12 +139,12 @@ setup(
     long_description=open('README').read(),
     author='Mike Ivanov',
     author_email='mivanov@gmail.com',
-    packages=find_packages(exclude=['deb_utils']),
+    packages=find_packages(),
     package_dir={'sapling': 'sapling'},
     data_files=gen_data_files(
         ('docs', 'share/localwiki/docs')
     ),
-    package_data=find_package_data(exclude_directories=standard_exclude_directories + ('./deb_utils',) ),
+    package_data=find_package_data(exclude_directories=standard_exclude_directories + ('deb_utils',) ),
     install_requires=install_requires,
     dependency_links=[
         'https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration-0.8.0-alpha-1',
