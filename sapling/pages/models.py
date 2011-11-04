@@ -235,6 +235,14 @@ class PageFile(models.Model):
             kwargs={'slug': self.slug, 'file': self.name})
 
     @property
+    def page(self):
+        try:
+            p = Page.objects.get(slug=self.slug)
+        except Page.DoesNotExist:
+            p = Page(slug=self.slug, name=clean_name(self.slug))
+        return p
+
+    @property
     def rough_type(self):
         mime = self.mime_type
         if mime:
