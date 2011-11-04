@@ -32,6 +32,35 @@ case "$1" in
 
         echo "Configuring localwiki ..."
         localwiki-manage setup_all
+
+        # If first time setup, initialize site and wiki
+        if [ ! -d "$datadir/deploy" ]; then
+            echo "Adding default pages ..."
+            localwiki-manage loaddata basic_pages
+
+            echo "Configuring apache ..."
+            mkdir "$datadir/deploy"
+            cp "$confdir/localwiki.wsgi.template" "$datadir/deploy/localwiki.wsgi"
+            cp "$confdir/apache.conf.template" "/etc/apache2/sites-available/example.com"
+
+            # Allow apache to save uploads
+            chown www-data:www-data "$datadir/media"
+
+            # Enable mod_headers
+            a2enmod headers > /dev/null 2>&1
+
+            # Disable default apache site
+            [ -e /etc/apache2/sites-enabled/000-default ] && a2dissite default > /dev/null 2>&1
+
+            # Enable localwiki site
+            a2ensite example.com > /dev/null 2>&1
+
+            /etc/init.d/apache2 restart
+            echo "LocalWiki site enabled.  Configuration in /etc/apache2/sites-available/example.com"
+        fi
+
+        # Ask mod_wsgi to reload
+        touch "$datadir/deploy/localwiki.wsgi"
 ;;
 esac
 
