@@ -953,3 +953,7 @@ body .cke_dialog
     padding-top: 20px;
     font-style: italic;
 }
+
+.cke_dialog_ui_html .file_list a {
+    color: inherit;
+}

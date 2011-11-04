@@ -25,8 +25,10 @@ from models import Page, PageFile, url_to_name
 from forms import PageForm, PageFileForm
 from maps.widgets import InfoMap
 
-from models import slugify
+from models import slugify, clean_name
+from exceptions import PageExistsError
 from users.decorators import permission_required
+from django.template.loader import render_to_string
 
 # Where possible, we subclass similar generic views here.
 
@@ -42,9 +44,12 @@ class PageDetailView(Custom404Mixin, DetailView):
 
     def handler404(self, request, *args, **kwargs):
         name = url_to_name(kwargs['original_slug'])
+        page_templates = Page.objects.filter(slug__startswith='templates/')\
+                                     .order_by('name')
         return HttpResponseNotFound(
             direct_to_template(request, 'pages/page_new.html',
-                               {'page': Page(name=name, slug=kwargs['slug'])})
+                               {'page': Page(name=name, slug=kwargs['slug']),
+                                'page_templates': page_templates})
         )
 
     def get_context_data(self, **kwargs):
@@ -94,25 +99,43 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin, UpdateView):
     def success_msg(self):
         # NOTE: This is eventually marked as safe when rendered in our
         # template.  So do *not* allow unescaped user input!
+        message = ('Thank you for your changes. '
+                   'Your attention to detail is appreciated.')
+        if not self.request.user.is_authenticated():
+            message = ('Changes saved! To use your name when editing, please '
+                '<a href="%s?next=%s"><strong>log in</strong></a> or '
+                '<a href="%s?next=%s"><strong>create an account</strong></a>.'
+                % (reverse('django.contrib.auth.views.login'),
+                   self.request.path,
+                   reverse('registration_register'),
+                   self.request.path
+                   )
+                )
         map_create_link = ''
         if not hasattr(self.object, 'mapdata'):
             slug = self.object.pretty_slug
             map_create_link = (
-                '<p class="create_map"><a href="%s">'
-                'Create a map for this page?'
-                '</a></p>' % reverse('maps:edit', args=[slug])
+                '<p class="create_map"><a href="%s" class="button little map">'
+                '<span class="text">Create a map</span></a> '
+                'for this page?</p>' %
+                reverse('maps:edit', args=[slug])
             )
-        return (
-            '<div>Thank you for your changes. '
-            'Your attention to detail is appreciated.</div>'
-            '%s' % map_create_link
-        )
+        return '<div>%s</div>%s' % (message, map_create_link)
 
     def get_success_url(self):
         return reverse('pages:show', args=[self.object.pretty_slug])
 
     def create_object(self):
-        return Page(name=url_to_name(self.kwargs['original_slug']))
+        pagename = clean_name(self.kwargs['original_slug'])
+        content = '<p>Describe %s here</p>' % pagename
+        if 'template' in self.request.GET:
+            try:
+                p = Page.objects.get(slug=self.request.GET['template'])
+                content = p.content
+            except Page.DoesNotExist:
+                pass
+        return Page(name=url_to_name(self.kwargs['original_slug']),
+                    content=content)
 
 
 class PageDeleteView(PermissionRequiredMixin, DeleteView):
@@ -335,8 +358,10 @@ class PageRenameView(FormView):
             p = Page.objects.get(slug=slugify(self.kwargs['slug']))
             self.new_pagename = form.cleaned_data['pagename']
             p.rename_to(self.new_pagename)
-        except Page.DoesNotExist:
-            pass
+        except PageExistsError, s:
+            messages.add_message(self.request, messages.SUCCESS, s)
+            return HttpResponseRedirect(reverse('pages:show', args=[p.slug]))
+
         return HttpResponseRedirect(self.get_success_url())
 
     def get_context_data(self, **kwargs):

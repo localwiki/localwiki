@@ -42,7 +42,8 @@ class DaisyDiffTest(TestCase):
     def test_nbsp(self):
         tr = daisydiff(u'Hello \xa0 World', u'Hello World')
         self.assertEquals(tr,
-            u'<tr class="htmldiff">\n<td>Hello <del class="diff-html-removed">\xa0 </del>World</td><td>Hello World</td>\n</tr>')
+             (u'<tr class="htmldiff">\n<td>Hello <del class="diff-html-removed'
+              u'">\xa0 </del>World</td><td>Hello World</td>\n</tr>'))
 
 
 class DaisyDiffMergeTest(TestCase):
@@ -64,7 +65,8 @@ class DaisyDiffMergeTest(TestCase):
 
     @skipUnlessHasService
     def test_poor_quality_merge_style(self):
-        """ This doesn't quite work right but at least shouldn't lose anything
+        """
+        This doesn't quite work right but at least shouldn't lose anything.
         """
         (body, conflict) = daisydiff_merge(
             '<p><strong>Original</strong></p>',
@@ -87,3 +89,42 @@ class DaisyDiffMergeTest(TestCase):
         self.failUnless('First version' in body)
         self.failUnless('Second version' in body)
         self.failUnless('Original' not in body)
+
+    ##################################################################
+    # These tests are probably a bit too strict, but it's better than
+    # nothing for now.
+    ##################################################################
+    @skipUnlessHasService
+    def test_merge_conflict_is_readable(self):
+        ancestor = ('<p>Rosamunde sells delicious gourmet sausages!</p>'
+                    '<p>Vegans and beer-lovers are invited!</p>')
+        mine = ('<p>Rosamunde sells delicious gourmet sausages!</p>'
+                '<p>Vegans and beer-lovers are invited!</p>'
+                '<p>Their "mission street" sausage is a $6.50 play on the '
+                'classic <a href="/Bacon-wrapped_hot_dogs">bacon wrapped hot '
+                'dog</a>.</p>')
+        theirs = ('<p>Rosamunde sells delicious gourmet sausages!</p>'
+                  '<p>Vegans and beer-lovers are invited!</p>'
+                  '<p><a href="http://rosamundesausagegrill.com/haight-street"'
+                  '>Menu</a> (Haight Street)</p>'
+                  '<p><a href="http://rosamundesausagegrill.com/mission-street'
+                  '">Menu</a> (Mission Street)</p>')
+        (body, conflict) = daisydiff_merge(mine, theirs, ancestor)
+
+        expected = ('<p>Rosamunde sells delicious gourmet sausages!</p>'
+                '<p>Vegans and beer-lovers are invited!</p>'
+                '<strong class="editConflict">Edit conflict! Other version:'
+                '</strong>'
+                '<p><a href="http://rosamundesausagegrill.com/haight-street">'
+                'Menu</a> (Haight Street)</p><p>'
+                '<a href="http://rosamundesausagegrill.com/mission-street"'
+                '>Menu</a> (Mission Street)</p>'
+                '<strong class="editConflict">Edit conflict! Your version:'
+                '</strong>'
+                '<p>Their "mission street" sausage is a $6.50 play on the '
+                'classic <a href="/Bacon-wrapped_hot_dogs">bacon wrapped hot '
+                'dog</a>.</p>')
+
+        self.failUnless(conflict is True)
+        self.failUnlessEqual(body, expected)
+

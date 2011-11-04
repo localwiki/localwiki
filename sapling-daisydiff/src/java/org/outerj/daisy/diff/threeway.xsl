@@ -35,21 +35,21 @@
 
 <xsl:template match="@*|node()">
   <xsl:choose>
-    <xsl:when test="descendant::span[@class='diff-html-conflict-yours'] and not(preceding::span[1][@class='diff-html-conflict-yours']) and not(descendant::span[@class='diff-html-conflict-theirs'])">
-        <xsl:call-template name="insertmessage">
-          <xsl:with-param name="side">Your</xsl:with-param>
-        </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="descendant::span[@class='diff-html-conflict-theirs'] and not(preceding::span[1][@class='diff-html-conflict-theirs']) and not(descendant::span[@class='diff-html-conflict-yours'])">
-        <xsl:call-template name="insertmessage">
-          <xsl:with-param name="side">Other</xsl:with-param>
-        </xsl:call-template>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:copy>
-        <xsl:apply-templates select="@*|node()"/>
-      </xsl:copy>
-    </xsl:otherwise>
+  <xsl:when test="descendant::span[@class='diff-html-conflict-yours'] and not(descendant::span[@class='diff-html-conflict-theirs'])">
+      <xsl:call-template name="insertmessage">
+        <xsl:with-param name="side">Your</xsl:with-param>
+      </xsl:call-template>
+  </xsl:when>
+  <xsl:when test="descendant::span[@class='diff-html-conflict-theirs'] and not(descendant::span[@class='diff-html-conflict-yours'])">
+      <xsl:call-template name="insertmessage">
+        <xsl:with-param name="side">Other</xsl:with-param>
+      </xsl:call-template>
+  </xsl:when>
+  <xsl:otherwise>
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+  </xsl:otherwise>
   </xsl:choose>
 </xsl:template>
 
@@ -77,7 +77,6 @@
   </xsl:choose>
   
 </xsl:template>
-
 
 <xsl:template match="@*|node()" mode="nomessage">
 <xsl:copy>
@@ -113,12 +112,12 @@
 </xsl:template>
 
 <xsl:template match="span[@class='diff-html-conflict-yours']" >
-  <strong>Edit conflict! Your version:</strong>
+  <strong class="editConflict">Edit conflict! Your version:</strong>
   <xsl:apply-templates select="node()"/>
 </xsl:template>
 
 <xsl:template match="span[@class='diff-html-conflict-theirs']" >
-  <strong>Edit conflict! Other version:</strong>
+  <strong class="editConflict">Edit conflict! Other version:</strong>
   <xsl:apply-templates select="node()"/>
 </xsl:template>
 

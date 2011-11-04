@@ -1,3 +1,5 @@
+/* LICENSE and credits: please see LICENSE.txt in this directory */
+
 body {
     z-index: 0;
     background: #fafafa url(../img/body-bg.png) top left repeat;
@@ -44,8 +46,16 @@ h5, h6 {
     line-height: 125%;
     margin-bottom: 0.6em;
 }
-a {
-    color: #444;
+a, a:link {
+    color: #333c94;
+    color: #4c54a4;
+    color: #333c94;
+
+    color: #4e58b5;
+
+    /*color: #406d8f;
+    color: #4c668e;*/
+
 }
 a:hover {
     color: #111;
@@ -59,7 +69,7 @@ p {
 pre, code {
     margin: 15px 0;
     padding: .5em;
-    white-space: pre;
+    white-space: pre-wrap;
     overflow: auto;
     font-family: "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
     line-height: 20px;
@@ -127,6 +137,12 @@ textarea, input, select {
     padding-left: 3.5em;
     min-height: 4.2em;
 }
+#header_bar a, #header_bar a:link {
+    color: #444;
+}
+#header_bar a:hover {
+    color: #111;
+}
 #header_bar .inner {
     margin-top: 0.5em;
 }
@@ -162,8 +178,15 @@ textarea, input, select {
     padding-left: 1.5em;
     font-size: 130%;
 }
-#site_title a {
+#site_title a, #site_title a:link {
     text-decoration: none;
+    color: #444
+}
+#site_title a:hover {
+    color: #111;
+}
+#site_title img {
+    margin-top: -13px;
 }
 
 #object_actions {
@@ -209,10 +232,10 @@ textarea, input, select {
 }
 #header .site_search input[type="text"], #header .site_search #id_q {
     padding: 0;
-    height: 30px;
+    height: 2em;
     width: 180px;
     font-size: 15px;
-    line-height: 0;
+    line-height: 30px;
     background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 10px;
     padding-left: 30px;
     margin-right: 0.5em;
@@ -238,6 +261,12 @@ textarea, input, select {
     margin-top: -1.2em;
     margin-left: 1em;
     margin-bottom: 0.8em;
+}
+#map a, #map a:link {
+    color: #444;
+}
+#map a:hover {
+    color: #111;
 }
 /* Just the widget. Contained in #map. */
 .mapwidget.small {
@@ -297,6 +326,9 @@ textarea, input, select {
     margin-left: 2em;
     margin-top: -2em;
 }
+#nav a, #nav a:link {
+    color: #444;
+}
 #nav li {
     margin: 0;
     margin-right: 0.4em;
@@ -317,6 +349,11 @@ textarea, input, select {
     background-color: #e1e1e1;
     text-decoration: none;
 }
+#nav li a:hover {
+    background-color: #bfbfbf;
+    border: 1px solid #bfbfbf;
+    color: #111;
+}
 
 /*
 ====================================
@@ -329,8 +366,19 @@ textarea, input, select {
     background: #e1e1e1 url(../img/footer-bg.png) top left repeat;
     padding: 1.5em;
     clear: both;
+    min-height: 30px;
 }
 #footer p { margin: 0; padding: 0 }
+
+#powered_by {
+    float: right;
+}
+#powered_by a img {
+    border: none;
+}
+#powered_by a {
+    background-image: none;
+}
 
 /*
 ====================================
@@ -421,7 +469,7 @@ form p.required label { font-weight: bold; }
 textarea, input, button, .button, select {
     display: block;
     padding: 5px;
-    color: #444;
+    color: #444!important;
     background-color: #fff;
     border: 1px solid #BFBFBF;
     border-radius: 3px;
@@ -448,7 +496,7 @@ select {
 }
 input[type="submit"], input[type="button"], button, .button {
     font: 16px/25px "Cabin", Arial, "Helvetica Neue", "Helvetica", sans-serif;
-    color: #666;
+    color: #666!important;
     font-weight: bold;
     padding: 6px 10px;
     border: none;
@@ -472,11 +520,16 @@ input[type="submit"], input[type="button"], button, .button {
     margin: 0;
     font-size: 90%;
 }
+input.little {
+    /* values are slightly different to make it look the same as
+     * non-input little button. Not sure why this works but it does. */
+    height: 2.2em;
+}
 .tiny.button, input.tiny {
-    padding: 0.1em 0.5em 0.3em 0.5em;
+    padding: 10px 8px 11px 8px;
     margin: 0;
-    line-height: 1;
     font-size: 90%;
+    line-height: 0;
 }
 .button.cancel {
 }
@@ -488,7 +541,7 @@ input[type="submit"], input[type="button"], button, .button {
 
 input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:hover {
     background-color: #c8cbde;
-    color: #fff;
+    color: #fff!important;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
     border-color: #c8cbde;
     border-bottom-color: #757783;
@@ -502,9 +555,16 @@ input[type="hidden"] { display: none; }
 input[type="checkbox"], input[type="radio"] { display: inline; }
 label {
     margin-bottom: 4px;
-    font-weight: bold; color: #444;
+    font-weight: bold;
+    color: #444;
 }
-
+div.templates {
+    clear: both;
+}
+div.templates li {
+    list-style: none;
+    margin-left: 1em;
+}
 /* textarea { background: #fff; width: 435px; height: 150px; } */
 
 /*
@@ -520,6 +580,25 @@ label {
     -webkit-border-radius: 5px 5px 5px 5px;
     padding: 8px;
     display: table;
+}
+#compare_form label {
+    font-weight: normal;
+    color: #999999; /* On white bg, so let's go lighter */
+}
+#compare_form label a {
+    text-decoration: none; /* Underline is too intense here */
+    color: #5d66bf; /* on white bg, so let's go lighter */
+}
+#compare_form label a:hover {
+    color: #444;
+}
+#compare_form .date {
+    color: #444;
+    font-weight: bold;
+}
+#compare_form .date:hover {
+    color: #111;
+    text-decoration: underline;
 }
 #compare_form thead td, #compare_form tfoot td {
     padding-left: 1em;
@@ -595,11 +674,23 @@ label {
     min-height: 3em;
 }
 .create_map {
-    margin-top: 1em;
+    padding-top: 1em;
     min-width: 30px;
-    padding-left: 30px;
-    background: url(../img/map-icon-small.png) 6px 66% no-repeat;
-    display: block;
+    display: table;
+    vertical-align: top;
+    margin-bottom: 0;
+}
+.create_map .button {
+    margin-right: 0.5em;
+    margin-top: -0.35em;
+}
+.button.map .text {
+    background: url(../img/map-icon-small.png) 0px 66% no-repeat;
+    padding-left: 20px;
+}
+.button.redirect .text {
+    background: url(../img/arrow-turn-left.png) 2px 2px no-repeat;
+    padding-left: 20px;
 }
 
 /*
@@ -621,16 +712,46 @@ label {
 #recentchanges h3 {
     margin-top: 1em;
 }
-#recentchanges #limit_to {
-    margin-bottom: 1em;
+#recentchanges h3 a, #recentchanges h3 a:link {
+    color: #444;
 }
+#recentchanges h3 a:hover {
+    color: #111;
+}
+#recentchanges hr {
+    height: 5px;
+    border: none;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
+    margin-top: 2em;
+    margin-bottom: 1.5em;
+
+    /* Copied from #main margin: */
+    margin-left: -5em;
+    margin-right: -8em;
+}
+#recentchanges #limit_to {
+    float: right;
+    margin-top: 0.1em;
+}
+#recentchanges #limit_to span {
+    float: left;
+}
+#recentchanges #limit_to .pagination {
+    margin-left: 0.4em;
+    margin-right: 0.4em;
+    margin-top: -0.6em;
+}
+
+
 #recentchanges li {
+    list-style-type: none;
     margin-left: 0;
     padding-left: 30px;
+    margin-bottom: 0.7em;
 }
 
 #recentchanges .changelabel {
-    width: 3.5em;
+    width: 5.2em;
     /* This is basically .little.button */
     text-align: center;
     font-weight: bold;
@@ -640,7 +761,7 @@ label {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     float: left;
-    padding: 0.1em 0.5em 0.3em 0.5em;
+    padding: 7px 10px 8px 10px;
     line-height: 100%;
     margin: 0;
     margin-right: 1em;
@@ -648,7 +769,7 @@ label {
 }
 #recentchanges .changelabel.updated {
     /* .updated is a button */
-    color: #444;
+    color: #666;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
     -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
@@ -657,6 +778,12 @@ label {
     /* TODO: explore using purely CSS gradients */
     background: #E8ECEF url(../img/gradient.png) repeat-x bottom left;
     border: 1px solid #bfbfbf;
+
+    /* Slightly different padding*/
+    padding-top: 6px;
+    padding-bottom: 7px;
+
+    text-decoration: none;
 }
 #recentchanges .changelabel.updated:hover
 {
@@ -664,23 +791,30 @@ label {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
     border-color: #c8cbde;
     border-bottom-color: #757783;
+    color: #fff;
 }
 #recentchanges .changelabel.updated:active {
     box-shadow: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
 }
-#recentchanges .changelabel.updated:hover a {
-    color: #fff;
-}
 
 #recentchanges .changelabel.added {
-    background-color: #ffff77;
+    background-color: #fdfab4;
     color: #6b6945;
+    border-color: #e1e1e1;
+    border: none;
+    border-radius: 0px;
 }
 #recentchanges .changelabel.deleted {
-    background-color: #ff9999;
-    color: #794141;
+    background-color: #f3d8d8;
+    border-color: #dedede;
+    color: #808080;
+    color: #767676;
+    color: #6b6b6b;
+    color: #646464;
+    border: none;
+    border-radius: 0px;
 }
 #recentchanges .changelabel a {
     text-decoration: none;
@@ -690,21 +824,18 @@ label {
     color: black;
     padding-right: 0.5em;
 }
-#recentchanges .map .type {
-    min-width: 30px;
-    padding-left: 30px;
-    background: url(../img/map-icon-small.png) 5px 56% no-repeat;
-}
-#recentchanges .file .type {
-    min-width: 30px;
-    padding-left: 30px;
-    background: url(../pages/img/file_icons/document-block.png) 5px 56% no-repeat;
-}
 
-#recentchanges .redirect .type {
-    min-width: 30px;
-    padding-left: 30px;
-    background: url(../img/arrow-turn-left.png) 5px 56% no-repeat;
+#recentchanges .map .changelabel span {
+    background: url(../img/map-icon-small.png) 0px 66% no-repeat;
+    padding-left: 20px;
+}
+#recentchanges .file .changelabel span {
+    background: url(../img/document-block-light.png) 2px 66% no-repeat;
+    padding-left: 20px;
+}
+#recentchanges .redirect .changelabel span {
+    background: url(../img/arrow-turn-left.png) 2px 2px no-repeat;
+    padding-left: 20px;
 }
 
 /*
@@ -719,6 +850,7 @@ label {
     text-align: center;
 }
 
+
 /*
 ====================================
  Search results
@@ -728,7 +860,7 @@ label {
 #search_results .highlighted {
     font-weight: bold;
 }
-#search_results .pagination {
+#search_results .simple_pagination {
     height: 3em;
 }
 
@@ -747,12 +879,27 @@ label {
     height: 30px;
     width: 25em;
     font-size: 15px;
-    line-height: 0;
+    line-height: 30px;
     background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 10px;
     padding-left: 30px;
     margin-right: 0.5em;
     margin-bottom: 0.5em;
 }
+
+/*
+====================================
+ Pagination
+====================================
+*/
+
+.pagination { float: left; background: #e6e6e6; padding: 8px; border-radius: 5px; -moz-border-radius: 5px; webkit-border-radius: 5px; }
+.pagination a, .pagination span { background: #fff; display: block; color: #444; text-decoration: none; float: left; padding: 2px 10px; border: 1px solid #bfbfbf; border-left: none; }
+.pagination a.disabled, .pagination span.disabled,
+.pagination a.disabled:hover, .pagination span.disabled:hover { color: #999; background: #fff; }
+.pagination a:hover { background: url("../img/gradient-light.png") repeat-x scroll left bottom #f6f6f6; }
+.pagination .next { border-right: 1px solid #bfbfbf; }
+.pagination a:first-child { border-left: 1px solid #bfbfbf; }
+.pagination .current, .pagination .current:hover { color: #444; background: url("../img/gradient-light.png") repeat-x scroll left bottom #d9d9d9; }
 
 /*
 ====================================
@@ -813,6 +960,16 @@ form #content_footer {
 }
 
 /*
+=======================================
+ Page specific (not stuff in page css)
+=======================================
+*/
+#create_page {
+    min-height: 4em;
+}
+
+
+/*
 ====================================
  Map customizations for this theme
 ====================================
@@ -828,3 +985,4 @@ form #content_footer {
     left: 130px;
     margin-top: 10px;
 }
+

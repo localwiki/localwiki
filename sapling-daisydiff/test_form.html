@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title>sapling-daisydiff test rig</title>
+        <style>
+            label {
+                display: block;
+            }
+            textarea {
+                width: 500px;
+                height: 100px;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+        <script>
+            $(function(){
+               $("#merge_form").submit(function(){
+                   $(this).attr("action", $("#merge_url").val());
+                   return true;
+               }); 
+            });
+        </script>
+    </head>
+    <body>
+        <label>
+            DAISYDIFF_MERGE_URL:
+            <input id="merge_url" type="text" value="http://localhost:8080/daisydiff/merge"/>
+        </label>
+        <form id="merge_form" method="POST" target="_blank">
+            <label>
+                ancestor:
+                <textarea name="ancestor"></textarea>
+            </label>
+            <label>
+                field1:
+                <textarea name="field1"></textarea>
+            </label>
+            <label>
+                field2:
+                <textarea name="field2"></textarea>
+            </label>
+            <input type="submit" value="Merge"/>
+        </form>
+    </body>
+</html>

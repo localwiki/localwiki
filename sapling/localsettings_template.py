@@ -34,6 +34,7 @@ OLWIDGET_DEFAULT_OPTIONS = {
     'default_lat': 37.76,
     'default_lon': -122.43,
     'default_zoom': 12,
+    'zoom_to_data_extent_min': 16,
 
     'layers': ['cloudmade.35165', 've.aerial'],
     'map_options': {

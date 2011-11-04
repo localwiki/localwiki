@@ -289,12 +289,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 }, {
                     type: 'html',
                     id: 'webImageHint',
-                    html: 'or <span style="color:blue;text-decoration:underline;cursor:pointer;">use ' + (dialogType == 'attachfile' ? 'a file' : 'an image') + ' from the web</span>',
+                    html: 'or <a href="#">use ' + (dialogType == 'attachfile' ? 'a file' : 'an image') + ' from the web</a>',
                     style: 'float:left;margin-top:5px',
                     onClick: function () {
                         var urlText = this.getDialog().getContentElement('Upload', 'txtUrl');
                         urlText.getElement().show();
                         urlText.focus();
+                        return false;
                     }
                 }, {
                     type: 'text',

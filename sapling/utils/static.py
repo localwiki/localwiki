@@ -7,4 +7,8 @@ def static_url(path):
 
     Simple wrapper around staticfiles.storage.staticfiles_storage.
     """
-    return staticfiles_storage.url(path)
+    try:
+        return staticfiles_storage.url(path)
+    except ValueError:
+        # URL couldn't be found.  Let's just return the path.
+        return path

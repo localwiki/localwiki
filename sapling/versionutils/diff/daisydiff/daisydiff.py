@@ -5,6 +5,7 @@ import lxml
 
 from django.conf import settings
 from django.utils.http import urlencode
+from lxml import etree
 
 DAISYDIFF_URL = getattr(settings, 'DAISYDIFF_URL',
     'http://localhost:8080/diff')
@@ -68,6 +69,14 @@ def daisydiff_merge(field1, field2, ancestor, service_url=DAISYDIFF_MERGE_URL):
 
 def extract_merge(xml):
     doc = lxml.etree.fromstring(xml)
+    # remove repeating conflict messages
+    last_conflict_message = None
+    tree = etree.iterwalk(doc)
+    for action, elem in tree:
+        if elem.tag == 'strong' and elem.attrib.get('class') == 'editConflict':
+            if elem.text == last_conflict_message:
+                elem.getparent().remove(elem)
+            last_conflict_message = elem.text
     body_list = [lxml.etree.tostring(child, method='html', encoding='UTF-8')
                                  for child in doc.find('body')]
     body = ''.join(body_list)

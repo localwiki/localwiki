@@ -1,0 +1,2 @@
+class RedirectToSelf(Exception):
+    pass

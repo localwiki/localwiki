@@ -2,7 +2,6 @@
 
 from urllib import quote
 from lxml.html import fragments_fromstring
-from cStringIO import StringIO
 
 from django.test import TestCase
 from django.db import models
@@ -190,6 +189,25 @@ class PageTest(TestCase):
         self.assertEqual(len(PageFile.objects.filter(slug=p.slug)), 1)
 
         ###########################################################
+        # Renaming with multiple files.
+        ###########################################################
+        p = Page()
+        p.content = "<p>A new page with multiple files.</p>"
+        p.name = "Page with multiple files"
+        p.save()
+        # Create a file that points at the page.
+        pf = PageFile(file=ContentFile("foo"), name="file.txt", slug=p.slug)
+        pf.save()
+        pf = PageFile(file=ContentFile("foo2"), name="file2.txt", slug=p.slug)
+        pf.save()
+        pf = PageFile(file=ContentFile("foo3"), name="file3.txt", slug=p.slug)
+        pf.save()
+        p.rename_to("A page with multiple files 2")
+
+        p = Page.objects.get(name="A page with multiple files 2")
+        self.assertEqual(len(PageFile.objects.filter(slug=p.slug)), 3)
+
+        ###########################################################
         # Reverting a renamed page should be possible and should
         # restore files and FK'ed items that were pointed at the
         # original page.  The renamed-to page should still exist
@@ -209,10 +227,7 @@ class PageTest(TestCase):
         self.assertEqual(len(MapData.objects.filter(page=p2)), 1)
         self.assertEqual(len(PageFile.objects.filter(slug=p2.slug)), 1)
 
-        # The explicit redirect should point at the new page.
-        # len == 2 b/c we have our explicit redirect + rename_to()
-        # redirect.
-        self.assertEqual(len(Redirect.objects.filter(destination=p2)), 2)
+        self.assertEqual(len(Redirect.objects.filter(destination=p2)), 1)
 
         ###########################################################
         # Renaming a page and then renaming it back.
@@ -268,6 +283,53 @@ class PageTest(TestCase):
         self.assertEqual(p1.name, 'FOO A')
         self.assertEqual(p0.name, 'Foo A')
         self.assertEqual(p0.content, p1.content)
+
+        ###########################################################
+        # Renaming a page twice (A -> B -> C) and then revert A to
+        # an existing state.
+        ###########################################################
+        p = Page(name="Bar A", content="<p>Bar A</p>")
+        p.save()
+        p.rename_to("Bar B")
+        p = Page.objects.get(name="Bar B")
+        p.rename_to("Bar C")
+
+        p = Page(name="Bar A", slug="bar a")
+        p_h = p.versions.as_of(version=1)
+        p_h.revert_to()
+
+        ###########################################################
+        # Renaming a page back and forth and reverting.
+        ###########################################################
+        p = Page(name="Zoo A", content="<p>Zoo A</p>")
+        p.save()
+        p.rename_to("Zoo B")
+        p = Page.objects.get(name="Zoo B")
+        p.rename_to("Zoo A")
+        p = Page.objects.get(name="Zoo A")
+        p.rename_to("Zoo B")
+
+        p = Page(name="Zoo A", slug="zoo a")
+        p_h = p.versions.as_of(version=1)
+        p_h.revert_to()
+
+        ###########################################################
+        # page A, rename to B, then create new A, rename B to C,
+        # rename C to B, then revert C to first version
+        ###########################################################
+        p = Page(name="Mike A", content="<p>A</p>")
+        p.save()
+        p.rename_to("Mike B")
+        new_a = Page(name="Mike A", content="<p>A new</p>")
+        new_a.save()
+        p = Page.objects.get(name="Mike B")
+        p.rename_to("Mike C")
+        p = Page.objects.get(name="Mike C")
+        p.rename_to("Mike B")
+
+        p_c = Page(name="Mike C", slug="mike c")
+        p_h = p_c.versions.as_of(version=1)
+        p_h.revert_to()
 
 
 class TestModel(models.Model):
