@@ -1,5 +1,14 @@
 {% extends "pages/page_detail.html" %}
 
+{% block media %}
+{{ block.super }}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#id_destination').autocomplete({source: '/api/pages/suggest'});
+    });
+</script>
+{% endblock %}
+
 {% block dialog %}
 <div id="dialog">
  <form method="post" action="">{% csrf_token %}

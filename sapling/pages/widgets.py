@@ -84,5 +84,6 @@ class WikiEditor(CKEditor):
     class Media:
         js = (
               static_url('js/jquery/jquery-1.6.4.min.js'),
+              static_url('js/jquery/jquery-ui-1.8.16.custom.min.js'),
               static_url('js/ckeditor/sapling_utils.js'),
         )

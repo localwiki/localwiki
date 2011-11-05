@@ -101,6 +101,12 @@ urlpatterns = patterns('',
 
     url(r'^(?P<slug>.+)/_rename$', PageRenameView.as_view(), name='rename'),
 
+    # TODO: Break this out, use tastypie or something similar
+    ##########################################################
+    # API
+    ##########################################################
+    url(r'^api/pages/suggest', suggest),
+
     ##########################################################
     # Basic page URLs.
     ##########################################################
