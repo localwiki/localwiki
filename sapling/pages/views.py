@@ -390,6 +390,6 @@ def suggest(request):
 
     term = request.GET['term']
 
-    results = Page.objects.filter(name__startswith=term)
+    results = Page.objects.filter(name__istartswith=term)
     results = [p.name for p in results]
     return HttpResponse(json.dumps(results))
