@@ -231,5 +231,4 @@ class MapCompareView(diff.views.CompareView):
         # their media here to ensure we display more than one layer
         # correctly.
         context['map_diff_media'] = InfoMap([]).media + OLInfoMap([]).media
-        print InfoMap([]).media
         return context
