@@ -280,7 +280,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 		{
             // Set up autocomplete.
 			var urlField = this.getContentElement( 'info', 'url' );
-            $('input', urlField.$).autocomplete({source: '/api/pages/suggest'})
+            $('#' + urlField.domId + ' input').autocomplete({source: '/api/pages/suggest'})
 		},
 		// Inital focus on 'url' field if link is of type URL.
 		onFocus : function()
