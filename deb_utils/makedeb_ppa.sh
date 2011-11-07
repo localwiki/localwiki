@@ -9,6 +9,6 @@ cp triggers ../deb_dist/localwiki-$version/debian
 cd ../deb_dist/localwiki-$version
 dpkg-buildpackage -rfakeroot -S -sa
 cd ../
-dput ppa:mivanov/localwiki localwiki_$version-1_source.changes
+dput ppa:localwiki/ppa localwiki_$version-1_source.changes
 cd ../deb_utils
 
