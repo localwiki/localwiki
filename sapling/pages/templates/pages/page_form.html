@@ -2,6 +2,10 @@
 
 {% block title %}Editing page "{{ form.instance.name }}" - {{ block.super }}{% endblock %}
 
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
 {% block main_wrapper %}
     <div id="main" class="page_form">
         {% block main %}

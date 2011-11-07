@@ -2,6 +2,10 @@
 {% block title %}Page not found{% endblock %}
 {% block header_title %}Page "{{ page.name }}" does not exist (yet!){% endblock %}
 
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
 {% block content %}
 {% load pages_tags %}
   <div id="create_page">

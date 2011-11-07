@@ -3,6 +3,10 @@
 {{ block.super }}
 {{ form.media }}
 
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
 <script type="text/javascript">
     function size_map() {
         /* We want to size the map to the size of the container when the

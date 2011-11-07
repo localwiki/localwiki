@@ -1,5 +1,9 @@
 {% extends "pages/pagefile_info.html" %}
 
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
 {% block dialog %}
 <div id="dialog">
  <form method="post" action="">{% csrf_token %}
