@@ -72,7 +72,7 @@ class PageDetailView(Custom404Mixin, DetailView):
 
 
 class PageVersionDetailView(PageDetailView):
-    template_name = 'pages/page_detail.html'
+    template_name = 'pages/page_version_detail.html'
 
     def get_object(self):
         page = Page(slug=self.kwargs['slug'])

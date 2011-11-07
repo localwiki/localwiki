@@ -124,7 +124,7 @@ class MapObjectsForBounds(JSONResponseMixin, BaseListView):
 
 
 class MapVersionDetailView(MapDetailView):
-    template_name = 'maps/mapdata_detail.html'
+    template_name = 'maps/mapdata_version_detail.html'
     context_object_name = 'mapdata'
 
     def get_object(self):
