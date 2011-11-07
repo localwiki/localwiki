@@ -235,7 +235,7 @@ class PageFile(models.Model):
             kwargs={'slug': self.slug, 'file': self.name})
 
     @property
-    def page(self):
+    def attached_to_page(self):
         try:
             p = Page.objects.get(slug=self.slug)
         except Page.DoesNotExist:

@@ -72,7 +72,7 @@ class PageDetailView(Custom404Mixin, DetailView):
 
 
 class PageVersionDetailView(PageDetailView):
-    template_name = 'pages/page_detail.html'
+    template_name = 'pages/page_version_detail.html'
 
     def get_object(self):
         page = Page(slug=self.kwargs['slug'])
@@ -379,3 +379,17 @@ class PageRenameView(FormView):
             self.success_msg())
         # Redirect back to the page.
         return reverse('pages:show', args=[self.new_pagename])
+
+
+def suggest(request):
+    """
+    Simple page suggest.
+    """
+    # XXX TODO: Break this out when doing the API work.
+    import json
+
+    term = request.GET['term']
+
+    results = Page.objects.filter(name__istartswith=term)
+    results = [p.name for p in results]
+    return HttpResponse(json.dumps(results))

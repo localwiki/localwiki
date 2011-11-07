@@ -220,3 +220,55 @@ hr.selected {
 td, th {
     min-width: 10px;
 }
+
+/*
+====================================
+ Autocomplete
+====================================
+*/
+
+.ui-autocomplete {
+    position: absolute;
+    cursor: default;
+    z-index: 10011!important;
+}
+.ui-menu {
+	list-style:none;
+	padding: 0;
+	margin: 0;
+	display:block;
+	float: left;
+    background-color: #fff;
+    border: 1px solid #BFBFBF;
+    -webkit-border-bottom-right-radius: 2px;
+    -webkit-border-bottom-left-radius: 2px;
+    -moz-border-radius-bottomright: 2px;
+    -moz-border-radius-bottomleft: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+/* bump up autocomplete box a bit. setting margin here actually works */
+.ui-menu .ui-menu-item:first-child {
+    margin-top: -1px!important;
+}
+.ui-menu .ui-menu-item {
+	margin: 0;
+	zoom: 1;
+	float: left;
+	clear: left;
+	width: 100%;
+    background-color: #fff;
+}
+.ui-menu .ui-menu-item a {
+	text-decoration:none;
+	display:block;
+	padding:.2em .4em;
+	line-height:1.5;
+	zoom:1;
+    color: inherit;
+}
+.ui-menu .ui-menu-item a.ui-state-hover,
+.ui-menu .ui-menu-item a.ui-state-active {
+	font-weight: normal;
+    background-color: #e1e1e1;
+}

@@ -7,6 +7,12 @@ from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 
+from django.views.generic.list import BaseListView
+from olwidget import utils
+from olwidget.widgets import InfoMap as OLInfoMap
+from django.contrib.gis.geos.polygon import Polygon
+from django.utils.safestring import mark_safe
+
 from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin, JSONResponseMixin
 from versionutils.versioning.views import DeleteView, UpdateView
@@ -17,10 +23,6 @@ from pages.models import slugify
 from widgets import InfoMap
 from models import MapData
 from forms import MapForm
-from django.views.generic.list import BaseListView
-from olwidget import utils
-from django.contrib.gis.geos.polygon import Polygon
-from django.utils.safestring import mark_safe
 
 
 class MapDetailView(Custom404Mixin, DetailView):
@@ -122,7 +124,7 @@ class MapObjectsForBounds(JSONResponseMixin, BaseListView):
 
 
 class MapVersionDetailView(MapDetailView):
-    template_name = 'maps/mapdata_detail.html'
+    template_name = 'maps/mapdata_version_detail.html'
     context_object_name = 'mapdata'
 
     def get_object(self):
@@ -225,5 +227,8 @@ class MapCompareView(diff.views.CompareView):
     def get_context_data(self, **kwargs):
         # Send this in directly because we've wrapped InfoMap.
         context = super(MapCompareView, self).get_context_data(**kwargs)
-        context['map_diff_media'] = InfoMap([]).media
+        # We subclassed olwidget.widget.InfoMap. We want to combine both
+        # their media here to ensure we display more than one layer
+        # correctly.
+        context['map_diff_media'] = InfoMap([]).media + OLInfoMap([]).media
         return context

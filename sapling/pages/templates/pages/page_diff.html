@@ -1,8 +1,11 @@
 {% extends "pages/base.html" %}
 {% load static from staticfiles %}
-
 {% load diff_tags %}
 {% load pages_tags %}
+
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
 
 {% block media %}
   {{ block.super }}

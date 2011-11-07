@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block title %}Information about "{{ file.name }}" on {{ file.slug }} - {{ block.super }}{% endblock %}
-{% block header_title %}Information about "{{ file.name }}" on <a href="{% url pages:show slug=file.slug %}">{{ file.page }}</a>{% endblock %}
+{% block header_title %}Information about "{{ file.name }}" on <a href="{% url pages:show slug=file.slug %}">{{ file.attached_to_page }}</a>{% endblock %}
 
 {% block body %}
 <body>

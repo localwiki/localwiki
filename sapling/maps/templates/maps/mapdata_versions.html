@@ -5,6 +5,10 @@
   {% include "versionutils/history/media.html" %}
 {% endblock %}
 
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
 {% block title %}Previous versions of map for {{ mapdata.page.name }} - {{ block.super }}{% endblock %}
 
 {% block content %}
