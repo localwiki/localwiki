@@ -135,8 +135,8 @@ if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
 setup(
     name='localwiki',
     version=get_version(),
-    description="LocalWiki is a tool for collaboration in local, geographic communities",
-    long_description=open('README').read(),
+    description="LocalWiki is a tool for collaboration in local communities",
+    long_description=open(os.path.join('deb_utils','DESCRIPTION.debian')).read(),
     author='Mike Ivanov',
     author_email='mivanov@gmail.com',
     packages=find_packages(),
