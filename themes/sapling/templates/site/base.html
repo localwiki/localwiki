@@ -8,7 +8,7 @@
        Remove this if you use the .htaccess -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-  <title>{% block title %}Wiki{% endblock %}</title>
+  <title>{% block title %}{% if current_site %}{{ current_site.name }}{% else %}Wiki{% endif %}{% endblock %}</title>
   <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
   <link rel="shortcut icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
