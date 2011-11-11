@@ -173,10 +173,17 @@ textarea, input, select {
 
 #site_title {
     background: #fafafa url(../img/body-bg.png) top left repeat;
-    height: 4em;
-    padding-top: 1em;
+    min-height: 4em;
     padding-left: 1.5em;
     font-size: 130%;
+    padding-top: 1em;
+    margin: 0;
+}
+#site_title h1 {
+}
+#site_title img {
+    margin-top: -0.1em;
+    padding-bottom: 1.6em; /* make sure there's room for #nav */
 }
 #site_title a, #site_title a:link {
     text-decoration: none;
@@ -184,9 +191,6 @@ textarea, input, select {
 }
 #site_title a:hover {
     color: #111;
-}
-#site_title img {
-    margin-top: -13px;
 }
 
 #object_actions {
@@ -985,4 +989,3 @@ form #content_footer {
     left: 130px;
     margin-top: 10px;
 }
-
