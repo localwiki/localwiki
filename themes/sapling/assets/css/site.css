@@ -173,13 +173,17 @@ textarea, input, select {
 
 #site_title {
     background: #fafafa url(../img/body-bg.png) top left repeat;
-    min-height: 4em;
+    min-height: 3.95em;
     padding-left: 1.5em;
     font-size: 130%;
     padding-top: 1em;
     margin: 0;
+    border-bottom: 1px solid #E8ECEF; /* Check before removing this border -
+        it's needed for the correct CSS margin/padding behavior.
+        TODO: fix this. */
 }
 #site_title h1 {
+    margin-bottom: 0;
 }
 #site_title img {
     margin-top: -0.1em;
