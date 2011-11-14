@@ -98,6 +98,25 @@ class MapGlobalView(ListView):
         return context
 
 
+class MapAllObjectsAsPointsView(MapGlobalView):
+    """
+    Like MapGlobalView, but return all objects as points and do not filter by zoom.
+    """
+    def get_queryset(self):
+        return super(MapGlobalView, self).get_queryset()
+
+    def get_context_data(self, **kwargs):
+        context = super(MapGlobalView, self).get_context_data(**kwargs)
+        map_objects = [
+            (obj.geom.centroid, popup_html(obj))
+            for obj in self.object_list
+        ]
+        context['map'] = InfoMap(map_objects, options={
+            'dynamic': False, 'zoomToDataExtent': False})
+        context['dynamic_map'] = False
+        return context
+
+
 class MapObjectsForBounds(JSONResponseMixin, BaseListView):
     model = MapData
 
