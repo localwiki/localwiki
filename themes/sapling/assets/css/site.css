@@ -186,7 +186,7 @@ textarea, input, select {
     margin-bottom: 0;
 }
 #site_title img {
-    margin-top: -0.1em;
+    margin-top: -0.4em;
     padding-bottom: 1.6em; /* make sure there's room for #nav */
 }
 #site_title a, #site_title a:link {
