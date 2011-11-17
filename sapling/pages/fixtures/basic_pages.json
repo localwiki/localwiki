@@ -21,6 +21,15 @@
         "pk": null, 
         "model": "pages.page", 
         "fields": {
+            "content": "<p>\n\tWrite anything you&#39;d like about yourself here!</p>\n<h2>\n\tContact info</h2>\n<ul>\n\t<li>\n\t\tTwitter</li>\n\t<li>\n\t\tFacebook</li>\n\t<li>\n\t\tEmail</li>\n</ul>",
+            "name": "Templates/User", 
+            "slug": "templates/user"
+        }
+    },
+    {
+        "pk": null, 
+        "model": "pages.page", 
+        "fields": {
             "content": "<table>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Location</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tPlease fill in address</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Hours</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(Please fill in hours)</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Phone</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(415) 555-5555</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Website</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tAdd link here</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Established</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(Date, i.e. YYYY-MM-DD)</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Price range</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(Prices for \"average\" entrees)</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Payment Methods</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(Cash, check, credit cards, other?)</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Wheelchair accessibility</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(notes on stairs, bathroom access, handrails, aisle width)</td>\n\t\t</tr>\n\t</tbody>\n</table>\n<p>\n\tThen, put\u00a0<em>whatever</em>\u00a0you want down here! Note that\u00a0<a href=\"http://local.google.com\">http://local.google.com</a>\u00a0is sometimes a good and easy place to find times/phone. Better yet, look them up in the phone book, and ask them.</p>\n<p>\n\tRemember to add this restaurant to the neighborhood\u00a0<a href=\"restaurants\">restaurants</a>\u00a0page.</p>\n<h3>\n\tRelated Links</h3>\n<ul>\n\t<li>\n\t\t<a href=\"Restaurants\">Restaurants</a></li>\n</ul>\n<p>\n\t\u00a0</p>\n", 
             "name": "Templates/Restaurant", 
             "slug": "templates/restaurant"
