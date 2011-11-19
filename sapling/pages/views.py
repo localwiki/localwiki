@@ -28,7 +28,6 @@ from maps.widgets import InfoMap
 from models import slugify, clean_name
 from exceptions import PageExistsError
 from users.decorators import permission_required
-from django.template.loader import render_to_string
 
 # Where possible, we subclass similar generic views here.
 
