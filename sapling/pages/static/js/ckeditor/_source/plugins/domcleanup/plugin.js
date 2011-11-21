@@ -111,7 +111,7 @@ CKEDITOR.plugins.add( 'domcleanup',
                         	for (i = 0; i < styles.length; i++)
                         	{
                         		style = styles[i].split(':');
-                        		k = $.trim(style[0]);
+                        		k = $.trim(style[0]).toLowerCase(); // IE sometimes has styles in ALL CAPS
                         		v = $.trim(style.slice(1).join(':'));
                         		if (k.length > 0 && v.length > 0
                         			&& ok_styles[element.name].indexOf(k) >= 0)

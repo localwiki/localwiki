@@ -1,10 +1,10 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from django.template.loader import render_to_string
+from django.conf import settings
+from django.utils.safestring import mark_safe
 
 attrs_dict = {'class': 'required'}
-TOS_AGREEMENT = render_to_string("tos/license_on_signup.html")
 
 
 class RegistrationForm(forms.Form):
@@ -37,7 +37,8 @@ class RegistrationForm(forms.Form):
     name = forms.CharField(required=False, label=_("Your name"))
 
     tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
-            label=TOS_AGREEMENT, error_messages={'required':
+            label=mark_safe(settings.SIGNUP_TOS),
+            error_messages={'required':
                 _("You must agree to the terms to register")})
 
     def clean_username(self):

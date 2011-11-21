@@ -130,6 +130,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             // Image is ready.
             var image = this.imageElement;
             image.setCustomData('isReady', 'true');
+            sizeImage(image);
             image.removeListener('load', onImgLoadEvent);
             image.removeListener('error', onImgLoadErrorEvent);
             image.removeListener('abort', onImgLoadErrorEvent);
@@ -177,7 +178,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	                if (!this.imageElement.getAttribute('style')) this.imageElement.removeAttribute('style');
 	
 	                // Insert a new Image.
-	                sizeImage(this.imageElement);
 	                var spanElement = editor.document.createElement('span');
 	                spanElement.setAttribute('class', 'image_frame image_frame_border');
 	                spanElement.append(this.imageElement);
