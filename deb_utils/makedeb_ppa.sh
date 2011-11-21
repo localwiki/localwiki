@@ -25,7 +25,7 @@ cp deb_utils/localwiki.postinst deb_dist/localwiki-${LW_VERSION}/debian
 cp deb_utils/triggers deb_dist/localwiki-${LW_VERSION}/debian
 cd deb_dist/localwiki-${LW_VERSION}
 
-dpkg-buildpackage -rfakeroot -S -sd
+dpkg-buildpackage -rfakeroot -S -sa
 
 cd ../
 dput ppa:localwiki/ppa localwiki_${VERSION}_source.changes
