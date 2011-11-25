@@ -1,65 +1,74 @@
-Here's how to get this code running on Ubuntu Server Edition 10.04 LTS.  For
-more general install instructions see the NOTE at the bottom of this document.
+For non-development installs we *highly* recommend using our standard
+installation packages. Details here:
+
+  http://localwiki.org/install
+
+These packages are much easier to keep updated.
+
+The following install instructions are geared for development setups or non-Ubuntu
+installs.
 
 1.  Prerequisites: solr + jetty, python imaging library, python lxml bindings,
-python-setuptools, virtualenv, gdal, postgresql with postgis:
+python-setuptools, virtualenv, gdal, postgresql with postgis.  Here's how we
+get these packages in Ubuntu 10.04 LTS:
 
     $ sudo apt-get install python-setuptools solr-jetty python-lxml python-imaging
     $ sudo apt-get install gdal-bin proj postgresql-8.4-postgis python-psycopg2
     $ sudo easy_install --upgrade virtualenv
 
-2.  Create a virtualenv. For more info, see http://pypi.python.org/pypi/virtualenv
+2.  Create a virtualenv. For more info, see http://pypi.python.org/pypi/virtualenv.
+*Note*: We store some important site-specific data in the virtualenv, so don't
+delete it without first backing up the share/localwiki directory inside it.
+
     $ virtualenv env
     
     Activate the new environment. Run all of the following commands in this environment:
+
     $ source env/bin/activate
 
-3.  Install required python packages using requirements.txt:
-	(env)$ pip install --upgrade -r install_config/requirements.txt
+3.  Install the localwiki package and its dependencies:
 
-4.  Create the database and database user.  Here's how we do it:
+	(env)$ python setup.py install
 
-    (env)$ sudo -u postgres bash install_config/create_template_postgis-debian.sh
-    (env)$ sudo -u postgres createuser sapling -PSDR # REMEMBER THE PASSWORD YOU TYPE HERE!
-    (env)$ sudo -u postgres createdb -E UTF8 -T template_postgis -O sapling sapling
+4.  Allow the search, diff services to start & back up existing config.  This will
+differ between systems.  We use this setup_jetty.sh script on Ubuntu systems:
 
-    You may want to customize the db privileges based on your local setup.
-
-5.  Allow the search, diff services to start & back up existing config:
     (env)$ sudo install_config/setup_jetty.sh
 
-6.  Copy sapling/localsettings_template.py to sapling/localsettings.py:
-	(env)$ cp sapling/localsettings_template.py sapling/localsettings.py
+Take a look at the setup_jetty.sh script (it's short). You may need to
+customize it for your particular OS.
 
-    Edit sapling/localsettings.py, adding your db password from step 5.
+5. Initialize the localwiki install:
 
-Initialize the project environment:
+	(env)$ localwiki-manage setup_all
 
-	(env)$ python sapling/manage.py syncdb
-    (env)$ python sapling/manage.py migrate
-    (env)$ python sapling/manage.py collectstatic
-    (env)$ python sapling/manage.py reset_permissions
-    (env)$ python sapling/manage.py loaddata basic_pages
+You'll be asked to sudo in order to create the postgres database.
 
 You are now done configuring and installing things! You can start the built-in
 Django development server:
     
-    (env)$ python sapling/manage.py runserver
+    (env)$ localwiki-manage runserver
 
 Hooray!  You can visit the site at http://127.0.0.1:8000/
 
 Note: For security/efficiency, the built-in server listens on 127.0.0.1 only.
-      For real deployments you'll want to use an actual webserver.  The code 
-      isn't production ready yet, so don't do that.
+      For real deployments you'll want to set up apache.
+      See http://guide.localwiki.org for more instructions.
+
+Note: You'll want to run source env/bin/activate every time you want to access
+      the localwiki-manage command.
 
 -------------------------------------------------------------------------------
-These instructions are specific to Ubuntu Server Edition 10.04 LTS.  It should
-be very possible to run this on any *nix system.  You'll need to:
+We've really only tested things on Ubuntu Server Edition 10.04 LTS.  It should
+be very possible to run this on any Unix-y system.  You'll need to:
 
   * Hunt down the correct prerequisites for Step 1.
   * Make sure that Step 5 is completed.  Take a peek at install_config/setup_jetty.sh
     to see what it's doing.  It's simple stuff, really, but the configuration files
     may be in a different spot on your system.
+
+Help us document this stuff!  Add something to http://guide.localwiki.org or
+the github wiki.
 
 == Database Note ==
 This setup assumes we're using PostgreSQL and its geographic companion,

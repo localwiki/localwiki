@@ -6,10 +6,13 @@
   4. For non-trivial contributions, agree to the contributor agreement:
      http://localwiki.org/cla
 
-Email patches to philip@localwiki.org, issue a GitHub pull request, or post
-them to the LocalWiki development mailing list.
+Email issue a GitHub pull request, email patches to philip@localwiki.org, or
+post them to the LocalWiki development mailing list.
 
-Please also see our ticketing system at http://code.trac.localwiki.org/.
+Please also see our ticketing system at:
+
+  https://github.com/localwiki/localwiki/issues
+
 Picking out some tickets to work on is a great way to get started on the 
 project!
 
@@ -22,9 +25,9 @@ great way to quickly chat about functionality and plans!
 If using GitHub:
 
    1. Fork on GitHub (click Fork button)
-   2. Clone to computer ($ git clone git@github.com:you/sapling.git )
+   2. Clone to computer ($ git clone git@github.com:you/localwiki.git )
    3. Set up remote upstream
-      ($ git remote add upstream git://github.com/localwiki/sapling.git)
+      ($ git remote add upstream git://github.com/localwiki/localwiki.git)
    4. Create a branch for new issue ($ git checkout -b 100-new-feature)
    5. Develop on issue branch.
       [Time passes, the main LocalWiki repository accumulates new commits]
