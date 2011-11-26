@@ -214,6 +214,8 @@ INSTALLED_APPS = (
 )
 
 LOCAL_INSTALLED_APPS = ()
+# We set this manually, after localsettings import, below.
+TEMPLATE_DIRS = ()
 
 SITE_THEME = 'sapling'
 
@@ -227,12 +229,19 @@ except:
 # Allow localsettings.py to define LOCAL_INSTALLED_APPS.
 INSTALLED_APPS = tuple(list(INSTALLED_APPS) + list(LOCAL_INSTALLED_APPS))
 
+###############################
+# Setup template directories
+###############################
+LOCAL_TEMPLATE_DIR = os.path.join(DATA_ROOT, 'templates')
+PROJECT_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'templates')
+
 # A site theme uses a template directory with a particular name.
 # Site themes can live in either the global themes/ directory
 # or in the local themes/ directory (in DATA_ROOT).
-GLOBAL_THEME_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'templates')
+PROJECT_THEME_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'templates')
 LOCAL_THEME_TEMPLATE_DIR = os.path.join(DATA_ROOT, 'themes', SITE_THEME, 'templates')
-TEMPLATE_DIRS = tuple([LOCAL_THEME_TEMPLATE_DIR, GLOBAL_THEME_TEMPLATE_DIR] +
+
+TEMPLATE_DIRS = tuple([LOCAL_TEMPLATE_DIR, PROJECT_TEMPLATE_DIR, LOCAL_THEME_TEMPLATE_DIR, PROJECT_THEME_TEMPLATE_DIR] +
                       list(TEMPLATE_DIRS))
 
 
