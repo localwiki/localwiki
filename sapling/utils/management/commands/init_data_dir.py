@@ -18,6 +18,9 @@ class Command(object):
         if not os.path.exists(share_dir):
             os.makedirs(share_dir)
 
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir)
+
         defaults_dir = os.path.join(self.PROJECT_ROOT, 'etc', 'install_config',
             'defaults')
 

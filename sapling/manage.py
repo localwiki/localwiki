@@ -37,6 +37,17 @@ def main(set_apps_path=True):
         else:
             print "Existing localwiki data directory found! Using %s\n" % DATA_ROOT
 
+    if len(sys.argv) >= 2:
+        if sys.argv[1] == 'init_data_dir':
+            init_data_dir.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
+            return
+        if sys.argv[1] == 'init_db':
+            init_db.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
+            return
+        if sys.argv[1] == 'init_settings':
+            init_settings.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
+            return
+
     try:
         import settings  # Assumed to be in the same directory.
     except ImportError:
