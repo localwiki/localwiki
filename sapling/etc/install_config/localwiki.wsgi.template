@@ -1,3 +1,6 @@
+# This is an example .wsgi file that will work if you've installed
+# localwiki globally, e.g. via apt-get.
+
 import os
 import sys
 
