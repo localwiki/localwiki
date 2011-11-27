@@ -126,6 +126,10 @@ USERS_DEFAULT_PERMISSIONS = {'auth.group':
 # django-guardian setting
 ANONYMOUS_USER_ID = -1
 
+# By default we load only one map layer on most pages to speed up load
+# times.
+OLWIDGET_INFOMAP_MAX_LAYERS = 1
+
 # Should we display user's IP addresses to non-admin users?
 SHOW_IP_ADDRESSES = True
 

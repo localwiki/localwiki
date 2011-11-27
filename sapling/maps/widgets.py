@@ -2,8 +2,6 @@
 # This is a thin wrapper over olwidget.
 # We provide our own media.
 ################################################
-from urlparse import urljoin
-
 from django.conf import settings
 
 from olwidget import widgets
@@ -27,8 +25,9 @@ class InfoMap(MediaMixin, widgets.InfoMap):
 
     def __init__(self, *args, **kwargs):
         val = super(InfoMap, self).__init__(*args, **kwargs)
-        # Just display one layer for InfoMaps, for now.
-        if len(self.options['layers']) > 1:
-            self.options['layers'] = self.options['layers'][:1]
+        # Potentially limit # of layers on InfoMaps, for now. This helps
+        # with quicker load times on most pages.
+        max_layers = getattr(settings, 'OLWIDGET_INFOMAP_MAX_LAYERS', 1)
+        self.options['layers'] = self.options['layers'][:max_layers]
         return val
 
