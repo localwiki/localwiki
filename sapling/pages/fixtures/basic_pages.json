@@ -57,7 +57,7 @@
         "pk": null, 
         "model": "pages.page", 
         "fields": {
-            "content": "<p>\n\tWelcome to your brand new localwiki! \u00a0There are currently just a handful of pages in it, to get you started. \u00a0Here are a few useful pages:</p>\n<ul>\n\t<li>\n\t\t\u200b<a href=\"Help\">Help</a></li>\n\t<li>\n\t\t<a href=\"Admin%20documentation\">Admin documentation</a></li>\n\t<li>\n\t\t\u200b<a href=\"Templates\">Templates</a></li>\n</ul>\n<p>\n\tClick on\u00a0<strong>All Pages</strong>\u00a0at the top to see what else is there now.</p>\n<p>\n\tYou can edit this and any other page by clicking the <strong>Edit</strong> button.</p>\n<p>\n\tTo create a new page, type a page name into the search box and press\u00a0<strong>Search or create page</strong>.</p>\n<p>\n\t\u00a0</p>\n", 
+            "content": "<p>\n\tWelcome to your brand new localwiki! \u00a0There are currently just a handful of pages in it, to get you started. \u00a0Here are a few useful pages:</p>\n<ul>\n\t<li>\n\t\t\u200b<a href=\"Help\">Help</a></li>\n\t<li>\n\t\t<a href=\"Admin%20documentation\">Admin documentation</a></li>\n\t<li>\n\t\t\u200b<a href=\"Templates\">Templates</a></li>\n</ul>\n<p>\n\tClick on\u00a0<strong>All Pages</strong>\u00a0at the top to see what else is there now.</p>\n<p>\n\tYou can edit this and any other page by clicking the <strong>Edit</strong> button.</p>\n<p>\n\tTo create a new page, type a page name into the search box and press\u00a0<strong>Search or create page</strong>.</p>\n", 
             "name": "Front Page", 
             "slug": "front page"
         }
