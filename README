@@ -1,6 +1,20 @@
+=========
+LocalWiki
+=========
+
+LocalWiki is a modern wiki engine designed for local, geographic collaboration.
+
 We're _really_ just getting started here.
 
-For project information, please see http://code.trac.localwiki.org/.
+General install instructions here:
+
+  http://localwiki.org/install/
+
+For developers, see the INSTALL file.
+
+For project development information, please see:
+
+  https://dev.localwiki.org
 
 We've got a development mailing list here:
 
