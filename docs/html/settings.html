@@ -74,16 +74,18 @@ enter the domain name and display name and press &#8220;Save&#8221;.</p>
 </div>
 <div class="section" id="localsettings-py">
 <h2><tt class="docutils literal"><span class="pre">localsettings.py</span></tt><a class="headerlink" href="#localsettings-py" title="Permalink to this headline">¶</a></h2>
-<p>Settings particular to your installation go in this file and can override
-the settings in <tt class="docutils literal"><span class="pre">settings.py</span></tt>.  Here are some things you may need or wish
-to modify:</p>
+<p>Settings particular to your installation go in this file, found at
+<tt class="docutils literal"><span class="pre">/usr/share/localwiki/conf/localsettings.py</span></tt> on your system. Here are some
+things you may need or wish to modify:</p>
 <dl class="docutils">
 <dt><tt class="docutils literal"><span class="pre">SITE_THEME</span></tt></dt>
 <dd>The name of the directory under <tt class="docutils literal"><span class="pre">themes</span></tt> to look for the theme templates
 and static files.</dd>
 <dt><tt class="docutils literal"><span class="pre">OLWIDGET_DEFAULT_OPTIONS</span></tt></dt>
 <dd>Defaults for all map widgets, including default location, theme, navigation
-controls, colors, etc.</dd>
+controls, colors, etc.  To set the default map location, change
+<tt class="docutils literal"><span class="pre">default_lat</span></tt> and <tt class="docutils literal"><span class="pre">default_lon</span></tt>.  Use this tool to look it up:
+<a class="reference external" href="http://www.getlatlon.com/">http://www.getlatlon.com/</a></dd>
 <dt><tt class="docutils literal"><span class="pre">CLOUDMADE_API_KEY</span></tt></dt>
 <dd>Your developer API key from <a class="reference external" href="http://developers.cloudmade.com/">Cloudmade</a></dd>
 <dt><tt class="docutils literal"><span class="pre">EMBED_ALLOWED_URLS</span></tt></dt>

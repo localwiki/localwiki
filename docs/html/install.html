@@ -50,7 +50,113 @@
             
   <div class="section" id="installing">
 <h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h1>
-<p>Stub</p>
+<p>The easiest way to install LocalWiki is by using our Ubuntu package.</p>
+<div class="section" id="installing-on-ubuntu">
+<h2>Installing on Ubuntu<a class="headerlink" href="#installing-on-ubuntu" title="Permalink to this headline">¶</a></h2>
+<p>LocalWiki is available as a prebuilt package for Ubuntu 10.04 LTS or newer.</p>
+<p>Just open a terminal and run these commands:</p>
+<div class="highlight-python"><pre>sudo apt-get install python-software-properties
+sudo apt-add-repository ppa:localwiki
+sudo apt-get update
+sudo apt-get install localwiki</pre>
+</div>
+<p>That&#8217;s it! Follow the prompts to configure LocalWiki.</p>
+</div>
+<div class="section" id="installing-on-other-systems">
+<h2>Installing on other systems<a class="headerlink" href="#installing-on-other-systems" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This installation method is recommended only for developers.</p>
+</div>
+<p>See our <tt class="docutils literal"><span class="pre">INSTALL</span></tt> file for detailed instructions.  The file is also included
+here:</p>
+<div class="highlight-python"><pre>For non-development installs we *highly* recommend using our standard
+installation packages. Details here:
+
+  http://localwiki.org/install
+
+These packages are much easier to keep updated.
+
+The following install instructions are geared for development setups or non-Ubuntu
+installs.
+
+1.  Prerequisites: solr + jetty, python imaging library, python lxml bindings,
+python-setuptools, virtualenv, gdal, postgresql with postgis.  Here's how we
+get these packages in Ubuntu 10.04 LTS:
+
+    $ sudo apt-get install python-setuptools solr-jetty python-lxml python-imaging
+    $ sudo apt-get install gdal-bin proj postgresql-8.4-postgis python-psycopg2
+    $ sudo easy_install --upgrade virtualenv
+
+2.  Create a virtualenv. For more info, see http://pypi.python.org/pypi/virtualenv.
+*Note*: We store some important site-specific data in the virtualenv, so don't
+delete it without first backing up the share/localwiki directory inside it.
+
+    $ virtualenv env
+    
+    Activate the new environment. Run all of the following commands in this environment:
+
+    $ source env/bin/activate
+
+3.  Install the localwiki package and its dependencies:
+
+	(env)$ python setup.py install
+
+4.  Allow the search, diff services to start &amp; back up existing config.  This will
+differ between systems.  We use this setup_jetty.sh script on Ubuntu systems:
+
+    (env)$ sudo install_config/setup_jetty.sh
+
+Take a look at the setup_jetty.sh script (it's short). You may need to
+customize it for your particular OS.
+
+5. Initialize the localwiki install:
+
+	(env)$ localwiki-manage setup_all
+
+You'll be asked to sudo in order to create the postgres database.
+
+You are now done configuring and installing things! You can start the built-in
+Django development server:
+    
+    (env)$ localwiki-manage runserver
+
+Hooray!  You can visit the site at http://127.0.0.1:8000/
+
+Note: For security/efficiency, the built-in server listens on 127.0.0.1 only.
+      For real deployments you'll want to set up apache.
+      See http://guide.localwiki.org for more instructions.
+
+Note: You'll want to run source env/bin/activate every time you want to access
+      the localwiki-manage command.
+
+-------------------------------------------------------------------------------
+We've really only tested things on Ubuntu Server Edition 10.04 LTS.  It should
+be very possible to run this on any Unix-y system.  You'll need to:
+
+  * Hunt down the correct prerequisites for Step 1.
+  * Make sure that Step 5 is completed.  Take a peek at install_config/setup_jetty.sh
+    to see what it's doing.  It's simple stuff, really, but the configuration files
+    may be in a different spot on your system.
+
+Help us document this stuff!  Add something to http://guide.localwiki.org or
+the github wiki.
+
+== Database Note ==
+This setup assumes we're using PostgreSQL and its geographic companion,
+PostGIS.  You should in theory be able to use any supported Django database.
+If you'd like to do something more specialized, please see the general Django
+install instructions here:
+
+http://docs.djangoproject.com/en/dev/topics/install/
+
+and the GeoDjango install instructions here:
+
+http://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
+-------------------------------------------------------------------------------
+</pre>
+</div>
+</div>
 </div>
 
 
@@ -59,6 +165,15 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installing</a><ul>
+<li><a class="reference internal" href="#installing-on-ubuntu">Installing on Ubuntu</a></li>
+<li><a class="reference internal" href="#installing-on-other-systems">Installing on other systems</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="index.html"
                         title="previous chapter">LocalWiki Documentation</a></p>
