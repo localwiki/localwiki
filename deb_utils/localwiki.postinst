@@ -35,9 +35,6 @@ case "$1" in
 
         # If first time setup, initialize site and wiki
         if [ ! -d "$datadir/deploy" ]; then
-            echo "Adding default pages ..."
-            localwiki-manage loaddata basic_pages
-
             echo "Configuring apache ..."
             mkdir "$datadir/deploy"
             cp "$confdir/localwiki.wsgi.template" "$datadir/deploy/localwiki.wsgi"
