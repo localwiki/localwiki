@@ -32,7 +32,7 @@ this group additional permissions.
 If you followed the installation instructions, you should have the following
 groups out of the box:
 
-.. figure:: /images/admin_groups.png
+.. figure:: /_static/images/admin_groups.png
 
 ``Anonymous``
     This group contains ``AnonymousUser``, which is used to set permissions for
@@ -58,13 +58,13 @@ not have any permissions.
 
 First, find the user in the admin interface, using the search box:
 
-.. figure:: /images/admin_user_search.png
+.. figure:: /_static/images/admin_user_search.png
 
 Click on the username, and scroll down "Groups" section. Hold down
 "Control" ("Command" on a Mac) while selecting ``Banned`` group, and press
 "Save".
 
-.. figure:: /images/admin_ban_user.png
+.. figure:: /_static/images/admin_ban_user.png
 
 
 Setting permissions for specific objects
@@ -79,15 +79,15 @@ Say, for example, you want to lock down a page so that only logged-in users
 can edit it.  First, find the page in the admin interface and click on
 "Object permissions" in the top right.
 
-.. figure:: /images/admin_page_permissions1.png
+.. figure:: /_static/images/admin_page_permissions1.png
 
 Then in the Groups section enter "Authenticated" and click "Manage group".
 
-.. figure:: /images/admin_page_permissions2.png
+.. figure:: /_static/images/admin_page_permissions2.png
 
 Click the "Choose all" button and press "Save".
 
-.. figure:: /images/admin_page_permissions3.png
+.. figure:: /_static/images/admin_page_permissions3.png
 
 Now, only those users who have logged in will be able to edit this page.
 
@@ -111,6 +111,7 @@ each group and select which default permissions the group should have.
 Editing all of your group permissions by hand can be a lot to manage, so we
 provide a setting you can modify in ``settings.py`` and a command to apply
 them.  At the time of writing this, the setting looks like this::
+
     USERS_DEFAULT_PERMISSIONS = {'auth.group':
                                  [{'name': USERS_DEFAULT_GROUP,
                                    'permissions':
