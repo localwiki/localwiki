@@ -4,7 +4,7 @@ from django.core.management import call_command
 
 def has_pages():
     from pages.models import Page
-    return Page.objects.all()
+    return Page.objects.exists()
 
 
 class Command(BaseCommand):
