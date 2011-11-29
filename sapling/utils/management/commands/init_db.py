@@ -20,6 +20,7 @@ class Command(object):
             return True
 
         if os.path.exists('/etc/lsb-release'):
+            f = open('/etc/lsb-release')
             info = f.read().lower()
             if 'distrib_id=ubuntu' in info:
                 return True
