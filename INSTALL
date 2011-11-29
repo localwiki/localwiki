@@ -5,6 +5,8 @@ installation packages. Details here:
 
 These packages are much easier to keep updated.
 
+--------------------------------------------------------------------------------
+
 The following install instructions are geared for development setups or non-Ubuntu
 installs.
 
@@ -53,7 +55,7 @@ Hooray!  You can visit the site at http://127.0.0.1:8000/
 
 Note: For security/efficiency, the built-in server listens on 127.0.0.1 only.
       For real deployments you'll want to set up apache.
-      See http://guide.localwiki.org for more instructions.
+      See https://dev.localwiki.org for more instructions.
 
 Note: You'll want to run source env/bin/activate every time you want to access
       the localwiki-manage command.

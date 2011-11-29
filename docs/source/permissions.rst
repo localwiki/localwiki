@@ -152,7 +152,7 @@ You can edit this setting by adding or removing permissions for certain groups
 or adding your own groups.  To apply these permissions (and overwrite the
 previously set defaults), run the following command::
 
-    python manage.py reset_permissions
+    localwiki-manage reset_permissions
 
 .. note ::
    Regardless of everything said in this section, administrators and superusers

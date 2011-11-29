@@ -21,9 +21,17 @@ That's it! Follow the prompts to configure LocalWiki.
 Installing on other systems
 ---------------------------
 
-.. note:: This installation method is recommended only for developers.
+.. note:: This installation method should only be used if you can't use
+   the Ubuntu package or if you want to set up a development
+   enviroment.
 
 See our ``INSTALL`` file for detailed instructions.  The file is also included
 here:
 
 .. literalinclude:: ../../INSTALL
+
+
+More info
+---------
+
+See https://dev.localwiki.org for more information on installation.
