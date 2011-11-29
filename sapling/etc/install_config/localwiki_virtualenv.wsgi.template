@@ -9,6 +9,10 @@ VIRTUAL_ENV_PATH = '/absolute/path/to/the/env'
 import os
 import sys
 
+# WSGI has undefined behavior for stdout. This fixes issues with some external
+# libraries printing to sys.stdout.
+sys.stdout = sys.stderr
+
 activate_this = os.path.join(VIRTUAL_ENV_PATH, 'bin/activate_this.py')
 execfile(activate_this, dict(__file__=activate_this))
 

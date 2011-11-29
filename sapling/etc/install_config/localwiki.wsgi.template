@@ -4,6 +4,10 @@
 import os
 import sys
 
+# WSGI has undefined behavior for stdout. This fixes issues with some external
+# libraries printing to sys.stdout.
+sys.stdout = sys.stderr
+
 # Add virtualenv path.
 from sapling import manage
 
