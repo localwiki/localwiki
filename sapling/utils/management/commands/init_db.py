@@ -16,7 +16,17 @@ class Command(object):
             return False
         f = open('/etc/issue')
         info = f.read().lower()
-        return info.startswith('debian') or info.startswith('ubuntu')
+        if info.startswith('debian') or info.startswith('ubuntu'):
+            return True
+
+        if os.path.exists('/etc/lsb-release'):
+            info = f.read().lower()
+            if 'distrib_id=ubuntu' in info:
+                return True
+            if 'distrib_id=debian' in info:
+                return True
+
+        return False
 
     def create_spatial_template(self):
         if self._is_debian():
