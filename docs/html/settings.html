@@ -57,7 +57,9 @@ your machine, it can be found at <a class="reference external" href="http://loca
 <div class="figure">
 <img alt="_images/admin_login.png" src="_images/admin_login.png" />
 </div>
-<p>At the prompt, enter your superuser login and password.</p>
+<p>At the prompt, enter your superuser login and password.  If you don&#8217;t
+have a superuser login and password, you can create one by running
+<tt class="docutils literal"><span class="pre">localwiki-manage</span> <span class="pre">createsuperuser</span></tt>.</p>
 <p>When you login, you will see all of the object types that you can modify on the
 left, and a list of recent actions done by administrators on the right(if any).</p>
 <div class="figure">
@@ -78,16 +80,18 @@ enter the domain name and display name and press &#8220;Save&#8221;.</p>
 <tt class="docutils literal"><span class="pre">/usr/share/localwiki/conf/localsettings.py</span></tt> on your system. Here are some
 things you may need or wish to modify:</p>
 <dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">SITE_THEME</span></tt></dt>
-<dd>The name of the directory under <tt class="docutils literal"><span class="pre">themes</span></tt> to look for the theme templates
-and static files.</dd>
 <dt><tt class="docutils literal"><span class="pre">OLWIDGET_DEFAULT_OPTIONS</span></tt></dt>
-<dd>Defaults for all map widgets, including default location, theme, navigation
-controls, colors, etc.  To set the default map location, change
-<tt class="docutils literal"><span class="pre">default_lat</span></tt> and <tt class="docutils literal"><span class="pre">default_lon</span></tt>.  Use this tool to look it up:
-<a class="reference external" href="http://www.getlatlon.com/">http://www.getlatlon.com/</a></dd>
+<dd><p class="first">Defaults for all map widgets, including default location, theme, navigation
+controls, colors, etc.</p>
+<p class="last">You will want to set the the <strong>default map location</strong> on your localwiki.
+Simply change <tt class="docutils literal"><span class="pre">default_lat</span></tt> and <tt class="docutils literal"><span class="pre">default_lon</span></tt>.  Use this tool to look it
+up: <a class="reference external" href="http://www.getlatlon.com/">http://www.getlatlon.com/</a></p>
+</dd>
 <dt><tt class="docutils literal"><span class="pre">CLOUDMADE_API_KEY</span></tt></dt>
 <dd>Your developer API key from <a class="reference external" href="http://developers.cloudmade.com/">Cloudmade</a></dd>
+<dt><tt class="docutils literal"><span class="pre">SITE_THEME</span></tt></dt>
+<dd>The name of the directory under <tt class="docutils literal"><span class="pre">themes</span></tt> to look for the theme templates
+and static files.  We&#8217;ll have more detail on creating a theme soon.</dd>
 <dt><tt class="docutils literal"><span class="pre">EMBED_ALLOWED_URLS</span></tt></dt>
 <dd>This is a list of regular expressions used to restrict what kinds of
 content users can embed.  If an embedded URL does not pass any of the
@@ -126,7 +130,7 @@ regular expressions in this list, it will not be shown.</dd>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -157,7 +161,7 @@ regular expressions in this list, it will not be shown.</dd>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Mike Ivanov, Philip Neustrom.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.8.
     </div>
   </body>
 </html>

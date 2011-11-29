@@ -100,7 +100,8 @@ class MapGlobalView(ListView):
 
 class MapAllObjectsAsPointsView(MapGlobalView):
     """
-    Like MapGlobalView, but return all objects as points and do not filter by zoom.
+    Like MapGlobalView, but return all objects as points and do not filter by
+    zoom.
     """
     def get_queryset(self):
         return super(MapGlobalView, self).get_queryset()
