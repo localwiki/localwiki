@@ -21,9 +21,7 @@ echo "Building package source for localwiki_${VERSION}"
 rm -r deb_dist/
 rm -r localwiki.egg-info/
 
-echo python setup.py --command-packages=stdeb.command sdist_dsc --ignore-install-requires --suite ${UBUNTU_RELEASE} --debian-version ${DEBIAN_VERSION}  --depends "${DEPENDS}" --use-premade-distfile ${DIST_FILE}
-
-exit 0
+python setup.py --command-packages=stdeb.command sdist_dsc --ignore-install-requires --suite ${UBUNTU_RELEASE} --debian-version ${DEBIAN_VERSION}  --depends "${DEPENDS}" --use-premade-distfile ${DIST_FILE}
 
 cp deb_utils/localwiki.postinst deb_dist/localwiki-${LW_VERSION}/debian
 cp deb_utils/triggers deb_dist/localwiki-${LW_VERSION}/debian
