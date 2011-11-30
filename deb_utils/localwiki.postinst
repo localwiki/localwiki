@@ -36,7 +36,10 @@ case "$1" in
 
         if [ -d "/etc/postgresql/9.1/main" ]
         then
-            echo -e "\n# Following line added by localwiki\nstandard_conforming_strings = off\n" >> /etc/postgresql/9.1/main/postgresql.conf
+            echo "#" >> /etc/postgresql/9.1/main/postgresql.conf
+            echo "# Following line added by localwiki" >> /etc/postgresql/9.1/main/postgresql.conf
+            echo "standard_conforming_strings = off" >> /etc/postgresql/9.1/main/postgresql.conf
+            echo "#" >> /etc/postgresql/9.1/main/postgresql.conf
         fi
 
         echo "Configuring localwiki ..."
