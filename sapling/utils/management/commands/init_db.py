@@ -58,7 +58,7 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
         # Make the temp script executable.
         os.chmod(temp_path, 0775)
 
-        p = subprocess.Popen('sudo -i -u postgres %s' % temp_path,
+        p = subprocess.Popen('sudo -u postgres %s' % temp_path,
             shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         retval = p.wait()
 
@@ -74,7 +74,7 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
         rand_password = self.gen_password()
         # First, let's try and create the default username.
         username = default_username
-        p = subprocess.Popen("""sudo -i -u postgres psql -d template1 """
+        p = subprocess.Popen("""sudo -u postgres psql -d template1 """
             """-c "CREATE USER %s WITH PASSWORD '%s'" """ % (username, rand_password),
             shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         retval = p.wait()
@@ -85,7 +85,7 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
             print ("Default DB username '%s' already taken. "
                    "Enter new DB username:" % default_username)
             username = raw_input().strip()
-            p = subprocess.Popen("""sudo -i -u postgres psql -d template1 """
+            p = subprocess.Popen("""sudo -u postgres psql -d template1 """
                 """-c "CREATE USER %s WITH PASSWORD '%s'" """ % (username, rand_password),
                 shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             retval = p.wait()
@@ -95,7 +95,7 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
 
         # Now let's try and create the default database.
         dbname = default_dbname
-        p = subprocess.Popen('sudo -i -u postgres createdb -E UTF8 -T template_postgis -O %s %s' % (username, dbname),
+        p = subprocess.Popen('sudo -u postgres createdb -E UTF8 -T template_postgis -O %s %s' % (username, dbname),
                 shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         retval = p.wait()
         if retval != 0:
@@ -105,7 +105,7 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
             print ("Default DB name '%s' already taken. "
                    "Enter new DB name:" % default_dbname)
             dbname = raw_input().strip()
-            p = subprocess.Popen('sudo -i -u postgres createdb -E UTF8 -T template_postgis -O %s %s' % (username, dbname),
+            p = subprocess.Popen('sudo -u postgres createdb -E UTF8 -T template_postgis -O %s %s' % (username, dbname),
                 shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             retval = p.wait()
             for line in p.stdout:
