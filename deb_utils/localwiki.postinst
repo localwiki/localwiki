@@ -30,6 +30,15 @@ case "$1" in
         pip install --upgrade -r requirements.txt
         deactivate
 
+        # For Ubuntu 11.10 (with PostgreSQL 9.1), we have an issue with
+        # GeoDjango.  We have to turn off standard string formatting.  We can
+        # re-enable it once it's fixed, in Django 1.3.2
+
+        if [ -d "/etc/postgresql/9.1/main" ]
+        then
+            echo -e "\n# Following line added by localwiki\nstandard_conforming_strings = off\n" >> /etc/postgresql/9.1/main/postgresql.conf
+        fi
+
         echo "Configuring localwiki ..."
         localwiki-manage setup_all
 
