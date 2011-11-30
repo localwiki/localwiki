@@ -1,4 +1,4 @@
-For non-development installs we *highly* recommend using our standard
+F-or non-development installs we *highly* recommend using our standard
 installation packages. Details here:
 
   http://localwiki.org/install
@@ -15,7 +15,7 @@ python-setuptools, virtualenv, gdal, postgresql with postgis.  Here's how we
 get these packages in Ubuntu 10.04 LTS:
 
     $ sudo apt-get install python-setuptools solr-jetty python-lxml python-imaging
-    $ sudo apt-get install gdal-bin proj postgresql-8.4-postgis python-psycopg2
+    $ sudo apt-get install gdal-bin proj postgis python-psycopg2
     $ sudo easy_install --upgrade virtualenv
 
 2.  Create a virtualenv. For more info, see http://pypi.python.org/pypi/virtualenv.
