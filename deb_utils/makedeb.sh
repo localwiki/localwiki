@@ -5,10 +5,12 @@
 cd ..
 LW_VERSION=$(python -c "from sapling import get_version; print get_version().replace(' ', '.')")
 
+DEPENDS=$(deb_utils/depends.sh lucid)
+
 rm -r deb_dist/
 rm -r localwiki.egg-info/
 
-python setup.py --command-packages=stdeb.command sdist_dsc --ignore-install-requires --suite unstable
+python setup.py --command-packages=stdeb.command sdist_dsc --ignore-install-requires --suite unstable --depends "${DEPENDS}"
 
 cp deb_utils/localwiki.postinst deb_dist/localwiki-${LW_VERSION}/debian
 cp deb_utils/triggers deb_dist/localwiki-${LW_VERSION}/debian

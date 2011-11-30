@@ -14,12 +14,16 @@ UBUNTU_RELEASE=$1
 DEBIAN_VERSION="0ubuntu1~${UBUNTU_RELEASE}"
 DIST_FILE=$2
 VERSION="${LW_VERSION}-${DEBIAN_VERSION}"
+DEPENDS=$(deb_utils/depends.sh ${UBUNTU_RELEASE})
+
 echo "Building package source for localwiki_${VERSION}"
 
 rm -r deb_dist/
 rm -r localwiki.egg-info/
 
-python setup.py --command-packages=stdeb.command sdist_dsc --ignore-install-requires --suite ${UBUNTU_RELEASE} --debian-version ${DEBIAN_VERSION}  --use-premade-distfile ${DIST_FILE}
+echo python setup.py --command-packages=stdeb.command sdist_dsc --ignore-install-requires --suite ${UBUNTU_RELEASE} --debian-version ${DEBIAN_VERSION}  --depends "${DEPENDS}" --use-premade-distfile ${DIST_FILE}
+
+exit 0
 
 cp deb_utils/localwiki.postinst deb_dist/localwiki-${LW_VERSION}/debian
 cp deb_utils/triggers deb_dist/localwiki-${LW_VERSION}/debian
