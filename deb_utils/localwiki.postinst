@@ -40,6 +40,8 @@ case "$1" in
             echo "# Following line added by localwiki" >> /etc/postgresql/9.1/main/postgresql.conf
             echo "standard_conforming_strings = off" >> /etc/postgresql/9.1/main/postgresql.conf
             echo "#" >> /etc/postgresql/9.1/main/postgresql.conf
+
+            /etc/init.d/postgresql restart
         fi
 
         echo "Configuring localwiki ..."
