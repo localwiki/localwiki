@@ -137,7 +137,8 @@ def embed_code(elem, context=None):
 
 
 def searchbox(elem, context=None):
-    before = '{%% searchbox "%s" %%} %s' % (elem.attrib['value'],
+    value = elem.attrib.get('value', '')
+    before = '{%% searchbox "%s" %%} %s' % (value,
                                             elem.tail or '')
     insert_text_before(before, elem)
     elem.getparent().remove(elem)
@@ -249,14 +250,20 @@ def html_to_template_text(unsafe_html, context=None, render_plugins=True):
             if 'plugin' in classes and render_plugins:
                 for p in classes:
                     if p in plugin_handlers:
-                        plugin_handlers[p](elem, context)
+                        try:
+                            plugin_handlers[p](elem, context)
+                        except:
+                            pass
             continue
         if not elem.tag in tag_handlers:
             continue
         for handler in tag_handlers[elem.tag]:
-            can_continue = handler(elem, context)
-            if can_continue is False:
-                break
+            try:
+                can_continue = handler(elem, context)
+                if can_continue is False:
+                    break
+            except:
+                pass
 
     template_bits = [etree.tostring(elem, encoding='UTF-8')
                      for elem in container]
