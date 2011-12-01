@@ -387,8 +387,9 @@ def suggest(request):
     # XXX TODO: Break this out when doing the API work.
     import json
 
-    term = request.GET['term']
-
+    term = request.GET.get('term', None)
+    if not term:
+        return HttpResponse('')
     results = Page.objects.filter(name__istartswith=term)
     results = [p.name for p in results]
     return HttpResponse(json.dumps(results))
