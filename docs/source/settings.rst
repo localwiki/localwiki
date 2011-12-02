@@ -11,7 +11,7 @@ your machine, it can be found at http://localhost/admin/
 
 At the prompt, enter your superuser login and password.  If you don't
 have a superuser login and password, you can create one by running
-``localwiki-manage createsuperuser``.
+``sudo localwiki-manage createsuperuser``.
 
 When you login, you will see all of the object types that you can modify on the
 left, and a list of recent actions done by administrators on the right(if any).
