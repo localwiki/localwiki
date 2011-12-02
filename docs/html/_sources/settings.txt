@@ -55,3 +55,5 @@ things you may need or wish to modify:
     This is a list of regular expressions used to restrict what kinds of
     content users can embed.  If an embedded URL does not pass any of the
     regular expressions in this list, it will not be shown.
+
+After changing settings you'll need to restart Apache.
