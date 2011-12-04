@@ -1,7 +1,8 @@
 DEBUG = False
 
 #######################################################################
-# Config values you *must* change
+# These config values vary on an install-by-install basis. If you
+# installed using the Ubuntu package, these should be pre-set.
 #######################################################################
 
 DATABASES = {
