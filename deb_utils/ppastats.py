@@ -11,27 +11,32 @@ import sys
 import os
 from launchpadlib.launchpad import Launchpad
 
-archs = ["i386", "amd64"]
-releases = ["hardy", "lucid", "maverick", "natty", "oneiric"]
+archs = ["i386"]
+releases = ["lucid", "maverick", "natty", "oneiric"]
 
-if len(sys.argv) < 3: print "Usage: ppastats owner ppaname1 [ppaname2 ...]"
+if len(sys.argv) < 3:
+    print "Usage: ppastats owner ppaname1 [ppaname2 ...]"
+    sys.exit(1)
 
 owner_name = sys.argv[1]
 ppas = sys.argv[2:]
 
-for individual_ppa in ppas:
-	print "usage stats for PPA with owner \"" + owner_name + "\" named \"" + individual_ppa + "\""
-	print "#####"
+stats = {}
+
+for ppa in ppas:
 	cachedir = os.path.expanduser("~/.launchpadlib/cache/")
 
 	launchpad = Launchpad.login_anonymously('ppastats', 'production', cachedir, version='devel')
 	owner = launchpad.people[owner_name]
-	archive = owner.getPPAByName(name=individual_ppa)
+	archive = owner.getPPAByName(name=ppa)
 
-	for individual_arch in archs:
-		for individual_release in releases:
-			individual_distro_arch_series = "https://api.launchpad.net/devel/ubuntu/" + individual_release + "/" + individual_arch
-			print "\t" + individual_release + "/" + individual_arch + ":"
-			for individual_archive in archive.getPublishedBinaries(status='Published',distro_arch_series=individual_distro_arch_series):
-				print individual_archive.binary_package_name + "\t" + individual_archive.binary_package_version + "\t" + str(individual_archive.getDownloadCount())
-	print "#####"
+	for arch in archs:
+		for release in releases:
+			distro_arch_series = "https://api.launchpad.net/devel/ubuntu/" + release + "/" + arch
+
+			for binary in archive.getPublishedBinaries(status='Published', distro_arch_series=distro_arch_series):
+				totals = binary.getDailyDownloadTotals()
+				for date, downloads in totals.items():
+					if date not in stats:
+						stats[date] = dict([(r, 0) for r in releases])
+					stats[date][release] = downloads
