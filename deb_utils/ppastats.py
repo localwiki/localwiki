@@ -45,7 +45,7 @@ for ppa in ppas:
                 for date, downloads in totals.items():
                     if date not in stats:
                         stats[date] = dict([(r, 0) for r in releases])
-                    stats[date][release] = downloads
+                    stats[date][release] += downloads
 
 try:
     import numpy as np
@@ -80,10 +80,12 @@ try:
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     plt.draw()
-    plt.savefig("_".join([owner_name, ppa, 'downloads.png']))
+    image_file = "_".join([owner_name, ppa, 'downloads.png']) 
+    plt.savefig(image_file)
+    print "Graph saved as %s" % image_file
 
     print "Totals by date:"
-    for d,t in zip(stats,all.sum(0))[::-1]:
+    for d,t in reversed(zip(stats,all.sum(0))):
         print "%4d :"%t,d
     print "Totals by release:"
     for r,t in zip(releases,all.sum(1)):
