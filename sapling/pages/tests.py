@@ -30,7 +30,7 @@ class PageTest(TestCase):
     def test_clean_name(self):
         self.assertEqual(clean_name(' Front Page '), 'Front Page')
         self.assertEqual(clean_name('_edit'), 'edit')
-        self.assertEqual(clean_name('Front Page /_edit'), 'Front Page/edit')
+        self.assertEqual(clean_name('Front Page /_edit'), 'Front Page / edit')
         self.assertEqual(clean_name('/Front Page/'), 'Front Page')
         self.assertEqual(clean_name('Front Page// /'), 'Front Page')
 
