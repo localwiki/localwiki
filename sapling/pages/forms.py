@@ -1,11 +1,10 @@
 import mimetypes
 
 from django import forms
-from django.template.defaultfilters import slugify
 
 from versionutils.merging.forms import MergeMixin
 from versionutils.versioning.forms import CommentMixin
-from pages.models import Page, PageFile
+from pages.models import Page, PageFile, slugify
 from pages.widgets import WikiEditor
 from versionutils.diff.daisydiff.daisydiff import daisydiff_merge
 
