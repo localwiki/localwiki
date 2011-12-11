@@ -78,9 +78,16 @@ class Page(models.Model):
         super(Page, self).save(*args, **kwargs)
 
     def clean(self):
+        from urls import matches_action_url
+
         self.name = clean_name(self.name)
         if not slugify(self.name):
             raise ValidationError('Page name is invalid.')
+
+        # Don't allow pagenames whos URL match a system URL, such as
+        # "Front Page/ edit" -> "Front_Page/_edit"
+        if matches_action_url(name_to_url(self.name)):
+            raise ValidationError('Page name invalid: matches a system URL.')
 
     def exists(self):
         """
@@ -270,8 +277,7 @@ def clean_name(name):
     # underscores are used to namespace special URLs, so let's remove them
     name = re.sub('_', ' ', name).strip()
     # we allow / in page names so we want to strip each bit between slashes
-    name = '/'.join([part.strip()
-                     for part in name.split('/') if slugify(part)])
+    name = '/'.join([part for part in name.split('/') if slugify(part)])
     return name
 
 

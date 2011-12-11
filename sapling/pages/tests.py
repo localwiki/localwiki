@@ -7,6 +7,7 @@ from django.test import TestCase
 from django.db import models
 from django import forms
 from django.template.base import Template
+from django.core.exceptions import ValidationError
 from django.template.context import Context
 from django.conf import settings
 from django.core.files.base import ContentFile
@@ -29,7 +30,7 @@ class PageTest(TestCase):
     def test_clean_name(self):
         self.assertEqual(clean_name(' Front Page '), 'Front Page')
         self.assertEqual(clean_name('_edit'), 'edit')
-        self.assertEqual(clean_name('Front Page /_edit'), 'Front Page/edit')
+        self.assertEqual(clean_name('Front Page /_edit'), 'Front Page / edit')
         self.assertEqual(clean_name('/Front Page/'), 'Front Page')
         self.assertEqual(clean_name('Front Page// /'), 'Front Page')
 
@@ -93,6 +94,13 @@ class PageTest(TestCase):
                 "_%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
         assert slug == quote('Заглавная_Страница')
         self.assertEqual(a.pretty_slug, slug)
+
+    def test_prevent_action_url_in_clean(self):
+        p = Page()
+        p.content = '<p>Stuff</p>'
+        p.name = 'Page name/ edit'
+
+        self.assertRaises(ValidationError, p.clean)
 
     def test_merge_conflict(self):
         p = Page()
