@@ -61,6 +61,9 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
         p = subprocess.Popen('sudo -u postgres %s' % temp_path,
             shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         retval = p.wait()
+        if retval != 0:
+            for line in p.stdout:
+                print line.strip()
 
     def gen_password(self):
         chars = string.letters + string.digits
@@ -75,10 +78,13 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
         # First, let's try and create the default username.
         username = default_username
         p = subprocess.Popen("""sudo -u postgres psql -d template1 """
-            """-c "CREATE USER %s WITH PASSWORD '%s'" """ % (username, rand_password),
+            """-c "CREATE USER %s WITH PASSWORD '%s'" """
+            % (username, rand_password),
             shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         retval = p.wait()
         if retval != 0:
+            for line in p.stdout:
+                print line.strip()
             # Oops, default name already taken.  This is probably their
             # second install on the same system.  Let's prompt for a new
             # username.
@@ -86,26 +92,31 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
                    "Enter new DB username:" % default_username)
             username = raw_input().strip()
             p = subprocess.Popen("""sudo -u postgres psql -d template1 """
-                """-c "CREATE USER %s WITH PASSWORD '%s'" """ % (username, rand_password),
+                """-c "CREATE USER %s WITH PASSWORD '%s'" """
+                % (username, rand_password),
                 shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             retval = p.wait()
             for line in p.stdout:
                 if line.strip():
                     print line.strip()
 
-        # Now let's try and create the default database.
+        # Now let's try and create the default database.'
         dbname = default_dbname
-        p = subprocess.Popen('sudo -u postgres createdb -E UTF8 -T template_postgis -O %s %s' % (username, dbname),
+        p = subprocess.Popen("""sudo -u postgres createdb -E UTF8 """
+                """-T template_postgis -O %s %s""" % (username, dbname),
                 shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         retval = p.wait()
         if retval != 0:
+            for line in p.stdout:
+                print line.strip()
             # Oops, db already exists.  This is probably their second
             # install on the same system.  Let's prompt for a new
             # database name.
             print ("Default DB name '%s' already taken. "
                    "Enter new DB name:" % default_dbname)
             dbname = raw_input().strip()
-            p = subprocess.Popen('sudo -u postgres createdb -E UTF8 -T template_postgis -O %s %s' % (username, dbname),
+            p = subprocess.Popen("""sudo -u postgres createdb -E UTF8 """
+                """-T template_postgis -O %s %s""" % (username, dbname),
                 shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             retval = p.wait()
             for line in p.stdout:

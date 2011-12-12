@@ -32,7 +32,7 @@ else
     GEOGRAPHY=0
 fi
 
-createdb -E UTF8 template_postgis
+createdb template_postgis -E UTF8 -T template0
 OUT=$?
 # template doesn't exist yet, so let's create
 if [ $OUT -eq 0 ]
