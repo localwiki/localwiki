@@ -106,10 +106,12 @@ urlpatterns = patterns('',
     # API
     ##########################################################
     url(r'^api/pages/suggest', suggest),
+)
 
-    ##########################################################
-    # Basic page URLs.
-    ##########################################################
+##########################################################
+# Basic page URLs.
+##########################################################
+page_catchall_urlpatterns = patterns('',
     url(r'^/*$', slugify(PageDetailView.as_view()),
         kwargs={'slug': 'Front Page'}, name='frontpage'),
     url(r'^(?i)All_Pages/*$', ListView.as_view(**page_list_info),
@@ -118,3 +120,17 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>.+)/*$', slugify(PageDetailView.as_view()),
         name='show'),
 )
+
+urlpatterns += page_catchall_urlpatterns
+
+
+def matches_action_url(url):
+    """
+    Does the provided url match any of the non-catchall URL patterns?
+    """
+    for pattern in urlpatterns:
+        if pattern in page_catchall_urlpatterns:
+            continue
+        if pattern.resolve(url):
+            return True
+    return False
