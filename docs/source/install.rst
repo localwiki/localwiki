@@ -17,6 +17,7 @@ Just open a terminal and run these commands::
 
 That's it! Follow the prompts to configure LocalWiki.
 
+.. _dev-install:
 
 Installing on other systems
 ---------------------------
