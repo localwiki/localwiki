@@ -71,7 +71,7 @@ First, let's find the built-in templates.  Type::
 
 then once you're in the localwiki shell, copy and paste this::
 
-    import sapling, sys; print sapling.__path__[0]; sys.exit()
+    import sapling; print sapling.__path__[0]; exit()
 
 This will print out where the localwiki code itself lives on your
 system.
