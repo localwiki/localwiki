@@ -5,7 +5,8 @@ Administration interface
 ------------------------
 
 LocalWiki comes with a web-based admin interface.  If LocalWiki is running on
-your machine, it can be found at http://localhost/admin/
+your machine, it can be found at ``http://localhost/admin/``.  Otherwise,
+you can find the admin interface at ``http://<your server's address>/admin/``
 
 .. figure:: /_static/images/admin_login.png
 
@@ -56,4 +57,5 @@ things you may need or wish to modify:
     content users can embed.  If an embedded URL does not pass any of the
     regular expressions in this list, it will not be shown.
 
-After changing settings you'll need to restart Apache.
+After changing settings you'll need to restart Apache.  On most systems
+you can do this by running ``sudo /etc/init.d/apache2 restart``.

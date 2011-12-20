@@ -50,7 +50,8 @@
 <div class="section" id="administration-interface">
 <h2>Administration interface<a class="headerlink" href="#administration-interface" title="Permalink to this headline">¶</a></h2>
 <p>LocalWiki comes with a web-based admin interface.  If LocalWiki is running on
-your machine, it can be found at <a class="reference external" href="http://localhost/admin/">http://localhost/admin/</a></p>
+your machine, it can be found at <tt class="docutils literal"><span class="pre">http://localhost/admin/</span></tt>.  Otherwise,
+you can find the admin interface at <tt class="docutils literal"><span class="pre">http://&lt;your</span> <span class="pre">server's</span> <span class="pre">address&gt;/admin/</span></tt></p>
 <div class="figure">
 <img alt="_images/admin_login.png" src="_images/admin_login.png" />
 </div>
@@ -94,7 +95,8 @@ and static files.  We&#8217;ll have more detail on creating a theme soon.</dd>
 content users can embed.  If an embedded URL does not pass any of the
 regular expressions in this list, it will not be shown.</dd>
 </dl>
-<p>After changing settings you&#8217;ll need to restart Apache.</p>
+<p>After changing settings you&#8217;ll need to restart Apache.  On most systems
+you can do this by running <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">/etc/init.d/apache2</span> <span class="pre">restart</span></tt>.</p>
 </div>
 </div>
 

@@ -60,6 +60,16 @@ Note: For security/efficiency, the built-in server listens on 127.0.0.1 only.
 Note: You'll want to run source env/bin/activate every time you want to access
       the localwiki-manage command.
 
+
+=== Development note ===
+
+If you're hacking on the code, you'll probably want to run, inside the virtualenv:
+
+    (env)$ python setup.py develop
+
+Instead of 'install'.  This makes the code update without having to run
+'setup.py install' every time!
+
 -------------------------------------------------------------------------------
 We've really only tested things on Ubuntu Server Edition 10.04 LTS.  It should
 be very possible to run this on any Unix-y system.  You'll need to:
@@ -69,7 +79,7 @@ be very possible to run this on any Unix-y system.  You'll need to:
     to see what it's doing.  It's simple stuff, really, but the configuration files
     may be in a different spot on your system.
 
-Help us document this stuff!  Add something to http://guide.localwiki.org or
+Help us document this stuff!  Add something to https://dev.localwiki.org or
 the github wiki.
 
 == Database Note ==

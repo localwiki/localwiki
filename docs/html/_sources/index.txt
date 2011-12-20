@@ -13,6 +13,7 @@ Contents:
    permissions
    upgrade
    contribute
+   customizing
    advanced
 
 Indices and tables
