@@ -104,7 +104,7 @@ making an new theme is overkill.</p>
 <div class="highlight-python"><pre>localwiki-manage shell</pre>
 </div>
 <p>then once you&#8217;re in the localwiki shell, copy and paste this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sapling</span><span class="o">,</span> <span class="nn">sys</span><span class="p">;</span> <span class="k">print</span> <span class="n">sapling</span><span class="o">.</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sapling</span><span class="p">;</span> <span class="k">print</span> <span class="n">sapling</span><span class="o">.</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="nb">exit</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>This will print out where the localwiki code itself lives on your
@@ -113,7 +113,7 @@ system.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">It&#8217;s not a good idea to modify the files in the code directory
 directly, as they&#8217;re likely to be replaced when you upgrade.  If you
-want to customize the code you should do a <em class="xref std std-ref">development install</em>.</p>
+want to customize the code you should do a <a class="reference internal" href="install.html#dev-install"><em>development install</em></a>.</p>
 </div>
 <p>Copy the path printed out and <tt class="docutils literal"><span class="pre">cd</span></tt> there.  You&#8217;ll see there&#8217;s a
 <tt class="docutils literal"><span class="pre">themes</span></tt> directory in that directory.  Inside the <tt class="docutils literal"><span class="pre">themes</span></tt> directory
