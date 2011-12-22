@@ -12,6 +12,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             var maxHeight = 300;
             var oWidth = img.$.width;
             var oHeight = img.$.height;
+            if(oWidth === 0)
+            {
+                // image not loading yet, try again later
+                var sizeTimer = setTimeout(function(){sizeImage(img);}, 200);
+                img.setCustomData('sizeTimer', sizeTimer);
+                return;
+            }
+            // image loaded enough to resize, clear timer
+            var sizeTimer = img.getCustomData('sizeTimer');
+            if(sizeTimer)
+                clearTimeout(sizeTimer);
             if(oWidth > maxWidth || oHeight > maxHeight)
             {
                 var newWidth, newHeight;
@@ -30,6 +41,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             }
             img.removeAttribute( 'width' );
             img.removeAttribute( 'height' );
+            jQuery(window).resize();
         }
         function commitContent() {
             var args = arguments;
@@ -129,7 +141,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         var onImgLoadEvent = function () {
             // Image is ready.
             var image = this.imageElement;
-            image.setCustomData('isReady', 'true');
             sizeImage(image);
             image.removeListener('load', onImgLoadEvent);
             image.removeListener('error', onImgLoadErrorEvent);
@@ -139,6 +150,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         var onImgLoadErrorEvent = function () {
             // Error. Image is not loaded.
             var image = this.imageElement;
+            var sizeTimer = image.getCustomData('sizeTimer');
+            if(sizeTimer)
+                clearTimeout(sizeTimer);
             image.removeListener('load', onImgLoadEvent);
             image.removeListener('error', onImgLoadErrorEvent);
             image.removeListener('abort', onImgLoadErrorEvent);
@@ -160,7 +174,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 }
 
                 this.imageElement = editor.document.createElement('img');
-                this.imageElement.setCustomData('isReady', 'false');
                 highlight('');
                 this.setupContent();
             },
@@ -180,8 +193,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	                // Insert a new Image.
 	                var spanElement = editor.document.createElement('span');
 	                spanElement.setAttribute('class', 'image_frame image_frame_border');
+	                sizeImage(this.imageElement);
 	                spanElement.append(this.imageElement);
-	                //spanElement.setStyle('width', this.imageElement.getStyle('width'));
 	                editor.insertElement(spanElement);
                 }
             },
@@ -317,7 +330,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                             uploadFinished(dialog, newUrl);
                             if(image)
                             {
-                              image.setCustomData('isReady', 'false');
                               image.on('load', onImgLoadEvent, dialog);
                               image.setAttribute('src', newUrl);
                             }
@@ -330,7 +342,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         		element.setText(this.getValue().substring('_files/'.length));
                         	}
                         	else {
-                        		element.setCustomData('isReady', 'false');
 	                            element.on('load', onImgLoadEvent, this.getDialog());
 	                            element.setAttribute('_cke_saved_src', decodeURI(this.getValue()));
 	                            element.setAttribute('src', decodeURI(this.getValue()));
