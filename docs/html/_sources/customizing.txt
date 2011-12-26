@@ -235,7 +235,15 @@ customize the appearance of tables with the class ``welcome``::
         margin-top: 0.4em;
     }
 
-3. Now we want to reference this new ``denton.css`` file from the HTML
+3. The CSS file references two images -- ``/static/img/80_trans_white_bg.png`` and
+``/front_page/_files/welcome.jpg``.   The ``welcome.jpg`` image can be
+added simply by uploading a file named ``welcome.jpg`` to the Front
+Page.  You'll want to copy 
+`80_trans_white_bg.png <https://dentonwiki.org/static/img/80_trans_white_bg.png>`_
+to ``/usr/share/localwiki/static/img`` (or
+``env/share/locawiki/static/img`` for manual installations)
+
+4. Now we want to reference this new ``denton.css`` file from the HTML
 of all the pages.  Let's go back into the localwiki code directory,
 referenced in the beginning of :ref:`Example 1 <example1>` and copy over ``sites/base.html``
 to our global templates directory::
