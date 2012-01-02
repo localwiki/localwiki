@@ -15,6 +15,7 @@ from launchpadlib.launchpad import Launchpad
 
 archs = ["i386"]
 releases = ["lucid", "maverick", "natty", "oneiric"]
+releases.reverse()
 
 if len(sys.argv) < 3:
     print "Usage: ppastats owner ppaname1 [ppaname2 ...]"
