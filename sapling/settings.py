@@ -203,7 +203,6 @@ INSTALLED_APPS = (
     'staticfiles',
     'guardian',
     'south',
-    'forms_builder.forms',
 
     # Our apps
     'versionutils.versioning',
