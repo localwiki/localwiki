@@ -145,6 +145,11 @@ OLWIDGET_CSS = '%solwidget/css/sapling.css?tm=1317359250' % STATIC_URL
 OLWIDGET_JS = '%solwidget/js/olwidget.js?tm=1317359250' % STATIC_URL
 CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js?tm=1317359250' % STATIC_URL
 
+# django-honeypot options
+HONEYPOT_FIELD_NAME = 'content2'
+HONEYPOT_USE_JS_FIELD = True
+HONEYPOT_REDIRECT_URL = '/'
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -173,6 +178,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'honeypot.middleware.HoneypotMiddleware',
     'versionutils.versioning.middleware.AutoTrackUserInfoMiddleware',
     'redirects.middleware.RedirectFallbackMiddleware',
 )
@@ -203,6 +209,7 @@ INSTALLED_APPS = (
     'staticfiles',
     'guardian',
     'south',
+    'honeypot',
 
     # Our apps
     'versionutils.versioning',
