@@ -241,7 +241,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                              }).attr('src', this.action);
                     },
                     onChange: function () {
-                        // Patch the upload form before submitting and add the CSRF token
+                        // Patch the upload form before submitting and add the CSRF token and honeypot fields
                         function getCookie(key) {
                             var result;
                             // adapted from the jQuery Cookie plugin
@@ -260,6 +260,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         csrf.setAttribute('type', 'hidden');
                         csrf.setAttribute('value', csrf_cookie);
                         uploadForm.appendChild(csrf);
+                        /* TODO: make this automatic, this is hardcoded to the django-honeypot settings */
+                        honeypot = uploadForm.ownerDocument.createElement('input');
+                        honeypot.setAttribute('name', 'content2');
+                        honeypot.setAttribute('type', 'hidden');
+                        uploadForm.appendChild(honeypot);
+                        honeypot_js = uploadForm.ownerDocument.createElement('input');
+                        honeypot_js.setAttribute('name', 'content2_js');
+                        honeypot_js.setAttribute('type', 'hidden');
+                        uploadForm.appendChild(honeypot_js);
                         // if there is a file to upload, do that now
                         if (this.getValue()) {
                             this.getDialog().getContentElement('Upload', 'uploadButton').fire('click');
