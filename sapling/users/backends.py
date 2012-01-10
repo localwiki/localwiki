@@ -69,7 +69,7 @@ class RestrictiveBackend(object):
             default_has_perm = LOGGED_IN_HAS_PERM
         else:
             user_obj = User.objects.get(pk=ANONYMOUS_USER_ID)
-        if user_obj.is_active is not True:
+        if not user_obj.is_active:
             return False
         if user_obj.is_superuser:
             return True
