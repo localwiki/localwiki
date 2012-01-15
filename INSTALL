@@ -22,7 +22,7 @@ get these packages in Ubuntu 10.04 LTS:
 *Note*: We store some important site-specific data in the virtualenv, so don't
 delete it without first backing up the share/localwiki directory inside it.
 
-    $ virtualenv env
+    $ virtualenv --system-site-packages env
     
     Activate the new environment. Run all of the following commands in this environment:
 
