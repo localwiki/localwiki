@@ -51,6 +51,15 @@ OLWIDGET_DEFAULT_OPTIONS = {
 DAISYDIFF_URL = 'http://localhost:8080/daisydiff/diff'
 DAISYDIFF_MERGE_URL = 'http://localhost:8080/daisydiff/merge'
 
+LICENSE = """<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">a Creative Commons Attribution License</a>"""
+
+GLOBAL_LICENSE_NOTE = """<p>Except where otherwise noted, this content is licensed under {0}. See <a href="/Copyrights">Copyrights.</p>""".format (LICENSE)
+
+EDIT_LICENSE_NOTE = """<p>By clicking "Save Changes" you are agreeing to release your contribution under {0}. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>""".format (LICENSE)
+
+SIGNUP_TOS = """I agree to release my contributions under {0}, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.""".format (LICENSE)
+
+
 # list of regular expressions for white listing embedded URLs
 EMBED_ALLOWED_SRC = ['.*']
 
