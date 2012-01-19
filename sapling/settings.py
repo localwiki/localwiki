@@ -28,11 +28,13 @@ DATABASES = {
     }
 }
 
-GLOBAL_LICENSE_NOTE = """<p>Except where otherwise noted, this content is licensed under <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">a Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights.</p>"""
+LICENSE = """<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">a Creative Commons Attribution License</a>"""
 
-EDIT_LICENSE_NOTE = """<p>By clicking "Save Changes" you are agreeing to release your contribution under <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">a Creative Commons Attribution license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>"""
+GLOBAL_LICENSE_NOTE = """<p>Except where otherwise noted, this content is licensed under {0}. See <a href="/Copyrights">Copyrights.</p>""".format(LICENSE)
 
-SIGNUP_TOS = """I agree to release my contributions under <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">a Creative Commons Attribution license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>."""
+EDIT_LICENSE_NOTE = """<p>By clicking "Save Changes" you are agreeing to release your contribution under {0}, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>""".format(LICENSE)
+
+SIGNUP_TOS = """I agree to release my contributions under {0}, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.""".format(LICENSE)
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
