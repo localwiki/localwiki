@@ -28,13 +28,10 @@ DATABASES = {
     }
 }
 
-LICENSE = """<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">a Creative Commons Attribution License</a>"""
-
-GLOBAL_LICENSE_NOTE = """<p>Except where otherwise noted, this content is licensed under {0}. See <a href="/Copyrights">Copyrights.</p>""".format(LICENSE)
-
-EDIT_LICENSE_NOTE = """<p>By clicking "Save Changes" you are agreeing to release your contribution under {0}, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>""".format(LICENSE)
-
-SIGNUP_TOS = """I agree to release my contributions under {0}, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.""".format(LICENSE)
+LICENSE = None
+GLOBAL_LICENSE_NOTE = None
+EDIT_LICENSE_NOTE = None
+SIGNUP_TOS = None
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -241,6 +238,27 @@ except:
 
 # Allow localsettings.py to define LOCAL_INSTALLED_APPS.
 INSTALLED_APPS = tuple(list(INSTALLED_APPS) + list(LOCAL_INSTALLED_APPS))
+
+###############################
+# License
+###############################
+
+# Override this in localsettings.py to use a different license, e.g. BY-SA
+if LICENSE is None:
+    LICENSE = """<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">a Creative Commons Attribution License</a>"""
+
+# This appears at the bottom of each page in the site.
+if GLOBAL_LICENSE_NOTE is None:
+    GLOBAL_LICENSE_NOTE = """<p>Except where otherwise noted, this content is licensed under {0}. See <a href="/Copyrights">Copyrights.</p>""".format(LICENSE)
+
+# When a user makes an edit, they shown this text.
+if EDIT_LICENSE_NOTE is None:
+    EDIT_LICENSE_NOTE = """<p>By clicking "Save Changes" you are agreeing to release your contribution under {0}, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>""".format(LICENSE)
+
+# When a user creates an account, they see this text. (Note that anonymous users won't see it.)
+if not SIGNUP_TOS:
+    SIGNUP_TOS = """I agree to release my contributions under {0}, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.""".format(LICENSE)
+
 
 ###############################
 # Setup template directories
