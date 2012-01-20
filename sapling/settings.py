@@ -34,6 +34,8 @@ EDIT_LICENSE_NOTE = """<p>By clicking "Save Changes" you are agreeing to release
 
 SIGNUP_TOS = """I agree to release my contributions under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>."""
 
+SUBSCRIBE_MESSAGE = """I would like to receive occasional updates via email"""
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -82,6 +84,8 @@ AUTHENTICATION_BACKENDS = (
     'sapling.users.backends.CaseInsensitiveModelBackend',
     'sapling.users.backends.RestrictiveBackend',
 )
+
+AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 # users app settings
 USERS_ANONYMOUS_GROUP = 'Anonymous'

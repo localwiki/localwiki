@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
+from users.models import UserProfile
+from django.views.generic.list import ListView
 
 
 class CensoredUserAdmin(UserAdmin):
@@ -20,3 +22,8 @@ class CensoredUserAdmin(UserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, CensoredUserAdmin)
+
+
+class SubscribedList(ListView):
+    queryset = UserProfile.objects.filter(subscribed=True)
+    template_name = 'users/subscribed_list.html'
