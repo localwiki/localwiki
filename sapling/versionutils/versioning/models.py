@@ -275,9 +275,7 @@ class ChangesTracker(object):
 
             is_fk = isinstance(field, models.ForeignKey)
             is_m2m = isinstance(field, models.ManyToManyField)
-            #if is_fk or is_m2m:
             if isinstance(field, models.fields.related.RelatedField):
-                #parent_model = field.related.parent_model
                 parent_model = field.rel.to
                 is_to_self = parent_model == model
 
@@ -352,7 +350,8 @@ class ChangesTracker(object):
             def get_extra_history_fields(self, model):
                 # Keep base_attrs -- we like user tracking!
                 attrs = super(MyTrackChanges, self).get_extra_history_fields()
-                attrs['history_long_description'] = models.TextField(blank=True, null=True)
+                attrs['history_long_description'] = models.TextField(
+                    blank=True, null=True)
                 return attrs
 
         Returns:
