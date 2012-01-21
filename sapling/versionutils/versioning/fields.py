@@ -8,6 +8,10 @@ class AutoSetField(object):
 
 class AutoUserField(models.ForeignKey, AutoSetField):
     def __init__(self, **kws):
+        if 'to' in kws:
+            # Fixes south.  We always want this to point to the User
+            # model.
+            del kws['to']
         return super(AutoUserField, self).__init__(User, **kws)
 
 
