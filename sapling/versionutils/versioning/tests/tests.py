@@ -13,6 +13,7 @@ from django.utils.unittest import skipIf
 from utils import TestSettingsManager
 from models import *
 from versionutils.versioning.constants import *
+from versionutils.versioning.utils import is_versioned
 
 mgr = TestSettingsManager()
 INSTALLED_APPS = list(settings.INSTALLED_APPS)
@@ -108,7 +109,10 @@ class ChangesTrackingTest(TestCase):
         """
         for M in self.test_models:
             for m in M.objects.all():
-                m.delete(track_changes=False)
+                if is_versioned(M):
+                    m.delete(track_changes=False)
+                else:
+                    m.delete()
         self._cleanup_file_environment()
 
     def test_new_save(self):
@@ -791,6 +795,36 @@ class ChangesTrackingTest(TestCase):
 
         # Test with a specified related_name
         #m12related = M12ForeignKeyRelatedSpecified()
+
+    def test_fk_not_versioned(self):
+        # When we do an FK lookup using a historical instance and the
+        # FK'ed model isn't versioned things should be just like they
+        # would be on the normal model instance.
+
+        # ForeignKey
+        nonversioned_m = NonVersionedModel(a="hi")
+        nonversioned_m.save()
+        m27 = M27FKToNonVersioned(a="hi", b=nonversioned_m)
+        m27.save()
+        m27_h = m27.versions.most_recent()
+        self.assertEqual(m27.b, m27_h.b)
+
+        # ManyToMany
+        m14 = M14ManyToMany(a="test")
+        m14.save()
+        category1 = Category(a='cats')
+        category1.save()
+        m14.b.add(category1)
+
+        m14_hist = m14.versions.most_recent()
+        self.assertEqual(len(m14_hist.b.all()), 1)
+
+        # OneToOne
+        m28 = M28OneToOneNonVersioned(a="A", b=nonversioned_m)
+        m28.save()
+
+        m28_h = m28.versions.most_recent()
+        self.assertEqual(m28_h.b.a, 'hi')
 
     def test_fk_reverse_lookup(self):
         # Reverse foreign key lookups on historical models should,

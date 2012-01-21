@@ -86,8 +86,38 @@ def historical_record_init(m, *args, **kws):
 
     retval = base.__init__(m, *args, **kws)
     m._wrapped_lookup_fields = {}
+    _wrap_m2m_relation_lookups(m)
     _wrap_reverse_lookups(m)
     return retval
+
+
+def _wrap_m2m_relation_lookups(m):
+    """
+    We wrap ManyToMany relation lookup on the historical models and have the
+    fields, when accessed, return the associated fields on the non-historical model.
+
+    We have to do this because, with ManyToManyField, it's not clear what
+    should happen if there's a concrete relation between the historical model
+    and the related model.  For instance, when new items are added to the M2M set,
+    should we go and update all the historical instances' M2M tables?  It'd
+    certainly be possible, but wrapping them will give us what we want.
+
+    We don't do this wrapping when the ManyToManyField points to a historical model,
+    as we handle that case separately and do the right thing (look up the related
+    set at the right historical time).
+
+    Args:
+        m: A historical record instance.
+    """
+    model_meta = m.version_info._object._meta
+    orig_obj = m.version_info._object
+    non_versioned_m2m_fields = [f for f in model_meta.local_many_to_many if
+        isinstance(f, models.fields.related.RelatedField) and
+        not is_versioned(f.rel.to)
+    ]
+    for field in non_versioned_m2m_fields:
+        _lookup = partial(getattr, orig_obj, field.name)
+        m._wrapped_lookup_fields[field.name] = SimpleLazyObject(_lookup)
 
 
 def _wrap_reverse_lookups(m):
@@ -232,6 +262,7 @@ def historical_record_getattribute(model, m, name):
             # This is a callable so let's do a lookup on the non-historical
             # model instance.
             return m.version_info._object_rel_populated.__getattribute__(name)
+
     return model.__getattribute__(m, name)
 
 
@@ -372,10 +403,7 @@ class HistoricalMetaInfo(object):
         return self
 
     def __getattr__(self, name):
-        try:
-            return getattr(self.__dict__['instance'], 'history_%s' % name)
-        except AttributeError, s:
-            raise AttributeError("version_info has no attribute %s" % name)
+        return getattr(self.__dict__['instance'], 'history_%s' % name)
 
     def __setattr__(self, name, val):
         if name == 'instance':
