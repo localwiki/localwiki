@@ -213,7 +213,6 @@ INSTALLED_APPS = (
     'staticfiles',
     'guardian',
     'south',
-    'taggit',
     'honeypot',
 
     # Our apps
