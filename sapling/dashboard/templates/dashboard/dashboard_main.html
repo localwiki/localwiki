@@ -1,0 +1,21 @@
+{% extends "site/base.html" %}
+
+{% block header_title %}
+  Dashboard
+{% endblock %}
+
+{% block main %}
+<p>
+Number of pages: <strong>{{ num_pages }}</strong>
+</p>
+<p>
+Number of files: <strong>{{ num_files }}</strong>
+</p>
+<p>
+Number of maps: <strong>{{ num_maps }}</strong>
+</p>
+<p>
+Number of redirects: <strong>{{ num_redirects }}</strong>
+</p>
+
+{% endblock %}
