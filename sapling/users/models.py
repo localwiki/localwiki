@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.encoding import smart_str
 from django.db import models
 from django.conf import settings
+from django.contrib.sites.models import Site
 
 
 #######################################################################
@@ -52,7 +53,10 @@ class UserProfile(models.Model):
     # this field is required
     user = models.OneToOneField(User)
 
-    subscribed = models.BooleanField(verbose_name=settings.SUBSCRIBE_MESSAGE)
+    subscribed = models.BooleanField(
+        verbose_name=settings.SUBSCRIBE_MESSAGE % {
+                'site_name': Site.objects.get_current().name}
+    )
 
 
 import signals  # to fire signals
