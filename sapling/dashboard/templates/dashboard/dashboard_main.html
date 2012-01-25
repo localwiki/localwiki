@@ -1,7 +1,14 @@
 {% extends "site/base.html" %}
+{% load static from staticfiles %}
 
 {% block header_title %}
   Dashboard
+{% endblock %}
+
+{% block media %}
+{{ block.super }}
+<script type="text/javascript" src="{% static "js/jquery/jquery-1.7.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery/flot/jquery.flot.js" %}"></script>
 {% endblock %}
 
 {% block main %}
@@ -18,4 +25,46 @@ Number of maps: <strong>{{ num_maps }}</strong>
 Number of redirects: <strong>{{ num_redirects }}</strong>
 </p>
 
+<p>
+Number of registered users: <strong>{{ num_users }}</strong>
+</p>
+
+<h3>Number of things over time</h3>
+<div id="num_items_over_time" style="width:800px;height:300px;"></div>
+
+<h3>Number of edits over time</h3>
+<div id="num_edits_over_time" style="width:800px;height:300px;"></div>
+
+<h3>Page content growth over time</h3>
+<div id="page_content_over_time" style="width:800px;height:300px;"></div>
+
+<script type="text/javascript">
+$(function () {
+    var num_items_over_time = {{ num_items_over_time.series_json|safe }};
+    var num_edits_over_time = {{ num_edits_over_time.series_json|safe }};
+    var page_content_over_time = {{ page_content_over_time.series_json|safe }};
+
+    $.plot($("#num_items_over_time"),
+           num_items_over_time,
+           { 
+               'xaxes': [{'mode': 'time'}],
+           }
+    );
+
+    $.plot($("#num_edits_over_time"),
+           num_edits_over_time,
+           { 
+               'xaxes': [{'mode': 'time'}],
+           }
+    );
+
+    $.plot($("#page_content_over_time"),
+           page_content_over_time,
+           { 
+               'xaxes': [{'mode': 'time'}],
+               'series': {'lines': {'show': true, 'fill': true}},
+           }
+    );
+});
+</script>
 {% endblock %}
