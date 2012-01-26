@@ -1,0 +1,8 @@
+.stat_number {
+    font-size: 130%;
+    margin-bottom: 0.4em;
+}
+.stat_number strong {
+    font-size: 140%;
+    margin-right: 0.2em;
+}

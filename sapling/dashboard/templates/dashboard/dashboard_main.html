@@ -9,27 +9,20 @@
 {{ block.super }}
 <script type="text/javascript" src="{% static "js/jquery/jquery-1.7.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery/flot/jquery.flot.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery/flot/jquery.flot.navigate.js" %}"></script>
+<link rel="stylesheet" href="{% static "css/dashboard/dashboard.css" %}">
 {% endblock %}
 
 {% block main %}
-<p>
-Number of pages: <strong>{{ num_pages }}</strong>
-</p>
-<p>
-Number of files: <strong>{{ num_files }}</strong>
-</p>
-<p>
-Number of maps: <strong>{{ num_maps }}</strong>
-</p>
-<p>
-Number of redirects: <strong>{{ num_redirects }}</strong>
-</p>
+<br/>
+<div class="stat_number"><strong>{{ num_pages }}</strong> Pages</div>
+<div class="stat_number"><strong>{{ num_files }}</strong> Files</div>
+<div class="stat_number"><strong>{{ num_maps }}</strong> Maps</div>
+<div class="stat_number"><strong>{{ num_redirects }}</strong> Redirects</div>
+<div class="stat_number"><strong>{{ num_users }}</strong> Users registered</div>
+<br/><br/>
 
-<p>
-Number of registered users: <strong>{{ num_users }}</strong>
-</p>
-
-<h3>Number of things over time</h3>
+<h3>Wiki growth over time</h3>
 <div id="num_items_over_time" style="width:800px;height:300px;"></div>
 
 <h3>Number of edits over time</h3>
@@ -38,16 +31,23 @@ Number of registered users: <strong>{{ num_users }}</strong>
 <h3>Page content growth over time</h3>
 <div id="page_content_over_time" style="width:800px;height:300px;"></div>
 
+<h3>Users registered over time</h3>
+<div id="users_registered_over_time" style="width:800px;height:300px;"></div>
+
 <script type="text/javascript">
 $(function () {
-    var num_items_over_time = {{ num_items_over_time.series_json|safe }};
-    var num_edits_over_time = {{ num_edits_over_time.series_json|safe }};
-    var page_content_over_time = {{ page_content_over_time.series_json|safe }};
+    var num_items_over_time = {{ num_items_over_time|safe }};
+    var num_edits_over_time = {{ num_edits_over_time|safe }};
+    var page_content_over_time = {{ page_content_over_time|safe }};
+    var users_registered_over_time = {{ users_registered_over_time|safe }};
 
     $.plot($("#num_items_over_time"),
            num_items_over_time,
            { 
                'xaxes': [{'mode': 'time'}],
+               'yaxes': [{'panRange': [0, null]}],
+               'zoom': {'interactive': true},
+               'pan': {'interactive': true},
            }
     );
 
@@ -55,14 +55,33 @@ $(function () {
            num_edits_over_time,
            { 
                'xaxes': [{'mode': 'time'}],
+               'yaxes': [{'panRange': [0, null]}],
+               'series': {'bars': {'show': true}},
+               'zoom': {'interactive': true},
+               'pan': {'interactive': true},
            }
+
     );
 
     $.plot($("#page_content_over_time"),
            page_content_over_time,
            { 
                'xaxes': [{'mode': 'time'}],
+               'yaxes': [{'panRange': [0, null]}],
                'series': {'lines': {'show': true, 'fill': true}},
+               'zoom': {'interactive': true},
+               'pan': {'interactive': true},
+           }
+    );
+
+    $.plot($("#users_registered_over_time"),
+           users_registered_over_time,
+           { 
+               'xaxes': [{'mode': 'time'}],
+               'yaxes': [{'panRange': [0, null]}],
+               'series': {'lines': {'show': true}},
+               'zoom': {'interactive': true},
+               'pan': {'interactive': true},
            }
     );
 });
