@@ -51,6 +51,9 @@ OLWIDGET_DEFAULT_OPTIONS = {
 DAISYDIFF_URL = 'http://localhost:8080/daisydiff/diff'
 DAISYDIFF_MERGE_URL = 'http://localhost:8080/daisydiff/merge'
 
+# Uncomment this to switch to BY-SA
+#LICENSE = """<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">a Creative Commons Attribution-ShareAlike License</a>"""
+
 # list of regular expressions for white listing embedded URLs
 EMBED_ALLOWED_SRC = ['.*']
 
