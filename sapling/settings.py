@@ -33,6 +33,8 @@ GLOBAL_LICENSE_NOTE = None
 EDIT_LICENSE_NOTE = None
 SIGNUP_TOS = None
 
+SUBSCRIBE_MESSAGE = """I would like to receive occasional updates about %(site_name)s via email"""
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -81,6 +83,8 @@ AUTHENTICATION_BACKENDS = (
     'sapling.users.backends.CaseInsensitiveModelBackend',
     'sapling.users.backends.RestrictiveBackend',
 )
+
+AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 # users app settings
 USERS_ANONYMOUS_GROUP = 'Anonymous'

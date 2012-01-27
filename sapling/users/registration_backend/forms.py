@@ -3,6 +3,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.safestring import mark_safe
+from django.forms.models import fields_for_model
+
+from users.models import UserProfile
 
 attrs_dict = {'class': 'required'}
 
@@ -40,6 +43,9 @@ class RegistrationForm(forms.Form):
             label=mark_safe(settings.SIGNUP_TOS),
             error_messages={'required':
                 _("You must agree to the terms to register")})
+
+    subscribed = UserProfile._meta.get_field('subscribed').formfield()
+
 
     def clean_username(self):
         """

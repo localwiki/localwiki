@@ -43,7 +43,7 @@ urlpatterns = patterns('',
         slugify(PageFileInfo.as_view()), name='file-info'),
     url(r'^(?P<slug>.+)/_files/(?P<file>.+)/_info/_feed/*$',
         PageFileChangesFeed(), name='file-changes-feed'),
-    url(r'^(?P<slug>.+)/_files/(?P<file>.+)/_info/compare$',
+    url(r'^(?P<slug>.+)/_files/(?P<file>.+)/_info/compare',
         slugify(PageFileCompareView.as_view())),
     url((r'^(?P<slug>.+)/_files/(?P<file>.+)/_info/'
             r'(?P<version1>[0-9]+)\.\.\.(?P<version2>[0-9]+)?$'),
@@ -70,7 +70,7 @@ urlpatterns = patterns('',
     # ('/_history/',
     #  include(history_urls(list_view=..,compare_view=..)))?
     #########################################################
-    url(r'^(?P<slug>.+)/_history/compare/$',
+    url(r'^(?P<slug>.+)/_history/compare',
         slugify(PageCompareView.as_view())),
     url((r'^(?P<slug>.+)/_history/'
             r'(?P<version1>[0-9]+)\.\.\.(?P<version2>[0-9]+)?$'),
