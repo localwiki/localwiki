@@ -55,6 +55,6 @@
     </tbody>
   </table>
   <p>
-      <a href="{% url pages:file-info slug=slug file=pagefile.name %}">File info</a>
+      <a href="{% url pages:file-info slug=slug file=pagefile.name|urlencode %}">File info</a>
   </p>
 {% endblock %}

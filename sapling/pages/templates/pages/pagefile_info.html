@@ -24,14 +24,14 @@
 {% load thumbnail %}
   <p>
   	{% spaceless %}
-    <a class="no_icon" href="{% url pages:file slug=file.slug file=file.name %}">
+    <a class="no_icon" href="{% url pages:file slug=file.slug file=file.name|urlencode %}">
     	{% thumbnail file.file "500x500" upscale=False as im %}
     	<img src="{{ im.url }}" />
     	{% endthumbnail %}
     </a>
     {% endspaceless %}
     <br/>
-    <a class="file_{{ file.rough_type }}" href="{% url pages:file slug=file.slug file=file.name %}">
+    <a class="file_{{ file.rough_type }}" href="{% url pages:file slug=file.slug file=file.name|urlencode %}">
     	Download {{ file.name }}
     </a>
   </p>
