@@ -2,8 +2,6 @@ from datetime import datetime, timedelta
 
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.db.models import Max
 
@@ -12,6 +10,7 @@ import pyflot
 from pages.models import Page, PageFile
 from maps.models import MapData
 from redirects.models import Redirect
+from utils.views.decorators import force_cache_page
 
 from versionutils.versioning.constants import *
 
@@ -19,18 +18,15 @@ from versionutils.versioning.constants import *
 class DashboardView(TemplateView):
     template_name = 'dashboard/dashboard_main.html'
 
-    #@method_decorator(cache_page(60 * 60 * 5))
-    def get(self, request, *args, **kwargs):
-        return super(DashboardView, self).get(request, *args, **kwargs)
+    # TODO: We should use a job queue here or something.
+    @method_decorator(force_cache_page(60 * 60 * 5))
+    def dispatch(self, *args, **kwargs):
+        return super(DashboardView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = cache.get('dashboard_context')
-        if context is not None:
-            return context
-
-        now = datetime.now()
         context = super(DashboardView, self).get_context_data(**kwargs)
 
+        now = datetime.now()
         context['num_pages'] = len(Page.objects.all())
         context['num_files'] = len(PageFile.objects.all())
         context['num_maps'] = len(MapData.objects.all())
@@ -40,8 +36,6 @@ class DashboardView(TemplateView):
         context['num_edits_over_time'] = edits_over_time(now)
         context['page_content_over_time'] = page_content_over_time(now)
         context['users_registered_over_time'] = users_registered_over_time(now)
-
-        cache.set('dashboard_context', context, 60 * 60 * 5)
 
         return context
 

@@ -13,26 +13,45 @@
 <link rel="stylesheet" href="{% static "css/dashboard/dashboard.css" %}">
 {% endblock %}
 
-{% block main %}
-<br/>
-<div class="stat_number"><strong>{{ num_pages }}</strong> Pages</div>
-<div class="stat_number"><strong>{{ num_files }}</strong> Files</div>
-<div class="stat_number"><strong>{{ num_maps }}</strong> Maps</div>
-<div class="stat_number"><strong>{{ num_redirects }}</strong> Redirects</div>
-<div class="stat_number"><strong>{{ num_users }}</strong> Users registered</div>
-<br/><br/>
+{% block content %}
+<table class="stats">
+  <thead><tr><td>
+    <div class="stat_number">{{ num_pages }}<div class="type">Pages</div></div>
+    <div class="stat_number">{{ num_files }}<div class="type">Files</div></div>
+    <div class="stat_number">{{ num_maps }}<div class="type">Maps</div></div>
+    <div class="stat_number">{{ num_redirects }}<div class="type">Redirects</div></div>
+    <div class="stat_number">{{ num_users }}<div class="type">Users</div></div>
+  </td></tr></thead>
 
-<h3>Wiki growth over time</h3>
-<div id="num_items_over_time" style="width:800px;height:300px;"></div>
+<tr><td>
+<div class="stat_detail">
+   <h2>Growth over time</h2>
+   <div id="num_items_over_time" class="graph"></div>
+</div>
+</td></tr>
 
-<h3>Number of edits over time</h3>
-<div id="num_edits_over_time" style="width:800px;height:300px;"></div>
+<tr><td>
+<div class="stat_detail">
+    <h2>Edits over time</h2>
+    <div id="num_edits_over_time" class="graph"></div>
+</div>
+</td></tr>
 
-<h3>Page content growth over time</h3>
-<div id="page_content_over_time" style="width:800px;height:300px;"></div>
+<tr><td>
+<div class="stat_detail">
+    <h2>Page content growth over time</h2>
+    <div id="page_content_over_time" class="graph"></div>
+</div>
+</td></tr>
 
-<h3>Users registered over time</h3>
-<div id="users_registered_over_time" style="width:800px;height:300px;"></div>
+<tr><td>
+<div class="stat_detail">
+    <h2>Users registered over time</h2>
+    <div id="users_registered_over_time" class="graph"></div>
+</div>
+</td></tr>
+
+</table>
 
 <script type="text/javascript">
 $(function () {
@@ -48,6 +67,7 @@ $(function () {
                'yaxes': [{'panRange': [0, null]}],
                'zoom': {'interactive': true},
                'pan': {'interactive': true},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}},
            }
     );
 
@@ -59,6 +79,7 @@ $(function () {
                'series': {'bars': {'show': true}},
                'zoom': {'interactive': true},
                'pan': {'interactive': true},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}},
            }
 
     );
@@ -71,6 +92,7 @@ $(function () {
                'series': {'lines': {'show': true, 'fill': true}},
                'zoom': {'interactive': true},
                'pan': {'interactive': true},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}},
            }
     );
 
@@ -82,6 +104,7 @@ $(function () {
                'series': {'lines': {'show': true}},
                'zoom': {'interactive': true},
                'pan': {'interactive': true},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}},
            }
     );
 });
