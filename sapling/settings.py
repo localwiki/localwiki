@@ -225,6 +225,7 @@ INSTALLED_APPS = (
     'recentchanges',
     'search',
     'redirects',
+    'dashboard',
     'utils',
 )
 

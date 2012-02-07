@@ -125,6 +125,7 @@ install_requires = [
     'django-randomfilenamestorage',
     'django-guardian',
     'South',
+    'python-flot-utils',
     'django-staticfiles>=1.1.2',
     'django-registration==0.8.0-alpha-1',
     'django-olwidget==0.46-custom1',
