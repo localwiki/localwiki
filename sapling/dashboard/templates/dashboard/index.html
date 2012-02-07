@@ -68,7 +68,7 @@ function generate_graphs(stats) {
                'yaxes': [{'panRange': [0, null]}],
                'zoom': {'interactive': true},
                'pan': {'interactive': true},
-               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
            }
     );
 
@@ -80,7 +80,7 @@ function generate_graphs(stats) {
                'series': {'bars': {'show': true}},
                'zoom': {'interactive': true},
                'pan': {'interactive': true},
-               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
            }
 
     );
@@ -93,7 +93,7 @@ function generate_graphs(stats) {
                'series': {'lines': {'show': true, 'fill': true}},
                'zoom': {'interactive': true},
                'pan': {'interactive': true},
-               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
            }
     );
 
@@ -105,7 +105,7 @@ function generate_graphs(stats) {
                'series': {'lines': {'show': true}},
                'zoom': {'interactive': true},
                'pan': {'interactive': true},
-               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
            }
     );
 }
@@ -121,7 +121,7 @@ function populateData(data) {
         'num_items_over_time': data.num_items_over_time,
         'num_edits_over_time': data.num_edits_over_time,
         'page_content_over_time': data.page_content_over_time,
-        'users_registered_over_time': data.users_registered_over_time,
+        'users_registered_over_time': data.users_registered_over_time
     };
     generate_graphs(stats);
 }
