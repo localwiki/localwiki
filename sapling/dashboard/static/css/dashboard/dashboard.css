@@ -2,6 +2,7 @@
     text-align: center;
     width: 80%;
     min-width: 40em;
+    display: none;
 }
 .stats td {
     padding-left: 3.2em;
@@ -52,4 +53,13 @@
 }
 .graph .legend table {
     border: 1px solid #b8b8b8;
+}
+
+.loading {
+    background-image: url(../../theme/img/loading_spinner.gif);
+	background-repeat: no-repeat;
+	background-position: 20px 0;
+
+    padding-top: 20px;
+    font-style: italic;
 }

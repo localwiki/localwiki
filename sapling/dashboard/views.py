@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
-from django.views.generic import TemplateView
-from django.utils.decorators import method_decorator
+from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.db.models import Max
 
@@ -10,32 +9,47 @@ import pyflot
 from pages.models import Page, PageFile
 from maps.models import MapData
 from redirects.models import Redirect
-from utils.views.decorators import force_cache_page
+from utils.views import JSONView
 
 from versionutils.versioning.constants import *
 
+CACHE_TIME = 60 * 60 * 5
 
-class DashboardView(TemplateView):
-    template_name = 'dashboard/dashboard_main.html'
 
-    # TODO: We should use a job queue here or something.
-    @method_decorator(force_cache_page(60 * 60 * 5))
-    def dispatch(self, *args, **kwargs):
-        return super(DashboardView, self).dispatch(*args, **kwargs)
-
+class DashboardView(JSONView):
     def get_context_data(self, **kwargs):
-        context = super(DashboardView, self).get_context_data(**kwargs)
+        context = cache.get('dashboard')
+        if context is not None:
+            return context
 
-        now = datetime.now()
-        context['num_pages'] = len(Page.objects.all())
-        context['num_files'] = len(PageFile.objects.all())
-        context['num_maps'] = len(MapData.objects.all())
-        context['num_redirects'] = len(Redirect.objects.all())
-        context['num_users'] = len(User.objects.all())
-        context['num_items_over_time'] = items_over_time(now)
-        context['num_edits_over_time'] = edits_over_time(now)
-        context['page_content_over_time'] = page_content_over_time(now)
-        context['users_registered_over_time'] = users_registered_over_time(now)
+        if 'check_cache' in self.request.GET:
+            # We tell the browser it hasn't been generated yet, and the browser
+            # then shows a "loading" message as the page is generated.
+            # TODO: Make this process better.  Job-queue + structured
+            # poll/socketio.
+            context = {'generated': False}
+        else:
+            if cache.get('dashboard_generating'):
+                # Cache is generating in a different request.
+                return {'generated': False}
+
+            cache.set('dashboard_generating', True)
+            now = datetime.now()
+            context = {
+                'num_pages': len(Page.objects.all()),
+                'num_files': len(PageFile.objects.all()),
+                'num_maps': len(MapData.objects.all()),
+                'num_redirects': len(Redirect.objects.all()),
+                'num_users': len(User.objects.all()),
+                'num_items_over_time': items_over_time(now),
+                'num_edits_over_time': edits_over_time(now),
+                'page_content_over_time': page_content_over_time(now),
+                'users_registered_over_time': users_registered_over_time(now),
+            }
+
+            context['generated'] = True
+            cache.set('dashboard', context, CACHE_TIME)
+            cache.set('dashboard_generating', False)
 
         return context
 
@@ -90,7 +104,7 @@ def items_over_time(now):
     graph.add_time_series(num_redirects_over_time,
         label="redirects")
 
-    return graph.series_json
+    return [graph.prepare_series(s) for s in graph._series]
 
 
 def edits_over_time(now):
@@ -133,7 +147,7 @@ def edits_over_time(now):
     graph.add_time_series(file_edits, label="files")
     graph.add_time_series(redirect_edits, label="redirects")
 
-    return graph.series_json
+    return [graph.prepare_series(s) for s in graph._series]
 
 
 def page_content_over_time(now):
@@ -170,7 +184,7 @@ def page_content_over_time(now):
 
     graph.add_time_series(page_contents)
 
-    return graph.series_json
+    return [graph.prepare_series(s) for s in graph._series]
 
 
 def users_registered_over_time(now):
@@ -193,4 +207,4 @@ def users_registered_over_time(now):
 
     graph.add_time_series(users_registered)
 
-    return graph.series_json
+    return [graph.prepare_series(s) for s in graph._series]

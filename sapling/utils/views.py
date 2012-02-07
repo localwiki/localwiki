@@ -1,6 +1,7 @@
 from django.utils.decorators import classonlymethod
 from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.utils import simplejson as json
+from django.views.generic import View
 
 
 class ForbiddenException:
@@ -107,3 +108,33 @@ class PermissionRequiredMixin(object):
                 return HttpResponseForbidden(self.forbidden_message)
         return super(PermissionRequiredMixin, self).dispatch(request, *args,
                                                         **kwargs)
+
+
+class JSONResponseMixin(object):
+    def render_to_response(self, context):
+        "Returns a JSON response containing 'context' as payload"
+        return self.get_json_response(self.convert_context_to_json(context))
+
+    def get_json_response(self, content, **httpresponse_kwargs):
+        "Construct an `HttpResponse` object."
+        return HttpResponse(content, content_type='application/json',
+            **httpresponse_kwargs)
+
+    def convert_context_to_json(self, context):
+        "Convert the context dictionary into a JSON object"
+        # Note: This is *EXTREMELY* naive; in reality, you'll need
+        # to do much more complex handling to ensure that arbitrary
+        # objects -- such as Django model instances or querysets
+        # -- can be serialized as JSON.
+        return json.dumps(context)
+
+
+class JSONView(View, JSONResponseMixin):
+    """
+    A JSONView returns, on GET, a json dictionary containing the values of
+    get_context_data().
+    """
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
