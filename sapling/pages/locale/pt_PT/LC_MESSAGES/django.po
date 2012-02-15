@@ -1,0 +1,344 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-15 19:45+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt-PT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: feeds.py:42
+#, python-format
+msgid "File %(filename)s on page \"%(pagename)s\""
+msgstr "Ficheiro %(filename)s na página \"%(pagename)s\""
+
+#: feeds.py:79
+#, fuzzy
+msgid "File %(filename)=s on page \"%(pagename)s\""
+msgstr "Ficheiro %(filename)s na página \"%(pagename)s\""
+
+#: fields.py:22
+#, python-format
+msgid "Page %s does not exist!  Please enter a valid page name."
+msgstr "A página %s não existe! Por favor, introduza um nome de página válido."
+
+#: forms.py:15
+msgid ""
+"Warning: someone else saved this page before you.  Please resolve edit "
+"conflicts and save again."
+msgstr "Aviso: outra pessou gravou esta página antes de si. Por favor, resolva os"
+"conflitos de edição e grave novamente."
+
+#: forms.py:46
+msgid "A page with this name already exists"
+msgstr "Já existe uma página com este nome"
+
+#: forms.py:62
+msgid "The new file should be of the same type"
+msgstr "O novo ficheiro deve ser do mesmo tipo"
+
+#: models.py:84
+msgid "Page name is invalid."
+msgstr "Nome da página inválido"
+
+#: models.py:138
+#, python-format
+msgid "The page '%s' already exists!"
+msgstr "A página '%s' já existe!"
+
+#: plugins.py:368
+msgid ""
+"The embedded URL is not on the list of approved providers.  Contact the site "
+"administrator to add it."
+msgstr ""
+"O URL (embedded) não está na lista dos fornecedores permitidos.  Contacte o administrador do "
+"site para o adicionar."
+
+#: plugins.py:372
+msgid "Invalid embed code"
+msgstr "Código de embed inválido"
+
+#: plugins.py:384
+msgid "Search or create page"
+msgstr "Pesquisar ou criar página"
+
+#: views.py:103
+msgid "Thank you for your changes. Your attention to detail is appreciated."
+msgstr "Obrigado pelas alterações. Apreciamos a sua atenção ao detalhe."
+
+#: views.py:106
+#, python-format
+msgid ""
+"Changes saved! To use your name when editing, please <a href=\"%(login_url)s?"
+"next=%(current_path)s\"><strong>log in</strong></a> or <a href="
+"\"%(register_url)s?next=%(current_path)s\"><strong>create an account</"
+"strong></a>."
+msgstr ""
+"Alterações gravadas! Para usar o seu nome na edição, por favor <a href=\"%(login_url)s?"
+"next=%(current_path)s\"><strong>entre no site</strong></a> ou <a href="
+"\"%(register_url)s?next=%(current_path)s\"><strong>crie uma conta</"
+"strong></a>."
+
+#: views.py:118
+#, python-format
+msgid ""
+"<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
+"class=\"text\">Create a map</span></a> for this page?</p>"
+msgstr ""
+"<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
+"class=\"text\">Criar um mapa</span></a> para esta página?</p>"
+
+#: views.py:130
+#, python-format
+msgid "<p>Describe %s here</p>"
+msgstr "<p>Descreva %s aqui</p>"
+
+#: views.py:343
+msgid "A file with this name already exists"
+msgstr "Já existe um ficheiro com este nome"
+
+#: views.py:375
+#, python-format
+msgid "Page renamed to \"%s\""
+msgstr "Nome da Página alterado para \"%s\""
+
+#: templates/pages/base.html:5
+msgid "Recent changes on this Page"
+msgstr "Alterações recentes nesta Paǵina"
+
+#: templates/pages/base.html:26 templates/pages/page_form.html:60
+#: templates/pages/page_versions.html:25
+msgid "Edit"
+msgstr "Editar"
+
+#: templates/pages/base.html:27 templates/pages/page_form.html:61
+#: templates/pages/page_versions.html:26
+msgid "Info"
+msgstr "Informações"
+
+#: templates/pages/cke_filebrowser.html:7 templates/pages/page_files.html:4
+msgid "Files"
+msgstr "Ficheiros"
+
+#: templates/pages/editor_actions.html:4
+msgid "Edit map"
+msgstr "Editar mapa"
+
+#: templates/pages/editor_actions.html:5
+msgid "Delete page"
+msgstr "Apagar página"
+
+#: templates/pages/editor_actions.html:6
+msgid "Rename page"
+msgstr "Mudar o nome da página"
+
+#: templates/pages/editor_actions.html:8
+msgid "Redirect"
+msgstr "Redirecionar"
+
+#: templates/pages/page_confirm_delete.html:14
+#: templates/pages/pagefile_confirm_delete.html:14
+msgid "Delete"
+msgstr "Apagar"
+
+#: templates/pages/page_confirm_revert.html:14
+msgid "Revert"
+msgstr "Reverter"
+
+#: templates/pages/page_detail.html:15
+msgid "Redirected from"
+msgstr "Redirecionado de"
+
+#: templates/pages/page_detail.html:29
+#, python-format
+msgid ""
+"Revision %(page.version_info.version_number)s\n"
+"          (%(date)s by %(user_link)s)"
+msgstr ""
+"Revisão %(page.version_info.version_number)s\n"
+"          (%(date)s por %(user_link)s)"
+
+#: templates/pages/page_detail.html:37
+msgid "View map"
+msgstr "Ver mapa"
+
+#: templates/pages/page_detail.html:53
+#, python-format
+msgid ""
+"<a href=\"%(pretty_slug)s\">Edit</a> this page (last modified %(ago)s ago)"
+msgstr ""
+"<a href=\"%(pretty_slug)s\">Editar</a> esta página (última modificação há %(ago)s)"
+
+#: templates/pages/page_diff.html:19
+#, python-format
+msgid "Differences for %(name)s"
+msgstr "Diferenças para %(name)s"
+
+#: templates/pages/page_diff.html:20
+#, python-format
+msgid "Differences for <a href=\"%(pretty_slug)s\">%(new.name)s</a>"
+msgstr "Diferenças para <a href=\"%(pretty_slug)s\">%(new.name)s</a>"
+
+#: templates/pages/page_diff.html:30
+#, python-format
+msgid ""
+"Revision %(version_number)s\n"
+"                  ( %(date)s by %(user_link)s)"
+msgstr ""
+"Revisão %(version_number)s\n"
+"                  ( %(date)s por %(user_link)s)"
+
+#: templates/pages/page_diff.html:35 templates/pages/pagefile_diff.html:43
+#, python-format
+msgid ""
+"Revisão %(version_number)s\n"
+"                  (%(date)s por %(user_link)s)"
+msgstr ""
+
+#: templates/pages/page_diff.html:41
+msgid "Deletions are marked like this"
+msgstr "O conteúdo apagado está marcado assim"
+
+#: templates/pages/page_diff.html:44
+msgid "Additions are marked like this"
+msgstr "O conteúdo adicionado está marcado assim"
+
+#: templates/pages/page_files.html:19
+msgid "Files attached to this page:"
+msgstr "Ficheiros anexados a esta página:"
+
+#: templates/pages/page_files.html:34
+msgid "View page"
+msgstr "Ver página"
+
+#: templates/pages/page_form.html:4
+#, python-format
+msgid "Editing page \"%(name)s\" - %(super)s"
+msgstr "A editar a página \"%(name)s\" - %(super)s"
+
+#: templates/pages/page_form.html:38
+msgid "Please comment about this change:"
+msgstr "Por favor introduza um comentário sobre esta alteração:"
+
+#: templates/pages/page_form.html:42
+msgid "Save changes"
+msgstr "Gravar alterações"
+
+#: templates/pages/page_form.html:43
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: templates/pages/page_list.html:4 templates/pages/page_list.html.py:6
+msgid "All Pages"
+msgstr "Todas as Páginas"
+
+#: templates/pages/page_new.html:4
+msgid "Page not found"
+msgstr "Página não encontrada"
+
+#: templates/pages/page_new.html:5
+#, python-format
+msgid "Page \"%(name)s\" does not exist (yet!)"
+msgstr "A página \"%(name)s\" não existe (ainda!)"
+
+#: templates/pages/page_new.html:14
+msgid "Create this page"
+msgstr "Criar esta página"
+
+#: templates/pages/page_new.html:18
+msgid "Or use one of these templates:"
+msgstr "Ou usar um destes modelos:"
+
+#: templates/pages/page_new.html:21
+#, python-format
+msgid "Create with %(name)s template"
+msgstr "Criar com o modelo %(name)s"
+
+#: templates/pages/page_rename.html:12
+msgid "Submit"
+msgstr "Enviar"
+
+#: templates/pages/page_versions.html:13
+#, python-format
+msgid "Previous versions of page \"%(name)s\" - %(super)s"
+msgstr "Versões anteriores da página \"%(name)s\" - %(super)s"
+
+#: templates/pages/page_versions.html:18
+msgid " Looking for <a href=\"../_files/\">files</a>"
+msgstr " À procura de <a href=\"../_files/\">ficheiros</a>"
+
+#: templates/pages/pagefile_diff.html:34 templates/pages/pagefile_diff.html:35
+#, python-format
+msgid "Differences for %(new_name)s"
+msgstr "Diferenças para %(new_name)s"
+
+#: templates/pages/pagefile_diff.html:48
+#, python-format
+msgid ""
+"Revision %(version_number)s\n"
+"                (%(date)s by %(user_link)s)"
+msgstr ""
+"Revisão %(version_number)s\n"
+"                (%(date)s por %(user_link)s)"
+
+#: templates/pages/pagefile_diff.html:59
+msgid "File info"
+msgstr "Informações sobre o ficheiro"
+
+#: templates/pages/pagefile_info.html:4
+msgid "Recent changes for this file"
+msgstr "Alterações recentes para este ficheiro"
+
+#: templates/pages/pagefile_info.html:11
+#, python-format
+msgid "Information about \"%(name)s\" on %(slug)s - %(super)s"
+msgstr "Informações sobre \"%(name)s\" em %(slug)s - %(super)s"
+
+#: templates/pages/pagefile_info.html:12
+#, python-format
+msgid ""
+"Information about \"%(name)s\" on <a href=\"%(pages_show_url)s\">"
+"%(attached_to_page)s</a>"
+msgstr ""
+"Informações sobre \"%(name)s\" em <a href=\"%(pages_show_url)s\">"
+"%(attached_to_page)s</a>"
+
+#: templates/pages/pagefile_info.html:36
+#, python-format
+msgid "Download %(name)s"
+msgstr "Descarregar %(name)s"
+
+#: templates/pages/pagefile_info.html:41
+msgid "Upload a new version"
+msgstr "Carregar uma nova versão"
+
+#: templates/pages/pagefile_info.html:48
+msgid "Upload"
+msgstr "Carregar"
+
+#: templatetags/pages_tags.py:69
+#, python-format
+msgid ""
+"Unable to include <a href=\"%(pagename)s\">%(pagename)s</a>: endless include "
+"loop.)"
+msgstr ""
+"Não foi possível incluir a página<a href=\"%(pagename)s\">%(pagename)s</a>: ciclo infinito "
+".)"
+
+#: templatetags/pages_tags.py:81
+#, python-format
+msgid ""
+"Unable to include <a href=\"%(pageurl)s\" class=\"missing_link\">"
+"%(pagename)s</a>"
+msgstr ""
+"Não foi possível incluir a página <a href=\"%(pageurl)s\" class=\"missing_link\">"
+"%(pagename)s</a>"

@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import stringfilter
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext as _
 
 from django_randomfilenamestorage.storage import (
     RandomFilenameFileSystemStorage)
@@ -80,7 +81,7 @@ class Page(models.Model):
     def clean(self):
         self.name = clean_name(self.name)
         if not slugify(self.name):
-            raise ValidationError('Page name is invalid.')
+            raise ValidationError(_('Page name is invalid.'))
 
     def exists(self):
         """
@@ -134,7 +135,7 @@ class Page(models.Model):
                 return
             else:
                 raise exceptions.PageExistsError(
-                    "The page '%s' already exists!" % pagename)
+                    _("The page '%s' already exists!") % pagename)
 
         # Copy the current page into the new page, zeroing out the
         # primary key and setting a new name and slug.

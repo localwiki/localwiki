@@ -1,6 +1,7 @@
 import mimetypes
 
 from django import forms
+from django.utils.translation import  ugettext_lazy as _
 
 from versionutils.merging.forms import MergeMixin
 from versionutils.versioning.forms import CommentMixin
@@ -10,7 +11,7 @@ from versionutils.diff.daisydiff.daisydiff import daisydiff_merge
 
 
 class PageForm(MergeMixin, CommentMixin, forms.ModelForm):
-    conflict_error = (
+    conflict_error = _(
         "Warning: someone else saved this page before you.  "
         "Please resolve edit conflicts and save again."
     )
@@ -42,7 +43,7 @@ class PageForm(MergeMixin, CommentMixin, forms.ModelForm):
             page = Page.objects.get(slug__exact=slugify(name))
             if self.instance != page:
                 raise forms.ValidationError(
-                    'A page with this name already exists'
+                    _('A page with this name already exists')
                 )
         except Page.DoesNotExist:
             pass
@@ -58,7 +59,7 @@ class PageFileForm(CommentMixin, forms.ModelForm):
             (mime_type, enc) = mimetypes.guess_type(filename)
             if mime_type != self.instance.mime_type:
                 raise forms.ValidationError(
-                    'The new file should be of the same type')
+                    _('The new file should be of the same type'))
         return self.cleaned_data
 
     class Meta:

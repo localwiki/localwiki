@@ -4,7 +4,6 @@
 *.swo
 *.pyo
 *~
-*.mo
 /build/
 /dist/
 /env/

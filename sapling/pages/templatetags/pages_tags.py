@@ -1,6 +1,7 @@
 from django import template
 from django.template.loader_tags import BaseIncludeNode
 from django.template import Template
+from django.utils.translation import ugettext as _
 from django.conf import settings
 
 from pages.plugins import html_to_template_text, SearchBoxNode
@@ -65,9 +66,9 @@ class IncludePageNode(BaseIncludeNode):
                 include_stack = context.get('_include_stack', [])
                 include_stack.append(context_page.name)
                 if page.name in include_stack:
-                    content = ('<p class="plugin includepage">Unable to'
-                               ' include <a href="%s">%s</a>: endless include'
-                               ' loop.</p>' % (self.page_name, self.page_name))
+                    content = ('<p class="plugin includepage">' _('Unable to'
+                               ' include <a href="%(pagename)s">%(pagename)s</a>: endless include'
+                               ' loop.)') '</p>' % {'pagename': self.page_name})
                 context['_include_stack'] = include_stack
                 context['page'] = page
                 template_text = html_to_template_text(content, context)
@@ -77,9 +78,9 @@ class IncludePageNode(BaseIncludeNode):
             except Page.DoesNotExist:
                 page_url = reverse('pages:show',
                                    args=[name_to_url(self.page_name)])
-                template_text = ('<p class="plugin includepage">Unable to'
-                        ' include <a href="%s" class="missing_link">%s</a></p>'
-                        % (page_url, self.page_name))
+                template_text = ('<p class="plugin includepage">' _('Unable to'
+                        ' include <a href="%(pageurl)s" class="missing_link">%(pagename)s</a>') '</p>'
+                        % {'pageurl': page_url, 'pagename': self.page_name})
             template = Template(template_text)
             return self.render_template(template, context)
         except:

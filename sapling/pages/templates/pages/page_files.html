@@ -1,6 +1,7 @@
 {% extends "pages/base.html" %}
+{% load i18n %}
 {% load thumbnail %}
-{% block title %}Files - {{ block.super }}{% endblock %}
+{% block title %}{% trans "Files" %} - {{ block.super }}{% endblock %}
 {% block media %}
 {{ block.super }}
 <style>
@@ -15,7 +16,7 @@
     }
 </style>
 {% endblock %}
-{% block header_title %}Files attached to this page: {% endblock %}
+{% block header_title %}{% trans "Files attached to this page:" %} {% endblock %}
 
 {% block content %}
   <ul class="file_list">
@@ -30,6 +31,6 @@
   {% endfor %}
   </ul>
   <p>
-    <a href="{% url pages:show slug=slug %}">View page</a>
+    <a href="{% url pages:show slug=slug %}">{% trans "View page" %}</a>
   </p>
 {% endblock %}

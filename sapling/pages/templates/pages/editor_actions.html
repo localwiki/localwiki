@@ -1,8 +1,9 @@
+{% load i18n %}
 {% block editor_actions %}
     {% if page.exists %}
-      <li><a href="{% url maps:edit slug=page.pretty_slug %}" class="little button map"><span class="text">Edit map</span></a></li>
-      <li><a href="{% url pages:delete slug=page.pretty_slug %}" class="little button">Delete page</a></li>
-      <li><a href="{% url pages:rename slug=page.pretty_slug %}" class="little button">Rename page</a></li>
+      <li><a href="{% url maps:edit slug=page.pretty_slug %}" class="little button map"><span class="text">{% trans "Edit map" %}</span></a></li>
+      <li><a href="{% url pages:delete slug=page.pretty_slug %}" class="little button">{% trans "Delete page" %}</a></li>
+      <li><a href="{% url pages:rename slug=page.pretty_slug %}" class="little button">{% trans "Rename page" %}</a></li>
     {% endif %}
-    <li><a href="{% url redirects:edit slug=page.pretty_slug %}" class="little button redirect"><span class="text">Redirect</span></a></li>
+    <li><a href="{% url redirects:edit slug=page.pretty_slug %}" class="little button redirect"><span class="text">{% trans "Redirect" %}</span></a></li>
     {% endblock %}
