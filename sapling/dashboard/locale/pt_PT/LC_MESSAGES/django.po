@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: localwiki - dashboard\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-15 17:06+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
+"Language: pt-PT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: views.py:102 views.py:146
+msgid "pages"
+msgstr "páginas"
+
+#: views.py:103 views.py:147
+msgid "maps"
+msgstr "mapas"
+
+#: views.py:104 views.py:148
+msgid "files"
+msgstr "ficheiros"
+
+#: views.py:106 views.py:149
+msgid "redirects"
+msgstr "redirecionamentos"
+
+#: templates/dashboard/index.html:6
+msgid "Dashboard"
+msgstr "Painel de gestão"
+
+#: templates/dashboard/index.html:19
+msgid "Statistics loading.  This may take several minutes the first time."
+msgstr "A carregar as estatísticas. Pode demorar vários minutos da primeira vez."
+
+#: templates/dashboard/index.html:23 templates/dashboard/render.html:4
+msgid "Pages"
+msgstr "Páginas"
+
+#: templates/dashboard/index.html:24 templates/dashboard/render.html:5
+msgid "Files"
+msgstr "Ficheiros"
+
+#: templates/dashboard/index.html:25 templates/dashboard/render.html:6
+msgid "Maps"
+msgstr "Mapas"
+
+#: templates/dashboard/index.html:26 templates/dashboard/render.html:7
+msgid "Redirects"
+msgstr "Redirecionamentos"
+
+#: templates/dashboard/index.html:27 templates/dashboard/render.html:8
+msgid "Users"
+msgstr "Utilizadores"
+
+#: templates/dashboard/index.html:32 templates/dashboard/render.html:13
+msgid "Growth over time"
+msgstr "Crescimento ao longo do tempo"
+
+#: templates/dashboard/index.html:39 templates/dashboard/render.html:20
+msgid "Edits over time"
+msgstr "Alterações ao longo do tempo"
+
+#: templates/dashboard/index.html:46 templates/dashboard/render.html:27
+msgid "Page content growth over time"
+msgstr "Crescimento dos conteúdos ao longo do tempo"
+
+#: templates/dashboard/index.html:53 templates/dashboard/render.html:34
+msgid "Users registered over time"
+msgstr "Utilizadores registados ao longo do tempo"

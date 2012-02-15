@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.db.models import Max
+from django.utils.translation import  ugettext_lazy as _
 
 import pyflot
 
@@ -98,11 +99,11 @@ def items_over_time(now):
 
         d = next_d
 
-    graph.add_time_series(num_pages_over_time, label="pages")
-    graph.add_time_series(num_maps_over_time, label="maps")
-    graph.add_time_series(num_files_over_time, label="files")
+    graph.add_time_series(num_pages_over_time, label=_("pages"))
+    graph.add_time_series(num_maps_over_time, label=_("maps"))
+    graph.add_time_series(num_files_over_time, label=_("files"))
     graph.add_time_series(num_redirects_over_time,
-        label="redirects")
+        label=_("redirects"))
 
     return [graph.prepare_series(s) for s in graph._series]
 
@@ -142,10 +143,10 @@ def edits_over_time(now):
 
         d = next_d
 
-    graph.add_time_series(page_edits, label="pages")
-    graph.add_time_series(map_edits, label="maps")
-    graph.add_time_series(file_edits, label="files")
-    graph.add_time_series(redirect_edits, label="redirects")
+    graph.add_time_series(page_edits, label=_("pages"))
+    graph.add_time_series(map_edits, label=_("maps"))
+    graph.add_time_series(file_edits, label=_("files"))
+    graph.add_time_series(redirect_edits, label=_("redirects"))
 
     return [graph.prepare_series(s) for s in graph._series]
 

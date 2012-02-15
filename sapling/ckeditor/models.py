@@ -27,7 +27,7 @@ class XMLValidator(object):
                 return
         except:
             pass
-        raise exceptions.ValidationError('This field contains invalid data.')
+        raise exceptions.ValidationError(_('This field contains invalid data.'))
 
 
 class HTMLSanitizer(sanitizer.HTMLSanitizer):
