@@ -1,0 +1,41 @@
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: localwiki-ckeditor\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-15 15:54+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
+"Language: pt-PT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: models.py:30
+msgid "This field contains invalid data."
+msgstr "Este campo contém dados inválidos."
+
+#: models.py:171
+msgid "XML text"
+msgstr "texto XML"
+
+#: models.py:181
+msgid "XHTML text"
+msgstr "texto XHTML"
+
+#: models.py:190
+msgid "HTML5 text"
+msgstr "texto HTML5"
+
+#: models.py:220
+msgid "HTML5 fragment text"
+msgstr "fragmento de texto HTML5"
+
+#: views.py:14
+msgid "Unable to upload"
+msgstr "Erro a carregar"
+
+#: templates/ckeditor/upload_result.html:3
+msgid "Upload result"
+msgstr "Resultado do carregamento"
