@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 
 import recentchanges
@@ -21,7 +22,8 @@ class RedirectChanges(RecentChanges):
         return Page(slug=obj.source, name=obj.source.capitalize())
 
     def title(self, obj):
-        return 'Redirect %s --> %s' % (obj.source, obj.destination)
+        return _('Redirect %(objsrc)s --> %(objdest)s') % {
+                'objsrc':obj.source, 'objdest':obj.destination}
 
     def diff_url(self, obj):
         return reverse('redirects:compare-dates', kwargs={

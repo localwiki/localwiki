@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 
 from versionutils.versioning.views import UpdateView, DeleteView
 from versionutils import diff
@@ -36,10 +37,12 @@ class RedirectUpdateView(PermissionRequiredMixin, CreateObjectMixin,
         # NOTE: This is eventually marked as safe when rendered in our
         # template.  So do *not* allow unescaped user input!
         return (
-            '<div>Thank you for your changes. '
-            'This page now redirects to <a href="%s">%s</a>.</div>'
-            % (self.object.destination.get_absolute_url(),
-               self.object)
+            '<div>' +\
+            _('Thank you for your changes. ') +\
+            _('This page now redirects to <a href="%(url)s">%(obj)s</a>.')  % {
+               'url': self.object.destination.get_absolute_url(),
+               'obj': self.object}  +\
+            '</div>'
         )
 
     def get_success_url(self):
@@ -94,8 +97,10 @@ class RedirectDeleteView(DeleteView):
         # NOTE: This is eventually marked as safe when rendered in our
         # template.  So do *not* allow unescaped user input!
         return (
-            '<div>Thank you for your changes. '
-            'The redirect has been deleted</div>'
+            '<div>' +\
+            _('Thank you for your changes. ') +\
+            _('The redirect has been deleted') +\
+            '</div>' 
         )
 
     def get_success_url(self):

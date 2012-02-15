@@ -1,0 +1,76 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-15 12:33-0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Pedro Lima <pedro@cognitiva.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: feeds.py:25
+#, python-format
+msgid "Redirect %(objsrc)s --> %(objdest)s"
+msgstr "Redirecionamento %(objsrc)s --> %(objdest)s"
+
+#: forms.py:13
+msgid "Destination"
+msgstr "Destino"
+
+#: models.py:29
+msgid "You cannot redirect a page to itself"
+msgstr "Não pode redirecionar uma página para a própria página"
+
+#: views.py:40 views.py:100
+msgid "Thank you for your changes. "
+msgstr "Obrigado pelas alterações. "
+
+#: views.py:41
+#, python-format
+msgid "This page now redirects to <a href=\"%(url)s\">%(obj)s</a>."
+msgstr "Esta página agora redireciona para <a href=\"%(url)s\">%(obj)s</a>."
+
+#: views.py:101
+msgid "The redirect has been deleted"
+msgstr "O redirecionamento foi removido"
+
+#: templates/redirects/redirect_confirm_delete.html:14
+msgid "Delete"
+msgstr "Remover"
+
+#: templates/redirects/redirect_diff.html:34
+#: templates/redirects/redirect_diff.html:35
+#, python-format
+msgid "Differences for %(new.source)s redirect"
+msgstr "Diferenças para redirecionamento %(new.source)s"
+
+#: templates/redirects/redirect_diff.html:43
+#: templates/redirects/redirect_diff.html:48
+msgid "Revision"
+msgstr "Revisão"
+
+#: templates/redirects/redirect_diff.html:44
+#: templates/redirects/redirect_diff.html:49
+msgid "by"
+msgstr "por"
+
+#: templates/redirects/redirect_form.html:24
+msgid "Update redirect"
+msgstr "Actualizar redirecionamento"
+
+#: templates/redirects/redirect_form.html:25
+msgid "Delete redirect"
+msgstr "Remover redirecionamento"
+
+#: templates/redirects/redirect_form.html:27
+msgid "Create redirect"
+msgstr "Criar redirecionamento"
