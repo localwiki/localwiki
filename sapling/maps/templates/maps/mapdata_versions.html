@@ -1,4 +1,5 @@
 {% extends "maps/base.html" %}
+{% load i18n %}
 
 {% block media %}
   {{ block.super }}
@@ -9,7 +10,7 @@
 <meta name="robots" content="noindex,nofollow">
 {% endblock %}
 
-{% block title %}Previous versions of map for {{ mapdata.page.name }} - {{ block.super }}{% endblock %}
+{% block title %}{% trans "Previous versions of map for" %} {{ mapdata.page.name }} - {{ block.super }}{% endblock %}
 
 {% block content %}
   {% include "utils/history/form.html" %}
@@ -18,8 +19,8 @@
 {% block object_actions %}
 <ul>
   {% if mapdata %}
-      <li><a href="{% url maps:edit slug=mapdata.page.pretty_slug %}" class="button">Edit</a></li>
-      <li><a href="{% url maps:history slug=mapdata.page.pretty_slug %}" class="button active">Info</a></li>
+      <li><a href="{% url maps:edit slug=mapdata.page.pretty_slug %}" class="button">{% trans "Edit" %}</a></li>
+      <li><a href="{% url maps:history slug=mapdata.page.pretty_slug %}" class="button active">{% trans "Info" %}</a></li>
   {% endif %}
 </ul>
 {% endblock %}
