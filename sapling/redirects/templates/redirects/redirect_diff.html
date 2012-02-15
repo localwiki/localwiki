@@ -1,4 +1,5 @@
 {% extends "pages/base.html" %}
+{% load i18n %}
 
 {% load diff_tags %}
 {% load pages_tags %}
@@ -30,8 +31,8 @@
   </style>
 {% endblock %}
 
-{% block title %}Differences for {{ new.source }} redirect{% endblock %}
-{% block header_title %}Differences for {{ new.source }} redirect{% endblock %}
+{% block title %}{% blocktrans %}Differences for {{ new.source }} redirect{% endblocktrans %}{% endblock %}
+{% block header_title %}{% blocktrans %}Differences for {{ new.source }} redirect{% endblocktrans %}{% endblock %}
 
 {% block content %}
   <table width="100%">
@@ -39,13 +40,13 @@
         <tr>
             <td class="revision_details">
                 {% if old %}
-                  Revision {{ old.version_info.version_number }}
-                  ({{ old.version_info.date }} by {{ old.version_info.user_link|safe }})
+                  {% trans "Revision" %} {{ old.version_info.version_number }}
+                  ({{ old.version_info.date }} {% trans "by" %} {{ old.version_info.user_link|safe }})
                 {% endif %}
             </td>
             <td class="revision_details">
-                Revision {{ new.version_info.version_number }}
-                ({{ new.version_info.date }} by {{ new.version_info.user_link|safe }})
+                {% trans "Revision" %} {{ new.version_info.version_number }}
+                ({{ new.version_info.date }} {% trans "by" %} {{ new.version_info.user_link|safe }})
             </td>
         </tr>
     </thead>
