@@ -364,12 +364,12 @@ class EmbedCodeNode(Node):
 
         except IFrameSrcNotApproved:
             return (
-                '<span class="plugin embed">'
+                '<span class="plugin embed">' +
                 _('The embedded URL is not on the list of approved providers.  '
-                'Contact the site administrator to add it.')
+                'Contact the site administrator to add it.') +
                 '</span>')
         except:
-            return '<span class="plugin embed">' _('Invalid embed code') '</span>'
+            return '<span class="plugin embed">' + _('Invalid embed code') + '</span>'
 
 
 class SearchBoxNode(Node):
@@ -381,7 +381,7 @@ class SearchBoxNode(Node):
             # TODO: put the JS in an external file, import via Media object
             html = ('<span class="searchbox">'
                     '<input type="text" name="q" value="%s">'
-                    '<input type="submit" value="' _('Search or create page') '">'
+                    '<input type="submit" value="' + _('Search or create page') + '">'
                     '<script>$(function(){'
                     '$(".searchbox input[name=\'q\']").keypress(function(evt){'
                     'if(evt.which == 13)'
