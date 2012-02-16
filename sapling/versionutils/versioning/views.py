@@ -64,7 +64,7 @@ class UpdateView(UpdateView):
             A string that gets sent to django.contrib.messages'
             add_message() when the model is successfully saved.
         """
-        return (_("Thank you for your changes. ")
+        return (_("Thank you for your changes. ") +\
                 _("Your attention to detail is appreciated."))
 
     def form_valid(self, form):

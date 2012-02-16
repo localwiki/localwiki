@@ -50,9 +50,9 @@ class MergeMixin(object):
             get_version_date() instead of using this attribute.
     """
     version_date = forms.CharField(widget=forms.HiddenInput(), required=False)
-    conflict_error = (_('Warning: someone else made changes before you.  ')
+    conflict_error = (_('Warning: someone else made changes before you.  ') +\
         _('Please review the changes and save again.'))
-    merge_success_msg = (_('Someone else made changes before you but your ')
+    merge_success_msg = (_('Someone else made changes before you but your ') +\
         _('changes were successfully merged.'))
 
     def __init__(self, *args, **kwargs):
