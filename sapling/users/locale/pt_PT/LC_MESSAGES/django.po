@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-16 15:43+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: __init__.py:7
+msgid "You are now logged out."
+msgstr "Saiu do site"
+
+#: admin.py:16
+msgid "Personal info"
+msgstr "Informações pessoais"
+
+#: admin.py:17
+msgid "Permissions"
+msgstr "Permissões"
+
+#: admin.py:18
+msgid "Important dates"
+msgstr "Datas importantes"
+
+#: admin.py:19
+msgid "Groups"
+msgstr "Grupos"
+
+#: registration_backend/__init__.py:46
+msgid "You are signed up and logged in!"
+msgstr "Está registado e entrou no site!"
+
+#: registration_backend/__init__.py:48
+#, python-format
+msgid "Tell us who you are by <a href=\"%s\">creating a page for yourself!</a>"
+msgstr "Fale-nos de si <a href=\"%s\">criando a sua página pessoal!</a>"
+
+#: registration_backend/forms.py:29
+msgid "Username"
+msgstr "Nome de utilizador"
+
+#: registration_backend/forms.py:31
+msgid "This value may contain only letters (a-z), numbers, +, - and ."
+msgstr "Este campo deve apensa conter letras (a-z), algarismos, +, - e ."
+
+#: registration_backend/forms.py:36
+msgid "E-mail"
+msgstr "E-mail"
+
+#: registration_backend/forms.py:39
+msgid "Password"
+msgstr "Senha"
+
+#: registration_backend/forms.py:40
+msgid "Your name"
+msgstr "O seu nome"
+
+#: registration_backend/forms.py:45
+msgid "You must agree to the terms to register"
+msgstr "Deve aceitar as condições para se poder registar"
+
+#: registration_backend/forms.py:60
+msgid "A user with that username already exists."
+msgstr "Já existe um utilizador com esse nome."
+
+#: registration_backend/forms.py:69
+msgid ""
+"This email address is already in use. Please supply a different email "
+"address."
+msgstr "Já existe um utilizador com esse endereço de e-mail. Por favor, use um endereço de e-mail diferente."
+
+#: templates/users/subscribed_list.html:4
+msgid "List of subscribers"
+msgstr "Lista de subscritores"
+
+#: templates/users/subscribed_list.html:8
+msgid "Subscriber emails:"
+msgstr "Endereços de email de subscritores:"

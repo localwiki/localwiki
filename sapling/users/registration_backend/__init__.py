@@ -4,6 +4,7 @@ A simple registration backend for django-registration.
 from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 
 import registration
 from registration.backends.simple import SimpleBackend
@@ -42,10 +43,10 @@ def registration_complete_msg(sender, user, request, **kwargs):
     user_slug = 'Users/%s' % user.username
     users_edit_url = reverse('pages:edit', args=[user_slug])
     messages.add_message(request, messages.SUCCESS,
-        'You are signed up and logged in!')
+        _('You are signed up and logged in!'))
     messages.add_message(request, messages.SUCCESS,
-        'Tell us who you are by '
-           '<a href="%s">creating a page for yourself!</a>' %
+        _('Tell us who you are by '
+           '<a href="%s">creating a page for yourself!</a>') %
         users_edit_url)
 
 registration.signals.user_registered.connect(registration_complete_msg,
