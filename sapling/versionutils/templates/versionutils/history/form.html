@@ -1,17 +1,18 @@
+{% load i18n %}
 {% if versions_list %}
 <form method="GET" action="compare" name="compare_form" id="compare_form">
 <table>
   <thead>
     <tr>
       <td colspan="100%">
-        <input type="submit" value="Compare">
+        <input type="submit" value="{% trans 'Compare' %}">
       </td>
     </tr>
   </thead>
   <tfoot>
     <tr>
       <td colspan="100%">
-        <input type="submit" value="Compare">
+        <input type="submit" value="{% trans 'Compare' %}">
       </td>
     </tr>
   </tfoot>
@@ -41,5 +42,5 @@
 </table>
 </form>
 {% else %}
-There is no revision history.
+{% trans "There is no revision history." %}
 {% endif %}

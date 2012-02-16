@@ -1,0 +1,82 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-16 05:53-0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: diff/diffutils.py:103 diff/diffutils.py:206 diff/diffutils.py:294
+#: diff/diffutils.py:314 diff/diffutils.py:377 diff/diffutils.py:391
+#: diff/diffutils.py:494
+msgid "No differences found"
+msgstr "Nenhuma diferença encontrada"
+
+#: diff/templates/diff/file_diff.html:8
+msgid "Download deleted version"
+msgstr "Transferir versão removida"
+
+#: diff/templates/diff/file_diff.html:9
+msgid "Download added version"
+msgstr "Transferir versão adicionada"
+
+#: merging/forms.py:53
+msgid "Warning: someone else made changes before you.  "
+msgstr "Aviso: alguém gravou alterações antes de si.  "
+
+#: merging/forms.py:54
+msgid "Please review the changes and save again."
+msgstr "Por favor reveja as alterações e grave de novo."
+
+#: merging/forms.py:55
+msgid "Someone else made changes before you but your "
+msgstr "Alguém gravou alterações antes de si mas as suas "
+
+#: merging/forms.py:56
+msgid "changes were successfully merged."
+msgstr "alterações foram introduzidas no texto com sucesso."
+
+#: templates/versionutils/history/form.html:8
+#: templates/versionutils/history/form.html:15
+msgid "Compare"
+msgstr "Comparar"
+
+#: templates/versionutils/history/form.html:45
+msgid "There is no revision history."
+msgstr "Não existe histórico de revisões"
+
+#: versioning/forms.py:43
+msgid "Reason for deletion"
+msgstr "Motivo para remover"
+
+#: versioning/forms.py:53
+msgid "Reason for revert"
+msgstr "Motivo para reverter"
+
+#: versioning/views.py:67
+msgid "Thank you for your changes. "
+msgstr "Obrigado pelas alterações. "
+
+#: versioning/views.py:68
+msgid "Your attention to detail is appreciated."
+msgstr "Apreciamos a sua atenção ao detalhe."
+
+#: versioning/views.py:100
+msgid "Successfully deleted!"
+msgstr "Removido com sucesso!"
+
+#: versioning/views.py:146
+#, python-format
+msgid "Reverted to version %s."
+msgstr "Revertido para a versão %s."

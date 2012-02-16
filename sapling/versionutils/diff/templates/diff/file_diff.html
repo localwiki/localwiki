@@ -1,10 +1,11 @@
+{% load i18n %}
 {% ifequal diff.file_rough_type 'image' %}
   {% include "diff/image_diff.html" %}
 {% endifequal %}
 
 {% spaceless %}
   <tr>
-  <td><a class="file_{{ diff.file_rough_type }}" href="{{ diff.deleted.url }}">Download deleted version</a></td>
-  <td><a class="file_{{ diff.file_rough_type }}" href="{{ diff.inserted.url }}">Download added version</a></td>
+  <td><a class="file_{{ diff.file_rough_type }}" href="{{ diff.deleted.url }}">{% trans "Download deleted version" %}</a></td>
+  <td><a class="file_{{ diff.file_rough_type }}" href="{{ diff.inserted.url }}">{% trans "Download added version" %}</a></td>
   </tr>
 {% endspaceless %}

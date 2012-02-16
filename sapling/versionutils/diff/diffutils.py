@@ -8,6 +8,7 @@ from django.utils.safestring import mark_safe
 from django import forms
 from django.conf import settings
 from django.contrib.gis.db import models as gis_models
+from django.utils.translation import ugettext as _
 
 from utils.static import static_url
 import diff_match_patch
@@ -98,7 +99,8 @@ class BaseFieldDiff(object):
             return render_to_string(self.template, diff)
 
         if diff is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>' 
+                     % _('No differences found') )
         return '<tr><td>%s</td><td>%s</td></tr>' % (self.field1, self.field2)
 
     def _media(self):
@@ -200,7 +202,8 @@ class BaseModelDiff(object):
                 diff_str.append('%s' % (diffs[name], ))
         if diff_str:
             return '\n'.join(diff_str)
-        return '<tr><td colspan="2">No differences found</td></tr>'
+        return ('<tr><td colspan="2">%s</td></tr>'
+                % _('No differences found'))
 
     def get_diff(self):
         """
@@ -287,7 +290,8 @@ class TextFieldDiff(BaseFieldDiff):
     def as_html(self):
         d = self.get_diff()
         if d is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>' 
+                     % _('No differences found'))
         return render_to_string(self.template, {'diff': d})
 
     def get_diff(self):
@@ -306,7 +310,8 @@ class HtmlFieldDiff(BaseFieldDiff):
     def as_html(self):
         d = self.get_diff()
         if d is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>'
+                    % _('No differences found'))
         try:
             return daisydiff.daisydiff(d['deleted'], d['inserted'],
                                        self.DAISYDIFF_URL)
@@ -368,7 +373,8 @@ class FileFieldDiff(BaseFieldDiff):
     def as_html(self):
         d = self.get_diff()
         if d is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>'
+                    % _('No differences found'))
         return render_to_string(self.template, {'diff': d})
 
 
@@ -381,7 +387,8 @@ class ImageFieldDiff(FileFieldDiff):
     def as_html(self):
         d = self.get_diff()
         if d is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>'
+                    % _('No differences found'))
         return render_to_string(self.template, {'diff': d})
 
 
@@ -483,7 +490,8 @@ class GeometryFieldDiff(BaseFieldDiff):
 
         d = self.get_diff()
         if d is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>'
+                    % _('No differences found'))
 
         # Split out polygons from other geometries in field1, field2,
         # same, deleted and inserted.
