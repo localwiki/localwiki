@@ -2,7 +2,7 @@ from django.utils.decorators import classonlymethod
 from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.utils import simplejson as json
 from django.views.generic import View
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 class ForbiddenException:
     pass

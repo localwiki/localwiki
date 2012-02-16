@@ -2,7 +2,7 @@ from django.db import models
 from django import forms
 
 from django.forms.models import model_to_dict
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from versionutils.versioning.utils import is_versioned
 from versionutils.versioning import get_versions
