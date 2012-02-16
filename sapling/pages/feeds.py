@@ -39,7 +39,7 @@ class PageFileChanges(RecentChanges):
         return page
 
     def title(self, obj):
-        return _('File %(filename)s on page "%(pagename)s"') % {'filename': obj.name, 'pagename': self.page(obj).name})
+        return _('File %(filename)s on page "%(pagename)s"') % {'filename': obj.name, 'pagename': self.page(obj).name}
 
     def diff_url(self, obj):
         return reverse('pages:file-compare-dates', kwargs={
