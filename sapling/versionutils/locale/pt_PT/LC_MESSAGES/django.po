@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-16 05:53-0600\n"
+"POT-Creation-Date: 2012-02-16 10:44-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Pedro Lima <pedro@cognitiva.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -32,20 +32,20 @@ msgid "Download added version"
 msgstr "Transferir versão adicionada"
 
 #: merging/forms.py:53
-msgid "Warning: someone else made changes before you.  "
-msgstr "Aviso: alguém gravou alterações antes de si.  "
-
-#: merging/forms.py:54
-msgid "Please review the changes and save again."
-msgstr "Por favor reveja as alterações e grave de novo."
+#, fuzzy
+msgid ""
+"Warning: someone else made changes before you.  Please review the changes "
+"and save again."
+msgstr "Aviso: alguém gravou alterações antes de si. Por favor verifique "
+"as alterações e volte a gravar."
 
 #: merging/forms.py:55
-msgid "Someone else made changes before you but your "
-msgstr "Alguém gravou alterações antes de si mas as suas "
-
-#: merging/forms.py:56
-msgid "changes were successfully merged."
-msgstr "alterações foram introduzidas no texto com sucesso."
+#, fuzzy
+msgid ""
+"Someone else made changes before you but yourchanges were successfully "
+"merged."
+msgstr "Alguém gravou alterações antes de si mas as suas alterações "
+"foram introduzidas com sucesso."
 
 #: templates/versionutils/history/form.html:8
 #: templates/versionutils/history/form.html:15
@@ -80,3 +80,4 @@ msgstr "Removido com sucesso!"
 #, python-format
 msgid "Reverted to version %s."
 msgstr "Revertido para a versão %s."
+
