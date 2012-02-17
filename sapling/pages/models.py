@@ -131,7 +131,7 @@ class Page(models.Model):
                 # The slug is the same but we're changing the name.
                 old_name = self.name
                 self.name = pagename
-                self.save(comment='Renamed from "%s"' % old_name)
+                self.save(comment=_('Renamed from "%s"') % old_name)
                 return
             else:
                 raise exceptions.PageExistsError(
@@ -143,7 +143,7 @@ class Page(models.Model):
         new_p.pk = None
         new_p.name = pagename
         new_p.slug = slugify(pagename)
-        new_p.save(comment='Renamed from "%s"' % self.name)
+        new_p.save(comment=_('Renamed from "%s"') % self.name)
 
         # Get all related objects before the original page is deleted.
         related_objs = []

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-15 19:45+0000\n"
+"POT-Creation-Date: 2012-02-17 04:56-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: pt-PT\n"
@@ -35,8 +35,9 @@ msgstr "A página %s não existe! Por favor, introduza um nome de página válid
 msgid ""
 "Warning: someone else saved this page before you.  Please resolve edit "
 "conflicts and save again."
-msgstr "Aviso: outra pessou gravou esta página antes de si. Por favor, resolva os"
-"conflitos de edição e grave novamente."
+msgstr ""
+"Aviso: outra pessou gravou esta página antes de si. Por favor, resolva "
+"osconflitos de edição e grave novamente."
 
 #: forms.py:46
 msgid "A page with this name already exists"
@@ -50,6 +51,11 @@ msgstr "O novo ficheiro deve ser do mesmo tipo"
 msgid "Page name is invalid."
 msgstr "Nome da página inválido"
 
+#: models.py:134 models.py:146
+#, fuzzy, python-format
+msgid "Renamed from \"%s\""
+msgstr "Nome alterado de \"%s\""
+
 #: models.py:138
 #, python-format
 msgid "The page '%s' already exists!"
@@ -60,8 +66,8 @@ msgid ""
 "The embedded URL is not on the list of approved providers.  Contact the site "
 "administrator to add it."
 msgstr ""
-"O URL (embedded) não está na lista dos fornecedores permitidos.  Contacte o administrador do "
-"site para o adicionar."
+"O URL (embedded) não está na lista dos fornecedores permitidos.  Contacte o "
+"administrador do site para o adicionar."
 
 #: plugins.py:372
 msgid "Invalid embed code"
@@ -70,6 +76,16 @@ msgstr "Código de embed inválido"
 #: plugins.py:384
 msgid "Search or create page"
 msgstr "Pesquisar ou criar página"
+
+#: signals.py:13
+#, fuzzy
+msgid "Redirect created"
+msgstr "Redirecionamento criado"
+
+#: signals.py:19
+#, fuzzy
+msgid "Page created"
+msgstr "Página criada"
 
 #: views.py:103
 msgid "Thank you for your changes. Your attention to detail is appreciated."
@@ -83,10 +99,10 @@ msgid ""
 "\"%(register_url)s?next=%(current_path)s\"><strong>create an account</"
 "strong></a>."
 msgstr ""
-"Alterações gravadas! Para usar o seu nome na edição, por favor <a href=\"%(login_url)s?"
-"next=%(current_path)s\"><strong>entre no site</strong></a> ou <a href="
-"\"%(register_url)s?next=%(current_path)s\"><strong>crie uma conta</"
-"strong></a>."
+"Alterações gravadas! Para usar o seu nome na edição, por favor <a href="
+"\"%(login_url)s?next=%(current_path)s\"><strong>entre no site</strong></a> "
+"ou <a href=\"%(register_url)s?next=%(current_path)s\"><strong>crie uma "
+"conta</strong></a>."
 
 #: views.py:118
 #, python-format
@@ -176,7 +192,8 @@ msgstr "Ver mapa"
 msgid ""
 "<a href=\"%(pretty_slug)s\">Edit</a> this page (last modified %(ago)s ago)"
 msgstr ""
-"<a href=\"%(pretty_slug)s\">Editar</a> esta página (última modificação há %(ago)s)"
+"<a href=\"%(pretty_slug)s\">Editar</a> esta página (última modificação há "
+"%(ago)s)"
 
 #: templates/pages/page_diff.html:19
 #, python-format
@@ -198,11 +215,13 @@ msgstr ""
 "                  ( %(date)s por %(user_link)s)"
 
 #: templates/pages/page_diff.html:35 templates/pages/pagefile_diff.html:43
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"Revisão %(version_number)s\n"
-"                  (%(date)s por %(user_link)s)"
+"Revision %(version_number)s\n"
+"                  (%(date)s by %(user_link)s)"
 msgstr ""
+"Revisão %(version_number)s\n"
+"                  ( %(date)s por %(user_link)s)"
 
 #: templates/pages/page_diff.html:41
 msgid "Deletions are marked like this"
@@ -227,7 +246,7 @@ msgstr "A editar a página \"%(name)s\" - %(super)s"
 
 #: templates/pages/page_form.html:38
 msgid "Please comment about this change:"
-msgstr "Por favor introduza um comentário sobre esta alteração:"
+msgstr "Descrição da alteração:"
 
 #: templates/pages/page_form.html:42
 msgid "Save changes"
@@ -331,8 +350,8 @@ msgid ""
 "Unable to include <a href=\"%(pagename)s\">%(pagename)s</a>: endless include "
 "loop.)"
 msgstr ""
-"Não foi possível incluir a página<a href=\"%(pagename)s\">%(pagename)s</a>: ciclo infinito "
-".)"
+"Não foi possível incluir a página<a href=\"%(pagename)s\">%(pagename)s</a>: "
+"ciclo infinito .)"
 
 #: templatetags/pages_tags.py:81
 #, python-format
@@ -340,5 +359,5 @@ msgid ""
 "Unable to include <a href=\"%(pageurl)s\" class=\"missing_link\">"
 "%(pagename)s</a>"
 msgstr ""
-"Não foi possível incluir a página <a href=\"%(pageurl)s\" class=\"missing_link\">"
-"%(pagename)s</a>"
+"Não foi possível incluir a página <a href=\"%(pageurl)s\" class="
+"\"missing_link\">%(pagename)s</a>"
