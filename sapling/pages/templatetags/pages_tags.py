@@ -68,7 +68,7 @@ class IncludePageNode(BaseIncludeNode):
                 if page.name in include_stack:
                     content = ('<p class="plugin includepage">' + _('Unable to'
                                ' include <a href="%(pagename)s">%(pagename)s</a>: endless include'
-                               ' loop.)') + '</p>' % {'pagename': self.page_name})
+                               ' loop.)') + '</p>') % {'pagename': self.page_name}
                 context['_include_stack'] = include_stack
                 context['page'] = page
                 template_text = html_to_template_text(content, context)
@@ -78,8 +78,8 @@ class IncludePageNode(BaseIncludeNode):
             except Page.DoesNotExist:
                 page_url = reverse('pages:show',
                                    args=[name_to_url(self.page_name)])
-                template_text = ('<p class="plugin includepage">' + _('Unable to'
-                        ' include <a href="%(pageurl)s" class="missing_link">%(pagename)s</a>') + '</p>'
+                template_text = (('<p class="plugin includepage">' + _('Unable to'
+                        ' include <a href="%(pageurl)s" class="missing_link">%(pagename)s</a>') + '</p>')
                         % {'pageurl': page_url, 'pagename': self.page_name})
             template = Template(template_text)
             return self.render_template(template, context)

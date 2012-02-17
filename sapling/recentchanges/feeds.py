@@ -61,7 +61,7 @@ class RecentChangesFeed(Feed):
         change_type = item.version_info.type_verbose().lower()
         if item.version_info.type in REVERTED_TYPES:
             try:
-                change_type = "%s (" + _("to version %s") + ")" % (change_type,
+                change_type = ("%s (" + _("to version %s") + ")") % (change_type,
                     item.version_info.reverted_to_version.version_info.date)
             except AttributeError:
                 # On old wikis that we've imported we didn't set
@@ -149,7 +149,7 @@ class ChangesOnItemFeed(Feed):
         change_type = item.version_info.type_verbose().lower()
         try:
             if item.version_info.type in REVERTED_TYPES:
-                change_type = "%s (" + _("to version %s") + ")" % (change_type,
+                change_type = ("%s (" + _("to version %s") + ")") % (change_type,
                     item.version_info.reverted_to_version.version_info.date)
         except AttributeError:
             # On old wikis that we've imported we didn't set

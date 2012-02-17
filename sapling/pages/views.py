@@ -372,7 +372,7 @@ class PageRenameView(FormView):
     def success_msg(self):
         # NOTE: This is eventually marked as safe when rendered in our
         # template.  So do *not* allow unescaped user input!
-        return '<div>' + _('Page renamed to "%s"') + '</div>' % escape(self.new_pagename)
+        return ('<div>' + _('Page renamed to "%s"') + '</div>') % escape(self.new_pagename)
 
     def get_success_url(self):
         messages.add_message(self.request, messages.SUCCESS,
