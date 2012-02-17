@@ -188,3 +188,48 @@ msgstr "Todas as Páginas"
 #: themes/sapling/templates/site/search_form.html:5
 msgid "Search or create page"
 msgstr "Pesquisar ou criar página"
+
+
+#:
+msgid "Added"
+msgstr "Adicionado"
+
+#:
+msgid "Removed"
+msgstr "Apagado"
+
+#:
+msgid "Renamed"
+msgstr "Nome modificado"
+
+#:
+msgid "Updated"
+msgstr "Alterado"
+
+#: 
+msgid "Deleted"
+msgstr "Apagado"
+
+#: 
+msgid "Reverted"
+msgstr "Revertido"
+
+#: 
+msgid "Reverted/Added"
+msgstr "Revertido/Adicionado"
+
+#: 
+msgid "Reverted/Deleted"
+msgstr "Revertido/Apagado"
+
+#: 
+msgid "Deleted via cascade"
+msgstr "Apagado por cascata"
+
+#: 
+msgid "Reverted/Deleted via cascade"
+msgstr "Revertido/Apagado por cascata"
+
+#: 
+msgid "Reverted via cascade"
+msgstr "Revertido por cascata"

@@ -175,7 +175,7 @@ class Page(models.Model):
                     obj.pk = None  # Reset the primary key before saving.
                     try:
                         getattr(new_p, attname).add(obj)
-                        obj.save(comment="Parent page renamed")
+                        obj.save(comment=_("Parent page renamed"))
                     except RedirectToSelf, s:
                         # We don't want to create a redirect to ourself.
                         # This happens during a rename -> rename-back
@@ -185,7 +185,7 @@ class Page(models.Model):
                 # This is an easy way to set obj to point to new_p.
                 setattr(new_p, attname, rel_obj)
                 rel_obj.pk = None  # Reset the primary key before saving.
-                rel_obj.save(comment="Parent page renamed")
+                rel_obj.save(comment=_("Parent page renamed"))
 
         # Do the same with related-via-slug objects.
         for info in self._get_slug_related_objs():
@@ -201,7 +201,7 @@ class Page(models.Model):
                     continue
                 obj.slug = new_p.slug
                 obj.pk = None  # Reset the primary key before saving.
-                obj.save(comment="Parent page renamed")
+                obj.save(comment=_("Parent page renamed"))
 
 
 class PageDiff(diff.BaseModelDiff):

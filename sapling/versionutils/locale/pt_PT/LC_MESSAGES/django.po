@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-16 10:44-0600\n"
+"POT-Creation-Date: 2012-02-17 13:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Pedro Lima <pedro@cognitiva.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -36,25 +36,30 @@ msgstr "Transferir versão adicionada"
 msgid ""
 "Warning: someone else made changes before you.  Please review the changes "
 "and save again."
-msgstr "Aviso: alguém gravou alterações antes de si. Por favor verifique "
-"as alterações e volte a gravar."
+msgstr ""
+"Aviso: alguém gravou alterações antes de si. Por favor verifique as "
+"alterações e volte a gravar."
 
 #: merging/forms.py:55
 #, fuzzy
 msgid ""
 "Someone else made changes before you but yourchanges were successfully "
 "merged."
-msgstr "Alguém gravou alterações antes de si mas as suas alterações "
-"foram introduzidas com sucesso."
+msgstr ""
+"Alguém gravou alterações antes de si mas as suas alterações foram "
+"introduzidas com sucesso."
 
-#: templates/versionutils/history/form.html:8
-#: templates/versionutils/history/form.html:15
-msgid "Compare"
-msgstr "Comparar"
+#: templates/versionutils/history/form.html:34
+msgid "by"
+msgstr "por"
 
 #: templates/versionutils/history/form.html:45
 msgid "There is no revision history."
 msgstr "Não existe histórico de revisões"
+
+#: templates/versionutils/history/media.html:47
+msgid "Please select two versions to compare"
+msgstr "Selecione duas versões para comparar"
 
 #: versioning/forms.py:43
 msgid "Reason for deletion"
@@ -81,3 +86,7 @@ msgstr "Removido com sucesso!"
 msgid "Reverted to version %s."
 msgstr "Revertido para a versão %s."
 
+#: templates/versionutils/history/form.html:8
+#: templates/versionutils/history/form.html:15
+msgid "Compare"
+msgstr "Comparar"
