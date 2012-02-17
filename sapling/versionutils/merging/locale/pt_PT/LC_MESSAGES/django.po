@@ -8,17 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-17 13:10+0000\n"
+"POT-Creation-Date: 2012-02-17 11:28-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Pedro Lima <pedro@cognitiva.com>\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: merging/forms.py:53
-#, fuzzy
+#: forms.py:53
 msgid ""
 "Warning: someone else made changes before you.  Please review the changes "
 "and save again."
@@ -26,8 +25,7 @@ msgstr ""
 "Aviso: alguém gravou alterações antes de si. Por favor verifique as "
 "alterações e volte a gravar."
 
-#: merging/forms.py:55
-#, fuzzy
+#: forms.py:55
 msgid ""
 "Someone else made changes before you but yourchanges were successfully "
 "merged."
@@ -35,40 +33,19 @@ msgstr ""
 "Alguém gravou alterações antes de si mas as suas alterações foram "
 "introduzidas com sucesso."
 
+#: templates/versionutils/history/form.html:8
+#: templates/versionutils/history/form.html:15
+msgid "Compare"
+msgstr "Comparar"
+
 #: templates/versionutils/history/form.html:34
 msgid "by"
 msgstr "por"
 
 #: templates/versionutils/history/form.html:45
 msgid "There is no revision history."
-msgstr "Não existe histórico de revisões"
+msgstr "Não existe histórico de revisões."
 
 #: templates/versionutils/history/media.html:47
 msgid "Please select two versions to compare"
 msgstr "Selecione duas versões para comparar"
-
-#: versioning/forms.py:43
-msgid "Reason for deletion"
-msgstr "Motivo para remover"
-
-#: versioning/forms.py:53
-msgid "Reason for revert"
-msgstr "Motivo para reverter"
-
-#: versioning/views.py:67
-msgid "Thank you for your changes. "
-msgstr "Obrigado pelas alterações. "
-
-#: versioning/views.py:68
-msgid "Your attention to detail is appreciated."
-msgstr "Apreciamos a sua atenção ao detalhe."
-
-#: versioning/views.py:100
-msgid "Successfully deleted!"
-msgstr "Removido com sucesso!"
-
-#: versioning/views.py:146
-#, python-format
-msgid "Reverted to version %s."
-msgstr "Revertido para a versão %s."
-
