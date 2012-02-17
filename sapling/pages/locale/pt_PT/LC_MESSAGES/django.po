@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-17 04:56-0600\n"
+"POT-Creation-Date: 2012-02-17 15:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: pt-PT\n"
@@ -60,6 +60,11 @@ msgstr "Nome alterado de \"%s\""
 #, python-format
 msgid "The page '%s' already exists!"
 msgstr "A página '%s' já existe!"
+
+#: models.py:178 models.py:188 models.py:204
+#, fuzzy
+msgid "Parent page renamed"
+msgstr "Nome da página superior alterado"
 
 #: plugins.py:368
 msgid ""
@@ -121,6 +126,14 @@ msgstr "<p>Descreva %s aqui</p>"
 #: views.py:343
 msgid "A file with this name already exists"
 msgstr "Já existe um ficheiro com este nome"
+
+#: views.py:348
+msgid "Pagename"
+msgstr "Nome da Página"
+
+#: views.py:349
+msgid "Comment"
+msgstr "Comentário"
 
 #: views.py:375
 #, python-format

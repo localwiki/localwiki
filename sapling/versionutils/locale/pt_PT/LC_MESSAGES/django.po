@@ -17,20 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: diff/diffutils.py:103 diff/diffutils.py:206 diff/diffutils.py:294
-#: diff/diffutils.py:314 diff/diffutils.py:377 diff/diffutils.py:391
-#: diff/diffutils.py:494
-msgid "No differences found"
-msgstr "Nenhuma diferença encontrada"
-
-#: diff/templates/diff/file_diff.html:8
-msgid "Download deleted version"
-msgstr "Transferir versão removida"
-
-#: diff/templates/diff/file_diff.html:9
-msgid "Download added version"
-msgstr "Transferir versão adicionada"
-
 #: merging/forms.py:53
 #, fuzzy
 msgid ""
@@ -86,7 +72,3 @@ msgstr "Removido com sucesso!"
 msgid "Reverted to version %s."
 msgstr "Revertido para a versão %s."
 
-#: templates/versionutils/history/form.html:8
-#: templates/versionutils/history/form.html:15
-msgid "Compare"
-msgstr "Comparar"

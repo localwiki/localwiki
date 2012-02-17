@@ -15,7 +15,7 @@ from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.utils.html import escape
 from django.utils.http import urlquote
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from ckeditor.views import ck_upload_result
 from versionutils import diff
@@ -345,8 +345,8 @@ def upload(request, slug, **kwargs):
 
 
 class RenameForm(forms.Form):
-    pagename = forms.CharField(max_length=255)
-    comment = forms.CharField(max_length=150, required=False)
+    pagename = forms.CharField(max_length=255, label=_("Pagename"))
+    comment = forms.CharField(max_length=150, required=False, label=_("Comment"))
 
 
 class PageRenameView(FormView):
