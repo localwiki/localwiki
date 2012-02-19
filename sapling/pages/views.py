@@ -289,7 +289,7 @@ class PageCompareView(diff.views.CompareView):
 
     def get_context_data(self, **kwargs):
         context = super(PageCompareView, self).get_context_data(**kwargs)
-        context['pagediff'] = diff.diff(context['old'], context['new'])
+        context['page_diff'] = diff.diff(context['old'], context['new'])
         return context
 
 

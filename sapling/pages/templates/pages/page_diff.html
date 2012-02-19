@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="{% static "theme/pages/css/diff.css" %}">
   <script type="text/javascript" src="{% static "js/jquery/jquery-1.7.min.js" %}"></script>
   <script type="text/javascript" src="{% static "theme/pages/js/diff.js" %}"></script>
-  {{ pagediff.media }}
+  {{ page_diff.media }}
 {% endblock %}
 
 {% block title %}{% blocktrans with name=new.name %}Differences for {{ name }}{% endblocktrans %}{% endblock %}
@@ -48,7 +48,7 @@
       {% endblock %}
 
       <tbody valign="top">
-          {% render_tags pagediff.content %}
+          {% render_tags page_diff.content %}
       </tbody>
 
     </table>
