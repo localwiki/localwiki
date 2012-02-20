@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-15 15:54+0000\n"
+"POT-Creation-Date: 2012-02-20 17:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
 "Language: pt-PT\n"
@@ -24,15 +24,15 @@ msgstr "Este campo contém dados inválidos."
 msgid "XML text"
 msgstr "texto XML"
 
-#: ckeditor/models.py:183
+#: ckeditor/models.py:181
 msgid "XHTML text"
 msgstr "texto XHTML"
 
-#: ckeditor/models.py:192
+#: ckeditor/models.py:190
 msgid "HTML5 text"
 msgstr "texto HTML5"
 
-#: ckeditor/models.py:222
+#: ckeditor/models.py:220
 msgid "HTML5 fragment text"
 msgstr "fragmento de texto HTML5"
 
@@ -66,7 +66,8 @@ msgstr "Painel de gestão"
 
 #: dashboard/templates/dashboard/index.html:19
 msgid "Statistics loading.  This may take several minutes the first time."
-msgstr "A carregar as estatísticas. Pode demorar vários minutos da primeira vez."
+msgstr ""
+"A carregar as estatísticas. Pode demorar vários minutos da primeira vez."
 
 #: dashboard/templates/dashboard/index.html:23
 #: dashboard/templates/dashboard/render.html:4
@@ -125,12 +126,12 @@ msgstr "Mapa de \"%s\""
 msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
 "instances."
-msgstr ""
+msgstr "O atributo '%(fieldname)s' só pode ser acedido das instância de %(ownername)s."
 
 #: maps/fields.py:214
 #, python-format
 msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
-msgstr ""
+msgstr "não é possível atribuir ao conjunto %(cname)s CollectionFrom um valor do tipo: %(vtype)s"
 
 #: maps/validators.py:14
 #, python-format
@@ -355,9 +356,9 @@ msgstr "Obrigado pelas alterações. Apreciamos a sua atenção ao detalhe."
 #, python-format
 msgid ""
 "Changes saved! To use your name when editing, please <a href=\"%(login_url)s?"
-"next=%(current_path)s\"><strong>log in</strong></a> or <a href=\"%"
-"(register_url)s?next=%(current_path)s\"><strong>create an account</strong></"
-"a>."
+"next=%(current_path)s\"><strong>log in</strong></a> or <a href="
+"\"%(register_url)s?next=%(current_path)s\"><strong>create an account</"
+"strong></a>."
 msgstr ""
 "Alterações gravadas! Para usar o seu nome na edição, por favor <a href="
 "\"%(login_url)s?next=%(current_path)s\"><strong>entre no site</strong></a> "
@@ -552,15 +553,14 @@ msgstr "Alterações recentes para este ficheiro"
 
 #: pages/templates/pages/pagefile_info.html:11
 #, python-format
-#, python-format
 msgid "Information about \"%(name)s\" on %(slug)s - %(super)s"
 msgstr "Informações sobre \"%(name)s\" em %(slug)s - %(super)s"
 
 #: pages/templates/pages/pagefile_info.html:12
 #, python-format
 msgid ""
-"Information about \"%(name)s\" on <a href=\"%(pages_show_url)s\">%"
-"(attached_to_page)s</a>"
+"Information about \"%(name)s\" on <a href=\"%(pages_show_url)s\">"
+"%(attached_to_page)s</a>"
 msgstr ""
 "Informações sobre \"%(name)s\" em <a href=\"%(pages_show_url)s\">"
 "%(attached_to_page)s</a>"
@@ -590,8 +590,8 @@ msgstr ""
 #: pages/templatetags/pages_tags.py:81
 #, python-format
 msgid ""
-"Unable to include <a href=\"%(pageurl)s\" class=\"missing_link\">%(pagename)"
-"s</a>"
+"Unable to include <a href=\"%(pageurl)s\" class=\"missing_link\">"
+"%(pagename)s</a>"
 msgstr ""
 "Não foi possível incluir a página <a href=\"%(pageurl)s\" class="
 "\"missing_link\">%(pagename)s</a>"
@@ -602,6 +602,7 @@ msgid "Recent Changes on %s"
 msgstr "Alterações Recentes"
 
 #: recentchanges/feeds.py:31
+#, python-format
 msgid "Recent changes on %s"
 msgstr "Alterações Recentes em %s"
 
@@ -970,7 +971,9 @@ msgstr "Já existe um utilizador com esse nome."
 msgid ""
 "This email address is already in use. Please supply a different email "
 "address."
-msgstr "Já existe um utilizador com esse endereço de e-mail. Por favor, use um endereço de e-mail diferente."
+msgstr ""
+"Já existe um utilizador com esse endereço de e-mail. Por favor, use um "
+"endereço de e-mail diferente."
 
 #: users/templates/users/subscribed_list.html:4
 msgid "List of subscribers"
@@ -994,6 +997,20 @@ msgstr "reverter"
 #: versionutils/diff/diffutils.py:496
 msgid "No differences found"
 msgstr "Nenhuma diferença encontrada"
+
+#: versionutils/diff/diffutils.py:531 versionutils/diff/diffutils.py:541
+#: versionutils/diff/diffutils.py:554 versionutils/diff/diffutils.py:564
+msgid "Stayed the same"
+msgstr "Não sofreu alterações"
+
+#: versionutils/diff/diffutils.py:534 versionutils/diff/diffutils.py:546
+msgid "Removed"
+msgstr "Apagado"
+
+#: versionutils/diff/diffutils.py:557 versionutils/diff/diffutils.py:569
+#: versionutils/versioning/constants.py:13
+msgid "Added"
+msgstr "Adicionado"
 
 #: versionutils/diff/templates/diff/file_diff.html:8
 msgid "Download deleted version"
@@ -1032,6 +1049,39 @@ msgstr "Não existe histórico de revisões."
 msgid "Please select two versions to compare"
 msgstr "Selecione duas versões para comparar"
 
+#: versionutils/versioning/constants.py:14
+msgid "Updated"
+msgstr "Alterado"
+
+#: versionutils/versioning/constants.py:15
+msgid "Deleted"
+msgstr "Apagado"
+
+#: versionutils/versioning/constants.py:16
+msgid "Deleted via cascade"
+msgstr "Apagado por cascata"
+
+#: versionutils/versioning/constants.py:17
+msgid "Reverted"
+msgstr "Revertido"
+
+#: versionutils/versioning/constants.py:18
+msgid "Reverted/Added"
+msgstr "Revertido/Adicionado"
+
+#: versionutils/versioning/constants.py:19
+msgid "Reverted/Deleted"
+msgstr "Revertido/Apagado"
+
+#: versionutils/versioning/constants.py:20
+msgid "Reverted/Deleted via cascade"
+msgstr "Revertido/Apagado por cascata"
+
+#: versionutils/versioning/constants.py:21
+#, fuzzy
+msgid "Reverted via cascade"
+msgstr "Apagado por cascata"
+
 #: versionutils/versioning/forms.py:43
 msgid "Reason for deletion"
 msgstr "Motivo para remover"
@@ -1052,21 +1102,3 @@ msgstr "Removido com sucesso!"
 #, python-format
 msgid "Reverted to version %s."
 msgstr "Revertido para a versão %s."
-
-#~ msgid "Added"
-#~ msgstr "Adicionado"
-
-#~ msgid "Removed"
-#~ msgstr "Apagado"
-
-#~ msgid "Reverted/Added"
-#~ msgstr "Revertido/Adicionado"
-
-#~ msgid "Reverted/Deleted"
-#~ msgstr "Revertido/Apagado"
-
-#~ msgid "Deleted via cascade"
-#~ msgstr "Apagado por cascata"
-
-#~ msgid "Reverted/Deleted via cascade"
-#~ msgstr "Revertido/Apagado por cascata"

@@ -528,22 +528,22 @@ class GeometryFieldDiff(BaseFieldDiff):
         poly_field2 = _convert_to_multipolygon(poly_field2)
 
         deleted = InfoMap([
-            (poly_same, {'html': 'Stayed the same',
+            (poly_same, {'html': _('Stayed the same'),
                          'style': {'stroke_opacity': '0'}}),
             (poly_deleted,
-                {'html': 'Removed',
+                {'html': _('Removed'),
                  'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
                            'fill_opacity': '0.8', 'stroke_opacity': '0'}
                 }
             ),
             (poly_field1.boundary, {}),
             (other_geom_same_for_del,
-                {'html': 'Stayed the same',
+                {'html': _('Stayed the same'),
                  'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
                            'stroke_opacity': '1'}}
             ),
             (other_geom_deleted,
-                {'html': 'Removed',
+                {'html': _('Removed'),
                  'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
                            'fill_opacity': '0.8', 'stroke_opacity': '1'}
                 }
@@ -551,22 +551,22 @@ class GeometryFieldDiff(BaseFieldDiff):
         ], options=olwidget_options)
 
         inserted = InfoMap([
-            (poly_same, {'html': 'Stayed the same',
+            (poly_same, {'html': _('Stayed the same'),
                          'style': {'stroke_opacity': '0'}}),
             (poly_inserted,
-                {'html': 'Added',
+                {'html': _('Added'),
                  'style': {'fill_color': '#9bff53', 'stroke_color': '#9bff53',
                            'fill_opacity': '0.8', 'stroke_opacity': '0'}
                 }
             ),
             (poly_field2.boundary, {}),
             (other_geom_same_for_insert,
-                {'html': 'Stayed the same',
+                {'html': _('Stayed the same'),
                  'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
                            'stroke_opacity': '1'}}
             ),
             (other_geom_inserted,
-                {'html': 'Added',
+                {'html': _('Added'),
                  'style': {'fill_color': '#9bff53', 'stroke_color': '#9bff53',
                            'fill_opacity': '0.8', 'stroke_opacity': '1'}
                 }
