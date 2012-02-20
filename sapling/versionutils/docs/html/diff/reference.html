@@ -3,13 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Reference &mdash; django-versionutils v0.1 documentation</title>
+    <title>Reference &mdash; django-versionutils 0.1 documentation</title>
+    
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -22,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="django-versionutils v0.1 documentation" href="../index.html" />
+    <link rel="top" title="django-versionutils 0.1 documentation" href="../index.html" />
     <link rel="up" title="versionutils.diff" href="index.html" />
     <link rel="next" title="versionutils.merging" href="../merging/index.html" />
     <link rel="prev" title="How to Install" href="install.html" /> 
@@ -40,8 +43,8 @@
         <li class="right" >
           <a href="install.html" title="How to Install"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">django-versionutils v0.1 documentation</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U"><tt class="docutils literal docutils literal"><span class="pre">versionutils.diff</span></tt></a> &raquo;</li> 
+        <li><a href="../index.html">django-versionutils 0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U"><tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.diff</span></tt></a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -60,7 +63,7 @@ template tag.  Use it like this, in your templates:</p>
 
 {% diff m1 m2 %}</pre>
 </div>
-<p>You can also use it, just like <a class="reference internal" href="#versionutils.diff.diff" title="versionutils.diff.diff"><tt class="xref py py-func docutils literal"><span class="pre">diff()</span></tt></a>, with historical instances as the
+<p>You can also use it, just like <tt class="xref py py-func docutils literal"><span class="pre">diff()</span></tt>, with historical instances as the
 arguments.  Example:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">old</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">as_of</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="n">old</span><span class="p">)</span>
 <span class="n">new</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">as_of</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="n">new</span><span class="p">)</span>
@@ -75,148 +78,6 @@ arguments.  Example:</p>
 </div>
 <div class="section" id="versionutils-diff">
 <h2><tt class="xref py py-mod docutils literal"><span class="pre">versionutils.diff</span></tt><a class="headerlink" href="#versionutils-diff" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="versionutils.diff.diff">
-<tt class="descclassname">versionutils.diff.</tt><tt class="descname">diff</tt><big>(</big><em>object1</em>, <em>object2</em><big>)</big><a class="headerlink" href="#versionutils.diff.diff" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compares two objects (such as model instances) and returns an object that
-can be used to render the differences between the two objects.</p>
-<p>Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">m1</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Philip&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m2</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Phillip&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">diff</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">)</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
-<span class="go">{&#39;name&#39;: [{&#39;equal&#39;: &#39;Phil&#39;}, {&#39;inserted&#39;: &#39;l&#39;}, {&#39;equal&#39;: &#39;ip&#39;}]}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">diff</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">)</span><span class="o">.</span><span class="n">as_html</span><span class="p">()</span>
-<span class="go">u(&#39;&lt;tr&gt;&#39;</span>
-<span class="go">    &#39;&lt;td colspan=&quot;2&quot;&gt;name&lt;/td&gt;&#39;</span>
-<span class="go">  &#39;&lt;/tr&gt;</span>
-<span class="go">  &#39;&lt;tr&gt;&#39;</span>
-<span class="go">  &#39;&lt;td colspan=&quot;2&quot;&gt;&#39;</span>
-<span class="go">    &#39;&lt;span class=&quot;diff_equal&quot;&gt;Phil&lt;/span&gt;&#39;</span>
-<span class="go">    &#39;&lt;ins&gt;l&lt;/ins&gt;&#39;</span>
-<span class="go">    &#39;&lt;span class=&quot;diff_equal&quot;&gt;ip&lt;/span&gt;&#39;</span>
-<span class="go">  &#39;&lt;/td&gt;</span>
-<span class="go">  &#39;&lt;/tr&gt;&#39;)</span>
-</pre></div>
-</div>
-<p>This can work with versioned models, e.g.:</p>
-<div class="highlight-python"><pre>&gt;&gt; diff(m1.versions.as_of(version=2),
-&gt;&gt;      m2.versions.as_of(version=3)).as_html()
-u('&lt;tr&gt;'
-    '&lt;td colspan="2"&gt;name&lt;/td&gt;'
-  '&lt;/tr&gt;
-  '&lt;tr&gt;'
-  '&lt;td colspan="2"&gt;'
-    '&lt;span class="diff_equal"&gt;Phil&lt;/span&gt;'
-    '&lt;ins&gt;l&lt;/ins&gt;'
-    '&lt;span class="diff_equal"&gt;ip!&lt;/span&gt;'
-  '&lt;/td&gt;
-  '&lt;/tr&gt;')</pre>
-</div>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>An object that can be used to display differences.  Object will be
-either BaseModelDiff or a subclass.</dd>
-<dt>Raises:</dt>
-<dd>DiffUtilNotFound: If there&#8217;s no registered or inferred diff for
-the objects.</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="versionutils.diff.register">
-<tt class="descclassname">versionutils.diff.</tt><tt class="descname">register</tt><big>(</big><em>model_or_field</em>, <em>diff_util</em><big>)</big><a class="headerlink" href="#versionutils.diff.register" title="Permalink to this definition">¶</a></dt>
-<dd><p>Registers a diff util for a particular model or field type.</p>
-<p>For convenience, several built-in fields (CharField, TextField,
-FileField, ImageField) are pre-registered.</p>
-<p>Examples:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">register</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">,</span> <span class="n">TextFieldDiff</span><span class="p">)</span>
-<span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">MyModelDiff</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="docutils">
-<dt>Attrs:</dt>
-<dd><dl class="first last docutils">
-<dt>model_or_field: The type that will be compared (subclass of</dt>
-<dd>Model or Field)</dd>
-<dt>diff_util: The class that will do the comparison (subclass</dt>
-<dd>of BaseModelDiff or BaseFieldDiff, respectively)</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="class">
-<dt id="versionutils.diff.BaseFieldDiff">
-<em class="property">class </em><tt class="descclassname">versionutils.diff.</tt><tt class="descname">BaseFieldDiff</tt><big>(</big><em>field1</em>, <em>field2</em><big>)</big><a class="headerlink" href="#versionutils.diff.BaseFieldDiff" title="Permalink to this definition">¶</a></dt>
-<dd><p>Simplest diff possible, used when no better option is available.
-Just shows two fields side-by-side, in the case of HTML output.
-To customize how two fields get compared, subclass BaseFieldDiff,
-implement (at minimum) get_diff() and as_html() and register your
-class either for a certain field type or for a specific field of a
-specific model.  See BaseModelDiff for details on the latter.</p>
-<p>Here&#8217;s how you might create your own diff util and register it for
-a field type:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyIntegerDiff</span><span class="p">(</span><span class="n">BaseFieldDiff</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">get_diff</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field1</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">field2</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">None</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;difference&#39;</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">field1</span><span class="p">)}</span>
-
-    <span class="k">def</span> <span class="nf">as_html</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_diff</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;Values are the same&#39;</span>
-        <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;difference&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;New value is larger&#39;</span>
-        <span class="k">return</span> <span class="s">&#39;New value is smaller&#39;</span>
-
-<span class="n">diff</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">,</span> <span class="n">MyIntegerDiff</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="docutils">
-<dt>Attributes:</dt>
-<dd>field1: The first value you want to diff.
-field2: The second value you want to diff, against field1.
-template: An optional filename of the template to use when rendering.</dd>
-</dl>
-</dd></dl>
-
-<dl class="class">
-<dt id="versionutils.diff.BaseModelDiff">
-<em class="property">class </em><tt class="descclassname">versionutils.diff.</tt><tt class="descname">BaseModelDiff</tt><big>(</big><em>model1</em>, <em>model2</em>, <em>model_class=None</em><big>)</big><a class="headerlink" href="#versionutils.diff.BaseModelDiff" title="Permalink to this definition">¶</a></dt>
-<dd><p>Diff util used for comparing two model instances.  By default, it will
-compare the instances on all of their fields, except AutoFields.
-To customize which fields to compare, subclass BaseModelDiff, setting the
-&#8216;fields&#8217; or &#8216;excludes&#8217; attributes like this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyModelDiff</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">BaseModelDiff</span><span class="p">):</span>
-    <span class="n">fields</span> <span class="o">=</span>   <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span>
-                <span class="s">&#39;contents&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>and then register it with your model like this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">diff</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">MyModelDiff</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>You can also customize how each field is compared by using a tuple
-(&#8216;field_name&#8217;, FieldDiff) instead of just the field names, like this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyModelDiff</span><span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">BaseModelDiff</span><span class="p">):</span>
-    <span class="n">fields</span> <span class="o">=</span>   <span class="p">(</span> <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">diff</span><span class="o">.</span><span class="n">TextFieldDiff</span><span class="p">),</span>
-                 <span class="p">(</span><span class="s">&#39;contents&#39;</span><span class="p">,</span> <span class="n">diff</span><span class="o">.</span><span class="n">HtmlFieldDiff</span><span class="p">),</span>
-               <span class="p">)</span>
-</pre></div>
-</div>
-<dl class="docutils">
-<dt>Attributes:</dt>
-<dd><dl class="first docutils">
-<dt>fields: An optional tuple containing either field names or</dt>
-<dd>(&#8216;field_name&#8217;, FieldDiff).  The listed fields will be
-diffed.</dd>
-</dl>
-<p class="last">excludes: An optional tuple of field names to ignore.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 </div>
 
@@ -240,7 +101,7 @@ diffed.</dd>
                         title="previous chapter">How to Install</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="../merging/index.html"
-                        title="next chapter"><tt class="docutils literal"><span class="pre">versionutils.merging</span></tt></a></p>
+                        title="next chapter"><tt class="docutils literal docutils literal"><span class="pre">versionutils.merging</span></tt></a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/diff/reference.txt"
@@ -249,7 +110,7 @@ diffed.</dd>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -275,13 +136,13 @@ diffed.</dd>
         <li class="right" >
           <a href="install.html" title="How to Install"
              >previous</a> |</li>
-        <li><a href="../index.html">django-versionutils v0.1 documentation</a> &raquo;</li>
-          <li><a href="index.html" ><tt class="docutils literal docutils literal"><span class="pre">versionutils.diff</span></tt></a> &raquo;</li> 
+        <li><a href="../index.html">django-versionutils 0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" ><tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.diff</span></tt></a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Philip Neustrom.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
     </div>
   </body>
 </html>

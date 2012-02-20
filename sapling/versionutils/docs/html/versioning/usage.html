@@ -3,13 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Usage &mdash; django-versionutils v0.1 documentation</title>
+    <title>Usage &mdash; django-versionutils 0.1 documentation</title>
+    
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -22,7 +25,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="django-versionutils v0.1 documentation" href="../index.html" />
+    <link rel="top" title="django-versionutils 0.1 documentation" href="../index.html" />
     <link rel="up" title="versionutils.versioning" href="index.html" />
     <link rel="next" title="Reference" href="reference.html" />
     <link rel="prev" title="How to Install" href="install.html" /> 
@@ -40,8 +43,8 @@
         <li class="right" >
           <a href="install.html" title="How to Install"
              accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">django-versionutils v0.1 documentation</a> &raquo;</li>
-          <li><a href="index.html" accesskey="U"><tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
+        <li><a href="../index.html">django-versionutils 0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U"><tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -73,7 +76,7 @@
 </pre></div>
 </div>
 <p>Historical instances have all the same fields as the normal model.  They
-also have <tt class="xref py py-attr docutils literal"><span class="pre">the</span> <span class="pre">version_info</span> <span class="pre">field</span></tt> which has information on the
+also have <a class="reference internal" href="reference.html#version_info" title="version_info"><tt class="xref py py-attr docutils literal"><span class="pre">the</span> <span class="pre">version_info</span> <span class="pre">field</span></tt></a> which has information on the
 revision:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">m_hist</span><span class="o">.</span><span class="n">version_info</span><span class="o">.</span><span class="n">date</span>
 <span class="go">datetime.datetime(2011, 2, 15, 17, 23, 20, 483243)</span>
@@ -205,8 +208,8 @@ to be passed into <tt class="docutils literal"><span class="pre">save()</span></
 &gt;&gt; ph.version_info.comment
 u'creating this person for the first time'</pre>
 </div>
-<p>You can pass in any of the <em>optional fields</em> on the <tt class="xref py py-attr docutils literal"><span class="pre">version_info</span>
-<span class="pre">attribute</span></tt> into the <tt class="docutils literal"><span class="pre">save()</span></tt> and <tt class="docutils literal"><span class="pre">delete()</span></tt> methods on your
+<p>You can pass in any of the <em>optional fields</em> on the <a class="reference internal" href="reference.html#version_info" title="version_info"><tt class="xref py py-attr docutils literal"><span class="pre">version_info</span>
+<span class="pre">attribute</span></tt></a> into the <tt class="docutils literal"><span class="pre">save()</span></tt> and <tt class="docutils literal"><span class="pre">delete()</span></tt> methods on your
 models.  In theory you can pass in non-optional fields (like <tt class="docutils literal"><span class="pre">date</span></tt>),
 but you probably won&#8217;t need to do that.</p>
 </div>
@@ -256,7 +259,7 @@ updated:</p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -282,13 +285,13 @@ updated:</p>
         <li class="right" >
           <a href="install.html" title="How to Install"
              >previous</a> |</li>
-        <li><a href="../index.html">django-versionutils v0.1 documentation</a> &raquo;</li>
-          <li><a href="index.html" ><tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
+        <li><a href="../index.html">django-versionutils 0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" ><tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2011, Philip Neustrom.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
     </div>
   </body>
 </html>
