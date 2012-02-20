@@ -198,3 +198,20 @@ msgstr "Conteúdo removido"
 #: versionutils/diff/static/js/diff/htmldiff.js:70
 msgid "Content was added"
 msgstr "Conteúdo adicionado"
+
+#: maps/static/olwidget/js/sapling_utils.js:82
+msgid " for "
+msgstr " para "
+
+#: maps/static/olwidget/js/sapling_utils.js:145
+msgid "Things on this map:"
+msgstr "Locais neste mapa:"
+
+#: maps/static/olwidget/js/sapling_utils.js:157
+msgid "Things inside "
+msgstr "Locais dentro de "
+
+#: maps/static/olwidget/js/sapling_utils.js:167
+msgid "Things near "
+msgstr "Locais perto de "
+
