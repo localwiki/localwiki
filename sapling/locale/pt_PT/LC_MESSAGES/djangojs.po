@@ -203,6 +203,10 @@ msgstr "Conteúdo adicionado"
 msgid " for "
 msgstr " para "
 
+#: maps/static/olwidget/js/sapling_utils.js:102
+msgid "You've made changes but haven't saved.  Are you sure you want to leave this page?"
+msgstr "Tem alterações que ainda não foram gravadas. Tem certeza que pretende deixar esta página?"
+
 #: maps/static/olwidget/js/sapling_utils.js:145
 msgid "Things on this map:"
 msgstr "Locais neste mapa:"

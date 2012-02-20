@@ -99,7 +99,7 @@ SaplingMap = {
 
     beforeUnload: function(e) {
         if(SaplingMap.is_dirty) {
-            return e.returnValue = "You've made changes but haven't saved.  Are you sure you want to leave this page?";
+            return e.returnValue = gettext("You've made changes but haven't saved.  Are you sure you want to leave this page?");
         }
     },
 
