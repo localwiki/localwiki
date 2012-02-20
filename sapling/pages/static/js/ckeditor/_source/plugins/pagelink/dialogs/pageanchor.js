@@ -57,7 +57,7 @@ CKEDITOR.dialog.add( 'pageanchor', function( editor )
 					{
 						type : 'text',
 						id : 'name',
-						label : 'Anchor name',
+						label : gettext('Anchor name'),
 						required: true,
 						onLoad : function ()
 						{

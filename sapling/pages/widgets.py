@@ -1,8 +1,7 @@
-from urlparse import urljoin
-
 from django.conf import settings
 
 from utils.static import static_url
+from utils import reverse_lazy
 from ckeditor.widgets import CKEditor
 import models
 
@@ -83,6 +82,8 @@ class WikiEditor(CKEditor):
 
     class Media:
         js = (
+              reverse_lazy('django.views.i18n.javascript_catalog',
+                           args=['pages']),
               static_url('js/jquery/jquery-1.7.min.js'),
               static_url('js/jquery/jquery-ui-1.8.16.custom.min.js'),
               static_url('js/ckeditor/sapling_utils.js'),

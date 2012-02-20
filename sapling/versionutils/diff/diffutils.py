@@ -10,7 +10,7 @@ from django.conf import settings
 from django.contrib.gis.db import models as gis_models
 from django.utils.translation import ugettext as _
 
-from utils.static import static_url
+from utils import static_url, reverse_lazy
 import diff_match_patch
 import daisydiff
 from versionutils.versioning.utils import is_historical_instance
@@ -324,7 +324,9 @@ class HtmlFieldDiff(BaseFieldDiff):
         return {'deleted': self.field1, 'inserted': self.field2}
 
     class Media:
-        js = (static_url('js/diff/htmldiff.js'),
+        js = (reverse_lazy('django.views.i18n.javascript_catalog',
+                           args=['versionutils.diff']),
+              static_url('js/diff/htmldiff.js'),
               static_url('js/jquery.qtip.min.js'))
         css = {'all': (static_url('css/jquery.qtip.min.css'),)}
 

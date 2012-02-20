@@ -11,7 +11,7 @@
 				config.wikiplugins_menu = {};
 			config.wikiplugins_menu.includePage =
 				{
-					label : 'Include Page',
+					label : gettext('Include Page'),
 					command : 'includepage',
 					icon : this.path + 'images/document-import.png'
 				}

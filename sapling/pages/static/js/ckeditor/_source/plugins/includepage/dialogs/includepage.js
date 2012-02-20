@@ -8,20 +8,20 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 	var pagelink_plugin = CKEDITOR.plugins.pagelink;
 
 	return {
-		title : 'Include Page',
+		title : gettext('Include Page'),
 		minWidth : 250,
 		minHeight : 120,
 		contents : [
 			{
 				id : 'info',
-				label : 'Include Page',
-				title : 'Include Page',
+				label : gettext('Include Page'),
+				title : gettext('Include Page'),
 				elements :
 				[
 					{
 						type : 'text',
 						id : 'page',
-						label : 'Page name',
+						label : gettext('Page name'),
 						required: true,
 						onLoad : function ()
 						{
@@ -36,13 +36,13 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 						},
 						onChange : function()
 						{
-							if ( this.allowOnChange )		// Dont't call on dialog load.
+							if ( this.allowOnChange )		// Don't call on dialog load.
 								this.onKeyUp();
 						},
 						validate : function()
 						{
 							var dialog = this.getDialog();
-							var func = CKEDITOR.dialog.validate.notEmpty( 'Please enter a page name' );
+							var func = CKEDITOR.dialog.validate.notEmpty( gettext('Please enter a page name') );
 							return func.apply( this );
 						},
 						setup : function( data )
@@ -61,7 +61,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 					{
 						type : 'checkbox',
 						id : 'showtitle',
-						label : 'Show page title',
+						label : gettext('Show page title'),
 						setup : function( data )
 						{
 							if ( data.showtitle )
@@ -81,7 +81,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 							{
 								type : 'text',
 								id : 'width',
-								label : 'Width',
+								label : gettext('Width'),
 								setup : function( data )
 								{
 									if ( data.width )
@@ -107,8 +107,8 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 								'default' : 'px',
 								items :
 								[
-									[ 'pixels', 'px' ],
-									[ 'percent', '%' ]
+									[ gettext('pixels'), 'px' ],
+									[ gettext('percent'), '%' ]
 								],
 								setup : function( data )
 								{
@@ -123,7 +123,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 					{
 						type : 'radio',
 						id : 'align',
-						label : 'Align',
+						label : gettext('Align'),
 						'default' : '',
 						items :
 						[
@@ -203,7 +203,8 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				var selection = editor.getSelection(),
 					ranges = selection.getRanges( true );
 
-				var textLabel = 'Include page ' + data.page;
+				var fmts = gettext('Include page %s');
+				var textLabel = interpolate(fmts, [data.page]);
 
 				var text = new CKEDITOR.dom.text( textLabel, editor.document );
 				ranges[0].insertNode( text );
@@ -225,7 +226,9 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				var element = this._.selectedElement;
 
 				element.setAttributes( attributes );
-				element.setHtml( 'Include page ' + data.page );
+                var fmts = gettext('Include page %(page)s');
+				var textLabel = interpolate(fmts, [data.page]);
+				element.setHtml( textLabel );
 			}
 		},
 		onLoad : function()

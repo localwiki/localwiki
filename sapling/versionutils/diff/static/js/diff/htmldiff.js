@@ -20,10 +20,10 @@ function addToolTips() {
 		{
 			toolBar = $('<div class="diff-toolbar"></div>');
 			changeText = $('<span class="diff-toolbar-text"/>').appendTo(toolBar);
-			prev = $('<input type="button" class="little" value="Previous" />').click(goPrev)
-				.appendTo(toolBar);
-			next = $('<input type="button" class="little" value="Next" />').click(goNext)
-				.appendTo(toolBar);
+			prev = $('<input type="button" class="little" ' +
+                     'value="' + gettext('Previous') + '" />').click(goPrev).appendTo(toolBar);
+            next = $('<input type="button" class="little" ' +
+                     'value="' + gettext('Next') + '" />').click(goNext).appendTo(toolBar);
 			$('<span class="close-button" title="Close">&times;</span>').click(function(){
 				toolBar.animate({ 'margin-top': '-36px'}, function(){ toolBar.hide(); });
 			}).css('cursor', 'pointer').appendTo(toolBar);
@@ -51,12 +51,12 @@ function addToolTips() {
 			showChange(current - 1);
 		else showChange(current);
 	};
-	$('<span class="button">Review changes</span>)')
+	$('<span class="button">' + gettext('Review changes') + '</span>)')
 		.click(function(){
 			showChange(0);
 		}).insertBefore($('tr.htmldiff').parents('table').first())
 		  .wrap('<div class="review-changes">')
-		  .parent().append('You can use the &larr; and &rarr; keys, too.');
+		  .parent().append(gettext('You can use the &larr; and &rarr; keys, too.'));
 	var changes = $("del.diff-html-removed,ins.diff-html-added,span.diff-html-changed")
 		.sort(visualSort)
 		.each(function (index){
@@ -66,8 +66,8 @@ function addToolTips() {
 			content: function (api) {
 				switch(api.elements.target[0].nodeName)
 				{
-					case 'DEL': return 'Content was deleted';
-					case 'INS': return 'Content was added';
+					case 'DEL': return gettext('Content was deleted');
+					case 'INS': return gettext('Content was added');
 					default : return decodeURIComponent(
 								api.elements.target.first().attr('changes'));
 				}

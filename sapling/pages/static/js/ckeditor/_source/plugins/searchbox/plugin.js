@@ -11,7 +11,7 @@
 				config.wikiplugins_menu = {};
 			config.wikiplugins_menu.searchBox =
 				{
-					label : 'Search Box',
+					label : gettext('Search Box'),
 					command : 'searchbox',
 					icon : this.path + 'images/magnifier.png'
 				}

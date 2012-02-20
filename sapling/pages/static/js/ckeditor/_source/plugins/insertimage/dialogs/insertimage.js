@@ -90,7 +90,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         var showSpinner = function(picker)
         {
         	var element = picker.getElement().$;
-        	var spinner = jQuery('<div class="loading">Uploading your file...</div>');
+        	var spinner = jQuery('<div class="loading">' + gettext('Uploading your file...') + '</div>');
         	var message = jQuery('.image_picker_msg', element);
             message.empty().append(spinner);
         }
@@ -106,9 +106,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         	var filekind = dialogType == 'attachfile' ? 'files' : 'images'
         	var element = picker.getElement().$;
             var txtUrl = picker.getDialog().getContentElement('Upload', 'txtUrl');
-            var spinner = jQuery('<div class="loading">Loading ' + filekind + '...</div>');
+            if (filekind == 'files') {
+                var loadingstr = gettext('Loading files...');
+                var notfoundstr = gettext('No files attached to this page');
+            }
+            else {
+                var loadingstr = gettext('Loading images...');
+                var notfoundstr = gettext('No images attached to this page');
+            }
+            var spinner = jQuery('<div class="loading">' + loadingstr + '</div>');
             
-            var no_images = jQuery('<em>(No ' + filekind + ' attached to this page)</em>');
+            var no_images = jQuery('<em>(' + notfoundstr + ')</em>');
             var image_picker = jQuery('.image_picker', element);
             var message = jQuery('.image_picker_msg', element);
             message.empty().append(spinner);
@@ -159,7 +167,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         };
 
         return {
-            title: dialogType == 'attachfile' ? 'Attach File' : 'Insert Image',
+            title: dialogType == 'attachfile' ? gettext('Attach File') : gettext('Insert Image'),
             minWidth: 420,
             minHeight: 150,
             onShow: function () {
@@ -217,11 +225,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 id: 'Upload',
                 hidden: false,
                 filebrowser: 'uploadButton',
-                label: 'Choose a file from your computer',
+                label: gettext('Choose a file from your computer'),
                 elements: [{
                     type: 'file',
                     id: 'file',
-                    label: 'Choose a file from your computer',
+                    label: gettext('Choose a file from your computer'),
                     style: 'height:40px',
                     size: 34,
                     setup: function () {
@@ -303,7 +311,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 },{
                     type: 'html',
                     id: 'imagePicker',
-                    html: 'Select ' + (dialogType == 'attachfile' ? 'a file' : 'an image') + ': <div style="max-height: 8em; overflow-y: auto;"><div class="image_picker_msg"></div><div class="image_picker"></div></div>',
+                    html: (dialogType == 'attachfile' ? gettext('Select a file') : gettext('Select an image')) + ': <div style="max-height: 8em; overflow-y: auto;"><div class="image_picker_msg"></div><div class="image_picker"></div></div>',
                     style: 'margin-top: 5px',
                     setup: function() {
                         refreshFiles(this);
@@ -311,7 +319,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 }, {
                     type: 'html',
                     id: 'webImageHint',
-                    html: 'or <a href="#">use ' + (dialogType == 'attachfile' ? 'a file' : 'an image') + ' from the web</a>',
+                    html: (dialogType == 'attachfile' ? gettext('or <a href="#">use a file from the web</a>') : gettext('or <a href="#">use an image from the web</a>')),
                     style: 'float:left;margin-top:5px',
                     onClick: function () {
                         var urlText = this.getDialog().getContentElement('Upload', 'txtUrl');
@@ -322,7 +330,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                 }, {
                     type: 'text',
                     id: 'txtUrl',
-                    label: dialogType == 'attachfile' ? 'File URL' : 'Image URL',
+                    label: dialogType == 'attachfile' ? gettext('File URL') : gettext('Image URL'),
                     style: 'height: 4em',
                     size: 38,
                     hidden: true,
@@ -360,7 +368,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                     },
                     validate: function () {
                         if (this.getValue().length > 0 || this.getDialog().getContentElement('Upload', 'file').getValue().length > 0) return true;
-                        alert('No file selected');
+                        alert(gettext('No file selected'));
                         return false;
                     }
                 }]

@@ -20,8 +20,8 @@
 		var iconPath = editor.plugins.wikiplugins.path + 'images/puzzle.png';
 		editor.ui.add( 'Plugins', CKEDITOR.UI_MENUBUTTON,
 			{
-				label : 'Insert Object',
-				title : 'Insert Object',
+				label : gettext('Insert Object'),
+				title : gettext('Insert Object'),
 				icon :  iconPath,
 				modes : { wysiwyg : 1 },
 				onRender: function()
