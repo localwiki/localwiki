@@ -55,11 +55,13 @@ class PageTagSetForm(MergeMixin, forms.ModelForm):
     tags = TagSetField(queryset=Tag.objects.all(), required=False)
 
     def merge(self, yours, theirs, ancestor):
-        # NOTE: I think something's not right here with versioning
         your_set = set(yours['tags'])
         their_set = set(theirs['tags'])
         if ancestor:
-            old_set = set(ancestor['tags'])
+            # merge based on original id, so get that for each historic tag
+            old_pks = [t.id for t in Tag.versions.filter(
+                                            history_id__in=ancestor['tags'])]
+            old_set = set(old_pks)
         else:
             old_set = set()
         common = your_set.intersection(their_set)
