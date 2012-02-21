@@ -7,6 +7,7 @@ import models
 from utils.constants import DATETIME_REGEXP
 from models import Page
 from views import PageFilebrowserView
+from tags.views import PageTagSetUpdateView
 
 page_list_info = {
     'model': Page,
@@ -86,6 +87,12 @@ urlpatterns = patterns('',
         name='changes-feed'),
     url(r'^(?P<slug>.+)/_history/$', slugify(PageVersionsList.as_view()),
         name='history'),
+
+    ##########################################################
+    # Page tags
+    ##########################################################
+    url(r'^(?P<slug>.+)/_tags', slugify(PageTagSetUpdateView.as_view()),
+        name='tags'),
 
     ##########################################################
     # Basic edit actions.

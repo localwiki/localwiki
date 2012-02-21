@@ -1,0 +1,5 @@
+<ul>
+{% for pagetags in pagetagset_list %}
+  <li><a href="{% url pages:show slug=pagetags.page.pretty_slug %}">{{ pagetags.page.name }}</a></li>
+{% endfor %}
+</ul>

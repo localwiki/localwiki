@@ -227,6 +227,7 @@ INSTALLED_APPS = (
     'redirects',
     'dashboard',
     'utils',
+    'tags',
 )
 
 LOCAL_INSTALLED_APPS = ()
