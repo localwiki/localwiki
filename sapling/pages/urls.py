@@ -7,7 +7,7 @@ import models
 from utils.constants import DATETIME_REGEXP
 from models import Page
 from views import PageFilebrowserView
-from tags.views import PageTagSetUpdateView
+from tags.views import PageTagSetUpdateView, suggest_tags
 
 page_list_info = {
     'model': Page,
@@ -113,6 +113,7 @@ urlpatterns = patterns('',
     # API
     ##########################################################
     url(r'^api/pages/suggest', suggest),
+    url(r'^api/tags/suggest', suggest_tags),
 
     ##########################################################
     # Basic page URLs.
