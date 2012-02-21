@@ -6,6 +6,7 @@ from tags.forms import PageTagSetForm
 from pages.models import slugify, Page
 from django.core.urlresolvers import reverse
 from django.views.generic.list import ListView
+from django.http import HttpResponse
 
 
 class TagListView(ListView):
@@ -35,3 +36,17 @@ class PageTagSetUpdateView(CreateObjectMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('pages:tags', args=[self.kwargs.get('slug')])
+
+def suggest_tags(request):
+    """
+    Simple tag suggest.
+    """
+    # XXX TODO: Break this out when doing the API work.
+    import json
+
+    term = request.GET.get('term', None)
+    if not term:
+        return HttpResponse('')
+    results = Tag.objects.filter(name__istartswith=term)
+    results = [t.name for t in results]
+    return HttpResponse(json.dumps(results))
