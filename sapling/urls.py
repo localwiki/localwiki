@@ -15,6 +15,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^map/', include(maps.site.urls)),
+    (r'^tags$', redirect_to, {'url': '/tags/'}),
+    (r'^tags/', include('sapling.tags.urls', 'tags', 'tags')),
     (r'^_redirect/', include(redirects.site.urls)),
     (r'^(?i)Users/', include('sapling.users.urls')),
     (r'^search/', include('sapling.search.urls')),

@@ -15,6 +15,14 @@
   {% endif %}
 {% endblock %}
 
+{% block tags %}
+  {% if page.pagetagset %}
+    {% with page.pagetagset.tags.all as tag_list %}
+      {% include "tags/tag_list.html" %}
+    {% endwith %}
+  {% endif %}
+{% endblock %}
+
 {% block content_wrapper %}
 <div id="content_wrapper">
   {% if map %}
