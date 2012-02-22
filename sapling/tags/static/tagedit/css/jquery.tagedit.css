@@ -11,15 +11,30 @@
 /**
  * Styles of the tagedit inputsforms
  */
-.tagedit-list {
+label[for="id_tags"] {
+    display: none;
+}
+.tag-list, .tagedit-list {
     font-size: 12px;
     color: #666;
-    font-family: Verdana, sans-serif;
+    display: inline-block;
+    margin: 0;
 }
-.tagedit-list {margin: 0; padding: 5px 5px 0 5px; border: 1px solid #c6c6c6; width: 400px; overflow: auto; font-size: 11px; min-height: 25px; }
+.edit_tags_button {
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    vertical-align: super;
+}
+.tag-list li.tag a { text-decoration: none; color: #666;}
+.tag-list li.tag a:hover { text-decoration: underline;}
+
+.tag-list li.tag { list-style-type: none; float: left; background: #DEE7F8 url(../img/disc.png) 4px center no-repeat; margin: 0 5px 0 0; border: 1px solid #CAD8F3; padding: 2px 6px 2px 13px; -moz-border-radius: 8px 4px 4px 8px; -webkit-border-radius: 8px 4px 4px 8px; border-radius: 8px 4px 4px 8px;}
+
+.tagedit-list {margin: 0; padding: 5px 5px 0 5px; border: 1px solid #c6c6c6; width: 400px; overflow: auto; font-size: 11px; min-height: 25px; background-color: white;}
 .tagedit-list li.tagedit-listelement {list-style-type: none; float: left; margin: 0 5px 5px 0; padding: 0; }
 /* New Item input */
-.tagedit-list li.tagedit-listelement-new input {border: 0; padding: 2px 5px; width: 15px; background: #fff;}
+.tagedit-list li.tagedit-listelement-new input {border: 0; padding: 2px 5px; width: 15px; background: #fff; box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none;}
 .tagedit-list li.tagedit-listelement-new input:focus {outline: none;}
 .tagedit-list li.tagedit-listelement-new input.tagedit-input-disabled {display: none;}
 /* Item that is put to the List */

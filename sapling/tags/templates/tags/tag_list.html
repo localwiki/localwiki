@@ -1,5 +1,5 @@
-<ul>
+<ul class="tag-list">
   {% for tag in tag_list %}
-  <li><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
+  <li class="tag"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
   {% endfor %}
 </ul>
