@@ -35,6 +35,9 @@ class PageTagSetUpdateView(CreateObjectMixin, UpdateView):
             return PageTagSet(page=page)
 
     def get_success_url(self):
+        next = self.request.POST.get('next', None)
+        if next:
+            return next
         return reverse('pages:tags', args=[self.kwargs.get('slug')])
 
 def suggest_tags(request):

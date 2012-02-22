@@ -1,5 +1,6 @@
 <form action="{% url pages:tags slug=form.instance.page.pretty_slug %}" method="POST">
     {% csrf_token %}
     {{ form }}
+    <input type="hidden" name="next" value="{{ request.path }}"/>
     <input type="submit" name="save" value="Save"/>
 </form>

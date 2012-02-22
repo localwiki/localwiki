@@ -1,9 +1,11 @@
 {% extends "pages/base.html" %}
 
 {% load pages_tags %}
+{% load tags_tags %}
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.min.js"></script>
+{% page_tags_form_media %}
 {% endblock %}
 
 {% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
@@ -16,11 +18,14 @@
 {% endblock %}
 
 {% block tags %}
-  {% if page.pagetagset %}
-    {% with page.pagetagset.tags.all as tag_list %}
-      {% include "tags/tag_list.html" %}
-    {% endwith %}
-  {% endif %}
+  <div class="tags_show">
+    {% page_tags page %}
+    <span class="edit_tags_button" onclick="$(this).parent().hide().next().show()">Edit tags</span>
+  </div>
+  <div class="tags edit" style="display: none">
+    {% page_tags_form page %}
+    <span class="edit_tags_button" onclick="window.location.reload(false)">Cancel</span>
+  </div>
 {% endblock %}
 
 {% block content_wrapper %}
