@@ -1,6 +1,15 @@
-<form action="{% url pages:tags slug=form.instance.page.pretty_slug %}" method="POST">
-    {% csrf_token %}
-    {{ form }}
-    <input type="hidden" name="next" value="{{ request.path }}"/>
-    <input type="submit" name="save" value="Save"/>
-</form>
+{% extends "tags/base.html" %}
+
+{% block media %}
+  {{ block.super }}
+  {{ form.media }}
+{% endblock %}
+
+{% block title %}Tags for {{ pagetagset.page.name }} - {{ block.super }}{% endblock %}
+{% block header_title %}Tags for <a href="{% url pages:show slug=pagetagset.page.pretty_slug %}">{{ pagetagset.page.name }}</a>{% endblock %}
+
+{% block content %}
+    <div id="object_tags">
+    {% include "tags/pagetagset_form_snippet.html" %}
+    </div>
+{% endblock %}

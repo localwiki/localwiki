@@ -20,11 +20,11 @@
 {% block tags %}
   <div class="tags_show">
     {% page_tags page %}
-    <span class="edit_tags_button" onclick="$(this).parent().hide().next().show()">Edit tags</span>
+    <a class="edit_tags" href="{% url pages:tags slug=page.pretty_slug %}" onclick="$(this).parent().hide().next().show(); return false;">Edit tags</a>
   </div>
   <div class="tags edit" style="display: none">
     {% page_tags_form page %}
-    <span class="edit_tags_button" onclick="window.location.reload(false)">Cancel</span>
+    <a class="edit_tags_cancel" href="{% url pages:show slug=page.pretty_slug %}">Cancel</a>
   </div>
 {% endblock %}
 

@@ -5,7 +5,8 @@ from django.db.utils import IntegrityError
 from django.template.defaultfilters import stringfilter
 
 from pages.models import Page
-from versionutils import versioning
+from versionutils import versioning, diff
+from django.utils.html import strip_tags
 
 
 class Tag(models.Model):
@@ -16,6 +17,7 @@ class Tag(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
+        self.name = strip_tags(self.name)
         self.slug = slugify(self.name)
         if not self.slug:
             raise IntegrityError('Invalid tag name: %s' % self.name)
@@ -42,4 +44,14 @@ class PageTagSet(models.Model):
     def __unicode__(self):
         return ', '.join(map(unicode, self.tags.all()))
 
+
+class TagsFieldDiff(diff.BaseFieldDiff):
+    template = 'tags/tags_diff.html'
+
+class PageTagSetDiff(diff.BaseModelDiff):
+    fields = (('tags', TagsFieldDiff),
+              )
+
+
+diff.register(PageTagSet, PageTagSetDiff)
 versioning.register(PageTagSet)

@@ -1,0 +1,16 @@
+{% spaceless %}
+  <tr>
+  <td><div id="object_tags">
+    {% with deleted.all as tag_list %}
+      {% include "tags/tag_list_snippet.html" %}
+    {% endwith %}
+    </div>
+  </td>
+  <td><div id="object_tags">
+    {% with inserted.all as tag_list %}
+      {% include "tags/tag_list_snippet.html" %}
+    {% endwith %}
+    </div>
+  </td>
+  </tr>
+{% endspaceless %}
