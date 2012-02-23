@@ -26,7 +26,10 @@
 {{ form.tos.errors }}
 {{ form.tos }} {{ form.tos.label_tag }}
 </p>
-
+<p>
+{{ form.subscribed.errors }}
+{{ form.subscribed }} {{ form.subscribed.label_tag }}
+</p>
 <input type="submit" value="login" />
 </form>
 {% endblock %}

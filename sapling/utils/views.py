@@ -1,6 +1,7 @@
 from django.utils.decorators import classonlymethod
 from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.utils import simplejson as json
+from django.views.generic import View
 
 
 class ForbiddenException:
@@ -50,6 +51,16 @@ class JSONResponseMixin(object):
         Note: Make sure that the entire context dictionary is serializable
         """
         return json.dumps(context)
+
+
+class JSONView(View, JSONResponseMixin):
+    """
+    A JSONView returns, on GET, a json dictionary containing the values of
+    get_context_data().
+    """
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
 
 
 class PermissionRequiredMixin(object):
@@ -107,3 +118,6 @@ class PermissionRequiredMixin(object):
                 return HttpResponseForbidden(self.forbidden_message)
         return super(PermissionRequiredMixin, self).dispatch(request, *args,
                                                         **kwargs)
+
+
+

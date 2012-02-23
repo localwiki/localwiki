@@ -1,0 +1,149 @@
+{% extends "site/base.html" %}
+{% load static from staticfiles %}
+
+{% block header_title %}
+  Dashboard
+{% endblock %}
+
+{% block media %}
+{{ block.super }}
+<script type="text/javascript" src="{% static "js/jquery/jquery-1.7.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery/flot/jquery.flot.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery/flot/jquery.flot.navigate.js" %}"></script>
+<link rel="stylesheet" href="{% static "css/dashboard/dashboard.css" %}">
+{% endblock %}
+
+{% block content %}
+<div class="loading" id="loading">
+  Statistics loading.  This may take several minutes the first time.
+</div>
+<table class="stats" id="main_stats">
+  <thead><tr><td>
+    <div id="num_pages" class="stat_number"><div class="type">Pages</div></div>
+    <div id="num_files" class="stat_number"><div class="type">Files</div></div>
+    <div id="num_maps" class="stat_number"><div class="type">Maps</div></div>
+    <div id="num_redirects" class="stat_number"><div class="type">Redirects</div></div>
+    <div id="num_users" class="stat_number"><div class="type">Users</div></div>
+  </td></tr></thead>
+
+<tr><td>
+<div class="stat_detail">
+   <h2>Growth over time</h2>
+   <div id="num_items_over_time" class="graph"></div>
+</div>
+</td></tr>
+
+<tr><td>
+<div class="stat_detail">
+    <h2>Edits over time</h2>
+    <div id="num_edits_over_time" class="graph"></div>
+</div>
+</td></tr>
+
+<tr><td>
+<div class="stat_detail">
+    <h2>Page content growth over time</h2>
+    <div id="page_content_over_time" class="graph"></div>
+</div>
+</td></tr>
+
+<tr><td>
+<div class="stat_detail">
+    <h2>Users registered over time</h2>
+    <div id="users_registered_over_time" class="graph"></div>
+</div>
+</td></tr>
+
+</table>
+
+<script type="text/javascript">
+function generate_graphs(stats) {
+    $('#loading').hide();
+    $('#main_stats').show();
+
+    $.plot($("#num_items_over_time"),
+           stats.num_items_over_time,
+           { 
+               'xaxes': [{'mode': 'time'}],
+               'yaxes': [{'panRange': [0, null]}],
+               'zoom': {'interactive': true},
+               'pan': {'interactive': true},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
+           }
+    );
+
+    $.plot($("#num_edits_over_time"),
+           stats.num_edits_over_time,
+           { 
+               'xaxes': [{'mode': 'time'}],
+               'yaxes': [{'panRange': [0, null]}],
+               'series': {'bars': {'show': true}},
+               'zoom': {'interactive': true},
+               'pan': {'interactive': true},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
+           }
+
+    );
+
+    $.plot($("#page_content_over_time"),
+           stats.page_content_over_time,
+           { 
+               'xaxes': [{'mode': 'time'}],
+               'yaxes': [{'panRange': [0, null]}],
+               'series': {'lines': {'show': true, 'fill': true}},
+               'zoom': {'interactive': true},
+               'pan': {'interactive': true},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
+           }
+    );
+
+    $.plot($("#users_registered_over_time"),
+           stats.users_registered_over_time,
+           { 
+               'xaxes': [{'mode': 'time'}],
+               'yaxes': [{'panRange': [0, null]}],
+               'series': {'lines': {'show': true}},
+               'zoom': {'interactive': true},
+               'pan': {'interactive': true},
+               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
+           }
+    );
+}
+
+function populateData(data) {
+    $('#num_pages').prepend(data.num_pages);
+    $('#num_files').prepend(data.num_files);
+    $('#num_maps').prepend(data.num_maps);
+    $('#num_redirects').prepend(data.num_redirects);
+    $('#num_users').prepend(data.num_users);
+
+    var stats = {
+        'num_items_over_time': data.num_items_over_time,
+        'num_edits_over_time': data.num_edits_over_time,
+        'page_content_over_time': data.page_content_over_time,
+        'users_registered_over_time': data.users_registered_over_time
+    };
+    generate_graphs(stats);
+}
+
+function getData(qs, timeout) {
+    if (!qs) qs = '';
+    $.ajax({
+        url: '{% url dashboard:render %}' + qs,
+        dataType: 'json',
+        success: function(data) {
+            if (!data.generated) {
+                if (!timeout) timeout = 1000 * 20;
+                return setTimeout('getData()', timeout);
+            }
+            populateData(data)
+        }
+    });
+}
+
+$(function() {
+    getData('?check_cache=1', 1)
+});
+
+</script>
+{% endblock %}

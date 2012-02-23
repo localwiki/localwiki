@@ -14,6 +14,7 @@ from django.contrib import messages
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.utils.html import escape
+from django.utils.http import urlquote
 
 from ckeditor.views import ck_upload_result
 from versionutils import diff
@@ -333,7 +334,7 @@ def upload(request, slug, **kwargs):
                                             args=[slug, kwargs['file']]))
 
     # uploaded from ckeditor
-    relative_url = '_files/' + uploaded.name
+    relative_url = '_files/' + urlquote(uploaded.name)
     try:
         file = PageFile(file=uploaded, name=uploaded.name, slug=slug)
         file.save()

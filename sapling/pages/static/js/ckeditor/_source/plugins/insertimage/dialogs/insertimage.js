@@ -347,13 +347,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                     commit: function (element) {
                         if (this.getValue() || this.isChanged()) {
                         	if(dialogType == 'attachfile') {
-                        		element.setAttribute('href', this.getValue());
+                        		element.setAttribute('href', encodeURI(this.getValue()));
                         		element.setText(this.getValue().substring('_files/'.length));
                         	}
                         	else {
 	                            element.on('load', onImgLoadEvent, this.getDialog());
-	                            element.setAttribute('_cke_saved_src', decodeURI(this.getValue()));
-	                            element.setAttribute('src', decodeURI(this.getValue()));
+	                            element.setAttribute('_cke_saved_src', this.getValue());
+	                            element.setAttribute('src', this.getValue());
                         	}
                             
                         }

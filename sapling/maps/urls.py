@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>.+)/_revert/(?P<version>[0-9]+)$',
         MapRevertView.as_view(), name='revert'),
 
-    url(r'^(?P<slug>.+)/_history/compare$', MapCompareView.as_view()),
+    url(r'^(?P<slug>.+)/_history/compare', MapCompareView.as_view()),
     url((r'^(?P<slug>.+)/_history/'
             r'(?P<version1>[0-9]+)\.\.\.(?P<version2>[0-9]+)?$'),
         MapCompareView.as_view(), name='compare-revisions'),

@@ -32,6 +32,9 @@ class SaplingBackend(SimpleBackend):
                                             name=settings.USERS_DEFAULT_GROUP)
         user.groups.add(all_group)
         user.save()
+        profile = user.get_profile()
+        profile.subscribed = kwargs.get('subscribed', False)
+        profile.save()
         return user
 
 

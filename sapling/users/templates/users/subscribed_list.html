@@ -1,0 +1,14 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}List of subscribers{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <h1>Subscriber emails:</h1>
+  <ul>
+  {% for profile in object_list %}
+    <li>{{ profile.user.email }}</li>
+  {% endfor %}
+  </ul>
+</div>
+{% endblock %}

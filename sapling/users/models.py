@@ -2,6 +2,10 @@ import urllib
 
 from django.contrib.auth.models import User
 from django.utils.encoding import smart_str
+from django.db import models
+from django.conf import settings
+from django.contrib.sites.models import Site
+
 
 #######################################################################
 #
@@ -43,3 +47,12 @@ def get_absolute_url(self):
 
 User.name = property(first_last_to_name, name_to_first_last)
 User.get_absolute_url = get_absolute_url
+
+
+class UserProfile(models.Model):
+    # this field is required
+    user = models.OneToOneField(User)
+    subscribed = models.BooleanField(verbose_name=settings.SUBSCRIBE_MESSAGE)
+
+
+import signals  # to fire signals
