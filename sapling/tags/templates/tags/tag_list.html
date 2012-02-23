@@ -1,5 +1,14 @@
-<ul class="tag-list">
-  {% for tag in tag_list %}
-  <li class="tag"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
-  {% endfor %}
-</ul>
+{% extends "tags/base.html" %}
+
+{% block title %}Tags - {{ block.super }}{% endblock %}
+{% block header_title %}All tags{% endblock %}
+
+{% block content %}
+  {% if tag_list %}
+    {% include "tags/tag_list_snippet.html" %}
+  {% else %}
+    There are no tags. Add some!
+  {% endif %}
+{% endblock %}
+
+

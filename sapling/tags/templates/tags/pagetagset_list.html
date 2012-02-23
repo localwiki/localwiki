@@ -1,5 +1,16 @@
-<ul>
-{% for pagetags in pagetagset_list %}
-  <li><a href="{% url pages:show slug=pagetags.page.pretty_slug %}">{{ pagetags.page.name }}</a></li>
-{% endfor %}
-</ul>
+{% extends "tags/base.html" %}
+
+{% block title %}Pages tagged "{{ tag.name }}" - {{ block.super }}{% endblock %}
+{% block header_title %}Pages tagged "{{ tag.name }}"{% endblock %}
+
+{% block content %}
+  {% if pagetagset_list %}
+    <ul>
+    {% for pagetags in pagetagset_list %}
+      <li><a href="{% url pages:show slug=pagetags.page.pretty_slug %}">{{ pagetags.page.name }}</a></li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    There are no pages with the tag "{{ tag.name }}".
+  {% endif %}
+{% endblock %}
