@@ -128,7 +128,6 @@ class RevertView(DeleteView):
     """
     template_name_suffix = '_confirm_revert'
     form_class = RevertForm
-    restore_relations = []
 
     def __init__(self, *args, **kwargs):
         base_init = super(RevertView, self).__init__(*args, **kwargs)
@@ -149,8 +148,7 @@ class RevertView(DeleteView):
         form = self.get_form(self.get_form_class())
         if form.is_valid():
             self.object = self.get_object()
-            self.object.revert_to(restore_relations=self.restore_relations,
-                comment=form.cleaned_data.get('comment'))
+            self.object.revert_to(comment=form.cleaned_data.get('comment'))
             messages.add_message(self.request, messages.SUCCESS,
                 self.success_msg())
         return HttpResponseRedirect(self.get_success_url())
