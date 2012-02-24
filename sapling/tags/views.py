@@ -110,6 +110,7 @@ class PageTagSetRevertView(PermissionRequiredMixin, RevertView):
     model = PageTagSet
     context_object_name = 'pagetagset'
     permission = 'pages.change_page'
+    restore_relations = ['tags']
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
