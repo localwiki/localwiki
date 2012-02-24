@@ -1104,6 +1104,82 @@ class ChangesTrackingTest(TestCase):
         self.assertEqual(len(A.objects.filter(a="child")), 0)
         self.assertEqual(len(B.versions.filter(a="child")), 0)
 
+    def test_revert_restore_relations(self):
+        # If we specify restore_relations=True when calling
+        # revert_to(), we should restore related objects to the
+        # appropriate moment in time.
+        m2 = M2(a="a", b="b", c=1)
+        m2.save()
+        m = M12ForeignKey(a=m2, b="hello")
+        m.save()
+
+        m2.a += "!"
+        m2.b += "!"
+        m2.c += 1
+        m2.save()
+
+        m_h = m.versions.as_of(version=1)
+        m_h.revert_to()
+        m = M12ForeignKey.objects.filter(b="hello")[0]
+        # Normal behavior -- the relation is whatever is current.
+        self.assertEqual(m.a.a, "a!")
+
+        m_h = m.versions.as_of(version=1)
+        m_h.revert_to(restore_relations=True)
+        m = M12ForeignKey.objects.filter(b="hello")[0]
+        # We should now be pointing at the correct version.
+        self.assertEqual(m.a.a, "a")
+
+        # Deleting the related object and then restoring_relations should work.
+        m2.delete()
+        m_h.revert_to(restore_relations=True)
+        m = M12ForeignKey.objects.filter(b="hello")[0]
+        # Related bject should exist again.
+        self.assertEqual(len(M2.objects.filter(a="a", b="b", c=1)), 1)
+        # We should now be pointing at the correct version.
+        self.assertEqual(m.a.a, "a")
+
+        ##################
+        # M2M relation
+        ##################
+        t1 = LameTag(name="tag1")
+        t1.save()
+        t2 = LameTag(name="tag2")
+        t2.save()
+        t3 = LameTag(name="tag3")
+        t3.save()
+
+        m = M19ManyToManyFieldVersioned(a="a")
+        m.save()
+        m.tags.add(t1, t2)
+        m.save()
+        m.tags.add(t3)
+        m.save()
+        m_h = m.versions.as_of(version=1)
+        m_h = m.versions.as_of(version=2)
+
+        # Non-restore-relations behavior.
+        m_h.revert_to()
+        m = M19ManyToManyFieldVersioned.objects.get(a="a")
+        tags = m.tags.all()
+        # The M2M set is whatever the current, most-recent M2M set is.
+        self.assertEqual(set([t.name for t in tags]), set(["tag1", "tag2", "tag3"]))
+
+        # restore_relations should bring back the old tags
+        m_h = m.versions.as_of(version=1)
+        m_h.revert_to(restore_relations=True)
+        m = M19ManyToManyFieldVersioned.objects.get(a="a")
+        tags = m.tags.all()
+        self.assertEqual(set([t.name for t in tags]), set(["tag1", "tag2"]))
+
+        # ..even if they're deleted.
+        t3.delete()
+        m_h = m.versions.as_of(version=2)
+        m_h.revert_to(restore_relations=True)
+        m = M19ManyToManyFieldVersioned.objects.get(a="a")
+        tags = m.tags.all()
+        self.assertEqual(set([t.name for t in tags]), set(["tag1", "tag2", "tag3"]))
+
 ##
 #    def test_reverse_related_name(self):
 #        # custom ForeignKey related_name

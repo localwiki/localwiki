@@ -94,7 +94,8 @@ def historical_record_init(m, *args, **kws):
 def _wrap_m2m_relation_lookups(m):
     """
     We wrap ManyToMany relation lookup on the historical models and have the
-    fields, when accessed, return the associated fields on the non-historical model.
+    fields, when accessed, return the associated fields on the non-historical
+    model.
 
     We have to do this because, with ManyToManyField, it's not clear what
     should happen if there's a concrete relation between the historical model
@@ -298,7 +299,7 @@ def _cascade_revert(current_hm, m, **kws):
                 latest_rel_hm.revert_to(**kws)
 
 
-def revert_to(hm, delete_newer_versions=False, **kws):
+def revert_to(hm, delete_newer_versions=False, restore_relations=False, **kws):
     """
     This is used on a *historical instance* - e.g. something you get
     using history.get(..) rather than an instance of the model.  Like::
@@ -311,6 +312,9 @@ def revert_to(hm, delete_newer_versions=False, **kws):
     Args:
         delete_newer_versions: If True, delete all versions in the
             history newer than this version.
+        restore_relations: If True, restore the objects this model points to,
+            as well.  Restores them to the correct moment in time.
+            Default: False.
         track_changes: If False, won't log *this revert* as an action in
             the history log.
         kws: Any other keyword arguments you want to pass along to the
@@ -340,10 +344,19 @@ def revert_to(hm, delete_newer_versions=False, **kws):
         for v in newer:
             v.delete()
 
+    if restore_relations:
+        for field in get_related_versioned_fields(m):
+            rel_hist = getattr(hm, field.name)
+            # Mark as a cascaded revert.
+            rel_hist._from_cascade_revert = True
+            rel_hist.revert_to(restore_relations=True)
+        
+
     m._history_type = TYPE_REVERTED
 
     # Having the _from_cascade_revert attribute means revert_to() was
-    # called from _cascade_revert().
+    # called from _cascade_revert() via a revert_to with
+    # restore_relations=True.
     if getattr(hm, '_from_cascade_revert', False):
         m._history_type = TYPE_REVERTED_CASCADE
 
@@ -372,6 +385,25 @@ def revert_to(hm, delete_newer_versions=False, **kws):
 
         m.save(reverted_to_version=hm, **kws)
 
+        if restore_relations:
+            # We restore m2m fields after the model's been saved.
+            for field in get_m2m_versioned_fields(m):
+                # Clear out the m2m set on the current instance.
+                setattr(m, field.name, [])
+
+                # Set each object in the M2m set to its historical version.
+                hist_manager = getattr(hm, field.name)
+                for rel_hist in hist_manager.all():
+                    # XXX TODO: we should only really revert when the current version isn't
+                    # equal to this version.
+                    # Mark as a cascaded revert.
+                    rel_hist._from_cascade_revert = True
+                    obj = rel_hist.revert_to(restore_relations=True)
+                    manager = getattr(m, field.name)
+                    # Add the object to the current related set on the
+                    # non-historical instance.
+                    manager.add(obj)
+            
         # If we are reverting from a deleted state to a restored state
         # then we should cascade the revert to children that were
         # deleted during the initial delete().
