@@ -1105,7 +1105,7 @@ class ChangesTrackingTest(TestCase):
         self.assertEqual(len(B.versions.filter(a="child")), 0)
 
     def test_revert_restore_relations(self):
-        # If we specify restore_relations=True when calling
+        # If we specify restore_relations when calling
         # revert_to(), we should restore related objects to the
         # appropriate moment in time.
         m2 = M2(a="a", b="b", c=1)
@@ -1125,14 +1125,14 @@ class ChangesTrackingTest(TestCase):
         self.assertEqual(m.a.a, "a!")
 
         m_h = m.versions.as_of(version=1)
-        m_h.revert_to(restore_relations=True)
+        m_h.revert_to(restore_relations=['a'])
         m = M12ForeignKey.objects.filter(b="hello")[0]
         # We should now be pointing at the correct version.
         self.assertEqual(m.a.a, "a")
 
         # Deleting the related object and then restoring_relations should work.
         m2.delete()
-        m_h.revert_to(restore_relations=True)
+        m_h.revert_to(restore_relations=['a'])
         m = M12ForeignKey.objects.filter(b="hello")[0]
         # Related bject should exist again.
         self.assertEqual(len(M2.objects.filter(a="a", b="b", c=1)), 1)
@@ -1167,7 +1167,7 @@ class ChangesTrackingTest(TestCase):
 
         # restore_relations should bring back the old tags
         m_h = m.versions.as_of(version=1)
-        m_h.revert_to(restore_relations=True)
+        m_h.revert_to(restore_relations=['tags'])
         m = M19ManyToManyFieldVersioned.objects.get(a="a")
         tags = m.tags.all()
         self.assertEqual(set([t.name for t in tags]), set(["tag1", "tag2"]))
@@ -1175,7 +1175,7 @@ class ChangesTrackingTest(TestCase):
         # ..even if they're deleted.
         t3.delete()
         m_h = m.versions.as_of(version=2)
-        m_h.revert_to(restore_relations=True)
+        m_h.revert_to(restore_relations=['tags'])
         m = M19ManyToManyFieldVersioned.objects.get(a="a")
         tags = m.tags.all()
         self.assertEqual(set([t.name for t in tags]), set(["tag1", "tag2", "tag3"]))
