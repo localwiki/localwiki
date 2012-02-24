@@ -1,4 +1,5 @@
 {% extends "pages/page_detail.html" %}
+{% load i18n %}
 
 {% block media %}
 {{ block.super }}
@@ -20,10 +21,10 @@
     {{ form.as_ul }}
     </ul>
     {% if exists %}
-      <input type="submit" value="Update redirect"/> 
-      <a class="button" href="{% url redirects:delete slug=page.slug %}">Delete redirect</a>
+      <input type="submit" value="{% trans 'Update redirect' %}"/> 
+      <a class="button" href="{% url redirects:delete slug=page.slug %}">{% trans "Delete redirect" %}</a>
     {% else %}
-      <input type="submit" value="Create redirect"/> 
+      <input type="submit" value="{% trans 'Create redirect' %}"/> 
     {% endif %}
  </form>
 </div>

@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext as _
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import *
 
@@ -165,8 +166,8 @@ class CollectionDescriptor(object):
     def __get__(self, instance=None, owner=None):
         if instance is None:
             raise AttributeError(
-                "The '%s' attribute can only be accessed from %s instances."
-                % (self._field.name, owner.__name__))
+                _("The '%(fieldname)s' attribute can only be accessed from %(ownername)s instances.")
+                % {'fieldname':self._field.name, 'ownername':owner.__name__})
 
         set_field_value = instance.__dict__.get(
             '_explicit_set_%s' % self._field.attname, None)
@@ -210,8 +211,8 @@ class CollectionDescriptor(object):
             value = GEOSGeometry(value, srid=self._field.srid)
         else:
             raise TypeError(
-                'cannot set %s CollectionFrom with value of type: %s' %
-                (obj.__class__.__name__, type(value)))
+                _('cannot set %(cname)s CollectionFrom with value of type: %(vtype)s') %
+                {'cname':obj.__class__.__name__, vtype: type(value)})
 
         obj.__dict__['_explicit_set_%s' % self._field.attname] = value
         return value

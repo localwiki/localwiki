@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import stringfilter
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext as _
 
 from django_randomfilenamestorage.storage import (
     RandomFilenameFileSystemStorage)
@@ -80,7 +81,7 @@ class Page(models.Model):
     def clean(self):
         self.name = clean_name(self.name)
         if not slugify(self.name):
-            raise ValidationError('Page name is invalid.')
+            raise ValidationError(_('Page name is invalid.'))
 
     def exists(self):
         """
@@ -130,11 +131,11 @@ class Page(models.Model):
                 # The slug is the same but we're changing the name.
                 old_name = self.name
                 self.name = pagename
-                self.save(comment='Renamed from "%s"' % old_name)
+                self.save(comment=_('Renamed from "%s"') % old_name)
                 return
             else:
                 raise exceptions.PageExistsError(
-                    "The page '%s' already exists!" % pagename)
+                    _("The page '%s' already exists!") % pagename)
 
         # Copy the current page into the new page, zeroing out the
         # primary key and setting a new name and slug.
@@ -142,7 +143,7 @@ class Page(models.Model):
         new_p.pk = None
         new_p.name = pagename
         new_p.slug = slugify(pagename)
-        new_p.save(comment='Renamed from "%s"' % self.name)
+        new_p.save(comment=_('Renamed from "%s"') % self.name)
 
         # Get all related objects before the original page is deleted.
         related_objs = []
@@ -174,7 +175,7 @@ class Page(models.Model):
                     obj.pk = None  # Reset the primary key before saving.
                     try:
                         getattr(new_p, attname).add(obj)
-                        obj.save(comment="Parent page renamed")
+                        obj.save(comment=_("Parent page renamed"))
                     except RedirectToSelf, s:
                         # We don't want to create a redirect to ourself.
                         # This happens during a rename -> rename-back
@@ -184,7 +185,7 @@ class Page(models.Model):
                 # This is an easy way to set obj to point to new_p.
                 setattr(new_p, attname, rel_obj)
                 rel_obj.pk = None  # Reset the primary key before saving.
-                rel_obj.save(comment="Parent page renamed")
+                rel_obj.save(comment=_("Parent page renamed"))
 
         # Do the same with related-via-slug objects.
         for info in self._get_slug_related_objs():
@@ -200,7 +201,7 @@ class Page(models.Model):
                     continue
                 obj.slug = new_p.slug
                 obj.pk = None  # Reset the primary key before saving.
-                obj.save(comment="Parent page renamed")
+                obj.save(comment=_("Parent page renamed"))
 
 
 class PageDiff(diff.BaseModelDiff):

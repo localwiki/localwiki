@@ -1,0 +1,89 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-16 15:43+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: feeds.py:25
+#, python-format
+msgid "Recent Changes on %s"
+msgstr "Alterações Recentes em %s"
+
+#: feeds.py:31
+#, python-format
+msgid "Recent changes on %s"
+msgstr "Alterações recentes em %s"
+
+#: feeds.py:64 feeds.py:152
+#, python-format
+msgid "to version %s"
+msgstr "para a versão %s"
+
+#: feeds.py:71 feeds.py:159
+#, python-format
+msgid " with comment \"%s\""
+msgstr " com o comentário \"%s\""
+
+#: feeds.py:72 feeds.py:160
+#, python-format
+msgid "%(title)s was %(change_type)s by %(user)s%(comment)s."
+msgstr "%(title)s foi %(change_type)s por %(user)s%(comment)s."
+
+#: feeds.py:124 feeds.py:130
+#, python-format
+msgid "Changes for %(title)s on %(site_name)s"
+msgstr "Alterações em %(title)s em %(site_name)s"
+
+#: templates/recentchanges/recentchanges.html:5
+#: templates/recentchanges/recentchanges.html:7
+#: templates/recentchanges/recentchanges.html:9
+msgid "Recent Changes"
+msgstr "Alterações Recentes"
+
+#: templates/recentchanges/recentchanges.html:15
+msgid "Show all changes in the last"
+msgstr "Ver todas as alterações nos últimos"
+
+#: templates/recentchanges/recentchanges.html:22
+msgid "days."
+msgstr "dias."
+
+#: templates/recentchanges/recentchanges.html:40
+#, python-format
+msgid "last modified %(version_date)s ago"
+msgstr "última modificação há %(version_date)s"
+
+#: templates/recentchanges/recentchanges.html:48
+msgid "new"
+msgstr "novo"
+
+#: templates/recentchanges/recentchanges.html:50
+msgid "deleted"
+msgstr "apagado"
+
+#: templates/recentchanges/recentchanges.html:52
+msgid "changes"
+msgstr "alterações"
+
+#: templates/recentchanges/recentchanges.html:56
+#, python-format
+msgid "Reverted to version from %(version_date_timesince)s ago"
+msgstr "Revertido para a versão de há %(version_date_timesince)s"
+
+#: templates/recentchanges/recentchanges.html:62
+#, python-format
+msgid "Redirected to <a href=\"%(url)s\">%(destination)s</a>"
+msgstr "Redirecionado para <a href=\"%(url)s\">%(destination)s</a>"

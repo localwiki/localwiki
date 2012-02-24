@@ -3,6 +3,7 @@
 *.swa
 *.swo
 *.pyo
+*~
 /build/
 /dist/
 /env/

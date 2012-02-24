@@ -2,6 +2,7 @@ from django.db import models
 from django import forms
 
 from django.forms.models import model_to_dict
+from django.utils.translation import ugettext_lazy as _
 
 from versionutils.versioning.utils import is_versioned
 from versionutils.versioning import get_versions
@@ -49,10 +50,10 @@ class MergeMixin(object):
             get_version_date() instead of using this attribute.
     """
     version_date = forms.CharField(widget=forms.HiddenInput(), required=False)
-    conflict_error = ('Warning: someone else made changes before you.  '
-        'Please review the changes and save again.')
-    merge_success_msg = ('Someone else made changes before you but your '
-        'changes were successfully merged.')
+    conflict_error = (_('Warning: someone else made changes before you.  '
+                        'Please review the changes and save again.'))
+    merge_success_msg = (_('Someone else made changes before you but your' 
+                           'changes were successfully merged.'))
 
     def __init__(self, *args, **kwargs):
         base_init = super(MergeMixin, self).__init__(*args, **kwargs)

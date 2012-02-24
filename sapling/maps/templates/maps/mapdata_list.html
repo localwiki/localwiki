@@ -1,4 +1,5 @@
 {% extends "maps/base.html" %}
+{% load i18n %}
 
 {% block media %}
 {{block.super}}
@@ -18,10 +19,10 @@
 </script>
 {% endblock %}
 
-{% block title %}Map - {{ block.super }}{% endblock %}
+{% block title %}{% trans "Map" %} - {{ block.super }}{% endblock %}
 
 {% block header_title %}
-  Map <span id="header_title_detail"></span>
+  {% trans "Map" %} <span id="header_title_detail"></span>
 {% endblock %}
 
 {% block main_wrapper %}

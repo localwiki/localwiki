@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext as _
 from django.db import models
 from django.db.models.signals import pre_save
 from django.core.urlresolvers import reverse
@@ -25,7 +26,7 @@ versioning.register(Redirect)
 def _validate_redirect(sender, instance, raw, **kws):
     if instance.source == instance.destination.slug:
             raise exceptions.RedirectToSelf(
-                    "You cannot redirect a page to itself")
+                    _("You cannot redirect a page to itself"))
 
 pre_save.connect(_validate_redirect, sender=Redirect)
 

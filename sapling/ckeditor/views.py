@@ -3,6 +3,7 @@ import urlparse
 
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.utils.translation import  ugettext_lazy as _
 from django.views.generic.simple import direct_to_template
 
 
@@ -10,7 +11,7 @@ def ck_upload(request, upload_folder):
     """
     Save file uploaded via CKEditor.
     """
-    error_message = 'Unable to upload'
+    error_message = _('Unable to upload')
 
     upload_location = os.path.join(settings.MEDIA_ROOT, upload_folder)
     upload_url = urlparse.urljoin(settings.MEDIA_URL, upload_folder)

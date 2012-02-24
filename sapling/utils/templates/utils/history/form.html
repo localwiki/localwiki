@@ -1,4 +1,5 @@
 {% extends "versionutils/history/form.html" %}
+{% load i18n %}
 {% load url from future %}
 
 {% block version_info_extras %}
@@ -9,7 +10,7 @@
     {% if not forloop.first %}
     {% ifnotequal version_info.type_verbose "Deleted" %}
         {# This assumes a certain URL format #}
-        <a class="tiny button" href="../_revert/{{ forloop.revcounter }}">revert</a>
+        <a class="tiny button" href="../_revert/{{ forloop.revcounter }}">{% trans "revert" %}</a>
     {% endifnotequal %}
     {% endif %}
   </td>

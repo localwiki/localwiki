@@ -2,7 +2,7 @@ from django.utils.decorators import classonlymethod
 from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.utils import simplejson as json
 from django.views.generic import View
-
+from django.utils.translation import ugettext_lazy as _
 
 class ForbiddenException:
     pass
@@ -76,7 +76,7 @@ class PermissionRequiredMixin(object):
             allowed.
     """
     permission = None
-    forbidden_message = 'Sorry, you are not allowed to perform this action.'
+    forbidden_message = _('Sorry, you are not allowed to perform this action.')
 
     def get_protected_object(self):
         """

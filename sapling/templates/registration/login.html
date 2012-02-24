@@ -1,12 +1,13 @@
 {% extends "site/base.html" %}
 {% load url from future %}
+{% load i18n %}
 
-{% block header_title %}Log in{% endblock %}
+{% block header_title %}{% trans "Log in" %}{% endblock %}
 
 {% block content %}
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-<p><a href="{% url 'django.contrib.auth.views.password_reset' %}">Forgot your password?</a></p>
+<p>{% trans "Your username and password didn't match. Please try again." %}</p>
+<p><a href="{% url 'django.contrib.auth.views.password_reset' %}">{% trans "Forgot your password?" %}</a></p>
 {% endif %}
 
 <form method="post" action="{% url 'django.contrib.auth.views.login' %}" id="login_form">
@@ -14,10 +15,10 @@
 
 {{ form.as_p }}
 
-<input type="submit" value="login" />
+<input type="submit" value="{% trans 'login' %}" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<a href="{% url 'django.contrib.auth.views.password_reset' %}">Forgot your password?</a>
+<a href="{% url 'django.contrib.auth.views.password_reset' %}">{% trans "Forgot your password?" %}</a>
 
 {% endblock %}

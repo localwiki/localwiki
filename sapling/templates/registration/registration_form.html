@@ -1,7 +1,8 @@
 {% extends "site/base.html" %}
 {% load url from future %}
+{% load i18n %}
 
-{% block header_title %}Create account{% endblock %}
+{% block header_title %}{% trans "Create account" %}{% endblock %}
 
 {% block content %}
 <form method="post" action="{% url 'registration_register' %}?next={{ request.GET.next }}">
@@ -30,6 +31,6 @@
 {{ form.subscribed.errors }}
 {{ form.subscribed }} {{ form.subscribed.label_tag }}
 </p>
-<input type="submit" value="login" />
+<input type="submit" value="{% trans 'login' %}" />
 </form>
 {% endblock %}

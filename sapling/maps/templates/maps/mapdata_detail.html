@@ -1,4 +1,5 @@
 {% extends "maps/base.html" %}
+{% load i18n %}
 
 {% block media %}
 {{block.super}}
@@ -17,7 +18,7 @@
 </script>
 {% endblock %}
 
-{% block title %}Map for {{ mapdata.page.name }} - {{ block.super }}{% endblock %}
+{% block title %}{% trans "Map for" %} {{ mapdata.page.name }} - {{ block.super }}{% endblock %}
 
 {% block main_wrapper %}
     <div id="main" class="mapdata_detail">
@@ -31,8 +32,8 @@
     {{ block.super }}
     {% if show_revision %}
         <em class="revision_details">
-            Revision {{ mapdata.version_info.version_number }}
-            ({{ mapdata.version_info.date }} by {{ mapdata.version_info.user_link|safe }})
+            {% trans "Revision" %} {{ mapdata.version_info.version_number }}
+            ({{ mapdata.version_info.date }} {% trans "by" %} {{ mapdata.version_info.user_link|safe }})
         </em>
     {% endif %}
 {% endblock %}
@@ -46,6 +47,6 @@
 {% block footer %}
   {{ block.super }}
   <p>
-    <a href="{% url maps:edit slug=mapdata.page.pretty_slug %}">Edit</a> this map (last modified {{ date|timesince }} ago)
+    <a href="{% url maps:edit slug=mapdata.page.pretty_slug %}">{% trans "Edit" %}</a> {% trans "this map" %} ({% blocktrans with tsince=date|timesince %}last modified {{ tsince }} ago{% endblocktrans %})
   </p>
 {% endblock %}  

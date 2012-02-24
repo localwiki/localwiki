@@ -1,5 +1,5 @@
 from django import forms
-
+from django.utils.translation import ugettext_lazy as _
 
 class CommentMixin(object):
     """
@@ -40,7 +40,7 @@ class DeleteForm(forms.Form):
     Contains a single comment field.
     """
     comment = forms.CharField(max_length=150, required=False,
-        label="Reason for deletion")
+        label=_("Reason for deletion"))
 
 
 class RevertForm(forms.Form):
@@ -50,4 +50,4 @@ class RevertForm(forms.Form):
     Contains a single comment field.
     """
     comment = forms.CharField(max_length=150, required=False,
-        label="Reason for revert")
+        label=_("Reason for revert"))

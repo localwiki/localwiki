@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext as _
 from pages.models import Page, slugify
 
 import recentchanges
@@ -17,7 +18,7 @@ class MapChanges(RecentChanges):
         return MapData.versions.all()
 
     def title(self, obj):
-        return 'Map for "%s"' % obj.page.name
+        return _('Map for "%s"') % obj.page.name
 
 recentchanges.register(MapChanges)
 
@@ -34,7 +35,7 @@ class MapChangesFeed(ChangesOnItemFeed):
 
         obj = MapData(page=page)
         obj.page = page
-        obj.title = 'Map for "%s"' % obj.page.name
+        obj.title = _('Map for "%s"') % obj.page.name
         obj.slug = page.slug
         return obj
 

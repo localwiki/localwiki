@@ -1,4 +1,5 @@
 from django.db.models.signals import pre_save
+from django.utils.translation import ugettext as _
 
 from redirects.models import Redirect
 
@@ -9,13 +10,13 @@ def _delete_page(sender, instance, raw, **kws):
     # Delete the source page if it exists.
     if Page.objects.filter(slug=instance.source):
         p = Page.objects.get(slug=instance.source)
-        p.delete(comment="Redirect created")
+        p.delete(comment=_("Redirect created"))
 
 
 def _delete_redirect(sender, instance, raw, **kws):
     if Redirect.objects.filter(source=instance.slug):
         r = Redirect.objects.get(source=instance.slug)
-        r.delete(comment="Page created")
+        r.delete(comment=_("Page created"))
 
 
 # When a Redirect is created we want to delete the source Page if it
