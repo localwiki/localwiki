@@ -18,14 +18,16 @@
 {% endblock %}
 
 {% block tags %}
-  <div class="tags_show">
-    {% page_tags page %}
-    <a class="edit_tags" href="{% url pages:tags slug=page.pretty_slug %}" onclick="$(this).parent().hide().next().show(); return false;">{% if page.pagetagset.tags.exists %}Edit{% else %}Add{% endif %} tags</a>
-  </div>
-  <div class="tags edit" style="display: none">
-    {% page_tags_form page %}
-    <a class="edit_tags_cancel" href="{% url pages:show slug=page.pretty_slug %}">Cancel</a>
-  </div>
+  {% if not page.version_info %}
+    <div class="tags_show">
+      {% page_tags page %}
+      <a class="edit_tags" href="{% url pages:tags slug=page.pretty_slug %}" onclick="$(this).parent().hide().next().show(); return false;">Edit tags</a>
+    </div>
+    <div class="tags edit" style="display: none">
+      {% page_tags_form page %}
+      <a class="edit_tags_cancel" href="{% url pages:show slug=page.pretty_slug %}">Cancel</a>
+    </div>
+  {% endif %}
 {% endblock %}
 
 {% block content_wrapper %}
