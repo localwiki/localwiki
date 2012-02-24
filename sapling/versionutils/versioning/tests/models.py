@@ -172,6 +172,19 @@ class M19ManyToManyFieldVersioned(models.Model):
 versioning.register(M19ManyToManyFieldVersioned)
 
 
+class UniqueLameTag(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+versioning.register(UniqueLameTag)
+
+
+class M2MFieldVersionedUnique(models.Model):
+    a = models.TextField()
+    tags = models.ManyToManyField(UniqueLameTag)
+
+versioning.register(M2MFieldVersionedUnique)
+
+
 class CustomManager(models.Manager):
     def foo(self):
         return "bar"

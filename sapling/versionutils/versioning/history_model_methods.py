@@ -299,7 +299,7 @@ def _cascade_revert(current_hm, m, **kws):
                 latest_rel_hm.revert_to(**kws)
 
 
-def revert_to(hm, delete_newer_versions=False, restore_relations=[], **kws):
+def revert_to(hm, delete_newer_versions=False, **kws):
     """
     This is used on a *historical instance* - e.g. something you get
     using history.get(..) rather than an instance of the model.  Like::
@@ -312,8 +312,6 @@ def revert_to(hm, delete_newer_versions=False, restore_relations=[], **kws):
     Args:
         delete_newer_versions: If True, delete all versions in the
             history newer than this version.
-        restore_relations: A list of field names of relations on the model.
-            If provided, we will restore the relations to the correct moment in time.
         track_changes: If False, won't log *this revert* as an action in
             the history log.
         kws: Any other keyword arguments you want to pass along to the
@@ -343,21 +341,10 @@ def revert_to(hm, delete_newer_versions=False, restore_relations=[], **kws):
         for v in newer:
             v.delete()
 
-    for fieldname in restore_relations:
-        if fieldname in [f.name for f in m._meta.local_many_to_many]:
-            # It's a M2M field, so let's deal with it after saving the
-            # model.
-            continue
-        rel_hist = getattr(hm, fieldname)
-        # Mark as a cascaded revert.
-        rel_hist._from_cascade_revert = True
-        rel_hist.revert_to()
-
     m._history_type = TYPE_REVERTED
 
     # Having the _from_cascade_revert attribute means revert_to() was
-    # called from _cascade_revert() via a revert_to with
-    # restore_relations=True.
+    # called from _cascade_revert().
     if getattr(hm, '_from_cascade_revert', False):
         m._history_type = TYPE_REVERTED_CASCADE
 
@@ -371,7 +358,7 @@ def revert_to(hm, delete_newer_versions=False, restore_relations=[], **kws):
             rel_hist = getattr(hm, field.name)
             rel_o = rel_hist.version_info._object
             latest_version = get_versions(rel_o).most_recent()
-            if latest_version.version_info.type == TYPE_DELETED:
+            if latest_version.version_info.type in DELETED_TYPES:
                 # This means the related, versioned object is
                 # currently deleted.  In this case we want to throw
                 # an exception, as reverting doesn't make any sense
@@ -387,26 +374,35 @@ def revert_to(hm, delete_newer_versions=False, restore_relations=[], **kws):
         m.save(reverted_to_version=hm, **kws)
 
         # Now, after the model's been saved, we restore m2m fields.
-        for fieldname in restore_relations:
-            if fieldname not in [f.name for f in m._meta.local_many_to_many]:
-                # We process only M2M fields here.
-                continue
+        for field in get_m2m_versioned_fields(m):
             # Clear out the m2m set on the current instance.
-            setattr(m, fieldname, [])
+            setattr(m, field.name, [])
 
-            # Set each object in the M2m set to its historical version.
-            hist_manager = getattr(hm, fieldname)
+            # Recreate the M2M set as it was.
+            # Don't revert individual objects back, though.
+            hist_manager = getattr(hm, field.name)
             for rel_hist in hist_manager.all():
-                # XXX TODO: we should only really revert when the current version isn't
-                # equal to this version.
-                # Mark as a cascaded revert.
-                rel_hist._from_cascade_revert = True
-                obj = rel_hist.revert_to()
-                manager = getattr(m, fieldname)
+                rel_o = rel_hist.version_info._object
+                latest_version = get_versions(rel_o).most_recent()
+                if latest_version.version_info.type in DELETED_TYPES:
+                    # This means the related, versioned object is
+                    # currently deleted.  In this case we want to throw
+                    # an exception, as reverting doesn't make any sense
+                    # and will otherwise raise a database IntegrityError.
+                    raise ObjectDoesNotExist("ManyToMany set '%s' contains an "
+                        "instance of %s that does not exist! Re-create the "
+                        "referenced model and try again." %
+                        (field.name, latest_version.version_info._object.__class__))
+
+                # Get the latest instance of the object in the M2M set.
+                obj = latest_version.version_info._object
+                # Get the real current instance.
+                obj = obj.__class__.objects.get(pk=obj.pk)
+                manager = getattr(m, field.name)
                 # Add the object to the current related set on the
                 # non-historical instance.
                 manager.add(obj)
-            
+
         # If we are reverting from a deleted state to a restored state
         # then we should cascade the revert to children that were
         # deleted during the initial delete().
