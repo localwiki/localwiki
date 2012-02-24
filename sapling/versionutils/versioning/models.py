@@ -127,6 +127,7 @@ class ChangesTracker(object):
                 return type(
                     name, (get_versions(model.__base__).model,), attrs)
             return type(name, (model.__base__,), attrs)
+
         return type(name, (models.Model,), attrs)
 
     def wrap_model_fields(self, model):
@@ -249,6 +250,7 @@ class ChangesTracker(object):
             return opts
 
         attrs = {}
+
         for field in (model._meta.local_fields +
                       model._meta.local_many_to_many):
             field = copy.deepcopy(field)
@@ -259,7 +261,8 @@ class ChangesTracker(object):
                 field.__class__ = models.IntegerField
                 field.serialize = True
 
-            if field.primary_key or field.unique:
+            if (getattr(field, 'primary_key', None) or
+                getattr(field, 'unique', None)):
                 # Unique fields can no longer be guaranteed unique,
                 # but they should still be indexed for faster lookups.
                 field.primary_key = False
@@ -272,9 +275,10 @@ class ChangesTracker(object):
 
             is_fk = isinstance(field, models.ForeignKey)
             is_m2m = isinstance(field, models.ManyToManyField)
-            if is_fk or is_m2m:
-                parent_model = field.related.parent_model
+            if isinstance(field, models.fields.related.RelatedField):
+                parent_model = field.rel.to
                 is_to_self = parent_model == model
+
                 # If the field is versioned then we replace it with a
                 # FK/M2M to the historical model.
                 if is_versioned(parent_model) or is_to_self:
@@ -290,9 +294,9 @@ class ChangesTracker(object):
                     else:
                         model_type = models.ManyToManyField
                         options = _get_m2m_opts(field)
-                        _m2m_changed = partial(self.m2m_changed, field.attname)
+                        _m2m_changed = partial(self.m2m_changed, field.name)
                         models.signals.m2m_changed.connect(_m2m_changed,
-                            sender=getattr(model, field.attname).through,
+                            sender=getattr(model, field.name).through,
                             weak=False,
                         )
                     if is_to_self:
@@ -309,8 +313,23 @@ class ChangesTracker(object):
                         hist_field = model_type(fk_hist_obj, **options)
 
                     hist_field.name = field.name
-                    hist_field.attname = field.attname
+                    if hasattr(field, 'attname'):
+                        hist_field.attname = field.attname
                     field = hist_field
+
+                if not is_fk and not is_m2m:
+                    # When this isn't an FK (which includes OneToOne) or M2M
+                    # then this is something a bit more strange.  In
+                    # this case, let's make the related name end with
+                    # '+' which causes the related descriptor to not be
+                    # added.  We'll also use our own unique name here to
+                    # avoid collisions, which were seen with
+                    # django-taggit (it uses a forced related_name on
+                    # all models).
+                    field.rel.related_name = '%s_hist_%s+' % (
+                        model.__name__.lower(),
+                        model._meta.app_label.lower()
+                    )
 
             attrs[field.name] = field
 
@@ -331,7 +350,8 @@ class ChangesTracker(object):
             def get_extra_history_fields(self, model):
                 # Keep base_attrs -- we like user tracking!
                 attrs = super(MyTrackChanges, self).get_extra_history_fields()
-                attrs['history_long_description'] = models.TextField(blank=True, null=True)
+                attrs['history_long_description'] = models.TextField(
+                    blank=True, null=True)
                 return attrs
 
         Returns:
@@ -472,12 +492,13 @@ class ChangesTracker(object):
         Initialize the ManyToMany sets on a historical instance.
         """
         for field in instance._meta.many_to_many:
-            if is_versioned(field.related.parent_model):
-                current_objs = getattr(instance, field.attname).all()
+            parent_model = field.rel.to
+            if is_versioned(parent_model):
+                current_objs = getattr(instance, field.name).all()
                 m2m_items = []
                 for o in current_objs:
                     m2m_items.append(get_versions(o).most_recent())
-                setattr(hist_instance, field.attname, m2m_items)
+                setattr(hist_instance, field.name, m2m_items)
 
     def m2m_changed(self, attname, sender, instance, action, reverse,
                     model, pk_set, **kwargs):

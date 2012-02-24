@@ -95,6 +95,21 @@ def get_related_versioned_fields(m):
     return fields
 
 
+def get_m2m_versioned_fields(m):
+    """
+    Args:
+        m: A model instance or model class.
+
+    Returns:
+        A list of the m2m fields attached to m which are versioned.
+    """
+    return [
+        f for f in m._meta.local_many_to_many if
+            isinstance(f, models.fields.related.RelatedField) and
+            is_versioned(f.rel.to)
+    ]
+
+
 def get_parent_instance(m, parent):
     """
     Attrs:
