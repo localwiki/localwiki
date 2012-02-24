@@ -99,13 +99,13 @@ def _wrap_m2m_relation_lookups(m):
 
     We have to do this because, with ManyToManyField, it's not clear what
     should happen if there's a concrete relation between the historical model
-    and the related model.  For instance, when new items are added to the M2M set,
-    should we go and update all the historical instances' M2M tables?  It'd
+    and the related model.  For instance, when new items are added to the M2M
+    set should we go and update all the historical instances' M2M tables?  It'd
     certainly be possible, but wrapping them will give us what we want.
 
-    We don't do this wrapping when the ManyToManyField points to a historical model,
-    as we handle that case separately and do the right thing (look up the related
-    set at the right historical time).
+    We don't do this wrapping when the ManyToManyField points to a historical
+    model, as we handle that case separately and do the right thing (look up
+    the related set at the right historical time).
 
     Args:
         m: A historical record instance.
@@ -289,14 +289,20 @@ def _cascade_revert(current_hm, m, **kws):
             rel_hms = [rel_lookup]
 
         for rel_hm in rel_hms:
-            latest_rel_hm = get_versions(
-                rel_hm.version_info._object).most_recent()
+            direct_obj = rel_hm.version_info._object
+            latest_rel_hm = get_versions(direct_obj).most_recent()
             if latest_rel_hm.version_info.type in [TYPE_DELETED_CASCADE,
                     TYPE_REVERTED_DELETED_CASCADE]:
                 # The related object was most recently deleted via a
                 # delete cascade.  So we revert it.
-                latest_rel_hm._from_cascade_revert = True
-                latest_rel_hm.revert_to(**kws)
+
+                # Let's get the version right before the deletion and
+                # revert to it.
+                version_num = latest_rel_hm.version_info.version_number() - 1
+                before_delete = get_versions(direct_obj).as_of(
+                    version=version_num)
+                before_delete._from_cascade_revert = True
+                before_delete.revert_to(**kws)
 
 
 def revert_to(hm, delete_newer_versions=False, **kws):
