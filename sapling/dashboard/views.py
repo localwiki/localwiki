@@ -13,13 +13,28 @@ from utils.views import JSONView
 
 from versionutils.versioning.constants import *
 
-CACHE_TIME = 60 * 60 * 5
+COMPLETE_CACHE_TIME = 60 * 60 * 5
+EASIER_CACHE_TIME = 60  # cache easier stuff for 60 seconds.
 
 
 class DashboardView(JSONView):
+    def get_nums(self):
+        nums = cache.get('dashboard_nums')
+        if nums is None:
+            nums = {
+                'num_pages': len(Page.objects.all()),
+                'num_files': len(PageFile.objects.all()),
+                'num_maps': len(MapData.objects.all()),
+                'num_redirects': len(Redirect.objects.all()),
+                'num_users': len(User.objects.all())
+            }
+            cache.set('dashboard_nums', nums, EASIER_CACHE_TIME)
+        return nums
+
     def get_context_data(self, **kwargs):
         context = cache.get('dashboard')
         if context is not None:
+            context.update(self.get_nums())
             return context
 
         if 'check_cache' in self.request.GET:
@@ -36,16 +51,12 @@ class DashboardView(JSONView):
             cache.set('dashboard_generating', True)
             now = datetime.now()
             context = {
-                'num_pages': len(Page.objects.all()),
-                'num_files': len(PageFile.objects.all()),
-                'num_maps': len(MapData.objects.all()),
-                'num_redirects': len(Redirect.objects.all()),
-                'num_users': len(User.objects.all()),
                 'num_items_over_time': items_over_time(now),
                 'num_edits_over_time': edits_over_time(now),
                 'page_content_over_time': page_content_over_time(now),
                 'users_registered_over_time': users_registered_over_time(now),
             }
+            context.update(self.get_nums())
 
             context['generated'] = True
             cache.set('dashboard', context, CACHE_TIME)
