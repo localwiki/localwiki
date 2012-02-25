@@ -326,3 +326,4 @@ url_to_name = stringfilter(url_to_name)
 
 import feeds  # To fire register() calls.
 import signals  # To fire signal calls.
+import api  # To fire register() calls.

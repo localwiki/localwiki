@@ -11,9 +11,13 @@ import redirects
 import dashboard
 from users.admin import SubscribedList
 
+from api import api
+
 admin.autodiscover()
 
+
 urlpatterns = patterns('',
+    (r'^api/', include(api.urls)),
     (r'^map/', include(maps.site.urls)),
     (r'^_redirect/', include(redirects.site.urls)),
     (r'^(?i)Users/', include('sapling.users.urls')),
