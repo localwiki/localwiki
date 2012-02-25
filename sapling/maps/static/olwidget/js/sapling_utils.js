@@ -60,7 +60,9 @@ SaplingMap = {
         }
         this._open_editing(map);
 
-        map.addControl(new OpenLayers.Control.Permalink({anchor: true}));
+        if(map.opts.permalink) {
+            map.addControl(new OpenLayers.Control.Permalink({anchor: true}));
+        }
     },
 
     setup_dynamic_map: function(map) {
