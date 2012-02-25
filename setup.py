@@ -119,7 +119,7 @@ install_requires = [
     'html5lib>=0.90',
     'Sphinx>=1.0.7',
     'sorl-thumbnail>=11.01',
-    'python-dateutil>=1.5',
+    'python-dateutil==1.5',
     'pysolr',
     'django-haystack',
     'django-randomfilenamestorage',
