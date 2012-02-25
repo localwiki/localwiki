@@ -59,7 +59,7 @@ class DashboardView(JSONView):
             context.update(self.get_nums())
 
             context['generated'] = True
-            cache.set('dashboard', context, CACHE_TIME)
+            cache.set('dashboard', context, COMPLETE_CACHE_TIME)
             cache.set('dashboard_generating', False)
 
         return context
