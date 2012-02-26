@@ -7,10 +7,11 @@ from sapling.api import api, SlugifyMixin
 
 
 class MapResource(SlugifyMixin, ModelResource):
-    #page = fields.ToOneField(pages.api.PageResource, 'page')
+    page = fields.ToOneField(pages.api.PageResource, 'page')
     class Meta:
         queryset = MapData.objects.all()
         resource_name = 'map'
-        #slugify_from_field = 'page'
+        field_to_slug = 'page'
+        slug_lookup_field = 'page__slug'
 
 api.register(MapResource())

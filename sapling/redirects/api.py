@@ -10,7 +10,7 @@ class RedirectResource(SlugifyMixin, ModelResource):
     destination = fields.ForeignKey(PageResource, 'destination')
     class Meta:
         queryset = Redirect.objects.all()
-        slugify_from_field = 'source'
+        slug_lookup_field = 'source'
         filtering = {
             'destination': ALL,
             'source': ALL,

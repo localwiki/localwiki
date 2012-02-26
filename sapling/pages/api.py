@@ -25,7 +25,7 @@ class PageResource(SlugifyMixin, ModelResource):
     class Meta:
         queryset = Page.objects.all()
         resource_name = 'page'
-        slugify_from_field = 'name'
+        field_to_slug = 'name'
         filtering = {
             'name': ALL,
             'slug': ALL,
