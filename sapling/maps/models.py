@@ -38,3 +38,4 @@ class MapData(models.Model):
 versioning.register(MapData)
 
 import feeds # To fire register() calls.
+import api  # To fire register() calls.
