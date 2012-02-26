@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import url
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 
@@ -53,7 +53,8 @@ class PageResource(SlugifyMixin, ModelResource):
         self.throttle_check(request)
 
         # Do the query.
-        sqs = SearchQuerySet().models(Page).load_all().auto_query(request.GET.get('q', ''))
+        sqs = SearchQuerySet().models(Page).load_all().auto_query(
+            request.GET.get('q', ''))
         paginator = Paginator(sqs, 20)
 
         try:
