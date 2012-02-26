@@ -30,3 +30,4 @@ def _validate_redirect(sender, instance, raw, **kws):
 pre_save.connect(_validate_redirect, sender=Redirect)
 
 import feeds # To fire register() calls.
+import api  # To fire register() calls.
