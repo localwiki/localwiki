@@ -21,7 +21,11 @@
 {% block title %}Map - {{ block.super }}{% endblock %}
 
 {% block header_title %}
-  Map <span id="header_title_detail"></span>
+  {% if map_title %}
+    {{ map_title|safe }}
+  {% else %}
+    Map <span id="header_title_detail"></span>
+  {% endif %}
 {% endblock %}
 
 {% block main_wrapper %}
