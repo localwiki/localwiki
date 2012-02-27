@@ -48,6 +48,7 @@ class PageTagSet(models.Model):
 class TagsFieldDiff(diff.BaseFieldDiff):
     template = 'tags/tags_diff.html'
 
+
 class PageTagSetDiff(diff.BaseModelDiff):
     fields = (('tags', TagsFieldDiff),
               )
@@ -55,3 +56,6 @@ class PageTagSetDiff(diff.BaseModelDiff):
 
 diff.register(PageTagSet, PageTagSetDiff)
 versioning.register(PageTagSet)
+
+
+import feeds  # To fire register() calls.

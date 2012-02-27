@@ -880,6 +880,11 @@ div.templates li {
     padding-left: 20px;
 }
 
+#recentchanges .tags .changelabel span {
+    background: url(../img/tag-icon-small.png) 0 0 no-repeat;
+    padding-left: 20px;
+}
+
 /*
 ====================================
  Attributions
