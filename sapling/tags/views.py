@@ -1,3 +1,5 @@
+import copy
+
 from dateutil.parser import parse as dateparser
 
 from django.views.generic import UpdateView
@@ -12,6 +14,9 @@ from django.http import HttpResponse
 from versionutils.versioning.views import VersionsList, RevertView
 from django.views.generic.detail import DetailView
 from versionutils.diff.views import CompareView
+from maps.views import MapForTag
+from maps.widgets import InfoMap
+from django.conf import settings
 
 
 class TagListView(ListView):
@@ -25,9 +30,29 @@ class TaggedList(ListView):
         self.tag = Tag.objects.get(slug=self.kwargs['slug'])
         return PageTagSet.objects.filter(tags__in=[self.tag])
 
+    def get_map_objects(self):
+        map_view = MapForTag()
+        map_view.kwargs = dict(tag=self.tag.slug)
+        map_view.object_list = map_view.get_queryset()
+        return map_view.get_map_objects()
+
     def get_context_data(self, *args, **kwargs):
         context = super(TaggedList, self).get_context_data(*args, **kwargs)
         context['tag'] = self.tag
+        map_objects = self.get_map_objects()
+        if len(map_objects):
+            # Remove the PanZoomBar on normal page views.
+            olwidget_options = copy.deepcopy(getattr(settings,
+                'OLWIDGET_DEFAULT_OPTIONS', {}))
+            map_opts = olwidget_options.get('map_options', {})
+            map_controls = map_opts.get('controls', [])
+            if 'PanZoomBar' in map_controls:
+                map_controls.remove('PanZoomBar')
+            olwidget_options['map_options'] = map_opts
+            olwidget_options['map_div_class'] = 'mapwidget small'
+            context['map'] = InfoMap(
+                map_objects,
+                options=olwidget_options)
         return context
 
 
