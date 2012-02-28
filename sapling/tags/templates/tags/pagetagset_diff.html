@@ -43,6 +43,14 @@
                 ({{ new.version_info.date }} by {{ new.version_info.user_link|safe }})
             </td>
         </tr>
+        <tr>
+            <td>
+                <del>Deletions are marked like this</del>
+            </td>
+            <td>
+                <ins>Additions are marked like this</ins>
+            </td>
+        </tr>
     </thead>
     {% diff old new as pagetagset_diff %}
     <tbody valign="top">

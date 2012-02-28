@@ -6,7 +6,7 @@
       <li class="tag"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
     {% endfor %}
     {% for tag in deleted %}
-      <li class="tag deleted"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
+      <del><li class="tag"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li></del>
     {% endfor %}
     </ul>
     </div>
@@ -17,7 +17,7 @@
       <li class="tag"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
     {% endfor %}
     {% for tag in added %}
-      <li class="tag added"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</ins></li>
+      <ins><li class="tag"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</li></ins>
     {% endfor %}
     </ul>
     </div>

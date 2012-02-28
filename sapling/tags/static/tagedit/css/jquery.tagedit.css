@@ -24,8 +24,8 @@ label[for="id_tags"] {
 .tag-list li.tag a:hover { text-decoration: underline; color: #222;}
 
 .tag-list li.tag { list-style-type: none; float: left; background: #DEE7F8 url(../img/disc.png) 4px center no-repeat; margin: 0 5px 0 0; border: 1px solid #CAD8F3; padding: 2px 6px 2px 13px; -moz-border-radius: 8px 4px 4px 8px; -webkit-border-radius: 8px 4px 4px 8px; border-radius: 8px 4px 4px 8px;}
-.tag-list li.tag.added { background-color: #DEF8DE; border-color: #AAFAAA;}
-.tag-list li.tag.deleted { background-color: #F8DEDE; border-color: #FACACA;}
+.tag-list ins li.tag { background-color: #DEF8DE; border-color: #AAFAAA;}
+.tag-list del li.tag { background-color: #F8DEDE; border-color: #FACACA;}
 
 .tagedit-list {margin: 0; padding: 5px 5px 0 5px; border: 1px solid #c6c6c6; width: 400px; overflow: auto; font-size: 11px; min-height: 25px; background-color: white;}
 .tagedit-list li.tagedit-listelement {list-style-type: none; float: left; margin: 0 5px 5px 0; padding: 0; }
