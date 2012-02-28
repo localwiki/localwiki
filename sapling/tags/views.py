@@ -4,19 +4,27 @@ from dateutil.parser import parse as dateparser
 
 from django.views.generic import UpdateView
 
-from utils.views import CreateObjectMixin, PermissionRequiredMixin
+from utils.views import CreateObjectMixin, PermissionRequiredMixin,\
+    Custom404Mixin
 from tags.models import PageTagSet, Tag
 from tags.forms import PageTagSetForm
 from pages.models import Page
 from django.core.urlresolvers import reverse
 from django.views.generic.list import ListView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from versionutils.versioning.views import VersionsList, RevertView
 from django.views.generic.detail import DetailView
 from versionutils.diff.views import CompareView
 from maps.views import MapForTag
 from maps.widgets import InfoMap
 from django.conf import settings
+from django.shortcuts import get_object_or_404
+
+
+class PageNotFoundMixin(Custom404Mixin):
+    def handler404(self, request, *args, **kwargs):
+        return HttpResponseRedirect(reverse('pages:show',
+                                            kwargs={'slug': kwargs['slug']}))
 
 
 class TagListView(ListView):
@@ -56,13 +64,13 @@ class TaggedList(ListView):
         return context
 
 
-class PageTagSetUpdateView(CreateObjectMixin, UpdateView):
+class PageTagSetUpdateView(PageNotFoundMixin, CreateObjectMixin, UpdateView):
     model = PageTagSet
     form_class = PageTagSetForm
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
-        page = Page.objects.get(slug=page_slug)
+        page = get_object_or_404(Page, slug=page_slug)
         try:
             return PageTagSet.objects.get(page=page)
         except PageTagSet.DoesNotExist:
@@ -75,15 +83,14 @@ class PageTagSetUpdateView(CreateObjectMixin, UpdateView):
         return reverse('pages:tags', args=[self.kwargs.get('slug')])
 
 
-class PageTagSetVersions(VersionsList):
+class PageTagSetVersions(PageNotFoundMixin, VersionsList):
     def get_queryset(self):
         page_slug = self.kwargs.get('slug')
         try:
-            self.page = Page.objects.get(slug=page_slug)
+            self.page = get_object_or_404(Page, slug=page_slug)
             return self.page.pagetagset.versions.all()
-        except (Page.DoesNotExist, PageTagSet.DoesNotExist):
-            pass
-        return []
+        except PageTagSet.DoesNotExist:
+            return PageTagSet.versions.none()
 
     def get_context_data(self, **kwargs):
         context = super(PageTagSetVersions, self).get_context_data(**kwargs)
