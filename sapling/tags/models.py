@@ -48,6 +48,14 @@ class PageTagSet(models.Model):
 class TagsFieldDiff(diff.BaseFieldDiff):
     template = 'tags/tags_diff.html'
 
+    def get_diff(self):
+        set1 = set(self.field1 and self.field1.all() or [])
+        set2 = set(self.field2 and self.field2.all() or [])
+        deleted = set1.difference(set2)
+        added = set2.difference(set1)
+        equal = set1.intersection(set2)
+        return {'equal': equal, 'deleted': deleted, 'added': added}
+
 
 class PageTagSetDiff(diff.BaseModelDiff):
     fields = (('tags', TagsFieldDiff),

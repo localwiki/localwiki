@@ -1,10 +1,11 @@
 from django import forms
 
 from versionutils.merging.forms import MergeMixin
-from tags.models import Tag, PageTagSet, slugify
+from tags.models import Tag, PageTagSet, slugify, TagsFieldDiff
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from tags.widgets import TagEdit
+from versionutils.versioning.forms import CommentMixin
 
 
 def parse_tags(tagstring):
@@ -38,7 +39,7 @@ class TagSetField(forms.ModelMultipleChoiceField):
                 keys.append(tag.pk)
             except IntegrityError as e:
                 raise ValidationError(e)
-        return keys
+        return Tag.objects.filter(pk__in=keys)
 
     def prepare_value(self, value):
         if not hasattr(value, '__iter__'):
@@ -47,15 +48,38 @@ class TagSetField(forms.ModelMultipleChoiceField):
         return tags_to_edit_string(tags)
 
 
-class PageTagSetForm(MergeMixin, forms.ModelForm):
+class PageTagSetForm(MergeMixin, CommentMixin, forms.ModelForm):
     class Meta:
         model = PageTagSet
         fields = ('tags',)
+        exclude = ('comment',)  # we generate comment automatically
 
     tags = TagSetField(queryset=Tag.objects.all(), required=False)
 
+    def pluralize_tag(self, list):
+        if len(list) > 1:
+            return Tag._meta.verbose_name_plural.lower()
+        return Tag._meta.verbose_name.lower()
+
+    def get_save_comment(self):
+        comments = []
+        previous = self.instance.pk and self.instance.tags or None
+        d = TagsFieldDiff(previous, self.cleaned_data['tags'])
+        diff = d.get_diff()
+        deleted = ['"%s"' % t.name for t in diff['deleted']]
+        added = ['"%s"' % t.name for t in diff['added']]
+        if deleted:
+            comments.append('removed %s %s' % (self.pluralize_tag(deleted),
+                                               ', '.join(deleted)))
+        if added:
+            comments.append('added %s %s' % (self.pluralize_tag(added),
+                                             ', '.join(added)))
+        if not comments:
+            return 'no changes made'
+        return ' and '.join(comments)
+
     def merge(self, yours, theirs, ancestor):
-        your_set = set(yours['tags'])
+        your_set = set([t.pk for t in yours['tags']])
         their_set = set(theirs['tags'])
         if ancestor:
             # merge based on original id, so get that for each historic tag
@@ -66,5 +90,5 @@ class PageTagSetForm(MergeMixin, forms.ModelForm):
             old_set = set()
         common = your_set.intersection(their_set)
         merged = your_set.union(their_set).difference(old_set).union(common)
-        yours['tags'] = list(merged)
+        yours['tags'] = Tag.objects.filter(pk__in=merged)
         return yours

@@ -1,15 +1,25 @@
 {% spaceless %}
   <tr>
   <td><div id="object_tags">
-    {% with deleted.all as tag_list %}
-      {% include "tags/tag_list_snippet.html" %}
-    {% endwith %}
+    <ul class="tag-list">
+    {% for tag in equal %}
+      <li class="tag"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
+    {% endfor %}
+    {% for tag in deleted %}
+      <li class="tag deleted"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
+    {% endfor %}
+    </ul>
     </div>
   </td>
   <td><div id="object_tags">
-    {% with inserted.all as tag_list %}
-      {% include "tags/tag_list_snippet.html" %}
-    {% endwith %}
+    <ul class="tag-list">
+    {% for tag in equal %}
+      <li class="tag"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
+    {% endfor %}
+    {% for tag in added %}
+      <li class="tag added"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</ins></li>
+    {% endfor %}
+    </ul>
     </div>
   </td>
   </tr>
