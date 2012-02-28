@@ -7,6 +7,21 @@ from pages.models import slugify, name_to_url
 
 
 class SlugifyMixin(object):
+    """
+    Add this mixin to your Resource model to lookup resource entries by a
+    slugified value rather than by integer primary key. This mixin will make
+    your resources resource_uri more human readable.
+
+    There are two Meta attributes::
+
+        field_to_slugify: A string representing the name of the field that
+            will by slugified. slugify() is called on this field. If not
+            provided, the value of slug_lookup_field is used.
+
+        slug_lookup_field: A string representing the name of the field that
+            we use for the slug lookup on the model.  If not provided, the
+            value 'slug' is used.
+    """
     def obj_get(self, request=None, **kwargs):
         slug = getattr(self._meta, 'slug_lookup_field', 'slug')
         kwargs[slug] = slugify(kwargs[slug])
@@ -32,9 +47,9 @@ class SlugifyMixin(object):
             obj = bundle_or_obj
 
         slug = getattr(self._meta, 'slug_lookup_field', 'slug')
-        field_to_slug = getattr(self._meta, 'field_to_slug', slug)
+        field_to_slugify = getattr(self._meta, 'field_to_slugify', slug)
 
-        kwargs[slug] = name_to_url(getattr(obj, field_to_slug))
+        kwargs[slug] = name_to_url(getattr(obj, field_to_slugify))
 
         if self._meta.api_name is not None:
             kwargs['api_name'] = self._meta.api_name

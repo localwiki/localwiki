@@ -8,6 +8,7 @@ from sapling.api import api, SlugifyMixin
 
 class RedirectResource(SlugifyMixin, ModelResource):
     destination = fields.ForeignKey(PageResource, 'destination')
+
     class Meta:
         queryset = Redirect.objects.all()
         slug_lookup_field = 'source'
@@ -15,6 +16,5 @@ class RedirectResource(SlugifyMixin, ModelResource):
             'destination': ALL,
             'source': ALL,
         }
-    
 
 api.register(RedirectResource())
