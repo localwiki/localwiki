@@ -329,6 +329,11 @@ textarea, input, select {
   font-size: 90%;
 }
 
+/* Map widget, when it's part of page content */
+#page #map {
+    margin: 0.5em;
+    margin-left: 0;
+}
 /* Overview map */
 .mapdata #results_pane {
   background: #E8ECEF url(../img/header-bg.png) top left repeat;

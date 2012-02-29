@@ -6,7 +6,7 @@ from django.views.generic import UpdateView
 
 from utils.views import CreateObjectMixin, PermissionRequiredMixin,\
     Custom404Mixin
-from tags.models import PageTagSet, Tag
+from tags.models import PageTagSet, Tag, slugify
 from tags.forms import PageTagSetForm
 from pages.models import Page
 from django.core.urlresolvers import reverse
@@ -35,10 +35,18 @@ class TaggedList(ListView):
     model = PageTagSet
 
     def get_queryset(self):
-        self.tag = Tag.objects.get(slug=self.kwargs['slug'])
-        return PageTagSet.objects.filter(tags__in=[self.tag])
+        self.tag_name = slugify(self.kwargs['slug'])
+        try:
+            self.tag = Tag.objects.get(slug=self.tag_name)
+            self.tag_name = self.tag.name
+            return PageTagSet.objects.filter(tags=self.tag)
+        except Tag.DoesNotExist:
+            self.tag = None
+            return PageTagSet.objects.none()
 
     def get_map_objects(self):
+        if not self.tag:
+            return None
         map_view = MapForTag()
         map_view.kwargs = dict(tag=self.tag.slug)
         map_view.object_list = map_view.get_queryset()
@@ -47,8 +55,9 @@ class TaggedList(ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(TaggedList, self).get_context_data(*args, **kwargs)
         context['tag'] = self.tag
+        context['tag_name'] = self.tag_name
         map_objects = self.get_map_objects()
-        if len(map_objects):
+        if map_objects:
             # Remove the PanZoomBar on normal page views.
             olwidget_options = copy.deepcopy(getattr(settings,
                 'OLWIDGET_DEFAULT_OPTIONS', {}))

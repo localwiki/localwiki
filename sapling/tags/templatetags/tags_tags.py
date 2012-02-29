@@ -1,7 +1,9 @@
 from django import template
-from tags.models import PageTagSet
+from tags.models import PageTagSet, slugify, Tag
 from tags.forms import PageTagSetForm
 from django.template.loader import render_to_string
+from pages.templatetags.pages_tags import IncludeContentNode
+from tags.views import TaggedList
 
 register = template.Library()
 
@@ -34,3 +36,25 @@ def page_tags_form_media():
     return f.media
 
 
+@register.tag(name='include_tag')
+def do_include_page(parser, token):
+    return IncludeTagNode(parser, token)
+
+
+class IncludeTagNode(IncludeContentNode):
+    def __init__(self, *args, **kwargs):
+        super(IncludeTagNode, self).__init__(*args, **kwargs)
+        try:
+            self.tag = Tag.objects.get(slug=slugify(self.name))
+        except Tag.DoesNotExist:
+            self.tag = None
+
+    def get_title(self, context):
+        return 'Pages tagged "%s"' % self.name
+
+    def get_content(self, context):
+        view = TaggedList()
+        view.kwargs = dict(slug=self.name)
+        view.object_list = view.get_queryset()
+        data = view.get_context_data(object_list=view.object_list)
+        return render_to_string('tags/tagged_list_snippet.html', data)
