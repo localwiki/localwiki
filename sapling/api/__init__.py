@@ -1,6 +1,6 @@
-from django.conf.urls.defaults import url
+from django.conf.urls.defaults import *
 
-from tastypie.api import Api
+from tastypie.api import Api, AcceptHeaderRouter
 from tastypie.bundle import Bundle
 
 from pages.models import slugify, name_to_url
@@ -51,10 +51,13 @@ class SlugifyMixin(object):
 
         kwargs[slug] = name_to_url(getattr(obj, field_to_slugify))
 
-        if self._meta.api_name is not None:
+        if (self._meta.api_name is not None and
+            not self._meta._api_name_accept_header):
             kwargs['api_name'] = self._meta.api_name
 
         return self._build_reverse_url("api_dispatch_detail", kwargs=kwargs)
 
+api_router = AcceptHeaderRouter()
 
 api = Api(api_name='v1')
+api_router.register(api, default=True)
