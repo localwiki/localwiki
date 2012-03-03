@@ -52,12 +52,11 @@ class SlugifyMixin(object):
         kwargs[slug] = name_to_url(getattr(obj, field_to_slugify))
 
         if (self._meta.api_name is not None and
-            not self._meta._api_name_accept_header):
+            not self._meta._api._accept_header_routing):
             kwargs['api_name'] = self._meta.api_name
 
         return self._build_reverse_url("api_dispatch_detail", kwargs=kwargs)
 
 api_router = AcceptHeaderRouter()
-
 api = Api(api_name='v1')
 api_router.register(api, default=True)
