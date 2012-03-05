@@ -153,7 +153,7 @@ setup(
         'https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration-0.8.0-alpha-1',
         'https://github.com/philipn/olwidget/tarball/custom_base_layers_fixed#egg=django-olwidget-0.46-custom1',
         'https://github.com/mivanov/django-honeypot/tarball/master#egg=django-honeypot-0.3.0-custom',
-        'https://github.com/philipn/django-tastypie/tarball/accept_versioning#egg=django-tastypie-0.9.11-custom',
+        'https://github.com/philipn/django-tastypie/tarball/localwiki_master#egg=django-tastypie-0.9.11-custom',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=sapling.manage:main'],
