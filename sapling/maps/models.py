@@ -1,11 +1,10 @@
 from django.contrib.gis.db import models
-from django.contrib.gis.geos import *
 from django.core.urlresolvers import reverse
 
 from versionutils import versioning
 from pages.models import Page
 
-from fields import *
+from fields import FlatCollectionFrom
 
 
 class MapData(models.Model):
@@ -37,5 +36,5 @@ class MapData(models.Model):
 
 versioning.register(MapData)
 
-import feeds # To fire register() calls.
 import api  # To fire register() calls.
+import feeds  # To fire register() calls.

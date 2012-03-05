@@ -3,6 +3,7 @@
 
 from django.contrib.gis.db.models import GeometryField
 from django.utils import simplejson
+from django.contrib.gis.geos import GEOSGeometry
 
 from tastypie.fields import ApiField, CharField
 from tastypie.resources import ModelResource
@@ -51,3 +52,19 @@ class GeoResource(ModelResource):
             return GeometryApiField
 
         return super(GeoResource, cls).api_field_from_django_field(f, default)
+
+    def filter_value_to_python(self, value, field_name, filters, filter_expr,
+            filter_type):
+        value = super(GeoResource, self).filter_value_to_python(
+            value, field_name, filters, filter_expr, filter_type)
+
+        # If we are filtering on a GeometryApiField then we should try
+        # and convert this to a GEOSGeometry object.  The conversion
+        # will fail if we don't have value JSON, so in that case we'll
+        # just return ``value`` as normal.
+        if isinstance(self.fields[field_name], GeometryApiField):
+            try:
+                value = GEOSGeometry(value)
+            except ValueError:
+                pass
+        return value

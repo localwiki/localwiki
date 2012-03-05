@@ -1,4 +1,5 @@
 from tastypie import fields
+from tastypie.resources import ALL
 
 from models import MapData
 import pages.api  # Scoped import to prevent ImportError.
@@ -14,5 +15,13 @@ class MapResource(SlugifyMixin, GeoResource):
         resource_name = 'map'
         field_to_slugify = 'page'
         slug_lookup_field = 'page__slug'
+        filtering = {
+            'points': ALL,
+            'lines': ALL,
+            'polys': ALL,
+            'geom': ALL,
+            'length': ALL,
+        }
+
 
 api.register(MapResource())

@@ -2,11 +2,10 @@ from django.conf.urls.defaults import url
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 
-from haystack.query import SearchQuerySet
 from tastypie.resources import ModelResource, ALL
 from tastypie.utils import trailing_slash
 
-from models import Page, PageFile
+from pages.models import Page, PageFile
 from sapling.api import api, SlugifyMixin
 
 
@@ -46,6 +45,7 @@ class PageResource(SlugifyMixin, ModelResource):
         """
         A simple search method, mostly from the tastypie examples.
         """
+        from haystack.query import SearchQuerySet
         # The search method isn't discoverable via the API.  TODO: Fix that.
 
         self.method_check(request, allowed=['get'])
