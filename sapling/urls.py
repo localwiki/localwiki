@@ -17,7 +17,7 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    (r'^api/(?P<rest>.*)', api_router.as_view()),
+    url(r'^api/(?P<rest>.*)', api_router.as_view(), name="api"),
     (r'^map/', include(maps.site.urls)),
     (r'^_redirect/', include(redirects.site.urls)),
     (r'^(?i)Users/', include('sapling.users.urls')),

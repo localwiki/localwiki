@@ -2,6 +2,8 @@ SaplingMap = {
 
     is_dirty: false,
 
+    api_endpoint: '/api/',
+
     init_openlayers: function() {
         OpenLayers.Control.LayerSwitcher.prototype.roundedCorner = false;
         var base_initOptions = olwidget.Map.prototype.initOptions;
@@ -195,38 +197,66 @@ SaplingMap = {
         var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
         var setAlpha = this._setAlpha;
         var extent = map.getExtent().scale(1.5);
-        var bbox = extent.clone().transform(layer.projection,
-                       new OpenLayers.Projection('EPSG:4326')).toBBOX();
-              
+        var geoJSON = new OpenLayers.Format.GeoJSON();
+        var WKT = new OpenLayers.Format.WKT();
+        var bbox = geoJSON.write(extent.clone().transform(layer.projection,
+                       new OpenLayers.Projection('EPSG:4326')).toGeometry());
+
         var zoom = map.getZoom();
         var myDataToken = Math.random();
         layer.dataToken = myDataToken;
-        $.get('_objects/', { 'bbox': bbox, 'zoom': zoom }, function(data){
-            if(layer.dataToken != myDataToken)
-            {
-                return;
+
+        var min_length = 100 * Math.pow(2, 0 - zoom);
+
+        var page_endpoint = SaplingMap.api_endpoint + 'page/';
+
+        var add_geom_items = function(data) {
+            var geom_items = [];
+            // Convert returned GeoJSON into WKT for olWidget
+            for (var i=0; i<data.objects.length; i++) {
+                var item = data.objects[i];
+                var page_url = item.page.slice(page_endpoint.length - 1);
+                var page_name = decodeURIComponent(page_url.slice(1)).replace('_', ' ');
+                var geom_html = '<a href="' + page_url + '">' + page_name + '</a>';
+                var geom_wkt = WKT.extractGeometry(geoJSON.read(item.geom, 'Geometry'));
+                geom_items.push([geom_wkt, geom_html]);
             }
-            layer.dataExtent = extent;
-            var temp = new olwidget.InfoLayer(data);
+
+            var temp = new olwidget.InfoLayer(geom_items);
             temp.visibility = false;
             map.addLayer(temp);
-            layer.removeAllFeatures();
-            if(selectedFeature)
-            {
-              layer.addFeatures(selectedFeature);
-              layer.selectedFeatures = [selectedFeature];
-            }
+
             $.each(temp.features, function(index, feature) {
               feature.map = map;
-              if(selectedFeature && selectedFeature.geometry.toString() == feature.geometry.toString())
+              if(selectedFeature && selectedFeature.geometry.toString() == feature.geometry.toString()) {
                   return;
+              }
               layer.addFeatures(feature);
             });
             map.removeLayer(temp);
-            if(callback){
-                callback();
-            }
-        })
+        };
+
+        if(layer.dataToken != myDataToken) {
+            return;
+        }
+        layer.dataExtent = extent;
+        layer.removeAllFeatures();
+        if(selectedFeature) {
+            layer.addFeatures(selectedFeature);
+            layer.selectedFeatures = [selectedFeature];
+        }
+
+        var geom_items = [];
+        /* TODO: make this one request by adding OR support to tastypie? */
+        $.getJSON(SaplingMap.api_endpoint + 'map/', {'polys__within': bbox, 'length__gte': min_length}, add_geom_items);
+        $.getJSON(SaplingMap.api_endpoint + 'map/', {'lines__within': bbox, 'length__gte': min_length}, add_geom_items);
+        if (zoom >= 14) {
+            $.getJSON(SaplingMap.api_endpoint + 'map/', {'points__within': bbox}, add_geom_items);
+        }
+
+        if(callback) {
+            callback();
+        }
     },
 
     _registerEvents: function(map, layer) {

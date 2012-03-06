@@ -82,17 +82,11 @@ class MapGlobalView(ListView):
     model = MapData
     template_name = 'maps/mapdata_list.html'
 
-    def get_queryset(self):
-        queryset = super(MapGlobalView, self).get_queryset()
-        # We order by -length so that the geometries are in that
-        # order when rendered by OpenLayers -- this creates the
-        # correct stacking order.
-        return filter_by_zoom(queryset, 12).order_by('-length')
-
     def get_context_data(self, **kwargs):
         context = super(MapGlobalView, self).get_context_data(**kwargs)
-        map_objects = [(obj.geom, popup_html(obj)) for obj in self.object_list]
-        context['map'] = InfoMap(map_objects, options={
+        # We set the InfoMap to empty because it gets populated via an
+        # API call on page load.
+        context['map'] = InfoMap([], options={
             'dynamic': True, 'zoomToDataExtent': False})
         context['dynamic_map'] = True
         return context
@@ -116,31 +110,6 @@ class MapAllObjectsAsPointsView(MapGlobalView):
             'dynamic': False, 'zoomToDataExtent': False})
         context['dynamic_map'] = False
         return context
-
-
-class MapObjectsForBounds(JSONResponseMixin, BaseListView):
-    model = MapData
-
-    def get_queryset(self):
-        queryset = MapData.objects.all()
-        bbox = self.request.GET.get('bbox', None)
-        if bbox:
-            bbox = Polygon.from_bbox([float(x) for x in bbox.split(',')])
-            queryset = filter_by_bounds(queryset, bbox)
-        zoom = self.request.GET.get('zoom', None)
-        if zoom:
-            # We order by -length so that the geometries are in that
-            # order when rendered by OpenLayers -- this creates the
-            # correct stacking order.
-            queryset = filter_by_zoom(queryset, int(zoom)).order_by('-length')
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        map_objects = [(obj.geom, popup_html(obj)) for obj in self.object_list]
-        return self.objects_to_wkt(map_objects)
-
-    def objects_to_wkt(self, info):
-        return [[utils.get_ewkt(geom), attr] for geom, attr in info]
 
 
 class MapVersionDetailView(MapDetailView):
