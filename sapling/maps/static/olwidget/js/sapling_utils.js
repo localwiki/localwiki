@@ -253,12 +253,12 @@ SaplingMap = {
         var geom_items = [];
 
         /* TODO: make this one request by adding OR support to tastypie? */
-        $.getJSON(SaplingMap.api_endpoint + 'map/', {'polys__within': bbox, 'length__gte': min_length}, function (data) {
+        $.getJSON(SaplingMap.api_endpoint + 'map/', {'polys__intersects': bbox, 'length__gte': min_length}, function (data) {
             add_geom_items(data, 'polys', geom_items); 
-            $.getJSON(SaplingMap.api_endpoint + 'map/', {'lines__within': bbox, 'length__gte': min_length}, function (data) {
+            $.getJSON(SaplingMap.api_endpoint + 'map/', {'lines__intersects': bbox, 'length__gte': min_length}, function (data) {
                 add_geom_items(data, 'lines', geom_items); 
                 if (zoom >= 14) {
-                    $.getJSON(SaplingMap.api_endpoint + 'map/', {'points__within': bbox}, function (data) {
+                    $.getJSON(SaplingMap.api_endpoint + 'map/', {'points__intersects': bbox}, function (data) {
                         add_geom_items(data, 'points', geom_items); 
                         process_geom_data(geom_items);
                     });
