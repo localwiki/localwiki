@@ -56,3 +56,4 @@ class UserProfile(models.Model):
 
 
 import signals  # to fire signals
+import api  # to fire register
