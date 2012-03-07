@@ -47,6 +47,8 @@ class TaggedList(ListView):
     def get_map_objects(self):
         if not self.tag:
             return None
+        # We re-use the MapForTag view's logic here to embed a mini-map on the
+        # tags list page
         map_view = MapForTag()
         map_view.kwargs = dict(tag=self.tag.slug)
         map_view.object_list = map_view.get_queryset()

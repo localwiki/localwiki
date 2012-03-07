@@ -1,6 +1,8 @@
 {% extends "site/base.html" %}
 {% load highlight %}
 {% load url from future %}
+{% load tags_tags %}
+{% load search_tags %}
 
 {% block title %}
    {% if query %}
@@ -8,6 +10,11 @@
    {% else %}
       Search or create page
    {% endif %}
+{% endblock %}
+
+{% block media %}
+   {{ block.super }}
+   {% page_tags_form_media %}
 {% endblock %}
 
 {% block header_title %}
@@ -29,14 +36,19 @@
         {% endif %}
 
         {% for result in page.object_list %}
+            {% ifequal result.model_name "page" %}
             <h3>
-                <a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a>
+                <a href="{{ result.object.get_absolute_url }}">{{ result.name }}</a>
             </h3>
+            <div id="object_tags">
+                {% filtered_tags result.tags keywords %}
+            </div>
             <p>
-                {% with result.object.content|striptags as content %}
-                {% highlight content with query %}
+                {% with result.text as content %}
+                   {% highlight content with query %}
                 {% endwith %}
             </p>
+            {% endifequal %}
         {% empty %}
             <p>No results found.</p>
         {% endfor %}

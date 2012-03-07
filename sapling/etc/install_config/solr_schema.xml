@@ -108,6 +108,8 @@
 
     <field name="name" type="text" indexed="true" stored="true" multiValued="false" />
 
+    <field name="tags" type="text" indexed="true" stored="true" multiValued="true" />
+
   </fields>
 
   <!-- field to use to determine and enforce document uniqueness. -->

@@ -7,6 +7,7 @@ from django.template.defaultfilters import stringfilter
 from pages.models import Page
 from versionutils import versioning, diff
 from django.utils.html import strip_tags
+from django.core.urlresolvers import reverse
 
 
 class Tag(models.Model):
@@ -22,6 +23,9 @@ class Tag(models.Model):
         if not self.slug:
             raise IntegrityError('Invalid tag name: %s' % self.name)
         super(Tag, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('tags:tagged', args=[self.slug])
 
 versioning.register(Tag)
 
@@ -67,3 +71,4 @@ versioning.register(PageTagSet)
 
 
 import feeds  # To fire register() calls.
+import signals  # To fire signals
