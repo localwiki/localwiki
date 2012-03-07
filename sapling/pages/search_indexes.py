@@ -13,7 +13,7 @@ class PageIndex(RealTimeSearchIndex):
 
     def prepare_tags(self, obj):
         try:
-            return [tag.name  for tag in obj.pagetagset.tags.all()] 
+            return [tag.name  for tag in obj.pagetagset.tags.all()]
         except PageTagSet.DoesNotExist:
             return []
 
