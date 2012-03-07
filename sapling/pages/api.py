@@ -75,5 +75,22 @@ class PageResource(SlugifyMixin, ModelResource):
         return self.create_response(request, object_list)
 
 
+class PageHistoryResource(SlugifyMixin, ModelResource):
+    class Meta:
+        parent_resource = PageResource
+        subresource_name = '_history'
+        queryset = parent_resource._meta.queryset.model.versions.all()
+        resource_name = "%s/%s" % (parent_resource._meta.resource_name,
+            subresource_name)
+
+        field_to_slugify = 'name'
+        filtering = {
+            'name': ALL,
+            'slug': ALL,
+        }
+
+
 api.register(PageResource())
 api.register(FileResource())
+
+api.register(PageHistoryResource())
