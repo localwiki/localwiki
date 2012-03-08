@@ -57,7 +57,6 @@
 			direction: 'ltr',
 			animSpeed: 200,
 			autocompleteOptions: {
-				autoFocus: true,
 				select: function( event, ui ) {
 					$(this).val(ui.item.value).trigger('transformToTag', [ui.item.id]);
 					return false;
