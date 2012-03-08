@@ -63,6 +63,7 @@ class PageTagSetForm(MergeMixin, CommentMixin, forms.ModelForm):
 
     def get_save_comment(self):
         comments = []
+        short_comments = []
         previous = self.instance.pk and self.instance.tags or None
         d = TagsFieldDiff(previous, self.cleaned_data['tags'])
         diff = d.get_diff()
@@ -71,12 +72,20 @@ class PageTagSetForm(MergeMixin, CommentMixin, forms.ModelForm):
         if deleted:
             comments.append('removed %s %s' % (self.pluralize_tag(deleted),
                                                ', '.join(deleted)))
+            short_comments.append('removed %i %s ' % (len(deleted),
+                                                self.pluralize_tag(deleted)))
         if added:
             comments.append('added %s %s' % (self.pluralize_tag(added),
                                              ', '.join(added)))
+            short_comments.append('added %i %s ' % (len(added),
+                                                self.pluralize_tag(added)))
         if not comments:
             return 'no changes made'
-        return ' and '.join(comments)
+        comments = ' and '.join(comments)
+        # with lots of tags, this can get too long for db field
+        if len(comments) > 140:
+            return ' and '.join(short_comments)
+        return comments
 
     def merge(self, yours, theirs, ancestor):
         your_set = set([t.pk for t in yours['tags']])
