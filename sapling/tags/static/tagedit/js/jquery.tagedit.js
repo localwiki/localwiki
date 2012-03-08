@@ -55,7 +55,7 @@
 			allowDelete: true,
 			allowAdd: true,
 			direction: 'ltr',
-			animSpeed: 500,
+			animSpeed: 200,
 			autocompleteOptions: {
 				select: function( event, ui ) {
 					$(this).val(ui.item.value).trigger('transformToTag', [ui.item.id]);
@@ -119,6 +119,13 @@
 				html += '</li>';
 				html += '</ul>';
 				$(this).after(html);
+				$(this).closest('form').submit(function (){
+					// before submitting, convert anything in the input into tag
+					var input = $(this).find('#tagedit-input');
+					if(input.val().length > 0)
+						input.trigger('transformToTag');
+					return true;
+				});
 			});
 			$('ul.tagedit-list')
 				// Set function on the input
@@ -153,7 +160,7 @@
 								case 8: // BACKSPACE
 									if($(this).val().length == 0) {
 										// delete Last Tag
-										var elementToRemove = elements.find('li.tagedit-listelement-old').last();
+										var elementToRemove = $(this).closest('.tagedit-list').find('li.tagedit-listelement-old').last();
 										elementToRemove.fadeOut(options.animSpeed, function() {elementToRemove.remove();})
 										event.preventDefault();
 										updateValue($(this).closest('.tagedit-list')[0]);
@@ -161,7 +168,7 @@
 									}
 									break;
 								case 9: // TAB
-									if($(this).val().length > 0 && $('ul.ui-autocomplete #ui-active-menuitem').length == 0) {
+									if($(this).val().length > 0) {
 										$(this).trigger('transformToTag');
 										event.preventDefault();
 										return false;
