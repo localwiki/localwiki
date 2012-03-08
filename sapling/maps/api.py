@@ -1,13 +1,13 @@
 from tastypie import fields
 from tastypie.resources import ALL
+from tastypie.contrib.gis.resources import ModelResource
 
 from models import MapData
 import pages.api  # Scoped import to prevent ImportError.
 from sapling.api import api, SlugifyMixin
-from sapling.api.resources import GeoResource
 
 
-class MapResource(SlugifyMixin, GeoResource):
+class MapResource(SlugifyMixin, ModelResource):
     page = fields.ToOneField(pages.api.PageResource, 'page')
 
     class Meta:
