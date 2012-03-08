@@ -57,6 +57,7 @@
 			direction: 'ltr',
 			animSpeed: 200,
 			autocompleteOptions: {
+				autoFocus: true,
 				select: function( event, ui ) {
 					$(this).val(ui.item.value).trigger('transformToTag', [ui.item.id]);
 					return false;
@@ -168,9 +169,13 @@
 									}
 									break;
 								case 9: // TAB
-									if($(this).val().length > 0) {
+									var autocomplete_active = $('ul.ui-autocomplete #ui-active-menuitem').length > 0;
+									if($(this).val().length > 0  && !autocomplete_active) {
 										$(this).trigger('transformToTag');
 										event.preventDefault();
+										return false;
+									} else if (autocomplete_active){
+										// let it autocomplete on tab
 										return false;
 									}
 								break;
