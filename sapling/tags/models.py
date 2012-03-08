@@ -27,6 +27,9 @@ class Tag(models.Model):
     def get_absolute_url(self):
         return reverse('tags:tagged', args=[self.slug])
 
+    class Meta:
+        ordering = ('slug',)
+
 versioning.register(Tag)
 
 
@@ -47,6 +50,9 @@ class PageTagSet(models.Model):
 
     def __unicode__(self):
         return ', '.join(map(unicode, self.tags.all()))
+
+    class Meta:
+        ordering = ('page__slug',)
 
 
 class TagsFieldDiff(diff.BaseFieldDiff):

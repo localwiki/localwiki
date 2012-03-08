@@ -19,6 +19,7 @@ from maps.views import MapForTag
 from maps.widgets import InfoMap
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.db.models.aggregates import Count
 
 
 class PageNotFoundMixin(Custom404Mixin):
@@ -29,6 +30,10 @@ class PageNotFoundMixin(Custom404Mixin):
 
 class TagListView(ListView):
     model = Tag
+
+    def get_queryset(self):
+        return super(TagListView, self).get_queryset().annotate(
+                    num_pages=Count('pagetagset')).filter(num_pages__gt=0)
 
 
 class TaggedList(ListView):

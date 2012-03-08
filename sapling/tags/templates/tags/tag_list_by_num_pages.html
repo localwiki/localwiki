@@ -1,0 +1,12 @@
+<style>
+    .num_pages {
+        color: #AAA;
+        font-size: 80%;
+    }
+</style>
+<ul class="tag-list">
+{% for tag in tag_list|dictsortreversed:"num_pages" %}
+  <li class="tag"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a> <span class="num_pages">x {{ tag.num_pages}}</span>
+  </li>
+{% endfor %}
+</ul>

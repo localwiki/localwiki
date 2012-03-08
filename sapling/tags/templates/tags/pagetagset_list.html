@@ -1,7 +1,7 @@
 {% extends "tags/base.html" %}
 
-{% block title %}Pages tagged "{{ tag_name }}" - {{ block.super }}{% endblock %}
-{% block header_title %}Pages tagged "{{ tag_name }}"{% endblock %}
+{% block title %}Tags/{{ tag_name }} - {{ block.super }}{% endblock %}
+{% block header_title %}<a href="{% url tags:list %}">Tags</a>/{{ tag_name }}{% endblock %}
 
 {% block media %}
   {{ block.super }}
