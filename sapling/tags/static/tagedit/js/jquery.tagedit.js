@@ -160,10 +160,10 @@
 								case 8: // BACKSPACE
 									if($(this).val().length == 0) {
 										// delete Last Tag
+										var list = $(this).closest('.tagedit-list')[0];
 										var elementToRemove = $(this).closest('.tagedit-list').find('li.tagedit-listelement-old').last();
-										elementToRemove.fadeOut(options.animSpeed, function() {elementToRemove.remove();})
+										elementToRemove.fadeOut(options.animSpeed, function() {elementToRemove.remove(); updateValue(list);})
 										event.preventDefault();
-										updateValue($(this).closest('.tagedit-list')[0]);
 										return false;
 									}
 									break;
