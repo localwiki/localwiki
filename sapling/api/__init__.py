@@ -67,13 +67,12 @@ class SlugifyMixin(object):
     def get_resource_uri(self, bundle_or_obj):
         if hasattr(self._meta, 'parent_resource'):
             kwargs = {
-                'parent_resource_name': self._meta.parent_resource._meta.resource_name,
+                'parent_resource_name': self._meta.parent_resource._meta.\
+                    resource_name,
                 'subresource_name': self._meta.subresource_name,
             }
         else:
-            kwargs = {
-                'resource_name': self._meta.resource_name,
-            }
+            kwargs = {'resource_name': self._meta.resource_name}
 
         if isinstance(bundle_or_obj, Bundle):
             obj = bundle_or_obj.obj
