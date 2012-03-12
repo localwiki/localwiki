@@ -141,10 +141,17 @@ class MapForTag(MapGlobalView):
         return qs.filter(page__in=pages)
 
     def get_map_title(self):
-        return 'Map for <a href="%s">%s</a>' % (
-                        reverse('tags:tagged', kwargs={'slug': self.tag.slug}),
-                        escape(self.tag.name)
-                        )
+        d = {
+            'map_url': reverse('maps:global'),
+            'tag_url': reverse('tags:list'),
+            'page_tag_url': reverse('tags:tagged',
+                kwargs={'slug': self.tag.slug}),
+            'tag_name': escape(self.tag.name)
+        }
+        return (
+            '<a href="%(map_url)s">Map</a> / '
+            '<a href="%(tag_url)s">Tags</a> / '
+            '<a href="%(page_tag_url)s">%(tag_name)s</a>' % d)
 
     def get_context_data(self, **kwargs):
         context = super(MapForTag, self).get_context_data(**kwargs)
