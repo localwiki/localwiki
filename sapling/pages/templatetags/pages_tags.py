@@ -7,7 +7,7 @@ from pages.plugins import html_to_template_text, SearchBoxNode
 from pages.plugins import LinkNode, EmbedCodeNode
 from pages import models
 from django.utils.text import unescape_string_literal
-from pages.models import Page, slugify, url_to_name
+from pages.models import Page, slugify
 from django.core.urlresolvers import reverse
 
 register = template.Library()
@@ -72,7 +72,7 @@ class IncludeContentNode(BaseIncludeNode):
             if 'showtitle' in self.args:
                 title = self.get_title(context)
                 if title:
-                    template_text  += '<h2>%s</h2>' % title
+                    template_text += '<h2>%s</h2>' % title
             template_text += self.get_content(context)
             template = Template(template_text)
             return self.render_template(template, context)
@@ -121,7 +121,8 @@ class IncludePageNode(IncludeContentNode):
 
 @register.tag(name='render_plugins')
 def do_render_plugins(parser, token, render_plugins=True):
-    """ Render tags and plugins
+    """
+    Render tags and plugins
     """
     try:
         tag, html_var = token.split_contents()
@@ -133,7 +134,8 @@ def do_render_plugins(parser, token, render_plugins=True):
 
 @register.tag(name='render_tags')
 def do_render_tags(parser, token):
-    """ Render tags only, does not render plugins
+    """
+    Render tags only, does not render plugins
     """
     return do_render_plugins(parser, token, render_plugins=False)
 
