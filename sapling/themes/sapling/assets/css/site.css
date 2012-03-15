@@ -407,7 +407,7 @@ textarea, input, select {
     clear: both;
     min-height: 30px;
 }
-#footer p { margin: 0; padding: 0 }
+#footer p { margin: 0; padding: 0; color: #999;}
 
 #powered_by {
     float: right;
