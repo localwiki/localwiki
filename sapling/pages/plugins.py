@@ -107,38 +107,11 @@ def insert_text_before(text, elem):
         elem.getparent().text = (elem.getparent().text or '') + text
 
 
-def include_tag(elem, context=None):
-    if not 'href' in elem.attrib:
-        return
-    href = unquote_url(desanitize(elem.attrib['href']))
-    args = []
-    if 'class' in elem.attrib:
-        classes = elem.attrib['class'].split()
-        args = [c[len('includetag_'):] for c in classes
-                    if c.startswith('includetag_')]
-    args = ['"%s"' % escape_quotes(href)] + args
-    container = etree.Element('div')
-    align = [a for a in args if a in ['left', 'right']]
-    if len(align):
-        container.attrib['class'] = 'includetag_' + align[0]
-    style = parse_style(elem.attrib.get('style', ''))
-    if 'width' in style:
-        container.attrib['style'] = 'width: ' + style['width'] + ';'
-    tag_text = '{%% include_tag %s %%}' % ' '.join(args)
-    container.text = tag_text
-    elem.addprevious(container)
-    elem.getparent().remove(elem)
-
-
 def include_page(elem, context=None):
     if not 'href' in elem.attrib:
         return
     href = unquote_url(desanitize(elem.attrib['href']))
-    if href.startswith('tags/'):
-        plugin_tag = 'include_tag'
-        href = href.replace('tags/', '')
-    else:
-        plugin_tag = 'include_page'
+    plugin_tag = 'include_page'
     args = []
     if 'class' in elem.attrib:
         classes = elem.attrib['class'].split()
@@ -196,6 +169,7 @@ _files_url = '_files/'
 def file_url_to_name(url):
     return unquote_plus(url.replace(_files_url, '').encode('utf-8'))
 
+
 def unquote_url(url):
     return unquote_plus(url.encode('utf-8'))
 
@@ -245,7 +219,6 @@ def handle_image(elem, context=None):
 
 tag_imports = ['{% load pages_tags %}',
                '{% load thumbnail %}',
-               '{% load tags_tags %}',
               ]
 
 
