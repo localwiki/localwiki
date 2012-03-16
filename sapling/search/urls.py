@@ -19,8 +19,6 @@ class CreatePageSearchView(SearchView):
 class SearchForm(DefaultSearchForm):
     def search(self):
         sqs = super(SearchForm, self).search()
-        for s in sqs:
-            print s
         cleaned_data = getattr(self, 'cleaned_data', {})
         keywords = cleaned_data.get('q', '').split()
         if not keywords:
