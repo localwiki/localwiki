@@ -30,6 +30,7 @@ def page_tags_form(context, page):
     context.pop()
     return rendered
 
+
 @register.simple_tag
 def page_tags_form_media():
     f = PageTagSetForm()
