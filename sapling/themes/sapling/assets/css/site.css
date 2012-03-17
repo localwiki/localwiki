@@ -786,11 +786,9 @@ div.templates li {
 }
 #recentchanges .changelabel.updated:hover
 {
-    background-color: #c8cbde;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    background-color: #dcdcdc!important;
     border-color: #c8cbde;
-    border-bottom-color: #757783;
-    color: #fff;
+    border-bottom-color: #a9a9a9;
 }
 #recentchanges .changelabel.updated:active {
     box-shadow: none;
