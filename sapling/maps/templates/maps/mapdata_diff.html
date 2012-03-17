@@ -46,7 +46,8 @@
 {% endblock %}
 
 {% block title %}Differences for map on {{ new.page.name }}{% endblock %}
-{% block header_title %}Differences for map on {{ new.page.name }}{% endblock %}
+{% block header_title %}Differences for <a href="{% url maps:global %}">Map</a> / <a href="{% url pages:show slug=new.page.slug %}">{{ new.page.name }}</a>{% endblock %}
+  
 
 {% block content %}
   <table width="100%">
