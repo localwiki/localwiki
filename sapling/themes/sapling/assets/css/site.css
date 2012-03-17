@@ -47,15 +47,7 @@ h5, h6 {
     margin-bottom: 0.6em;
 }
 a, a:link {
-    color: #333c94;
-    color: #4c54a4;
-    color: #333c94;
-
     color: #4e58b5;
-
-    /*color: #406d8f;
-    color: #4c668e;*/
-
 }
 a:hover {
     color: #111;
@@ -548,16 +540,15 @@ input.little {
 
 
 input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:hover {
-    background-color: #c8cbde;
-    color: #fff!important;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    background-color: #dcdcdc!important;
     border-color: #c8cbde;
-    border-bottom-color: #757783;
+    border-bottom-color: #a9a9a9;
 }
 input[type="submit"]:active, input[type="button"]:active, button:active, .button:active {
     box-shadow: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
+
 }
 input[type="hidden"] { display: none; }
 input[type="checkbox"], input[type="radio"] { display: inline; }
