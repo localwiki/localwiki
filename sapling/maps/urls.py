@@ -6,6 +6,7 @@ from feeds import MapChangesFeed
 
 urlpatterns = patterns('',
     url(r'^$', MapGlobalView.as_view(), name='global'),
+    url(r'^tags/(?P<tag>.+)', MapForTag.as_view(), name='tagged'),
     url(r'^(?P<slug>.+)/_edit$', MapUpdateView.as_view(),  name='edit'),
     url(r'^(?P<slug>.+)/_delete$', MapDeleteView.as_view(), name='delete'),
     url(r'^(?P<slug>.+)/_revert/(?P<version>[0-9]+)$',

@@ -19,10 +19,12 @@ from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, VersionsList
 from pages.models import Page
 from pages.models import slugify
+import tags.models as tags
 
 from widgets import InfoMap
 from models import MapData
 from forms import MapForm
+from django.utils.html import escape
 
 
 class MapDetailView(Custom404Mixin, DetailView):
@@ -81,6 +83,9 @@ def popup_html(map_data):
 class MapGlobalView(ListView):
     model = MapData
     template_name = 'maps/mapdata_list.html'
+    dynamic = True
+    zoom_to_data = False
+    filter_by_zoom = True
 
     def get_context_data(self, **kwargs):
         context = super(MapGlobalView, self).get_context_data(**kwargs)
@@ -91,24 +96,60 @@ class MapGlobalView(ListView):
         context['dynamic_map'] = True
         return context
 
+    def get_map_objects(self):
+        return [(obj.geom, popup_html(obj)) for obj in self.object_list]
+
+    def get_map(self):
+        map_objects = self.get_map_objects()
+        return InfoMap(map_objects, options={'dynamic': self.dynamic,
+                                        'zoomToDataExtent': self.zoom_to_data})
+
 
 class MapAllObjectsAsPointsView(MapGlobalView):
     """
     Like MapGlobalView, but return all objects as points and do not filter by
     zoom.
     """
+    dynamic = False
+    zoom_to_data = False
+    filter_by_zoom = False
+
+    def get_map_objects(self):
+        return [(obj.geom.centroid, popup_html(obj))
+                for obj in self.object_list
+               ]
+
+
+class MapForTag(MapGlobalView):
+    """
+    All objects whose pages have a particular tag.
+    """
+    dynamic = False
+    zoom_to_data = True
+
     def get_queryset(self):
-        return super(MapGlobalView, self).get_queryset()
+        qs = super(MapGlobalView, self).get_queryset()
+        self.tag = tags.Tag.objects.get(slug=tags.slugify(self.kwargs['tag']))
+        tagsets = tags.PageTagSet.objects.filter(tags=self.tag)
+        pages = Page.objects.filter(pagetagset__in=tagsets)
+        return qs.filter(page__in=pages)
+
+    def get_map_title(self):
+        d = {
+            'map_url': reverse('maps:global'),
+            'tag_url': reverse('tags:list'),
+            'page_tag_url': reverse('tags:tagged',
+                kwargs={'slug': self.tag.slug}),
+            'tag_name': escape(self.tag.name)
+        }
+        return (
+            '<a href="%(map_url)s">Map</a> / '
+            '<a href="%(tag_url)s">Tags</a> / '
+            '<a href="%(page_tag_url)s">%(tag_name)s</a>' % d)
 
     def get_context_data(self, **kwargs):
-        context = super(MapGlobalView, self).get_context_data(**kwargs)
-        map_objects = [
-            (obj.geom.centroid, popup_html(obj))
-            for obj in self.object_list
-        ]
-        context['map'] = InfoMap(map_objects, options={
-            'dynamic': False, 'zoomToDataExtent': False})
-        context['dynamic_map'] = False
+        context = super(MapForTag, self).get_context_data(**kwargs)
+        context['map_title'] = self.get_map_title()
         return context
 
 

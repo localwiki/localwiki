@@ -10,7 +10,7 @@
 
 {% block header_title %}
   {% if mapdata %}
-  Map for <a href="{% url pages:show slug=mapdata.page.pretty_slug %}">{{ mapdata.page.name }}</a>
+  <a href="{% url maps:global %}">Map</a> / <a href="{% url pages:show slug=mapdata.page.pretty_slug %}">{{ mapdata.page.name }}</a>
   {% endif %}
 {% endblock %}
 

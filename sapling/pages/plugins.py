@@ -110,7 +110,8 @@ def insert_text_before(text, elem):
 def include_page(elem, context=None):
     if not 'href' in elem.attrib:
         return
-    href = desanitize(elem.attrib['href'])
+    href = unquote_url(desanitize(elem.attrib['href']))
+    plugin_tag = 'include_page'
     args = []
     if 'class' in elem.attrib:
         classes = elem.attrib['class'].split()
@@ -124,7 +125,7 @@ def include_page(elem, context=None):
     style = parse_style(elem.attrib.get('style', ''))
     if 'width' in style:
         container.attrib['style'] = 'width: ' + style['width'] + ';'
-    tag_text = '{%% include_page %s %%}' % ' '.join(args)
+    tag_text = '{%% %s %s %%}' % (plugin_tag, ' '.join(args))
     container.text = tag_text
     elem.addprevious(container)
     elem.getparent().remove(elem)
@@ -167,6 +168,10 @@ _files_url = '_files/'
 
 def file_url_to_name(url):
     return unquote_plus(url.replace(_files_url, '').encode('utf-8'))
+
+
+def unquote_url(url):
+    return unquote_plus(url.encode('utf-8'))
 
 
 def handle_image(elem, context=None):

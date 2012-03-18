@@ -117,7 +117,6 @@ class M14ManyToMany(models.Model):
 
 versioning.register(M14ManyToMany)
 
-
 class LongerNameOfThing(models.Model):
     a = models.TextField()
 
@@ -171,6 +170,19 @@ class M19ManyToManyFieldVersioned(models.Model):
     tags = models.ManyToManyField(LameTag)
 
 versioning.register(M19ManyToManyFieldVersioned)
+
+
+class UniqueLameTag(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+versioning.register(UniqueLameTag)
+
+
+class M2MFieldVersionedUnique(models.Model):
+    a = models.TextField()
+    tags = models.ManyToManyField(UniqueLameTag)
+
+versioning.register(M2MFieldVersionedUnique)
 
 
 class CustomManager(models.Manager):
@@ -310,6 +322,19 @@ class NonVersionedModel(models.Model):
     a = models.CharField(max_length=100)
 
 
+class M27FKToNonVersioned(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.ForeignKey(NonVersionedModel)
+
+versioning.register(M27FKToNonVersioned)
+
+
+class M28OneToOneNonVersioned(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.OneToOneField(NonVersionedModel)
+
+versioning.register(M28OneToOneNonVersioned)
+
 TEST_MODELS = [
     M1, M2, M3BigInteger, M4Date, M5Decimal, M6Email, M7Numbers,
     M8Time, M9URL, M10File, M11Image, M12ForeignKey, M13ForeignKeySelf,
@@ -321,5 +346,6 @@ TEST_MODELS = [
     M26SubclassConcreteA, M26ConcreteModelB,
     M26SubclassConcreteB, M26ConcreteModelC, M26SubclassConcreteC,
     MUniqueAndFK, MUniqueAndFK2,
-    NonVersionedModel,
+    NonVersionedModel, M27FKToNonVersioned,
+    M28OneToOneNonVersioned,
 ]

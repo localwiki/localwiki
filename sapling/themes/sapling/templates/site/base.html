@@ -78,11 +78,6 @@
     </div>
 
     <div id="footer">
-     <div id="powered_by">
-       {% block powered_by %}
-       <a href="http://localwiki.org/"><img src="{% static "theme/img/powered_by_localwiki.png" %}"/></a>
-       {% endblock %}
-     </div>
      {% block footer %}
      {% endblock %}
     </div>
@@ -93,8 +88,15 @@
      {% endblock %}
     </div>
 
+    <div id="powered_by">
+      {% block powered_by %}
+      <a href="http://localwiki.org/"><img src="{% static "theme/img/powered_by_localwiki.png" %}"/></a>
+      {% endblock %}
+    </div>
+
   {% endblock %}
   </div>
+  
 </body>
 {% endblock %}
 </html>

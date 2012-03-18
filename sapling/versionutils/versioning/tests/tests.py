@@ -13,6 +13,7 @@ from django.utils.unittest import skipIf
 from utils import TestSettingsManager
 from models import *
 from versionutils.versioning.constants import *
+from versionutils.versioning.utils import is_versioned
 
 mgr = TestSettingsManager()
 INSTALLED_APPS = list(settings.INSTALLED_APPS)
@@ -108,7 +109,10 @@ class ChangesTrackingTest(TestCase):
         """
         for M in self.test_models:
             for m in M.objects.all():
-                m.delete(track_changes=False)
+                if is_versioned(M):
+                    m.delete(track_changes=False)
+                else:
+                    m.delete()
         self._cleanup_file_environment()
 
     def test_new_save(self):
@@ -399,6 +403,31 @@ class ChangesTrackingTest(TestCase):
         self.assertEqual([0, 0],
                          [obj.c for obj in m_cur.versions.all()]
         )
+
+    def test_revert_fk_changes(self):
+        obj1 = M2(a="a", b="b", c=1)
+        obj1.save()
+        obj2 = M2(a="a2", b="b2", c=1)
+        obj2.save()
+        m = M12ForeignKey(a=obj1, b="hello")
+        m.save()
+        m.a = obj2
+        m.save()
+
+        m_h = m.versions.as_of(version=1)
+        # We should have our FK pointed at the older object.
+        self.assertEqual(m_h.a.a, "a")
+        m_h.revert_to()
+        m = M12ForeignKey.objects.get(b="hello")
+        # Reverting should give us the same result.
+        self.assertEqual(m.a.a, "a")
+
+        m_h = m.versions.as_of(version=2)
+        self.assertEqual(m_h.a.a, "a2")
+        m_h.revert_to()
+        m = M12ForeignKey.objects.get(b="hello")
+        # Reverting should give us the same result.
+        self.assertEqual(m.a.a, "a2")
 
     @skipIf(settings.DATABASE_ENGINE == 'sqlite3',
             'See Django ticket #10164. Sqlite recycles primary keys')
@@ -792,6 +821,36 @@ class ChangesTrackingTest(TestCase):
         # Test with a specified related_name
         #m12related = M12ForeignKeyRelatedSpecified()
 
+    def test_fk_not_versioned(self):
+        # When we do an FK lookup using a historical instance and the
+        # FK'ed model isn't versioned things should be just like they
+        # would be on the normal model instance.
+
+        # ForeignKey
+        nonversioned_m = NonVersionedModel(a="hi")
+        nonversioned_m.save()
+        m27 = M27FKToNonVersioned(a="hi", b=nonversioned_m)
+        m27.save()
+        m27_h = m27.versions.most_recent()
+        self.assertEqual(m27.b, m27_h.b)
+
+        # ManyToMany
+        m14 = M14ManyToMany(a="test")
+        m14.save()
+        category1 = Category(a='cats')
+        category1.save()
+        m14.b.add(category1)
+
+        m14_hist = m14.versions.most_recent()
+        self.assertEqual(len(m14_hist.b.all()), 1)
+
+        # OneToOne
+        m28 = M28OneToOneNonVersioned(a="A", b=nonversioned_m)
+        m28.save()
+
+        m28_h = m28.versions.most_recent()
+        self.assertEqual(m28_h.b.a, 'hi')
+
     def test_fk_reverse_lookup(self):
         # Reverse foreign key lookups on historical models should,
         # if the parent model is versioned, return the related set
@@ -1069,6 +1128,48 @@ class ChangesTrackingTest(TestCase):
         self.assertEqual(len(B.objects.filter(a="child")), 0)
         self.assertEqual(len(A.objects.filter(a="child")), 0)
         self.assertEqual(len(B.versions.filter(a="child")), 0)
+
+    def test_revert_restore_relations(self):
+        #####################################
+        # We test only M2M relations here.
+        #####################################
+        t1 = UniqueLameTag(name="tag1")
+        t1.save()
+        t2 = UniqueLameTag(name="tag2")
+        t2.save()
+        t3 = UniqueLameTag(name="tag3")
+        t3.save()
+
+        m = M2MFieldVersionedUnique(a="a")
+        m.save()
+        m.tags.add(t1, t2)
+        m.save()
+        m.tags.add(t3)
+        m.save()
+        m_h = m.versions.as_of(version=2)
+
+        # Reverting should bring back the old tags.
+        m_h = m.versions.as_of(version=1)
+        m_h.revert_to()
+        m = M2MFieldVersionedUnique.objects.get(a="a")
+        tags = m.tags.all()
+        self.assertEqual(set([t.name for t in tags]), set(["tag1", "tag2"]))
+
+        # If we attempt to revert back to a set with a deleted item in
+        # it, an exception should be raised.
+        t3.delete()
+        m_h = m.versions.as_of(version=2)
+        self.assertRaises(ObjectDoesNotExist, m_h.revert_to)
+
+        m_h = m.versions.as_of(version=2)
+        # Let's re-create tag3
+        t3 = UniqueLameTag(name="tag3")
+        t3.save()
+        # Now a revert should work.
+        m_h.revert_to()
+        m = M2MFieldVersionedUnique.objects.get(a="a")
+        tags = m.tags.all()
+        self.assertEqual(set([t.name for t in tags]), set(["tag1", "tag2", "tag3"]))
 
 ##
 #    def test_reverse_related_name(self):

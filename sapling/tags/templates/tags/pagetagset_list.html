@@ -1,0 +1,13 @@
+{% extends "tags/base.html" %}
+
+{% block title %}Tags / {{ tag_name }} - {{ block.super }}{% endblock %}
+{% block header_title %}<a href="{% url tags:list %}">Tags</a> / {{ tag_name }}{% endblock %}
+
+{% block media %}
+  {{ block.super }}
+  {% if map %}{{ map.media }}{% endif %}
+{% endblock %}
+
+{% block content %}
+  {% include "tags/tagged_list_snippet.html" %}
+{% endblock %}
