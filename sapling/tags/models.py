@@ -3,11 +3,11 @@ import re
 from django.db import models
 from django.db.utils import IntegrityError
 from django.template.defaultfilters import stringfilter
+from django.utils.html import strip_tags
+from django.core.urlresolvers import reverse
 
 from pages.models import Page
 from versionutils import versioning, diff
-from django.utils.html import strip_tags
-from django.core.urlresolvers import reverse
 
 
 class Tag(models.Model):
@@ -78,3 +78,4 @@ versioning.register(PageTagSet)
 
 import feeds  # To fire register() calls.
 import signals  # To fire signals
+import api  # To fire register() calls.
