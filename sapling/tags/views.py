@@ -2,8 +2,6 @@ import copy
 
 from dateutil.parser import parse as dateparser
 
-from django.views.generic import UpdateView
-
 from utils.views import CreateObjectMixin, PermissionRequiredMixin,\
     Custom404Mixin
 from tags.models import PageTagSet, Tag, slugify
@@ -12,7 +10,7 @@ from pages.models import Page
 from django.core.urlresolvers import reverse
 from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
-from versionutils.versioning.views import VersionsList, RevertView
+from versionutils.versioning.views import VersionsList, RevertView, UpdateView
 from django.views.generic.detail import DetailView
 from versionutils.diff.views import CompareView
 from maps.views import MapForTag
