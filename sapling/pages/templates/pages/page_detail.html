@@ -51,7 +51,7 @@
   {% if not page.version_info %}
     <div class="tags_show">
       {% page_tags page %}
-      <a class="tiny button edit_tags" href="{% url pages:tags slug=page.pretty_slug %}" onclick="$(this).closest('div').hide().next().show(); return false;">
+      <a class="tiny button edit_tags" href="{% url pages:tags slug=page.pretty_slug %}" onclick="$(this).closest('div').hide().next().show().find('#tagedit-input').focus(); return false;">
         <span>{% if page.pagetagset.tags.count %}Edit tags{% else %}Add tags{% endif %}</span>
       </a>
     </div>
