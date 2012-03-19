@@ -161,11 +161,6 @@ class Page(models.Model):
             else:
                 related_objs.append((r.get_accessor_name(), rel_obj))
 
-        # Create a redirect from the starting pagename to the new pagename.
-        redirect = Redirect(source=self.slug, destination=new_p)
-        # Creating the redirect causes the starting page to be deleted.
-        redirect.save()
-
         # Point each related object to the new page and save the object with a
         # 'was renamed' comment.
         for attname, rel_obj in related_objs:
@@ -183,8 +178,15 @@ class Page(models.Model):
             else:
                 # This is an easy way to set obj to point to new_p.
                 setattr(new_p, attname, rel_obj)
+                # For any m2m fields, we have to fetch them and then restore
+                m2m_values = dict(
+                    [(f.attname, getattr(rel_obj, f.attname).all())
+                     for f in rel_obj._meta.many_to_many])
                 rel_obj.pk = None  # Reset the primary key before saving.
                 rel_obj.save(comment="Parent page renamed")
+                # Restore any m2m fields now that we have a new primary key
+                for name, value in m2m_values.items():
+                    setattr(rel_obj, name, value)
 
         # Do the same with related-via-slug objects.
         for info in self._get_slug_related_objs():
@@ -201,6 +203,11 @@ class Page(models.Model):
                 obj.slug = new_p.slug
                 obj.pk = None  # Reset the primary key before saving.
                 obj.save(comment="Parent page renamed")
+
+        # Create a redirect from the starting pagename to the new pagename.
+        redirect = Redirect(source=self.slug, destination=new_p)
+        # Creating the redirect causes the starting page to be deleted.
+        redirect.save()
 
 
 class PageDiff(diff.BaseModelDiff):
