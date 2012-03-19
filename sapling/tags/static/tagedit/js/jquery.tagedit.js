@@ -202,8 +202,6 @@
 						})
 						.blur(function() {
 							if($(this).val().length == 0) {
-								// disable the field to prevent sending with the form
-								$(this).attr('disabled', 'disabled').addClass('tagedit-input-disabled');
 							}
 							else {
 								// Delete entry after a timeout
