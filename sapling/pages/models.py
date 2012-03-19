@@ -180,8 +180,8 @@ class Page(models.Model):
                 setattr(new_p, attname, rel_obj)
                 # For any m2m fields, we have to fetch them and then restore
                 m2m_values = dict(
-                    [(f.attname, getattr(rel_obj, f.attname).all())
-                     for f in rel_obj._meta.many_to_many])
+                    (f.attname, getattr(rel_obj, f.attname).all())
+                    for f in rel_obj._meta.many_to_many)
                 rel_obj.pk = None  # Reset the primary key before saving.
                 rel_obj.save(comment="Parent page renamed")
                 # Restore any m2m fields now that we have a new primary key
