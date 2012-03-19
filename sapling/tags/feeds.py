@@ -2,9 +2,8 @@ from django.core.urlresolvers import reverse
 
 import recentchanges
 from recentchanges import RecentChanges
-from recentchanges.feeds import ChangesOnItemFeed
 
-from models import PageTagSet, slugify
+from models import PageTagSet
 
 
 class PageTagSetChanges(RecentChanges):
