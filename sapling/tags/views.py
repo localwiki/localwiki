@@ -183,6 +183,7 @@ def suggest_tags(request):
     term = request.GET.get('term', None)
     if not term:
         return HttpResponse('')
-    results = Tag.objects.filter(name__istartswith=term)
+    results = Tag.objects.filter(name__istartswith=term).exclude(
+                                                            pagetagset=None)
     results = [t.name for t in results]
     return HttpResponse(json.dumps(results))
