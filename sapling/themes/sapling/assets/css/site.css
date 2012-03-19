@@ -237,15 +237,6 @@ textarea, input, select {
 #object_tags li.tag { 
     line-height: 2.3;
 }
-/* no box-shadow around the text input area */
-.tagedit-list li.tagedit-listelement-new {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-#object_tags .tag-list {
-    display: block;
-}
 #object_tags .edit_tags {
     display: block;
     padding: 13px 10px 14px 8px;
