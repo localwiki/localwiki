@@ -59,7 +59,7 @@ class SlugifyMixin(object):
                 # Slugs can't start with the _ character or contain a
                 # slash surrounded by the _ character. We do this so we can
                 # define URLs for sub-resources more easily.
-                url(r"^(?P<resource_name>%s)/(?P<%s>[^_]+((?!(/_)|(_/)).)*?)/*$" %
+                url(r"^(?P<resource_name>%s)/(?P<%s>[^_]((?!(/_)|(_/)).)*?)/*$" %
                     (self._meta.resource_name, slug),
                     self.wrap_view('dispatch_detail'), name="api_dispatch_detail")
             )
