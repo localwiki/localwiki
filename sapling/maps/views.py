@@ -53,7 +53,8 @@ class MapDetailView(Custom404Mixin, DetailView):
         context = super(MapDetailView, self).get_context_data(**kwargs)
 
         context['date'] = self.get_object_date()
-        context['map'] = InfoMap([(self.object.geom, self.object.page.name)])
+        context['map'] = InfoMap([(self.object.geom, self.object.page.name)],
+            options={'permalink': True})
         return context
 
 
@@ -93,7 +94,7 @@ class MapGlobalView(ListView):
         context = super(MapGlobalView, self).get_context_data(**kwargs)
         map_objects = [(obj.geom, popup_html(obj)) for obj in self.object_list]
         context['map'] = InfoMap(map_objects, options={
-            'dynamic': True, 'zoomToDataExtent': False})
+            'dynamic': True, 'zoomToDataExtent': False, 'permalink': True})
         context['dynamic_map'] = True
         return context
 
@@ -113,7 +114,7 @@ class MapAllObjectsAsPointsView(MapGlobalView):
             for obj in self.object_list
         ]
         context['map'] = InfoMap(map_objects, options={
-            'dynamic': False, 'zoomToDataExtent': False})
+            'dynamic': False, 'zoomToDataExtent': False, 'permalink': True})
         context['dynamic_map'] = False
         return context
 
