@@ -20,12 +20,15 @@ class TagResource(SlugifyMixin, ModelResource):
 api.register(TagResource())
 
 
-class PageTagSetResource(ModelResource):
+class PageTagSetResource(SlugifyMixin, ModelResource):
     page = fields.ToOneField(pages.api.PageResource, 'page')
     tags = fields.ToManyField(TagResource, 'tags')
 
     class Meta:
         resource_name = 'page_tag_set'
         queryset = PageTagSet.objects.all()
+        field_to_slugify = 'page'
+        slug_lookup_field = 'page__slug'
+        lookup_function = slugify
 
 api.register(PageTagSetResource())
