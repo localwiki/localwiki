@@ -5,8 +5,21 @@ from django.http import Http404
 from tastypie.resources import ModelResource, ALL
 from tastypie.utils import trailing_slash
 
-from pages.models import Page, PageFile
+from pages.models import Page, PageFile, slugify, name_to_url
 from sapling.api import api, SlugifyMixin
+
+
+class PageSlugifyMixin(SlugifyMixin):
+    """
+    A version of SlugifyMixin that uses our custom slugify and quotes
+    URLs using our name_to_url. We need this because we aren't using
+    the standard slugify with our page-related models, and we also want
+    our page-related Resources to have urls_with_underscores.
+    """
+    def __init__(self, *args, **kwargs):
+        self._meta.lookup_function = slugify
+        self._meta.to_url_function = name_to_url
+        super(PageSlugifyMixin, self).__init__(*args, **kwargs)
 
 
 # TODO: move this under /page/<slug>/_file/<filename>?
@@ -20,7 +33,7 @@ class FileResource(ModelResource):
         }
 
 
-class PageResource(SlugifyMixin, ModelResource):
+class PageResource(PageSlugifyMixin, ModelResource):
     class Meta:
         queryset = Page.objects.all()
         resource_name = 'page'
@@ -75,7 +88,7 @@ class PageResource(SlugifyMixin, ModelResource):
         return self.create_response(request, object_list)
 
 
-class PageHistoryResource(SlugifyMixin, ModelResource):
+class PageHistoryResource(PageSlugifyMixin, ModelResource):
     class Meta:
         parent_resource = PageResource
         subresource_name = '_history'

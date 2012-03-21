@@ -4,7 +4,7 @@ from tastypie.api import Api, AcceptHeaderRouter
 from tastypie.utils import trailing_slash
 from tastypie.bundle import Bundle
 
-from pages.models import slugify, name_to_url
+from pages.models import slugify
 
 
 class SlugifyMixin(object):
@@ -13,7 +13,7 @@ class SlugifyMixin(object):
     slugified value rather than by integer primary key. This mixin will make
     your resources resource_uri more human readable.
 
-    There are two Meta attributes::
+    There are three Meta attributes::
 
         field_to_slugify: A string representing the name of the field that
             will by slugified. slugify() is called on this field. If not
@@ -22,11 +22,40 @@ class SlugifyMixin(object):
         slug_lookup_field: A string representing the name of the field that
             we use for the slug lookup on the model.  If not provided, the
             value 'slug' is used.
+
+        lookup_function: An optional callable that converts a string into
+            a slugified string for object retrieval.  Defaults to ``slugify``.
+
+        to_url_function: An optional callable that converts a string into
+            a URL-suitable string.  This defaults to ``lookup_function``,
+            as most of the time you just want the slugified string in your
+            URL.
     """
-    # TODO: Spin this out as something other people can use.
+    # TODO: Replace /our/ slugify with the default slugify and
+    # spin this out as something other people can use.
+
+    def __init__(self, *args, **kwargs):
+        """
+        Un-bind and set up utility functions.
+        """
+        # We use .im_func to un-bind bound methods.  We have to do this
+        # because the functions are sometimes set as class attributes inside
+        # Meta.
+        self._lookup_func = getattr(self._meta, 'lookup_function', slugify)
+        if hasattr(self._lookup_func, 'im_func'):
+            self._lookup_func = self._lookup_func.im_func
+
+        self._to_url = self._lookup_func
+        if hasattr(self._meta, 'to_url_function'):
+            self._to_url = self._meta.to_url_function
+        if hasattr(self._to_url, 'im_func'):
+            self._to_url = self._to_url.im_func
+
+        super(SlugifyMixin, self).__init__(*args, **kwargs)
+
     def obj_get(self, request=None, **kwargs):
         slug = getattr(self._meta, 'slug_lookup_field', 'slug')
-        kwargs[slug] = slugify(kwargs[slug])
+        kwargs[slug] = self._lookup_func(kwargs[slug])
         return super(SlugifyMixin, self).obj_get(request=request, **kwargs)
 
     def base_urls(self):
@@ -99,7 +128,7 @@ class SlugifyMixin(object):
         slug = getattr(self._meta, 'slug_lookup_field', 'slug')
         field_to_slugify = getattr(self._meta, 'field_to_slugify', slug)
 
-        kwargs[slug] = name_to_url(getattr(obj, field_to_slugify))
+        kwargs[slug] = self._to_url(getattr(obj, field_to_slugify))
 
         if (self._meta.api_name is not None and
             not self._meta._api._accept_header_routing):

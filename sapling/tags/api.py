@@ -1,12 +1,12 @@
 from tastypie.resources import ModelResource, ALL
 from tastypie import fields
 
-from models import Tag, PageTagSet
+from models import Tag, PageTagSet, slugify
 import pages
-from sapling.api import api
+from sapling.api import api, SlugifyMixin
 
 
-class TagResource(ModelResource):
+class TagResource(SlugifyMixin, ModelResource):
     class Meta:
         resource_name = 'tags'
         queryset = Tag.objects.all()
@@ -14,6 +14,8 @@ class TagResource(ModelResource):
             'name': ALL,
             'slug': ALL,
         }
+        field_to_slugify = 'name'
+        lookup_function = slugify
 
 api.register(TagResource())
 
