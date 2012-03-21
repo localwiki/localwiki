@@ -1,10 +1,9 @@
 from django.conf.urls.defaults import *
+from django.template.defaultfilters import slugify
 
 from tastypie.api import Api, AcceptHeaderRouter
 from tastypie.utils import trailing_slash
 from tastypie.bundle import Bundle
-
-from pages.models import slugify
 
 
 class SlugifyMixin(object):
@@ -31,9 +30,7 @@ class SlugifyMixin(object):
             as most of the time you just want the slugified string in your
             URL.
     """
-    # TODO: Replace /our/ slugify with the default slugify and
-    # spin this out as something other people can use.
-
+    # TODO: Spin this mixin out - anyone can use it!
     def __init__(self, *args, **kwargs):
         """
         Un-bind and set up utility functions.
