@@ -13,15 +13,15 @@ class SlugifyMixin(object):
     slugified value rather than by integer primary key. This mixin will make
     your resources resource_uri more human readable.
 
-    There are three Meta attributes::
+    There are four possible Meta attributes::
 
-        field_to_slugify: A string representing the name of the field that
-            will by slugified. slugify() is called on this field. If not
-            provided, the value of slug_lookup_field is used.
+        field_to_slugify: An optional string representing the name of the
+            field that will by slugified. slugify() is called on this field.
+            If not provided, the value of slug_lookup_field is used.
 
-        slug_lookup_field: A string representing the name of the field that
-            we use for the slug lookup on the model.  If not provided, the
-            value 'slug' is used.
+        slug_lookup_field: A an optional string representing the name of the
+            field that we use for the slug lookup on the model.  If not
+            provided, the value 'slug' is used.
 
         lookup_function: An optional callable that converts a string into
             a slugified string for object retrieval.  Defaults to ``slugify``.
