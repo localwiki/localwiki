@@ -60,12 +60,18 @@ allowed_styles_map = {'p': ['text-align'],
                      }
 
 
+rename_elements = {'b': 'strong',
+                   'i': 'em'
+                   }
+
+
 class Page(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False, unique=True)
     content = HTML5FragmentField(allowed_elements=allowed_tags,
                                  allowed_attributes_map=allowed_attributes_map,
-                                 allowed_styles_map=allowed_styles_map)
+                                 allowed_styles_map=allowed_styles_map,
+                                 rename_elements=rename_elements)
 
     def __unicode__(self):
         return self.name
