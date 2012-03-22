@@ -14,10 +14,16 @@ class CensoredUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username',)}),
         (_('Personal info'), {'fields': ('first_name', 'last_name')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
+                                       'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
         (_('Groups'), {'fields': ('groups',)}),
     )
+
+    def get_readonly_fields(self, request, obj=None):
+        if not request.user.is_superuser:
+            return self.readonly_fields + ('is_staff', 'is_superuser',)
+        return self.readonly_fields
 
 
 admin.site.unregister(User)

@@ -55,7 +55,8 @@ class MapDetailView(Custom404Mixin, DetailView):
         context = super(MapDetailView, self).get_context_data(**kwargs)
 
         context['date'] = self.get_object_date()
-        context['map'] = InfoMap([(self.object.geom, self.object.page.name)])
+        context['map'] = InfoMap([(self.object.geom, self.object.page.name)],
+            options={'permalink': True})
         return context
 
 
@@ -86,6 +87,7 @@ class MapGlobalView(ListView):
     dynamic = True
     zoom_to_data = False
     filter_by_zoom = True
+    permalink = True
 
     def get_queryset(self):
         queryset = super(MapGlobalView, self).get_queryset()
@@ -108,7 +110,8 @@ class MapGlobalView(ListView):
     def get_map(self):
         map_objects = self.get_map_objects()
         return InfoMap(map_objects, options={'dynamic': self.dynamic,
-                                        'zoomToDataExtent': self.zoom_to_data})
+                                        'zoomToDataExtent': self.zoom_to_data,
+                                        'permalink': self.permalink})
 
 
 class MapAllObjectsAsPointsView(MapGlobalView):

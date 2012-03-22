@@ -16,7 +16,6 @@ SaplingMap = {
             // height immediately.
             $('#content_wrapper').css('border', 'none');
             return opts;
-
         }
         olwidget.EditableLayerSwitcher.prototype.roundedCorner = false;
         var base_onClick = olwidget.EditingToolbar.prototype.onClick;
@@ -32,7 +31,18 @@ SaplingMap = {
             else {
                 base_onClick.call(this, ctrl, evt);
             }
-        }
+        };
+        /* We don't want a permalinked URL until they move the map */
+        OpenLayers.Control.Permalink.prototype.draw = function () {
+            OpenLayers.Control.prototype.draw.apply(this, arguments);
+            this.map.events.on({
+                'moveend': this.updateLink,
+                'changelayer': this.updateLink,
+                'changebaselayer': this.updateLink,
+                scope: this
+            });
+            return this.div;
+        };
     },
 
     setup_map: function(map) {
@@ -49,6 +59,10 @@ SaplingMap = {
             this.setup_dynamic_map(map);
         }
         this._open_editing(map);
+
+        if(map.opts.permalink) {
+            map.addControl(new OpenLayers.Control.Permalink({anchor: true}));
+        }
     },
 
     setup_dynamic_map: function(map) {
