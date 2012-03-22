@@ -5,7 +5,6 @@
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.min.js"></script>
-{% page_tags_form_media %}
 {% endblock %}
 
 {% block title %}{{ page.name }} - {{ block.super }}{% endblock %}
@@ -56,6 +55,7 @@
       </a>
     </div>
     <div class="tags edit" style="display: none">
+      {% page_tags_form_media %}
       {% page_tags_form page %}
       <a class="edit_tags_cancel" href="{% url pages:show slug=page.pretty_slug %}">Cancel</a>
     </div>

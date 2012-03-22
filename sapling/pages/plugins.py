@@ -99,6 +99,14 @@ def escape_quotes(s):
     return s.replace('"', '\\"')
 
 
+def unquote_url(url):
+    return unquote_plus(url.encode('utf-8'))
+
+
+def prefixed_url_to_name(url, prefix):
+    return unquote_url(url.replace(prefix, ''))
+
+
 def insert_text_before(text, elem):
     prev = elem.getprevious()
     if prev is not None:
@@ -107,11 +115,8 @@ def insert_text_before(text, elem):
         elem.getparent().text = (elem.getparent().text or '') + text
 
 
-def include_page(elem, context=None):
-    if not 'href' in elem.attrib:
-        return
-    href = unquote_url(desanitize(elem.attrib['href']))
-    plugin_tag = 'include_page'
+def include_content(elem, plugin_tag, context=None):
+    href = elem.attrib['href']
     args = []
     if 'class' in elem.attrib:
         classes = elem.attrib['class'].split()
@@ -129,6 +134,23 @@ def include_page(elem, context=None):
     container.text = tag_text
     elem.addprevious(container)
     elem.getparent().remove(elem)
+
+
+def include_tag(elem, context=None):
+    if not 'href' in elem.attrib:
+        return
+    href = unquote_url(desanitize(elem.attrib['href']))
+    elem.attrib['href'] = prefixed_url_to_name(href, 'tags/')
+    return include_content(elem, 'include_tag', context)
+
+
+def include_page(elem, context=None):
+    if not 'href' in elem.attrib:
+        return
+    elem.attrib['href'] = unquote_url(desanitize(elem.attrib['href']))
+    if elem.attrib['href'].startswith('tags/'):
+        return include_tag(elem, context)
+    return include_content(elem, 'include_page', context)
 
 
 def embed_code(elem, context=None):
@@ -167,11 +189,7 @@ _files_url = '_files/'
 
 
 def file_url_to_name(url):
-    return unquote_plus(url.replace(_files_url, '').encode('utf-8'))
-
-
-def unquote_url(url):
-    return unquote_plus(url.encode('utf-8'))
+    return prefixed_url_to_name(url, _files_url)
 
 
 def handle_image(elem, context=None):
@@ -219,6 +237,7 @@ def handle_image(elem, context=None):
 
 tag_imports = ['{% load pages_tags %}',
                '{% load thumbnail %}',
+               '{% load tags_tags %}',
               ]
 
 
@@ -228,6 +247,7 @@ tag_handlers = {"a": [handle_link],
 
 
 plugin_handlers = {"includepage": include_page,
+                   "includetag": include_tag,
                    "embed": embed_code,
                    "searchbox": searchbox,
                   }

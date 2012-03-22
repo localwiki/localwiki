@@ -4,7 +4,7 @@ Sapling pagelink dialog
 
 CKEDITOR.dialog.add( 'embed', function( editor )
 {
-	var plugin = CKEDITOR.plugins.includepage;
+	var plugin = CKEDITOR.plugins.embed;
 	var pagelink_plugin = CKEDITOR.plugins.pagelink;
 
 	return {

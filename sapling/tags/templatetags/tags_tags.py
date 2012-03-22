@@ -5,6 +5,7 @@ from django.template.loader import render_to_string
 from pages.templatetags.pages_tags import IncludeContentNode
 from tags.views import TaggedList
 
+
 register = template.Library()
 
 
@@ -51,7 +52,7 @@ class IncludeTagNode(IncludeContentNode):
             self.tag = None
 
     def get_title(self, context):
-        return 'Pages tagged "%s"' % self.name
+        return 'Pages tagged &ldquo;%s&rdquo;' % self.name
 
     def get_content(self, context):
         view = TaggedList()
