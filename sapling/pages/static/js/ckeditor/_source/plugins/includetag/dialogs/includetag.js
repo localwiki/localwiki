@@ -175,6 +175,9 @@ CKEDITOR.dialog.add( 'includetag', function( editor )
 					data.width = width;
 			}
 			this.setupContent( data );
+			// Set up autocomplete.
+			var urlField = this.getContentElement( 'info', 'tag' );
+            $('#' + urlField.domId + ' input').autocomplete({source: '/api/tags/suggest'})
 		},
 		onOk : function()
 		{
@@ -231,11 +234,11 @@ CKEDITOR.dialog.add( 'includetag', function( editor )
 				element.setHtml( 'List of pages tagged "' + data.tag + '"' );
 			}
 		},
-		onLoad : function()
+		onHide : function()
 		{
-            // Set up autocomplete.
+			// Close autocomplete.
 			var urlField = this.getContentElement( 'info', 'tag' );
-            $('#' + urlField.domId + ' input').autocomplete({source: '/api/tags/suggest'})
+            $('#' + urlField.domId + ' input').autocomplete("destroy");
 		},
 		// Inital focus on 'url' field if link is of type URL.
 		onFocus : function()
