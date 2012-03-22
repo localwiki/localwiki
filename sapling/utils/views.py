@@ -77,7 +77,8 @@ class PermissionRequiredMixin(object):
     """
     permission = None
     forbidden_message = 'Sorry, you are not allowed to perform this action.'
-    forbidden_message_anonymous = 'Anonymous users may not perform this action. Please <A HREF="Users/login/">log in</A>.'
+    forbidden_message_anon = ('Anonymous users may not perform this action. '
+                              'Please <a href="/Users/login/">log in</a>.')
 
     def get_protected_object(self):
         """
@@ -119,9 +120,6 @@ class PermissionRequiredMixin(object):
                 if request.user.is_authenticated():
                     return HttpResponseForbidden(self.forbidden_message)
                 else:
-                    return HttpResponseForbidden(self.forbidden_message_anonymous)
+                    return HttpResponseForbidden(self.forbidden_message_anon)
         return super(PermissionRequiredMixin, self).dispatch(request, *args,
                                                         **kwargs)
-
-
-
