@@ -1,6 +1,7 @@
 {% block editor_actions %}
     {% if page.exists %}
       <li><a href="{% url maps:edit slug=page.pretty_slug %}" class="little button map"><span class="text">Edit map</span></a></li>
+      <li><a href="{% url pages:filelist slug=page.pretty_slug %}" class="little button"><span class="text">Edit images &amp; files</span></a></li>
       <li><a href="{% url pages:delete slug=page.pretty_slug %}" class="little button">Delete page</a></li>
       <li><a href="{% url pages:rename slug=page.pretty_slug %}" class="little button">Rename page</a></li>
     {% endif %}
