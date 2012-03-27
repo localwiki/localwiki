@@ -1,14 +1,14 @@
-django>=1.3
-html5lib>=0.90
-sorl-thumbnail>=11.01
+django==1.3
+html5lib==0.95
+sorl-thumbnail==11.12
 python-dateutil==1.5
-pysolr
-django-haystack
-django-randomfilenamestorage
-django-guardian
-South
-python-flot-utils
-django-staticfiles>=1.1.2
-https://bitbucket.org/ubernostrum/django-registration/get/tip.tar.gz#egg=django-registration
+pysolr==2.1.0-beta
+django-haystack==1.2.6
+django-randomfilenamestorage==1.1
+django-guardian==1.0.4
+South==0.7.4
+python-flot-utils==0.2.1
+django-staticfiles==1.2.1
+django-registration==0.8.0
 -e git+git://github.com/philipn/olwidget.git@72de64cd25ffdc3644bc92d14668c145533d6d45#egg=django-olwidget
 -e git+git://github.com/mivanov/django-honeypot.git#egg=django-honeypot
