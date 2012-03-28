@@ -1,6 +1,14 @@
 #!/bin/bash
 UBUNTU_RELEASES="lucid maverick natty oneiric"
 
+if [[ "$1" = "" ]]
+then
+  echo "Usage: $0 <user/ppa>"
+  exit
+fi
+
+PPA=$1
+
 # Build orig.tar.gz
 cd ..
 rm -r deb_dist/
@@ -13,5 +21,5 @@ mv ${ORIG_FILE} /tmp
 cd ../deb_utils
 for DIST in $(echo ${UBUNTU_RELEASES}) ; do
     echo "Building and uploading for ${DIST} ..."
-    ./makedeb_ppa.sh "${DIST}" "/tmp/${ORIG_FILE}"
+    ./makedeb_ppa.sh "${DIST}" "/tmp/${ORIG_FILE}" "${PPA}"
 done
