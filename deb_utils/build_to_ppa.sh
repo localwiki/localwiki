@@ -4,6 +4,8 @@ UBUNTU_RELEASES="lucid maverick natty oneiric"
 if [[ "$1" = "" ]]
 then
   echo "Usage: $0 <user/ppa>"
+  echo "Official LocalWiki PPA is localwiki/ppa"
+  echo "For testing use localwikidev/testing"
   exit
 fi
 
