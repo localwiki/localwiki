@@ -89,7 +89,7 @@ def items_over_time(now):
         num_redirects_over_time = [], [], [], []
     # Start at the oldest page's date and then iterate, day-by-day, until
     # current day, day by day.
-    d = datetime(oldest_page.year, oldest_page.month, oldest_page.day)
+    d = datetime(oldest_page.year, oldest_page.month, oldest_page.day - 1)
     while (now.year, now.month, now.day) != (d.year, d.month, d.day):
         next_d = d + timedelta(days=1)
 
