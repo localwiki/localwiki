@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -10,14 +12,15 @@
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '#',
+        URL_ROOT:    '',
         VERSION:     '0.2',
-        COLLAPSE_MODINDEX: false,
+        COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="localwiki v0.2 documentation" href="index.html" />
     <link rel="next" title="Web server configuration" href="configure.html" />
@@ -86,14 +89,22 @@ python-setuptools, virtualenv, gdal, postgresql with postgis.  Here's how we
 get these packages in Ubuntu 10.04 LTS:
 
     $ sudo apt-get install python-setuptools solr-jetty python-lxml python-imaging
-    $ sudo apt-get install gdal-bin proj postgis python-psycopg2
+    $ sudo apt-get install gdal-bin proj python-psycopg2
     $ sudo easy_install --upgrade virtualenv
+
+For Ubuntu 11.10 or greater:
+
+    $ sudo apt-get install postgresql-9.1-postgis
+
+For Ubuntu 11.04 or less:
+
+    $ sudo apt-get install postgresql-8.4-postgis
 
 2.  Create a virtualenv. For more info, see http://pypi.python.org/pypi/virtualenv.
 *Note*: We store some important site-specific data in the virtualenv, so don't
 delete it without first backing up the share/localwiki directory inside it.
 
-    $ virtualenv env
+    $ virtualenv --system-site-packages env
     
     Activate the new environment. Run all of the following commands in this environment:
 
@@ -180,40 +191,40 @@ http://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-            <h3><a href="index.html">Table Of Contents</a></h3>
-            <ul>
-<li><a class="reference external" href="#">Installing</a><ul>
-<li><a class="reference external" href="#installing-on-ubuntu">Installing on Ubuntu</a></li>
-<li><a class="reference external" href="#installing-on-other-systems">Installing on other systems</a></li>
-<li><a class="reference external" href="#more-info">More info</a></li>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installing</a><ul>
+<li><a class="reference internal" href="#installing-on-ubuntu">Installing on Ubuntu</a></li>
+<li><a class="reference internal" href="#installing-on-other-systems">Installing on other systems</a></li>
+<li><a class="reference internal" href="#more-info">More info</a></li>
 </ul>
 </li>
 </ul>
 
-            <h4>Previous topic</h4>
-            <p class="topless"><a href="index.html"
-                                  title="previous chapter">LocalWiki Documentation</a></p>
-            <h4>Next topic</h4>
-            <p class="topless"><a href="configure.html"
-                                  title="next chapter">Web server configuration</a></p>
-            <h3>This Page</h3>
-            <ul class="this-page-menu">
-              <li><a href="_sources/install.txt"
-                     rel="nofollow">Show Source</a></li>
-            </ul>
-          <div id="searchbox" style="display: none">
-            <h3>Quick search</h3>
-              <form class="search" action="search.html" method="get">
-                <input type="text" name="q" size="18" />
-                <input type="submit" value="Go" />
-                <input type="hidden" name="check_keywords" value="yes" />
-                <input type="hidden" name="area" value="default" />
-              </form>
-              <p class="searchtip" style="font-size: 90%">
-              Enter search terms or a module, class or function name.
-              </p>
-          </div>
-          <script type="text/javascript">$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">LocalWiki Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="configure.html"
+                        title="next chapter">Web server configuration</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/install.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -234,8 +245,8 @@ http://docs.djangoproject.com/en/dev/ref/contrib/gis/install/
       </ul>
     </div>
     <div class="footer">
-      &copy; Copyright 2011, Mike Ivanov, Philip Neustrom.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
+        &copy; Copyright 2011, Mike Ivanov, Philip Neustrom.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
     </div>
   </body>
 </html>

@@ -85,6 +85,9 @@ class RestrictiveBackend(object):
                 or
                 UserObjectPermission.objects.filter(object_pk=obj.pk).exists())
 
+    def has_module_perms(self, user_obj, app_label):
+        return self._model_backend.has_module_perms(user_obj, app_label)
+
 ANONYMOUS_USER_ID = settings.ANONYMOUS_USER_ID  # we *want* error if not set
 BANNED_GROUP = getattr(settings, "USERS_BANNED_GROUP", None)
 LOGGED_IN_HAS_PERM = getattr(settings, "USERS_LOGGED_IN_HAS_PERM", False)

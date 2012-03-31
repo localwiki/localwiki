@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% load pages_tags %}
+{% load tags_tags %}
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.min.js"></script>
@@ -40,9 +41,26 @@
 
     <div id="page">
       {% render_plugins page.content %}
+      <div style="clear:both;"></div>
+      
     <div style="clear:both;"></div>
     </div>
   {% endblock %}
+  </div>
+  <div id="object_tags">
+  {% if not page.version_info %}
+    <div class="tags_show">
+      {% page_tags page %}
+      <a class="tiny button edit_tags" href="{% url pages:tags slug=page.pretty_slug %}" onclick="$(this).closest('div').hide().next().show().find('#tagedit-input').focus(); return false;">
+        <span>{% if page.pagetagset.tags.count %}Edit tags{% else %}Add tags{% endif %}</span>
+      </a>
+    </div>
+    <div class="tags edit" style="display: none">
+      {% page_tags_form_media %}
+      {% page_tags_form page %}
+      <a class="edit_tags_cancel" href="{% url pages:show slug=page.pretty_slug %}">Cancel</a>
+    </div>
+  {% endif %}
   </div>
 </div>
 {% endblock %}
@@ -50,6 +68,6 @@
 {% block footer %}
   {{ block.super }}
   <p>
-    {% url pages:edit slug=page.pretty_slug as pretty_slug %}{% blocktrans with ago=date|timesince %}<a href="{{ pretty_slug }}">Edit</a> this page (last modified {{ ago }} ago){% endblocktrans %}
+    {% blocktrans with ago=date|timesince %}This page was last modified {{ ago }} ago{% endblocktrans %}
   </p>
 {% endblock %}

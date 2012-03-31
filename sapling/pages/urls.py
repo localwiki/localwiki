@@ -7,6 +7,8 @@ import models
 from utils.constants import DATETIME_REGEXP
 from models import Page
 from views import PageFilebrowserView
+from tags.views import PageTagSetUpdateView, suggest_tags, PageTagSetVersions,\
+    PageTagSetVersionDetailView, PageTagSetCompareView, PageTagSetRevertView
 
 page_list_info = {
     'model': Page,
@@ -64,6 +66,31 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>.+)/_filebrowser/(?P<filter>(files|images))$',
         slugify(PageFilebrowserView.as_view()), name='filebrowser'),
 
+    ##########################################################
+    # Page tags
+    ##########################################################
+    url(r'^(?P<slug>.+)/_tags/$', slugify(PageTagSetUpdateView.as_view()),
+        name='tags'),
+    url(r'^(?P<slug>.+)/_tags/_history/$',
+        slugify(PageTagSetVersions.as_view()), name='tags-history'),
+    url(r'^(?P<slug>.+)/_tags/_history/(?P<version>[0-9]+)$',
+        slugify(PageTagSetVersionDetailView.as_view()),
+        name='tags-as_of_version'),
+    url(r'^(?P<slug>.+)/_tags/_history/(?P<date>%s)$'
+        % DATETIME_REGEXP, slugify(PageTagSetVersionDetailView.as_view()),
+        name='tags-as_of_date'),
+    url(r'^(?P<slug>.+)/_tags/_history/compare',
+        slugify(PageTagSetCompareView.as_view())),
+    url((r'^(?P<slug>.+)/_tags/_history/'
+            r'(?P<version1>[0-9]+)\.\.\.(?P<version2>[0-9]+)?$'),
+        slugify(PageTagSetCompareView.as_view()), name='tags-compare-revisions'),
+    url(r'^(?P<slug>.+)/_tags/_history/'
+        r'(?P<date1>%s)\.\.\.(?P<date2>%s)?$'
+        % (DATETIME_REGEXP, DATETIME_REGEXP),
+        slugify(PageTagSetCompareView.as_view()), name='tags-compare-dates'),
+     url(r'^(?P<slug>.+)/_tags/_revert/(?P<version>[0-9]+)$',
+        slugify(PageTagSetRevertView.as_view()), name='tags-revert'),
+
     #########################################################
     # History URLs.
     # TODO: Non-DRY. Break out into something like
@@ -106,6 +133,7 @@ urlpatterns = patterns('',
     # API
     ##########################################################
     url(r'^api/pages/suggest', suggest),
+    url(r'^api/tags/suggest', suggest_tags),
 
     ##########################################################
     # Basic page URLs.

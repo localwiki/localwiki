@@ -2,9 +2,9 @@
 # Makes deb source for a given Ubuntu release using prebuilt source
 # and uploads it to the localwiki PPA
 
-if [[ "$1" = "" ]] || [[ "$2" = "" ]]
+if [[ "$1" = "" ]] || [[ "$2" = "" ]] || [[ "$3" = "" ]]
 then
-  echo "Usage: $0 <ubuntu_release(ex: lucid)> <prebuilt_dist.orig.tar.gz>"
+  echo "Usage: $0 <ubuntu_release(ex: lucid)> <prebuilt_dist.orig.tar.gz> <user/ppa>"
   exit
 fi
 
@@ -13,6 +13,7 @@ LW_VERSION=$(python -c "from sapling import get_version; print get_version().rep
 UBUNTU_RELEASE=$1
 DEBIAN_VERSION="0ubuntu1~${UBUNTU_RELEASE}"
 DIST_FILE=$2
+PPA=$3
 VERSION="${LW_VERSION}-${DEBIAN_VERSION}"
 DEPENDS=$(deb_utils/depends.sh ${UBUNTU_RELEASE})
 
@@ -30,5 +31,5 @@ cd deb_dist/localwiki-${LW_VERSION}
 dpkg-buildpackage -rfakeroot -S -sa
 
 cd ../
-dput ppa:localwiki/ppa localwiki_${VERSION}_source.changes
+dput ppa:${PPA} localwiki_${VERSION}_source.changes
 cd ../deb_utils

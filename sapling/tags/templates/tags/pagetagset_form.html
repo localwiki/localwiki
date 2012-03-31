@@ -1,0 +1,15 @@
+{% extends "tags/base.html" %}
+
+{% block media %}
+  {{ block.super }}
+  {{ form.media }}
+{% endblock %}
+
+{% block title %}Tags for {{ pagetagset.page.name }} - {{ block.super }}{% endblock %}
+{% block header_title %}Tags for <a href="{% url pages:show slug=pagetagset.page.pretty_slug %}">{{ pagetagset.page.name }}</a>{% endblock %}
+
+{% block content %}
+    <div id="object_tags">
+    {% include "tags/pagetagset_form_snippet.html" %}
+    </div>
+{% endblock %}

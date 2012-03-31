@@ -1,0 +1,15 @@
+These are the administrative docs for localwiki. An online version of the latest version of these docs can be found at http://readthedocs.org/docs/localwiki/en/latest/
+
+html/  contains html versions of the docs.
+
+
+Want to help with documentation?
+--------------------------------
+
+source/ contains .rst files that turn into html. If you want to contribute to the docs, just edit the .rst files in this directory.  You'll want to make sure you have Sphinx (pip install Sphinx) installed, and then simply run:
+
+   $ make html
+
+to generate the HTML docs.
+
+For more information on the Sphix documentation system, see http://sphinx.pocoo.org/.

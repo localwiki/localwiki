@@ -47,15 +47,7 @@ h5, h6 {
     margin-bottom: 0.6em;
 }
 a, a:link {
-    color: #333c94;
-    color: #4c54a4;
-    color: #333c94;
-
     color: #4e58b5;
-
-    /*color: #406d8f;
-    color: #4c668e;*/
-
 }
 a:hover {
     color: #111;
@@ -151,6 +143,11 @@ textarea, input, select {
     padding-left: 3.5em;
     background: url(../img/map-icon.png) 0.95em 45% no-repeat;
 }
+/* Header is different on tag pages */
+.tagpage #header_bar {
+    padding-left: 3.5em;
+    background: url(../img/tag-icon.png) 0.75em 45% no-repeat;
+}
 
 #object_title {
     padding: 0;
@@ -215,6 +212,51 @@ textarea, input, select {
     margin-top: 0;
     margin-bottom: 0;
     margin-right: 0.5em;
+}
+
+#object_tags {
+    display: block;
+    line-height: 1.3;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+#object_tags form {
+    display: inline;
+}
+#object_tags input[type="submit"] {
+    display: inline;
+}
+#object_tags li.tag {
+    -webkit-box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.05);
+    display: block;
+    float: left;
+}
+/* no box-shadow around the text input area */
+.tagedit-list li.tagedit-listelement-new {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+#object_tags .tag-list {
+    display: table-cell;
+}
+#object_tags .edit_tags {
+    display: block;
+    padding: 13px 10px 14px 8px;
+    font-weight: normal;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+}
+#object_tags .edit_tags span {
+    background: url(../img/tag-icon-small.png) 0 0 no-repeat;
+    padding-left: 22px;
+}
+#object_tags .edit_tags_cancel {
+    display: inline-block;
+    vertical-align: top;
+    margin: 8px;
 }
 
 #login_info {
@@ -295,6 +337,11 @@ textarea, input, select {
   font-size: 90%;
 }
 
+/* Map widget, when it's part of page content */
+#page #map {
+    margin: 0.5em;
+    margin-left: 0;
+}
 /* Overview map */
 .mapdata #results_pane {
   background: #E8ECEF url(../img/header-bg.png) top left repeat;
@@ -376,10 +423,13 @@ textarea, input, select {
     clear: both;
     min-height: 30px;
 }
-#footer p { margin: 0; padding: 0 }
+#footer p { margin: 0; padding: 0; color: #999;}
 
 #powered_by {
-    float: right;
+    width: 100%;
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
 }
 #powered_by a img {
     border: none;
@@ -523,7 +573,7 @@ input[type="submit"], input[type="button"], button, .button {
     float: left;
     cursor: pointer;
 }
-.little.button, input.little {
+.little.button, input.little, a.little {
     padding: 0.2em 0.5em 0.3em 0.5em;
     margin: 0;
     font-size: 90%;
@@ -548,16 +598,15 @@ input.little {
 
 
 input[type="submit"]:hover, input[type="button"]:hover, button:hover, .button:hover {
-    background-color: #c8cbde;
-    color: #fff!important;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    background-color: #dcdcdc!important;
     border-color: #c8cbde;
-    border-bottom-color: #757783;
+    border-bottom-color: #a9a9a9;
 }
 input[type="submit"]:active, input[type="button"]:active, button:active, .button:active {
     box-shadow: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
+
 }
 input[type="hidden"] { display: none; }
 input[type="checkbox"], input[type="radio"] { display: inline; }
@@ -795,11 +844,9 @@ div.templates li {
 }
 #recentchanges .changelabel.updated:hover
 {
-    background-color: #c8cbde;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    background-color: #dcdcdc!important;
     border-color: #c8cbde;
-    border-bottom-color: #757783;
-    color: #fff;
+    border-bottom-color: #a9a9a9;
 }
 #recentchanges .changelabel.updated:active {
     box-shadow: none;
@@ -829,7 +876,6 @@ div.templates li {
     color: #666;
 }
 #recentchanges .comment {
-    color: black;
     padding-right: 0.5em;
 }
 
@@ -846,6 +892,14 @@ div.templates li {
     padding-left: 20px;
 }
 
+#recentchanges .tags .changelabel span {
+    background: url(../img/tag-icon-small.png) 0 0 no-repeat;
+    padding-left: 20px;
+}
+
+.see_also {
+    margin-top: 2em;
+}
 /*
 ====================================
  Attributions
@@ -853,7 +907,7 @@ div.templates li {
 */
 
 #attributions {
-    margin: 1.5em 1em 1.5em 1em;
+    margin: 1.5em 1em 0.5em 1em;
     font-size: 80%;
     text-align: center;
 }

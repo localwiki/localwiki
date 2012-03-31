@@ -8,7 +8,7 @@ from pages.plugins import html_to_template_text, SearchBoxNode
 from pages.plugins import LinkNode, EmbedCodeNode
 from pages import models
 from django.utils.text import unescape_string_literal
-from pages.models import Page, slugify, url_to_name
+from pages.models import Page, slugify
 from django.core.urlresolvers import reverse
 
 register = template.Library()
@@ -38,18 +38,34 @@ class PageContentNode(BaseIncludeNode):
             return ''
 
 
-class IncludePageNode(BaseIncludeNode):
+class IncludeContentNode(BaseIncludeNode):
+    """
+    Base class for including some named content inside a other content.
+
+    Subclass and override get_content() and get_title() to return HTML or None.
+    The name of the content to include is stored in self.name
+    All other parameters are stored in self.args, without quotes (if any).
+    """
     def __init__(self, parser, token, *args, **kwargs):
-        super(IncludePageNode, self).__init__(*args, **kwargs)
+        super(IncludeContentNode, self).__init__(*args, **kwargs)
         bits = token.split_contents()
         if len(bits) < 2:
             raise template.TemplateSyntaxError, ('%r tag requires at least one'
                                     ' argument' % token.contents.split()[0])
-        page_name = bits[1]
-        if is_quoted(page_name):
-            page_name = unescape_string_literal(page_name)
-        self.page_name = url_to_name(page_name)
-        self.args = bits[2:]
+        self.args = []
+        for b in bits[1:]:
+            if is_quoted(b):
+                b = unescape_string_literal(b)
+            self.args.append(b)
+        self.name = self.args.pop(0)
+
+    def get_content(self, context):
+        """ Override this to return content to be included. """
+        return None
+
+    def get_title(self, context):
+        """ Override this to return a title or None to omit it. """
+        return self.name
 
     def render(self, context):
         try:
@@ -89,9 +105,47 @@ class IncludePageNode(BaseIncludeNode):
             return ''
 
 
+class IncludePageNode(IncludeContentNode):
+    def __init__(self, *args, **kwargs):
+        super(IncludePageNode, self).__init__(*args, **kwargs)
+        try:
+            self.page = Page.objects.get(slug__exact=slugify(self.name))
+        except Page.DoesNotExist:
+            self.page = None
+
+    def get_title(self, context):
+        if not self.page:
+            return None
+        return ('<a href="%s">%s</a>'
+                % (self.page.pretty_slug, self.page.name))
+
+    def get_content(self, context):
+        if not self.page:
+            page_url = reverse('pages:show', args=[name_to_url(self.name)])
+            return ('<p class="plugin includepage">Unable to include '
+                    '<a href="%s" class="missing_link">%s</a></p>'
+                    % (page_url, self.name))
+        # prevent endless loops
+        context_page = context['page']
+        include_stack = context.get('_include_stack', [])
+        include_stack.append(context_page.name)
+        if self.page.name in include_stack:
+            return ('<p class="plugin includepage">Unable to'
+                    ' include <a href="%s">%s</a>: endless include'
+                    ' loop.</p>' % (name_to_url(self.name), self.name))
+        context['_include_stack'] = include_stack
+        context['page'] = self.page
+        template_text = html_to_template_text(self.page.content, context)
+        # restore context
+        context['_include_stack'].pop()
+        context['page'] = context_page
+        return template_text
+
+
 @register.tag(name='render_plugins')
 def do_render_plugins(parser, token, render_plugins=True):
-    """ Render tags and plugins
+    """
+    Render tags and plugins
     """
     try:
         tag, html_var = token.split_contents()
@@ -103,7 +157,8 @@ def do_render_plugins(parser, token, render_plugins=True):
 
 @register.tag(name='render_tags')
 def do_render_tags(parser, token):
-    """ Render tags only, does not render plugins
+    """
+    Render tags only, does not render plugins
     """
     return do_render_plugins(parser, token, render_plugins=False)
 

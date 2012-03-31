@@ -19,14 +19,18 @@ class CommentMixin(object):
     def __init__(self, *args, **kwargs):
         base_init = super(CommentMixin, self).__init__(*args, **kwargs)
         # Due to mixin behavior we need to set this here, too.
-        self.fields['comment'] = self.comment
+        if not 'comment' in (self._meta.exclude or []):
+            self.fields['comment'] = self.comment
         return base_init
+
+    def get_save_comment(self):
+        return self.cleaned_data.get('comment')
 
     def save(self, commit=True):
         # It would be ideal if the ModelForm save method took keyword
         # arguments and passed them along.
         save_with = getattr(self.instance, '_save_with', {})
-        comment = self.cleaned_data.get('comment')
+        comment = self.get_save_comment()
         if comment:
             save_with['comment'] = comment
         self.instance._save_with = save_with

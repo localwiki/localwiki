@@ -31,8 +31,8 @@
   </style>
 {% endblock %}
 
-{% block title %}{% blocktrans with new_name=new.name %}Differences for {{ new_name }}{% endblocktrans %}{% endblock %}
-{% block header_title %}{% blocktrans with new_name=new.name %}Differences for {{ new_name }}{% endblocktrans %}{% endblock %}
+{% block title %}{% blocktrans with new_name=new.name %}Differences for {{ new_name }} on {{ new.slug }}{% endblocktrans %}{% endblock %}
+{% block header_title %}{% blocktrans with new_name=new.name %}Differences for {{ new_name }} on <a href="{% url pages:show slug=new.slug %}">{{ new.attached_to_page }}</a>{% endblocktrans %}{% endblock %}
 
 {% block content %}
   <table width="100%">

@@ -29,7 +29,8 @@ class RestrictedHTML5FragmentModel(models.Model):
     html = HTML5FragmentField(allowed_elements=['a', 'span'],
                               allowed_attributes_map={'a': ['href'],
                                                       'span': ['style']},
-                              allowed_styles_map={'span': ['width']})
+                              allowed_styles_map={'span': ['width']},
+                              rename_elements={'div': 'span'})
 
 
 class XHTMLFieldTest(TestCase):
@@ -92,6 +93,12 @@ class HTML5FragmentField(TestCase):
         m.html = ('<span style="width: 300px; height:100px">Blah</span>')
         m.clean_fields()
         self.assertEquals(m.html, '<span style="width: 300px;">Blah</span>')
+
+    def test_rename_elements(self):
+        m = RestrictedHTML5FragmentModel()
+        m.html = '<div>This should be a span</div>'
+        m.clean_fields()
+        self.assertEquals(m.html, '<span>This should be a span</span>')
 
     def test_self_closing_a_tag(self):
         m = HTML5FragmentModel()

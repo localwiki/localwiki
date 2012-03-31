@@ -11,6 +11,11 @@ less technical at some point.  For now you'll need to be comfortable
 with moving things around on a server, editing files and have some
 knowledge of CSS and HTML.
 
+.. note:: If you're a developer and have been playing around, make sure
+   you have set ``DEBUG`` to ``False`` in ``localsettings.py``,
+   otherwise you won't see static media show up when using
+   ``localwiki-manage runsever``.
+
 
 Template files
 --------------

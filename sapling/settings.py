@@ -148,7 +148,7 @@ HAYSTACK_SEARCH_ENGINE = 'solr'
 
 THUMBNAIL_BACKEND = 'utils.sorl_backends.AutoFormatBackend'
 
-OL_API = STATIC_URL + 'openlayers/OpenLayers.js?tm=1317359250'
+OL_API = STATIC_URL + 'openlayers/OpenLayers.js?tm=1330130829'
 OLWIDGET_CSS = '%solwidget/css/sapling.css?tm=1317359250' % STATIC_URL
 OLWIDGET_JS = '%solwidget/js/olwidget.js?tm=1317359250' % STATIC_URL
 CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js?tm=1317359250' % STATIC_URL
@@ -231,6 +231,7 @@ INSTALLED_APPS = (
     'redirects',
     'dashboard',
     'utils',
+    'tags',
 )
 
 LOCAL_INSTALLED_APPS = ()

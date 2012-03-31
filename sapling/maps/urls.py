@@ -3,11 +3,11 @@ from django.conf.urls.defaults import *
 from utils.constants import DATETIME_REGEXP
 from views import *
 from feeds import MapChangesFeed
-from maps.views import MapObjectsForBounds
 
 urlpatterns = patterns('',
     url(r'^$', MapGlobalView.as_view(), name='global'),
     url(r'^_objects/$', MapObjectsForBounds.as_view(), name='objects'),
+    url(r'^tags/(?P<tag>.+)', MapForTag.as_view(), name='tagged'),
     url(r'^(?P<slug>.+)/_edit$', MapUpdateView.as_view(),  name='edit'),
     url(r'^(?P<slug>.+)/_delete$', MapDeleteView.as_view(), name='delete'),
     url(r'^(?P<slug>.+)/_revert/(?P<version>[0-9]+)$',

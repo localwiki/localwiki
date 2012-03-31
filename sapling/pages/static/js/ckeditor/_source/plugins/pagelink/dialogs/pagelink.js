@@ -194,6 +194,9 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 			else
 				element = null;
 			this.setupContent( processLink.apply( this, [ editor, element ] ) );
+			// Set up autocomplete.
+			var urlField = this.getContentElement( 'info', 'url' );
+            $('#' + urlField.domId + ' input').autocomplete({source: '/api/pages/suggest'});
 		},
 		onOk : function()
 		{
@@ -276,11 +279,11 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 					jQuery(element.$).after(jQuery(element.$).html()).remove();
 			}
 		},
-		onLoad : function()
+		onHide : function()
 		{
-            // Set up autocomplete.
+			// Close autocomplete.
 			var urlField = this.getContentElement( 'info', 'url' );
-            $('#' + urlField.domId + ' input').autocomplete({source: '/api/pages/suggest'})
+            $('#' + urlField.domId + ' input').autocomplete("destroy");
 		},
 		// Inital focus on 'url' field if link is of type URL.
 		onFocus : function()

@@ -1,0 +1,15 @@
+{% extends "site/base.html" %}
+
+{% block title %}Permission denied - {{ block.super }}{% endblock %}
+
+{% block header_title %}Permission denied{% endblock %}
+
+{% block messages %}
+  <ul class="messages">
+    {% if message %}
+      <li>{{ message|safe }}</li>
+    {% else %}
+      <li>Permission denied</li>
+    {% endif %}
+  </ul>
+{% endblock %}
