@@ -9,10 +9,13 @@
         margin: 0.2em;
         display: inline;
     }
+    .cloud a:link {
+        text-decoration: none;
+    }
 </style>
 <ul class="tag-list cloud">
 {% for tag in tag_list %}
-  <li class="tag" style="font-size: {% if tag.num_pages > 20 %}23{% else %}{{ tag.num_pages|add:"3" }}mm{% endif %}"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a>
+  <li class="tag" style="font-size: {% if tag.num_pages > 20 %}30pt{% else %}{{ tag.num_pages|add:"9" }}pt{% endif %}"><a title="{{ tag.num_pages }} pages" href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a>
   </li>
 {% endfor %}
 </ul>

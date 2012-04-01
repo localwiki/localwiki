@@ -115,7 +115,7 @@
 					html += '</li>';
 				});
 				html += '<li class="tagedit-listelement tagedit-listelement-new">';
-				html += '<input type="text" value="" id="tagedit-input" disabled="disabled" class="tagedit-input-disabled" dir="'+options.direction+'"/>';
+				html += '<input type="text" value="" id="tagedit-input" dir="'+options.direction+'"/>';
 				html += '</li>';
 				html += '</ul>';
 				$(this).after(html);
@@ -202,8 +202,6 @@
 						})
 						.blur(function() {
 							if($(this).val().length == 0) {
-								// disable the field to prevent sending with the form
-								$(this).attr('disabled', 'disabled').addClass('tagedit-input-disabled');
 							}
 							else {
 								// Delete entry after a timeout
@@ -234,10 +232,7 @@
 						case 'LI':
 							break;
 						default:
-							$(this).find('#tagedit-input')
-								.removeAttr('disabled')
-								.removeClass('tagedit-input-disabled')
-								.focus();
+							$(this).find('#tagedit-input').focus();
 					}
 					return false;
 				})

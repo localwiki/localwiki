@@ -1,27 +1,27 @@
 /*
-Sapling pagelink dialog
+Sapling includetag dialog
 */
 
-CKEDITOR.dialog.add( 'includepage', function( editor )
+CKEDITOR.dialog.add( 'includetag', function( editor )
 {
-	var plugin = CKEDITOR.plugins.includepage;
+	var plugin = CKEDITOR.plugins.includetag;
 	var pagelink_plugin = CKEDITOR.plugins.pagelink;
 
 	return {
-		title : 'Include Page',
+		title : 'List of tagged pages',
 		minWidth : 250,
 		minHeight : 120,
 		contents : [
 			{
 				id : 'info',
-				label : 'Include Page',
-				title : 'Include Page',
+				label : 'List of tagged pages',
+				title : 'List of tagged pages',
 				elements :
 				[
 					{
 						type : 'text',
-						id : 'page',
-						label : 'Page name',
+						id : 'tag',
+						label : 'Tag',
 						required: true,
 						onLoad : function ()
 						{
@@ -42,26 +42,26 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 						validate : function()
 						{
 							var dialog = this.getDialog();
-							var func = CKEDITOR.dialog.validate.notEmpty( 'Please enter a page name' );
+							var func = CKEDITOR.dialog.validate.notEmpty( 'Please enter a tag' );
 							return func.apply( this );
 						},
 						setup : function( data )
 						{
 							this.allowOnChange = false;
-							if ( data.page )
-								this.setValue( data.page );
+							if ( data.tag )
+								this.setValue( data.tag );
 							this.allowOnChange = true;
 						},
 						commit : function( data )
 						{
-							data.page = this.getValue();
+							data.tag = this.getValue();
 							this.allowOnChange = false;
 						}
 					},
 					{
 						type : 'checkbox',
 						id : 'showtitle',
-						label : 'Show page title',
+						label : 'Show title',
 						setup : function( data )
 						{
 							if ( data.showtitle )
@@ -149,7 +149,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 			var editor = this.getParentEditor(),
 				selection = editor.getSelection(),
 				element = null,
-				data = { page : '' };
+				data = { tag : '', showtitle : true };
 
 			// Fill in all the relevant fields if there's already one link selected.
 			if ( ( element = pagelink_plugin.getSelectedLink( editor ) )
@@ -160,9 +160,12 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 			if( element )
 			{
 				this._.selectedElement = element;
-				data.page = decodeURIComponent(element.getAttribute( 'href' ));
+				data.tag = decodeURIComponent(element.getAttribute( 'href' ));
+				if(data.tag.indexOf('tags/') == 0)
+					data.tag = data.tag.substr('tags/'.length);
 				if(element.hasClass('includepage_showtitle'))
 					data.showtitle = true;
+				else data.showtitle = false;
 				if(element.hasClass('includepage_left'))
 					data.align = 'left';
 				if(element.hasClass('includepage_right'))
@@ -173,8 +176,8 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 			}
 			this.setupContent( data );
 			// Set up autocomplete.
-			var urlField = this.getContentElement( 'info', 'page' );
-            $('#' + urlField.domId + ' input').autocomplete({source: '/api/pages/suggest'});
+			var urlField = this.getContentElement( 'info', 'tag' );
+            $('#' + urlField.domId + ' input').autocomplete({source: '/api/tags/suggest'})
 		},
 		onOk : function()
 		{
@@ -186,9 +189,9 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				classes = [];
 
 			this.commitContent( data );
-			href = encodeURIComponent(data.page);
+			href = encodeURIComponent('tags/' + data.tag);
 	
-			classes.push('plugin includepage');
+			classes.push('plugin includetag');
 			if(data.showtitle)
 				classes.push('includepage_showtitle');
 			if(data.align)
@@ -200,13 +203,13 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 			
 			if ( !this._.selectedElement )
 			{
-				if(jQuery.trim(data.page) == '')
+				if(jQuery.trim(data.tag) == '')
 					return;
 				// Create element if current selection is collapsed.
 				var selection = editor.getSelection(),
 					ranges = selection.getRanges( true );
 
-				var textLabel = 'Include page ' + data.page;
+				var textLabel = 'List of pages tagged "' + data.tag + '"';
 
 				var text = new CKEDITOR.dom.text( textLabel, editor.document );
 				ranges[0].insertNode( text );
@@ -228,20 +231,20 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				var element = this._.selectedElement;
 
 				element.setAttributes( attributes );
-				element.setHtml( 'Include page ' + data.page );
+				element.setHtml( 'List of pages tagged "' + data.tag + '"' );
 			}
 		},
 		onHide : function()
 		{
 			// Close autocomplete.
-			var urlField = this.getContentElement( 'info', 'page' );
+			var urlField = this.getContentElement( 'info', 'tag' );
             $('#' + urlField.domId + ' input').autocomplete("destroy");
 		},
 		// Inital focus on 'url' field if link is of type URL.
 		onFocus : function()
 		{
-			var pageField = this.getContentElement( 'info', 'page' );
-			pageField.select();
+			var tagField = this.getContentElement( 'info', 'tag' );
+			tagField.select();
 		}
 	};
 });

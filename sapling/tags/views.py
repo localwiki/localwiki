@@ -1,26 +1,24 @@
 import copy
-
 from dateutil.parser import parse as dateparser
 
-from django.views.generic import UpdateView
 from django.core.urlresolvers import reverse
-from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic.detail import DetailView
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.db.models.aggregates import Count
+from django.views.generic import UpdateView
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 
 from utils.views import CreateObjectMixin, PermissionRequiredMixin,\
     Custom404Mixin
-from tags.models import PageTagSet, Tag, slugify
-from tags.forms import PageTagSetForm
-from pages.models import Page
-
-from versionutils.versioning.views import VersionsList, RevertView
+from versionutils.versioning.views import VersionsList, RevertView, UpdateView
 from versionutils.diff.views import CompareView
 from maps.views import MapForTag
 from maps.widgets import InfoMap
+from tags.models import PageTagSet, Tag, slugify
+from tags.forms import PageTagSetForm
+from pages.models import Page
 
 
 class PageNotFoundMixin(Custom404Mixin):
@@ -184,6 +182,7 @@ def suggest_tags(request):
     term = request.GET.get('term', None)
     if not term:
         return HttpResponse('')
-    results = Tag.objects.filter(name__istartswith=term)
+    results = Tag.objects.filter(name__istartswith=term).exclude(
+                                                            pagetagset=None)
     results = [t.name for t in results]
     return HttpResponse(json.dumps(results))

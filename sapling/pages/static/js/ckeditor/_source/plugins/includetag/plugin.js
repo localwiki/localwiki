@@ -1,6 +1,6 @@
 (function()
 {
-	CKEDITOR.plugins.add( 'includepage',
+	CKEDITOR.plugins.add( 'includetag',
 	{
 		requires : [ 'wikiplugins', 'pagelink' ],
 
@@ -9,19 +9,19 @@
 			var config = editor.config;
 			if(!config.wikiplugins_menu)
 				config.wikiplugins_menu = {};
-			config.wikiplugins_menu.includePage =
+			config.wikiplugins_menu.includeTag =
 				{
-					label : 'Include page',
-					command : 'includepage',
-					icon : this.path + 'images/document-import.png'
+					label : 'List of tagged pages',
+					command : 'includetag',
+					icon : this.path + 'images/tag-icon-small.png'
 				}
 			
 		},
 		
 		init : function( editor )
 		{
-			editor.addCommand( 'includepage', new CKEDITOR.dialogCommand( 'includepage' ) );
-			CKEDITOR.dialog.add( 'includepage', this.path + 'dialogs/includepage.js' );
+			editor.addCommand( 'includetag', new CKEDITOR.dialogCommand( 'includetag' ) );
+			CKEDITOR.dialog.add( 'includetag', this.path + 'dialogs/includetag.js' );
 			editor.on( 'doubleclick', function( evt )
 			{
 				var element = CKEDITOR.plugins.pagelink.getSelectedLink( editor ) || evt.data.element;
@@ -30,8 +30,8 @@
 				{
 					if ( element.is( 'a' ) )
 					{
-						if( element.hasClass('plugin') && element.hasClass('includepage') )
-							evt.data.dialog =  'includepage';
+						if( element.hasClass('plugin') && element.hasClass('includetag') )
+							evt.data.dialog =  'includetag';
 					}
 				}
 			});

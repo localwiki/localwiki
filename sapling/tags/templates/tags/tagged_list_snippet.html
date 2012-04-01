@@ -1,4 +1,5 @@
 {% if map %}
+  {{ map.media }}
   <div id="map">
     {{ map }}
     <div class="info"><a href="{% url maps:tagged tag=tag.slug %}">View map</a></div>

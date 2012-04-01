@@ -226,16 +226,12 @@ textarea, input, select {
 #object_tags input[type="submit"] {
     display: inline;
 }
-#object_tags li.tag, .tagedit-list li {
+#object_tags li.tag {
     -webkit-box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.05);
     -moz-box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.05);
     box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.05);
-    display: inline;
-    float: none;
-}
-/* Just set this on the non-edit tag, b/c it messes up in edit for some reason */
-#object_tags li.tag { 
-    line-height: 2.3;
+    display: block;
+    float: left;
 }
 /* no box-shadow around the text input area */
 .tagedit-list li.tagedit-listelement-new {
@@ -244,7 +240,7 @@ textarea, input, select {
     box-shadow: none;
 }
 #object_tags .tag-list {
-    display: block;
+    display: table-cell;
 }
 #object_tags .edit_tags {
     display: block;
@@ -901,6 +897,9 @@ div.templates li {
     padding-left: 20px;
 }
 
+.see_also {
+    margin-top: 2em;
+}
 /*
 ====================================
  Attributions

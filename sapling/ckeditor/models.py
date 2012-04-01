@@ -33,19 +33,25 @@ class XMLValidator(object):
 class HTMLSanitizer(sanitizer.HTMLSanitizer):
     allowed_attributes_map = None
     allowed_styles_map = None
+    rename_elements = None
 
     def sanitize_token(self, token):
         """"
         An adaptation of sanitizer.HTMLSanitizer.sanitize_token that enforces
         particular values for allowed attributes.  We use the class variables
-        allowed_attributes_map and allowed_styles_map, which are of the form:
+        allowed_attributes_map, allowed_styles_map, and rename_elements,
+        which are of the form:
 
             allowed_attributes_map = {'a': ['class', 'href'], 'img': ['style']}
 
             allowed_styles_map = {'img': ['width', 'height']}
+
+            rename_elements = {'b': 'strong', 'i': 'em'}
         """
         if token["type"] in (tokenTypes["StartTag"], tokenTypes["EndTag"],
                              tokenTypes["EmptyTag"]):
+            if self.rename_elements and token["name"] in self.rename_elements:
+                token["name"] = self.rename_elements[token["name"]]
             if token["name"] in self.allowed_elements:
                 tag = token["name"]
                 if "data" in token:
@@ -124,11 +130,12 @@ def parse_style(css):
     return style
 
 
-def custom_sanitizer(elements, attribute_map, styles_map):
+def custom_sanitizer(elements, attribute_map, styles_map, rename):
     class CustomSanitizer(HTMLSanitizer):
         allowed_elements = elements
         allowed_attributes_map = attribute_map
         allowed_styles_map = styles_map
+        rename_elements = rename
 
     return CustomSanitizer
 
@@ -141,14 +148,14 @@ def sanitize_html(unsafe):
 
 def sanitize_html_fragment(unsafe, allowed_elements=None,
         allowed_attributes_map=None, allowed_styles_map=None,
-        encoding='UTF-8'):
+        rename_elements=None, encoding='UTF-8'):
     # TODO: make this more simple / understandable and factor out from
     # plugins.html_to_template_text
     if not allowed_elements:
         allowed_elements = sanitizer.HTMLSanitizer.allowed_elements
 
     tokenizer = custom_sanitizer(allowed_elements, allowed_attributes_map,
-                               allowed_styles_map)
+                               allowed_styles_map, rename_elements)
     p = html5lib.HTMLParser(
         tree=treebuilders.getTreeBuilder("lxml"),
         tokenizer=tokenizer,
@@ -205,14 +212,15 @@ class HTML5FragmentField(models.TextField):
     Any non-whitelisted elements, such as <script>, will be escaped, and non-
     whitelisted attributes and styles will be stripped.
     You can customize the whitelisted elements, attributes, and styles by
-    setting the allowed_elements, allowed_attributes_map, and
-    allowed_styles_map argument like this:
+    setting the allowed_elements, allowed_attributes_map, allowed_styles_map,
+    and rename_elements arguments like this:
 
     class Page(models.Model):
         contents = HTML5FragmentField(
             allowed_elements=['p', 'a', 'strong', 'em'],
             allowed_attributes_map={'p': ['style'], 'a': ['href', 'name']},
-            allowed_styles_map={'p': ['text-align', 'font-size']}
+            allowed_styles_map={'p': ['text-align', 'font-size']},
+            rename_elements={'b': 'strong', 'i': 'em'}
         )
 
     All of these are optional, and, when missing, imply anything is allowed.
@@ -222,17 +230,19 @@ class HTML5FragmentField(models.TextField):
 
     def __init__(self, verbose_name=None, name=None, allowed_elements=None,
                  allowed_attributes_map=None, allowed_styles_map=None,
-                 **kwargs):
+                 rename_elements=None, **kwargs):
         models.Field.__init__(self, verbose_name, name, **kwargs)
         self.allowed_elements = allowed_elements
         self.allowed_attributes_map = allowed_attributes_map
         self.allowed_styles_map = allowed_styles_map
+        self.rename_elements = rename_elements
 
     def clean(self, value, model_instance):
         value = super(HTML5FragmentField, self).clean(value, model_instance)
         return sanitize_html_fragment(value, self.allowed_elements,
                                       self.allowed_attributes_map,
                                       self.allowed_styles_map,
+                                      self.rename_elements,
                                       encoding=self.encoding)
 
     def formfield(self, **kwargs):

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -10,14 +12,15 @@
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '#',
+        URL_ROOT:    '',
         VERSION:     '0.2',
-        COLLAPSE_MODINDEX: false,
+        COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="localwiki v0.2 documentation" href="index.html" />
     <link rel="next" title="Advanced topics" href="advanced.html" />
@@ -55,6 +58,13 @@ site&#8217;s templates, and by creating entirely new themes.</p>
 less technical at some point.  For now you&#8217;ll need to be comfortable
 with moving things around on a server, editing files and have some
 knowledge of CSS and HTML.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you&#8217;re a developer and have been playing around, make sure
+you have set <tt class="docutils literal"><span class="pre">DEBUG</span></tt> to <tt class="xref docutils literal"><span class="pre">False</span></tt> in <tt class="docutils literal"><span class="pre">localsettings.py</span></tt>,
+otherwise you won&#8217;t see static media show up when using
+<tt class="docutils literal"><span class="pre">localwiki-manage</span> <span class="pre">runsever</span></tt>.</p>
+</div>
 <div class="section" id="template-files">
 <h2>Template files<a class="headerlink" href="#template-files" title="Permalink to this headline">¶</a></h2>
 <p>The LocalWiki software has the concept of a <em>template</em>.  A template is
@@ -110,7 +120,7 @@ system.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">It&#8217;s not a good idea to modify the files in the code directory
 directly, as they&#8217;re likely to be replaced when you upgrade.  If you
-want to customize the code you should do a <a class="reference external" href="install.html#dev-install"><em>development install</em></a>.</p>
+want to customize the code you should do a <a class="reference internal" href="install.html#dev-install"><em>development install</em></a>.</p>
 </div>
 <p>Copy the path printed out and <tt class="docutils literal"><span class="pre">cd</span></tt> there.  You&#8217;ll see there&#8217;s a
 <tt class="docutils literal"><span class="pre">themes</span></tt> directory in that directory.  Inside the <tt class="docutils literal"><span class="pre">themes</span></tt> directory
@@ -338,47 +348,47 @@ simply define <tt class="docutils literal"><span class="pre">themes/nameofyourth
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-            <h3><a href="index.html">Table Of Contents</a></h3>
-            <ul>
-<li><a class="reference external" href="#">Customizing your localwiki&#8217;s appearance</a><ul>
-<li><a class="reference external" href="#template-files">Template files</a></li>
-<li><a class="reference external" href="#themes">Themes</a></li>
-<li><a class="reference external" href="#tutorial">Tutorial</a><ul>
-<li><a class="reference external" href="#example-1-adding-a-logo">Example 1: Adding a logo</a></li>
-<li><a class="reference external" href="#example-2-adding-a-custom-css-file-on-every-page">Example 2: Adding a custom CSS file on every page</a></li>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Customizing your localwiki&#8217;s appearance</a><ul>
+<li><a class="reference internal" href="#template-files">Template files</a></li>
+<li><a class="reference internal" href="#themes">Themes</a></li>
+<li><a class="reference internal" href="#tutorial">Tutorial</a><ul>
+<li><a class="reference internal" href="#example-1-adding-a-logo">Example 1: Adding a logo</a></li>
+<li><a class="reference internal" href="#example-2-adding-a-custom-css-file-on-every-page">Example 2: Adding a custom CSS file on every page</a></li>
 </ul>
 </li>
-<li><a class="reference external" href="#creating-an-entirely-new-theme">Creating an entirely new theme</a></li>
-<li><a class="reference external" href="#referring-to-static-assets-in-templates">Referring to static assets in templates</a></li>
-<li><a class="reference external" href="#overriding-built-in-templates">Overriding built-in templates</a></li>
+<li><a class="reference internal" href="#creating-an-entirely-new-theme">Creating an entirely new theme</a></li>
+<li><a class="reference internal" href="#referring-to-static-assets-in-templates">Referring to static assets in templates</a></li>
+<li><a class="reference internal" href="#overriding-built-in-templates">Overriding built-in templates</a></li>
 </ul>
 </li>
 </ul>
 
-            <h4>Previous topic</h4>
-            <p class="topless"><a href="contribute.html"
-                                  title="previous chapter">Contributing</a></p>
-            <h4>Next topic</h4>
-            <p class="topless"><a href="advanced.html"
-                                  title="next chapter">Advanced topics</a></p>
-            <h3>This Page</h3>
-            <ul class="this-page-menu">
-              <li><a href="_sources/customizing.txt"
-                     rel="nofollow">Show Source</a></li>
-            </ul>
-          <div id="searchbox" style="display: none">
-            <h3>Quick search</h3>
-              <form class="search" action="search.html" method="get">
-                <input type="text" name="q" size="18" />
-                <input type="submit" value="Go" />
-                <input type="hidden" name="check_keywords" value="yes" />
-                <input type="hidden" name="area" value="default" />
-              </form>
-              <p class="searchtip" style="font-size: 90%">
-              Enter search terms or a module, class or function name.
-              </p>
-          </div>
-          <script type="text/javascript">$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="contribute.html"
+                        title="previous chapter">Contributing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="advanced.html"
+                        title="next chapter">Advanced topics</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/customizing.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -399,8 +409,8 @@ simply define <tt class="docutils literal"><span class="pre">themes/nameofyourth
       </ul>
     </div>
     <div class="footer">
-      &copy; Copyright 2011, Mike Ivanov, Philip Neustrom.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.4.
+        &copy; Copyright 2011, Mike Ivanov, Philip Neustrom.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
     </div>
   </body>
 </html>

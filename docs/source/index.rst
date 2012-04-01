@@ -11,6 +11,7 @@ Contents:
    configure
    settings
    permissions
+   subscribers
    upgrade
    contribute
    customizing
