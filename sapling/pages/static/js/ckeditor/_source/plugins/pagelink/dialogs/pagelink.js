@@ -60,9 +60,13 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 		
 		return retval;
 	}
-	var processLink = function( editor, element )
+	var processLink = function( editor, element, selected_text )
 	{
 		var href = ( element  && (element.data( 'cke-saved-href' ) || element.getAttribute( 'href' ) ) ) || '';
+        // If there's no link selected, let's default to selected text
+        // if it's there.
+        if (!href && selected_text)
+            href = selected_text;
 
 		var retval = parseLink(href);
 		
@@ -188,12 +192,24 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 				selection = editor.getSelection(),
 				element = null;
 
-			// Fill in all the relevant fields if there's already one link selected.
-			if ( ( element = plugin.getSelectedLink( editor ) ) && element.hasAttribute( 'href' ) )
+            selection = editor.getSelection();
+            selected_text = null;
+			// Fill in all the relevant fields if there's already a link selected.
+			if ( ( element = plugin.getSelectedLink( editor ) ) && element.hasAttribute( 'href' ) ) {
 				selection.selectElement( element );
-			else
+            }
+            else if (selection && selection.getRanges()) {
+                var total_text = selection.getStartElement().getText();
+                var ranges = selection.getRanges();
+                if (ranges) {
+                   var range = ranges[0];
+                   selected_text = total_text.slice(range.startOffset, range.endOffset);
+                }
+            }
+			else {
 				element = null;
-			this.setupContent( processLink.apply( this, [ editor, element ] ) );
+            }
+			this.setupContent( processLink.apply( this, [ editor, element, selected_text ] ) );
 			// Set up autocomplete.
 			var urlField = this.getContentElement( 'info', 'url' );
             $('#' + urlField.domId + ' input').autocomplete({source: '/api/pages/suggest'});
