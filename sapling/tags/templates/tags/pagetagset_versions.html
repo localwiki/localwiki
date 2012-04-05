@@ -15,8 +15,9 @@
   {% if page.pagetagset.tags.exists %}
     {% page_tags page %}
   {% else %}
+    {% url pages:tags slug=page.slug as page_url %}
     {% blocktrans %}
-        This page has no tags.  <a href="{% url pages:tags slug=page.slug %}">Add some!</a>
+        This page has no tags.  <a href="{{ page_url }}">Add some!</a>
     {% endblocktrans %}
   {% endif %}
   </div>
