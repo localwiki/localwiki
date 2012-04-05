@@ -149,7 +149,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 			var editor = this.getParentEditor(),
 				selection = editor.getSelection(),
 				element = null,
-				data = { page : '' };
+				data = { page : '', showtitle : true };
 
 			// Fill in all the relevant fields if there's already one link selected.
 			if ( ( element = pagelink_plugin.getSelectedLink( editor ) )
