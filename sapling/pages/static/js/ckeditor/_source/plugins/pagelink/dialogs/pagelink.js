@@ -193,17 +193,15 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 				element = null;
 
             selection = editor.getSelection();
-            selected_text = null;
 			// Fill in all the relevant fields if there's already a link selected.
 			if ( ( element = plugin.getSelectedLink( editor ) ) && element.hasAttribute( 'href' ) ) {
 				selection.selectElement( element );
             }
             else if (selection && selection.getRanges()) {
-                var total_text = selection.getStartElement().getText();
-                var ranges = selection.getRanges();
-                if (ranges) {
-                   var range = ranges[0];
-                   selected_text = total_text.slice(range.startOffset, range.endOffset);
+                selected_text = String(selection.getNative());
+                if (CKEDITOR.env.ie) {
+                    selection.unlock(true);
+                    selected_text = String(selection.getNative().createRange().text);
                 }
             }
 			else {
