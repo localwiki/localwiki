@@ -66,7 +66,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
         // If there's no link selected, let's default to selected text
         // if it's there.
         if (!href && selected_text)
-            href = selected_text;
+            href = encodeURIComponent(selected_text);
 
 		var retval = parseLink(href);
 		
@@ -190,22 +190,29 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 		{
 			var editor = this.getParentEditor(),
 				selection = editor.getSelection(),
-				element = null;
-
-            selection = editor.getSelection();
+				element,
+				selected_text;
 			// Fill in all the relevant fields if there's already a link selected.
+			
 			if ( ( element = plugin.getSelectedLink( editor ) ) && element.hasAttribute( 'href' ) ) {
 				selection.selectElement( element );
             }
-            else if (selection && selection.getRanges()) {
-                selected_text = String(selection.getNative());
-                if (CKEDITOR.env.ie) {
-                    selection.unlock(true);
-                    selected_text = String(selection.getNative().createRange().text);
-                }
+            else {
+                element = undefined;
             }
-			else {
-				element = null;
+            if(!element && selection && selection.getRanges()) {
+                // Use selected text to set starting href value, but *only* if
+                // the selection is simple text, not images or anything else
+                var ranges = selection.getRanges();
+                if(ranges.length == 1 &&
+                   ranges[0].getCommonAncestor(true, false).type == CKEDITOR.NODE_TEXT)
+                {
+                    selected_text = String(selection.getNative());
+                    if (CKEDITOR.env.ie) {
+                        selection.unlock(true);
+                        selected_text = String(selection.getNative().createRange().text);
+                    }
+                }
             }
 			this.setupContent( processLink.apply( this, [ editor, element, selected_text ] ) );
 			// Set up autocomplete.
