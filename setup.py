@@ -139,7 +139,7 @@ setup(
     name='localwiki',
     version=get_version(),
     description="LocalWiki is a tool for collaboration in local communities",
-    long_description=open(os.path.join('deb_utils','DESCRIPTION.debian')).read(),
+    long_description=open(os.path.join('install_config','DESCRIPTION_pypi.txt')).read(),
     author='Mike Ivanov',
     author_email='mivanov@gmail.com',
     packages=find_packages(),
