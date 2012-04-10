@@ -517,7 +517,7 @@ class HTMLToTemplateTextTest(TestCase):
         imports = ''.join(tag_imports)
         template_text = html_to_template_text(html)
         self.assertEqual(template_text, imports +
-                                        'a\xc2\xa0<strong>\xc2\xa0</strong>\n')
+                                        u'a\xa0<strong>\xa0</strong>\n')
 
 
 class PluginTest(TestCase):
