@@ -60,9 +60,13 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 		
 		return retval;
 	}
-	var processLink = function( editor, element )
+	var processLink = function( editor, element, selected_text )
 	{
 		var href = ( element  && (element.data( 'cke-saved-href' ) || element.getAttribute( 'href' ) ) ) || '';
+        // If there's no link selected, let's default to selected text
+        // if it's there.
+        if (!href && selected_text)
+            href = encodeURIComponent(selected_text);
 
 		var retval = parseLink(href);
 		
@@ -186,14 +190,31 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 		{
 			var editor = this.getParentEditor(),
 				selection = editor.getSelection(),
-				element = null;
-
-			// Fill in all the relevant fields if there's already one link selected.
-			if ( ( element = plugin.getSelectedLink( editor ) ) && element.hasAttribute( 'href' ) )
+				element,
+				selected_text;
+			// Fill in all the relevant fields if there's already a link selected.
+			
+			if ( ( element = plugin.getSelectedLink( editor ) ) && element.hasAttribute( 'href' ) ) {
 				selection.selectElement( element );
-			else
-				element = null;
-			this.setupContent( processLink.apply( this, [ editor, element ] ) );
+            }
+            else {
+                element = undefined;
+            }
+            if(!element && selection && selection.getRanges()) {
+                // Use selected text to set starting href value, but *only* if
+                // the selection is simple text, not images or anything else
+                var ranges = selection.getRanges();
+                if(ranges.length == 1 &&
+                   ranges[0].getCommonAncestor(true, false).type == CKEDITOR.NODE_TEXT)
+                {
+                    selected_text = String(selection.getNative());
+                    if (CKEDITOR.env.ie) {
+                        selection.unlock(true);
+                        selected_text = String(selection.getNative().createRange().text);
+                    }
+                }
+            }
+			this.setupContent( processLink.apply( this, [ editor, element, selected_text ] ) );
 			// Set up autocomplete.
 			var urlField = this.getContentElement( 'info', 'url' );
             $('#' + urlField.domId + ' input').autocomplete({source: '/api/pages/suggest'});

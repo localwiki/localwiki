@@ -78,6 +78,8 @@ If you're hacking on the code, you'll probably want to run, inside the virtualen
 Instead of 'install'.  This makes the code update without having to run
 'setup.py install' every time!
 
+You'll also probably want to set DEBUG to False in share/conf/localsettings.py
+
 -------------------------------------------------------------------------------
 We've really only tested things on Ubuntu Server Edition 10.04 LTS.  It should
 be very possible to run this on any Unix-y system.  You'll need to:
