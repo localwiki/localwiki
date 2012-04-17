@@ -355,8 +355,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                     commit: function (element) {
                         if (this.getValue() || this.isChanged()) {
                         	if(dialogType == 'attachfile') {
-                        		element.setAttribute('href', encodeURI(this.getValue()));
-                        		element.setText(this.getValue().substring('_files/'.length));
+                        		element.setAttribute('href', this.getValue());
+                        		element.setText(decodeURIComponent(this.getValue().substring('_files/'.length)));
                         	}
                         	else {
 	                            element.on('load', onImgLoadEvent, this.getDialog());

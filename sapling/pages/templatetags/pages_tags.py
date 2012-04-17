@@ -117,14 +117,20 @@ class IncludePageNode(IncludeContentNode):
         if not self.page:
             return None
         return ('<a href="%s">%s</a>'
-                % (self.page.pretty_slug, self.page.name))
+                % (self.get_page_url(), self.page.name))
+
+    def get_page_url(self):
+        if self.page:
+            slug = self.page.pretty_slug
+        else:
+            slug = name_to_url(self.name)
+        return reverse('pages:show', args=[slug])
 
     def get_content(self, context):
         if not self.page:
-            page_url = reverse('pages:show', args=[name_to_url(self.name)])
             return ('<p class="plugin includepage">Unable to include '
                     '<a href="%s" class="missing_link">%s</a></p>'
-                    % (page_url, self.name))
+                    % (self.get_page_url(), self.name))
         # prevent endless loops
         context_page = context['page']
         include_stack = context.get('_include_stack', [])
@@ -132,7 +138,8 @@ class IncludePageNode(IncludeContentNode):
         if self.page.name in include_stack:
             return ('<p class="plugin includepage">Unable to'
                     ' include <a href="%s">%s</a>: endless include'
-                    ' loop.</p>' % (name_to_url(self.name), self.name))
+                    ' loop.</p>' % (self.get_page_url(),
+                                    self.page.name))
         context['_include_stack'] = include_stack
         context['page'] = self.page
         template_text = html_to_template_text(self.page.content, context)

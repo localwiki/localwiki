@@ -23,6 +23,7 @@ from pages.plugins import html_to_template_text
 from pages.plugins import tag_imports
 from pages.xsstests import xss_exploits
 from pages import exceptions
+from tags.models import PageTagSet, Tag
 
 
 class PageTest(TestCase):
@@ -174,11 +175,18 @@ class PageTest(TestCase):
         points = GEOSGeometry("""MULTIPOINT (-122.4378964233400069 37.7971758820830033, -122.3929211425700032 37.7688207875790027, -122.3908612060599950 37.7883584775320003, -122.4056240844700056 37.8013807351830025, -122.4148937988299934 37.8002956347170027, -122.4183270263600036 37.8051784612779969)""")
         map = MapData(points=points, page=p)
         map.save()
+        # Add tags to page
+        tagset = PageTagSet(page=p)
+        tagset.save()
+        tag = Tag(name="tag1")
+        tag.save()
+        tagset.tags.add(tag)
 
         p.rename_to("New Page With FKs")
 
         new_p = Page.objects.get(name="New Page With FKs")
         self.assertEqual(len(MapData.objects.filter(page=new_p)), 1)
+        self.assertEqual(len(new_p.pagetagset.tags.all()), 1)
         # Two redirects: one we created explicitly and one that was
         # created during rename_to()
         self.assertEqual(len(Redirect.objects.filter(destination=new_p)), 2)
@@ -509,7 +517,7 @@ class HTMLToTemplateTextTest(TestCase):
         imports = ''.join(tag_imports)
         template_text = html_to_template_text(html)
         self.assertEqual(template_text, imports +
-                                        'a\xc2\xa0<strong>\xc2\xa0</strong>\n')
+                                        u'a\xa0<strong>\xa0</strong>\n')
 
 
 class PluginTest(TestCase):

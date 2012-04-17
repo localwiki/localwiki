@@ -51,7 +51,7 @@ class HTMLSanitizer(sanitizer.HTMLSanitizer):
         if token["type"] in (tokenTypes["StartTag"], tokenTypes["EndTag"],
                              tokenTypes["EmptyTag"]):
             if self.rename_elements and token["name"] in self.rename_elements:
-                token["name"] = self.rename_elements[token["name"]]
+                token["name"] = unicode(self.rename_elements[token["name"]])
             if token["name"] in self.allowed_elements:
                 tag = token["name"]
                 if "data" in token:

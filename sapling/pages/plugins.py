@@ -294,11 +294,9 @@ def html_to_template_text(unsafe_html, context=None, render_plugins=True):
     template_bits = [etree.tostring(elem, encoding='UTF-8')
                      for elem in container]
     container_text = escape(container.text or '').encode('UTF-8')
-    return sanitize_final(''.join(tag_imports +
-                                  [container_text] +
-                                  template_bits
-                                  )
-                         )
+    template_text = sanitize_final(''.join(
+        tag_imports + [container_text] + template_bits))
+    return template_text.decode('utf-8')
 
 
 class LinkNode(Node):
