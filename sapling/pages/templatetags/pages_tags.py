@@ -69,34 +69,12 @@ class IncludeContentNode(BaseIncludeNode):
 
     def render(self, context):
         try:
-            try:
-                page = Page.objects.get(slug__exact=slugify(self.page_name))
-                header = ''
-                if 'showtitle' in self.args:
-                    header = ('<h2><a href="%s">%s</a></h2>'
-                                % (page.pretty_slug, page.name))
-                content = header + page.content
-
-                # prevent endless loops
-                context_page = context['page']
-                include_stack = context.get('_include_stack', [])
-                include_stack.append(context_page.name)
-                if page.name in include_stack:
-                    content = ('<p class="plugin includepage">' + _('Unable to'
-                               ' include <a href="%(pagename)s">%(pagename)s</a>: endless include'
-                               ' loop.)') + '</p>') % {'pagename': self.page_name}
-                context['_include_stack'] = include_stack
-                context['page'] = page
-                template_text = html_to_template_text(content, context)
-                # restore context
-                context['_include_stack'].pop()
-                context['page'] = context_page
-            except Page.DoesNotExist:
-                page_url = reverse('pages:show',
-                                   args=[name_to_url(self.page_name)])
-                template_text = (('<p class="plugin includepage">' + _('Unable to'
-                        ' include <a href="%(pageurl)s" class="missing_link">%(pagename)s</a>') + '</p>')
-                        % {'pageurl': page_url, 'pagename': self.page_name})
+            template_text = ''
+            if 'showtitle' in self.args:
+                title = self.get_title(context)
+                if title:
+                    template_text += '<h2>%s</h2>' % title
+            template_text += self.get_content(context)
             template = Template(template_text)
             return self.render_template(template, context)
         except:

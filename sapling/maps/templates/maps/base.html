@@ -11,7 +11,6 @@
 
 {% block header_title %}
   {% if mapdata %}
-=======
   <a href="{% url maps:global %}">{% trans "Map" %}</a> / <a href="{% url pages:show slug=mapdata.page.pretty_slug %}">{{ mapdata.page.name }}</a>
   {% endif %}
 {% endblock %}
