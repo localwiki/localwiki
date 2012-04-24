@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block title %}{% blocktrans with name=new.name %}Differences for {{ name }}{% endblocktrans %}{% endblock %}
-{% block header_title %}{% url pages:show slug=page.pretty_slug as pretty_slug %}{% blocktrans with name=new.name %}Differences for <a href="{{ pretty_slug }}">{{ new.name }}</a>{% endblocktrans %}{% endblock %}
+{% block header_title %}{% url pages:show slug=page.pretty_slug as pretty_slug %}{% blocktrans with name=new.name %}Differences for <a href="{{ pretty_slug }}">{{ new_name }}</a>{% endblocktrans %}{% endblock %}
 
 {% block content %}
   <div id="page">

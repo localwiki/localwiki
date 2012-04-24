@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-20 17:02+0000\n"
+"POT-Creation-Date: 2012-04-24 19:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
 "Language: pt-PT\n"
@@ -20,19 +20,19 @@ msgstr ""
 msgid "This field contains invalid data."
 msgstr "Este campo contém dados inválidos."
 
-#: ckeditor/models.py:171
+#: ckeditor/models.py:178
 msgid "XML text"
 msgstr "texto XML"
 
-#: ckeditor/models.py:181
+#: ckeditor/models.py:188
 msgid "XHTML text"
 msgstr "texto XHTML"
 
-#: ckeditor/models.py:190
+#: ckeditor/models.py:197
 msgid "HTML5 text"
 msgstr "texto HTML5"
 
-#: ckeditor/models.py:220
+#: ckeditor/models.py:228
 msgid "HTML5 fragment text"
 msgstr "fragmento de texto HTML5"
 
@@ -44,19 +44,19 @@ msgstr "Erro a carregar"
 msgid "Upload result"
 msgstr "Resultado do carregamento"
 
-#: dashboard/views.py:102 dashboard/views.py:146
+#: dashboard/views.py:113 dashboard/views.py:157
 msgid "pages"
 msgstr "páginas"
 
-#: dashboard/views.py:103 dashboard/views.py:147
+#: dashboard/views.py:114 dashboard/views.py:158
 msgid "maps"
 msgstr "mapas"
 
-#: dashboard/views.py:104 dashboard/views.py:148
+#: dashboard/views.py:115 dashboard/views.py:159
 msgid "files"
 msgstr "ficheiros"
 
-#: dashboard/views.py:106 dashboard/views.py:149
+#: dashboard/views.py:117 dashboard/views.py:160
 msgid "redirects"
 msgstr "redirecionamentos"
 
@@ -126,12 +126,16 @@ msgstr "Mapa de \"%s\""
 msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
 "instances."
-msgstr "O atributo '%(fieldname)s' só pode ser acedido das instância de %(ownername)s."
+msgstr ""
+"O atributo '%(fieldname)s' só pode ser acedido das instância de "
+"%(ownername)s."
 
 #: maps/fields.py:214
 #, python-format
 msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
-msgstr "não é possível atribuir ao conjunto %(cname)s CollectionFrom um valor do tipo: %(vtype)s"
+msgstr ""
+"não é possível atribuir ao conjunto %(cname)s CollectionFrom um valor do "
+"tipo: %(vtype)s"
 
 #: maps/validators.py:14
 #, python-format
@@ -151,9 +155,11 @@ msgstr "Blocos do mapa via"
 msgid "Recent changes on this Map"
 msgstr "Alterações recentes neste mapa"
 
-#: maps/templates/maps/base.html:14 maps/templates/maps/mapdata_detail.html:21
-msgid "Map for"
-msgstr "Mapa de"
+#: maps/templates/maps/base.html:14 maps/templates/maps/mapdata_list.html:22
+#: maps/templates/maps/mapdata_list.html:28
+#: themes/sapling/templates/site/nav.html:6
+msgid "Map"
+msgstr "Mapa"
 
 #: maps/templates/maps/base.html:31 maps/templates/maps/mapdata_detail.html:50
 #: maps/templates/maps/mapdata_form.html:84
@@ -183,14 +189,22 @@ msgstr "Apagar"
 
 #: maps/templates/maps/mapdata_confirm_revert.html:14
 #: pages/templates/pages/page_confirm_revert.html:14
+#: tags/templates/tags/pagetagset_confirm_revert.html:14
 msgid "Revert"
 msgstr "Reverter"
+
+#: maps/templates/maps/mapdata_detail.html:21
+msgid "Map for"
+msgstr "Mapa de"
 
 #: maps/templates/maps/mapdata_detail.html:35
 #: maps/templates/maps/mapdata_diff.html:59
 #: maps/templates/maps/mapdata_diff.html:64
 #: redirects/templates/redirects/redirect_diff.html:43
 #: redirects/templates/redirects/redirect_diff.html:48
+#: tags/templates/tags/pagetagset_diff.html:37
+#: tags/templates/tags/pagetagset_diff.html:42
+#: tags/templates/tags/pagetagset_version_detail.html:17
 msgid "Revision"
 msgstr "Revisão"
 
@@ -199,7 +213,13 @@ msgstr "Revisão"
 #: maps/templates/maps/mapdata_diff.html:65
 #: redirects/templates/redirects/redirect_diff.html:44
 #: redirects/templates/redirects/redirect_diff.html:49
+#: tags/templates/tags/pagetagset_diff.html:38
+#: tags/templates/tags/pagetagset_diff.html:43
+#: tags/templates/tags/pagetagset_version_detail.html:18
+#: versionutils/diff/templates/versionutils/history/form.html:34
+#: versionutils/merging/templates/versionutils/history/form.html:34
 #: versionutils/templates/versionutils/history/form.html:34
+#: versionutils/versioning/templates/versionutils/history/form.html:34
 msgid "by"
 msgstr "por"
 
@@ -213,17 +233,23 @@ msgid "last modified %(tsince)s ago"
 msgstr "última modificação há %(tsince)s"
 
 #: maps/templates/maps/mapdata_diff.html:49
-#: maps/templates/maps/mapdata_diff.html:50
 msgid "Differences for map on"
 msgstr "Diferenças para mapa de"
 
+#: maps/templates/maps/mapdata_diff.html:50
+#, fuzzy, python-format
+msgid "Differences for <a href=\"%(maps_global)s}\">Map</a>"
+msgstr "Diferenças para <a href=\"%(maps_global)s\">Mapa</a>"
+
 #: maps/templates/maps/mapdata_diff.html:70
 #: pages/templates/pages/page_diff.html:41
+#: tags/templates/tags/pagetagset_diff.html:48
 msgid "Deletions are marked like this"
 msgstr "Remoções estão marcadas assim"
 
 #: maps/templates/maps/mapdata_diff.html:73
 #: pages/templates/pages/page_diff.html:44
+#: tags/templates/tags/pagetagset_diff.html:51
 msgid "Additions are marked like this"
 msgstr "Adições estão marcadas assim"
 
@@ -245,12 +271,6 @@ msgstr "Gravar"
 #: pages/templates/pages/page_form.html:43
 msgid "Cancel"
 msgstr "Cancelar"
-
-#: maps/templates/maps/mapdata_list.html:22
-#: maps/templates/maps/mapdata_list.html:25
-#: themes/sapling/templates/site/nav.html:6
-msgid "Map"
-msgstr "Mapa"
 
 #: maps/templates/maps/mapdata_new.html:3
 msgid "Map for page not found"
@@ -303,25 +323,25 @@ msgstr "Já existe uma página com este nome"
 msgid "The new file should be of the same type"
 msgstr "O novo ficheiro deve ser do mesmo tipo"
 
-#: pages/models.py:84
+#: pages/models.py:90
 msgid "Page name is invalid."
 msgstr "Nome da página inválido"
 
-#: pages/models.py:134 pages/models.py:146
+#: pages/models.py:140 pages/models.py:152
 #, fuzzy, python-format
 msgid "Renamed from \"%s\""
 msgstr "Nome alterado de \"%s\""
 
-#: pages/models.py:138
+#: pages/models.py:144
 #, python-format
 msgid "The page '%s' already exists!"
 msgstr "A página '%s' já existe!"
 
-#: pages/models.py:178 pages/models.py:188 pages/models.py:204
+#: pages/models.py:194 pages/models.py:207 pages/models.py:226
 msgid "Parent page renamed"
 msgstr "Nome da página superior alterado"
 
-#: pages/plugins.py:368
+#: pages/plugins.py:391
 msgid ""
 "The embedded URL is not on the list of approved providers.  Contact the site "
 "administrator to add it."
@@ -329,11 +349,11 @@ msgstr ""
 "O URL (embedded) não está na lista dos fornecedores permitidos.  Contacte o "
 "administrador do site para o adicionar."
 
-#: pages/plugins.py:372
+#: pages/plugins.py:395
 msgid "Invalid embed code"
 msgstr "Código de embed inválido"
 
-#: pages/plugins.py:384 search/templates/search/search.html:10
+#: pages/plugins.py:407 search/templates/search/search.html:12
 #: themes/sapling/templates/site/search_form.html:5
 msgid "Search or create page"
 msgstr "Pesquisar ou criar página"
@@ -417,11 +437,11 @@ msgstr "Mudar o nome da página"
 msgid "Redirect"
 msgstr "Redirecionar"
 
-#: pages/templates/pages/page_detail.html:15
+#: pages/templates/pages/page_detail.html:16
 msgid "Redirected from"
 msgstr "Redirecionado de"
 
-#: pages/templates/pages/page_detail.html:29
+#: pages/templates/pages/page_detail.html:30
 #, python-format
 msgid ""
 "Revision %(page.version_info.version_number)s\n"
@@ -430,17 +450,15 @@ msgstr ""
 "Revisão %(page.version_info.version_number)s\n"
 "          (%(date)s por %(user_link)s)"
 
-#: pages/templates/pages/page_detail.html:37
+#: pages/templates/pages/page_detail.html:38
+#: tags/templates/tags/tagged_list_snippet.html:7
 msgid "View map"
 msgstr "Ver mapa"
 
-#: pages/templates/pages/page_detail.html:53
-#, python-format
-msgid ""
-"<a href=\"%(pretty_slug)s\">Edit</a> this page (last modified %(ago)s ago)"
-msgstr ""
-"<a href=\"%(pretty_slug)s\">Editar</a> esta página (última modificação há "
-"%(ago)s)"
+#: pages/templates/pages/page_detail.html:71
+#, fuzzy, python-format
+msgid "This page was last modified %(ago)s ago"
+msgstr "última modificação há %(tsince)s"
 
 #: pages/templates/pages/page_diff.html:19
 #, python-format
@@ -449,8 +467,8 @@ msgstr "Diferenças para %(name)s"
 
 #: pages/templates/pages/page_diff.html:20
 #, python-format
-msgid "Differences for <a href=\"%(pretty_slug)s\">%(new.name)s</a>"
-msgstr "Diferenças para <a href=\"%(pretty_slug)s\">%(new.name)s</a>"
+msgid "Differences for <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
+msgstr "Diferenças para <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
 
 #: pages/templates/pages/page_diff.html:30
 #, python-format
@@ -500,8 +518,8 @@ msgid "Page \"%(name)s\" does not exist (yet!)"
 msgstr "A página \"%(name)s\" não existe (ainda!)"
 
 #: pages/templates/pages/page_new.html:14
-#: search/templates/search/search.html:28
-#: search/templates/search/search.html:61
+#: search/templates/search/search.html:35
+#: search/templates/search/search.html:73
 msgid "Create this page"
 msgstr "Criar esta página"
 
@@ -524,14 +542,25 @@ msgid "Previous versions of page \"%(name)s\" - %(super)s"
 msgstr "Versões anteriores da página \"%(name)s\" - %(super)s"
 
 #: pages/templates/pages/page_versions.html:18
-msgid " Looking for <a href=\"../_files/\">files</a>"
+#, fuzzy
+msgid ""
+" Looking for <a href=\"../_files/\">files</a> or <a href=\"../_tags/_history/"
+"\">tags</a>?"
 msgstr " À procura de <a href=\"../_files/\">ficheiros</a>"
 
 #: pages/templates/pages/pagefile_diff.html:34
+#, python-format
+msgid "Differences for %(new_name)s on %(new_slug)s"
+msgstr "Diferenças para %(new_name)s em %(new_slug)s"
+
 #: pages/templates/pages/pagefile_diff.html:35
 #, python-format
-msgid "Differences for %(new_name)s"
-msgstr "Diferenças para %(new_name)s"
+msgid ""
+"Differences for %(new_name)s on <a href=\"%(url_pages_show)s\">"
+"%(new_attached_to_page)s</a>"
+msgstr ""
+"Diferenças para \"%(new_name)s\" em <a href=\"%(url_pages_show)s\">"
+"%(new_attached_to_page)s</a>"
 
 #: pages/templates/pages/pagefile_diff.html:48
 #, python-format
@@ -577,24 +606,6 @@ msgstr "Carregar uma nova versão"
 #: pages/templates/pages/pagefile_info.html:48
 msgid "Upload"
 msgstr "Carregar"
-
-#: pages/templatetags/pages_tags.py:69
-#, python-format
-msgid ""
-"Unable to include <a href=\"%(pagename)s\">%(pagename)s</a>: endless include "
-"loop.)"
-msgstr ""
-"Não foi possível incluir a página<a href=\"%(pagename)s\">%(pagename)s</a>: "
-"ciclo infinito .)"
-
-#: pages/templatetags/pages_tags.py:81
-#, python-format
-msgid ""
-"Unable to include <a href=\"%(pageurl)s\" class=\"missing_link\">"
-"%(pagename)s</a>"
-msgstr ""
-"Não foi possível incluir a página <a href=\"%(pageurl)s\" class="
-"\"missing_link\">%(pagename)s</a>"
 
 #: recentchanges/feeds.py:25
 #, fuzzy, python-format
@@ -713,43 +724,116 @@ msgstr "Remover redirecionamento"
 msgid "Create redirect"
 msgstr "Criar redirecionamento"
 
-#: search/templates/search/search.html:8
-#: search/templates/search/search.html:16
+#: search/templates/search/search.html:10
+#: search/templates/search/search.html:23
 msgid "Search results for"
 msgstr "Resultados da pesquisa para"
 
-#: search/templates/search/search.html:18
+#: search/templates/search/search.html:25
 msgid "Search or create a new page"
 msgstr "Pesquisar ou criar nova página"
 
-#: search/templates/search/search.html:27
+#: search/templates/search/search.html:34
 #, python-format
 msgid "No page with the exact title \"%(query)s\" exists."
 msgstr "Não existe página com o título exacto \"%(query)s\"."
 
-#: search/templates/search/search.html:42
+#: search/templates/search/search.html:54
 msgid "No results found."
 msgstr "Nenhum resultado encontrado."
 
-#: search/templates/search/search.html:48
+#: search/templates/search/search.html:60
 msgid "Previous"
 msgstr "Anterior"
 
-#: search/templates/search/search.html:51
+#: search/templates/search/search.html:63
 msgid "Next"
 msgstr "Seguinte"
 
-#: search/templates/search/search.html:58
+#: search/templates/search/search.html:70
 msgid "Create a new page:"
 msgstr "Criar uma nova página:"
 
-#: search/templates/search/search.html:65
+#: search/templates/search/search.html:77
 msgid "Search for pages:"
 msgstr "Pesquisar páginas:"
 
-#: search/templates/search/search.html:68
+#: search/templates/search/search.html:80
 msgid "Search"
 msgstr "Pesquisar"
+
+#: tags/templates/tags/pagetagset_diff.html:28
+#: tags/templates/tags/pagetagset_diff.html:29
+#, fuzzy, python-format
+msgid "Differences for tag versions for %(new.page.name)s"
+msgstr "Diferenças para %(new_name)s"
+
+#: tags/templates/tags/pagetagset_diff.html:61
+msgid "Tags history"
+msgstr ""
+
+#: tags/templates/tags/pagetagset_form.html:9
+#: tags/templates/tags/pagetagset_form.html:10
+#: tags/templates/tags/pagetagset_version_detail.html:12
+#: tags/templates/tags/pagetagset_versions.html:11
+#, fuzzy
+msgid "Tags for"
+msgstr "Mapa de"
+
+#: tags/templates/tags/pagetagset_form_snippet.html:8
+msgid "Save"
+msgstr ""
+
+#: tags/templates/tags/pagetagset_list.html:4
+#: tags/templates/tags/pagetagset_list.html:5
+#: tags/templates/tags/tag_list.html:4
+msgid "Tags"
+msgstr ""
+
+#: tags/templates/tags/pagetagset_version_detail.html:11
+#: tags/templates/tags/pagetagset_versions.html:10
+#, fuzzy
+msgid "Tags for "
+msgstr "Mapa de"
+
+#: tags/templates/tags/pagetagset_versions.html:19
+#, fuzzy, python-format
+msgid ""
+"\n"
+"        This page has no tags.  <a href=\"%(page_url)s\">Add some!</a>\n"
+"    "
+msgstr "Esta página agora redireciona para <a href=\"%(url)s\">%(obj)s</a>."
+
+#: tags/templates/tags/pagetagset_versions.html:25
+#, fuzzy
+msgid "Previous versions:"
+msgstr "Versões anteriores do mapa de"
+
+#: tags/templates/tags/tag_list.html:5
+#, fuzzy
+msgid "All tags"
+msgstr "Todas as Páginas"
+
+#: tags/templates/tags/tag_list.html:17
+msgid "Alphabetical"
+msgstr ""
+
+#: tags/templates/tags/tag_list.html:18
+msgid "Most popular"
+msgstr ""
+
+#: tags/templates/tags/tag_list.html:19
+msgid "As a cloud"
+msgstr ""
+
+#: tags/templates/tags/tag_list.html:58
+msgid "There are no tags. Add some!"
+msgstr ""
+
+#: tags/templates/tags/tagged_list_snippet.html:17
+#, python-format
+msgid "There are no pages with the tag \"%(tag_name)s\"."
+msgstr ""
 
 #: templates/registration/login.html:5
 msgid "Log in"
@@ -922,11 +1006,11 @@ msgstr "Informações pessoais"
 msgid "Permissions"
 msgstr "Permissões"
 
-#: users/admin.py:18
+#: users/admin.py:19
 msgid "Important dates"
 msgstr "Datas importantes"
 
-#: users/admin.py:19
+#: users/admin.py:20
 msgid "Groups"
 msgstr "Grupos"
 
@@ -983,9 +1067,15 @@ msgstr "Lista de subscritores"
 msgid "Subscriber emails:"
 msgstr "Endereços de email de subscritores:"
 
-#: utils/views.py:79
+#: utils/views.py:82
 msgid "Sorry, you are not allowed to perform this action."
 msgstr "Não tem permissões para realizar este comando."
+
+#: utils/views.py:83
+msgid ""
+"Anonymous users may not perform this action. Please <a href=\"/Users/login/"
+"\">log in</a>."
+msgstr ""
 
 #: utils/templates/utils/history/form.html:13
 msgid "revert"
@@ -1008,7 +1098,7 @@ msgid "Removed"
 msgstr "Apagado"
 
 #: versionutils/diff/diffutils.py:557 versionutils/diff/diffutils.py:569
-#: versionutils/versioning/constants.py:13
+#: versionutils/versioning/constants.py:14
 msgid "Added"
 msgstr "Adicionado"
 
@@ -1019,6 +1109,31 @@ msgstr "Transferir versão removida"
 #: versionutils/diff/templates/diff/file_diff.html:9
 msgid "Download added version"
 msgstr "Transferir versão adicionada"
+
+#: versionutils/diff/templates/versionutils/history/form.html:8
+#: versionutils/diff/templates/versionutils/history/form.html:15
+#: versionutils/merging/templates/versionutils/history/form.html:8
+#: versionutils/merging/templates/versionutils/history/form.html:15
+#: versionutils/templates/versionutils/history/form.html:8
+#: versionutils/templates/versionutils/history/form.html:15
+#: versionutils/versioning/templates/versionutils/history/form.html:8
+#: versionutils/versioning/templates/versionutils/history/form.html:15
+msgid "Compare"
+msgstr "Comparar"
+
+#: versionutils/diff/templates/versionutils/history/form.html:45
+#: versionutils/merging/templates/versionutils/history/form.html:45
+#: versionutils/templates/versionutils/history/form.html:45
+#: versionutils/versioning/templates/versionutils/history/form.html:45
+msgid "There is no revision history."
+msgstr "Não existe histórico de revisões."
+
+#: versionutils/diff/templates/versionutils/history/media.html:47
+#: versionutils/merging/templates/versionutils/history/media.html:47
+#: versionutils/templates/versionutils/history/media.html:47
+#: versionutils/versioning/templates/versionutils/history/media.html:47
+msgid "Please select two versions to compare"
+msgstr "Selecione duas versões para comparar"
 
 #: versionutils/merging/forms.py:53
 msgid ""
@@ -1036,57 +1151,44 @@ msgstr ""
 "Alguém gravou alterações antes de si mas as suas alterações foram "
 "introduzidas com sucesso."
 
-#: versionutils/templates/versionutils/history/form.html:8
-#: versionutils/templates/versionutils/history/form.html:15
-msgid "Compare"
-msgstr "Comparar"
-
-#: versionutils/templates/versionutils/history/form.html:45
-msgid "There is no revision history."
-msgstr "Não existe histórico de revisões."
-
-#: versionutils/templates/versionutils/history/media.html:47
-msgid "Please select two versions to compare"
-msgstr "Selecione duas versões para comparar"
-
-#: versionutils/versioning/constants.py:14
+#: versionutils/versioning/constants.py:15
 msgid "Updated"
 msgstr "Alterado"
 
-#: versionutils/versioning/constants.py:15
+#: versionutils/versioning/constants.py:16
 msgid "Deleted"
 msgstr "Apagado"
 
-#: versionutils/versioning/constants.py:16
+#: versionutils/versioning/constants.py:17
 msgid "Deleted via cascade"
 msgstr "Apagado por cascata"
 
-#: versionutils/versioning/constants.py:17
+#: versionutils/versioning/constants.py:18
 msgid "Reverted"
 msgstr "Revertido"
 
-#: versionutils/versioning/constants.py:18
+#: versionutils/versioning/constants.py:19
 msgid "Reverted/Added"
 msgstr "Revertido/Adicionado"
 
-#: versionutils/versioning/constants.py:19
+#: versionutils/versioning/constants.py:20
 msgid "Reverted/Deleted"
 msgstr "Revertido/Apagado"
 
-#: versionutils/versioning/constants.py:20
+#: versionutils/versioning/constants.py:21
 msgid "Reverted/Deleted via cascade"
 msgstr "Revertido/Apagado por cascata"
 
-#: versionutils/versioning/constants.py:21
+#: versionutils/versioning/constants.py:22
 #, fuzzy
 msgid "Reverted via cascade"
 msgstr "Apagado por cascata"
 
-#: versionutils/versioning/forms.py:43
+#: versionutils/versioning/forms.py:47
 msgid "Reason for deletion"
 msgstr "Motivo para remover"
 
-#: versionutils/versioning/forms.py:53
+#: versionutils/versioning/forms.py:57
 msgid "Reason for revert"
 msgstr "Motivo para reverter"
 
@@ -1102,3 +1204,23 @@ msgstr "Removido com sucesso!"
 #, python-format
 msgid "Reverted to version %s."
 msgstr "Revertido para a versão %s."
+
+#~ msgid ""
+#~ "<a href=\"%(pretty_slug)s\">Edit</a> this page (last modified %(ago)s ago)"
+#~ msgstr ""
+#~ "<a href=\"%(pretty_slug)s\">Editar</a> esta página (última modificação há "
+#~ "%(ago)s)"
+
+#~ msgid ""
+#~ "Unable to include <a href=\"%(pagename)s\">%(pagename)s</a>: endless "
+#~ "include loop.)"
+#~ msgstr ""
+#~ "Não foi possível incluir a página<a href=\"%(pagename)s\">%(pagename)s</"
+#~ "a>: ciclo infinito .)"
+
+#~ msgid ""
+#~ "Unable to include <a href=\"%(pageurl)s\" class=\"missing_link\">"
+#~ "%(pagename)s</a>"
+#~ msgstr ""
+#~ "Não foi possível incluir a página <a href=\"%(pageurl)s\" class="
+#~ "\"missing_link\">%(pagename)s</a>"
