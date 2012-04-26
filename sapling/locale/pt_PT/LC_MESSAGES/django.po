@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-24 19:39+0100\n"
+"POT-Creation-Date: 2012-04-24 19:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
 "Language: pt-PT\n"
@@ -415,6 +415,30 @@ msgstr "Comentário"
 #, python-format
 msgid "Page renamed to \"%s\""
 msgstr "Nome da Página alterado para \"%s\""
+
+#: pages/widgets.py:27
+msgid "Normal"
+msgstr "Normal"
+
+#: pages/widgets.py:28
+msgid "Heading 1"
+msgstr "Cabeçalho 1"
+
+#: pages/widgets.py:29
+msgid "Heading 2"
+msgstr "Cabeçalho 2"
+
+#: pages/widgets.py:30
+msgid "Heading 3"
+msgstr "Cabeçalho 3"
+
+#: pages/widgets.py:31
+msgid "Formatted"
+msgstr "Cabeçalho 4"
+
+#: pages/widgets.py:32
+msgid "Typewriter"
+msgstr "Máquina de Escrever"
 
 #: pages/templates/pages/base.html:5
 msgid "Recent changes on this Page"
