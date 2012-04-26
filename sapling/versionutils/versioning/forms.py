@@ -14,7 +14,7 @@ class CommentMixin(object):
                 model = Page
                 fields = ('content',)
     """
-    comment = forms.CharField(max_length=150, required=False)
+    comment = forms.CharField(max_length=150, required=False, label=_("Comment"))
 
     def __init__(self, *args, **kwargs):
         base_init = super(CommentMixin, self).__init__(*args, **kwargs)

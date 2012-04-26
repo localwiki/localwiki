@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-24 19:39+0100\n"
+"POT-Creation-Date: 2012-04-26 15:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
 "Language: pt-PT\n"
@@ -237,8 +237,8 @@ msgid "Differences for map on"
 msgstr "Diferenças para mapa de"
 
 #: maps/templates/maps/mapdata_diff.html:50
-#, fuzzy, python-format
-msgid "Differences for <a href=\"%(maps_global)s}\">Map</a>"
+#, python-format
+msgid "Differences for <a href=\"%(maps_global)s\">Map</a>"
 msgstr "Diferenças para <a href=\"%(maps_global)s\">Mapa</a>"
 
 #: maps/templates/maps/mapdata_diff.html:70
@@ -323,23 +323,27 @@ msgstr "Já existe uma página com este nome"
 msgid "The new file should be of the same type"
 msgstr "O novo ficheiro deve ser do mesmo tipo"
 
-#: pages/models.py:90
+#: pages/models.py:91
 msgid "Page name is invalid."
 msgstr "Nome da página inválido"
 
-#: pages/models.py:140 pages/models.py:152
+#: pages/models.py:141 pages/models.py:153
 #, fuzzy, python-format
 msgid "Renamed from \"%s\""
 msgstr "Nome alterado de \"%s\""
 
-#: pages/models.py:144
+#: pages/models.py:145
 #, python-format
 msgid "The page '%s' already exists!"
 msgstr "A página '%s' já existe!"
 
-#: pages/models.py:194 pages/models.py:207 pages/models.py:226
+#: pages/models.py:195 pages/models.py:208 pages/models.py:227
 msgid "Parent page renamed"
 msgstr "Nome da página superior alterado"
+
+#: pages/models.py:241
+msgid "file"
+msgstr "ficheiro"
 
 #: pages/plugins.py:391
 msgid ""
@@ -407,7 +411,7 @@ msgstr "Já existe um ficheiro com este nome"
 msgid "Pagename"
 msgstr "Nome da Página"
 
-#: pages/views.py:350
+#: pages/views.py:350 versionutils/versioning/forms.py:17
 msgid "Comment"
 msgstr "Comentário"
 
@@ -455,10 +459,18 @@ msgstr ""
 msgid "View map"
 msgstr "Ver mapa"
 
+#: pages/templates/pages/page_detail.html:55
+msgid "Edit tags"
+msgstr "Editar etiquetas"
+
+#: pages/templates/pages/page_detail.html:55
+msgid "Add tags"
+msgstr "Adicionar etiquetas"
+
 #: pages/templates/pages/page_detail.html:71
-#, fuzzy, python-format
+#, python-format
 msgid "This page was last modified %(ago)s ago"
-msgstr "última modificação há %(tsince)s"
+msgstr "Última modificação há %(ago)s"
 
 #: pages/templates/pages/page_diff.html:19
 #, python-format
@@ -542,11 +554,12 @@ msgid "Previous versions of page \"%(name)s\" - %(super)s"
 msgstr "Versões anteriores da página \"%(name)s\" - %(super)s"
 
 #: pages/templates/pages/page_versions.html:18
-#, fuzzy
 msgid ""
 " Looking for <a href=\"../_files/\">files</a> or <a href=\"../_tags/_history/"
 "\">tags</a>?"
-msgstr " À procura de <a href=\"../_files/\">ficheiros</a>"
+msgstr ""
+" À procura de <a href=\"../_files/\">ficheiros</a> ou <a href=\"../_tags/"
+"_history/\">etiquetas</a>?"
 
 #: pages/templates/pages/pagefile_diff.html:34
 #, python-format
@@ -606,6 +619,11 @@ msgstr "Carregar uma nova versão"
 #: pages/templates/pages/pagefile_info.html:48
 msgid "Upload"
 msgstr "Carregar"
+
+#: pages/templates/pages/pagefile_info.html:54
+#: tags/templates/tags/pagetagset_versions.html:25
+msgid "Previous versions:"
+msgstr "Versões anteriores:"
 
 #: recentchanges/feeds.py:25
 #, fuzzy, python-format
@@ -762,78 +780,90 @@ msgstr "Pesquisar páginas:"
 msgid "Search"
 msgstr "Pesquisar"
 
+#: tags/forms.py:74 tags/forms.py:76
+msgid "removed"
+msgstr "apagada"
+
+#: tags/forms.py:79 tags/forms.py:81
+msgid "added"
+msgstr "adicionada"
+
+#: tags/forms.py:84
+msgid "no changes made"
+msgstr "sem alterações"
+
+#: tags/forms.py:85 tags/forms.py:88
+msgid " and "
+msgstr " e "
+
 #: tags/templates/tags/pagetagset_diff.html:28
 #: tags/templates/tags/pagetagset_diff.html:29
-#, fuzzy, python-format
-msgid "Differences for tag versions for %(new.page.name)s"
-msgstr "Diferenças para %(new_name)s"
+#, python-format
+msgid "Differences for tag versions for %(new_name)s"
+msgstr "Diferenças para etiquetas em %(new_name)s"
 
 #: tags/templates/tags/pagetagset_diff.html:61
 msgid "Tags history"
-msgstr ""
+msgstr "Histórico das etiquetas"
 
 #: tags/templates/tags/pagetagset_form.html:9
 #: tags/templates/tags/pagetagset_form.html:10
 #: tags/templates/tags/pagetagset_version_detail.html:12
 #: tags/templates/tags/pagetagset_versions.html:11
-#, fuzzy
 msgid "Tags for"
-msgstr "Mapa de"
+msgstr "Etiquetas de"
 
 #: tags/templates/tags/pagetagset_form_snippet.html:8
 msgid "Save"
-msgstr ""
+msgstr "Gravar"
 
 #: tags/templates/tags/pagetagset_list.html:4
 #: tags/templates/tags/pagetagset_list.html:5
 #: tags/templates/tags/tag_list.html:4
 msgid "Tags"
-msgstr ""
+msgstr "Etiquetas"
 
 #: tags/templates/tags/pagetagset_version_detail.html:11
 #: tags/templates/tags/pagetagset_versions.html:10
-#, fuzzy
 msgid "Tags for "
-msgstr "Mapa de"
+msgstr "Etiquetas de"
 
 #: tags/templates/tags/pagetagset_versions.html:19
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "        This page has no tags.  <a href=\"%(page_url)s\">Add some!</a>\n"
 "    "
-msgstr "Esta página agora redireciona para <a href=\"%(url)s\">%(obj)s</a>."
-
-#: tags/templates/tags/pagetagset_versions.html:25
-#, fuzzy
-msgid "Previous versions:"
-msgstr "Versões anteriores do mapa de"
+msgstr ""
+"\n"
+"Esta página não tem etiquetas.  <a href=\"%(page_url)s\">Adicione algumas!</"
+"a>\n    "
 
 #: tags/templates/tags/tag_list.html:5
 #, fuzzy
 msgid "All tags"
-msgstr "Todas as Páginas"
+msgstr "Todas as Etiquetas"
 
 #: tags/templates/tags/tag_list.html:17
 msgid "Alphabetical"
-msgstr ""
+msgstr "Alfabética"
 
 #: tags/templates/tags/tag_list.html:18
 msgid "Most popular"
-msgstr ""
+msgstr "Mais populares"
 
 #: tags/templates/tags/tag_list.html:19
 msgid "As a cloud"
-msgstr ""
+msgstr "Como núvem"
 
 #: tags/templates/tags/tag_list.html:58
 msgid "There are no tags. Add some!"
-msgstr ""
+msgstr "Não há etiquetas. Adicione algumas!"
 
 #: tags/templates/tags/tagged_list_snippet.html:17
 #, python-format
 msgid "There are no pages with the tag \"%(tag_name)s\"."
-msgstr ""
+msgstr "Não há páginas com a etiqueta \"%(tag_name)s\"."
 
 #: templates/registration/login.html:5
 msgid "Log in"

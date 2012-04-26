@@ -25,8 +25,8 @@
   {% page_tags_form_media %}
 {% endblock %}
 
-{% block title %}{% blocktrans %}Differences for tag versions for {{ new.page.name }}{% endblocktrans %}{% endblock %}
-{% block header_title %}{% blocktrans %}Differences for tag versions for {{new.page.name }}{% endblocktrans %}{% endblock %}
+{% block title %}{% blocktrans with new_name=new.page.name %}Differences for tag versions for {{ new_name }}{% endblocktrans %}{% endblock %}
+{% block header_title %}{% blocktrans with new_name=new.page.name %}Differences for tag versions for {{ new_name }}{% endblocktrans %}{% endblock %}
 
 {% block content %}
   <table width="100%">

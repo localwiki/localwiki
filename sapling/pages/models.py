@@ -10,6 +10,7 @@ from django.template.defaultfilters import stringfilter
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy
 
 from django_randomfilenamestorage.storage import (
     RandomFilenameFileSystemStorage)
@@ -237,7 +238,7 @@ versioning.register(Page)
 
 
 class PageFile(models.Model):
-    file = models.FileField(upload_to='pages/files/',
+    file = models.FileField(ugettext_lazy("file"), upload_to='pages/files/',
                             storage=RandomFilenameFileSystemStorage())
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False)

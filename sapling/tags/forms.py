@@ -4,6 +4,7 @@ from versionutils.merging.forms import MergeMixin
 from tags.models import Tag, PageTagSet, slugify, TagsFieldDiff
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
+from django.utils.translation import ugettext as _
 from tags.widgets import TagEdit
 from versionutils.versioning.forms import CommentMixin
 
@@ -70,21 +71,21 @@ class PageTagSetForm(MergeMixin, CommentMixin, forms.ModelForm):
         deleted = ['"%s"' % t.name for t in diff['deleted']]
         added = ['"%s"' % t.name for t in diff['added']]
         if deleted:
-            comments.append('removed %s %s' % (self.pluralize_tag(deleted),
+            comments.append('%s %s %s' % (_('removed'), self.pluralize_tag(deleted),
                                                ', '.join(deleted)))
-            short_comments.append('removed %i %s ' % (len(deleted),
+            short_comments.append('%s %i %s ' % (_('removed'), len(deleted),
                                                 self.pluralize_tag(deleted)))
         if added:
-            comments.append('added %s %s' % (self.pluralize_tag(added),
+            comments.append('%s %s %s' % (_('added'), self.pluralize_tag(added),
                                              ', '.join(added)))
-            short_comments.append('added %i %s ' % (len(added),
+            short_comments.append('%s %i %s ' % (_('added'), len(added),
                                                 self.pluralize_tag(added)))
         if not comments:
-            return 'no changes made'
-        comments = ' and '.join(comments)
+            return _('no changes made')
+        comments = _(' and ').join(comments)
         # with lots of tags, this can get too long for db field
         if len(comments) > 140:
-            return ' and '.join(short_comments)
+            return _(' and ').join(short_comments)
         return comments
 
     def merge(self, yours, theirs, ancestor):
