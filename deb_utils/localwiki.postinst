@@ -30,7 +30,7 @@ case "$1" in
         pip install --upgrade -r requirements.txt
         deactivate
 
-        # For Ubuntu 11.10 (with PostgreSQL 9.1), we have an issue with
+        # For Ubuntu 11.10, 12.04 (with PostgreSQL 9.1), we have an issue with
         # GeoDjango.  We have to turn off standard string formatting.  We can
         # re-enable it once it's fixed, in Django 1.3.2
 
