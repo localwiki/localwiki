@@ -9,7 +9,7 @@ fi
 
 depends="python-pip, python-virtualenv, python-setuptools, solr-jetty, python-lxml, python-imaging, gdal-bin, proj, python-psycopg2, libapache2-mod-wsgi, git-core, mercurial, subversion"
 
-if [ "$1" = "oneiric" -o "$1" = "precise"]
+if [ "$1" = "oneiric" -o "$1" = "precise" ]
 then
   depends="${depends}, postgresql-9.1-postgis"
 else
