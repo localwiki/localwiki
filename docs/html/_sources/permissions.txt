@@ -66,6 +66,13 @@ Click on the username, and scroll down "Groups" section. Hold down
 
 .. figure:: /_static/images/admin_ban_user.png
 
+.. note::
+
+   While it's possible in the admin interface to delete a user, this is
+   **NOT** recommended as it will also delete every change the user has made.
+   If you need to disable a user's account, it's best to just unmark the
+   "active" checkbox for that user.
+
 
 Setting permissions for specific objects
 ----------------------------------------
