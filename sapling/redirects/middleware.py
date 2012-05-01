@@ -10,7 +10,7 @@ def _is_redirect(response):
 
 
 def _force_show_page(response):
-    return 'force_show' in response.GET
+    return 'show' in response.GET
 
 
 class RedirectFallbackMiddleware(object):
