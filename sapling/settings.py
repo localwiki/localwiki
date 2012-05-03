@@ -177,6 +177,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'utils.middleware.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -185,7 +186,17 @@ MIDDLEWARE_CLASSES = (
     'honeypot.middleware.HoneypotMiddleware',
     'versionutils.versioning.middleware.AutoTrackUserInfoMiddleware',
     'redirects.middleware.RedirectFallbackMiddleware',
+    'django.middleware.transaction.TransactionMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+    'utils.middleware.TrackPOSTMiddleware',
 )
+
+# Dummy cache - TODO: switch to memcached by default
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
 
 ROOT_URLCONF = 'sapling.urls'
 

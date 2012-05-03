@@ -20,6 +20,16 @@ from tags.models import PageTagSet, Tag, slugify
 from tags.forms import PageTagSetForm
 from pages.models import Page
 
+from versionutils.versioning.views import VersionsList, RevertView, UpdateView
+from versionutils.diff.views import CompareView
+from utils.views import CreateObjectMixin, PermissionRequiredMixin,\
+    Custom404Mixin
+from tags.models import PageTagSet, Tag, slugify
+from tags.forms import PageTagSetForm
+from pages.models import Page
+from maps.views import MapForTag
+from maps.widgets import InfoMap
+
 
 class PageNotFoundMixin(Custom404Mixin):
     def handler404(self, request, *args, **kwargs):

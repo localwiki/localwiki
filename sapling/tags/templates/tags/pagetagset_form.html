@@ -1,5 +1,9 @@
 {% extends "tags/base.html" %}
 
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
 {% block media %}
   {{ block.super }}
   {{ form.media }}

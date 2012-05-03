@@ -63,10 +63,3 @@ class CompareView(DetailView):
 
         context.update({'old': old_version, 'new': new_version})
         return context
-
-
-def debug(request):
-    info = {
-      'message': 'hi',
-    }
-    return render_to_response('debug.html', {'info': info})
