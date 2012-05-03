@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 class TagEdit(forms.TextInput):
     def render(self, name, value, attrs=None):
         input = super(TagEdit, self).render(name, value, attrs)
-        autocomplete = '/api/tags/suggest'
+        autocomplete = '/_api/tags/suggest'
         return input + render_to_string('tags/tagedit.html',
                                         {'id': attrs['id'],
                                          'autocomplete_url': autocomplete
