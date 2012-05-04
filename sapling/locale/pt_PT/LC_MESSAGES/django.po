@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-26 15:02+0100\n"
+"POT-Creation-Date: 2012-05-04 17:55+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
 "Language: pt-PT\n"
@@ -625,6 +625,24 @@ msgstr "Carregar"
 msgid "Previous versions:"
 msgstr "Versões anteriores:"
 
+#: pages/templatetags/pages_tags.py:109
+#, python-format
+msgid ""
+"Unable to include <a href=\"%(page_url)s\" class=\"missing_link\">"
+"%(page_name)s</a>"
+msgstr ""
+"Não foi possível incluir a página <a href=\"%(page_url)s\" class="
+"\"missing_link\">%(page_name)s</a>"
+
+#: pages/templatetags/pages_tags.py:117
+#, python-format
+msgid ""
+"Unable to include <a href=\"%(page_url)s\">%(page_name)s</a>: endless "
+"include loop."
+msgstr ""
+"Não foi possível incluir a página<a href=\"%(page_url)s\">%(page_name)s</a>: "
+"ciclo infinito .)"
+
 #: recentchanges/feeds.py:25
 #, fuzzy, python-format
 msgid "Recent Changes on %s"
@@ -837,7 +855,8 @@ msgid ""
 msgstr ""
 "\n"
 "Esta página não tem etiquetas.  <a href=\"%(page_url)s\">Adicione algumas!</"
-"a>\n    "
+"a>\n"
+"    "
 
 #: tags/templates/tags/tag_list.html:5
 #, fuzzy
@@ -1235,22 +1254,3 @@ msgstr "Removido com sucesso!"
 msgid "Reverted to version %s."
 msgstr "Revertido para a versão %s."
 
-#~ msgid ""
-#~ "<a href=\"%(pretty_slug)s\">Edit</a> this page (last modified %(ago)s ago)"
-#~ msgstr ""
-#~ "<a href=\"%(pretty_slug)s\">Editar</a> esta página (última modificação há "
-#~ "%(ago)s)"
-
-#~ msgid ""
-#~ "Unable to include <a href=\"%(pagename)s\">%(pagename)s</a>: endless "
-#~ "include loop.)"
-#~ msgstr ""
-#~ "Não foi possível incluir a página<a href=\"%(pagename)s\">%(pagename)s</"
-#~ "a>: ciclo infinito .)"
-
-#~ msgid ""
-#~ "Unable to include <a href=\"%(pageurl)s\" class=\"missing_link\">"
-#~ "%(pagename)s</a>"
-#~ msgstr ""
-#~ "Não foi possível incluir a página <a href=\"%(pageurl)s\" class="
-#~ "\"missing_link\">%(pagename)s</a>"
