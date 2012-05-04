@@ -83,8 +83,8 @@
   </div>
   <div class="see_also">
     <hr/>
-    <p>
-      For statistics about pages, maps, and more, check out the <a href="{% url 'dashboard:main' %}">dashboard</a>
+    <p>{% url 'dashboard:main' as dashboard_main_url %}
+      {% blocktrans %}For statistics about pages, maps, and more, check out the <a href="{{ dashboard_main_url }}">dashboard</a>{% endblocktrans %}
     </p>
   </div>
 {% endblock %}

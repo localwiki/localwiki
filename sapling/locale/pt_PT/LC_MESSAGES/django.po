@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-04 17:55+0100\n"
+"POT-Creation-Date: 2012-05-04 18:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
 "Language: pt-PT\n"
@@ -313,7 +313,7 @@ msgid ""
 "conflicts and save again."
 msgstr ""
 "Aviso: outra pessou gravou esta página antes de si. Por favor, resolva "
-"osconflitos de edição e grave novamente."
+"os conflitos de edição e grave novamente."
 
 #: pages/forms.py:46
 msgid "A page with this name already exists"
@@ -714,6 +714,15 @@ msgstr "Revertido para a versão de há %(version_date_timesince)s"
 #, python-format
 msgid "Redirected to <a href=\"%(url)s\">%(destination)s</a>"
 msgstr "Redirecionado para <a href=\"%(url)s\">%(destination)s</a>"
+
+#: recentchanges/templates/recentchanges/recentchanges.html:88
+#, python-format
+msgid ""
+"For statistics about pages, maps, and more, check out the <a href="
+"\"%(dashboard_main_url)s\">dashboard</a>"
+msgstr ""
+"Para estatísticas sobre páginas, mapas e outras coisas, veja o <a href="
+"\"%(dashboard_main_url)s\">painel de gestão</a>"
 
 #: redirects/feeds.py:25
 #, python-format
@@ -1253,4 +1262,3 @@ msgstr "Removido com sucesso!"
 #, python-format
 msgid "Reverted to version %s."
 msgstr "Revertido para a versão %s."
-
