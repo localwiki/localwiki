@@ -90,11 +90,8 @@ class PageResource(PageSlugifyMixin, ModelResource):
 
 class PageHistoryResource(PageSlugifyMixin, ModelResource):
     class Meta:
-        parent_resource = PageResource
-        subresource_name = '_history'
-        queryset = parent_resource._meta.queryset.model.versions.all()
-        resource_name = "%s/%s" % (parent_resource._meta.resource_name,
-            subresource_name)
+        resource_name = 'page_version'
+        queryset = Page.versions.all()
 
         field_to_slugify = 'name'
         filtering = {
@@ -104,6 +101,6 @@ class PageHistoryResource(PageSlugifyMixin, ModelResource):
 
 
 api.register(PageResource())
+api.register(PageHistoryResource())
 api.register(FileResource())
 
-api.register(PageHistoryResource())

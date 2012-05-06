@@ -70,52 +70,19 @@ class SlugifyMixin(object):
                 self._meta.resource_name, self.wrap_view('get_multiple'),
                 name="api_get_multiple"),
         ]
-        if hasattr(self._meta, 'parent_resource'):
-            l.append(
-                # Our slug field.
-                # Slugs can't start with the _ character. We do this so we can
-                # define URLs for sub-resources more easily.
-                url(r"^(?P<parent_resource_name>%s)/(?P<%s>[^_].*?)/(?P<subresource_name>%s)/*$" %
-                    (self._meta.parent_resource._meta.resource_name, slug, self._meta.subresource_name),
-                    self.wrap_view('dispatch_detail'), name="api_dispatch_detail")
-            )
-        else:
-            l.append(
-                # Our slug field.
-                # Slugs can't start with the _ character or contain a
-                # slash surrounded by the _ character. We do this so we can
-                # define URLs for sub-resources more easily.
-                url(r"^(?P<resource_name>%s)/(?P<%s>[^_]((?!(/_)|(_/)).)*?)/*$" %
-                    (self._meta.resource_name, slug),
-                    self.wrap_view('dispatch_detail'), name="api_dispatch_detail")
-            )
+        l.append(
+            # Our slug field.
+            # Slugs can't start with the _ character or contain a
+            # slash surrounded by the _ character. We do this so we can
+            # define URLs for sub-resources more easily.
+            url(r"^(?P<resource_name>%s)/(?P<%s>[^_]((?!(/_)|(_/)).)*?)/*$" %
+                (self._meta.resource_name, slug),
+                self.wrap_view('dispatch_detail'), name="api_dispatch_detail")
+        )
         return l
 
-    def remove_api_resource_names(self, url_dict):
-        """
-        We added two new URL keywords -- ``parent_resource_name`` and
-        ``subresource_name``, so we remove them from the kwargs as well.
-        """
-        url_dict = super(SlugifyMixin, self).remove_api_resource_names(url_dict)
-        kwargs_subset = url_dict.copy()
-
-        for key in ['parent_resource_name', 'subresource_name']:
-            try:
-                del(kwargs_subset[key])
-            except KeyError:
-                pass
-
-        return kwargs_subset
-
     def get_resource_uri(self, bundle_or_obj):
-        if hasattr(self._meta, 'parent_resource'):
-            kwargs = {
-                'parent_resource_name': self._meta.parent_resource._meta.\
-                    resource_name,
-                'subresource_name': self._meta.subresource_name,
-            }
-        else:
-            kwargs = {'resource_name': self._meta.resource_name}
+        kwargs = {'resource_name': self._meta.resource_name}
 
         if isinstance(bundle_or_obj, Bundle):
             obj = bundle_or_obj.obj

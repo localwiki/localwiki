@@ -1,5 +1,6 @@
 from tastypie.resources import ModelResource, ALL
 from tastypie import fields
+from tastypie.constants import ALL_WITH_RELATIONS
 
 from models import Tag, PageTagSet, slugify
 import pages
@@ -30,5 +31,9 @@ class PageTagSetResource(SlugifyMixin, ModelResource):
         field_to_slugify = 'page'
         slug_lookup_field = 'page__slug'
         lookup_function = slugify
+        filtering = {
+            'page': ALL_WITH_RELATIONS,
+            'tags': ALL_WITH_RELATIONS,
+        }
 
 api.register(PageTagSetResource())
