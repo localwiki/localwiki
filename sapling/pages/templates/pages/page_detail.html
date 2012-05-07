@@ -58,7 +58,7 @@
     <div class="tags edit" style="display: none">
       {% page_tags_form_media %}
       {% page_tags_form page %}
-      <a class="edit_tags_cancel" href="{% url pages:show slug=page.pretty_slug %}">Cancel</a>
+      <a class="edit_tags_cancel" href="{% url pages:show slug=page.pretty_slug %}">{% trans "Cancel" %}</a>
     </div>
   {% endif %}
   </div>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-07 15:36+0100\n"
+"POT-Creation-Date: 2012-05-07 20:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
 "Language: pt-PT\n"
@@ -265,6 +265,7 @@ msgid "Save changes"
 msgstr "Gravar"
 
 #: maps/templates/maps/mapdata_form.html:67
+#: pages/templates/pages/page_detail.html:61
 #: pages/templates/pages/page_form.html:43
 msgid "Cancel"
 msgstr "Cancelar"
