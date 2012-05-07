@@ -16,4 +16,9 @@ else
   depends="${depends}, postgresql-8.4-postgis"
 fi
 
+if [ "$1" = "precise" ]
+then
+  depends="default-jre-headless, ${depends}"
+fi
+
 echo ${depends}
