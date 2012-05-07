@@ -5,6 +5,7 @@ from collections import defaultdict
 from django.db import models
 from django.conf import settings
 from django.db.models.options import DEFAULT_NAMES as ALL_META_OPTIONS
+from django.utils.translation import string_concat
 
 from utils import *
 from storage import *
@@ -393,7 +394,7 @@ class ChangesTracker(object):
             if k in ChangesTracker.META_TO_SKIP:
                 continue
             meta[k] = getattr(model._meta, k)
-        meta['verbose_name'] = meta['verbose_name'] + ' hist'
+        meta['verbose_name'] = string_concat(meta['verbose_name'], ' hist')
         return meta
 
     def post_save(self, parent, instance, created, **kws):

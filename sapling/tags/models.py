@@ -8,6 +8,7 @@ from pages.models import Page
 from versionutils import versioning, diff
 from django.utils.html import strip_tags
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
 
 
 class Tag(models.Model):
@@ -29,6 +30,8 @@ class Tag(models.Model):
 
     class Meta:
         ordering = ('slug',)
+        verbose_name = _(u'Tag')
+        verbose_name_plural = _(u'Tags')
 
 versioning.register(Tag)
 

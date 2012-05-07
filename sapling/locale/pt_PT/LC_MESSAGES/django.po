@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-04 18:21+0100\n"
+"POT-Creation-Date: 2012-05-07 15:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
 "Language: pt-PT\n"
@@ -216,10 +216,7 @@ msgstr "Revisão"
 #: tags/templates/tags/pagetagset_diff.html:38
 #: tags/templates/tags/pagetagset_diff.html:43
 #: tags/templates/tags/pagetagset_version_detail.html:18
-#: versionutils/diff/templates/versionutils/history/form.html:34
-#: versionutils/merging/templates/versionutils/history/form.html:34
 #: versionutils/templates/versionutils/history/form.html:34
-#: versionutils/versioning/templates/versionutils/history/form.html:34
 msgid "by"
 msgstr "por"
 
@@ -312,8 +309,8 @@ msgid ""
 "Warning: someone else saved this page before you.  Please resolve edit "
 "conflicts and save again."
 msgstr ""
-"Aviso: outra pessou gravou esta página antes de si. Por favor, resolva "
-"os conflitos de edição e grave novamente."
+"Aviso: outra pessou gravou esta página antes de si. Por favor, resolva os "
+"conflitos de edição e grave novamente."
 
 #: pages/forms.py:46
 msgid "A page with this name already exists"
@@ -807,21 +804,51 @@ msgstr "Pesquisar páginas:"
 msgid "Search"
 msgstr "Pesquisar"
 
-#: tags/forms.py:74 tags/forms.py:76
-msgid "removed"
-msgstr "apagada"
+#: tags/forms.py:76
+#, python-format
+msgid "removed %(name)s %(deleted)s."
+msgid_plural "removed %(name)s %(deleted)s."
+msgstr[0] "apagada %(name)s %(deleted)s."
+msgstr[1] "apagadas %(name)s %(deleted)s."
 
-#: tags/forms.py:79 tags/forms.py:81
-msgid "added"
-msgstr "adicionada"
+#: tags/forms.py:85
+#, python-format
+msgid "removed %(count)i %(name)s."
+msgid_plural "removed %(count)i %(name)s."
+msgstr[0] "apagada %(count)i %(name)s."
+msgstr[1] "apagadas %(count)i %(name)s."
 
-#: tags/forms.py:84
+#: tags/forms.py:96
+#, python-format
+msgid "added %(name)s %(added)s."
+msgid_plural "added %(name)s %(added)s."
+msgstr[0] "adicionada %(name)s %(added)s."
+msgstr[1] "adicionadas %(name)s %(added)s."
+
+#: tags/forms.py:105
+#, python-format
+msgid "added %(count)i %(name)s."
+msgid_plural "added %(count)i %(name)s."
+msgstr[0] "adicionada %(count)i %(name)s."
+msgstr[1] "adicionadas %(count)i %(name)s."
+
+#: tags/forms.py:114
 msgid "no changes made"
 msgstr "sem alterações"
 
-#: tags/forms.py:85 tags/forms.py:88
+#: tags/forms.py:115 tags/forms.py:118
 msgid " and "
 msgstr " e "
+
+#: tags/models.py:33
+msgid "Tag"
+msgstr "Etiqueta"
+
+#: tags/models.py:34 tags/templates/tags/pagetagset_list.html:4
+#: tags/templates/tags/pagetagset_list.html:5
+#: tags/templates/tags/tag_list.html:4
+msgid "Tags"
+msgstr "Etiquetas"
 
 #: tags/templates/tags/pagetagset_diff.html:28
 #: tags/templates/tags/pagetagset_diff.html:29
@@ -843,12 +870,6 @@ msgstr "Etiquetas de"
 #: tags/templates/tags/pagetagset_form_snippet.html:8
 msgid "Save"
 msgstr "Gravar"
-
-#: tags/templates/tags/pagetagset_list.html:4
-#: tags/templates/tags/pagetagset_list.html:5
-#: tags/templates/tags/tag_list.html:4
-msgid "Tags"
-msgstr "Etiquetas"
 
 #: tags/templates/tags/pagetagset_version_detail.html:11
 #: tags/templates/tags/pagetagset_versions.html:10
@@ -1168,31 +1189,6 @@ msgstr "Transferir versão removida"
 msgid "Download added version"
 msgstr "Transferir versão adicionada"
 
-#: versionutils/diff/templates/versionutils/history/form.html:8
-#: versionutils/diff/templates/versionutils/history/form.html:15
-#: versionutils/merging/templates/versionutils/history/form.html:8
-#: versionutils/merging/templates/versionutils/history/form.html:15
-#: versionutils/templates/versionutils/history/form.html:8
-#: versionutils/templates/versionutils/history/form.html:15
-#: versionutils/versioning/templates/versionutils/history/form.html:8
-#: versionutils/versioning/templates/versionutils/history/form.html:15
-msgid "Compare"
-msgstr "Comparar"
-
-#: versionutils/diff/templates/versionutils/history/form.html:45
-#: versionutils/merging/templates/versionutils/history/form.html:45
-#: versionutils/templates/versionutils/history/form.html:45
-#: versionutils/versioning/templates/versionutils/history/form.html:45
-msgid "There is no revision history."
-msgstr "Não existe histórico de revisões."
-
-#: versionutils/diff/templates/versionutils/history/media.html:47
-#: versionutils/merging/templates/versionutils/history/media.html:47
-#: versionutils/templates/versionutils/history/media.html:47
-#: versionutils/versioning/templates/versionutils/history/media.html:47
-msgid "Please select two versions to compare"
-msgstr "Selecione duas versões para comparar"
-
 #: versionutils/merging/forms.py:53
 msgid ""
 "Warning: someone else made changes before you.  Please review the changes "
@@ -1208,6 +1204,19 @@ msgid ""
 msgstr ""
 "Alguém gravou alterações antes de si mas as suas alterações foram "
 "introduzidas com sucesso."
+
+#: versionutils/templates/versionutils/history/form.html:8
+#: versionutils/templates/versionutils/history/form.html:15
+msgid "Compare"
+msgstr "Comparar"
+
+#: versionutils/templates/versionutils/history/form.html:45
+msgid "There is no revision history."
+msgstr "Não existe histórico de revisões."
+
+#: versionutils/templates/versionutils/history/media.html:47
+msgid "Please select two versions to compare"
+msgstr "Selecione duas versões para comparar"
 
 #: versionutils/versioning/constants.py:15
 msgid "Updated"
