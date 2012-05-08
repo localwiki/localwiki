@@ -51,6 +51,14 @@ LOCALE_PATHS = (
     os.path.join(PROJECT_ROOT, 'locale'),
 )
 
+# Languages LocalWiki has been translated into.
+gettext = lambda s: s
+LANGUAGES = (
+    ('en', gettext('English')),
+    ('pt_PT', gettext('Portuguese')),
+    ('de_CH', gettext('German (CH)')),
+)
+
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
