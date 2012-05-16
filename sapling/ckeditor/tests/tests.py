@@ -100,11 +100,11 @@ class HTML5FragmentField(TestCase):
         m.clean_fields()
         self.assertEquals(m.html, '<span>This should be a span</span>')
 
-    def test_self_closing_a_tag(self):
+    def test_empty_a_element(self):
         m = HTML5FragmentModel()
-        m.html = '<a name="test"/>'
+        m.html = '<p><a name="test"></a></p>'
         m.clean_fields()
-        self.assertEquals(m.html, '<a name="test"></a>')
+        self.assertEquals(m.html, '<p><a name="test"></a></p>')
 
     def test_nbsp(self):
         ''' We store UTF-8, so &nbsp; should be stored as \xc2\xa0 (2 chars)

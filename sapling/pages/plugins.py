@@ -290,7 +290,7 @@ def html_to_template_text(unsafe_html, context=None, render_plugins=True):
             except:
                 pass
 
-    template_bits = [etree.tostring(elem, encoding='UTF-8')
+    template_bits = [etree.tostring(elem, method='html', encoding='UTF-8')
                      for elem in container]
     container_text = escape(container.text or '').encode('UTF-8')
     template_text = sanitize_final(''.join(
@@ -381,7 +381,8 @@ class EmbedCodeNode(Node):
             for elem in top_level_elements:
                 if elem.tag == 'iframe':
                     elem = self._process_iframe(elem)
-                out.append(etree.tostring(elem, encoding='UTF-8'))
+                out.append(etree.tostring(elem, method='html',
+                                          encoding='UTF-8'))
             return ''.join(out)
 
         except IFrameSrcNotApproved:
