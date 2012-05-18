@@ -9,7 +9,7 @@
 
     {{ setup_custom_layer_types|safe }}
 
-    $(document).ready(function() {
+    $(window).load(function() {
         var map = new olwidget.Map("{{ id }}", [
                 {{ layer_js|join:"," }}
             ], 
