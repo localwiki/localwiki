@@ -331,7 +331,7 @@ def name_to_url(value):
     """Converts page name to its canonical URL path
     """
     # spaces to underscore
-    value = re.sub('[\s]', '_', value.strip())
+    value = value.strip().replace(' ', '_')
     # url-encode
     value = quote(value.encode('utf-8'))
     return mark_safe(value)
