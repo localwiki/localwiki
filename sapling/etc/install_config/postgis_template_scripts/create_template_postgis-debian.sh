@@ -22,7 +22,7 @@ then
     GEOGRAPHY=1
 fi
 
-# For Ubuntu 11.10 (with PostGIS 1.5)
+# For Ubuntu 11.10 and 12.04 (with PostGIS 1.5)
 if [ -d "/usr/share/postgresql/9.1/contrib/postgis-1.5" ]
 then
     POSTGIS_SQL_PATH=/usr/share/postgresql/9.1/contrib/postgis-1.5

@@ -521,6 +521,12 @@ class HTMLToTemplateTextTest(TestCase):
         self.assertEqual(template_text, imports +
                                         u'a\xa0<strong>\xa0</strong>\n')
 
+    def test_empty_a_element(self):
+        html = '<p><a name="blah"></a></p>'
+        imports = ''.join(tag_imports)
+        template_text = html_to_template_text(html)
+        self.assertEqual(template_text, imports + '<p><a name="blah"></a></p>')
+
 
 class PluginTest(TestCase):
     def setUp(self):
