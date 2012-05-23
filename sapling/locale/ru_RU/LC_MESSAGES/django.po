@@ -8,118 +8,118 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-23 17:34-0500\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
+"POT-Creation-Date: 2012-05-23 17:36-0500\n"
+"PO-Revision-Date: 2012-05-18 00:06\n"
+"Last-Translator: Anonymous User <anonymous@user.tld>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt-PT\n"
+"X-Translated-Using: django-rosetta 0.6.5\n"
 
 #: ckeditor/models.py:30
 msgid "This field contains invalid data."
-msgstr "Este campo contém dados inválidos."
+msgstr "Это поле содержит неправильные данные."
 
 #: ckeditor/models.py:178
 msgid "XML text"
-msgstr "texto XML"
+msgstr "XML-текст"
 
 #: ckeditor/models.py:188
 msgid "XHTML text"
-msgstr "texto XHTML"
+msgstr "XHTML-текст"
 
 #: ckeditor/models.py:197
 msgid "HTML5 text"
-msgstr "texto HTML5"
+msgstr "HTML5-текст"
 
 #: ckeditor/models.py:228
 msgid "HTML5 fragment text"
-msgstr "fragmento de texto HTML5"
+msgstr "Фрагмент HTML5-текста"
 
 #: ckeditor/views.py:14
 msgid "Unable to upload"
-msgstr "Erro a carregar"
+msgstr "Загрузка прошла неуспешно"
 
 #: ckeditor/templates/ckeditor/upload_result.html:4
 msgid "Upload result"
-msgstr "Resultado do carregamento"
+msgstr "Результат загрузки"
 
 #: dashboard/views.py:113 dashboard/views.py:157
 msgid "pages"
-msgstr "páginas"
+msgstr "страниц"
 
 #: dashboard/views.py:114 dashboard/views.py:158
 msgid "maps"
-msgstr "mapas"
+msgstr "карт"
 
 #: dashboard/views.py:115 dashboard/views.py:159
 msgid "files"
-msgstr "ficheiros"
+msgstr "файлов"
 
 #: dashboard/views.py:117 dashboard/views.py:160
 msgid "redirects"
-msgstr "redirecionamentos"
+msgstr "перенаправлений"
 
 #: dashboard/templates/dashboard/index.html:6
 msgid "Dashboard"
-msgstr "Painel de gestão"
+msgstr "Приборная панель"
 
 #: dashboard/templates/dashboard/index.html:19
 msgid "Statistics loading.  This may take several minutes the first time."
-msgstr ""
-"A carregar as estatísticas. Pode demorar vários minutos da primeira vez."
+msgstr "Загружается статистика. В первый раз это может занять несколько минут."
 
 #: dashboard/templates/dashboard/index.html:23
 #: dashboard/templates/dashboard/render.html:4
 msgid "Pages"
-msgstr "Páginas"
+msgstr "Страниц"
 
 #: dashboard/templates/dashboard/index.html:24
 #: dashboard/templates/dashboard/render.html:5
 #: pages/templates/pages/cke_filebrowser.html:7
 #: pages/templates/pages/page_files.html:4
 msgid "Files"
-msgstr "Ficheiros"
+msgstr "Файлов"
 
 #: dashboard/templates/dashboard/index.html:25
 #: dashboard/templates/dashboard/render.html:6
 msgid "Maps"
-msgstr "Mapas"
+msgstr "Карт"
 
 #: dashboard/templates/dashboard/index.html:26
 #: dashboard/templates/dashboard/render.html:7
 msgid "Redirects"
-msgstr "Redirecionamentos"
+msgstr "Перенаправлений"
 
 #: dashboard/templates/dashboard/index.html:27
 #: dashboard/templates/dashboard/render.html:8
 msgid "Users"
-msgstr "Utilizadores"
+msgstr "Пользователей"
 
 #: dashboard/templates/dashboard/index.html:32
 #: dashboard/templates/dashboard/render.html:13
 msgid "Growth over time"
-msgstr "Crescimento ao longo do tempo"
+msgstr "Рост"
 
 #: dashboard/templates/dashboard/index.html:39
 #: dashboard/templates/dashboard/render.html:20
 msgid "Edits over time"
-msgstr "Alterações ao longo do tempo"
+msgstr "Правки"
 
 #: dashboard/templates/dashboard/index.html:46
 #: dashboard/templates/dashboard/render.html:27
 msgid "Page content growth over time"
-msgstr "Crescimento dos conteúdos ao longo do tempo"
+msgstr "Рост контента"
 
 #: dashboard/templates/dashboard/index.html:53
 #: dashboard/templates/dashboard/render.html:34
 msgid "Users registered over time"
-msgstr "Utilizadores registados ao longo do tempo"
+msgstr "Зарегистрированные пользователи"
 
 #: maps/feeds.py:21 maps/feeds.py:38
 #, python-format
 msgid "Map for \"%s\""
-msgstr "Mapa de \"%s\""
+msgstr "Карта \"%s\""
 
 #: maps/fields.py:169
 #, python-format
@@ -127,39 +127,35 @@ msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
 "instances."
 msgstr ""
-"O atributo '%(fieldname)s' só pode ser acedido das instância de %(ownername)"
-"s."
+"Поле \"%(fieldname)s\" доступно только через экземпляр класса %(ownername)s."
 
 #: maps/fields.py:214
 #, python-format
 msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
-msgstr ""
-"não é possível atribuir ao conjunto %(cname)s CollectionFrom um valor do "
-"tipo: %(vtype)s"
+msgstr "не могу присвоить %(cname)s CollectionFrom значение типа %(vtype)s"
 
 #: maps/validators.py:14
 #, python-format
 msgid "Map error: %s."
-msgstr "Erro no mapa: %s."
+msgstr "Ошибка! %s."
 
 #: maps/templates/maps/attribution.html:2
 msgid "Map data"
-msgstr "Dados do mapa"
+msgstr "Данные карты"
 
 #: maps/templates/maps/attribution.html:2
 msgid "Map tiles via"
-msgstr "Blocos do mapa via"
+msgstr "Изображения от"
 
 #: maps/templates/maps/base.html:5
-#, fuzzy
 msgid "Recent changes on this Map"
-msgstr "Alterações recentes neste mapa"
+msgstr "Свежие правки на этой карте"
 
 #: maps/templates/maps/base.html:14 maps/templates/maps/mapdata_list.html:22
 #: maps/templates/maps/mapdata_list.html:28
 #: themes/sapling/templates/site/nav.html:6
 msgid "Map"
-msgstr "Mapa"
+msgstr "Карта"
 
 #: maps/templates/maps/base.html:31 maps/templates/maps/mapdata_detail.html:50
 #: maps/templates/maps/mapdata_form.html:84
@@ -167,35 +163,35 @@ msgstr "Mapa"
 #: pages/templates/pages/base.html:26 pages/templates/pages/page_form.html:60
 #: pages/templates/pages/page_versions.html:25
 msgid "Edit"
-msgstr "Editar"
+msgstr "Править"
 
 #: maps/templates/maps/base.html:32 maps/templates/maps/mapdata_form.html:85
 #: maps/templates/maps/mapdata_versions.html:23
 #: pages/templates/pages/base.html:27 pages/templates/pages/page_form.html:61
 #: pages/templates/pages/page_versions.html:26
 msgid "Info"
-msgstr "Informações"
+msgstr "Информация"
 
 #: maps/templates/maps/editor_actions.html:4
 msgid "Delete map"
-msgstr "Apagar mapa"
+msgstr "Удалить карту"
 
 #: maps/templates/maps/mapdata_confirm_delete.html:14
 #: pages/templates/pages/page_confirm_delete.html:14
 #: pages/templates/pages/pagefile_confirm_delete.html:14
 #: redirects/templates/redirects/redirect_confirm_delete.html:14
 msgid "Delete"
-msgstr "Apagar"
+msgstr "Удалить"
 
 #: maps/templates/maps/mapdata_confirm_revert.html:14
 #: pages/templates/pages/page_confirm_revert.html:14
 #: tags/templates/tags/pagetagset_confirm_revert.html:14
 msgid "Revert"
-msgstr "Reverter"
+msgstr "Восстановить"
 
 #: maps/templates/maps/mapdata_detail.html:21
 msgid "Map for"
-msgstr "Mapa de"
+msgstr "Карта на странице"
 
 #: maps/templates/maps/mapdata_detail.html:35
 #: maps/templates/maps/mapdata_diff.html:59
@@ -206,7 +202,7 @@ msgstr "Mapa de"
 #: tags/templates/tags/pagetagset_diff.html:42
 #: tags/templates/tags/pagetagset_version_detail.html:17
 msgid "Revision"
-msgstr "Revisão"
+msgstr "Версия"
 
 #: maps/templates/maps/mapdata_detail.html:36
 #: maps/templates/maps/mapdata_diff.html:60
@@ -218,161 +214,158 @@ msgstr "Revisão"
 #: tags/templates/tags/pagetagset_version_detail.html:18
 #: versionutils/templates/versionutils/history/form.html:34
 msgid "by"
-msgstr "por"
+msgstr "пользователем"
 
 #: maps/templates/maps/mapdata_detail.html:50
 msgid "this map"
-msgstr "este mapa"
+msgstr "эту карту"
 
 #: maps/templates/maps/mapdata_detail.html:50
 #, python-format
 msgid "last modified %(tsince)s ago"
-msgstr "última modificação há %(tsince)s"
+msgstr "последнее изменение %(tsince)s назад"
 
 #: maps/templates/maps/mapdata_diff.html:49
 msgid "Differences for map on"
-msgstr "Diferenças para mapa de"
+msgstr "Сравнение версий карты на странице"
 
 #: maps/templates/maps/mapdata_diff.html:50
 #, python-format
 msgid "Differences for <a href=\"%(maps_global)s\">Map</a>"
-msgstr "Diferenças para <a href=\"%(maps_global)s\">Mapa</a>"
+msgstr "Сравнение версий на странице <a href=\"%(maps_global)s\">Карта</a>"
 
 #: maps/templates/maps/mapdata_diff.html:70
 #: pages/templates/pages/page_diff.html:41
 #: tags/templates/tags/pagetagset_diff.html:48
 msgid "Deletions are marked like this"
-msgstr "Remoções estão marcadas assim"
+msgstr "Удаления помечены так"
 
 #: maps/templates/maps/mapdata_diff.html:73
 #: pages/templates/pages/page_diff.html:44
 #: tags/templates/tags/pagetagset_diff.html:51
 msgid "Additions are marked like this"
-msgstr "Adições estão marcadas assim"
+msgstr "Добавления помечены так"
 
 #: maps/templates/maps/mapdata_form.html:32
 msgid "Editing map for"
-msgstr "Editar mapa de"
+msgstr "Правка карты"
 
 #: maps/templates/maps/mapdata_form.html:62
 #: pages/templates/pages/page_form.html:38
 msgid "Please comment about this change:"
-msgstr "Por favor coloque uma descrição da alteração:"
+msgstr "Кратко опишите это изменение:"
 
 #: maps/templates/maps/mapdata_form.html:66
 #: pages/templates/pages/page_form.html:42
 msgid "Save changes"
-msgstr "Gravar"
+msgstr "Сохранить"
 
 #: maps/templates/maps/mapdata_form.html:67
 #: pages/templates/pages/page_detail.html:61
 #: pages/templates/pages/page_form.html:43
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr "Отмена"
 
 #: maps/templates/maps/mapdata_new.html:3
 msgid "Map for page not found"
-msgstr "Mapa da página não existe"
+msgstr "Карта на странице не найдена"
 
 #: maps/templates/maps/mapdata_new.html:4
 msgid "Map for page"
-msgstr "Mapa da página"
+msgstr "Карта на странице"
 
 #: maps/templates/maps/mapdata_new.html:4
 msgid "does not exist (yet!)"
-msgstr "(ainda) não existe"
+msgstr "(пока) не существует"
 
 #: maps/templates/maps/mapdata_new.html:12
 msgid "Create this map"
-msgstr "Criar este mapa"
+msgstr "Создать карту"
 
 #: maps/templates/maps/mapdata_versions.html:13
 msgid "Previous versions of map for"
-msgstr "Versões anteriores do mapa de"
+msgstr "Предыдущиe версии карты на странице"
 
 #: pages/feeds.py:42
 #, python-format
 msgid "File %(filename)s on page \"%(pagename)s\""
-msgstr "Ficheiro %(filename)s na página \"%(pagename)s\""
+msgstr "Файл %(filename)s на странице \"%(pagename)s\""
 
 #: pages/feeds.py:79
-#, fuzzy
 msgid "File %(filename)=s on page \"%(pagename)s\""
-msgstr "Ficheiro %(filename)s na página \"%(pagename)s\""
+msgstr "Файл %(filename)s на странице \"%(pagename)s\""
 
 #: pages/fields.py:22
 #, python-format
 msgid "Page %s does not exist!  Please enter a valid page name."
-msgstr "A página %s não existe! Por favor, introduza um nome de página válido."
+msgstr "Страница %s не найдена! Введите правильное название."
 
 #: pages/forms.py:15
 msgid ""
 "Warning: someone else saved this page before you.  Please resolve edit "
 "conflicts and save again."
 msgstr ""
-"Aviso: outra pessou gravou esta página antes de si. Por favor, resolva os "
-"conflitos de edição e grave novamente."
+"Внимание! Кто-то сохранил страницу раньше вас. Разрешите конфликты слияния и "
+"сохраните еще раз. "
 
 #: pages/forms.py:46
 msgid "A page with this name already exists"
-msgstr "Já existe uma página com este nome"
+msgstr "Страница с таким названием уже существует"
 
 #: pages/forms.py:62
 msgid "The new file should be of the same type"
-msgstr "O novo ficheiro deve ser do mesmo tipo"
+msgstr "Новый файл должен быть такого-же типа"
 
 #: pages/models.py:91
 msgid "Page name is invalid."
-msgstr "Nome da página inválido"
+msgstr "Название страницы является недопустимым."
 
 #: pages/models.py:141 pages/models.py:153
-#, fuzzy, python-format
+#, python-format
 msgid "Renamed from \"%s\""
-msgstr "Nome alterado de \"%s\""
+msgstr "Страница переименована из \"%s\""
 
 #: pages/models.py:145
 #, python-format
 msgid "The page '%s' already exists!"
-msgstr "A página '%s' já existe!"
+msgstr "Страница '%s' уже существует!"
 
 #: pages/models.py:195 pages/models.py:208 pages/models.py:227
 msgid "Parent page renamed"
-msgstr "Nome da página superior alterado"
+msgstr "Страница переименована"
 
 #: pages/models.py:241
 msgid "file"
-msgstr "ficheiro"
+msgstr "файл"
 
 #: pages/plugins.py:391
 msgid ""
 "The embedded URL is not on the list of approved providers.  Contact the site "
 "administrator to add it."
 msgstr ""
-"O URL (embedded) não está na lista dos fornecedores permitidos.  Contacte o "
-"administrador do site para o adicionar."
+"Встроенный URL-адрес не входит в список утвержденных сайтов. Свяжитесь с "
+"администратором сайта, чтобы добавить его."
 
 #: pages/plugins.py:395
 msgid "Invalid embed code"
-msgstr "Código de embed inválido"
+msgstr "Неправильный код встраивания"
 
 #: pages/plugins.py:407 search/templates/search/search.html:12
 #: themes/sapling/templates/site/search_form.html:5
 msgid "Search or create page"
-msgstr "Pesquisar ou criar página"
+msgstr "Найти или создать"
 
 #: pages/signals.py:13
-#, fuzzy
 msgid "Redirect created"
-msgstr "Redirecionamento criado"
+msgstr "Перенаправление создано"
 
 #: pages/signals.py:19
-#, fuzzy
 msgid "Page created"
-msgstr "Página criada"
+msgstr "Страница создана"
 
 #: pages/views.py:104
 msgid "Thank you for your changes. Your attention to detail is appreciated."
-msgstr "Obrigado pelas alterações. Apreciamos a sua atenção ao detalhe."
+msgstr "Спасибо за изменения! Мы ценим ваше внимание к деталям."
 
 #: pages/views.py:107
 #, python-format
@@ -382,10 +375,10 @@ msgid ""
 "(register_url)s?next=%(current_path)s\"><strong>create an account</strong></"
 "a>."
 msgstr ""
-"Alterações gravadas! Para usar o seu nome na edição, por favor <a href=\"%"
-"(login_url)s?next=%(current_path)s\"><strong>entre no site</strong></a> ou "
-"<a href=\"%(register_url)s?next=%(current_path)s\"><strong>crie uma conta</"
-"strong></a>."
+"Изменения сохранены! Чтобы пользоваться своим именем при редактировании, <a "
+"href=\"%(login_url)s?next=%(current_path)s\"><strong>войдите в аккаунт</"
+"strong></a> или <a href=\"%(register_url)s?next=%(current_path)s"
+"\"><strong>зарегистрируйтесь</strong></a>."
 
 #: pages/views.py:119
 #, python-format
@@ -394,54 +387,53 @@ msgid ""
 "class=\"text\">Create a map</span></a> for this page?</p>"
 msgstr ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
-"class=\"text\">Criar um mapa</span></a> para esta página?</p>"
+"class=\"text\">Создать карту</span></a> для этой страницы?</p>"
 
 #: pages/views.py:131
 #, python-format
 msgid "<p>Describe %s here</p>"
-msgstr "<p>Descreva %s aqui</p>"
+msgstr "<p>Опишите %s здесь</p>"
 
 #: pages/views.py:344
 msgid "A file with this name already exists"
-msgstr "Já existe um ficheiro com este nome"
+msgstr "Файл с таким именем уже существует"
 
 #: pages/views.py:349
 msgid "Pagename"
-msgstr "Nome da Página"
+msgstr "Название"
 
 #: pages/views.py:350 versionutils/versioning/forms.py:17
 msgid "Comment"
-msgstr "Comentário"
+msgstr "Комментарий"
 
 #: pages/views.py:376
 #, python-format
 msgid "Page renamed to \"%s\""
-msgstr "Nome da Página alterado para \"%s\""
+msgstr "Страница переименована на \"%s\""
 
 #: pages/templates/pages/base.html:5
 msgid "Recent changes on this Page"
-msgstr "Alterações recentes nesta Paǵina"
+msgstr "Свежие правки на этой странице"
 
 #: pages/templates/pages/editor_actions.html:4
 msgid "Edit map"
-msgstr "Editar mapa"
+msgstr "Править карту"
 
 #: pages/templates/pages/editor_actions.html:5
-#, fuzzy
 msgid "Delete page"
-msgstr "Apagar página"
+msgstr "Удалить страницу"
 
 #: pages/templates/pages/editor_actions.html:6
 msgid "Rename page"
-msgstr "Mudar o nome da página"
+msgstr "Переименовать"
 
 #: pages/templates/pages/editor_actions.html:8
 msgid "Redirect"
-msgstr "Redirecionar"
+msgstr "Перенаправить"
 
 #: pages/templates/pages/page_detail.html:16
 msgid "Redirected from"
-msgstr "Redirecionado de"
+msgstr "Перенаправлено с"
 
 #: pages/templates/pages/page_detail.html:30
 #, python-format
@@ -449,36 +441,36 @@ msgid ""
 "Revision %(page.version_info.version_number)s\n"
 "          (%(date)s by %(user_link)s)"
 msgstr ""
-"Revisão %(page.version_info.version_number)s\n"
-"          (%(date)s por %(user_link)s)"
+"Версия %(page.version_info.version_number)s\n"
+"          (%(date)s пользователем %(user_link)s)"
 
 #: pages/templates/pages/page_detail.html:38
 #: tags/templates/tags/tagged_list_snippet.html:7
 msgid "View map"
-msgstr "Ver mapa"
+msgstr "Посмотреть карту"
 
 #: pages/templates/pages/page_detail.html:55
 msgid "Edit tags"
-msgstr "Editar etiquetas"
+msgstr "Править метки"
 
 #: pages/templates/pages/page_detail.html:55
 msgid "Add tags"
-msgstr "Adicionar etiquetas"
+msgstr "Добавить метки"
 
 #: pages/templates/pages/page_detail.html:71
 #, python-format
 msgid "This page was last modified %(ago)s ago"
-msgstr "Última modificação há %(ago)s"
+msgstr "Последнее изменение %(ago)s назад"
 
 #: pages/templates/pages/page_diff.html:19
 #, python-format
 msgid "Differences for %(name)s"
-msgstr "Diferenças para %(name)s"
+msgstr "Сравнение версий %(name)s"
 
 #: pages/templates/pages/page_diff.html:20
 #, python-format
 msgid "Differences for <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
-msgstr "Diferenças para <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
+msgstr "Сравнение версий <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
 
 #: pages/templates/pages/page_diff.html:30
 #, python-format
@@ -486,8 +478,8 @@ msgid ""
 "Revision %(version_number)s\n"
 "                  ( %(date)s by %(user_link)s)"
 msgstr ""
-"Revisão %(version_number)s\n"
-"                  ( %(date)s por %(user_link)s)"
+"Версия %(version_number)s\n"
+"                  ( %(date)s пользователем %(user_link)s)"
 
 #: pages/templates/pages/page_diff.html:35
 #: pages/templates/pages/pagefile_diff.html:43
@@ -496,73 +488,73 @@ msgid ""
 "Revision %(version_number)s\n"
 "                  (%(date)s by %(user_link)s)"
 msgstr ""
-"Revisão %(version_number)s\n"
-"                  ( %(date)s por %(user_link)s)"
+"Версия %(version_number)s\n"
+"                  ( %(date)s пользователем %(user_link)s)"
 
 #: pages/templates/pages/page_files.html:19
 msgid "Files attached to this page:"
-msgstr "Ficheiros anexados a esta página:"
+msgstr "Прикрепленные файлы:"
 
 #: pages/templates/pages/page_files.html:34
 msgid "View page"
-msgstr "Ver página"
+msgstr "Посмотреть страницу"
 
 #: pages/templates/pages/page_form.html:4
 #, python-format
 msgid "Editing page \"%(name)s\" - %(super)s"
-msgstr "A editar a página \"%(name)s\" - %(super)s"
+msgstr "Правка страницы \"%(name)s\" - %(super)s"
 
 #: pages/templates/pages/page_list.html:4
 #: pages/templates/pages/page_list.html:6
 #: themes/sapling/templates/site/nav.html:8
 msgid "All Pages"
-msgstr "Todas as Páginas"
+msgstr "Все страницы"
 
 #: pages/templates/pages/page_new.html:4
 msgid "Page not found"
-msgstr "Página não encontrada"
+msgstr "Страница не найдена"
 
 #: pages/templates/pages/page_new.html:5
 #, python-format
 msgid "Page \"%(name)s\" does not exist (yet!)"
-msgstr "A página \"%(name)s\" não existe (ainda!)"
+msgstr "Страница \"%(name)s\" не существует(пока!)"
 
 #: pages/templates/pages/page_new.html:14
 #: search/templates/search/search.html:35
 #: search/templates/search/search.html:73
 msgid "Create this page"
-msgstr "Criar esta página"
+msgstr "Создать страницу"
 
 #: pages/templates/pages/page_new.html:18
 msgid "Or use one of these templates:"
-msgstr "Ou usar um destes modelos:"
+msgstr "Или воспользуйтесь одним из шаблонов:"
 
 #: pages/templates/pages/page_new.html:21
 #, python-format
 msgid "Create with %(name)s template"
-msgstr "Criar com o modelo %(name)s"
+msgstr "Создать с помощью шаблона %(name)s"
 
 #: pages/templates/pages/page_rename.html:12
 msgid "Submit"
-msgstr "Enviar"
+msgstr "Переименовать"
 
 #: pages/templates/pages/page_versions.html:13
 #, python-format
 msgid "Previous versions of page \"%(name)s\" - %(super)s"
-msgstr "Versões anteriores da página \"%(name)s\" - %(super)s"
+msgstr "Предыдущие версии страницы \"%(name)s\" - %(super)s"
 
 #: pages/templates/pages/page_versions.html:18
 msgid ""
 " Looking for <a href=\"../_files/\">files</a> or <a href=\"../_tags/_history/"
 "\">tags</a>?"
 msgstr ""
-" À procura de <a href=\"../_files/\">ficheiros</a> ou <a href=\"../_tags/"
-"_history/\">etiquetas</a>?"
+"Возможно, вы ищите <a href=\"../_files/\">файлы</a> или <a href=\"../_tags/"
+"_history/\">метки</a>?"
 
 #: pages/templates/pages/pagefile_diff.html:34
 #, python-format
 msgid "Differences for %(new_name)s on %(new_slug)s"
-msgstr "Diferenças para %(new_name)s em %(new_slug)s"
+msgstr "Сравнение версий %(new_name)s на странице %(new_slug)s"
 
 #: pages/templates/pages/pagefile_diff.html:35
 #, python-format
@@ -570,8 +562,8 @@ msgid ""
 "Differences for %(new_name)s on <a href=\"%(url_pages_show)s\">%"
 "(new_attached_to_page)s</a>"
 msgstr ""
-"Diferenças para \"%(new_name)s\" em <a href=\"%(url_pages_show)s\">%"
-"(new_attached_to_page)s</a>"
+"Сравнение версий \"%(new_name)s\" на странице <a href=\"%(url_pages_show)s\">"
+"%(new_attached_to_page)s</a>"
 
 #: pages/templates/pages/pagefile_diff.html:48
 #, python-format
@@ -579,22 +571,21 @@ msgid ""
 "Revision %(version_number)s\n"
 "                (%(date)s by %(user_link)s)"
 msgstr ""
-"Revisão %(version_number)s\n"
-"                (%(date)s por %(user_link)s)"
+"Версия %(version_number)s\n"
+"                (%(date)s пользователем %(user_link)s)"
 
 #: pages/templates/pages/pagefile_diff.html:59
 msgid "File info"
-msgstr "Informações sobre o ficheiro"
+msgstr "Информация о файле"
 
 #: pages/templates/pages/pagefile_info.html:4
-#, fuzzy
 msgid "Recent changes for this file"
-msgstr "Alterações recentes para este ficheiro"
+msgstr "Свежие правки этого файла"
 
 #: pages/templates/pages/pagefile_info.html:11
 #, python-format
 msgid "Information about \"%(name)s\" on %(slug)s - %(super)s"
-msgstr "Informações sobre \"%(name)s\" em %(slug)s - %(super)s"
+msgstr "Информация о файле \"%(name)s\" на странице %(slug)s - %(super)s"
 
 #: pages/templates/pages/pagefile_info.html:12
 #, python-format
@@ -602,26 +593,26 @@ msgid ""
 "Information about \"%(name)s\" on <a href=\"%(pages_show_url)s\">%"
 "(attached_to_page)s</a>"
 msgstr ""
-"Informações sobre \"%(name)s\" em <a href=\"%(pages_show_url)s\">%"
+"Информация о файле \"%(name)s\" на странице <a href=\"%(pages_show_url)s\">%"
 "(attached_to_page)s</a>"
 
 #: pages/templates/pages/pagefile_info.html:36
 #, python-format
 msgid "Download %(name)s"
-msgstr "Descarregar %(name)s"
+msgstr "Скачать %(name)s"
 
 #: pages/templates/pages/pagefile_info.html:41
 msgid "Upload a new version"
-msgstr "Carregar uma nova versão"
+msgstr "Загрузить новую версию"
 
 #: pages/templates/pages/pagefile_info.html:48
 msgid "Upload"
-msgstr "Carregar"
+msgstr "Загрузить"
 
 #: pages/templates/pages/pagefile_info.html:54
 #: tags/templates/tags/pagetagset_versions.html:25
 msgid "Previous versions:"
-msgstr "Versões anteriores:"
+msgstr "Предыдущие версии:"
 
 #: pages/templatetags/pages_tags.py:109
 #, python-format
@@ -629,8 +620,8 @@ msgid ""
 "Unable to include <a href=\"%(page_url)s\" class=\"missing_link\">%"
 "(page_name)s</a>"
 msgstr ""
-"Não foi possível incluir a página <a href=\"%(page_url)s\" class="
-"\"missing_link\">%(page_name)s</a>"
+"Не могу включить страницу <a href=\"%(page_url)s\" class=\"missing_link\">%"
+"(page_name)s</a>"
 
 #: pages/templatetags/pages_tags.py:117
 #, python-format
@@ -638,80 +629,80 @@ msgid ""
 "Unable to include <a href=\"%(page_url)s\">%(page_name)s</a>: endless "
 "include loop."
 msgstr ""
-"Não foi possível incluir a página<a href=\"%(page_url)s\">%(page_name)s</a>: "
-"ciclo infinito .)"
+"Ошибка при включении страницы <a href=\"%(page_url)s\">%(page_name)s</a>! "
+"Бесконечный цикл включений."
 
 #: recentchanges/feeds.py:25
-#, fuzzy, python-format
+#, python-format
 msgid "Recent Changes on %s"
-msgstr "Alterações Recentes"
+msgstr "Свежие правки на %s"
 
 #: recentchanges/feeds.py:31
 #, python-format
 msgid "Recent changes on %s"
-msgstr "Alterações Recentes em %s"
+msgstr "Свежие правки на %s"
 
 #: recentchanges/feeds.py:64 recentchanges/feeds.py:152
 #, python-format
 msgid "to version %s"
-msgstr "para a versão %s"
+msgstr "на версию %s"
 
 #: recentchanges/feeds.py:71 recentchanges/feeds.py:159
 #, python-format
 msgid " with comment \"%s\""
-msgstr " com o comentário \"%s\""
+msgstr "с комментарием \"%s\""
 
 #: recentchanges/feeds.py:72 recentchanges/feeds.py:160
 #, python-format
 msgid "%(title)s was %(change_type)s by %(user)s%(comment)s."
-msgstr "%(title)s foi %(change_type)s por %(user)s%(comment)s."
+msgstr "%(title)s %(change_type)s пользователем %(user)s%(comment)s."
 
 #: recentchanges/feeds.py:124 recentchanges/feeds.py:130
 #, python-format
 msgid "Changes for %(title)s on %(site_name)s"
-msgstr "Alterações em %(title)s em %(site_name)s"
+msgstr "Правки страницы %(title)s на сайте %(site_name)s"
 
 #: recentchanges/templates/recentchanges/recentchanges.html:5
 #: recentchanges/templates/recentchanges/recentchanges.html:7
 #: recentchanges/templates/recentchanges/recentchanges.html:9
 #: themes/sapling/templates/site/nav.html:7
 msgid "Recent Changes"
-msgstr "Alterações Recentes"
+msgstr "Свежие правки"
 
 #: recentchanges/templates/recentchanges/recentchanges.html:15
 msgid "Show all changes in the last"
-msgstr "Ver todas as alterações nos últimos"
+msgstr "Показать все правки за последние"
 
 #: recentchanges/templates/recentchanges/recentchanges.html:22
 msgid "days."
-msgstr "dias."
+msgstr "дней."
 
 #: recentchanges/templates/recentchanges/recentchanges.html:40
 #, python-format
 msgid "last modified %(version_date)s ago"
-msgstr "última modificação há %(version_date)s"
+msgstr "последнее изменение %(version_date)s назад"
 
 #: recentchanges/templates/recentchanges/recentchanges.html:48
 msgid "new"
-msgstr "novo"
+msgstr "создано"
 
 #: recentchanges/templates/recentchanges/recentchanges.html:50
 msgid "deleted"
-msgstr "apagado"
+msgstr "удалено"
 
 #: recentchanges/templates/recentchanges/recentchanges.html:52
 msgid "changes"
-msgstr "alterações"
+msgstr "правки"
 
 #: recentchanges/templates/recentchanges/recentchanges.html:56
 #, python-format
 msgid "Reverted to version from %(version_date_timesince)s ago"
-msgstr "Revertido para a versão de há %(version_date_timesince)s"
+msgstr "Восстановлено на версию, сохраненную %(version_date_timesince)s назад"
 
 #: recentchanges/templates/recentchanges/recentchanges.html:62
 #, python-format
 msgid "Redirected to <a href=\"%(url)s\">%(destination)s</a>"
-msgstr "Redirecionado para <a href=\"%(url)s\">%(destination)s</a>"
+msgstr "Перенаправлена на страницу <a href=\"%(url)s\">%(destination)s</a>"
 
 #: recentchanges/templates/recentchanges/recentchanges.html:88
 #, python-format
@@ -719,163 +710,163 @@ msgid ""
 "For statistics about pages, maps, and more, check out the <a href=\"%"
 "(dashboard_main_url)s\">dashboard</a>"
 msgstr ""
-"Para estatísticas sobre páginas, mapas e outras coisas, veja o <a href=\"%"
-"(dashboard_main_url)s\">painel de gestão</a>"
+"Посмотрите статистику страниц, карт, и многого другого, на <a href=\"%"
+"(dashboard_main_url)s\">приборной панели</a>"
 
 #: redirects/feeds.py:25
 #, python-format
 msgid "Redirect %(objsrc)s --> %(objdest)s"
-msgstr "Redirecionamento %(objsrc)s --> %(objdest)s"
+msgstr "Перенаправление %(objsrc)s --> %(objdest)s"
 
 #: redirects/forms.py:13
 msgid "Destination"
-msgstr "Destino"
+msgstr "Назначение"
 
 #: redirects/models.py:29
 msgid "You cannot redirect a page to itself"
-msgstr "Não pode redirecionar uma página para a própria página"
+msgstr "Нельзя перенаправить страницу на саму себя"
 
 #: redirects/views.py:41 redirects/views.py:101
 #: versionutils/versioning/views.py:67
 msgid "Thank you for your changes. "
-msgstr "Obrigado pelas alterações. "
+msgstr "Спасибо за ваши правки. "
 
 #: redirects/views.py:42
 #, python-format
 msgid "This page now redirects to <a href=\"%(url)s\">%(obj)s</a>."
-msgstr "Esta página agora redireciona para <a href=\"%(url)s\">%(obj)s</a>."
+msgstr "Эта страница теперь перенаправлена на <a href=\"%(url)s\">%(obj)s</a>."
 
 #: redirects/views.py:102
 msgid "The redirect has been deleted"
-msgstr "O redirecionamento foi removido"
+msgstr "Перенаправление удалено"
 
 #: redirects/templates/redirects/redirect_diff.html:34
 #: redirects/templates/redirects/redirect_diff.html:35
 #, python-format
 msgid "Differences for %(new.source)s redirect"
-msgstr "Diferenças para redirecionamento %(new.source)s"
+msgstr "Сравнение версий перенаправления %(new.source)s"
 
 #: redirects/templates/redirects/redirect_form.html:24
 msgid "Update redirect"
-msgstr "Actualizar redirecionamento"
+msgstr "Изменить перенаправление"
 
 #: redirects/templates/redirects/redirect_form.html:25
 msgid "Delete redirect"
-msgstr "Remover redirecionamento"
+msgstr "Удалить перенаправление"
 
 #: redirects/templates/redirects/redirect_form.html:27
 msgid "Create redirect"
-msgstr "Criar redirecionamento"
+msgstr "Создать перенаправление"
 
 #: search/templates/search/search.html:10
 #: search/templates/search/search.html:23
 msgid "Search results for"
-msgstr "Resultados da pesquisa para"
+msgstr "Результаты поиска по запросу"
 
 #: search/templates/search/search.html:25
 msgid "Search or create a new page"
-msgstr "Pesquisar ou criar nova página"
+msgstr "Найти или создать страницу"
 
 #: search/templates/search/search.html:34
 #, python-format
 msgid "No page with the exact title \"%(query)s\" exists."
-msgstr "Não existe página com o título exacto \"%(query)s\"."
+msgstr "Нет страницы с точным названием \"%(query)s\"."
 
 #: search/templates/search/search.html:54
 msgid "No results found."
-msgstr "Nenhum resultado encontrado."
+msgstr "Ничего не найдено."
 
 #: search/templates/search/search.html:60
 msgid "Previous"
-msgstr "Anterior"
+msgstr "Предыдущая"
 
 #: search/templates/search/search.html:63
 msgid "Next"
-msgstr "Seguinte"
+msgstr "Следующая"
 
 #: search/templates/search/search.html:70
 msgid "Create a new page:"
-msgstr "Criar uma nova página:"
+msgstr "Создать новую страницу:"
 
 #: search/templates/search/search.html:77
 msgid "Search for pages:"
-msgstr "Pesquisar páginas:"
+msgstr "Поиск страниц:"
 
 #: search/templates/search/search.html:80
 msgid "Search"
-msgstr "Pesquisar"
+msgstr "Найти"
 
 #: tags/forms.py:76
 #, python-format
 msgid "removed %(name)s %(deleted)s."
 msgid_plural "removed %(name)s %(deleted)s."
-msgstr[0] "apagada %(name)s %(deleted)s."
-msgstr[1] "apagadas %(name)s %(deleted)s."
+msgstr[0] "удалены %(name)s %(deleted)s."
+msgstr[1] "удалены %(name)s %(deleted)s."
 
 #: tags/forms.py:85
 #, python-format
 msgid "removed %(count)i %(name)s."
 msgid_plural "removed %(count)i %(name)s."
-msgstr[0] "apagada %(count)i %(name)s."
-msgstr[1] "apagadas %(count)i %(name)s."
+msgstr[0] "удалены %(count)i %(name)s."
+msgstr[1] "удалены %(count)i %(name)s."
 
 #: tags/forms.py:96
 #, python-format
 msgid "added %(name)s %(added)s."
 msgid_plural "added %(name)s %(added)s."
-msgstr[0] "adicionada %(name)s %(added)s."
-msgstr[1] "adicionadas %(name)s %(added)s."
+msgstr[0] "добавлены %(name)s %(added)s."
+msgstr[1] "добавлены %(name)s %(added)s."
 
 #: tags/forms.py:105
 #, python-format
 msgid "added %(count)i %(name)s."
 msgid_plural "added %(count)i %(name)s."
-msgstr[0] "adicionada %(count)i %(name)s."
-msgstr[1] "adicionadas %(count)i %(name)s."
+msgstr[0] "добавлены %(count)i %(name)s."
+msgstr[1] "добавлены %(count)i %(name)s."
 
 #: tags/forms.py:114
 msgid "no changes made"
-msgstr "sem alterações"
+msgstr "нет изменений"
 
 #: tags/forms.py:115 tags/forms.py:118
 msgid " and "
-msgstr " e "
+msgstr " и "
 
 #: tags/models.py:33
 msgid "Tag"
-msgstr "Etiqueta"
+msgstr "Метка"
 
 #: tags/models.py:34 tags/templates/tags/pagetagset_list.html:4
 #: tags/templates/tags/pagetagset_list.html:5
 #: tags/templates/tags/tag_list.html:4
 msgid "Tags"
-msgstr "Etiquetas"
+msgstr "Метки"
 
 #: tags/templates/tags/pagetagset_diff.html:28
 #: tags/templates/tags/pagetagset_diff.html:29
 #, python-format
 msgid "Differences for tag versions for %(new_name)s"
-msgstr "Diferenças para etiquetas em %(new_name)s"
+msgstr "Сравнение версий меток на странице %(new_name)s"
 
 #: tags/templates/tags/pagetagset_diff.html:61
 msgid "Tags history"
-msgstr "Histórico das etiquetas"
+msgstr "История меток"
 
 #: tags/templates/tags/pagetagset_form.html:9
 #: tags/templates/tags/pagetagset_form.html:10
 #: tags/templates/tags/pagetagset_version_detail.html:12
 #: tags/templates/tags/pagetagset_versions.html:11
 msgid "Tags for"
-msgstr "Etiquetas de"
+msgstr "Метки на странице"
 
 #: tags/templates/tags/pagetagset_form_snippet.html:8
 msgid "Save"
-msgstr "Gravar"
+msgstr "Сохранить"
 
 #: tags/templates/tags/pagetagset_version_detail.html:11
 #: tags/templates/tags/pagetagset_versions.html:10
 msgid "Tags for "
-msgstr "Etiquetas de"
+msgstr "Метки на странице"
 
 #: tags/templates/tags/pagetagset_versions.html:19
 #, python-format
@@ -885,66 +876,64 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"Esta página não tem etiquetas.  <a href=\"%(page_url)s\">Adicione algumas!</"
-"a>\n"
+"Эта страница не имеет меток. <a href=\"%(page_url)s\">Добавьте их!</a>\n"
 "    "
 
 #: tags/templates/tags/tag_list.html:5
-#, fuzzy
 msgid "All tags"
-msgstr "Todas as Etiquetas"
+msgstr "Все метки"
 
 #: tags/templates/tags/tag_list.html:17
 msgid "Alphabetical"
-msgstr "Alfabética"
+msgstr "По алфавиту"
 
 #: tags/templates/tags/tag_list.html:18
 msgid "Most popular"
-msgstr "Mais populares"
+msgstr "Самые популярные"
 
 #: tags/templates/tags/tag_list.html:19
 msgid "As a cloud"
-msgstr "Como núvem"
+msgstr "Облаком"
 
 #: tags/templates/tags/tag_list.html:58
 msgid "There are no tags. Add some!"
-msgstr "Não há etiquetas. Adicione algumas!"
+msgstr "Нет меток. Добавьте их!"
 
 #: tags/templates/tags/tagged_list_snippet.html:17
 #, python-format
 msgid "There are no pages with the tag \"%(tag_name)s\"."
-msgstr "Não há páginas com a etiqueta \"%(tag_name)s\"."
+msgstr "Нет страниц с меткой \"%(tag_name)s\"."
 
 #: templates/registration/login.html:5
 msgid "Log in"
-msgstr "Entrar"
+msgstr "Войти"
 
 #: templates/registration/login.html:9
 msgid "Your username and password didn't match. Please try again."
-msgstr "Senha inválida para este utilizador. Por favor volte a tentar."
+msgstr "Введено неправильное имя пользователя или пароль. Попробуйте еще раз."
 
 #: templates/registration/login.html:10 templates/registration/login.html:22
 msgid "Forgot your password?"
-msgstr "Esqueceu a senha?"
+msgstr "Не помните свой пароль?"
 
 #: templates/registration/login.html:18
 #: templates/registration/registration_form.html:34
 msgid "login"
-msgstr "entrar"
+msgstr "войти"
 
 #: templates/registration/password_reset_complete.html:5
 #: templates/registration/password_reset_complete.html:6
 #: templates/registration/password_reset_complete.html:9
 msgid "Password reset complete"
-msgstr "Processo de redefinir senha completo"
+msgstr "Сброс пароля сделан"
 
 #: templates/registration/password_reset_complete.html:11
 msgid "Your password has been set.  You may go ahead and log in now."
-msgstr "A senha foi atualizada. Pode entrar agora na aplicação."
+msgstr "Ваш пароль был установлен. Вы можете войти в систему."
 
 #: templates/registration/password_reset_complete.html:13
 msgid "Sign in"
-msgstr "Entrar"
+msgstr "Войти"
 
 #: templates/registration/password_reset_confirm.html:4
 #: templates/registration/password_reset_confirm.html:6
@@ -952,53 +941,57 @@ msgstr "Entrar"
 #: templates/registration/password_reset_form.html:5
 #: templates/registration/password_reset_form.html:8
 msgid "Password reset"
-msgstr "Redefinir senha"
+msgstr "Сброс пароля"
 
 #: templates/registration/password_reset_confirm.html:11
 msgid "Enter new password"
-msgstr "Colocar nova senha"
+msgstr "Введите новый пароль"
 
 #: templates/registration/password_reset_confirm.html:13
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
-msgstr "Coloque a nova senha duas vezes para validação."
+msgstr ""
+"Введите ваш новый пароль дважды, чтобы мы могли проверить, что вы набрали "
+"его правильно."
 
 #: templates/registration/password_reset_confirm.html:17
 msgid "New password:"
-msgstr "Nova senha:"
+msgstr "Новый пароль:"
 
 #: templates/registration/password_reset_confirm.html:19
 msgid "Confirm password:"
-msgstr "Confirmar senha:"
+msgstr "Подтвердите пароль:"
 
 #: templates/registration/password_reset_confirm.html:20
 msgid "Change my password"
-msgstr "Alterar senha"
+msgstr "Изменить мой пароль"
 
 #: templates/registration/password_reset_confirm.html:24
 msgid "Password reset unsuccessful"
-msgstr "Erro no processo de redefinir senha"
+msgstr "Сброс пароля не удался"
 
 #: templates/registration/password_reset_confirm.html:26
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
 msgstr ""
-"O URL para redefinir a senha é inválido, possivelmente porque já foi usado. "
-"Por favor volte a pedir a redefinição da senha."
+"Ссылка на сброс пароля недействительна, возможно потому, что она уже была "
+"использована. Запросите новый сброс пароля."
 
 #: templates/registration/password_reset_done.html:4
 #: templates/registration/password_reset_done.html:5
 #: templates/registration/password_reset_done.html:8
 msgid "Password reset successful"
-msgstr "Processo de redefinição de senha com sucesso"
+msgstr "Сброс пароля удался"
 
 #: templates/registration/password_reset_done.html:10
 msgid ""
 "We've e-mailed you instructions for setting your password to the e-mail "
 "address you submitted. You should be receiving it shortly."
-msgstr "Vai receber um email com instruções para redefinir a senha."
+msgstr ""
+"Мы отправили вам инструкции по сбросу пароля на адрес электронной почты, "
+"указанный вами. Вы их скоро получите."
 
 #: templates/registration/password_reset_email.html:2
 #, python-format
@@ -1006,269 +999,268 @@ msgid ""
 "You're receiving this e-mail because you requested a password reset for your "
 "user account at %(site_name)s."
 msgstr ""
-"Esta a receber este email porque pediu a redefinição da senha para a sua "
-"conta de utilizador no %(site_name)s."
+"Вы получили это сообщение, потому что запросили сброс вашего пароля на сайте "
+"%(site_name)s."
 
 #: templates/registration/password_reset_email.html:4
 msgid "Please go to the following page and choose a new password:"
-msgstr "Por favor abra a página seguinte e escolha uma nova senha:"
+msgstr "Посетите следующую страницу и выберите новый пароль:"
 
 #: templates/registration/password_reset_email.html:8
 msgid "Your username, in case you've forgotten:"
-msgstr "O seu nome de utilizador, caso tenha esquecido, é:"
+msgstr "Ваше имя пользователя, в том случае, если не помните:"
 
 #: templates/registration/password_reset_email.html:10
 msgid "Thanks for using our site!"
-msgstr "Obrigado por usar este serviço!"
+msgstr "Спасибо за посещение нашего сайта!"
 
 #: templates/registration/password_reset_email.html:12
 #, python-format
 msgid "The %(site_name)s team"
-msgstr "A equipa %(site_name)s"
+msgstr "Команда %(site_name)s"
 
 #: templates/registration/password_reset_form.html:10
 msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll e-mail "
 "instructions for setting a new one."
 msgstr ""
-"Esqueceu a senha? Coloque o seu email e enviamos instruções para poder "
-"redefinir a senha."
+"Забыли свой пароль? Введите ниже адрес своей электронной почты, и мы "
+"отправим вам интрукции по установки нового пароля."
 
 #: templates/registration/password_reset_form.html:14
 msgid "E-mail address:"
-msgstr "Email:"
+msgstr "Aдрес электронной почты:"
 
 #: templates/registration/password_reset_form.html:14
 msgid "Reset my password"
-msgstr "Redefinir a senha"
+msgstr "Сбросить пароль"
 
 #: templates/registration/registration_form.html:5
 msgid "Create account"
-msgstr "Criar conta"
+msgstr "Создать аккаунт"
 
 #: themes/sapling/templates/site/login_info.html:6
 msgid "Welcome"
-msgstr "Bem-vindo"
+msgstr "Добро пожаловать"
 
 #: themes/sapling/templates/site/login_info.html:9
 msgid "log out"
-msgstr "sair"
+msgstr "выйти"
 
 #: themes/sapling/templates/site/login_info.html:13
 msgid "log in"
-msgstr "entrar"
+msgstr "войти"
 
 #: themes/sapling/templates/site/login_info.html:13
 msgid "or"
-msgstr "ou"
+msgstr "или"
 
 #: themes/sapling/templates/site/login_info.html:13
 msgid "create account"
-msgstr "criar conta"
+msgstr "создать аккаунт"
 
 #: themes/sapling/templates/site/nav.html:4
 msgid "Front Page"
-msgstr "Entrada"
+msgstr "Главная"
 
 #: themes/sapling/templates/site/nav.html:5
 msgid "People"
-msgstr "Membros"
+msgstr "Люди"
 
 #: users/__init__.py:7
 msgid "You are now logged out."
-msgstr "Saiu do site"
+msgstr "Вы вышли из этого аккаунта."
 
 #: users/admin.py:16
 msgid "Personal info"
-msgstr "Informações pessoais"
+msgstr "Личная информация"
 
 #: users/admin.py:17
 msgid "Permissions"
-msgstr "Permissões"
+msgstr "Права доступа"
 
 #: users/admin.py:19
 msgid "Important dates"
-msgstr "Datas importantes"
+msgstr "Важные даты"
 
 #: users/admin.py:20
 msgid "Groups"
-msgstr "Grupos"
+msgstr "Группы"
 
 #: users/registration_backend/__init__.py:46
 msgid "You are signed up and logged in!"
-msgstr "Está registado e entrou no site!"
+msgstr "Вы зарегистрировались и вошли в аккаунт!"
 
 #: users/registration_backend/__init__.py:48
 #, python-format
 msgid "Tell us who you are by <a href=\"%s\">creating a page for yourself!</a>"
-msgstr "Fale-nos de si <a href=\"%s\">criando a sua página pessoal!</a>"
+msgstr "Расскажите о себе на<a href=\"%s\">вашей личной странице</a>!"
 
 #: users/registration_backend/forms.py:29
 msgid "Username"
-msgstr "Nome de utilizador"
+msgstr "Имя пользователя"
 
 #: users/registration_backend/forms.py:31
 msgid "This value may contain only letters (a-z), numbers, +, - and ."
-msgstr "Este campo deve apensa conter letras (a-z), algarismos, +, - e ."
+msgstr "Это поле может содержать только латинские буквы (a-z), цифры, +, - и ."
 
 #: users/registration_backend/forms.py:36
 msgid "E-mail"
-msgstr "E-mail"
+msgstr "Адрес электронной почты"
 
 #: users/registration_backend/forms.py:39
 msgid "Password"
-msgstr "Senha"
+msgstr "Пароль"
 
 #: users/registration_backend/forms.py:40
 msgid "Your name"
-msgstr "O seu nome"
+msgstr "Ваше имя"
 
 #: users/registration_backend/forms.py:45
 msgid "You must agree to the terms to register"
-msgstr "Deve aceitar as condições para se poder registar"
+msgstr "Вы должны согласиться с условиями регистрации"
 
 #: users/registration_backend/forms.py:60
 msgid "A user with that username already exists."
-msgstr "Já existe um utilizador com esse nome."
+msgstr "Пользователь с таким именем уже существует."
 
 #: users/registration_backend/forms.py:69
 msgid ""
 "This email address is already in use. Please supply a different email "
 "address."
 msgstr ""
-"Já existe um utilizador com esse endereço de e-mail. Por favor, use um "
-"endereço de e-mail diferente."
+"Этот адрес электронной почты уже зарегистрирован. Введите другой адрес."
 
 #: users/templates/users/subscribed_list.html:4
 msgid "List of subscribers"
-msgstr "Lista de subscritores"
+msgstr "Список подписчиков"
 
 #: users/templates/users/subscribed_list.html:8
 msgid "Subscriber emails:"
-msgstr "Endereços de email de subscritores:"
+msgstr "Адреса подписчиков:"
 
 #: utils/views.py:82
 msgid "Sorry, you are not allowed to perform this action."
-msgstr "Não tem permissões para realizar este comando."
+msgstr "Извините, вы не имеете прав доступа на это действие."
 
 #: utils/views.py:83
 msgid ""
 "Anonymous users may not perform this action. Please <a href=\"/Users/login/"
 "\">log in</a>."
 msgstr ""
+"Анонимные пользователи не могут выполнять это действие. <a href=\"/Users/"
+"login/\">Войдите в аккаунт</a>."
 
 #: utils/templates/utils/history/form.html:13
 msgid "revert"
-msgstr "reverter"
+msgstr "восстановить"
 
 #: versionutils/diff/diffutils.py:103 versionutils/diff/diffutils.py:206
 #: versionutils/diff/diffutils.py:294 versionutils/diff/diffutils.py:314
 #: versionutils/diff/diffutils.py:379 versionutils/diff/diffutils.py:393
 #: versionutils/diff/diffutils.py:496
 msgid "No differences found"
-msgstr "Nenhuma diferença encontrada"
+msgstr "Нет разницы"
 
 #: versionutils/diff/diffutils.py:531 versionutils/diff/diffutils.py:541
 #: versionutils/diff/diffutils.py:554 versionutils/diff/diffutils.py:564
 msgid "Stayed the same"
-msgstr "Não sofreu alterações"
+msgstr "Не изменилось"
 
 #: versionutils/diff/diffutils.py:534 versionutils/diff/diffutils.py:546
 msgid "Removed"
-msgstr "Apagado"
+msgstr "Удалено"
 
 #: versionutils/diff/diffutils.py:557 versionutils/diff/diffutils.py:569
 #: versionutils/versioning/constants.py:14
 msgid "Added"
-msgstr "Adicionado"
+msgstr "Добавлено"
 
 #: versionutils/diff/templates/diff/file_diff.html:8
 msgid "Download deleted version"
-msgstr "Transferir versão removida"
+msgstr "Скачать удаленную версию"
 
 #: versionutils/diff/templates/diff/file_diff.html:9
 msgid "Download added version"
-msgstr "Transferir versão adicionada"
+msgstr "Скачать добавленную версию"
 
 #: versionutils/merging/forms.py:53
 msgid ""
 "Warning: someone else made changes before you.  Please review the changes "
 "and save again."
 msgstr ""
-"Aviso: alguém gravou alterações antes de si. Por favor verifique as "
-"alterações e volte a gravar."
+"Внимание! Кто-то изменил и сохранил раньше вас. Просмотрите изменения и "
+"сохраните снова."
 
 #: versionutils/merging/forms.py:55
 msgid ""
 "Someone else made changes before you but yourchanges were successfully "
 "merged."
 msgstr ""
-"Alguém gravou alterações antes de si mas as suas alterações foram "
-"introduzidas com sucesso."
+"Кто-то изменил и сохранил раньше вас, но ваши правки удалось объединить."
 
 #: versionutils/templates/versionutils/history/form.html:8
 #: versionutils/templates/versionutils/history/form.html:15
 msgid "Compare"
-msgstr "Comparar"
+msgstr "Сравнить"
 
 #: versionutils/templates/versionutils/history/form.html:45
 msgid "There is no revision history."
-msgstr "Não existe histórico de revisões."
+msgstr "Нет предыдущих версий."
 
 #: versionutils/templates/versionutils/history/media.html:47
 msgid "Please select two versions to compare"
-msgstr "Selecione duas versões para comparar"
+msgstr "Выберите две версии для сравнения"
 
 #: versionutils/versioning/constants.py:15
 msgid "Updated"
-msgstr "Alterado"
+msgstr "Обновлено"
 
 #: versionutils/versioning/constants.py:16
 msgid "Deleted"
-msgstr "Apagado"
+msgstr "Удалено"
 
 #: versionutils/versioning/constants.py:17
 msgid "Deleted via cascade"
-msgstr "Apagado por cascata"
+msgstr "Удалено каскадом"
 
 #: versionutils/versioning/constants.py:18
 msgid "Reverted"
-msgstr "Revertido"
+msgstr "Восстановлено"
 
 #: versionutils/versioning/constants.py:19
 msgid "Reverted/Added"
-msgstr "Revertido/Adicionado"
+msgstr "Восстановлено/Добавлено"
 
 #: versionutils/versioning/constants.py:20
 msgid "Reverted/Deleted"
-msgstr "Revertido/Apagado"
+msgstr "Восстановлено/Удалено"
 
 #: versionutils/versioning/constants.py:21
 msgid "Reverted/Deleted via cascade"
-msgstr "Revertido/Apagado por cascata"
+msgstr "Восстановлено/Удалено каскадом"
 
 #: versionutils/versioning/constants.py:22
-#, fuzzy
 msgid "Reverted via cascade"
-msgstr "Apagado por cascata"
+msgstr "Восстановлено каскадом"
 
 #: versionutils/versioning/forms.py:47
 msgid "Reason for deletion"
-msgstr "Motivo para remover"
+msgstr "Причина удаления"
 
 #: versionutils/versioning/forms.py:57
 msgid "Reason for revert"
-msgstr "Motivo para reverter"
+msgstr "Причина восставления"
 
 #: versionutils/versioning/views.py:68
 msgid "Your attention to detail is appreciated."
-msgstr "Apreciamos a sua atenção ao detalhe."
+msgstr "Мы ценим ваше внимание к деталям."
 
 #: versionutils/versioning/views.py:100
 msgid "Successfully deleted!"
-msgstr "Removido com sucesso!"
+msgstr "Успешно удалено!"
 
 #: versionutils/versioning/views.py:146
 #, python-format
 msgid "Reverted to version %s."
-msgstr "Revertido para a versão %s."
+msgstr "Восстановлена версия %s."
