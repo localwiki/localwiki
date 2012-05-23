@@ -5,6 +5,7 @@ import os
 from django.test import TestCase
 from django.db import models
 from django.core import exceptions
+from django.conf import settings
 
 from ckeditor.models import XHTMLField
 from ckeditor.models import XMLField
@@ -129,7 +130,7 @@ class CKEditorWidgetTest(TestCase):
                     '<script type="text/javascript">\n'
                     '<!--\n'
                     'CKEDITOR.basePath = \'/static/js/ckeditor/\';\n'
-                    "CKEDITOR.replace('id_ck');\n"
+                    'CKEDITOR.replace(\'id_ck\', {"language": "en-us"});\n'
                     '-->\n'
                     '</script>\n')
         self.assertEqual(rendered, expected)
@@ -140,9 +141,9 @@ class CKEditorWidgetTest(TestCase):
         expected = ('<textarea rows="10" cols="40" name="ck">Test</textarea>'
                     '<script type="text/javascript">\n'
                     '<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';'
-                    '\nCKEDITOR.replace(\'id_ck\', {"toolbar": [["Link",'
-                    ' "Unlink", "Anchor"]]});\n-->\n</script>\n'
-                    )
+                    '\nCKEDITOR.replace(\'id_ck\', {"language": "en-us", '
+                    '"toolbar": [["Link", "Unlink", "Anchor"]]});\n-->\n'
+                    '</script>\n')
         self.assertEqual(rendered, expected)
 
     def test_custom_config(self):
@@ -170,7 +171,8 @@ class CustomCKEditorTest(TestCase):
                     '<script type="text/javascript">\n'
                     '<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';\n'
                     "CKEDITOR.replace('id_ck', "
-                    '{"extraPlugins": "myPlugin1,myPlugin2"});\n'
+                    '{"language": "en-us", '
+                    '"extraPlugins": "myPlugin1,myPlugin2"});\n'
                     '-->\n'
                     '</script>\n')
         self.assertEqual(rendered, expected)

@@ -116,7 +116,7 @@ class IncludePageNode(IncludeContentNode):
         if self.page.name in include_stack:
             return (('<p class="plugin includepage">' + _('Unable to'
                     ' include <a href="%(page_url)s">%(page_name)s</a>: endless include'
-                    ' loop.') + '</p>') % {'page_url': self.get_page_url(), 'page_name': self.name})
+                    ' loop.') + '</p>') % {'page_url': self.get_page_url(), 'page_name': self.page.name})
         context['_include_stack'] = include_stack
         context['page'] = self.page
         template_text = html_to_template_text(self.page.content, context)
