@@ -68,7 +68,7 @@ things you may need or wish to modify:
     LocalWiki is fully localized and is currently translated into a
     number of languages.  To change your instance's language, set this
     to one of: ``en-us`` (for English), ``pt_PT`` (Portuguese),
-    ``de_CH`` (German, CH).
+    ``ru_RU`` (Russian), ``de_CH`` (German, CH).
 
 After changing settings you'll need to restart Apache.  On most systems
 you can do this by running ``sudo /etc/init.d/apache2 restart``.
