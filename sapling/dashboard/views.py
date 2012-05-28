@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from django.db.models import Max
-from django.utils.translation import  ugettext_lazy as _
+from django.utils.translation import ugettext as _
 
 import pyflot
 
