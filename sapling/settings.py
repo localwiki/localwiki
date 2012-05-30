@@ -28,11 +28,10 @@ DATABASES = {
     }
 }
 
-GLOBAL_LICENSE_NOTE = """<p>Except where otherwise noted, this content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights.</p>"""
-
-EDIT_LICENSE_NOTE = """<p>By clicking "Save Changes" you are agreeing to release your contribution under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>"""
-
-SIGNUP_TOS = """I agree to release my contributions under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>."""
+LICENSE = None
+GLOBAL_LICENSE_NOTE = None
+EDIT_LICENSE_NOTE = None
+SIGNUP_TOS = None
 
 SUBSCRIBE_MESSAGE = """I would like to receive occasional updates about this project via email."""
 
@@ -257,6 +256,27 @@ except:
 
 # Allow localsettings.py to define LOCAL_INSTALLED_APPS.
 INSTALLED_APPS = tuple(list(INSTALLED_APPS) + list(LOCAL_INSTALLED_APPS))
+
+######################################
+# License and edit / signup messages
+######################################
+
+# Override this in localsettings.py to use a different license.
+if LICENSE is None:
+    LICENSE = """<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution</a>"""
+
+# This appears at the bottom of each page in the site.
+if GLOBAL_LICENSE_NOTE is None:
+    GLOBAL_LICENSE_NOTE = """<p>Except where otherwise noted, this content is licensed under a %s license. See <a href="/Copyrights">Copyrights.</p>""" % LICENSE
+
+# When a user makes an edit they are shown this text.
+if EDIT_LICENSE_NOTE is None:
+    EDIT_LICENSE_NOTE = """<p>By clicking "Save Changes" you are agreeing to release your contribution under the %s license, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>""" % LICENSE
+
+# When a user creates an account they see this text. (Note that anonymous users won't see it)
+if not SIGNUP_TOS:
+    SIGNUP_TOS = """I agree to release my contributions under the %s license, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.""" % LICENSE
+
 
 ###############################
 # Setup template directories
