@@ -1,18 +1,40 @@
+import copy
+
 from django.conf.urls.defaults import *
+from django.conf import settings
 
 from haystack.views import SearchView
 from haystack.forms import SearchForm as DefaultSearchForm
 
 from pages.models import Page, slugify
+from maps.models import MapData
+from maps.widgets import InfoMap
 
 
 class CreatePageSearchView(SearchView):
+    def get_map(self):
+        result_pks = [p.pk for p in self.results]
+        maps = MapData.objects.filter(page__pk__in=result_pks)
+        widget_options = copy.deepcopy(getattr(settings,
+            'OLWIDGET_DEFAULT_OPTIONS', {}))
+        map_opts = widget_options.get('map_options', {})
+        map_controls = map_opts.get('controls', [])
+        # Remove the PanZoomBar.
+        if 'PanZoomBar' in map_controls:
+            map_controls.remove('PanZoomBar')
+        widget_options['map_options'] = map_opts
+        widget_options['map_div_class'] = 'mapwidget small'
+        map = InfoMap([(obj.geom, "test") for obj in maps],
+            options=widget_options)
+        return map
+
     def extra_context(self):
         context = super(CreatePageSearchView, self).extra_context()
         context['page_exists_for_query'] = Page.objects.filter(
             slug=slugify(self.query))
         context['query_slug'] = Page(name=self.query).pretty_slug
         context['keywords'] = self.query.split()
+        context['map'] = self.get_map()
         return context
 
 

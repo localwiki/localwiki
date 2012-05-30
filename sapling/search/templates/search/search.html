@@ -16,6 +16,7 @@
 {% block media %}
    {{ block.super }}
    {% page_tags_form_media %}
+   {% if map %}{{ map.media }}{% endif %}
 {% endblock %}
 
 {% block header_title %}
@@ -28,6 +29,7 @@
 
 {% block content %}
     <div id="search_results">
+    {{ map }}
     {% if query %}
         {% if not page_exists_for_query %}
           <div id="create_page_dialog">
