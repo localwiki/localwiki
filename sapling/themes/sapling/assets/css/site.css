@@ -948,6 +948,16 @@ div.templates li {
     margin-bottom: 0.5em;
 }
 
+#search_results #results_list.with_map {
+    margin-right: 480px;
+}
+
+#search_results #map {
+    margin-top: 1em;
+    margin-left: 0!important;
+    right: 8em;
+}
+
 /*
 ====================================
  Pagination
