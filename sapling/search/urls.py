@@ -2,6 +2,7 @@ import copy
 
 from django.conf.urls.defaults import *
 from django.conf import settings
+from django.utils.safestring import mark_safe
 
 from haystack.views import SearchView
 from haystack.forms import SearchForm as DefaultSearchForm
@@ -25,7 +26,7 @@ class CreatePageSearchView(SearchView):
             map_controls.remove('PanZoomBar')
         widget_options['map_options'] = map_opts
         widget_options['map_div_class'] = 'mapwidget small'
-        map = InfoMap([(obj.geom, "test") for obj in maps],
+        map = InfoMap([(obj.geom, popup_html(obj)) for obj in maps],
             options=widget_options)
         return map
 
@@ -37,6 +38,12 @@ class CreatePageSearchView(SearchView):
         context['keywords'] = self.query.split()
         context['map'] = self.get_map()
         return context
+
+
+def popup_html(map_data):
+    page = map_data.page
+    return mark_safe('<a href="%s">%s</a>' %
+                     (page.get_absolute_url(), page.name))
 
 
 class SearchForm(DefaultSearchForm):
