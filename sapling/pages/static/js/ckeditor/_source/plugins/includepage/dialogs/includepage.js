@@ -229,7 +229,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				var element = this._.selectedElement;
 
 				element.setAttributes( attributes );
-                var fmts = gettext('Include page %(page)s');
+                var fmts = gettext('Include page %s');
 				var textLabel = interpolate(fmts, [data.page]);
 				element.setHtml( textLabel );
 			}
