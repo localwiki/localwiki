@@ -203,6 +203,13 @@ MIDDLEWARE_CLASSES = (
     'utils.middleware.TrackPOSTMiddleware',
 )
 
+# Dummy cache - TODO: switch to memcached by default
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
 ROOT_URLCONF = 'sapling.urls'
 
 TEMPLATE_DIRS = (
