@@ -15,8 +15,10 @@ from maps.widgets import InfoMap
 class CreatePageSearchView(SearchView):
     def get_map(self):
         (paginator, page) = self.build_page()
-        result_pks = [p.pk for p in page.object_list]
+        result_pks = [p.pk for p in page.object_list if p]
         maps = MapData.objects.filter(page__pk__in=result_pks)
+        if not maps:
+            return None
         widget_options = copy.deepcopy(getattr(settings,
             'OLWIDGET_DEFAULT_OPTIONS', {}))
         map_opts = widget_options.get('map_options', {})
