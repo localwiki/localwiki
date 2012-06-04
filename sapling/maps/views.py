@@ -1,4 +1,5 @@
 from dateutil.parser import parse as dateparser
+from urlparse import urljoin
 
 from django.views.generic import DetailView, ListView
 from django.views.generic.simple import direct_to_template
@@ -18,7 +19,8 @@ from utils.views import Custom404Mixin, CreateObjectMixin, JSONResponseMixin
 from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, VersionsList
 from pages.models import Page
-from pages.models import slugify
+from pages.models import slugify, name_to_url
+from pages.constants import PAGE_BASE_PATH
 import tags.models as tags
 
 from widgets import InfoMap
@@ -75,10 +77,12 @@ def filter_by_zoom(queryset, zoom):
     return queryset
 
 
-def popup_html(map_data):
-    page = map_data.page
-    return mark_safe('<a href="%s">%s</a>' %
-                     (page.get_absolute_url(), page.name))
+def popup_html(mapdata=None, pagename=None):
+    if mapdata:
+        pagename = mapdata.page.name
+    slug = name_to_url(pagename)
+    page_url = urljoin(PAGE_BASE_PATH, slug)
+    return mark_safe('<a href="%s">%s</a>' % (page_url, pagename))
 
 
 class MapGlobalView(ListView):
@@ -111,7 +115,8 @@ class MapGlobalView(ListView):
         map_objects = self.get_map_objects()
         return InfoMap(map_objects, options={'dynamic': self.dynamic,
                                         'zoomToDataExtent': self.zoom_to_data,
-                                        'permalink': self.permalink})
+                                        'permalink': self.permalink,
+                                        'cluster': True})
 
 
 class MapAllObjectsAsPointsView(MapGlobalView):
@@ -174,17 +179,18 @@ class MapObjectsForBounds(JSONResponseMixin, BaseListView):
         zoom = self.request.GET.get('zoom', None)
         if zoom:
             # We order by -length so that the geometries are in that
-            # order when rendered by OpenLayers -- this creates the
+            # order when rendered by OpenLayers. This creates the
             # correct stacking order.
             queryset = filter_by_zoom(queryset, int(zoom)).order_by('-length')
-        return queryset
+        return queryset.select_related('page')
 
     def get_context_data(self, **kwargs):
-        map_objects = [(obj.geom, popup_html(obj)) for obj in self.object_list]
-        return self.objects_to_wkt(map_objects)
-
-    def objects_to_wkt(self, info):
-        return [[utils.get_ewkt(geom), attr] for geom, attr in info]
+        import time
+        t0 = time.time()
+        objs = self.object_list.values('geom', 'page__name')
+        map_objects = [(o['geom'].ewkt, o['page__name']) for o in objs]
+        print time.time() - t0
+        return map_objects
 
 
 class MapVersionDetailView(MapDetailView):

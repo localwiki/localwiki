@@ -146,3 +146,5 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>.+?)/*$', slugify(PageDetailView.as_view()),
         name='show'),
 )
+
+

@@ -17,6 +17,9 @@ SaplingMap = {
             $('#content_wrapper').css('border', 'none');
             return opts;
         }
+        /* Set the render default to Canvas rather than SVG */
+        OpenLayers.Layer.Vector.prototype.renderers = ['Canvas'];
+
         olwidget.EditableLayerSwitcher.prototype.roundedCorner = false;
         var base_onClick = olwidget.EditingToolbar.prototype.onClick;
         olwidget.EditingToolbar.prototype.onClick = function (ctrl, evt) {
@@ -205,6 +208,16 @@ SaplingMap = {
         $('#results_pane').empty().append($('<h3/>').html(header)).append(results);
     },
 
+    _format_bbox_data: function(data) {
+        for (var i=0; i<data.length; i++) {
+            var item = data[i];
+            var slug = encodeURIComponent(item[1].replace(' ', '_'));
+            var page_url = '/' + slug;
+            data[i][1] = '<a href="' + page_url + '">' + item[1] + '</a>';
+        }
+        return data;
+    },
+
     _loadObjects: function(map, layer, callback) {
         var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
         var setAlpha = this._setAlpha;
@@ -221,7 +234,7 @@ SaplingMap = {
                 return;
             }
             layer.dataExtent = extent;
-            var temp = new olwidget.InfoLayer(data);
+            var temp = new olwidget.InfoLayer(SaplingMap._format_bbox_data(data));
             temp.visibility = false;
             map.addLayer(temp);
             layer.removeAllFeatures();
@@ -230,12 +243,16 @@ SaplingMap = {
               layer.addFeatures(selectedFeature);
               layer.selectedFeatures = [selectedFeature];
             }
-            $.each(temp.features, function(index, feature) {
+            alert('here2');
+            /*$.each(temp.features, function(index, feature) {
+                alert('each..');
               feature.map = map;
               if(selectedFeature && selectedFeature.geometry.toString() == feature.geometry.toString())
                   return;
               layer.addFeatures(feature);
             });
+            */
+            layer.addFeatures(temp.features);
             map.removeLayer(temp);
             if(callback){
                 callback();
