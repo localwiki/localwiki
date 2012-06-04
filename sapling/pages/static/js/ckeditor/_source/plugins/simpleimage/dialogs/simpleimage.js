@@ -819,7 +819,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                                     items :
                                                     [
                                                         [ editor.lang.common.alignLeft , 'left'],
-                                                        [ 'None' , ''],
+                                                        [ gettext('None') , ''],
                                                         [ editor.lang.common.alignRight , 'right']
                                                         // Backward compatible with v2 on setup when specified as attribute value,
                                                         // while these values are no more available as select options.

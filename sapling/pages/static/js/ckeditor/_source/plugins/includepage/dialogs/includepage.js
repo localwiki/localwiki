@@ -128,7 +128,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 						items :
 						[
 							[ editor.lang.common.alignLeft , 'left'],
-							[ 'None' , ''],
+							[ gettext('None') , ''],
 							[ editor.lang.common.alignRight , 'right']
 						],
 						setup : function( data )
