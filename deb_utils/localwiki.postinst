@@ -20,9 +20,10 @@ case "$1" in
 
         if [ ! -d "$datadir/env" ]; then
             echo "Creating virtualenv ..."
-            cd "$datadir"
-            virtualenv --quiet env
         fi
+        # run virtualenv, even if it's been created, to upgrade python executable
+        cd "$datadir"
+        virtualenv --quiet env
 
         . "$datadir/env/bin/activate"
         cd "$confdir"
