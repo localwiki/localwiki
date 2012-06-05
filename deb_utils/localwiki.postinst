@@ -48,6 +48,9 @@ case "$1" in
         echo "Configuring localwiki ..."
         localwiki-manage setup_all
 
+        # Enable mod_wsgi
+        a2enmod wsgi > /dev/null 2>&1
+
         # If first time setup, initialize site and wiki
         if [ ! -d "$datadir/deploy" ]; then
             echo "Configuring apache ..."
