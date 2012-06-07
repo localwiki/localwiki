@@ -899,6 +899,7 @@ div.templates li {
 
 .see_also {
     margin-top: 2em;
+    clear: both;
 }
 /*
 ====================================

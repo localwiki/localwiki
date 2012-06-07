@@ -291,8 +291,13 @@ def _cascade_revert(current_hm, m, **kws):
         for rel_hm in rel_hms:
             direct_obj = rel_hm.version_info._object
             latest_rel_hm = get_versions(direct_obj).most_recent()
-            if latest_rel_hm.version_info.type in [TYPE_DELETED_CASCADE,
-                    TYPE_REVERTED_DELETED_CASCADE]:
+            latest_direct_obj = latest_rel_hm.version_info._object
+            deleted_is_same_as_latest = latest_direct_obj.pk == direct_obj.pk
+            # Was the related object most recently deleted via a delete cascade?
+            # Was the related object also most recently deleted TODO
+            if (latest_rel_hm.version_info.type in [TYPE_DELETED_CASCADE,
+                    TYPE_REVERTED_DELETED_CASCADE] and
+                deleted_is_same_as_latest):
                 # The related object was most recently deleted via a
                 # delete cascade.  So we revert it.
 

@@ -552,6 +552,33 @@ class ChangesTrackingTest(TestCase):
         self.assertEquals(len(MUniqueAndFK.objects.filter(a="my name3a")), 1)
 
         # Case 3(b):
+        #   A model (M) with an FK to another versioned model (N).
+        #   Model N is deleted, which causes Model M to be deleted via
+        #   cascade.  Model M is re-created and its FK is pointed to a
+        #   different instance of model N.  This new instance is deleted,
+        #   causing model M to be deleted via cascade.  When reverting
+        #   model N, M should not be re-created because it wasn't
+        #   deleted via the same cascade.
+
+        n = M16Unique(a="wee", b="dog", c=1)
+        n.save()
+        m = MUniqueAndFK(a="me me me", b="cat", c=n)
+        m.save()
+
+        n.delete()  # Will cause m to be deleted via cascade.
+
+        n = M16Unique(a="new n wee", b="dog", c=1)
+        n.save()
+        m = MUniqueAndFK(a="me me me", b="cat", c=n)
+        m.save()
+
+        n.delete()  # Will cause m to be deleted via cascade.
+        n = M16Unique(a="wee", b="dog", c=1)
+        n.versions.as_of(version=1).revert_to()
+
+        self.assertEquals(len(MUniqueAndFK.objects.filter(a="wee")), 0)
+
+        # Case 3(c):
         #   A model (L) with an FK to another versioned model (M) with
         #   an FK to another versioned model (N).
         #   Model N is deleted, which causes models L, M to be deleted via
@@ -572,7 +599,7 @@ class ChangesTrackingTest(TestCase):
         l.b += "!"
         l.save()
 
-        n.delete() # Will cause m, l to be deleted via cascade.
+        n.delete()  # Will cause m, l to be deleted via cascade.
         n.versions.as_of(version=1).revert_to()
 
         self.assertEquals(len(MUniqueAndFK2.objects.filter(a="oh name3b")), 1)

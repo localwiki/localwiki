@@ -1,6 +1,10 @@
 {% extends "tags/base.html" %}
 {% load i18n %}
 
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
 {% block media %}
   {{ block.super }}
   {{ form.media }}

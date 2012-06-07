@@ -149,7 +149,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 			var editor = this.getParentEditor(),
 				selection = editor.getSelection(),
 				element = null,
-				data = { page : '' };
+				data = { page : '', showtitle : true };
 
 			// Fill in all the relevant fields if there's already one link selected.
 			if ( ( element = pagelink_plugin.getSelectedLink( editor ) )
@@ -163,6 +163,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				data.page = decodeURIComponent(element.getAttribute( 'href' ));
 				if(element.hasClass('includepage_showtitle'))
 					data.showtitle = true;
+				else data.showtitle = false;
 				if(element.hasClass('includepage_left'))
 					data.align = 'left';
 				if(element.hasClass('includepage_right'))

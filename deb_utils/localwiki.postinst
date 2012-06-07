@@ -20,9 +20,10 @@ case "$1" in
 
         if [ ! -d "$datadir/env" ]; then
             echo "Creating virtualenv ..."
-            cd "$datadir"
-            virtualenv --quiet env
         fi
+        # run virtualenv, even if it's been created, to upgrade python executable
+        cd "$datadir"
+        virtualenv --quiet env
 
         . "$datadir/env/bin/activate"
         cd "$confdir"
@@ -46,6 +47,9 @@ case "$1" in
 
         echo "Configuring localwiki ..."
         localwiki-manage setup_all
+
+        # Enable mod_wsgi
+        a2enmod wsgi > /dev/null 2>&1
 
         # If first time setup, initialize site and wiki
         if [ ! -d "$datadir/deploy" ]; then
