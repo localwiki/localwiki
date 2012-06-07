@@ -140,6 +140,7 @@ CKEDITOR.plugins.add( 'simpleimage',
             	var oldHtml = oldFrame.length ? oldFrame.outerHTML() : img.outerHTML();
             	img.addClass('cke_moved');
             	oldFrame.addClass('cke_moved');
+            	var floated = oldFrame.hasClass('image_right') || oldFrame.hasClass('image_left');
             	var moveImage = function(evt){
                     oldFrame.remove();
             		var moved_image = jQuery('img.cke_moved', editor.document.$);
@@ -160,7 +161,13 @@ CKEDITOR.plugins.add( 'simpleimage',
             		        outerFrame.before(oldHtml);
             		    else outerFrame.after(oldHtml);
             		} else {
-            		    moved_element.before(oldHtml);
+                        where_to_drop = moved_element;
+            		    if(floated)
+            		    {
+            		        top_level = moved_element.parentsUntil('body,td,th').last();
+            		        where_to_drop = top_level;
+            		    }
+            		    where_to_drop.before(oldHtml);
             		}
             		// fix the cursor position
             		var selection = editor.getSelection();

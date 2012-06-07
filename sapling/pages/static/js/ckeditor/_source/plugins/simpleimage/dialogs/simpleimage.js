@@ -876,6 +876,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                                         	element.removeClass("image_right");
                                                             if ( value ) {
                                                             	element.addClass("image_" + value);
+                                                            	// Move to top level in the DOM when floated
+                                                            	top_level = jQuery(element.$).parentsUntil('body,td,th').last();
+                                                            	if(top_level.length)
+                                                            	{
+                                                            		jQuery(element.$).remove();
+                                                            		top_level.before(jQuery(element.$));
+                                                            	}
                                                             }
 
                                                             if ( !internalCommit && type == IMAGE )
