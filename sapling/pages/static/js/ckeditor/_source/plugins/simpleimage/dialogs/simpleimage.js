@@ -881,10 +881,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                                             	if(top_level.length)
                                                             	{
                                                             		jQuery(element.$).remove();
-                                                            		top_level.before(jQuery(element.$));
+                                                            		// wrap in paragraph if not already wrapped
+                                                            		if(!top_level.is('p'))
+                                                            			top_level.before(jQuery(element.$).wrap('p'));
+                                                            		else
+                                                            			top_level.prepend(jQuery(element.$));
                                                             	}
                                                             }
-
                                                             if ( !internalCommit && type == IMAGE )
                                                             {
                                                                 value = ( element.getAttribute( 'align' ) || '' ).toLowerCase();

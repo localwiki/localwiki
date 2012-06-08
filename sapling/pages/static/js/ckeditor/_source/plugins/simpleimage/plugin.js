@@ -161,13 +161,18 @@ CKEDITOR.plugins.add( 'simpleimage',
             		        outerFrame.before(oldHtml);
             		    else outerFrame.after(oldHtml);
             		} else {
-                        where_to_drop = moved_element;
-            		    if(floated)
+            			var top_level = moved_element.parentsUntil('body,td,th').last();
+            		    if(floated && top_level.length)
             		    {
-            		        top_level = moved_element.parentsUntil('body,td,th').last();
-            		        where_to_drop = top_level;
+            		        if(!top_level.is('p'))
+            		            top_level.before('<p>' + oldHtml + '</p>');
+            		        else
+            		            top_level.prepend(oldHtml);
             		    }
-            		    where_to_drop.before(oldHtml);
+            		    else
+            		    {
+            		        moved_element.before(oldHtml);
+            		    }
             		}
             		// fix the cursor position
             		var selection = editor.getSelection();
