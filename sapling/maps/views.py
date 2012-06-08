@@ -142,11 +142,10 @@ class MapForTag(MapGlobalView):
     zoom_to_data = True
 
     def get_queryset(self):
-        qs = super(MapGlobalView, self).get_queryset()
         self.tag = tags.Tag.objects.get(slug=tags.slugify(self.kwargs['tag']))
         tagsets = tags.PageTagSet.objects.filter(tags=self.tag)
         pages = Page.objects.filter(pagetagset__in=tagsets)
-        return qs.filter(page__in=pages)
+        return MapData.objects.filter(page__in=pages).order_by('-length')
 
     def get_map_title(self):
         d = {
