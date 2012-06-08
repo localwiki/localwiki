@@ -57,7 +57,8 @@ LOCALE_PATHS = (
 LANGUAGES = (
     ('en', _('English')),
     ('pt_PT', _('Portuguese')),
-    ('de_CH', _('German (CH)')),
+    ('de_CH', _('German (Swiss)')),
+    ('es_AR', _('Spanish (Argentina)')),
 )
 
 SITE_ID = 1
