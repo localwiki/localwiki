@@ -125,8 +125,8 @@ textarea, input, select {
     border-bottom: 1px solid #DAE1E5;
 }
 #header_bar {
-    margin-left: 1.5em;
-    padding-left: 3.5em;
+    margin: 0 1.5em;
+    padding: 0 3.5em;
     min-height: 4.2em;
 }
 #header_bar a, #header_bar a:link {
@@ -136,7 +136,7 @@ textarea, input, select {
     color: #111;
 }
 #header_bar .inner {
-    margin-top: 0.5em;
+    margin: 0.5em 0;
 }
 /* Header is different on mapdata pages */
 .mapdata #header_bar {
@@ -154,14 +154,13 @@ textarea, input, select {
     margin: 0;
     display: table-cell;
     vertical-align: top;
-    padding-top: 0.4em;
+    padding: 0.4em 0;
 }
 #object_title a {
     text-decoration: none;
 }
 #object_subtitle {
     position: relative;
-    margin-top: 0.3em;
     margin-left: 0;
     margin-bottom: 0.5em;
     font-size: 80%;
