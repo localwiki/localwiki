@@ -185,6 +185,8 @@ textarea, input, select {
 #site_title img {
     margin-top: -0.4em;
     padding-bottom: 1.6em; /* make sure there's room for #nav */
+    display: block; /* site_title contains either an h1 (block) or an img,
+                       so let's make this more consistent */
 }
 #site_title a, #site_title a:link {
     text-decoration: none;
