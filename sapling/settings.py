@@ -59,6 +59,7 @@ LANGUAGES = (
     ('pt_PT', _('Portuguese')),
     ('de_CH', _('German (Swiss)')),
     ('es_AR', _('Spanish (Argentina)')),
+    ('da_DK', _('Danish')),
 )
 
 SITE_ID = 1
