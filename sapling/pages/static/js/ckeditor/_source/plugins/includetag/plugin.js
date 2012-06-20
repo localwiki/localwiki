@@ -11,7 +11,7 @@
 				config.wikiplugins_menu = {};
 			config.wikiplugins_menu.includeTag =
 				{
-					label : 'List of tagged pages',
+					label : gettext('List of tagged pages'),
 					command : 'includetag',
 					icon : this.path + 'images/tag-icon-small.png'
 				}

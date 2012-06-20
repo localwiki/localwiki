@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-04 14:00-0700\n"
+"POT-Creation-Date: 2012-06-19 17:21-0700\n"
 "PO-Revision-Date: 2012-06-04 00:01\n"
 "Last-Translator: Anonymous User <anonymous@user.tld>\n"
 "MIME-Version: 1.0\n"
@@ -55,7 +55,15 @@ msgid "Portuguese"
 msgstr ""
 
 #: settings.py:60
-msgid "German (CH)"
+msgid "German (Swiss)"
+msgstr ""
+
+#: settings.py:61
+msgid "Spanish (Argentina)"
+msgstr ""
+
+#: settings.py:62
+msgid "Danish"
 msgstr ""
 
 #: ckeditor/models.py:30
@@ -305,7 +313,7 @@ msgid "Save changes"
 msgstr "Guardar cambios"
 
 #: maps/templates/maps/mapdata_form.html:67
-#: pages/templates/pages/page_detail.html:61
+#: pages/templates/pages/page_detail.html:63
 #: pages/templates/pages/page_form.html:43
 msgid "Cancel"
 msgstr "Cancelar"
@@ -455,6 +463,30 @@ msgstr "Comentario"
 msgid "Page renamed to \"%s\""
 msgstr "Página renombrada a \"%s\""
 
+#: pages/widgets.py:27
+msgid "Normal"
+msgstr ""
+
+#: pages/widgets.py:28
+msgid "Heading 1"
+msgstr ""
+
+#: pages/widgets.py:29
+msgid "Heading 2"
+msgstr ""
+
+#: pages/widgets.py:30
+msgid "Heading 3"
+msgstr ""
+
+#: pages/widgets.py:31
+msgid "Formatted"
+msgstr ""
+
+#: pages/widgets.py:32
+msgid "Typewriter"
+msgstr ""
+
 #: pages/templates/pages/base.html:5
 msgid "Recent changes on this Page"
 msgstr "Cambios recientes en esta Página"
@@ -475,11 +507,11 @@ msgstr "Renombrar página"
 msgid "Redirect"
 msgstr "Redireccionar"
 
-#: pages/templates/pages/page_detail.html:16
+#: pages/templates/pages/page_detail.html:17
 msgid "Redirected from"
 msgstr "Redireccionado desde"
 
-#: pages/templates/pages/page_detail.html:30
+#: pages/templates/pages/page_detail.html:32
 #, python-format
 msgid ""
 "Revision %(page.version_info.version_number)s\n"
@@ -488,20 +520,20 @@ msgstr ""
 "Revisión %(page.version_info.version_number)s\n"
 "          (%(date)s por %(user_link)s)"
 
-#: pages/templates/pages/page_detail.html:38
+#: pages/templates/pages/page_detail.html:40
 #: tags/templates/tags/tagged_list_snippet.html:7
 msgid "View map"
 msgstr "Ver mapa"
 
-#: pages/templates/pages/page_detail.html:55
+#: pages/templates/pages/page_detail.html:57
 msgid "Edit tags"
 msgstr "Editar etiquetas"
 
-#: pages/templates/pages/page_detail.html:55
+#: pages/templates/pages/page_detail.html:57
 msgid "Add tags"
 msgstr "Agregar etiquetas"
 
-#: pages/templates/pages/page_detail.html:71
+#: pages/templates/pages/page_detail.html:73
 #, python-format
 msgid "This page was last modified %(ago)s ago"
 msgstr "Esta página fue modificada por última vez hace %(ago)s"
@@ -896,8 +928,8 @@ msgstr "Diferencias de las versiones de la etiqueta %(new_name)s"
 msgid "Tags history"
 msgstr "Historial de etiquetas"
 
-#: tags/templates/tags/pagetagset_form.html:9
-#: tags/templates/tags/pagetagset_form.html:10
+#: tags/templates/tags/pagetagset_form.html:13
+#: tags/templates/tags/pagetagset_form.html:14
 #: tags/templates/tags/pagetagset_version_detail.html:12
 #: tags/templates/tags/pagetagset_versions.html:11
 msgid "Tags for"

@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-04 13:36-0700\n"
+"POT-Creation-Date: 2012-06-19 15:09-0700\n"
 "PO-Revision-Date: 2012-06-04 17:16\n"
 "Last-Translator: Anonymous User <anonymous@user.tld>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -103,12 +103,13 @@ msgstr "Alinear"
 msgid "None"
 msgstr "Ninguno"
 
-#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:209
-#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:232
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:210
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:233
 #, c-format
 msgid "Include page %s"
 msgstr "Incluir página %s"
 
+#: pages/static/js/ckeditor/_source/plugins/includetag/plugin.js:14
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:11
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:17
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:18
@@ -164,36 +165,36 @@ msgstr "Adjuntar archivo"
 msgid "Insert Image"
 msgstr "Insertar imagen"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:228
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:232
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:249
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:253
 msgid "Choose a file from your computer"
 msgstr "Seleccione un archivo de su computadora"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:314
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:335
 msgid "Select a file"
 msgstr "Seleccione un archivo"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:314
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:335
 msgid "Select an image"
 msgstr "Seleccione una imagen"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:322
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:343
 msgid "or <a href=\"#\">use a file from the web</a>"
 msgstr "o <a href=\"#\">use un archivo de la web</a>"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:322
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:343
 msgid "or <a href=\"#\">use an image from the web</a>"
 msgstr "o <a href=\"#\">use una imagen de la web</a>"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:333
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:354
 msgid "File URL"
 msgstr "URL del archivo"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:333
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:354
 msgid "Image URL"
 msgstr "URL de la imagen"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:371
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:392
 msgid "No file selected"
 msgstr "Ningún archivo seleccionado"
 
