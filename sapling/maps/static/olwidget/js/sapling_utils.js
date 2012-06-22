@@ -240,7 +240,11 @@ SaplingMap = {
                    });
                } else {
                    var threshold = 500; // TODO: what units is this?
-                   header = gettext('Things near ') + selectedFeature.attributes.html + ':';
+                   if (selectedFeature.cluster)
+                       var feature_label = selectedFeature.cluster[0].attributes.html;
+                   else
+                       var feature_label = selectedFeature.attributes.html;
+                   header = gettext('Things near ') + feature_label + ':';
                    listResult = selectedFeature.geometry.distanceTo(feature.geometry) < threshold;
                    if(feature.geometry.containsPoint)
                        listResult = listResult && !feature.geometry.containsPoint(selectedFeature.geometry);

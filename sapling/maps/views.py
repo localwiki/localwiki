@@ -9,7 +9,6 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 
 from django.views.generic.list import BaseListView
-from olwidget import utils
 from olwidget.widgets import InfoMap as OLInfoMap
 from django.contrib.gis.geos.polygon import Polygon
 from django.utils.safestring import mark_safe
@@ -20,7 +19,7 @@ from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, VersionsList
 from pages.models import Page
 from pages.models import slugify, name_to_url
-from pages.constants import PAGE_BASE_PATH
+from pages.constants import page_base_path
 import tags.models as tags
 
 from widgets import InfoMap
@@ -81,7 +80,8 @@ def popup_html(mapdata=None, pagename=None):
     if mapdata:
         pagename = mapdata.page.name
     slug = name_to_url(pagename)
-    page_url = urljoin(PAGE_BASE_PATH, slug)
+    # Use page_base_path() to avoid reverse() overhead.
+    page_url = urljoin(page_base_path(), slug)
     return mark_safe('<a href="%s">%s</a>' % (page_url, pagename))
 
 
