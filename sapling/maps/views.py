@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 
 from django.views.generic.list import BaseListView
+from olwidget import utils
 from olwidget.widgets import InfoMap as OLInfoMap
 from django.contrib.gis.geos.polygon import Polygon
 from django.utils.safestring import mark_safe
@@ -19,7 +20,7 @@ from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, VersionsList
 from pages.models import Page
 from pages.models import slugify, name_to_url
-from pages.constants import page_base_path
+from pages.constants import PAGE_BASE_PATH
 import tags.models as tags
 
 from widgets import InfoMap
@@ -80,8 +81,7 @@ def popup_html(mapdata=None, pagename=None):
     if mapdata:
         pagename = mapdata.page.name
     slug = name_to_url(pagename)
-    # Use page_base_path() to avoid reverse() overhead.
-    page_url = urljoin(page_base_path(), slug)
+    page_url = urljoin(PAGE_BASE_PATH, slug)
     return mark_safe('<a href="%s">%s</a>' % (page_url, pagename))
 
 
@@ -185,11 +185,8 @@ class MapObjectsForBounds(JSONResponseMixin, BaseListView):
         return queryset.select_related('page')
 
     def get_context_data(self, **kwargs):
-        import time
-        t0 = time.time()
         objs = self.object_list.values('geom', 'page__name')
         map_objects = [(o['geom'].ewkt, o['page__name']) for o in objs]
-        print time.time() - t0
         return map_objects
 
 
