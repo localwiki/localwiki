@@ -185,11 +185,8 @@ class MapObjectsForBounds(JSONResponseMixin, BaseListView):
         return queryset.select_related('page')
 
     def get_context_data(self, **kwargs):
-        import time
-        t0 = time.time()
         objs = self.object_list.values('geom', 'page__name')
         map_objects = [(o['geom'].ewkt, o['page__name']) for o in objs]
-        print time.time() - t0
         return map_objects
 
 
