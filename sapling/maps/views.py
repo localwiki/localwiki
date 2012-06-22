@@ -113,10 +113,11 @@ class MapGlobalView(ListView):
 
     def get_map(self):
         map_objects = self.get_map_objects()
-        return InfoMap(map_objects, options={'dynamic': self.dynamic,
-                                        'zoomToDataExtent': self.zoom_to_data,
-                                        'permalink': self.permalink,
-                                        'cluster': True})
+        return InfoMap(map_objects, options={
+            'dynamic': self.dynamic,
+            'zoomToDataExtent': self.zoom_to_data,
+            'permalink': self.permalink,
+            'cluster': True})
 
 
 class MapAllObjectsAsPointsView(MapGlobalView):
