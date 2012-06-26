@@ -63,7 +63,7 @@ class MapDetailView(Custom404Mixin, DetailView):
 
 def filter_by_bounds(queryset, bbox):
     return queryset.filter(Q(points__intersects=bbox)
-                         | Q(lines__intersects=bbox)
+                         | Q(lines__within=bbox)
                          | Q(polys__intersects=bbox))
 
 

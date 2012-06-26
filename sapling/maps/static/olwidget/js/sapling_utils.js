@@ -74,7 +74,8 @@ SaplingMap = {
         var viewedArea = map.getExtent().toGeometry().getArea();
         var area_ratio = Math.min(1, feature.geometry.getArea()/viewedArea);
         var fillAlpha =  0.2 - 0.2 * area_ratio;
-        var strokeAlpha = 1 - 1 * area_ratio;
+        // Always have some stroke for selected features.
+        var strokeAlpha = Math.max(0.2, 1 - 1 * area_ratio);
         var strokeWidth = Math.max(2, 15 * area_ratio);
         var zoomedStyle = $.extend({}, 
             layer.styleMap.styles.select.defaultStyle,
@@ -107,24 +108,37 @@ SaplingMap = {
           }
         });
         layer.events.register("featureselected", null, function(evt) {
+          var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
+          // Hack to maintain selected feature state throughout events.
+          // Not sure why this is required.
+          layer._selectedFeature = selectedFeature;
           var feature = evt.feature;
           var featureBounds = feature.geometry.bounds;
           $('#results_pane').css('display', 'block');
           $('.mapwidget').css('float', 'left');
           size_map();
           map.updateSize();
+
           if(feature.geometry.CLASS_NAME != "OpenLayers.Geometry.Point")
           {
               map.zoomToExtent(featureBounds);
           }
-          $('#header_title_detail').empty().append(gettext(' for ') + feature.attributes.html);
+          if (selectedFeature.cluster)
+            var feature_label = selectedFeature.cluster[0].attributes.html;
+          else
+            var feature_label = selectedFeature.attributes.html;
+          $('#header_title_detail').empty().append(gettext(' for ') + feature_label);
 
           SaplingMap._set_selected_style(map, feature);
           displayRelated(map);
         });
         layer.events.register("featureunselected", null, function(evt) {
-          evt.feature.style = evt.feature.defaultStyle;
+          // Hack to maintain selected feature state throughout events.
+          // Not sure why this is required.
+          layer._selectedFeature = null;
+          SaplingMap._set_feature_alpha(evt.feature, layer, map);
           layer.drawFeature(evt.feature);
+          $('#header_title_detail').empty();
         })
     },
 
@@ -134,15 +148,15 @@ SaplingMap = {
         }
         
         layer.dataExtent = map.getExtent();
-        var viewedArea = map.getExtent().toGeometry().getArea();
         var set_feature_alpha = SaplingMap._set_feature_alpha;
         var is_feature_invisible = SaplingMap._is_feature_invisible;
         var invisible_features = [];
         $.each(layer.features, function(index, feature) {
-           set_feature_alpha(feature, layer, viewedArea);
-           if (is_feature_invisible(feature, layer, viewedArea))
+           set_feature_alpha(feature, layer, map);
+           if (is_feature_invisible(feature, layer, map))
                invisible_features.push(feature);
         });
+        layer.redraw();
         if (invisible_features)
             layer.removeFeatures(invisible_features);
 
@@ -155,11 +169,13 @@ SaplingMap = {
         }
     },
 
-    _set_feature_alpha: function(feature, layer, viewedArea) {
-
-        if(feature && feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon")
+    _set_feature_alpha: function(feature, layer, map) {
+        if (!feature)
+            return;
+        var viewedRegion = map.getExtent().toGeometry();
+        if(feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon")
         {
-            var area_ratio = Math.min(1, feature.geometry.getArea()/viewedArea);
+            var area_ratio = Math.min(1, feature.geometry.getArea()/viewedRegion.getArea());
             var fillAlpha =  0.5 - 0.5 * area_ratio;
             var strokeAlpha = 1 - 1 * area_ratio;
             var strokeWidth = Math.max(2, 15 * area_ratio);
@@ -172,13 +188,30 @@ SaplingMap = {
                 // how.
                 { fillOpacity: fillAlpha, strokeOpacity: strokeAlpha, strokeWidth: strokeWidth, label: null });
             feature.style = polyStyle;
-            layer.drawFeature(feature);
+        }
+        else if(feature.geometry.CLASS_NAME == "OpenLayers.Geometry.LineString")
+        {
+            var length_ratio = Math.min(1, feature.geometry.getLength()/viewedRegion.getLength());
+            var strokeAlpha = 0.5; //1 - 1 * length_ratio;
+            var strokeWidth = 2; //Math.max(2, 15 * length_ratio);
+
+            var lineStyle = $.extend({},
+                layer.styleMap.styles.default.defaultStyle,
+                // TODO: Not sure why we have to explicitly set
+                // strokeWidth and label here. It's like we need to somehow pass
+                // the variables' context in but I couldn't figure out
+                // how.
+                { strokeOpacity: strokeAlpha, strokeWidth: strokeWidth, label: null });
+            feature.style = lineStyle;
         }
     },
 
-    _is_feature_invisible: function(feature, layer, viewedArea) {
-        if(feature && feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
-            if ((feature.geometry.getArea()/viewedArea) >= 1) {
+    _is_feature_invisible: function(feature, layer, map) {
+        var viewedRegion = map.getExtent().toGeometry();
+        if (!feature)
+            return
+        if(feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
+            if ((feature.geometry.getArea()/viewedRegion.getArea()) >= 1) {
                 return true;
             }
         }
@@ -205,24 +238,35 @@ SaplingMap = {
                 $(this).unbind('mouseout');
                 map.removePopup(popup);
                 feature.style = feature.defaultStyle;
-                layer.eraseFeatures(feature);
+                // Points are clustered, so we erase the feature to
+                // prevent the non-clustered point from being drawn.
+                if (feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Point") {
+                    layer.eraseFeatures(feature);
+                }
+                else {
+                    layer.drawFeature(feature);
+                    // Keep the selected feature on top of other
+                    // features after they've been drawn.
+                    if (layer._selectedFeature) {
+                        layer.eraseFeatures([layer._selectedFeature]);
+                        SaplingMap._set_selected_style(map, layer._selectedFeature);
+                    }
+                }
                 if(existingPopup)
                     map.addPopup(existingPopup);
             });
         };
         
-        var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
+        var selectedFeature = layer._selectedFeature;
         var header = gettext('Things on this map:');
         var results = $('<ol>');
-        var viewedArea = map.getExtent().toGeometry().getArea();
         var set_feature_alpha = SaplingMap._set_feature_alpha;
         var is_feature_invisible = SaplingMap._is_feature_invisible;
         var invisible_features = [];
         $.each(layer.features, function(index, feature) {
            if(feature == selectedFeature)
                 return;
-           set_feature_alpha(feature, layer, viewedArea);
-           if (is_feature_invisible(feature, layer, viewedArea)) {
+           if (is_feature_invisible(feature, layer, map)) {
                invisible_features.push(feature);
            }
            var listResult = false;
@@ -290,11 +334,12 @@ SaplingMap = {
     },
 
     _loadObjects: function(map, layer, callback) {
-        var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
+        var selectedFeature = layer._selectedFeature;
         var extent = map.getExtent().scale(1.5);
         var bbox = extent.clone().transform(layer.projection,
                        new OpenLayers.Projection('EPSG:4326')).toBBOX();
         var zoom = map.getZoom();
+        var set_feature_alpha = SaplingMap._set_feature_alpha;
         var myDataToken = Math.random();
         layer.dataToken = myDataToken;
 
@@ -314,8 +359,13 @@ SaplingMap = {
             layer.removeAllFeatures();
 
             $.each(temp.features, function(index, feature) {
-                if(selectedFeature && selectedFeature.geometry.toString() == feature.geometry.toString())
+                if(selectedFeature && selectedFeature.geometry.toString() == feature.geometry.toString()) {
                     temp.features[index] = selectedFeature;
+                    SaplingMap._set_selected_style(map, selectedFeature);
+                }
+                else {
+                    set_feature_alpha(feature, temp, map);
+                }
             });
 
             layer.addFeatures(temp.features);
