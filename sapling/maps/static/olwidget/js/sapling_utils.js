@@ -78,7 +78,7 @@ SaplingMap = {
         var strokeAlpha = Math.max(0.2, 1 - 1 * area_ratio);
         var strokeWidth = Math.max(2, 15 * area_ratio);
         var zoomedStyle = $.extend({}, 
-            layer.styleMap.styles.select.defaultStyle,
+            layer.styleMap.styles['select'].defaultStyle,
             { fillOpacity: fillAlpha,
               // TODO: Not sure why we need to specify strokeWidth
               // here.
@@ -181,7 +181,7 @@ SaplingMap = {
             var strokeWidth = Math.max(2, 15 * area_ratio);
 
             var polyStyle = $.extend({},
-                layer.styleMap.styles.default.defaultStyle,
+                layer.styleMap.styles['default'].defaultStyle,
                 // TODO: Not sure why we have to explicitly set
                 // strokeWidth and label here. It's like we need to somehow pass
                 // the variables' context in but I couldn't figure out
@@ -196,7 +196,7 @@ SaplingMap = {
             var strokeWidth = 2; //Math.max(2, 15 * length_ratio);
 
             var lineStyle = $.extend({},
-                layer.styleMap.styles.default.defaultStyle,
+                layer.styleMap.styles['default'].defaultStyle,
                 // TODO: Not sure why we have to explicitly set
                 // strokeWidth and label here. It's like we need to somehow pass
                 // the variables' context in but I couldn't figure out
@@ -232,7 +232,7 @@ SaplingMap = {
             if(existingPopup)
                 map.removePopup(existingPopup);
             map.addPopup(popup);
-            feature.style = $.extend({}, layer.styleMap.styles.select.defaultStyle, {label: null});
+            feature.style = $.extend({}, layer.styleMap.styles['select'].defaultStyle, {label: null});
             layer.drawFeature(feature);
             $(result).bind('mouseout', function(){
                 $(this).unbind('mouseout');
