@@ -188,10 +188,31 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
             onOk: function () {
             	if(this.uploading)
             		return false;
+                var insert = function(element, editor)
+                {
+                    var sel = editor.getSelection();
+                    var range = sel.getRanges()[0];
+                    var forbidden = jQuery(range.startContainer.$).closest('h1,h2,h3,h4,h5,span');
+                    if(forbidden.length)
+                    {   // if inside heading or frame, insert into a para after
+                        var p = editor.document.createElement('p');
+                        p.append(element);
+                        element = p;
+                        forbidden.after(jQuery(element.$));
+                        // fix selection
+                        range.setStartAfter(element);
+                        range.setEndAfter(element);
+                        sel.selectRanges([range]);
+                    }
+                    else
+                    {
+                        editor.insertElement(element);
+                    }
+                };
                 if(dialogType == 'attachfile') {
                 	var linkElement = editor.document.createElement('a');
                 	this.commitContent(linkElement);
-                	editor.insertElement(linkElement);
+                	insert(linkElement, editor);
                 }
                 else {
                 	this.commitContent(this.imageElement);
@@ -203,7 +224,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	                spanElement.setAttribute('class', 'image_frame image_frame_border');
 	                sizeImage(this.imageElement);
 	                spanElement.append(this.imageElement);
-	                editor.insertElement(spanElement);
+	                insert(spanElement, editor);
                 }
             },
             onLoad: function () {

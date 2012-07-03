@@ -40,7 +40,7 @@
           <div class="inner">
             <h1 id="object_title">{% block header_title %}{% endblock %}</h1>
             <div id="object_actions">{% block object_actions %}{% endblock %}</div>
-            <div id="object_subtitle">{% block header_subtitle %}{% endblock %}</div>
+            {% block header_subtitle %}{% endblock %}
           </div>
       </div>
     </div>
