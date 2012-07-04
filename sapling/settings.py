@@ -56,10 +56,12 @@ LOCALE_PATHS = (
 # Languages LocalWiki has been translated into.
 LANGUAGES = (
     ('en', _('English')),
-    ('pt_PT', _('Portuguese')),
+    ('ja', _('Japanese')),
+    ('ru_RU', _('Russian')),
     ('de_CH', _('German (Swiss)')),
     ('es_AR', _('Spanish (Argentina)')),
     ('da_DK', _('Danish')),
+    ('pt_PT', _('Portuguese')),
 )
 
 SITE_ID = 1
