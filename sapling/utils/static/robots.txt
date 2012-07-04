@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /*/_history/*
+
+User-agent: *
+Disallow: /*/_feed$
+
+User-agent: *
+Disallow: /*/_feed/
