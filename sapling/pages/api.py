@@ -33,6 +33,12 @@ class FileResource(ModelResource):
         }
 
 
+class FileHistoryResource(FileResource):
+    class Meta:
+        resource_name = 'file_version'
+        queryset = PageFile.versions.all()
+
+
 class PageResource(PageSlugifyMixin, ModelResource):
     class Meta:
         queryset = Page.objects.all()
@@ -88,12 +94,13 @@ class PageResource(PageSlugifyMixin, ModelResource):
         return self.create_response(request, object_list)
 
 
-class PageHistoryResource(PageSlugifyMixin, ModelResource):
+# We don't use the PageSlugifyMixin approach here because it becomes
+# too complicated to generate pretty URLs with the historical version
+# identifiers.
+class PageHistoryResource(ModelResource):
     class Meta:
         resource_name = 'page_version'
         queryset = Page.versions.all()
-
-        field_to_slugify = 'name'
         filtering = {
             'name': ALL,
             'slug': ALL,
@@ -103,4 +110,4 @@ class PageHistoryResource(PageSlugifyMixin, ModelResource):
 api.register(PageResource())
 api.register(PageHistoryResource())
 api.register(FileResource())
-
+api.register(FileHistoryResource())

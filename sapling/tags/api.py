@@ -36,4 +36,18 @@ class PageTagSetResource(SlugifyMixin, ModelResource):
             'tags': ALL_WITH_RELATIONS,
         }
 
+
+class PageTagSetHistoryResource(ModelResource):
+    page = fields.ToOneField(pages.api.PageHistoryResource, 'page')
+    tags = fields.ToManyField(TagResource, 'tags')
+
+    class Meta:
+        resource_name = 'page_tag_set_version'
+        queryset = PageTagSet.versions.all()
+        filtering = {
+            'page': ALL_WITH_RELATIONS,
+            'tags': ALL_WITH_RELATIONS,
+        }
+
 api.register(PageTagSetResource())
+api.register(PageTagSetHistoryResource())

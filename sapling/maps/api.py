@@ -24,4 +24,23 @@ class MapResource(pages.api.PageSlugifyMixin, ModelResource):
         }
 
 
+# We don't use the PageSlugifyMixin approach here because it becomes
+# too complicated to generate pretty URLs with the historical version
+# identifiers.
+class MapHistoryResource(ModelResource):
+    page = fields.ToOneField(pages.api.PageHistoryResource, 'page')
+
+    class Meta:
+        queryset = MapData.versions.all()
+        resource_name = 'map_version'
+        filtering = {
+            'points': ALL,
+            'lines': ALL,
+            'polys': ALL,
+            'geom': ALL,
+            'length': ALL,
+        }
+
+
 api.register(MapResource())
+api.register(MapHistoryResource())
