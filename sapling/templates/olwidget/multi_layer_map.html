@@ -4,7 +4,6 @@
 {{ layer_html|join:"" }}
 
 <script type="text/javascript">
-    SaplingMap.api_endpoint = "{% url api rest='' %}";
     SaplingMap.init_openlayers();
     OpenLayers.ImgPath = '{% static "img/openlayers/themes/dark/" %}';
 

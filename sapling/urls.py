@@ -17,7 +17,7 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    url(r'^api/(?P<rest>.*)', api_router.as_view(), name="api"),
+    (r'^api/(?P<rest>.*)', api_router.as_view()),
     (r'^map/', include(maps.site.urls)),
     (r'^tags$', redirect_to, {'url': '/tags/'}),
     (r'^tags/', include('sapling.tags.urls', 'tags', 'tags')),
