@@ -1,8 +1,8 @@
-from urlparse import urljoin
-
 from django.conf import settings
+from django.utils.translation import ugettext as _
 
 from utils.static import static_url
+from utils import reverse_lazy
 from ckeditor.widgets import CKEditor
 import models
 
@@ -24,12 +24,12 @@ class WikiEditor(CKEditor):
             'disableNativeSpellChecker': False,
             'browserContextMenuOnCtrl': True,
             'enterMode': 1,
-            'stylesSet': [{'name': 'Normal', 'element': 'p'},
-                          {'name': 'Heading 1', 'element': 'h1'},
-                          {'name': 'Heading 2', 'element': 'h2'},
-                          {'name': 'Heading 3', 'element': 'h3'},
-                          {'name': 'Formatted', 'element': 'pre'},
-                          {'name': 'Typewriter', 'element': 'tt'}
+            'stylesSet': [{'name': _('Normal'), 'element': 'p'},
+                          {'name': _('Heading 1'), 'element': 'h1'},
+                          {'name': _('Heading 2'), 'element': 'h2'},
+                          {'name': _('Heading 3'), 'element': 'h3'},
+                          {'name': _('Formatted'), 'element': 'pre'},
+                          {'name': _('Typewriter'), 'element': 'tt'}
                         ],
             'indentClasses': ['indent1', 'indent2', 'indent3', 'indent4',
                               'indent5', 'indent6', 'indent7', 'indent8',
@@ -83,6 +83,8 @@ class WikiEditor(CKEditor):
 
     class Media:
         js = (
+              reverse_lazy('django.views.i18n.javascript_catalog',
+                           args=['pages']),
               static_url('js/jquery/jquery-1.7.min.js'),
               static_url('js/jquery/jquery-ui-1.8.16.custom.min.js'),
               static_url('js/ckeditor/sapling_utils.js'),

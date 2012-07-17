@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.views.generic import DeleteView, UpdateView, ListView
 from django.views.generic.edit import FormMixin
+from django.utils.translation import ugettext as _
 
 from forms import DeleteForm, RevertForm
 
@@ -63,8 +64,8 @@ class UpdateView(UpdateView):
             A string that gets sent to django.contrib.messages'
             add_message() when the model is successfully saved.
         """
-        return ("Thank you for your changes. "
-                "Your attention to detail is appreciated.")
+        return (_("Thank you for your changes. ") +\
+                _("Your attention to detail is appreciated."))
 
     def form_valid(self, form):
         if getattr(form, 'performed_merge', None):
@@ -96,7 +97,7 @@ class DeleteView(DeleteView, FormMixin):
             A string that gets sent to django.contrib.messages'
             add_message() when the model is successfully deleted.
         """
-        return 'Successfully deleted!'
+        return _('Successfully deleted!')
 
     def delete(self, *args, **kwargs):
         form = self.get_form(self.get_form_class())
@@ -142,7 +143,7 @@ class RevertView(DeleteView):
 
     def success_msg(self):
         version_number = self.object.version_info.version_number()
-        return 'Reverted to version %s.' % version_number
+        return _('Reverted to version %s.') % version_number
 
     def revert(self, *args, **kwargs):
         form = self.get_form(self.get_form_class())

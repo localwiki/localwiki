@@ -15,6 +15,8 @@ from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django.utils.html import escape
 from django.utils.http import urlquote
+from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy
 
 from ckeditor.views import ck_upload_result
 from versionutils import diff
@@ -99,25 +101,24 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin, UpdateView):
     def success_msg(self):
         # NOTE: This is eventually marked as safe when rendered in our
         # template.  So do *not* allow unescaped user input!
-        message = ('Thank you for your changes. '
+        message = _('Thank you for your changes. '
                    'Your attention to detail is appreciated.')
         if not self.request.user.is_authenticated():
-            message = ('Changes saved! To use your name when editing, please '
-                '<a href="%s?next=%s"><strong>log in</strong></a> or '
-                '<a href="%s?next=%s"><strong>create an account</strong></a>.'
-                % (reverse('django.contrib.auth.views.login'),
-                   self.request.path,
-                   reverse('registration_register'),
-                   self.request.path
-                   )
+            message = (_('Changes saved! To use your name when editing, please '
+                '<a href="%(login_url)s?next=%(current_path)s"><strong>log in</strong></a> or '
+                '<a href="%(register_url)s?next=%(current_path)s"><strong>create an account</strong></a>.')
+                % {'login_url': reverse('django.contrib.auth.views.login'),
+                   'current_path' :self.request.path,
+                   'register_url': reverse('registration_register')
+                   }
                 )
         map_create_link = ''
         if not hasattr(self.object, 'mapdata'):
             slug = self.object.pretty_slug
-            map_create_link = (
+            map_create_link = (_(
                 '<p class="create_map"><a href="%s" class="button little map">'
                 '<span class="text">Create a map</span></a> '
-                'for this page?</p>' %
+                'for this page?</p>') %
                 reverse('maps:edit', args=[slug])
             )
         return '<div>%s</div>%s' % (message, map_create_link)
@@ -127,7 +128,7 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin, UpdateView):
 
     def create_object(self):
         pagename = clean_name(self.kwargs['original_slug'])
-        content = '<p>Describe %s here</p>' % pagename
+        content = _('<p>Describe %s here</p>') % pagename
         if 'template' in self.request.GET:
             try:
                 p = Page.objects.get(slug=self.request.GET['template'])
@@ -340,13 +341,13 @@ def upload(request, slug, **kwargs):
         file.save()
         return ck_upload_result(request, url=relative_url)
     except IntegrityError:
-        error = 'A file with this name already exists'
+        error = _('A file with this name already exists')
     return ck_upload_result(request, url=relative_url, message=error)
 
 
 class RenameForm(forms.Form):
-    pagename = forms.CharField(max_length=255)
-    comment = forms.CharField(max_length=150, required=False)
+    pagename = forms.CharField(max_length=255, label=ugettext_lazy("Pagename"))
+    comment = forms.CharField(max_length=150, required=False, label=ugettext_lazy("Comment"))
 
 
 class PageRenameView(FormView):
@@ -372,7 +373,7 @@ class PageRenameView(FormView):
     def success_msg(self):
         # NOTE: This is eventually marked as safe when rendered in our
         # template.  So do *not* allow unescaped user input!
-        return ('<div>Page renamed to "%s"</div>' % escape(self.new_pagename))
+        return ('<div>' + _('Page renamed to "%s"') + '</div>') % escape(self.new_pagename)
 
     def get_success_url(self):
         messages.add_message(self.request, messages.SUCCESS,

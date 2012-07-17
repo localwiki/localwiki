@@ -114,7 +114,8 @@ class PageTest(TestCase):
         a_post['content'] = '<p>a content</p>'
         a = PageForm(a_post, instance=p)
         self.failIf(a.is_valid())
-        self.failUnless(PageForm.conflict_error in str(a.errors))
+        # + '' to force evaluation of lazy string
+        self.failUnless(str(PageForm.conflict_error + '') in str(a.errors))
 
         a_post = a.data
         a = PageForm(a_post, instance=p)
@@ -408,7 +409,8 @@ class MergeModelFormTest(TestCase):
         a_post['contents'] = 'a contents'
         a = TestForm(a_post, instance=m_new)
         self.failIf(a.is_valid())
-        self.failUnless(MergeMixin.conflict_error in str(a.errors))
+        # + '' to force evaluation of lazy string
+        self.failUnless(str(MergeMixin.conflict_error + '') in str(a.errors))
 
         #repeated save with the same form rendered again should work, though
         a_post = a.data
@@ -518,6 +520,12 @@ class HTMLToTemplateTextTest(TestCase):
         template_text = html_to_template_text(html)
         self.assertEqual(template_text, imports +
                                         u'a\xa0<strong>\xa0</strong>\n')
+
+    def test_empty_a_element(self):
+        html = '<p><a name="blah"></a></p>'
+        imports = ''.join(tag_imports)
+        template_text = html_to_template_text(html)
+        self.assertEqual(template_text, imports + '<p><a name="blah"></a></p>')
 
 
 class PluginTest(TestCase):

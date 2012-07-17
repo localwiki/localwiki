@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
 from versionutils.versioning.forms import CommentMixin
 from pages.models import Page
@@ -9,7 +10,7 @@ from models import Redirect
 
 
 class RedirectForm(CommentMixin, forms.ModelForm):
-    destination = PageChoiceField(queryset=Page.objects.all())
+    destination = PageChoiceField(label=_("Destination"), queryset=Page.objects.all())
 
     class Meta:
         model = Redirect

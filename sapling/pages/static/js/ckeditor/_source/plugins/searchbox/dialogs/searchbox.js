@@ -7,20 +7,20 @@ CKEDITOR.dialog.add( 'searchbox', function( editor )
 	var plugin = CKEDITOR.plugins.searchbox;
 
 	return {
-		title : 'Search Box',
+		title : gettext('Search Box'),
 		minWidth : 250,
 		minHeight : 120,
 		contents : [
 			{
 				id : 'info',
-				label : 'Search Box',
-				title : 'Search Box',
+				label : gettext('Search Box'),
+				title : gettext('Search Box'),
 				elements :
 				[
 					{
 						type : 'text',
 						id : 'q',
-						label : 'Search query',
+						label : gettext('Search query'),
 						required: true,
 						setup : function( data )
 						{

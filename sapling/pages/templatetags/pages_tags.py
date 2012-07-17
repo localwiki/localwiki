@@ -1,6 +1,7 @@
 from django import template
 from django.template.loader_tags import BaseIncludeNode
 from django.template import Template
+from django.utils.translation import ugettext as _
 from django.conf import settings
 
 from pages.plugins import html_to_template_text, SearchBoxNode
@@ -105,18 +106,17 @@ class IncludePageNode(IncludeContentNode):
 
     def get_content(self, context):
         if not self.page:
-            return ('<p class="plugin includepage">Unable to include '
-                    '<a href="%s" class="missing_link">%s</a></p>'
-                    % (self.get_page_url(), self.name))
+            return (('<p class="plugin includepage">' + _('Unable to include '
+                    '<a href="%(page_url)s" class="missing_link">%(page_name)s</a>') + '</p>')
+                    % {'page_url': self.get_page_url(), 'page_name': self.name})
         # prevent endless loops
         context_page = context['page']
         include_stack = context.get('_include_stack', [])
         include_stack.append(context_page.name)
         if self.page.name in include_stack:
-            return ('<p class="plugin includepage">Unable to'
-                    ' include <a href="%s">%s</a>: endless include'
-                    ' loop.</p>' % (self.get_page_url(),
-                                    self.page.name))
+            return (('<p class="plugin includepage">' + _('Unable to'
+                    ' include <a href="%(page_url)s">%(page_name)s</a>: endless include'
+                    ' loop.') + '</p>') % {'page_url': self.get_page_url(), 'page_name': self.page.name})
         context['_include_stack'] = include_stack
         context['page'] = self.page
         template_text = html_to_template_text(self.page.content, context)

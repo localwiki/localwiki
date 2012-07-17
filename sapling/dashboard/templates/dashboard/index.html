@@ -1,8 +1,9 @@
 {% extends "site/base.html" %}
+{% load i18n %}
 {% load static from staticfiles %}
 
 {% block header_title %}
-  Dashboard
+  {% trans "Dashboard" %}
 {% endblock %}
 
 {% block media %}
@@ -15,41 +16,41 @@
 
 {% block content %}
 <div class="loading" id="loading">
-  Statistics loading.  This may take several minutes the first time.
+  {% trans "Statistics loading.  This may take several minutes the first time." %}
 </div>
 <table class="stats" id="main_stats">
   <thead><tr><td>
-    <div id="num_pages" class="stat_number"><div class="type">Pages</div></div>
-    <div id="num_files" class="stat_number"><div class="type">Files</div></div>
-    <div id="num_maps" class="stat_number"><div class="type">Maps</div></div>
-    <div id="num_redirects" class="stat_number"><div class="type">Redirects</div></div>
-    <div id="num_users" class="stat_number"><div class="type">Users</div></div>
+    <div id="num_pages" class="stat_number"><div class="type">{% trans "Pages" %}</div></div>
+    <div id="num_files" class="stat_number"><div class="type">{% trans "Files" %}</div></div>
+    <div id="num_maps" class="stat_number"><div class="type">{% trans "Maps" %}</div></div>
+    <div id="num_redirects" class="stat_number"><div class="type">{% trans "Redirects" %}</div></div>
+    <div id="num_users" class="stat_number"><div class="type">{% trans "Users" %}</div></div>
   </td></tr></thead>
 
 <tr><td>
 <div class="stat_detail">
-   <h2>Growth over time</h2>
+   <h2>{% trans "Growth over time" %}</h2>
    <div id="num_items_over_time" class="graph"></div>
 </div>
 </td></tr>
 
 <tr><td>
 <div class="stat_detail">
-    <h2>Edits over time</h2>
+    <h2>{% trans "Edits over time" %}</h2>
     <div id="num_edits_over_time" class="graph"></div>
 </div>
 </td></tr>
 
 <tr><td>
 <div class="stat_detail">
-    <h2>Page content growth over time</h2>
+    <h2>{% trans "Page content growth over time" %}</h2>
     <div id="page_content_over_time" class="graph"></div>
 </div>
 </td></tr>
 
 <tr><td>
 <div class="stat_detail">
-    <h2>Users registered over time</h2>
+    <h2>{% trans "Users registered over time" %}</h2>
     <div id="users_registered_over_time" class="graph"></div>
 </div>
 </td></tr>

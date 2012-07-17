@@ -1,6 +1,7 @@
 {% extends "pages/base.html" %}
+{% load i18n %}
 
-{% block title %}Editing page "{{ form.instance.name }}" - {{ block.super }}{% endblock %}
+{% block title %}{% blocktrans with name=form.instance.name super=block.super %}Editing page "{{ name }}" - {{ super }}{% endblocktrans %}{% endblock %}
 
 {% block search_robots %}
 <meta name="robots" content="noindex,nofollow">
@@ -34,12 +35,12 @@
 
       {% block content_footer %}
       <div id="content_footer">
-        <h3>Please comment about this change:</h3>
+        <h3>{% trans "Please comment about this change:" %}</h3>
         {{ form.comment }}
         <div id="editor_actions">
           <ul>
-            <li><input class="button" type="submit" value="Save changes"/></li>
-            <li><a href="." class="button cancel">Cancel</a></li>
+            <li><input class="button" type="submit" value="{% trans "Save changes" %}"/></li>
+            <li><a href="." class="button cancel">{% trans "Cancel" %}</a></li>
           </ul>
           <ul class="extra_actions">
           {% with form.instance as page %}
@@ -56,8 +57,8 @@
 {% block object_actions %}
   <ul>
     {% if page %}
-        <li><a href="#" class="button active">Edit</a></li>
-        <li><a href="{% url pages:history slug=page.pretty_slug %}" class="button">Info</a></li>
+        <li><a href="#" class="button active">{% trans "Edit" %}</a></li>
+        <li><a href="{% url pages:history slug=page.pretty_slug %}" class="button">{% trans "Info" %}</a></li>
     {% endif %}
   </ul>
 {% endblock %}

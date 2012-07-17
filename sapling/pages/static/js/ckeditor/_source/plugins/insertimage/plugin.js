@@ -31,7 +31,7 @@ CKEDITOR.plugins.add( 'insertimage',
 
 		editor.ui.addButton( 'AttachFile',
 			{
-				label : 'Attach file',
+				label : gettext('Attach file'),
 				command : 'attachfile',
 				icon : this.path + 'images/paper-clip.png'
 			});

@@ -1,4 +1,5 @@
 {% extends "pages/base.html" %}
+{% load i18n %}
 {% load static from staticfiles %}
 {% load diff_tags %}
 {% load pages_tags %}
@@ -15,8 +16,8 @@
   {{ page_diff.media }}
 {% endblock %}
 
-{% block title %}Differences for {{ new.name }}{% endblock %}
-{% block header_title %}Differences for <a href="{% url pages:show slug=page.pretty_slug %}">{{ new.name }}</a>{% endblock %}
+{% block title %}{% blocktrans with name=new.name %}Differences for {{ name }}{% endblocktrans %}{% endblock %}
+{% block header_title %}{% url pages:show slug=page.pretty_slug as pretty_slug %}{% blocktrans with new_name=new.name %}Differences for <a href="{{ pretty_slug }}">{{ new_name }}</a>{% endblocktrans %}{% endblock %}
 
 {% block content %}
   <div id="page">
@@ -26,21 +27,21 @@
           <tr>
               <td class="revision_details">
                   {% if old %}
-                    Revision {{ old.version_info.version_number }}
-                    ({{ old.version_info.date }} by {{ old.version_info.user_link|safe }})
+                    {% blocktrans with version_number=old.version_info.version_number date=old.version_info.date user_link=old.version_info.user_link|safe %}Revision {{ version_number }}
+                  ( {{ date }} by {{ user_link }}){% endblocktrans %}
                   {% endif %}
               </td>
               <td class="revision_details">
-                  Revision {{ new.version_info.version_number }}
-                  ({{ new.version_info.date }} by {{ new.version_info.user_link|safe }})
+                  {% blocktrans with version_number=new.version_info.version_number date=new.version_info.date user_link=new.version_info.user_link|safe %}Revision {{ version_number }}
+                  ({{ date }} by {{ user_link }}){% endblocktrans %}
               </td>
           </tr>
           <tr>
               <td>
-                  <del>Deletions are marked like this</del>
+                  <del>{% trans "Deletions are marked like this" %}</del>
               </td>
               <td>
-                  <ins>Additions are marked like this</ins>
+                  <ins>{% trans "Additions are marked like this" %}</ins>
               </td>
           </tr>
       </thead>

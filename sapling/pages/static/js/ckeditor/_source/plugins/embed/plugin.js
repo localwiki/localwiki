@@ -11,7 +11,7 @@
 				config.wikiplugins_menu = {};
 			config.wikiplugins_menu.embedMedia =
 				{
-					label : 'Embed media',
+					label : gettext('Embed media'),
 					command : 'embed',
 					icon : this.path + 'images/edit-code.png'
 				}

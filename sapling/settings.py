@@ -2,6 +2,8 @@
 import sys
 import os
 
+_ = lambda s: s
+
 # By default, let's turn DEBUG on.  It should be set to False in
 # localsettings.py.  We leave it set to True here so that our
 # init_data_dir command can run correctly.
@@ -28,13 +30,13 @@ DATABASES = {
     }
 }
 
-GLOBAL_LICENSE_NOTE = """<p>Except where otherwise noted, this content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights.</p>"""
+GLOBAL_LICENSE_NOTE = _("""<p>Except where otherwise noted, this content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights.</p>""")
 
-EDIT_LICENSE_NOTE = """<p>By clicking "Save Changes" you are agreeing to release your contribution under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>"""
+EDIT_LICENSE_NOTE = _("""<p>By clicking "Save Changes" you are agreeing to release your contribution under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>""")
 
-SIGNUP_TOS = """I agree to release my contributions under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>."""
+SIGNUP_TOS = _("""I agree to release my contributions under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.""")
 
-SUBSCRIBE_MESSAGE = """I would like to receive occasional updates about this project via email."""
+SUBSCRIBE_MESSAGE = _("""I would like to receive occasional updates about this project via email.""")
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -46,6 +48,21 @@ TIME_ZONE = 'America/Chicago'
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
+
+LOCALE_PATHS = (
+    os.path.join(PROJECT_ROOT, 'locale'),
+)
+
+# Languages LocalWiki has been translated into.
+LANGUAGES = (
+    ('en', _('English')),
+    ('ja', _('Japanese')),
+    ('ru_RU', _('Russian')),
+    ('de_CH', _('German (Swiss)')),
+    ('es_AR', _('Spanish (Argentina)')),
+    ('da_DK', _('Danish')),
+    ('pt_PT', _('Portuguese')),
+)
 
 SITE_ID = 1
 

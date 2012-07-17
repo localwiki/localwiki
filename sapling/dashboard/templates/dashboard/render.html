@@ -1,36 +1,37 @@
+{% load i18n %}
 <table class="stats">
   <thead><tr><td>
-    <div class="stat_number">{{ num_pages }}<div class="type">Pages</div></div>
-    <div class="stat_number">{{ num_files }}<div class="type">Files</div></div>
-    <div class="stat_number">{{ num_maps }}<div class="type">Maps</div></div>
-    <div class="stat_number">{{ num_redirects }}<div class="type">Redirects</div></div>
-    <div class="stat_number">{{ num_users }}<div class="type">Users</div></div>
+    <div class="stat_number">{{ num_pages }}<div class="type">{% trans "Pages" %}</div></div>
+    <div class="stat_number">{{ num_files }}<div class="type">{% trans "Files" %}</div></div>
+    <div class="stat_number">{{ num_maps }}<div class="type">{% trans "Maps" %}</div></div>
+    <div class="stat_number">{{ num_redirects }}<div class="type">{% trans "Redirects" %}</div></div>
+    <div class="stat_number">{{ num_users }}<div class="type">{% trans "Users" %}</div></div>
   </td></tr></thead>
 
 <tr><td>
 <div class="stat_detail">
-   <h2>Growth over time</h2>
+   <h2>{% trans "Growth over time" %}</h2>
    <div id="num_items_over_time" class="graph"></div>
 </div>
 </td></tr>
 
 <tr><td>
 <div class="stat_detail">
-    <h2>Edits over time</h2>
+    <h2>{% trans "Edits over time" %}</h2>
     <div id="num_edits_over_time" class="graph"></div>
 </div>
 </td></tr>
 
 <tr><td>
 <div class="stat_detail">
-    <h2>Page content growth over time</h2>
+    <h2>{% trans "Page content growth over time" %}</h2>
     <div id="page_content_over_time" class="graph"></div>
 </div>
 </td></tr>
 
 <tr><td>
 <div class="stat_detail">
-    <h2>Users registered over time</h2>
+    <h2>{% trans "Users registered over time" %}</h2>
     <div id="users_registered_over_time" class="graph"></div>
 </div>
 </td></tr>

@@ -1,14 +1,15 @@
 {% extends "pages/base.html" %}
+{% load i18n %}
 
-{% block head_extra %}{{ block.super }}<link rel="alternate" href="{% url pages:file-changes-feed slug=file.slug file=file.name %}" type="application/rss+xml" title="Recent changes for this file"/>{% endblock %}
+{% block head_extra %}{{ block.super }}<link rel="alternate" href="{% url pages:file-changes-feed slug=file.slug file=file.name %}" type="application/rss+xml" title="{% trans "Recent changes for this file" %}"/>{% endblock %}
 
 {% block media %}
   {{ block.super }}
   {% include "versionutils/history/media.html" %}
 {% endblock %}
 
-{% block title %}Information about "{{ file.name }}" on {{ file.slug }} - {{ block.super }}{% endblock %}
-{% block header_title %}Information about "{{ file.name }}" on <a href="{% url pages:show slug=file.slug %}">{{ file.attached_to_page }}</a>{% endblock %}
+{% block title %}{% blocktrans with name=file.name slug=file.slug super=block.super %}Information about "{{ name }}" on {{ slug }} - {{ super }}{% endblocktrans %}{% endblock %}
+{% block header_title %}{% url pages:show slug=file.slug as pages_show_url %}{% blocktrans with name=file.name attached_to_page=file.attached_to_page %}Information about "{{ name }}" on <a href="{{ pages_show_url }}">{{ attached_to_page }}</a>{% endblocktrans %}{% endblock %}
 
 {% block body %}
 <body>
@@ -32,25 +33,25 @@
     {% endspaceless %}
     <br/>
     <a class="file_{{ file.rough_type }}" href="{% url pages:file slug=file.slug file=file.name|urlencode %}">
-    	Download {{ file.name }}
+    	{% blocktrans with name=file.name %}Download {{ name }}{% endblocktrans %}
     </a>
   </p>
   
   {% block extras %}
-  <h3>Upload a new version</h3>
+  <h3>{% trans "Upload a new version" %}</h3>
   <form action="../_upload" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <table>
       <tbody>
         {{ form }}
         <td colspan="2">
-          <input type="submit" value="Upload"/>
+          <input type="submit" value="{% trans "Upload" %}"/>
         </td>
       </tbody>
     </table>
   </form>
  
-  <h3>Previous versions:</h3>
+  <h3>{% trans "Previous versions:" %}</h3>
   {% include "utils/history/form.html" %}
   
   {% endblock %}

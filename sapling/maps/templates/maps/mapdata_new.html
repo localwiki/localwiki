@@ -1,6 +1,7 @@
 {% extends "maps/base.html" %}
-{% block title %}Map for page not found{% endblock %}
-{% block header_title %}Map for page "{{ mapdata.page.name }}" does not exist (yet!){% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Map for page not found" %}{% endblock %}
+{% block header_title %}{% trans "Map for page" %} "{{ mapdata.page.name }}" {% trans "does not exist (yet!)" %}{% endblock %}
 
 {% block search_robots %}
 <meta name="robots" content="noindex,nofollow">
@@ -8,7 +9,7 @@
 
 {% block content %}
   <p>
-    <a href="{% url maps:edit slug=mapdata.page.pretty_slug %}">Create this map</a>
+    <a href="{% url maps:edit slug=mapdata.page.pretty_slug %}">{% trans "Create this map" %}</a>
   </p>
 {% endblock %}
 

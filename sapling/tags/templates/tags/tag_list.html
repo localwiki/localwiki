@@ -1,7 +1,8 @@
 {% extends "tags/base.html" %}
+{% load i18n %}
 
-{% block title %}Tags - {{ block.super }}{% endblock %}
-{% block header_title %}All tags{% endblock %}
+{% block title %}{% trans "Tags" %} - {{ block.super }}{% endblock %}
+{% block header_title %}{% trans "All tags" %}{% endblock %}
 
 {% block media %}
   {{ block.super }}
@@ -13,9 +14,9 @@
   {% if tag_list %}
     <div id="tabs">
         <ul style="display: none;">
-        <li><a href="#tags_by_name">Alphabetical</a></li>
-        <li><a href="#tags_by_num_pages">Most popular</a></li>
-        <li><a href="#tags_cloud">As a cloud</a></li>
+        <li><a href="#tags_by_name">{% trans "Alphabetical" %}</a></li>
+        <li><a href="#tags_by_num_pages">{% trans "Most popular" %}</a></li>
+        <li><a href="#tags_cloud">{% trans "As a cloud" %}</a></li>
         </ul>
         <div id="tags_by_name">
         {% include "tags/tag_list_snippet.html" %}
@@ -54,7 +55,7 @@
         });
     </script>
   {% else %}
-    There are no tags. Add some!
+    {% trans "There are no tags. Add some!" %}
   {% endif %}
 {% endblock %}
 

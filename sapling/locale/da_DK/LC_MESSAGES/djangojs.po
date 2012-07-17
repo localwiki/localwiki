@@ -1,0 +1,258 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-04 13:37-0700\n"
+"PO-Revision-Date: 2012-06-13 02:37\n"
+"Last-Translator: Anonymous User <anonymous@user.tld>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Translated-Using: django-rosetta 0.6.5\n"
+
+#: maps/static/olwidget/js/sapling_utils.js:96
+msgid " for "
+msgstr "for"
+
+#: maps/static/olwidget/js/sapling_utils.js:116
+msgid ""
+"You've made changes but haven't saved.  Are you sure you want to leave this "
+"page?"
+msgstr ""
+"Du har lavet ændringer, men har ikke gemt. Er du sikker på at du vil forlade"
+" siden?"
+
+#: maps/static/olwidget/js/sapling_utils.js:159
+msgid "Things on this map:"
+msgstr "Ting på dette kort:"
+
+#: maps/static/olwidget/js/sapling_utils.js:171
+msgid "Things inside "
+msgstr "Ting indenfor"
+
+#: maps/static/olwidget/js/sapling_utils.js:181
+msgid "Things near "
+msgstr "Ting i nærheden"
+
+#: pages/static/js/ckeditor/_source/plugins/embed/plugin.js:14
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:17
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:18
+msgid "Embed media"
+msgstr "Indlejr medie"
+
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:24
+msgid "Paste the embed code below:"
+msgstr "Indsæt indlejringskoden nedenfor:"
+
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:29
+msgid "Please enter the embed code"
+msgstr "Venligst indtast indlejringskoden"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/plugin.js:14
+msgid "Include page"
+msgstr "Inkludér side"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:11
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:17
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:18
+msgid "Include Page"
+msgstr "Inkludér side"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:24
+msgid "Page name"
+msgstr "Sidenavn"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:45
+msgid "Please enter a page name"
+msgstr "Indtast sidenavn"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:64
+msgid "Show page title"
+msgstr "Vis sidetitel"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:84
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:84
+msgid "Width"
+msgstr "Bredde"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:110
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:110
+msgid "pixels"
+msgstr "pixels"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:111
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:111
+msgid "percent"
+msgstr "procent"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:126
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:126
+msgid "Align"
+msgstr "Justér"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:131
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:131
+#: pages/static/js/ckeditor/_source/plugins/simpleimage/dialogs/simpleimage.js:822
+msgid "None"
+msgstr "Ingen"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:209
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:232
+#, c-format
+msgid "Include page %s"
+msgstr "Inkludér side %s"
+
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:11
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:17
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:18
+msgid "List of tagged pages"
+msgstr "Oversigt over taggede sider"
+
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:24
+msgid "Tag"
+msgstr "Tag"
+
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:45
+msgid "Please enter a tag"
+msgstr "Indtast tag"
+
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:64
+msgid "Show title"
+msgstr "Vis sidetitel"
+
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:212
+#, c-format
+msgid "List of pages tagged \"%s\""
+msgstr "Oversigt over sider med tagget \"%s\""
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/plugin.js:34
+msgid "Attach file"
+msgstr "Vedhæft fil"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:93
+msgid "Uploading your file..."
+msgstr "Overfører din fil..."
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:110
+msgid "Loading files..."
+msgstr "Indlæser filer..."
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:111
+msgid "No files attached to this page"
+msgstr "Denne side har ingen vedhæftede filer"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:114
+msgid "Loading images..."
+msgstr "Indlæser billeder..."
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:115
+msgid "No images attached to this page"
+msgstr "Denne side har ingen vedhæftede billeder"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:170
+msgid "Attach File"
+msgstr "Vedhæft fil"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:170
+msgid "Insert Image"
+msgstr "Indsæt billede"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:228
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:232
+msgid "Choose a file from your computer"
+msgstr "Vælg en fil fra din computer"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:314
+msgid "Select a file"
+msgstr "Vælg en fil"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:314
+msgid "Select an image"
+msgstr "Vælg et billede"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:322
+msgid "or <a href=\"#\">use a file from the web</a>"
+msgstr "eller <a href=\"#\">brug en fil fra internettet</a>"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:322
+msgid "or <a href=\"#\">use an image from the web</a>"
+msgstr "eller <a href=\"#\">brug et billede fra internettet</a>"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:333
+msgid "File URL"
+msgstr "Fil URL"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:333
+msgid "Image URL"
+msgstr "Billede URL"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:371
+msgid "No file selected"
+msgstr "Ingen valgt fil"
+
+#: pages/static/js/ckeditor/_source/plugins/pagelink/dialogs/pageanchor.js:60
+msgid "Anchor name"
+msgstr "Anker navn"
+
+#: pages/static/js/ckeditor/_source/plugins/pagelink/dialogs/pagelink.js:143
+msgid "Page name or URL"
+msgstr "Sidenavn eller URL"
+
+#: pages/static/js/ckeditor/_source/plugins/searchbox/plugin.js:14
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:10
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:16
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:17
+msgid "Search Box"
+msgstr "Søgeboks"
+
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:23
+msgid "Search query"
+msgstr "Søgeforespørgsel"
+
+#: pages/static/js/ckeditor/_source/plugins/simpleimage/plugin.js:83
+msgid "Add a caption"
+msgstr "Tilføj en billedtekst"
+
+#: pages/static/js/ckeditor/_source/plugins/simpletable/dialogs/simpletable.js:469
+msgid "Advanced settings..."
+msgstr "Avancerede indstillinger ..."
+
+#: pages/static/js/ckeditor/_source/plugins/simpletable/dialogs/simpletable.js:478
+msgid "CSS classes"
+msgstr "CSS-klasser"
+
+#: pages/static/js/ckeditor/_source/plugins/wikiplugins/plugin.js:23
+#: pages/static/js/ckeditor/_source/plugins/wikiplugins/plugin.js:24
+msgid "Insert Object"
+msgstr "Indsæt objekt"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:24
+msgid "Previous"
+msgstr "Forrige"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:26
+msgid "Next"
+msgstr "Næste"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:54
+msgid "Review changes"
+msgstr "Gennemse ændringer"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:59
+msgid "You can use the &larr; and &rarr; keys, too."
+msgstr "Du kan også bruge &larr; og &rarr; knapperne."
+
+#: versionutils/diff/static/js/diff/htmldiff.js:69
+msgid "Content was deleted"
+msgstr "Indhold slettet"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:70
+msgid "Content was added"
+msgstr "Indhold tilføjet"

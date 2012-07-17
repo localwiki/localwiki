@@ -2,6 +2,7 @@ from django.utils.decorators import classonlymethod
 from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.utils import simplejson as json
 from django.views.generic import View
+from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from django.template.context import RequestContext
 
@@ -78,8 +79,8 @@ class PermissionRequiredMixin(object):
             allowed.
     """
     permission = None
-    forbidden_message = 'Sorry, you are not allowed to perform this action.'
-    forbidden_message_anon = ('Anonymous users may not perform this action. '
+    forbidden_message = _('Sorry, you are not allowed to perform this action.')
+    forbidden_message_anon = _('Anonymous users may not perform this action. '
                               'Please <a href="/Users/login/">log in</a>.')
 
     def get_protected_object(self):

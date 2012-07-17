@@ -1,17 +1,18 @@
+{% load i18n %}
 {% if versions_list %}
 <form method="GET" action="compare" name="compare_form" id="compare_form">
 <table>
   <thead>
     <tr>
       <td colspan="100%">
-        <input type="submit" value="Compare">
+        <input type="submit" value="{% trans 'Compare' %}">
       </td>
     </tr>
   </thead>
   <tfoot>
     <tr>
       <td colspan="100%">
-        <input type="submit" value="Compare">
+        <input type="submit" value="{% trans 'Compare' %}">
       </td>
     </tr>
   </tfoot>
@@ -30,7 +31,7 @@
       </span>
       {# We assume a standard url format here. #}
       <a href="{{ forloop.revcounter }}" class="date">{{ version_info.date }}</a>
-      {{ version_info.type_verbose }} by {{ version_info.user_link|safe }}
+      {% with version_info.type_verbose as type %}{% trans type %}{% endwith %} {% trans "by" %} {{ version_info.user_link|safe }}
       {% block version_info_extras %}{% endblock %}
       </label>
     </td>
@@ -41,5 +42,5 @@
 </table>
 </form>
 {% else %}
-There is no revision history.
+{% trans "There is no revision history." %}
 {% endif %}

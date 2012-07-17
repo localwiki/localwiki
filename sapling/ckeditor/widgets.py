@@ -8,6 +8,7 @@ except ImportError:
 from django import forms
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.utils import translation
 from django.utils.safestring import mark_safe
 
 from utils.static import static_url
@@ -63,6 +64,7 @@ class CKEditor(forms.Textarea):
         config['toolbar'] = self.get_toolbar()
         config['plugins'] = self.get_plugins()
         config['extraPlugins'] = self.get_extra_plugins()
+        config['language'] = translation.get_language()
         for k, v in config.items():
             if not v:
                 del config[k]

@@ -1,3 +1,4 @@
+from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError
 
 
@@ -10,6 +11,6 @@ def validate_geometry(geom):
         until_coordinate = reason.find('[')
         if until_coordinate == -1:
             until_coordinate = 0
-        raise ValidationError("Map error: %s." %
+        raise ValidationError(_("Map error: %s.") %
             reason[:until_coordinate].strip().lower()
         )

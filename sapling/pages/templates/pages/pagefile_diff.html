@@ -1,4 +1,5 @@
 {% extends "pages/base.html" %}
+{% load i18n %}
 
 {% load diff_tags %}
 {% load pages_tags %}
@@ -30,8 +31,8 @@
   </style>
 {% endblock %}
 
-{% block title %}Differences for {{ new.name }} on {{ new.slug }}{% endblock %}
-{% block header_title %}Differences for {{ new.name }} on <a href="{% url pages:show slug=new.slug %}">{{ new.attached_to_page }}</a>{% endblock %}
+{% block title %}{% blocktrans with new_name=new.name new_slug=new.slug %}Differences for {{ new_name }} on {{ new_slug }}{% endblocktrans %}{% endblock %}
+{% block header_title %}{% url pages:show slug=new.slug as url_pages_show %}{% blocktrans with new_name=new.name new_attached_to_page=new.attached_to_page %}Differences for {{ new_name }} on <a href="{{ url_pages_show }}">{{ new_attached_to_page }}</a>{% endblocktrans %}{% endblock %}
 
 {% block content %}
   <table width="100%">
@@ -39,13 +40,13 @@
         <tr>
             <td class="revision_details">
                 {% if old %}
-                  Revision {{ old.version_info.version_number }}
-                  ({{ old.version_info.date }} by {{ old.version_info.user_link|safe }})
+                  {% blocktrans with version_number=old.version_info.version_number date=old.version_info.date user_link=old.version_info.user_link|safe %}Revision {{ version_number }}
+                  ({{ date }} by {{ user_link }}){% endblocktrans %}
                 {% endif %}
             </td>
             <td class="revision_details">
-                Revision {{ new.version_info.version_number }}
-                ({{ new.version_info.date }} by {{ new.version_info.user_link|safe }})
+                {% blocktrans with version_number=new.version_info.version_number date=new.version_info.date user_link=new.version_info.user_link|safe %}Revision {{ version_number }}
+                ({{ date }} by {{ user_link }}){% endblocktrans %}
             </td>
         </tr>
     </thead>
@@ -55,6 +56,6 @@
     </tbody>
   </table>
   <p>
-      <a href="{% url pages:file-info slug=slug file=pagefile.name|urlencode %}">File info</a>
+      <a href="{% url pages:file-info slug=slug file=pagefile.name|urlencode %}">{% trans "File info" %}</a>
   </p>
 {% endblock %}

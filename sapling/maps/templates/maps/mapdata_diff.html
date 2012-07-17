@@ -1,4 +1,5 @@
 {% extends "maps/base.html" %}
+{% load i18n %}
 {% load diff_tags %}
 
 {% block search_robots %}
@@ -45,9 +46,8 @@
 </script>
 {% endblock %}
 
-{% block title %}Differences for map on {{ new.page.name }}{% endblock %}
-{% block header_title %}Differences for <a href="{% url maps:global %}">Map</a> / <a href="{% url pages:show slug=new.page.slug %}">{{ new.page.name }}</a>{% endblock %}
-  
+{% block title %}{% trans "Differences for map on" %} {{ new.page.name }}{% endblock %}
+{% block header_title %}{% url maps:global as maps_global %}{% blocktrans %}Differences for <a href="{{ maps_global }}">Map</a>{% endblocktrans %} / <a href="{% url pages:show slug=new.page.slug %}">{{ new.page.name }}</a>{% endblock %}
 
 {% block content %}
   <table width="100%">
@@ -56,21 +56,21 @@
         <tr>
             <td class="revision_details">
                 {% if old %}
-                  Revision {{ old.version_info.version_number }}
-                  ({{ old.version_info.date }} by {{ old.version_info.user_link|safe }})
+                  {% trans "Revision" %} {{ old.version_info.version_number }}
+                  ({{ old.version_info.date }} {% trans "by" %} {{ old.version_info.user_link|safe }})
                 {% endif %}
             </td>
             <td class="revision_details">
-                Revision {{ new.version_info.version_number }}
-                ({{ new.version_info.date }} by {{ new.version_info.user_link|safe }})
+                {% trans "Revision" %} {{ new.version_info.version_number }}
+                ({{ new.version_info.date }} {% trans "by" %} {{ new.version_info.user_link|safe }})
             </td>
         </tr>
         <tr>
             <td>
-                <del>Deletions are marked like this</del>
+                <del>{% trans "Deletions are marked like this" %}</del>
             </td>
             <td>
-                <ins>Additions are marked like this</ins>
+                <ins>{% trans "Additions are marked like this" %}</ins>
             </td>
         </tr>
     </thead>

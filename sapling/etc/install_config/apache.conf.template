@@ -1,6 +1,6 @@
 # LocalWiki Apache config file
 # After modifying and saving, you may need to run these commands:
-#     $ sudo a2enable example.com
+#     $ sudo a2ensite example.com
 #     $ sudo /etc/init.d/apache2 reload
 
 <VirtualHost *:80>

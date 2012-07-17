@@ -1,7 +1,8 @@
 {% extends "site/base.html" %}
+{% load i18n %}
 {% load static from staticfiles %}
 
-{% block head_extra %}{% if mapdata %}<link rel="alternate" href="{% url maps:changes-feed slug=mapdata.page.pretty_slug %}" type="application/rss+xml" title="Recent changes on this Map"/>{% endif %}{% endblock %}
+{% block head_extra %}{% if mapdata %}<link rel="alternate" href="{% url maps:changes-feed slug=mapdata.page.pretty_slug %}" type="application/rss+xml" title="{% trans 'Recent changes on this Map' %}"/>{% endif %}{% endblock %}
 
 {% block media %}
 {{ block.super }}
@@ -10,7 +11,7 @@
 
 {% block header_title %}
   {% if mapdata %}
-  <a href="{% url maps:global %}">Map</a> / <a href="{% url pages:show slug=mapdata.page.pretty_slug %}">{{ mapdata.page.name }}</a>
+  <a href="{% url maps:global %}">{% trans "Map" %}</a> / <a href="{% url pages:show slug=mapdata.page.pretty_slug %}">{{ mapdata.page.name }}</a>
   {% endif %}
 {% endblock %}
 
@@ -27,8 +28,8 @@
 {% block object_actions %}
 <ul>
   {% if mapdata %}
-      <li><a href="{% url maps:edit slug=mapdata.page.pretty_slug %}" class="button">Edit</a></li>
-      <li><a href="{% url maps:history slug=mapdata.page.pretty_slug %}" class="button">Info</a></li>
+      <li><a href="{% url maps:edit slug=mapdata.page.pretty_slug %}" class="button">{% trans "Edit" %}</a></li>
+      <li><a href="{% url maps:history slug=mapdata.page.pretty_slug %}" class="button">{% trans "Info" %}</a></li>
   {% endif %}
 </ul>
 {% endblock %}

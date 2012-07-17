@@ -20,9 +20,10 @@ case "$1" in
 
         if [ ! -d "$datadir/env" ]; then
             echo "Creating virtualenv ..."
-            cd "$datadir"
-            virtualenv --quiet env
         fi
+        # run virtualenv, even if it's been created, to upgrade python executable
+        cd "$datadir"
+        virtualenv --quiet env
 
         . "$datadir/env/bin/activate"
         cd "$confdir"
@@ -30,7 +31,7 @@ case "$1" in
         pip install --upgrade -r requirements.txt
         deactivate
 
-        # For Ubuntu 11.10 (with PostgreSQL 9.1), we have an issue with
+        # For Ubuntu 11.10, 12.04 (with PostgreSQL 9.1), we have an issue with
         # GeoDjango.  We have to turn off standard string formatting.  We can
         # re-enable it once it's fixed, in Django 1.3.2
 
@@ -46,6 +47,9 @@ case "$1" in
 
         echo "Configuring localwiki ..."
         localwiki-manage setup_all
+
+        # Enable mod_wsgi
+        a2enmod wsgi > /dev/null 2>&1
 
         # If first time setup, initialize site and wiki
         if [ ! -d "$datadir/deploy" ]; then

@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 
 import recentchanges
 from recentchanges import RecentChanges
@@ -38,7 +39,7 @@ class PageFileChanges(RecentChanges):
         return page
 
     def title(self, obj):
-        return 'File %s on page "%s"' % (obj.name, self.page(obj).name)
+        return _('File %(filename)s on page "%(pagename)s"') % {'filename': obj.name, 'pagename': self.page(obj).name}
 
     def diff_url(self, obj):
         return reverse('pages:file-compare-dates', kwargs={
@@ -75,5 +76,5 @@ class PageFileChangesFeed(ChangesOnItemFeed):
         obj = PageFile(slug=slugify(slug), name=file)
         page = Page(slug=slugify(slug))
         obj.page = page.versions.most_recent()
-        obj.title = 'File %s on page "%s"' % (obj.name, obj.page.name)
+        obj.title = _('File %(filename)=s on page "%(pagename)s"') % {'filename': obj.name, 'pagename': obj.pageobj.name}
         return obj

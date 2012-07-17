@@ -130,6 +130,7 @@ install_requires = [
     'django-olwidget==0.46-custom1',
     'django-honeypot==0.3.0-custom',
     'django-tastypie==0.9.11-custom',
+    'django-qsstats-magic==0.7',
     # Actually optional:
     'Sphinx==1.1.3',
 ]

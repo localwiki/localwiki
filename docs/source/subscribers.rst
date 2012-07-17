@@ -10,6 +10,6 @@ When users register on your LocalWiki site, they can opt-in to receive email
 updates. Those who opt-in are added to a list, which is available to you,
 the administrator, at this address:
 
-  ``http://<your server's address>/admin/subscribers``
+  ``http://<your server's address>/admin/subscribers/``
 
 From here, you can copy this list and import it into your email software.

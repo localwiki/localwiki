@@ -1,24 +1,25 @@
 {% extends "site/base.html" %}
 {% load url from future %}
+{% load i18n %}
 
-{% block title %}Recent Changes - {{ block.super }}{% endblock %}
+{% block title %}{% trans "Recent Changes" %} - {{ block.super }}{% endblock %}
 
-{% block head_extra %}<link rel="alternate" href="{% url 'recentchanges-feed' %}" type="application/rss+xml" title="Recent Changes"/>{% endblock %}
+{% block head_extra %}<link rel="alternate" href="{% url 'recentchanges-feed' %}" type="application/rss+xml" title="{% trans "Recent Changes" %}"/>{% endblock %}
 
-{% block header_title %}<a href="{% url 'recentchanges' %}">Recent Changes</a>{% endblock %}
+{% block header_title %}<a href="{% url 'recentchanges' %}">{% trans "Recent Changes" %}</a>{% endblock %}
 
 {% block content %}
   <div id="recentchanges">
       {% with request.GET.days_back as days_back %}
       <div id="limit_to">
-        <span>Show all changes in the last</span>
+        <span>{% trans "Show all changes in the last" %}</span>
         <span class="pagination">
             <a href="{{ rc_url }}?days_back=1"{% ifequal days_back '1' %}class="current"{% endifequal %}>1</a>
             <a href="{{ rc_url }}?days_back=2"{% ifequal days_back '2' %}class="current"{% else %}{% if not days_back %}class="current"{% endif %}{% endifequal %}>2</a>
             <a href="{{ rc_url }}?days_back=3"{% ifequal days_back '3' %}class="current"{% endifequal %}>3</a>
             <a href="{{ rc_url }}?days_back=7"{% ifequal days_back '7' %}class="current"{% endifequal %}>7</a>
         </span>
-        <span>days.</span>
+        <span>{% trans "days." %}</span>
       </div>
       {% endwith %}
 
@@ -35,7 +36,7 @@
           {% for change in changes_on_item %}
             {% if forloop.first %}
               <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a>
-                  last modified {{ change.version_info.date|timesince }} ago</h3>
+                  {% blocktrans with version_date=change.version_info.date|timesince %}last modified {{ version_date }} ago{% endblocktrans %}</h3>
               <ul>
             {% endif %}
 
@@ -43,21 +44,21 @@
               <li class="{{ change.classname }}">
                 {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
                 {% if change.version_info.type in added_types %}
-                    <span class="changelabel added"><span>new</span></span>
+                    <span class="changelabel added"><span>{% trans "new"%}</span></span>
                 {% else %}{% if change.version_info.type in deleted_types %}
-                    <span class="changelabel deleted"><span>deleted</span></span>
+                    <span class="changelabel deleted"><span>{% trans "deleted"%}</span></span>
                 {% else %}
-                    <a class="changelabel updated" href="{{ change.diff_url }}"><span>changes</span></a></span>
+                    <a class="changelabel updated" href="{{ change.diff_url }}"><span>{% trans "changes" %}</span></a></span>
                 {% endif %}{% endif %}
 
                 {% if change.version_info.type in reverted_types %}
-                    <span class="revert">Reverted to version from {{ change.version_info.reverted_to_version.version_info.date|timesince}} ago</span>
+                    <span class="revert">{% blocktrans with version_date_timesince=change.version_info.reverted_to_version.version_info.date|timesince %}Reverted to version from {{ version_date_timesince }} ago{% endblocktrans %}</span>
                 {% endif %}
 
                 <span class="type"></span>
 
                 {% if change.classname == 'redirect' %}
-                    <span class="revert">Redirected to <a href="{{ change.destination.get_absolute_url }}">{{ change.destination.name }}</a></span>
+                    <span class="revert">{% blocktrans with url=change.destination.get_absolute_url destination=change.destination.name %}Redirected to <a href="{{ url }}">{{ destination }}</a>{% endblocktrans %}</span>
                 {% endif %}
 
                 {% if change.version_info.comment %}
@@ -82,8 +83,8 @@
   </div>
   <div class="see_also">
     <hr/>
-    <p>
-      For statistics about pages, maps, and more, check out the <a href="{% url 'dashboard:main' %}">dashboard</a>
+    <p>{% url 'dashboard:main' as dashboard_main_url %}
+      {% blocktrans %}For statistics about pages, maps, and more, check out the <a href="{{ dashboard_main_url }}">dashboard</a>{% endblocktrans %}
     </p>
   </div>
 {% endblock %}

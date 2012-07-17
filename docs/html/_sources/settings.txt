@@ -30,6 +30,13 @@ enter the domain name and display name and press "Save".
 .. figure:: /_static/images/admin_site.png
 
 
+Setting the default map location
+--------------------------------
+
+You'll need to edit your ``localsettings.py`` file and set the default
+map location.  See the ``localsettings.py`` section below.
+
+
 ``localsettings.py``
 --------------------
 
@@ -56,6 +63,13 @@ things you may need or wish to modify:
     This is a list of regular expressions used to restrict what kinds of
     content users can embed.  If an embedded URL does not pass any of the
     regular expressions in this list, it will not be shown.
+
+``LANGUAGE_CODE``
+    LocalWiki is fully localized and is currently translated into a
+    number of languages.  To change your instance's language, set this
+    to one of: ``en-us`` (for English), ``ja`` (Japanese),
+    ``pt_PT`` (Portuguese), ``ru_RU`` (Russian), ``de_CH`` (German, CH),
+    ``es_AR`` (Spanish, Argentina), ``da_DK`` (Danish).
 
 After changing settings you'll need to restart Apache.  On most systems
 you can do this by running ``sudo /etc/init.d/apache2 restart``.

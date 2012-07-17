@@ -14,19 +14,19 @@ CKEDITOR.dialog.add( 'embed', function( editor )
 		contents : [
 			{
 				id : 'info',
-				label : 'Embed media',
-				title : 'Embed media',
+				label : gettext('Embed media'),
+				title : gettext('Embed media'),
 				elements :
 				[
 					{
 						type : 'textarea',
 						id : 'code',
-						label : 'Paste the embed code below:',
+						label : gettext('Paste the embed code below:'),
 						required: true,
 						validate : function()
 						{
 							var dialog = this.getDialog();
-							var func = CKEDITOR.dialog.validate.notEmpty( 'Please enter the embed code' );
+							var func = CKEDITOR.dialog.validate.notEmpty( gettext('Please enter the embed code') );
 							return func.apply( this );
 						},
 						setup : function( data )

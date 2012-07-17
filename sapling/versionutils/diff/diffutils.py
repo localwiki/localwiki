@@ -8,8 +8,9 @@ from django.utils.safestring import mark_safe
 from django import forms
 from django.conf import settings
 from django.contrib.gis.db import models as gis_models
+from django.utils.translation import ugettext as _
 
-from utils import static_url
+from utils import static_url, reverse_lazy
 import diff_match_patch
 import daisydiff
 from versionutils.versioning.utils import is_historical_instance
@@ -98,7 +99,8 @@ class BaseFieldDiff(object):
             return render_to_string(self.template, diff)
 
         if diff is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>' 
+                     % _('No differences found') )
         return '<tr><td>%s</td><td>%s</td></tr>' % (self.field1, self.field2)
 
     def _media(self):
@@ -200,7 +202,8 @@ class BaseModelDiff(object):
                 diff_str.append('%s' % (diffs[name], ))
         if diff_str:
             return '\n'.join(diff_str)
-        return '<tr><td colspan="2">No differences found</td></tr>'
+        return ('<tr><td colspan="2">%s</td></tr>'
+                % _('No differences found'))
 
     def get_diff(self):
         """
@@ -287,7 +290,8 @@ class TextFieldDiff(BaseFieldDiff):
     def as_html(self):
         d = self.get_diff()
         if d is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>' 
+                     % _('No differences found'))
         return render_to_string(self.template, {'diff': d})
 
     def get_diff(self):
@@ -306,7 +310,8 @@ class HtmlFieldDiff(BaseFieldDiff):
     def as_html(self):
         d = self.get_diff()
         if d is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>'
+                    % _('No differences found'))
         try:
             return daisydiff.daisydiff(d['deleted'], d['inserted'],
                                        self.DAISYDIFF_URL)
@@ -319,7 +324,9 @@ class HtmlFieldDiff(BaseFieldDiff):
         return {'deleted': self.field1, 'inserted': self.field2}
 
     class Media:
-        js = (static_url('js/diff/htmldiff.js'),
+        js = (reverse_lazy('django.views.i18n.javascript_catalog',
+                           args=['versionutils.diff']),
+              static_url('js/diff/htmldiff.js'),
               static_url('js/jquery.qtip.min.js'))
         css = {'all': (static_url('css/jquery.qtip.min.css'),)}
 
@@ -368,7 +375,8 @@ class FileFieldDiff(BaseFieldDiff):
     def as_html(self):
         d = self.get_diff()
         if d is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>'
+                    % _('No differences found'))
         return render_to_string(self.template, {'diff': d})
 
 
@@ -381,7 +389,8 @@ class ImageFieldDiff(FileFieldDiff):
     def as_html(self):
         d = self.get_diff()
         if d is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>'
+                    % _('No differences found'))
         return render_to_string(self.template, {'diff': d})
 
 
@@ -483,7 +492,8 @@ class GeometryFieldDiff(BaseFieldDiff):
 
         d = self.get_diff()
         if d is None:
-            return '<tr><td colspan="2">(No differences found)</td></tr>'
+            return ('<tr><td colspan="2">(%s)</td></tr>'
+                    % _('No differences found'))
 
         # Split out polygons from other geometries in field1, field2,
         # same, deleted and inserted.
@@ -518,22 +528,22 @@ class GeometryFieldDiff(BaseFieldDiff):
         poly_field2 = _convert_to_multipolygon(poly_field2)
 
         deleted = InfoMap([
-            (poly_same, {'html': 'Stayed the same',
+            (poly_same, {'html': _('Stayed the same'),
                          'style': {'stroke_opacity': '0'}}),
             (poly_deleted,
-                {'html': 'Removed',
+                {'html': _('Removed'),
                  'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
                            'fill_opacity': '0.8', 'stroke_opacity': '0'}
                 }
             ),
             (poly_field1.boundary, {}),
             (other_geom_same_for_del,
-                {'html': 'Stayed the same',
+                {'html': _('Stayed the same'),
                  'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
                            'stroke_opacity': '1'}}
             ),
             (other_geom_deleted,
-                {'html': 'Removed',
+                {'html': _('Removed'),
                  'style': {'fill_color': '#ff7777', 'stroke_color': '#ff7777',
                            'fill_opacity': '0.8', 'stroke_opacity': '1'}
                 }
@@ -541,22 +551,22 @@ class GeometryFieldDiff(BaseFieldDiff):
         ], options=olwidget_options)
 
         inserted = InfoMap([
-            (poly_same, {'html': 'Stayed the same',
+            (poly_same, {'html': _('Stayed the same'),
                          'style': {'stroke_opacity': '0'}}),
             (poly_inserted,
-                {'html': 'Added',
+                {'html': _('Added'),
                  'style': {'fill_color': '#9bff53', 'stroke_color': '#9bff53',
                            'fill_opacity': '0.8', 'stroke_opacity': '0'}
                 }
             ),
             (poly_field2.boundary, {}),
             (other_geom_same_for_insert,
-                {'html': 'Stayed the same',
+                {'html': _('Stayed the same'),
                  'style': {'fill_color': '#ffdf68', 'stroke_color': '#db9e33',
                            'stroke_opacity': '1'}}
             ),
             (other_geom_inserted,
-                {'html': 'Added',
+                {'html': _('Added'),
                  'style': {'fill_color': '#9bff53', 'stroke_color': '#9bff53',
                            'fill_opacity': '0.8', 'stroke_opacity': '1'}
                 }

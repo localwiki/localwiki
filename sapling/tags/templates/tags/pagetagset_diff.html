@@ -1,5 +1,5 @@
 {% extends "tags/base.html" %}
-
+{% load i18n %}
 {% load diff_tags %}
 {% load tags_tags %}
 
@@ -25,8 +25,8 @@
   {% page_tags_form_media %}
 {% endblock %}
 
-{% block title %}Differences for tag versions for {{ new.page.name }}{% endblock %}
-{% block header_title %}Differences for tag versions for {{new.page.name }}{% endblock %}
+{% block title %}{% blocktrans with new_name=new.page.name %}Differences for tag versions for {{ new_name }}{% endblocktrans %}{% endblock %}
+{% block header_title %}{% blocktrans with new_name=new.page.name %}Differences for tag versions for {{ new_name }}{% endblocktrans %}{% endblock %}
 
 {% block content %}
   <table width="100%">
@@ -34,21 +34,21 @@
         <tr>
             <td class="revision_details">
                 {% if old %}
-                  Revision {{ old.version_info.version_number }}
-                  ({{ old.version_info.date }} by {{ old.version_info.user_link|safe }})
+                  {% trans "Revision" %} {{ old.version_info.version_number }}
+                  ({{ old.version_info.date }} {% trans "by" %} {{ old.version_info.user_link|safe }})
                 {% endif %}
             </td>
             <td class="revision_details">
-                Revision {{ new.version_info.version_number }}
-                ({{ new.version_info.date }} by {{ new.version_info.user_link|safe }})
+                {% trans "Revision" %} {{ new.version_info.version_number }}
+                ({{ new.version_info.date }} {% trans "by" %} {{ new.version_info.user_link|safe }})
             </td>
         </tr>
         <tr>
             <td>
-                <del>Deletions are marked like this</del>
+                <del>{% trans "Deletions are marked like this" %}</del>
             </td>
             <td>
-                <ins>Additions are marked like this</ins>
+                <ins>{% trans "Additions are marked like this" %}</ins>
             </td>
         </tr>
     </thead>
@@ -58,6 +58,6 @@
     </tbody>
   </table>
   <p>
-      <a href="{% url pages:tags-history slug=pagetagset.page.slug %}">Tags history</a>
+      <a href="{% url pages:tags-history slug=pagetagset.page.slug %}">{% trans "Tags history" %}</a>
   </p>
 {% endblock %}

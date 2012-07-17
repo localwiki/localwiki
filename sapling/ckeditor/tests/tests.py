@@ -5,6 +5,7 @@ import os
 from django.test import TestCase
 from django.db import models
 from django.core import exceptions
+from django.conf import settings
 
 from ckeditor.models import XHTMLField
 from ckeditor.models import XMLField
@@ -100,11 +101,11 @@ class HTML5FragmentField(TestCase):
         m.clean_fields()
         self.assertEquals(m.html, '<span>This should be a span</span>')
 
-    def test_self_closing_a_tag(self):
+    def test_empty_a_element(self):
         m = HTML5FragmentModel()
-        m.html = '<a name="test"/>'
+        m.html = '<p><a name="test"></a></p>'
         m.clean_fields()
-        self.assertEquals(m.html, '<a name="test"></a>')
+        self.assertEquals(m.html, '<p><a name="test"></a></p>')
 
     def test_nbsp(self):
         ''' We store UTF-8, so &nbsp; should be stored as \xc2\xa0 (2 chars)
@@ -129,7 +130,7 @@ class CKEditorWidgetTest(TestCase):
                     '<script type="text/javascript">\n'
                     '<!--\n'
                     'CKEDITOR.basePath = \'/static/js/ckeditor/\';\n'
-                    "CKEDITOR.replace('id_ck');\n"
+                    'CKEDITOR.replace(\'id_ck\', {"language": "en-us"});\n'
                     '-->\n'
                     '</script>\n')
         self.assertEqual(rendered, expected)
@@ -140,9 +141,9 @@ class CKEditorWidgetTest(TestCase):
         expected = ('<textarea rows="10" cols="40" name="ck">Test</textarea>'
                     '<script type="text/javascript">\n'
                     '<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';'
-                    '\nCKEDITOR.replace(\'id_ck\', {"toolbar": [["Link",'
-                    ' "Unlink", "Anchor"]]});\n-->\n</script>\n'
-                    )
+                    '\nCKEDITOR.replace(\'id_ck\', {"language": "en-us", '
+                    '"toolbar": [["Link", "Unlink", "Anchor"]]});\n-->\n'
+                    '</script>\n')
         self.assertEqual(rendered, expected)
 
     def test_custom_config(self):
@@ -170,7 +171,8 @@ class CustomCKEditorTest(TestCase):
                     '<script type="text/javascript">\n'
                     '<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';\n'
                     "CKEDITOR.replace('id_ck', "
-                    '{"extraPlugins": "myPlugin1,myPlugin2"});\n'
+                    '{"language": "en-us", '
+                    '"extraPlugins": "myPlugin1,myPlugin2"});\n'
                     '-->\n'
                     '</script>\n')
         self.assertEqual(rendered, expected)

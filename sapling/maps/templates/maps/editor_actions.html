@@ -1,5 +1,6 @@
+{% load i18n %}
 {% block editor_actions %}
     {% if map.exists %}
-      <li><a href="{% url maps:delete slug=map.page.pretty_slug %}" class="little button">Delete map</a></li>
+      <li><a href="{% url maps:delete slug=map.page.pretty_slug %}" class="little button">{% trans "Delete map" %}</a></li>
     {% endif %}
 {% endblock %}

@@ -4,6 +4,7 @@ from versionutils.merging.forms import MergeMixin
 from tags.models import Tag, PageTagSet, slugify, TagsFieldDiff
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
+from django.utils.translation import ugettext as _, ungettext
 from tags.widgets import TagEdit
 from versionutils.versioning.forms import CommentMixin
 
@@ -70,21 +71,51 @@ class PageTagSetForm(MergeMixin, CommentMixin, forms.ModelForm):
         deleted = ['"%s"' % t.name for t in diff['deleted']]
         added = ['"%s"' % t.name for t in diff['added']]
         if deleted:
-            comments.append('removed %s %s' % (self.pluralize_tag(deleted),
-                                               ', '.join(deleted)))
-            short_comments.append('removed %i %s ' % (len(deleted),
-                                                self.pluralize_tag(deleted)))
+            tag_name_pluralized = self.pluralize_tag(deleted)
+            comments.append(ungettext(
+                        'removed %(name)s %(deleted)s.',
+                        'removed %(name)s %(deleted)s.',
+                        len(deleted)
+                ) % {
+                    'deleted': ', '.join(deleted),
+                    'name': tag_name_pluralized
+                }
+            )
+            short_comments.append(ungettext(
+                        'removed %(count)i %(name)s.',
+                        'removed %(count)i %(name)s.',
+                        len(deleted)
+                ) % {
+                    'count': len(deleted),
+                    'name': tag_name_pluralized
+                }
+            )
         if added:
-            comments.append('added %s %s' % (self.pluralize_tag(added),
-                                             ', '.join(added)))
-            short_comments.append('added %i %s ' % (len(added),
-                                                self.pluralize_tag(added)))
+            tag_name_pluralized = self.pluralize_tag(added)
+            comments.append(ungettext(
+                        'added %(name)s %(added)s.',
+                        'added %(name)s %(added)s.',
+                        len(added)
+                ) % {
+                    'added': ', '.join(added),
+                    'name': tag_name_pluralized
+                }
+            )
+            short_comments.append(ungettext(
+                        'added %(count)i %(name)s.',
+                        'added %(count)i %(name)s.',
+                        len(added)
+                ) % {
+                    'count': len(added),
+                    'name': tag_name_pluralized
+                }
+            )
         if not comments:
-            return 'no changes made'
-        comments = ' and '.join(comments)
+            return _('no changes made')
+        comments = _(' and ').join(comments)
         # with lots of tags, this can get too long for db field
         if len(comments) > 140:
-            return ' and '.join(short_comments)
+            return _(' and ').join(short_comments)
         return comments
 
     def merge(self, yours, theirs, ancestor):

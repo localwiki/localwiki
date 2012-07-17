@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 
 from versionutils.versioning.constants import *
 
+from django.utils.translation import ugettext as _
 from utils import merge_changes
 from views import IGNORE_TYPES
 from recentchanges import get_changes_classes
@@ -21,13 +22,13 @@ class RecentChangesFeed(Feed):
         return self._current_site
 
     def title(self):
-        return "Recent Changes on %s" % self.site().name
+        return _("Recent Changes on %s") % self.site().name
 
     def link(self):
         return reverse('recentchanges')
 
     def description(self):
-        return "Recent changes on %s" % self.site().name
+        return _("Recent changes on %s") % self.site().name
 
     def format_change_set(self, change_obj, change_set):
         for obj in change_set:
@@ -60,15 +61,16 @@ class RecentChangesFeed(Feed):
         change_type = item.version_info.type_verbose().lower()
         if item.version_info.type in REVERTED_TYPES:
             try:
-                change_type = "%s (to version %s)" % (change_type,
+                change_type = ("%s (" + _("to version %s") + ")") % (change_type,
                     item.version_info.reverted_to_version.version_info.date)
             except AttributeError:
                 # On old wikis that we've imported we didn't set
                 # reverted_to_version.
                 pass
         if item.version_info.comment:
-            comment = ' with comment "%s"' % item.version_info.comment
-        return "%s was %s by %s%s." % (item.title, change_type, user, comment)
+            comment = _(' with comment "%s"') % item.version_info.comment
+        return _("%(title)s was %(change_type)s by %(user)s%(comment)s.") % {'title': item.title, 
+                'change_type': change_type, 'user': user, 'comment': comment}
 
     def item_link(self, item):
         if item.version_info.type == TYPE_ADDED:
@@ -119,13 +121,13 @@ class ChangesOnItemFeed(Feed):
         return self._current_site
 
     def title(self, obj):
-        return "Changes for %s on %s" % (obj.title, self.site().name)
+        return _("Changes for %(title)s on %(site_name)s") % {'title': obj.title, 'site_name': self.site().name}
 
     def link(self, obj):
         return obj.get_absolute_url()
 
     def description(self, obj):
-        return "Changes for %s on %s" % (obj.title, self.site().name)
+        return _("Changes for %(title)s on %(site_name)s") % {'title': obj.title, 'site_name': self.site().name}
 
     def items(self, obj):
         changes_obj = self.recentchanges_class()
@@ -147,15 +149,16 @@ class ChangesOnItemFeed(Feed):
         change_type = item.version_info.type_verbose().lower()
         try:
             if item.version_info.type in REVERTED_TYPES:
-                change_type = "%s (to version %s)" % (change_type,
+                change_type = ("%s (" + _("to version %s") + ")") % (change_type,
                     item.version_info.reverted_to_version.version_info.date)
         except AttributeError:
             # On old wikis that we've imported we didn't set
             # reverted_to_version.
             pass
         if item.version_info.comment:
-            comment = ' with comment "%s"' % item.version_info.comment
-        return "%s was %s by %s%s." % (item.title, change_type, user, comment)
+            comment = _(' with comment "%s"') % item.version_info.comment
+        return _("%(title)s was %(change_type)s by %(user)s%(comment)s.") % {'title': item.title, 
+                'change_type': change_type, 'user': user, 'comment': comment}
 
     def item_link(self, item):
         if item.version_info.type == TYPE_ADDED:

@@ -1,6 +1,8 @@
 {% extends "pages/base.html" %}
-{% block title %}Page not found{% endblock %}
-{% block header_title %}Page "{{ page.name }}" does not exist (yet!){% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans "Page not found" %}{% endblock %}
+{% block header_title %}{% blocktrans with name=page.name %}Page "{{ name }}" does not exist (yet!){% endblocktrans %}{% endblock %}
 
 {% block search_robots %}
 <meta name="robots" content="noindex,nofollow">
@@ -9,14 +11,14 @@
 {% block content %}
 {% load pages_tags %}
   <div id="create_page">
-    <a href="{% url pages:edit slug=page.pretty_slug %}" class="button">Create this page</a>
+    <a href="{% url pages:edit slug=page.pretty_slug %}" class="button">{% trans "Create this page" %}</a>
   </div>
   {% if page_templates %}
     <div class="templates">
-      <p>Or use one of these templates:</p>
+      <p>{% trans "Or use one of these templates:" %}</p>
       <ul>
         {% for template in page_templates %}
-          <li><a href="{% url pages:edit slug=page.pretty_slug %}?template={{template.slug}}">Create with {{template.name_parts.1}} template</a></li>
+          <li><a href="{% url pages:edit slug=page.pretty_slug %}?template={{template.slug}}">{% blocktrans with name=template.name_parts.1 %}Create with {{name}} template{% endblocktrans %}</a></li>
         {% endfor %}
       </ul>
     </div>

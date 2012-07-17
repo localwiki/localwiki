@@ -1,7 +1,8 @@
 {% extends "site/base.html" %}
+{% load i18n %}
 {% load static from staticfiles %}
 
-{% block head_extra %}{% if page %}<link rel="alternate" href="{% url pages:changes-feed slug=page.pretty_slug %}" type="application/rss+xml" title="Recent changes on this Page"/>{% endif %}{% endblock %}
+{% block head_extra %}{% if page %}<link rel="alternate" href="{% url pages:changes-feed slug=page.pretty_slug %}" type="application/rss+xml" title="{% trans "Recent changes on this Page" %}"/>{% endif %}{% endblock %}
   
 {% block media %}
 {{ block.super }}
@@ -22,8 +23,8 @@
 {% block object_actions %}
   <ul>
     {% if page %}
-        <li><a href="{% url pages:edit slug=page.pretty_slug %}" class="button">Edit</a></li>
-        <li><a href="{% url pages:history slug=page.pretty_slug %}" class="button">Info</a></li>
+        <li><a href="{% url pages:edit slug=page.pretty_slug %}" class="button">{% trans "Edit" %}</a></li>
+        <li><a href="{% url pages:history slug=page.pretty_slug %}" class="button">{% trans "Info" %}</a></li>
     {% endif %}
   </ul>
 {% endblock %}

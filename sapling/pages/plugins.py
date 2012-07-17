@@ -52,6 +52,7 @@ from copy import copy
 from django.template import Node
 from django.core.urlresolvers import reverse
 from django.utils.text import unescape_entities
+from django.utils.translation import  ugettext as _
 from django.conf import settings
 
 from ckeditor.models import parse_style, sanitize_html_fragment
@@ -220,7 +221,10 @@ def handle_image(elem, context=None):
         before = '{%% thumbnail "%s" "%dx%d" as im %%}' % (escaped_filename,
                                                            width, height)
         after = '{% endthumbnail %}'
-        elem.attrib['src'] = '{{ im.url }}'
+        # HTML will want to encode {{ }} inside a src, and we don't want that,
+        # so we will just rename it to src_thumb until just before it's output
+        del elem.attrib['src']
+        elem.attrib['src_thumb'] = '{{ im.url }}'
         insert_text_before(before, elem)
         elem.tail = after + (elem.tail or '')
     else:
@@ -290,11 +294,13 @@ def html_to_template_text(unsafe_html, context=None, render_plugins=True):
             except:
                 pass
 
-    template_bits = [etree.tostring(elem, encoding='UTF-8')
+    template_bits = [etree.tostring(elem, method='html', encoding='UTF-8')
                      for elem in container]
     container_text = escape(container.text or '').encode('UTF-8')
     template_text = sanitize_final(''.join(
         tag_imports + [container_text] + template_bits))
+    # Restore img src for thumbnails
+    template_text = template_text.replace('src_thumb', 'src')
     return template_text.decode('utf-8')
 
 
@@ -381,17 +387,18 @@ class EmbedCodeNode(Node):
             for elem in top_level_elements:
                 if elem.tag == 'iframe':
                     elem = self._process_iframe(elem)
-                out.append(etree.tostring(elem, encoding='UTF-8'))
+                out.append(etree.tostring(elem, method='html',
+                                          encoding='UTF-8'))
             return ''.join(out)
 
         except IFrameSrcNotApproved:
             return (
-                '<span class="plugin embed">'
-                'The embedded URL is not on the list of approved providers.  '
-                'Contact the site administrator to add it.'
+                '<span class="plugin embed">' +
+                _('The embedded URL is not on the list of approved providers.  '
+                'Contact the site administrator to add it.') +
                 '</span>')
         except:
-            return '<span class="plugin embed">Invalid embed code</span>'
+            return '<span class="plugin embed">' + _('Invalid embed code') + '</span>'
 
 
 class SearchBoxNode(Node):
@@ -403,7 +410,7 @@ class SearchBoxNode(Node):
             # TODO: put the JS in an external file, import via Media object
             html = ('<span class="searchbox">'
                     '<input type="text" name="q" value="%s">'
-                    '<input type="submit" value="Search or create page">'
+                    '<input type="submit" value="' + _('Search or create page') + '">'
                     '<script>$(function(){'
                     '$(".searchbox input[name=\'q\']").keypress(function(evt){'
                     'if(evt.which == 13)'

@@ -466,7 +466,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							type: 'html',
 							id : 'htmlAdvanced',
-							html : '<a href="#">Advanced settings...</a>',
+							html : '<a href="#">' + gettext('Advanced settings...') + '</a>',
 							onClick: function () {
 								var txtClass = this.getDialog().getContentElement('info', 'txtClass');
 								txtClass.getElement().show();
@@ -475,7 +475,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							type: 'text',
 							id : 'txtClass',
-							label : 'CSS classes',
+							label : gettext('CSS classes'),
 							hidden : true,
 							'default' : '',
 							setup : function (selectedTable)

@@ -140,7 +140,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 					{
 						type : 'text',
 						id : 'url',
-						label : 'Page name or URL',
+						label : gettext('Page name or URL'),
 						required: true,
 						onLoad : function ()
 						{
