@@ -441,9 +441,9 @@ msgstr ""
 msgid ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
 "class=\"text\">Create a map</span></a> for this page?</p>"
+
 msgstr ""
-"<p class=\"create_map\">このページの<a href=\"%s\" class=\"button little "
-"map\"><span class=\"text\">マップを作成</span></a> しますか？</p>"
+"<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span \"class=\"text\">マップを作成</span></a> しますか？</p>"
 
 #: pages/views.py:131
 #, python-format
