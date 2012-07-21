@@ -1,0 +1,158 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, LocalWiki team
+# This file is distributed under the same license as the LocalWiki package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LocalWiki 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-18 03:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/permissions.rst:2
+# 01804b0606fe40f4962468039b929faa
+msgid "Permissions"
+msgstr ""
+
+#: ../source/permissions.rst:4
+# e6eab23b3f354b13890fdc461b6d538a
+msgid "LocalWiki uses a pretty flexible system of permissions that allows the administrator to say who is allowed to add, change, and delete different objects (pages, maps, files, etc.).  It also lets the administrator ban users who are malicious."
+msgstr ""
+
+#: ../source/permissions.rst:9
+# 7b184a9c222c4f24b033c3a41af84912
+msgid "There are two levels of permissions: by type of object (i.e., page, map, etc.) and by specific object (i.e., \"Front Page\").  This allows you to set the default permissions for all objects and still adjust them for certain objects that should be more protected (or more open)."
+msgstr ""
+
+#: ../source/permissions.rst:16
+# 30a2f09d20fd42c7aff60ce4cd59e3d7
+msgid "Users and groups"
+msgstr ""
+
+#: ../source/permissions.rst:18
+# bfc7947775704998aacb406a331ccd6f
+msgid "Users can belong to one or more Group, and new groups can be added any time. You can grant permissions to each group, and the users in that group will inherit those permissions.  This makes role-based permissions possible, allowing you, for example, to create a group called \"Trusted Users\" and give this group additional permissions."
+msgstr ""
+
+#: ../source/permissions.rst:26
+# c9f4a0ea87d941afaf008a4761f55871
+msgid "It is good practice to grant permissions to groups instead of individual users because it's more manageable (there are lots of users and few groups) and maintainable (users come and go, and it's much easier to add and remove them from groups as needed)."
+msgstr ""
+
+#: ../source/permissions.rst:32
+# bff66e92f85849e89a2bfcf785f26581
+msgid "If you followed the installation instructions, you should have the following groups out of the box:"
+msgstr ""
+
+#: ../source/permissions.rst:38
+# a035c98dbc864f7f8aebf5a7b8d25a10
+msgid "This group contains ``AnonymousUser``, which is used to set permissions for people who are not logged in."
+msgstr ""
+
+#: ../source/permissions.rst:42
+# 53bdc14bc08649ba81e00f1dfa126dcc
+msgid "This group contains every user except ``AnonymousUser``.  New users are automatically added to this group.  It's a catch-all group to make it easy to set the default settings for everyone who's logged in."
+msgstr ""
+
+#: ../source/permissions.rst:47
+# f61cbca401aa473aa32825bd438146ca
+msgid "Users added to this group will be denied all permissions, regardless of what permissions are set for this group or what other groups they belong to."
+msgstr ""
+
+#: ../source/permissions.rst:53
+# c959527db4db479fb75a5fa26b3b1e1a
+msgid "Banning a user"
+msgstr ""
+
+#: ../source/permissions.rst:55
+# 86be70baa9e14d5b9b031b0a83838160
+msgid "To ban a user, simply add the user to the ``Banned`` group.  You do not need to remove the user from other groups.  Any user in the ``Banned`` group will not have any permissions."
+msgstr ""
+
+#: ../source/permissions.rst:59
+# 9df1a51582594c6c826c88fa9dfec46f
+msgid "First, find the user in the admin interface, using the search box:"
+msgstr ""
+
+#: ../source/permissions.rst:63
+# 09f36947dc7a4ea79288866af476ed71
+msgid "Click on the username, and scroll down \"Groups\" section. Hold down \"Control\" (\"Command\" on a Mac) while selecting ``Banned`` group, and press \"Save\"."
+msgstr ""
+
+#: ../source/permissions.rst:71
+# b9a3b69987c84af5835c1bde41f05a9e
+msgid "While it's possible in the admin interface to delete a user, this is **NOT** recommended as it will also delete every change the user has made. If you need to disable a user's account, it's best to just unmark the \"active\" checkbox for that user."
+msgstr ""
+
+#: ../source/permissions.rst:78
+# da673474e95b4f8b8873b5bddbc3c180
+msgid "Setting permissions for specific objects"
+msgstr ""
+
+#: ../source/permissions.rst:80
+# 4df28cd9a2b54ac786de6101fc02eab0
+msgid "If you view a Page in the admin interface and then click \"Object permissions\" you can then enter a group name and select which permissions the given group should have for that specific Page.  Only those groups you choose will be able to add, edit, and delete the Page."
+msgstr ""
+
+#: ../source/permissions.rst:85
+# c2439315ce594e9e8764573e73ca1a09
+msgid "Say, for example, you want to lock down a page so that only logged-in users can edit it.  First, find the page in the admin interface and click on \"Object permissions\" in the top right."
+msgstr ""
+
+#: ../source/permissions.rst:91
+# 6c50b0c136ae4f479408862970ec7663
+msgid "Then in the Groups section enter \"Authenticated\" and click \"Manage group\"."
+msgstr ""
+
+#: ../source/permissions.rst:95
+# f4bb65c2d1484dc396c9b2b6163fafc6
+msgid "Click the \"Choose all\" button and press \"Save\"."
+msgstr ""
+
+#: ../source/permissions.rst:99
+# aeec6fbe01234a91b365a47e20896264
+msgid "Now, only those users who have logged in will be able to edit this page."
+msgstr ""
+
+#: ../source/permissions.rst:101
+# d6919b8e030d4d5fbb3cd676c58c1cbf
+msgid "To clear out per-object permissions and go back to the defaults, on the \"Object permissions\" screen click \"edit\" next to each group and clear out all permissions.  When there are no groups or users shown on the \"Object permissions\" screen, the application will look at the default permissions for that object type."
+msgstr ""
+
+#: ../source/permissions.rst:109
+# 853ce924e76c439fb1d082a8cef4ec45
+msgid "Setting default permissions"
+msgstr ""
+
+#: ../source/permissions.rst:111
+# 61460a3d59654389adc58b47954b3e62
+msgid "When per-object permissions are not set for an object, the permissions backend looks at what permissions the user has (either directly or through the groups to which the user belongs) for that type of object."
+msgstr ""
+
+#: ../source/permissions.rst:115
+# d01e9344f0794b4c9c7ab5dd63e0d5c9
+msgid "If needed, you can set these permissions through the admin interface.  Edit each group and select which default permissions the group should have."
+msgstr ""
+
+#: ../source/permissions.rst:118
+# a141603072fc402fb5d8245fcafaf0d2
+msgid "Editing all of your group permissions by hand can be a lot to manage, so we provide a setting you can modify in ``settings.py`` and a command to apply them.  At the time of writing this, the setting looks like this::"
+msgstr ""
+
+#: ../source/permissions.rst:158
+# 7278aef0f7d34f57a60e80556794748b
+msgid "You can edit this setting by adding or removing permissions for certain groups or adding your own groups.  To apply these permissions (and overwrite the previously set defaults), run the following command::"
+msgstr ""
+
+#: ../source/permissions.rst:165
+# fcd3c79b06174294be75500773d25b0b
+msgid "Regardless of everything said in this section, administrators and superusers are always granted all permissions, no matter what groups they are in or even whether they are in the ``Banned`` group."
+msgstr ""
+

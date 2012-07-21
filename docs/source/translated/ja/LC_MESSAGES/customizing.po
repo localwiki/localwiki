@@ -1,0 +1,328 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, LocalWiki team
+# This file is distributed under the same license as the LocalWiki package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LocalWiki 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-18 03:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/customizing.rst:2
+# d27c096f9af04cf298bc1b1f7c9ee953
+msgid "Customizing your localwiki's appearance"
+msgstr ""
+
+#: ../source/customizing.rst:4
+# ae4a5ac20c824dc393354ff5cba4238d
+msgid "It's possible to completely customize the appearance and some of the behavior of the LocalWiki software without having to dig into the underlying code.  You can do this by customizing the site's CSS, the site's templates, and by creating entirely new themes."
+msgstr ""
+
+#: ../source/customizing.rst:9
+# 37044325e0794e0381389f08be76a39f
+msgid "We're hoping to make the process of altering templates and CSS a bit less technical at some point.  For now you'll need to be comfortable with moving things around on a server, editing files and have some knowledge of CSS and HTML."
+msgstr ""
+
+#: ../source/customizing.rst:14
+# 80606a0ecadb4db484f8ed73959fa0af
+msgid "If you're a developer and have been playing around, make sure you have set ``DEBUG`` to ``False`` in ``localsettings.py``, otherwise you won't see static media show up when using ``localwiki-manage runsever``."
+msgstr ""
+
+#: ../source/customizing.rst:21
+# 8152a34b6395430cb260c39311be4ff8
+msgid "Template files"
+msgstr ""
+
+#: ../source/customizing.rst:23
+# e93a82d7e666426babe01b3eebe31952
+msgid "The LocalWiki software has the concept of a *template*.  A template is a text file on the server running the LocalWiki software, and it's used to generate pages throughout the site."
+msgstr ""
+
+#: ../source/customizing.rst:27
+# 3f19fda96e4347bcbc2cc061582bf8d8
+msgid "These *template files* are very different from \"Template pages\" on the wiki. Template pages on the wiki are for creating new pages more easily. *Template files* on the server are used by the LocalWiki software to generate the site itself."
+msgstr ""
+
+#: ../source/customizing.rst:32
+# ea16c72ca88141a6870de683f7166ba1
+msgid "These templates are simply `Django templates <https://docs.djangoproject.com/en/dev/topics/templates/>`_ and support the full range of capabilities of the Django templating language.  Check out the `Django template documentation <https://docs.djangoproject.com/en/dev/topics/templates/>`_ for everything that's possible with the templates.  You don't need to read the template documentation to make simple customizations, though."
+msgstr ""
+
+#: ../source/customizing.rst:39
+# 03b9c63be24643cb8f09a01d1c0d0f4f
+msgid "The global template directory is ``/usr/share/localwiki/templates``, or ``env/share/localwiki/templates`` (for manual installations)."
+msgstr ""
+
+#: ../source/customizing.rst:44
+# 69e458ac615546e9b2a6015bf3a58875
+msgid "Themes"
+msgstr ""
+
+#: ../source/customizing.rst:46
+# 632c3d434a0f4effbec6e9d5d42a4ed8
+msgid "A *theme* is a collection of templates and static assets that together control the look of the entire site."
+msgstr ""
+
+#: ../source/customizing.rst:49
+# 4e9cb297c1ac4673912a6b8bd154aa95
+msgid "Each theme is simply a directory containing:"
+msgstr ""
+
+#: ../source/customizing.rst:51
+# 2beb635b54bf4d40bf07e51cfea8eb4f
+msgid "A directory with templates (``templates/``)"
+msgstr ""
+
+#: ../source/customizing.rst:52
+# 1c9cfbcebe924b1da2f8f822f5005c90
+msgid "A directory with static assets (``assets/``) like CSS and images."
+msgstr ""
+
+#: ../source/customizing.rst:55
+# f8d44fc0263a410da715a4bd79d4d936
+msgid "The global themes directory is ``/usr/share/localwiki/themes``, or ``env/share/localwiki/themes`` (for manual installations).  *NOTE*: If you are running localwiki-0.2-beta-12 you may have to create this directory by hand."
+msgstr ""
+
+#: ../source/customizing.rst:62
+# 313e6d2296324af69840fb3c4635a2ad
+msgid "Tutorial"
+msgstr ""
+
+#: ../source/customizing.rst:64
+# 5602eaadea7c40af85abdc94b5118ef3
+msgid "The theme system is best explained through a few simple examples."
+msgstr ""
+
+#: ../source/customizing.rst:69
+# 22ea24d2d5ad40c1a0cb8d576c14e713
+msgid "Example 1: Adding a logo"
+msgstr ""
+
+#: ../source/customizing.rst:70
+# 83a9851c6a7f4ca8a50f71160157eebb
+msgid "Let's add a logo to our site.  Because this is just a simple change, making an new theme is overkill."
+msgstr ""
+
+#: ../source/customizing.rst:73
+# 0889aa99fb05467ba91bd25c38e0f17e
+msgid "First, let's find the built-in templates.  Type::"
+msgstr ""
+
+#: ../source/customizing.rst:77
+# 308b6c66c60f4a87b8e2da99f05c0e92
+msgid "then once you're in the localwiki shell, copy and paste this::"
+msgstr ""
+
+#: ../source/customizing.rst:81
+# 7af5f63ec5e44660bf592a38dbe4a362
+msgid "This will print out where the localwiki code itself lives on your system."
+msgstr ""
+
+#: ../source/customizing.rst:84
+# 660010f7df38411396cf7ba5ddce88e0
+msgid "It's not a good idea to modify the files in the code directory directly, as they're likely to be replaced when you upgrade.  If you want to customize the code you should do a :ref:`development install <dev-install>`."
+msgstr ""
+
+#: ../source/customizing.rst:88
+# 76d76f2a1dc6422fa65ab250e5835ad4
+msgid "Copy the path printed out and ``cd`` there.  You'll see there's a ``themes`` directory in that directory.  Inside the ``themes`` directory is a directory for the default built-in theme, ``sapling``."
+msgstr ""
+
+#: ../source/customizing.rst:92
+# 3863979df8bd4d71b9497647b223bee8
+msgid "As explained earlier, the ``sapling`` theme directory has an ``assets`` and a ``templates`` directory inside of it::"
+msgstr ""
+
+#: ../source/customizing.rst:98
+# 4e4818635c9642caaccbf402fd9e1d2f
+msgid "If we go inside the templates directory, we'll see a ``site`` directory containing some template files::"
+msgstr ""
+
+#: ../source/customizing.rst:108
+# ee29b340cf554a5db579177f0ad8da74
+msgid "Taking a look at the template files, the ``site_title.html`` file is what we want to customize to add our own logo.  Let's copy that template over to our global templates directory and then customize it."
+msgstr ""
+
+#: ../source/customizing.rst:112
+# caa03a92456d47f681a4d8a987fce0ae
+msgid "First, let's make a ``site`` directory inside our global template directory (explained above)."
+msgstr ""
+
+#: ../source/customizing.rst:115
+# 61addebcde6342b29e79d8d90ecb18c1
+msgid "The global template directory is ``/usr/share/localwiki/templates``, or ``env/share/localwiki/templates`` (for manual installs)::"
+msgstr ""
+
+#: ../source/customizing.rst:120
+# e202d2b2bf22428c980391d8a1e2473a
+msgid "then copy the file over::"
+msgstr ""
+
+#: ../source/customizing.rst:124
+# e8a5efc653854b97bba20917be60a3fe
+msgid "Now we simply open up the copy of the template we made, ``/usr/share/localwiki/templates/site/site_title.html``.  It looks like this::"
+msgstr ""
+
+#: ../source/customizing.rst:134
+# ea8d8fee0a1c476c8c934ccf5f21e929
+msgid "Let's change it to look like this::"
+msgstr ""
+
+#: ../source/customizing.rst:142
+# e4b48db94fdb4a7698d23a3c26456530
+msgid "Now we need to go design a pretty logo, name it ``logo.png`` and move it into the static directory, located at ``/usr/share/localwiki/static`` or ``env/share/localwiki/static`` (for manual installations)."
+msgstr ""
+
+#: ../source/customizing.rst:146
+# 7a2cf19d87b54679a0ca6cfe10b82690
+msgid "Once we've done all this we'll need to restart the webserver.  You can usually do this by running the command::"
+msgstr ""
+
+#: ../source/customizing.rst:151
+# 468705d58bd1485db1de652533f3eb13
+msgid "And you'll have a shiny new logo on your site!"
+msgstr ""
+
+#: ../source/customizing.rst:155
+# cf086fb60c8d48739b42923cdd762c44
+msgid "Example 2: Adding a custom CSS file on every page"
+msgstr ""
+
+#: ../source/customizing.rst:157
+# 6409c4ccd85e4b109b44445e0c2f6b9e
+msgid "If you look at https://dentonwiki.org, you'll see they've got a cool \"I want to create a page about _______\" banner on their front page:"
+msgstr ""
+
+#: ../source/customizing.rst:162
+# b0b4eabafee9410aba3fa484177a1b4e
+msgid "The DentonWiki achieves this by creating a table and then giving it a custom CSS class.  If you click on \"View source\" on https://dentonwiki.org, you'll see::"
+msgstr ""
+
+#: ../source/customizing.rst:188
+# c61a2fa2857d4a64bd4fad64694de2c7
+msgid "You can easily add a custom CSS class to a table by right-clicking on it while editing and going to Table properties -> Advanced settings -> CSS classes."
+msgstr ""
+
+#: ../source/customizing.rst:191
+# f34a711c6f604594a3de012410b5c75b
+msgid "But in order to make a custom CSS class work, we'll need to make a new CSS file and reference it from the page's HTML.  Here's how we do this:"
+msgstr ""
+
+#: ../source/customizing.rst:194
+# 65a497e17e4d410ca7b03b3de15a9d1b
+msgid "1. We make a new file, in our case named ``denton.css``, inside of the global static directory.  In our case, this is ``/usr/share/localwiki/static/css/denton.css`` (or ``env/share/localwiki/static/css`` for manual installations)."
+msgstr ""
+
+#: ../source/customizing.rst:199
+# 0bc2233ac1ce48ceac4f58d32d84a39d
+msgid "2. Inside ``denton.css`` we place the following contents, which customize the appearance of tables with the class ``welcome``::"
+msgstr ""
+
+#: ../source/customizing.rst:243
+# e569718eab0a41d3bbbbfc11cfac10cf
+msgid "3. The CSS file references two images -- ``/static/img/80_trans_white_bg.png`` and ``/front_page/_files/welcome.jpg``.   The ``welcome.jpg`` image can be added simply by uploading a file named ``welcome.jpg`` to the Front Page.  You'll want to copy `80_trans_white_bg.png <https://dentonwiki.org/static/img/80_trans_white_bg.png>`_ to ``/usr/share/localwiki/static/img`` (or ``env/share/locawiki/static/img`` for manual installations)"
+msgstr ""
+
+#: ../source/customizing.rst:251
+# c28c8c6ab51c4bfc813d68706bf76bf6
+msgid "4. Now we want to reference this new ``denton.css`` file from the HTML of all the pages.  Let's go back into the localwiki code directory, referenced in the beginning of :ref:`Example 1 <example1>` and copy over ``sites/base.html`` to our global templates directory::"
+msgstr ""
+
+#: ../source/customizing.rst:262
+# ef10c62ea5a442159a0ad6f7b8d8addc
+msgid "and then open up the new ``/usr/share/localwiki/templates/site/base.html`` file.  We'll change this portion of the file::"
+msgstr ""
+
+#: ../source/customizing.rst:271
+# a5dc2b60bccd469c85f46f4abed78f2b
+msgid "to look like this::"
+msgstr ""
+
+#: ../source/customizing.rst:279
+# bc6db1a05dfa4f4f9ae40f7c9d94bc2c
+msgid "Then we simply restart the webserver::"
+msgstr ""
+
+#: ../source/customizing.rst:283
+# e9bfdd117eae4be5b7403969398f2884
+msgid "and we'll have the ``denton.css`` file referenced on all our pages!"
+msgstr ""
+
+#: ../source/customizing.rst:287
+# 17dd2578119b464a8768b3bfdd826ea7
+msgid "Creating an entirely new theme"
+msgstr ""
+
+#: ../source/customizing.rst:289
+# e89e934c92cc4ba6a2655c15ffd3fcf3
+msgid "After a certain amount of customization it may make sense to create an entirely new theme.  Here's how you'd go about doing this:"
+msgstr ""
+
+#: ../source/customizing.rst:292
+# 4e9d24ace0f9447484d44edb1e99c1d4
+msgid "1. Go into the localwiki code directory, referenced in the beginning of Example 1, and copy the ``sapling`` theme directory to your global ``themes`` directory::"
+msgstr ""
+
+#: ../source/customizing.rst:300
+# 58c412202c4843ea8f0839219e96c89e
+msgid "In localwiki-0.12-beta-12 there wasn't a ``themes`` directory in share/localwiki.  Create it if it's missing."
+msgstr ""
+
+#: ../source/customizing.rst:303
+# 524506fb2ea44b9b9b46cc43f9e12756
+msgid "Then edit the ``/usr/share/localwiki/conf/localsettings.py`` file and change the ``SITE_THEME`` value from ``sapling`` to ``nameofyourtheme``."
+msgstr ""
+
+#: ../source/customizing.rst:306
+# 144d10a63cba456e9fca7e3dd45facff
+msgid "Then simply run::"
+msgstr ""
+
+#: ../source/customizing.rst:310
+# ed916bcb4a5d473dbecf71dd8c557015
+msgid "and restart the webserver::"
+msgstr ""
+
+#: ../source/customizing.rst:314
+# 8328abdf1d524a0c854e81d36a1213f8
+msgid "and the site will be using your new theme."
+msgstr ""
+
+#: ../source/customizing.rst:316
+# 110543413e994707b56ee200007e416e
+msgid "As you develop your theme you'll need to restart the webserver whenever you change the ``templates/`` and run ``localwiki-manage collectstatic`` whenever you change the ``assets/``."
+msgstr ""
+
+#: ../source/customizing.rst:322
+# 71133c594c424cc8b8033c25d1daedc4
+msgid "Referring to static assets in templates"
+msgstr ""
+
+#: ../source/customizing.rst:324
+# 387058c5657b4b20bb161f5947bd0b94
+msgid "Your theme templates can refer to static assets like this::"
+msgstr ""
+
+#: ../source/customizing.rst:328
+# ed00d144cd8749e6aaeb07ea63c1d754
+msgid "That will pull up the file that lives at themes/yourtheme/img/mybutton.png."
+msgstr ""
+
+#: ../source/customizing.rst:331
+# 7ce9966c0ac4442ea50713a9c3a3bf4b
+msgid "Overriding built-in templates"
+msgstr ""
+
+#: ../source/customizing.rst:333
+# 9298d845b8f44496ab68cabdc1fc4abc
+msgid "More detail on this soon.  You'll probably be able to figure this out if you dig around.  But, as an example, to override ``pages/base.html``, you simply define ``themes/nameofyourtheme/templates/pages/base.html``"
+msgstr ""
+
