@@ -8,7 +8,7 @@ Page examples
 Get all pages whose title end in "park", case-insensitive
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``/api/pages/?name__iendswith=park``
+``/api/page/?name__iendswith=park``
 
 .. code-block:: javascript
 
@@ -40,7 +40,7 @@ Get all pages whose title end in "park", case-insensitive
 
 Alternatively, we could have filtered on the `slug` field, which is always lowercase:
 
-``/api/pages/?slug__endswith=park``
+``/api/page/?slug__endswith=park``
 
 
 Find pages that contain the word 'cafe'
@@ -48,11 +48,11 @@ Find pages that contain the word 'cafe'
 
 If we try to do something like:
 
-``/api/pages/?content__contains=cafe``
+``/api/page/?content__contains=cafe``
 
 We get the message "The 'content' field does not allow filtering."  Instead, for full-text searches we'll want to use the ``/search/`` method on the `page` resource.  Search takes a query parameter, `q`, which is a URL-encoded search string.  E.g.:
 
-``/api/pages/search/?q=cafe``
+``/api/page/search/?q=cafe``
 
 .. code-block:: javascript
 
