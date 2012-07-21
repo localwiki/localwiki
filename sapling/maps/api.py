@@ -1,5 +1,6 @@
 from tastypie import fields
-from tastypie.resources import ALL
+from tastypie.bundle import Bundle
+from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie.contrib.gis.resources import ModelResource
 
 from models import MapData
@@ -7,15 +8,15 @@ import pages.api  # Scoped import to prevent ImportError.
 from sapling.api import api
 
 
-class MapResource(pages.api.PageSlugifyMixin, ModelResource):
+class MapResource(pages.api.PageURLMixin, ModelResource):
     page = fields.ToOneField(pages.api.PageResource, 'page')
 
     class Meta:
         queryset = MapData.objects.all()
         resource_name = 'map'
-        field_to_slugify = 'page'
-        slug_lookup_field = 'page__slug'
+        detail_uri_name = 'page__name'
         filtering = {
+            'page': ALL_WITH_RELATIONS,
             'points': ALL,
             'lines': ALL,
             'polys': ALL,
@@ -24,9 +25,10 @@ class MapResource(pages.api.PageSlugifyMixin, ModelResource):
         }
 
 
-# We don't use the PageSlugifyMixin approach here because it becomes
-# too complicated to generate pretty URLs with the historical version
-# identifiers.
+# We don't use detail_uri_name here because it becomes too complicated
+# to generate pretty URLs with the historical version identifers.
+# TODO: Fix this. Maybe easier now with `detail_uri_name` and the uri prep
+# method.
 class MapHistoryResource(ModelResource):
     page = fields.ToOneField(pages.api.PageHistoryResource, 'page')
 
@@ -34,6 +36,7 @@ class MapHistoryResource(ModelResource):
         queryset = MapData.versions.all()
         resource_name = 'map_version'
         filtering = {
+            'page': ALL_WITH_RELATIONS,
             'points': ALL,
             'lines': ALL,
             'polys': ALL,

@@ -2,24 +2,61 @@ from django.conf.urls.defaults import url
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 
-from tastypie.resources import ModelResource, ALL
+from tastypie import fields
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.utils import trailing_slash
 
-from pages.models import Page, PageFile, slugify, name_to_url
-from sapling.api import api, SlugifyMixin
+from pages.models import Page, PageFile, name_to_url, url_to_name
+from sapling.api import api
 
 
-class PageSlugifyMixin(SlugifyMixin):
+class PageURLMixin(object):
     """
-    A version of SlugifyMixin that uses our custom slugify and quotes
-    URLs using our name_to_url. We need this because we aren't using
-    the standard slugify with our page-related models, and we also want
-    our page-related Resources to have urls_with_underscores.
+    Makes our resource URIs have nice_underscores_in_them_etc!
+
+    Quotes our resource URIs using our `name_to_url` method, and looks them
+    up using `url_to_name`
     """
-    def __init__(self, *args, **kwargs):
-        self._meta.lookup_function = slugify
-        self._meta.to_url_function = name_to_url
-        super(PageSlugifyMixin, self).__init__(*args, **kwargs)
+    def remove_api_resource_names(self, url_dict):
+        # Using this method to do processing of kwargs is a TOTAL HACK,
+        # but this is the only method that's called on every set of kwargs
+        # on every get/delete/update, etc.
+        url_dict = super(PageURLMixin, self).remove_api_resource_names(
+            url_dict)
+        uri_name_val = url_dict.get(self._meta.detail_uri_name)
+        if uri_name_val is not None:
+            url_dict[self._meta.detail_uri_name] = url_to_name(uri_name_val)
+
+        return url_dict
+
+    def detail_uri_kwargs(self, bundle_or_obj):
+        kwargs = super(PageURLMixin, self).detail_uri_kwargs(bundle_or_obj)
+        uri_name_val = kwargs[self._meta.detail_uri_name]
+        kwargs[self._meta.detail_uri_name] = name_to_url(uri_name_val)
+
+        return kwargs
+
+    def base_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                 self.wrap_view('dispatch_list'), name="api_dispatch_list"),
+            url(r"^(?P<resource_name>%s)/schema%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('get_schema'), name="api_get_schema"),
+            url(r"^(?P<resource_name>%s)/set/(?P<%s_list>\w[\w/;-]*)%s$" %
+                (self._meta.resource_name, self._meta.detail_uri_name,
+                 trailing_slash()), self.wrap_view('get_multiple'),
+                name="api_get_multiple"),
+            # Our lookup field.
+            # Slugs can't start with the _ character or contain a
+            # slash surrounded by the _ character. We do this so we can
+            # define URLs for sub-resources more easily.
+            url(r"^(?P<resource_name>%s)/(?P<%s>[^_]((?!(/_)|(_/)).)*?)%s*$" %
+                (self._meta.resource_name, self._meta.detail_uri_name,
+                 trailing_slash()), self.wrap_view('dispatch_detail'),
+                name="api_dispatch_detail"),
+        ]
 
 
 # TODO: move this under /page/<slug>/_file/<filename>?
@@ -39,17 +76,22 @@ class FileHistoryResource(FileResource):
         queryset = PageFile.versions.all()
 
 
-class PageResource(PageSlugifyMixin, ModelResource):
+class PageResource(PageURLMixin, ModelResource):
+    map = fields.ToOneField('maps.api.MapResource', 'mapdata', null=True)
+    page_tags = fields.ToOneField('tags.api.PageTagSetResource', 'pagetagset', null=True)
+
     class Meta:
         queryset = Page.objects.all()
         resource_name = 'page'
-        field_to_slugify = 'name'
+        detail_uri_name = 'name'
         filtering = {
             'name': ALL,
             'slug': ALL,
+            'page_tags': ALL_WITH_RELATIONS,
+            'map': ALL_WITH_RELATIONS,
         }
 
-    def override_urls(self):
+    def prepend_urls(self):
         # For searching.
         l = [
             url(r"^(?P<resource_name>%s)/search%s$" %
@@ -96,9 +138,10 @@ class PageResource(PageSlugifyMixin, ModelResource):
         return self.create_response(request, object_list)
 
 
-# We don't use the PageSlugifyMixin approach here because it becomes
+# We don't use the PageURLMixin approach here because it becomes
 # too complicated to generate pretty URLs with the historical version
-# identifiers.
+# identifiers. TODO: Fix this. Maybe easier now with
+# `detail_uri_name`
 class PageHistoryResource(ModelResource):
     class Meta:
         resource_name = 'page_version'
@@ -106,6 +149,7 @@ class PageHistoryResource(ModelResource):
         filtering = {
             'name': ALL,
             'slug': ALL,
+            'history_date': ALL,
         }
 
 

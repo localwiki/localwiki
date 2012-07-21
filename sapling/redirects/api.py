@@ -1,19 +1,19 @@
-from tastypie.resources import ModelResource, ALL
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 
 from models import Redirect
 from pages.api import PageResource, PageHistoryResource
-from sapling.api import api, SlugifyMixin
+from sapling.api import api
 
 
-class RedirectResource(SlugifyMixin, ModelResource):
+class RedirectResource(ModelResource):
     destination = fields.ForeignKey(PageResource, 'destination')
 
     class Meta:
         queryset = Redirect.objects.all()
-        slug_lookup_field = 'source'
+        detail_uri_name = 'source'
         filtering = {
-            'destination': ALL,
+            'destination': ALL_WITH_RELATIONS,
             'source': ALL,
         }
 
