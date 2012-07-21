@@ -1,6 +1,9 @@
 from tastypie.resources import ModelResource, ALL
 from tastypie import fields
 from tastypie.constants import ALL_WITH_RELATIONS
+from tastypie.authentication import (Authentication, ApiKeyAuthentication,
+    MultiAuthentication)
+from tastypie.authorization import DjangoAuthorization
 
 from models import Tag, PageTagSet
 import pages
@@ -32,6 +35,9 @@ class PageTagSetResource(pages.api.PageURLMixin, ModelResource):
             'page': ALL_WITH_RELATIONS,
             'tags': ALL_WITH_RELATIONS,
         }
+        authentication = MultiAuthentication(
+            Authentication(), ApiKeyAuthentication())
+        authorization = DjangoAuthorization()
 
 
 # We don't use detail_uri_name here because it becomes too complicated

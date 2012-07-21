@@ -1,5 +1,7 @@
 from tastypie import fields
-from tastypie.bundle import Bundle
+from tastypie.authentication import (Authentication, ApiKeyAuthentication,
+    MultiAuthentication)
+from tastypie.authorization import DjangoAuthorization
 from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie.contrib.gis.resources import ModelResource
 
@@ -9,7 +11,7 @@ from sapling.api import api
 
 
 class MapResource(pages.api.PageURLMixin, ModelResource):
-    page = fields.ToOneField(pages.api.PageResource, 'page')
+    page = fields.ToOneField(pages.api.PageResource, 'page', readonly=True)
 
     class Meta:
         queryset = MapData.objects.all()
@@ -23,6 +25,9 @@ class MapResource(pages.api.PageURLMixin, ModelResource):
             'geom': ALL,
             'length': ALL,
         }
+        authentication = MultiAuthentication(
+            Authentication(), ApiKeyAuthentication())
+        authorization = DjangoAuthorization()
 
 
 # We don't use detail_uri_name here because it becomes too complicated
