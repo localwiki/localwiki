@@ -1,12 +1,11 @@
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
-from tastypie.authentication import (Authentication, ApiKeyAuthentication,
-    MultiAuthentication)
 from tastypie.authorization import DjangoAuthorization
 from tastypie import fields
 
 from models import Redirect
 from pages.api import PageResource, PageHistoryResource
 from sapling.api import api
+from sapling.api.authentication import ApiKeyWriteAuthentication
 
 
 class RedirectResource(ModelResource):
@@ -19,8 +18,7 @@ class RedirectResource(ModelResource):
             'destination': ALL_WITH_RELATIONS,
             'source': ALL,
         }
-        authentication = MultiAuthentication(
-            Authentication(), ApiKeyAuthentication())
+        authentication = ApiKeyWriteAuthentication()
         authorization = DjangoAuthorization()
 
 

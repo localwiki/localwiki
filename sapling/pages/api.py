@@ -4,13 +4,12 @@ from django.http import Http404
 
 from tastypie import fields
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
-from tastypie.authentication import (Authentication, ApiKeyAuthentication,
-    MultiAuthentication)
 from tastypie.authorization import DjangoAuthorization
 from tastypie.utils import trailing_slash
 
 from pages.models import Page, PageFile, name_to_url, url_to_name
 from sapling.api import api
+from sapling.api.authentication import ApiKeyWriteAuthentication
 
 
 class PageURLMixin(object):
@@ -71,8 +70,7 @@ class FileResource(ModelResource):
             'name': ALL,
             'slug': ALL,
         }
-        authentication = MultiAuthentication(
-            Authentication(), ApiKeyAuthentication())
+        authentication = ApiKeyWriteAuthentication()
         authorization = DjangoAuthorization()
 
 
@@ -98,8 +96,7 @@ class PageResource(PageURLMixin, ModelResource):
             'page_tags': ALL_WITH_RELATIONS,
             'map': ALL_WITH_RELATIONS,
         }
-        authentication = MultiAuthentication(
-            Authentication(), ApiKeyAuthentication())
+        authentication = ApiKeyWriteAuthentication()
         authorization = DjangoAuthorization()
 
     def prepend_urls(self):

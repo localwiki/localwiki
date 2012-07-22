@@ -1,6 +1,4 @@
 from tastypie import fields
-from tastypie.authentication import (Authentication, ApiKeyAuthentication,
-    MultiAuthentication)
 from tastypie.authorization import DjangoAuthorization
 from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie.contrib.gis.resources import ModelResource
@@ -8,6 +6,7 @@ from tastypie.contrib.gis.resources import ModelResource
 from models import MapData
 import pages.api  # Scoped import to prevent ImportError.
 from sapling.api import api
+from sapling.api.authentication import ApiKeyWriteAuthentication
 
 
 class MapResource(pages.api.PageURLMixin, ModelResource):
@@ -25,8 +24,7 @@ class MapResource(pages.api.PageURLMixin, ModelResource):
             'geom': ALL,
             'length': ALL,
         }
-        authentication = MultiAuthentication(
-            Authentication(), ApiKeyAuthentication())
+        authentication = ApiKeyWriteAuthentication()
         authorization = DjangoAuthorization()
 
 
