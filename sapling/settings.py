@@ -61,6 +61,7 @@ LANGUAGES = (
     ('de_CH', _('German (Swiss)')),
     ('es_AR', _('Spanish (Argentina)')),
     ('da_DK', _('Danish')),
+    ('it_IT', _('Italian')),
     ('pt_PT', _('Portuguese')),
 )
 
