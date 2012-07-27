@@ -24,6 +24,7 @@ class MapResource(pages.api.PageURLMixin, ModelResource):
             'geom': ALL,
             'length': ALL,
         }
+        list_allowed_methods = ['get', 'post']
         authentication = ApiKeyWriteAuthentication()
         authorization = DjangoAuthorization()
 

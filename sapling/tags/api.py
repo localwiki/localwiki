@@ -34,6 +34,7 @@ class PageTagSetResource(pages.api.PageURLMixin, ModelResource):
             'page': ALL_WITH_RELATIONS,
             'tags': ALL_WITH_RELATIONS,
         }
+        list_allowed_methods = ['get', 'post']
         authentication = ApiKeyWriteAuthentication()
         authorization = DjangoAuthorization()
 
