@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Examples &mdash; LocalWiki 0.3 documentation</title>
+    <title>API Documentation &mdash; LocalWiki 0.3 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -25,7 +25,9 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="LocalWiki 0.3 documentation" href="index.html" /> 
+    <link rel="top" title="LocalWiki 0.3 documentation" href="index.html" />
+    <link rel="next" title="Examples" href="api_examples.html" />
+    <link rel="prev" title="Advanced topics" href="advanced.html" /> 
   </head>
   <body>
     <div class="related">
@@ -34,6 +36,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="api_examples.html" title="Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced topics"
+             accesskey="P">previous</a> |</li>
         <li><a href="index.html">LocalWiki 0.3 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -43,796 +51,142 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="examples">
-<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="page-examples">
-<h2>Page examples<a class="headerlink" href="#page-examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="get-all-pages-whose-title-end-in-park-case-insensitive">
-<h3>Get all pages whose title end in &#8220;park&#8221;, case-insensitive<a class="headerlink" href="#get-all-pages-whose-title-end-in-park-case-insensitive" title="Permalink to this headline">¶</a></h3>
-<p><tt class="docutils literal"><span class="pre">/api/page/?name__iendswith=park</span></tt></p>
+  <div class="section" id="api-documentation">
+<h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<p>LocalWiki provides a RESTful, read/write API with advanced geospatial
+capabilities.  Reading (using <tt class="docutils literal"><span class="pre">GET</span></tt> requests) is allowed for all users,
+but to write (<tt class="docutils literal"><span class="pre">POST</span></tt>, <tt class="docutils literal"><span class="pre">PUT</span></tt>, <tt class="docutils literal"><span class="pre">PATCH</span></tt>, <tt class="docutils literal"><span class="pre">DELETE</span></tt>) you&#8217;ll need to generate an API
+key.</p>
+<p>The LocalWiki API follows the conventions of <a class="reference external" href="https://github.com/toastdriven/django-tastypie">Tastypie</a>.  If this documentation seems incomplete, refer to Tastypie&#8217;s page on <a class="reference external" href="http://django-tastypie.readthedocs.org/en/latest/interacting.html">Interacting with the API</a> to become familiar with the common idiom.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>You will probably want to try these URLs in your browser. In order to make them work in a browser, you&#8217;ll need to append the <tt class="docutils literal"><span class="pre">format</span></tt> query string parameter.  For example, to view the <cite>page</cite> resource list, you&#8217;ll want visit a URL like this:</p>
+<div class="last highlight-python"><pre>/api/page/?format=json</pre>
+</div>
+</div>
+<p>Unless otherwise specified, all endpoints that return lists support the <tt class="docutils literal"><span class="pre">limit</span></tt> and <tt class="docutils literal"><span class="pre">offset</span></tt> parameters for pagination. Pagination information is contained in the embedded <tt class="docutils literal"><span class="pre">meta</span></tt> object within the response.</p>
+<div class="section" id="api-versioning">
+<h2>API versioning<a class="headerlink" href="#api-versioning" title="Permalink to this headline">¶</a></h2>
+<p>The LocalWiki API sends API version information in the <tt class="docutils literal"><span class="pre">Content-type</span></tt>
+header.  For instance, <tt class="docutils literal"><span class="pre">Content-Type:</span> <span class="pre">application/vnd.api.v1+json;</span> <span class="pre">charset=utf-8</span></tt></p>
+<p>You can lock your application to a particular version of the
+API by sending an <tt class="docutils literal"><span class="pre">Accept</span></tt> header with an appropriate version string.
+For instance, <tt class="docutils literal"><span class="pre">Accept:</span> <span class="pre">application/vnd.api.v1+json</span></tt> will request
+version 1 of the API.</p>
+</div>
+<div class="section" id="api-structure">
+<h2>API structure<a class="headerlink" href="#api-structure" title="Permalink to this headline">¶</a></h2>
+<p>blah blah REST self-describing.</p>
+</div>
+<div class="section" id="site">
+<h2>Site<a class="headerlink" href="#site" title="Permalink to this headline">¶</a></h2>
+<p>The Site object can be queried to retrieve information about the LocalWiki instance.</p>
+<p>Example Site object:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">4</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;A park page!&lt;/p&gt;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;166&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Dorothy B. Oven Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Dorothy_B._Oven_Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;dorothy b. oven park&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;Another park page!&lt;/p&gt;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;108&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Winthrop Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Winthrop_Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;winthrop park&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Alternatively, we could have filtered on the <cite>slug</cite> field, which is always lowercase:</p>
-<p><tt class="docutils literal"><span class="pre">/api/page/?slug__endswith=park</span></tt></p>
-</div>
-<div class="section" id="find-pages-that-contain-the-word-cafe">
-<h3>Find pages that contain the word &#8216;cafe&#8217;<a class="headerlink" href="#find-pages-that-contain-the-word-cafe" title="Permalink to this headline">¶</a></h3>
-<p>If we try to do something like:</p>
-<p><tt class="docutils literal"><span class="pre">/api/page/?content__contains=cafe</span></tt></p>
-<p>We get the message &#8220;The &#8216;content&#8217; field does not allow filtering.&#8221;  Instead, for full-text searches we&#8217;ll want to use the <tt class="docutils literal"><span class="pre">/search/</span></tt> method on the <cite>page</cite> resource.  Search takes a query parameter, <cite>q</cite>, which is a URL-encoded search string.  E.g.:</p>
-<p><tt class="docutils literal"><span class="pre">/api/page/search/?q=cafe</span></tt></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;MMm..caffeine!&lt;/p&gt;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;101&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Coffee&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Coffee&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;coffee&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p><em>Note</em>: You currently cannot use other filters on top of a <cite>search</cite> method.</p>
-</div>
-<div class="section" id="page-versions">
-<h3>Page versions<a class="headerlink" href="#page-versions" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="all-versions-of-pages-that-were-edited-after-a-certain-date">
-<h4>All versions of pages that were edited after a certain date<a class="headerlink" href="#all-versions-of-pages-that-were-edited-after-a-certain-date" title="Permalink to this headline">¶</a></h4>
-<p>Let&#8217;s find all versions of pages that were edited after June 25th, 2012 at 22:21:30 :</p>
-<p><tt class="docutils literal"><span class="pre">/api/page_version/history_date__gte=2012-06-25T22:21:30</span></tt></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_version/?history_date__gte=2012-06-25T22%3A21%3A30&amp;offset=20&amp;limit=20&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">34</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;Tallahassee offers many options for your food shopping needs.&lt;/p&gt;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_comment&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;history_date&quot;</span><span class="o">:</span> <span class="s2">&quot;2012-07-11T19:18:22.103443&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_id&quot;</span><span class="o">:</span> <span class="s2">&quot;786&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_type&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;history_user_ip&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">89</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Groceries&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_version/786/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;groceries&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;Write anything you&#39;d like about yourself here!&lt;/p&gt;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_comment&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;history_date&quot;</span><span class="o">:</span> <span class="s2">&quot;2012-07-11T00:30:05.415302&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_id&quot;</span><span class="o">:</span> <span class="s2">&quot;785&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_type&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;history_user_ip&quot;</span><span class="o">:</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">145</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;BArmstrong&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_version/785/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;barmstrong&quot;</span>
-        <span class="p">},</span>
-
-        <span class="p">...</span>
-
-        <span class="p">{</span>
-            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;&lt;span class=\&quot;image_frame image_left\&quot;&gt;&lt;img src=\&quot;_files/CampWiki-logo-400.png\&quot; style=\&quot;width: 300px; height: 71px;\&quot;&gt;&lt;/span&gt;&lt;/p&gt;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_comment&quot;</span><span class="o">:</span> <span class="s2">&quot;add shirt&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_date&quot;</span><span class="o">:</span> <span class="s2">&quot;2012-06-26T10:15:14&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_id&quot;</span><span class="o">:</span> <span class="s2">&quot;767&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_type&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;history_user_ip&quot;</span><span class="o">:</span> <span class="s2">&quot;67.233.209.109&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">54</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;CampWiki&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_version/767/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;campwiki&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="all-versions-of-pages-that-were-edited-after-a-certain-date-and-have-a-certain-title">
-<h4>All versions of pages that were edited after a certain date and have a certain title<a class="headerlink" href="#all-versions-of-pages-that-were-edited-after-a-certain-date-and-have-a-certain-title" title="Permalink to this headline">¶</a></h4>
-<p>Let&#8217;s find all versions of pages that were edited after June 25th, 2012 at 22:21:30 and whose title ends with &#8216;park&#8217;:</p>
-<p><tt class="docutils literal"><span class="pre">/api/page_version/?slug__endswith=park&amp;history_date__gte=2012-06-25T22:21:30</span></tt></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">4</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;&lt;strong&gt;Dorthy Oven Park&lt;/strong&gt; is a &lt;a href=\&quot;http://example.org\&quot;&gt;favorite&lt;/a&gt; destination during the holiday season, decorated with a stunning display of holiday lights!&lt;/p&gt;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_comment&quot;</span><span class="o">:</span> <span class="s2">&quot;bold name&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_date&quot;</span><span class="o">:</span> <span class="s2">&quot;2012-06-26T07:34:29&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_id&quot;</span><span class="o">:</span> <span class="s2">&quot;756&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_type&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;history_user_ip&quot;</span><span class="o">:</span> <span class="s2">&quot;67.233.209.109&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">166</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Dorothy B. Oven Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_version/756/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;dorothy b. oven park&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;Dorthy Oven Park is a &lt;a href=\&quot;http://example.org\&quot;&gt;favorite&lt;/a&gt; destination during the holiday season, decorated with a stunning display of holiday lights!&lt;/p&gt;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_comment&quot;</span><span class="o">:</span> <span class="s2">&quot;add exclamation&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_date&quot;</span><span class="o">:</span> <span class="s2">&quot;2012-06-26T07:33:45&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_id&quot;</span><span class="o">:</span> <span class="s2">&quot;755&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_type&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;history_user_ip&quot;</span><span class="o">:</span> <span class="s2">&quot;67.233.209.109&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">166</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Dorothy B. Oven Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_version/755/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;dorothy b. oven park&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;Dorthy Oven Park is a &lt;a href=\&quot;http://example.org\&quot;&gt;favorite&lt;/a&gt; destination during the holiday season, decorated with a stunning display of holiday lights.&lt;/p&gt;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_comment&quot;</span><span class="o">:</span> <span class="s2">&quot;complete external weblinks&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_date&quot;</span><span class="o">:</span> <span class="s2">&quot;2012-06-26T07:01:47&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_id&quot;</span><span class="o">:</span> <span class="s2">&quot;754&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_type&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;history_user_ip&quot;</span><span class="o">:</span> <span class="s2">&quot;67.233.209.109&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">166</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Dorothy B. Oven Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_version/754/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;dorothy b. oven park&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;Dorthy Oven Park is a favorite destination during the holiday season, decorated with a stunning display of holiday lights.&lt;/p&gt;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_comment&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;history_date&quot;</span><span class="o">:</span> <span class="s2">&quot;2012-06-25T22:21:30&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_id&quot;</span><span class="o">:</span> <span class="s2">&quot;753&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;history_type&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;history_user_ip&quot;</span><span class="o">:</span> <span class="s2">&quot;67.233.187.55&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">166</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Dorothy B. Oven Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_version/753/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;dorothy b. oven park&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="file-examples">
-<h2>File examples<a class="headerlink" href="#file-examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="get-all-files-on-a-given-page">
-<h3>Get all files on a given page<a class="headerlink" href="#get-all-files-on-a-given-page" title="Permalink to this headline">¶</a></h3>
-<p>Let&#8217;s get all files on the &#8216;Golden Gate Park&#8217; page.</p>
-<p><tt class="docutils literal"><span class="pre">/api/file/slug=golden</span> <span class="pre">gate</span> <span class="pre">park</span></tt></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">2</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;file&quot;</span><span class="o">:</span> <span class="s2">&quot;/media/pages/files/1bd1fgbitljt4egt.JPG&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;94&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;tacos.JPG&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/file/94/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;golden gate park&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;file&quot;</span><span class="o">:</span> <span class="s2">&quot;/media/pages/files/qlwizj8dqkstrler.jpg&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="s2">&quot;93&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;scruzmountainz.jpg&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/file/93/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;golden gate park&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>We can retrieve the file itself by visiting the location specified in
-the <cite>file</cite> attribute.</p>
-</div>
-</div>
-<div class="section" id="map-examples">
-<h2>Map examples<a class="headerlink" href="#map-examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="get-the-map-associated-with-a-particular-page">
-<h3>Get the map associated with a particular page<a class="headerlink" href="#get-the-map-associated-with-a-particular-page" title="Permalink to this headline">¶</a></h3>
-<p>Let&#8217;s get the map data on the &#8220;Lake Ella&#8221; page.  We can just visit the
-URI without any filtering:</p>
-<p><tt class="docutils literal"><span class="pre">/api/map/Lake_Ella</span></tt></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-            <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">[</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.281762999999998</span><span class="p">,</span> <span class="mf">30.462340000000001</span><span class="p">],</span> <span class="p">...</span>  <span class="p">]</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Polygon&quot;</span>
-            <span class="p">}</span>
-        <span class="p">],</span>
-        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-    <span class="p">},</span>
+    <span class="s2">&quot;domain&quot;</span><span class="o">:</span> <span class="s2">&quot;TallahasseeWiki.org&quot;</span><span class="p">,</span>
     <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.0121161205512</span><span class="p">,</span>
-    <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-    <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Lake_Ella&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-    <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-            <span class="p">[[</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.281762999999998</span><span class="p">,</span> <span class="mf">30.462340000000001</span><span class="p">],</span> <span class="p">...</span>  <span class="p">]]</span>
-        <span class="p">],</span>
-        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPolygon&quot;</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/Lake_Ella&quot;</span>
+    <span class="s2">&quot;language_code&quot;</span><span class="o">:</span> <span class="s2">&quot;en-us&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;license&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;Except where otherwise noted, this content is licensed under a &lt;a rel=\&quot;license\&quot; href=\&quot;http://creativecommons.org/licenses/by/3.0/\&quot;&gt;Creative Commons Attribution License&lt;/a&gt;. See &lt;a href=\&quot;/Copyrights\&quot;&gt;Copyrights.&lt;/p&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;TallahasseeWiki.org&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/site/1/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;signup_tos&quot;</span><span class="o">:</span> <span class="s2">&quot;I agree to release my contributions under the &lt;a rel=\&quot;license\&quot; href=\&quot;http://creativecommons.org/licenses/by/3.0/\&quot; target=\&quot;_blank\&quot;&gt;Creative Commons-By license&lt;/a&gt;, unless noted otherwise. See &lt;a href=\&quot;/Copyrights\&quot; target=\&quot;_blank\&quot;&gt;Copyrights&lt;/a&gt;.&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;time_zone&quot;</span><span class="o">:</span> <span class="s2">&quot;America/Chicago&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<div class="section" id="schema">
+<h3>Schema<a class="headerlink" href="#schema" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/site/schema/</pre>
 </div>
-<div class="section" id="get-all-maps-associated-with-pages-ending-in-park">
-<h3>Get all maps associated with pages ending in &#8216;Park&#8217;<a class="headerlink" href="#get-all-maps-associated-with-pages-ending-in-park" title="Permalink to this headline">¶</a></h3>
-<p>Get all the map data for all pages whose title end in &#8216;park&#8217;:</p>
-<p><tt class="docutils literal"><span class="pre">/api/map/?page__slug__endswith=park</span></tt></p>
+</div>
+<div class="section" id="list">
+<h3>List<a class="headerlink" href="#list" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/site/</pre>
+</div>
+</div>
+<div class="section" id="fetch">
+<h3>Fetch<a class="headerlink" href="#fetch" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/site/[id]/</pre>
+</div>
+</div>
+</div>
+<div class="section" id="users">
+<h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
+<p>User objects can be queried to retrieve information about LocalWiki users. Emails, passwords, etc are not included in responses.</p>
+<p>Example User object:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">3</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                            <span class="p">[</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.267825999999999</span><span class="p">,</span> <span class="mf">30.466224</span><span class="p">],</span> <span class="p">...</span>  <span class="p">]</span>
-                        <span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Polygon&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.015599483822</span><span class="p">,</span>
-            <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Winthrop_Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">[[</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.267825999999999</span><span class="p">,</span> <span class="mf">30.466224</span><span class="p">],</span> <span class="p">...</span>  <span class="p">]]</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPolygon&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/Winthrop_Park&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.251131999999998</span><span class="p">,</span> <span class="mf">30.449670000000001</span><span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Point&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">21</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Governor%27s_Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[[</span><span class="o">-</span><span class="mf">84.251131999999998</span><span class="p">,</span> <span class="mf">30.449670000000001</span><span class="p">]],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPoint&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/Governor%27s_Park&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.254312999999996</span><span class="p">,</span> <span class="mf">30.493468</span><span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Point&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">33</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Dorothy_B._Oven_Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[[</span><span class="o">-</span><span class="mf">84.254312999999996</span><span class="p">,</span> <span class="mf">30.493468</span><span class="p">]],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPoint&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/Dorothy_B._Oven_Park&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
+    <span class="s2">&quot;date_joined&quot;</span><span class="o">:</span> <span class="s2">&quot;2012-06-13T12:10:52&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;first_name&quot;</span><span class="o">:</span> <span class="s2">&quot;Tanya&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;last_name&quot;</span><span class="o">:</span> <span class="s2">&quot;Schaad&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/user/25/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;TanyaS&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
+<div class="section" id="id1">
+<h3>Schema<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/user/schema/</pre>
 </div>
-<div class="section" id="find-all-maps-that-contain-a-particular-point">
-<h3>Find all maps that contain a particular point<a class="headerlink" href="#find-all-maps-that-contain-a-particular-point" title="Permalink to this headline">¶</a></h3>
-<p>Let&#8217;s find all maps that contain a point that lies inside of Golden Gate
-Park:</p>
-<p><tt class="docutils literal"><span class="pre">/api/map/?polys__contains={&quot;type&quot;:</span> <span class="pre">&quot;Point&quot;,</span> <span class="pre">&quot;coordinates&quot;:</span> <span class="pre">[-122.475233,</span> <span class="pre">37.768617]}</span></tt></p>
+</div>
+<div class="section" id="id2">
+<h3>List<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/user/</pre>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Fetch<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/user/[id]/</pre>
+</div>
+</div>
+</div>
+<div class="section" id="pages">
+<h2>Pages<a class="headerlink" href="#pages" title="Permalink to this headline">¶</a></h2>
+<p>Pages are the base objects in a LocalWiki.  Pages contain, among other
+things, a <tt class="docutils literal"><span class="pre">content</span></tt> field consisting of a special subset of HTML5
+markup.</p>
+<p>Example Page object:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">1</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                            <span class="p">[</span> <span class="p">[</span><span class="o">-</span><span class="mf">122.510948</span><span class="p">,</span> <span class="mf">37.771121999999998</span><span class="p">],</span> <span class="p">...</span>  <span class="p">]</span>
-                        <span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Polygon&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">36</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.12849756341900001</span><span class="p">,</span>
-            <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Golden_Gate_Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">[[</span> <span class="p">[</span><span class="o">-</span><span class="mf">122.510948</span><span class="p">,</span> <span class="mf">37.771121999999998</span><span class="p">],</span> <span class="p">...</span>  <span class="p">]]</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPolygon&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/Golden_Gate_Park&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
+    <span class="s2">&quot;content&quot;</span><span class="o">:</span> <span class="s2">&quot;&lt;p&gt;Bradfordville Blues Club experience is like no other. It combines a truly unique location and atmosphere with the best the Blues has to offer. &lt;/p&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">158</span><span class="p">,</span>
+    <span class="s2">&quot;map&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/Bradfordville_Blues_Club&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Bradfordville Blues Club&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;page_tags&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_tags/Bradfordville_Blues_Club&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Bradfordville_Blues_Club&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;slug&quot;</span><span class="o">:</span> <span class="s2">&quot;bradfordville blues club&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>As expected, we get back the map for Golden Gate Park.</p>
-</div>
-<div class="section" id="find-all-maps-inside-of-a-region">
-<h3>Find all maps inside of a region<a class="headerlink" href="#find-all-maps-inside-of-a-region" title="Permalink to this headline">¶</a></h3>
-<p>Let&#8217;s find all maps inside of a polygon region roughly representing the
-United States.</p>
-<p>Due to technical limitations, we can only query for one geometry type
-(points, lines or polygons) at a time.  So we query for each in
-succession.</p>
-<p>First, let&#8217;s find the points that lay inside:</p>
-<p><tt class="docutils literal"><span class="pre">/api/map/?points__within={</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;Polygon&quot;,</span> <span class="pre">&quot;coordinates&quot;:</span> <span class="pre">[[[-125.363617,</span> <span class="pre">48.656273],</span> <span class="pre">[-123.254242,</span> <span class="pre">31.608656],</span> <span class="pre">[-77.902679,</span> <span class="pre">26.068811],</span> <span class="pre">[-65.597992,</span> <span class="pre">44.301984],</span> <span class="pre">[-125.363617,</span> <span class="pre">48.656273]]]}</span></tt></p>
-<p>Then the lines:</p>
-<p><tt class="docutils literal"><span class="pre">/api/map/?lines__within={</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;Polygon&quot;,</span> <span class="pre">&quot;coordinates&quot;:</span> <span class="pre">[[[-125.363617,</span> <span class="pre">48.656273],</span> <span class="pre">[-123.254242,</span> <span class="pre">31.608656],</span> <span class="pre">[-77.902679,</span> <span class="pre">26.068811],</span> <span class="pre">[-65.597992,</span> <span class="pre">44.301984],</span> <span class="pre">[-125.363617,</span> <span class="pre">48.656273]]]}</span></tt></p>
-<p>Finally, the polygons:</p>
-<p><tt class="docutils literal"><span class="pre">/api/map/?polys__within={</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;Polygon&quot;,</span> <span class="pre">&quot;coordinates&quot;:</span> <span class="pre">[[[-125.363617,</span> <span class="pre">48.656273],</span> <span class="pre">[-123.254242,</span> <span class="pre">31.608656],</span> <span class="pre">[-77.902679,</span> <span class="pre">26.068811],</span> <span class="pre">[-65.597992,</span> <span class="pre">44.301984],</span> <span class="pre">[-125.363617,</span> <span class="pre">48.656273]]]}</span></tt></p>
-<p>Here are the results:</p>
-<p>With points within:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">19</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.292406</span><span class="p">,</span> <span class="mf">30.448938999999999</span><span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Point&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/IFS_Business_Interiors&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[[</span><span class="o">-</span><span class="mf">84.292406</span><span class="p">,</span> <span class="mf">30.448938999999999</span><span class="p">]],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPoint&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/IFS_Business_Interiors&quot;</span>
-        <span class="p">},</span>
-        <span class="p">...</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.281746999999996</span><span class="p">,</span> <span class="mf">30.440351</span><span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Point&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">34</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Users/Governors-Inn&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[[</span><span class="o">-</span><span class="mf">84.281746999999996</span><span class="p">,</span> <span class="mf">30.440351</span><span class="p">]],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPoint&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/Users/Governors-Inn&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>With lines within:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">1</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.280647000000002</span><span class="p">,</span> <span class="mf">30.457765999999999</span><span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Point&quot;</span>
-                    <span class="p">},</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                            <span class="p">[</span><span class="o">-</span><span class="mf">84.280647000000002</span><span class="p">,</span> <span class="mf">30.457765999999999</span><span class="p">],</span>
-                            <span class="p">[</span><span class="o">-</span><span class="mf">84.280647000000002</span><span class="p">,</span> <span class="mf">30.435493000000001</span><span class="p">]</span>
-                        <span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;LineString&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.022272425525</span><span class="p">,</span>
-            <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[[</span>
-                    <span class="p">[</span><span class="o">-</span><span class="mf">84.280647000000002</span><span class="p">,</span> <span class="mf">30.457765999999999</span><span class="p">],</span>
-                    <span class="p">[</span><span class="o">-</span><span class="mf">84.280647000000002</span><span class="p">,</span> <span class="mf">30.435493000000001</span><span class="p">]</span>
-                <span class="p">]],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiLineString&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Springtime_Tallahassee&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[[</span><span class="o">-</span><span class="mf">84.280647000000002</span><span class="p">,</span> <span class="mf">30.457765999999999</span><span class="p">]],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPoint&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/Springtime_Tallahassee&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>With polygons within:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">11</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                            <span class="p">[</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.281762999999998</span><span class="p">,</span> <span class="mf">30.462340000000001</span><span class="p">],</span> <span class="p">...</span> <span class="p">]</span>
-                        <span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Polygon&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.0121161205512</span><span class="p">,</span>
-            <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Lake_Ella&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">[[</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.281762999999998</span><span class="p">,</span> <span class="mf">30.462340000000001</span><span class="p">],</span> <span class="p">...</span> <span class="p">]]</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPolygon&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/Lake_Ella&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                            <span class="p">[</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.297866999999997</span><span class="p">,</span> <span class="mf">30.43648</span><span class="p">],</span> <span class="p">...</span> <span class="p">]</span>
-                        <span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Polygon&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">8</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.0043480920960800003</span><span class="p">,</span>
-            <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/CollegeTown&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">[</span>
-                        <span class="p">[</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.297866999999997</span><span class="p">,</span> <span class="mf">30.43648</span> <span class="p">],</span> <span class="p">...</span> <span class="p">]</span>
-                    <span class="p">]</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPolygon&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/CollegeTown&quot;</span>
-        <span class="p">},</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
+<div class="section" id="id4">
+<h3>Schema<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/page/schema/</pre>
 </div>
 </div>
-</div>
-<div class="section" id="tag-examples">
-<h2>Tag examples<a class="headerlink" href="#tag-examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="pages-with-a-particular-tag">
-<h3>Pages with a particular tag<a class="headerlink" href="#pages-with-a-particular-tag" title="Permalink to this headline">¶</a></h3>
-<p>Get all pages tagged with &#8216;park&#8217;:</p>
-<p><tt class="docutils literal"><span class="pre">/api/page_tags/?tags__slug=park</span></tt></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">9</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Camellia_Christmas_at_Maclay_Gardens&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_tags/Camellia_Christmas_at_Maclay_Gardens&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;tags&quot;</span><span class="o">:</span> <span class="p">[</span>
-                <span class="s2">&quot;/api/tags/christmas/&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/api/tags/entertainment/&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/api/tags/families/&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/api/tags/holidays/&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/api/tags/park/&quot;</span>
-            <span class="p">]</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Dorothy_B._Oven_Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_tags/Dorothy_B._Oven_Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;tags&quot;</span><span class="o">:</span> <span class="p">[</span>
-                <span class="s2">&quot;/api/tags/park/&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/api/tags/recreation/&quot;</span>
-            <span class="p">]</span>
-        <span class="p">},</span>
-        <span class="p">...</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
+<div class="section" id="id5">
+<h3>List<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/page/</pre>
 </div>
 </div>
-<div class="section" id="pages-with-a-tag-or-another-tag">
-<h3>Pages with a tag or another tag<a class="headerlink" href="#pages-with-a-tag-or-another-tag" title="Permalink to this headline">¶</a></h3>
-<p>Get all pages tagged with &#8216;park&#8217; or &#8216;food:</p>
-<p><tt class="docutils literal"><span class="pre">/api/page_tags/?tags__slug__in=park,food</span></tt></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">11</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">33</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Banh_Mi_Palace&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_tags/Banh_Mi_Palace&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;tags&quot;</span><span class="o">:</span> <span class="p">[</span>
-                <span class="s2">&quot;/api/tags/food/&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/api/tags/foodtrucks/&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/api/tags/restaurants/&quot;</span>
-            <span class="p">]</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Camellia_Christmas_at_Maclay_Gardens&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page_tags/Camellia_Christmas_at_Maclay_Gardens&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;tags&quot;</span><span class="o">:</span> <span class="p">[</span>
-                <span class="s2">&quot;/api/tags/christmas/&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/api/tags/entertainment/&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/api/tags/families/&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/api/tags/holidays/&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;/api/tags/park/&quot;</span>
-            <span class="p">]</span>
-        <span class="p">},</span>
-        <span class="p">...</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
+<div class="section" id="id6">
+<h3>Fetch<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/page/[name]/</pre>
 </div>
 </div>
-<div class="section" id="geographic-data-for-all-pages-with-a-particular-tag">
-<h3>Geographic data for all pages with a particular tag<a class="headerlink" href="#geographic-data-for-all-pages-with-a-particular-tag" title="Permalink to this headline">¶</a></h3>
-<p>While we could iterate through a list of pages-with-a-particular-tag and
-retrieve pages&#8217; maps individually, we can also do this in a single query
-by tying together attributes across relations.</p>
-<p>Because each <cite>map</cite> resource has a <cite>page</cite> resource attached to it, and
-each <cite>page</cite> resource has a <cite>page_tags</cite> resource attached to it, we can
-tie these all together to get what we want!</p>
-<p>We know we can do <tt class="docutils literal"><span class="pre">/api/page_tags/?tags__slug=park</span></tt> to get all pages
-with the tag <cite>park</cite>.  And so we can tie these all together, giving us:</p>
-<p><tt class="docutils literal"><span class="pre">/api/map/?page__page_tags__tags__slug=park</span></tt></p>
-<p>To retrieve all the geographic data for all pages tagged with &#8216;park&#8217;:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">8</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">84.251379</span><span class="p">,</span> <span class="mf">30.515999999999998</span><span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Point&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">19</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Camellia_Christmas_at_Maclay_Gardens&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[[</span><span class="o">-</span><span class="mf">84.251379</span><span class="p">,</span> <span class="mf">30.515999999999998</span><span class="p">]],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPoint&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/Camellia_Christmas_at_Maclay_Gardens&quot;</span>
-        <span class="p">},</span>
-        <span class="p">...</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
+<div class="section" id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
+<p>To create a new page, POST a JSON document containing at least the <tt class="docutils literal"><span class="pre">name</span></tt> and <tt class="docutils literal"><span class="pre">content</span></tt> properties to /api/page/. Other properties such as <tt class="docutils literal"><span class="pre">map</span></tt> may also be set.</p>
 </div>
+<div class="section" id="update">
+<h3>Update<a class="headerlink" href="#update" title="Permalink to this headline">¶</a></h3>
+<p>To update an existing page, PUT a JSON document containing all the resource attributes to /api/page/[name].  You may also update a single field in a page by issuing a PATCH to /api/page/[name] with just the relevant field (e.g. <tt class="docutils literal"><span class="pre">content</span></tt>).</p>
 </div>
-<div class="section" id="pages-with-a-particular-tag-inside-a-particular-geographic-region">
-<h3>Pages with a particular tag inside a particular geographic region<a class="headerlink" href="#pages-with-a-particular-tag-inside-a-particular-geographic-region" title="Permalink to this headline">¶</a></h3>
-<p>Let&#8217;s get all pages tagged with &#8216;park&#8217; inside of an area roughly equal
-to San Francisco, California.</p>
-<p>We know the <cite>map</cite> resource has an associated <cite>page</cite> resource as an
-attribute, and the <cite>page</cite> resource has a <cite>page_tags</cite> resource.</p>
-<p>We know we can do <tt class="docutils literal"><span class="pre">/api/page_tags/?tags__slug=park</span></tt> to get all pages
-with the tag <cite>park</cite>.  And we can do <tt class="docutils literal"><span class="pre">/api/map/?polys__within=&lt;geojson&gt;</span></tt>
-to get all pages with polygons that are within the provided geojson.
-And so we can tie these all together, giving us:</p>
-<p><tt class="docutils literal"><span class="pre">/api/map/?page__page_tags__tags__slug=parks&amp;polys__within=&lt;geojson&gt;</span></tt></p>
-<p>Full detail:</p>
-<p><tt class="docutils literal"><span class="pre">/api/map/?page__page_tags__tags__slug=parks&amp;polys__within={&quot;type&quot;:</span> <span class="pre">&quot;Polygon&quot;,</span> <span class="pre">&quot;coordinates&quot;:</span> <span class="pre">[[[-122.521248,</span> <span class="pre">37.798391],</span> <span class="pre">[-122.397651,</span> <span class="pre">37.817378],</span> <span class="pre">[-122.353020,</span> <span class="pre">37.718590],</span> <span class="pre">[-122.504082,</span> <span class="pre">37.701751],</span> <span class="pre">[-122.521248,</span> <span class="pre">37.798391]]]}</span></tt></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">1</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                            <span class="p">[</span> <span class="p">[</span><span class="o">-</span><span class="mf">122.510948</span><span class="p">,</span> <span class="mf">37.771121999999998</span> <span class="p">],</span> <span class="p">...</span> <span class="p">]</span>
-                        <span class="p">],</span>
-                        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Polygon&quot;</span>
-                    <span class="p">}</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">36</span><span class="p">,</span>
-            <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.12849756341900001</span><span class="p">,</span>
-            <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Golden_Gate_Park&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="p">{</span>
-                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
-                    <span class="p">[</span>
-                        <span class="p">[</span> <span class="p">[</span><span class="o">-</span><span class="mf">122.510948</span><span class="p">,</span> <span class="mf">37.771121999999998</span> <span class="p">],</span> <span class="p">...</span> <span class="p">]</span>
-                    <span class="p">]</span>
-                <span class="p">],</span>
-                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPolygon&quot;</span>
-            <span class="p">},</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/Golden_Gate_Park&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="redirect-examples">
-<h2>Redirect examples<a class="headerlink" href="#redirect-examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="get-all-redirects-pointed-at-a-particular-page">
-<h3>Get all redirects pointed at a particular page<a class="headerlink" href="#get-all-redirects-pointed-at-a-particular-page" title="Permalink to this headline">¶</a></h3>
-<p>Find all the redirects that point to the page with the slug &#8216;coffee&#8217;:</p>
-<p><tt class="docutils literal"><span class="pre">/api/redirect/destination__slug=coffee</span></tt></p>
-<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
-        <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
-        <span class="s2">&quot;next&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;previous&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="s2">&quot;total_count&quot;</span><span class="o">:</span> <span class="mi">2</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;objects&quot;</span><span class="o">:</span> <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;destination&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Coffee&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">6</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/redirect/coffee%20shops/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="s2">&quot;coffee shops&quot;</span>
-        <span class="p">},</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;destination&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/Coffee&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">7</span><span class="p">,</span>
-            <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/redirect/cafes/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;source&quot;</span><span class="o">:</span> <span class="s2">&quot;cafes&quot;</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
+<div class="section" id="delete">
+<h3>Delete<a class="headerlink" href="#delete" title="Permalink to this headline">¶</a></h3>
+<p>To delete an existing page, issue a DELETE to /api/page/[name].</p>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_examples.html">Examples</a></li>
+</ul>
 </div>
 </div>
 </div>
@@ -846,43 +200,42 @@ And so we can tie these all together, giving us:</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Examples</a><ul>
-<li><a class="reference internal" href="#page-examples">Page examples</a><ul>
-<li><a class="reference internal" href="#get-all-pages-whose-title-end-in-park-case-insensitive">Get all pages whose title end in &#8220;park&#8221;, case-insensitive</a></li>
-<li><a class="reference internal" href="#find-pages-that-contain-the-word-cafe">Find pages that contain the word &#8216;cafe&#8217;</a></li>
-<li><a class="reference internal" href="#page-versions">Page versions</a><ul>
-<li><a class="reference internal" href="#all-versions-of-pages-that-were-edited-after-a-certain-date">All versions of pages that were edited after a certain date</a></li>
-<li><a class="reference internal" href="#all-versions-of-pages-that-were-edited-after-a-certain-date-and-have-a-certain-title">All versions of pages that were edited after a certain date and have a certain title</a></li>
+<li><a class="reference internal" href="#">API Documentation</a><ul>
+<li><a class="reference internal" href="#api-versioning">API versioning</a></li>
+<li><a class="reference internal" href="#api-structure">API structure</a></li>
+<li><a class="reference internal" href="#site">Site</a><ul>
+<li><a class="reference internal" href="#schema">Schema</a></li>
+<li><a class="reference internal" href="#list">List</a></li>
+<li><a class="reference internal" href="#fetch">Fetch</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#users">Users</a><ul>
+<li><a class="reference internal" href="#id1">Schema</a></li>
+<li><a class="reference internal" href="#id2">List</a></li>
+<li><a class="reference internal" href="#id3">Fetch</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#file-examples">File examples</a><ul>
-<li><a class="reference internal" href="#get-all-files-on-a-given-page">Get all files on a given page</a></li>
+<li><a class="reference internal" href="#pages">Pages</a><ul>
+<li><a class="reference internal" href="#id4">Schema</a></li>
+<li><a class="reference internal" href="#id5">List</a></li>
+<li><a class="reference internal" href="#id6">Fetch</a></li>
+<li><a class="reference internal" href="#create">Create</a></li>
+<li><a class="reference internal" href="#update">Update</a></li>
+<li><a class="reference internal" href="#delete">Delete</a><ul>
 </ul>
 </li>
-<li><a class="reference internal" href="#map-examples">Map examples</a><ul>
-<li><a class="reference internal" href="#get-the-map-associated-with-a-particular-page">Get the map associated with a particular page</a></li>
-<li><a class="reference internal" href="#get-all-maps-associated-with-pages-ending-in-park">Get all maps associated with pages ending in &#8216;Park&#8217;</a></li>
-<li><a class="reference internal" href="#find-all-maps-that-contain-a-particular-point">Find all maps that contain a particular point</a></li>
-<li><a class="reference internal" href="#find-all-maps-inside-of-a-region">Find all maps inside of a region</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#tag-examples">Tag examples</a><ul>
-<li><a class="reference internal" href="#pages-with-a-particular-tag">Pages with a particular tag</a></li>
-<li><a class="reference internal" href="#pages-with-a-tag-or-another-tag">Pages with a tag or another tag</a></li>
-<li><a class="reference internal" href="#geographic-data-for-all-pages-with-a-particular-tag">Geographic data for all pages with a particular tag</a></li>
-<li><a class="reference internal" href="#pages-with-a-particular-tag-inside-a-particular-geographic-region">Pages with a particular tag inside a particular geographic region</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#redirect-examples">Redirect examples</a><ul>
-<li><a class="reference internal" href="#get-all-redirects-pointed-at-a-particular-page">Get all redirects pointed at a particular page</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="advanced.html"
+                        title="previous chapter">Advanced topics</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="api_examples.html"
+                        title="next chapter">Examples</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/api.txt"
@@ -911,6 +264,12 @@ And so we can tie these all together, giving us:</p>
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="api_examples.html" title="Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced topics"
+             >previous</a> |</li>
         <li><a href="index.html">LocalWiki 0.3 documentation</a> &raquo;</li> 
       </ul>
     </div>
