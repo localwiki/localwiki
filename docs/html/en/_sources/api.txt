@@ -158,7 +158,7 @@ Fetch
 
 ::
 
-    http://localhost:8000/api/page/[name]/
+    http://localhost:8000/api/page/[name]
 
 Create
 ------
@@ -177,6 +177,94 @@ Delete
 
 To delete an existing page, issue a DELETE to /api/page/[name].
 
+
+Maps
+====
+
+Maps are collections of geographic data that are associated with a given
+page.  Maps contain ``points``, ``lines``, and ``polys`` fields, each
+containing GeoJSON (or an XML/format-specific equivalent).  Maps also
+contain a ``length`` field, which you do not need to manually provide
+when issuing POSTs.
+
+The ``geom`` field is a collection of the
+``points``, ``lines`` and ``polys`` fields.  Sometimes it's convient to
+use this all-in-one field, though the ``geom`` field is limited in that
+we cannot filter on it.
+
+For more information on GeoJSON see
+`the wikipedia page <http://en.wikipedia.org/wiki/GeoJSON>`_.
+
+Example Map object:
+
+.. code-block:: javascript
+
+    {
+        "geom": {
+            "geometries": [
+                {
+                    "coordinates": [
+                        -84.292406, 
+                        30.448938999999999
+                    ], 
+                    "type": "Point"
+                }
+            ], 
+            "type": "GeometryCollection"
+        }, 
+        "id": 2, 
+        "length": 0.0, 
+        "lines": null, 
+        "page": "/api/page/IFS_Business_Interiors", 
+        "points": {
+            "coordinates": [
+                [
+                    -84.292406, 
+                    30.448938999999999
+                ]
+            ], 
+            "type": "MultiPoint"
+        }, 
+        "polys": null, 
+        "resource_uri": "/api/map/IFS_Business_Interiors"
+    }
+
+Schema
+------
+
+::
+
+    http://localhost:8000/api/map/schema/
+
+List
+----
+
+::
+
+    http://localhost:8000/api/map/
+
+Fetch
+-----
+
+::
+
+    http://localhost:8000/api/map/[pagename]
+
+Create
+------
+
+To create a new map, POST a JSON document containing at least a ``geom`` attribute and a ``page`` attribute.  ``geom`` should be a GeoJSON GeometryCollection and ``page`` should be an api-relative URI of a ``page`` resource.  Instead of providing the ``geom`` attribute you may instead provide one or more of the ``points``, ``lines`` and ``polys`` properties.
+
+Update
+------
+
+To update an existing map, PUT a JSON document containing all the resource attributes to /api/map/[pagename].  You may also update a single field in a page by issuing a PATCH to /api/map/[pagename] with just the relevant field (e.g. ``points``).
+
+
+Delete
+------
+
+To delete an existing map, issue a DELETE to /api/map/[pagename].
 
 
 Contents:

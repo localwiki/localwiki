@@ -168,7 +168,7 @@ markup.</p>
 </div>
 <div class="section" id="id6">
 <h3>Fetch<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python"><pre>http://localhost:8000/api/page/[name]/</pre>
+<div class="highlight-python"><pre>http://localhost:8000/api/page/[name]</pre>
 </div>
 </div>
 <div class="section" id="create">
@@ -182,6 +182,79 @@ markup.</p>
 <div class="section" id="delete">
 <h3>Delete<a class="headerlink" href="#delete" title="Permalink to this headline">¶</a></h3>
 <p>To delete an existing page, issue a DELETE to /api/page/[name].</p>
+</div>
+</div>
+<div class="section" id="maps">
+<h2>Maps<a class="headerlink" href="#maps" title="Permalink to this headline">¶</a></h2>
+<p>Maps are collections of geographic data that are associated with a given
+page.  Maps contain <tt class="docutils literal"><span class="pre">points</span></tt>, <tt class="docutils literal"><span class="pre">lines</span></tt>, and <tt class="docutils literal"><span class="pre">polys</span></tt> fields, each
+containing GeoJSON (or an XML/format-specific equivalent).  Maps also
+contain a <tt class="docutils literal"><span class="pre">length</span></tt> field, which you do not need to manually provide
+when issuing POSTs.</p>
+<p>The <tt class="docutils literal"><span class="pre">geom</span></tt> field is a collection of the
+<tt class="docutils literal"><span class="pre">points</span></tt>, <tt class="docutils literal"><span class="pre">lines</span></tt> and <tt class="docutils literal"><span class="pre">polys</span></tt> fields.  Sometimes it&#8217;s convient to
+use this all-in-one field, though the <tt class="docutils literal"><span class="pre">geom</span></tt> field is limited in that
+we cannot filter on it.</p>
+<p>For more information on GeoJSON see
+<a class="reference external" href="http://en.wikipedia.org/wiki/GeoJSON">the wikipedia page</a>.</p>
+<p>Example Map object:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;geometries&quot;</span><span class="o">:</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
+                    <span class="o">-</span><span class="mf">84.292406</span><span class="p">,</span>
+                    <span class="mf">30.448938999999999</span>
+                <span class="p">],</span>
+                <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;Point&quot;</span>
+            <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GeometryCollection&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;length&quot;</span><span class="o">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s2">&quot;lines&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="s2">&quot;page&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/page/IFS_Business_Interiors&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;points&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;coordinates&quot;</span><span class="o">:</span> <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="o">-</span><span class="mf">84.292406</span><span class="p">,</span>
+                <span class="mf">30.448938999999999</span>
+            <span class="p">]</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;MultiPoint&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;polys&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="s2">&quot;resource_uri&quot;</span><span class="o">:</span> <span class="s2">&quot;/api/map/IFS_Business_Interiors&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="id7">
+<h3>Schema<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/map/schema/</pre>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>List<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/map/</pre>
+</div>
+</div>
+<div class="section" id="id9">
+<h3>Fetch<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>http://localhost:8000/api/map/[pagename]</pre>
+</div>
+</div>
+<div class="section" id="id10">
+<h3>Create<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>To create a new map, POST a JSON document containing at least a <tt class="docutils literal"><span class="pre">geom</span></tt> attribute and a <tt class="docutils literal"><span class="pre">page</span></tt> attribute.  <tt class="docutils literal"><span class="pre">geom</span></tt> should be a GeoJSON GeometryCollection and <tt class="docutils literal"><span class="pre">page</span></tt> should be an api-relative URI of a <tt class="docutils literal"><span class="pre">page</span></tt> resource.  Instead of providing the <tt class="docutils literal"><span class="pre">geom</span></tt> attribute you may instead provide one or more of the <tt class="docutils literal"><span class="pre">points</span></tt>, <tt class="docutils literal"><span class="pre">lines</span></tt> and <tt class="docutils literal"><span class="pre">polys</span></tt> properties.</p>
+</div>
+<div class="section" id="id11">
+<h3>Update<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<p>To update an existing map, PUT a JSON document containing all the resource attributes to /api/map/[pagename].  You may also update a single field in a page by issuing a PATCH to /api/map/[pagename] with just the relevant field (e.g. <tt class="docutils literal"><span class="pre">points</span></tt>).</p>
+</div>
+<div class="section" id="id12">
+<h3>Delete<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<p>To delete an existing map, issue a DELETE to /api/map/[pagename].</p>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -221,7 +294,16 @@ markup.</p>
 <li><a class="reference internal" href="#id6">Fetch</a></li>
 <li><a class="reference internal" href="#create">Create</a></li>
 <li><a class="reference internal" href="#update">Update</a></li>
-<li><a class="reference internal" href="#delete">Delete</a><ul>
+<li><a class="reference internal" href="#delete">Delete</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#maps">Maps</a><ul>
+<li><a class="reference internal" href="#id7">Schema</a></li>
+<li><a class="reference internal" href="#id8">List</a></li>
+<li><a class="reference internal" href="#id9">Fetch</a></li>
+<li><a class="reference internal" href="#id10">Create</a></li>
+<li><a class="reference internal" href="#id11">Update</a></li>
+<li><a class="reference internal" href="#id12">Delete</a><ul>
 </ul>
 </li>
 </ul>

@@ -10,7 +10,7 @@ from sapling.api.authentication import ApiKeyWriteAuthentication
 
 
 class MapResource(pages.api.PageURLMixin, ModelResource):
-    page = fields.ToOneField(pages.api.PageResource, 'page', readonly=True)
+    page = fields.ToOneField(pages.api.PageResource, 'page')
 
     class Meta:
         queryset = MapData.objects.all()
