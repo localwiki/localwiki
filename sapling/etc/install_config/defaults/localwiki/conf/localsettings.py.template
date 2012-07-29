@@ -22,7 +22,7 @@ CLOUDMADE_API_KEY = 'CLOUDMADEAPIKEYHERE'
 # python -m smtpd -n -c DebuggingServer localhost:1025
 EMAIL_HOST = 'localhost'
 EMAIL_HOST_PASSWORD = ''
-EMAIL_PORT = 1025
+EMAIL_PORT = 25
 EMAIL_USE_TLS = False
 
 #######################################################################
