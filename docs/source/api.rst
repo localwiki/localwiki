@@ -30,6 +30,12 @@ For instance, ``Accept: application/vnd.api.v1+json`` will request
 version 1 of the API.
 
 
+API formats
+===========
+
+This documentation gives examples in ``json``.  However, the API also supports the ``xml``, ``yaml``, ``jsonp``, and ``plist`` (binary plist) formats.  The ``jsonp`` format takes an optional ``callback`` querystring.
+
+
 API structure
 ==============
 
@@ -253,7 +259,7 @@ Fetch
 Create
 ------
 
-To create a new map, POST a JSON document containing at least a ``geom`` attribute and a ``page`` attribute.  ``geom`` should be a GeoJSON GeometryCollection and ``page`` should be an api-relative URI of a ``page`` resource.  Instead of providing the ``geom`` attribute you may instead provide one or more of the ``points``, ``lines`` and ``polys`` properties.
+To create a new map, POST a JSON document containing at least a ``geom`` attribute and a ``page`` attribute.  ``geom`` should be a GeoJSON GeometryCollection and ``page`` should be an api-relative URI of a ``page`` resource.  Instead of providing the ``geom`` attribute you may instead provide one or more of the ``points`` (MultiPoint), ``lines`` (MultiLineString) and ``polys`` (MultiPolygon) properties.
 
 Update
 ------
@@ -265,6 +271,137 @@ Delete
 ------
 
 To delete an existing map, issue a DELETE to /api/map/[pagename].
+
+
+Tags
+====
+
+Tags are simple keywords associated with pages.  With tags, there are
+two resources you'll be interested in using:  ``tag`` and
+``page_tags``.  The ``tag`` resource represents the global *tag*
+that may be used on many different pages.  ``page_tags`` are the tags
+associated with a particular page.
+
+A ``tag`` is represented by a ``name`` and a ``slug`` (name without
+spaces and other characters).
+
+Example Tag object:
+
+.. code-block:: javascript
+
+    {
+        "id": 71, 
+        "name": "coffee shop", 
+        "resource_uri": "/api/tag/coffeeshop/", 
+        "slug": "coffeeshop"
+    }
+
+Schema
+------
+
+::
+
+    http://localhost:8000/api/tag/schema/
+
+List
+----
+
+::
+
+    http://localhost:8000/api/tag/
+
+Fetch
+-----
+
+::
+
+    http://localhost:8000/api/tag/[slug]/
+
+Create
+------
+
+To create a new ``tag``, POST a JSON document containing at least a
+``slug`` attribute to /api/tag/.
+
+Update
+------
+
+You cannot currently update a tag.
+
+
+Delete
+------
+
+You cannot currently delete a tag.
+
+Page Tags
+=========
+
+``page_tags`` are the particular set of ``tags`` associated with a given
+``page``.
+
+A ``page_tags`` resource is represented by a ``page`` API URI and a ``tags``
+attribute, which is a list of ``tag`` URIs.
+
+Example PageTags object:
+
+.. code-block:: javascript
+
+    {
+        "id": 2, 
+        "page": "/api/page/Lake_Ella", 
+        "resource_uri": "/api/page_tags/Lake_Ella", 
+        "tags": [
+            "/api/tag/lakes/", 
+            "/api/tag/parks/", 
+            "/api/tag/recreation/"
+        ]
+    }
+
+
+Schema
+------
+
+::
+
+    http://localhost:8000/api/page_tags/schema/
+
+List
+----
+
+::
+
+    http://localhost:8000/api/page_tags/
+
+Fetch
+-----
+
+::
+
+    http://localhost:8000/api/page_tags/[pagename]
+
+Create
+------
+
+To create a new ``page_tags`` set, POST a JSON document containing at least a
+``page`` attribute (path to a ``page`` resource) and a ``tags``
+attribute (a list of paths to ``tag`` resources).
+
+**Note** that all the ``tag`` resources you specify **must already exist**.
+If they don't exist yet you'll want to create them first with a POST to
+the ``tag`` endpoint.
+
+Update
+------
+
+To update an existing ``page_tags`` set, PUT a JSON document all the
+resource attributes to /api/page_tags/[pagename].
+
+Delete
+------
+
+To delete a ``page_tags`` set, issue a DELETE to
+/api/page_tags/[pagename].
 
 
 Contents:
