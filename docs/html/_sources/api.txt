@@ -30,19 +30,29 @@ For instance, ``Accept: application/vnd.api.v1+json`` will request
 version 1 of the API.
 
 
-API formats
-===========
+Formats
+=======
 
 This documentation gives examples in ``json``.  However, the API also supports the ``xml``, ``yaml``, ``jsonp``, and ``plist`` (binary plist) formats.  The ``jsonp`` format takes an optional ``callback`` querystring.
 
 
-API structure
-==============
+API Examples
+============
 
-blah blah REST self-describing.
+To get a handle on how to interact with the API, and how to
+use the filtering system, see the `api examples <api_examples>`_.
+
+.. toctree::
+   :maxdepth: 1
+
+   api_examples
+
+
+Resources
+=========
 
 Site
-====
+----
 
 The Site object can be queried to retrieve information about the LocalWiki instance.
 
@@ -62,21 +72,21 @@ Example Site object:
         }
 
 Schema
-------
+~~~~~~
 
 ::
 
     http://localhost:8000/api/site/schema/
 
 List
-----
+~~~~~~
 
 ::
 
     http://localhost:8000/api/site/
 
 Fetch
------
+~~~~~~
 
 ::
 
@@ -84,7 +94,7 @@ Fetch
 
 
 Users
-=====
+-----
 
 User objects can be queried to retrieve information about LocalWiki users. Emails, passwords, etc are not included in responses.
 
@@ -102,21 +112,21 @@ Example User object:
 
 
 Schema
-------
+~~~~~~
 
 ::
 
     http://localhost:8000/api/user/schema/
 
 List
-----
+~~~~
 
 ::
 
     http://localhost:8000/api/user/
 
 Fetch
------
+~~~~~
 
 ::
 
@@ -125,7 +135,7 @@ Fetch
 
 
 Pages
-=====
+-----
 
 Pages are the base objects in a LocalWiki.  Pages contain, among other
 things, a ``content`` field consisting of a special subset of HTML5
@@ -146,60 +156,57 @@ Example Page object:
     }
 
 Schema
-------
+~~~~~~
 
 ::
 
     http://localhost:8000/api/page/schema/
 
 List
-----
+~~~~
 
 ::
 
     http://localhost:8000/api/page/
 
 Fetch
------
+~~~~~
 
 ::
 
     http://localhost:8000/api/page/[name]
 
 Create
-------
+~~~~~~
 
 To create a new page, POST a JSON document containing at least the ``name`` and ``content`` properties to /api/page/. Other properties such as ``map`` may also be set.
 
 
 Update
-------
+~~~~~~
 
 To update an existing page, PUT a JSON document containing all the resource attributes to /api/page/[name].  You may also update a single field in a page by issuing a PATCH to /api/page/[name] with just the relevant field (e.g. ``content``).
 
 
 Delete
-------
+~~~~~~
 
 To delete an existing page, issue a DELETE to /api/page/[name].
 
 
 Maps
-====
+----
 
 Maps are collections of geographic data that are associated with a given
 page.  Maps contain ``points``, ``lines``, and ``polys`` fields, each
-containing GeoJSON (or an XML/format-specific equivalent).  Maps also
-contain a ``length`` field, which you do not need to manually provide
-when issuing POSTs.
+containing `GeoJSON <http://en.wikipedia.org/wiki/GeoJSON>`_
+(or an XML/format-specific equivalent).  Maps also contain a ``length``
+field, which you do not need to manually provide when issuing POSTs.
 
 The ``geom`` field is a collection of the
 ``points``, ``lines`` and ``polys`` fields.  Sometimes it's convient to
-use this all-in-one field, though the ``geom`` field is limited in that
-we cannot filter on it.
-
-For more information on GeoJSON see
-`the wikipedia page <http://en.wikipedia.org/wiki/GeoJSON>`_.
+use this all-in-one field, though we cannot filter using the ``geom``
+field.
 
 Example Map object:
 
@@ -236,45 +243,45 @@ Example Map object:
     }
 
 Schema
-------
+~~~~~~
 
 ::
 
     http://localhost:8000/api/map/schema/
 
 List
-----
+~~~~
 
 ::
 
     http://localhost:8000/api/map/
 
 Fetch
------
+~~~~~
 
 ::
 
     http://localhost:8000/api/map/[pagename]
 
 Create
-------
+~~~~~~
 
-To create a new map, POST a JSON document containing at least a ``geom`` attribute and a ``page`` attribute.  ``geom`` should be a GeoJSON GeometryCollection and ``page`` should be an api-relative URI of a ``page`` resource.  Instead of providing the ``geom`` attribute you may instead provide one or more of the ``points`` (MultiPoint), ``lines`` (MultiLineString) and ``polys`` (MultiPolygon) properties.
+To create a new map, POST a JSON document containing at least a ``geom`` attribute and a ``page`` attribute.  ``geom`` should be a `GeoJSON GeometryCollection <http://geojson.org/geojson-spec.html>`_ and ``page`` should be an api-relative URI of a ``page`` resource.  Instead of providing the ``geom`` attribute you may instead provide one or more of the ``points`` (MultiPoint), ``lines`` (MultiLineString) and ``polys`` (MultiPolygon) properties.
 
 Update
-------
+~~~~~~
 
 To update an existing map, PUT a JSON document containing all the resource attributes to /api/map/[pagename].  You may also update a single field in a page by issuing a PATCH to /api/map/[pagename] with just the relevant field (e.g. ``points``).
 
 
 Delete
-------
+~~~~~~
 
 To delete an existing map, issue a DELETE to /api/map/[pagename].
 
 
 Tags
-====
+----
 
 Tags are simple keywords associated with pages.  With tags, there are
 two resources you'll be interested in using:  ``tag`` and
@@ -297,45 +304,45 @@ Example Tag object:
     }
 
 Schema
-------
+~~~~~~
 
 ::
 
     http://localhost:8000/api/tag/schema/
 
 List
-----
+~~~~
 
 ::
 
     http://localhost:8000/api/tag/
 
 Fetch
------
+~~~~~
 
 ::
 
     http://localhost:8000/api/tag/[slug]/
 
 Create
-------
+~~~~~~
 
 To create a new ``tag``, POST a JSON document containing at least a
 ``slug`` attribute to /api/tag/.
 
 Update
-------
+~~~~~~
 
 You cannot currently update a tag.
 
 
 Delete
-------
+~~~~~~
 
 You cannot currently delete a tag.
 
 Page Tags
-=========
+---------
 
 ``page_tags`` are the particular set of ``tags`` associated with a given
 ``page``.
@@ -360,28 +367,28 @@ Example PageTags object:
 
 
 Schema
-------
+~~~~~~
 
 ::
 
     http://localhost:8000/api/page_tags/schema/
 
 List
-----
+~~~~
 
 ::
 
     http://localhost:8000/api/page_tags/
 
 Fetch
------
+~~~~~
 
 ::
 
     http://localhost:8000/api/page_tags/[pagename]
 
 Create
-------
+~~~~~~
 
 To create a new ``page_tags`` set, POST a JSON document containing at least a
 ``page`` attribute (path to a ``page`` resource) and a ``tags``
@@ -392,21 +399,18 @@ If they don't exist yet you'll want to create them first with a POST to
 the ``tag`` endpoint.
 
 Update
-------
+~~~~~~
 
 To update an existing ``page_tags`` set, PUT a JSON document all the
 resource attributes to /api/page_tags/[pagename].
 
+**Note** that all the ``tag`` resources you specify **must already exist**.
+If they don't exist yet you'll want to create them first with a POST to
+the ``tag`` endpoint.
+
 Delete
-------
+~~~~~~
 
 To delete a ``page_tags`` set, issue a DELETE to
 /api/page_tags/[pagename].
 
-
-Contents:
-
-.. toctree::
-   :maxdepth: 1
-
-   api_examples

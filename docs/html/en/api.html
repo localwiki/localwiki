@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="LocalWiki 0.3 documentation" href="index.html" />
-    <link rel="next" title="Examples" href="api_examples.html" />
+    <link rel="next" title="API Examples" href="api_examples.html" />
     <link rel="prev" title="Advanced topics" href="advanced.html" /> 
   </head>
   <body>
@@ -37,7 +37,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="api_examples.html" title="Examples"
+          <a href="api_examples.html" title="API Examples"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="advanced.html" title="Advanced topics"
@@ -74,16 +74,24 @@ API by sending an <tt class="docutils literal"><span class="pre">Accept</span></
 For instance, <tt class="docutils literal"><span class="pre">Accept:</span> <span class="pre">application/vnd.api.v1+json</span></tt> will request
 version 1 of the API.</p>
 </div>
-<div class="section" id="api-formats">
-<h2>API formats<a class="headerlink" href="#api-formats" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="formats">
+<h2>Formats<a class="headerlink" href="#formats" title="Permalink to this headline">¶</a></h2>
 <p>This documentation gives examples in <tt class="docutils literal"><span class="pre">json</span></tt>.  However, the API also supports the <tt class="docutils literal"><span class="pre">xml</span></tt>, <tt class="docutils literal"><span class="pre">yaml</span></tt>, <tt class="docutils literal"><span class="pre">jsonp</span></tt>, and <tt class="docutils literal"><span class="pre">plist</span></tt> (binary plist) formats.  The <tt class="docutils literal"><span class="pre">jsonp</span></tt> format takes an optional <tt class="docutils literal"><span class="pre">callback</span></tt> querystring.</p>
 </div>
-<div class="section" id="api-structure">
-<h2>API structure<a class="headerlink" href="#api-structure" title="Permalink to this headline">¶</a></h2>
-<p>blah blah REST self-describing.</p>
+<div class="section" id="api-examples">
+<h2>API Examples<a class="headerlink" href="#api-examples" title="Permalink to this headline">¶</a></h2>
+<p>To get a handle on how to interact with the API, and how to
+use the filtering system, see the <a class="reference external" href="api_examples">api examples</a>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api_examples.html">API Examples</a></li>
+</ul>
 </div>
+</div>
+<div class="section" id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="site">
-<h2>Site<a class="headerlink" href="#site" title="Permalink to this headline">¶</a></h2>
+<h3>Site<a class="headerlink" href="#site" title="Permalink to this headline">¶</a></h3>
 <p>The Site object can be queried to retrieve information about the LocalWiki instance.</p>
 <p>Example Site object:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
@@ -99,23 +107,23 @@ version 1 of the API.</p>
 </pre></div>
 </div>
 <div class="section" id="schema">
-<h3>Schema<a class="headerlink" href="#schema" title="Permalink to this headline">¶</a></h3>
+<h4>Schema<a class="headerlink" href="#schema" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/site/schema/</pre>
 </div>
 </div>
 <div class="section" id="list">
-<h3>List<a class="headerlink" href="#list" title="Permalink to this headline">¶</a></h3>
+<h4>List<a class="headerlink" href="#list" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/site/</pre>
 </div>
 </div>
 <div class="section" id="fetch">
-<h3>Fetch<a class="headerlink" href="#fetch" title="Permalink to this headline">¶</a></h3>
+<h4>Fetch<a class="headerlink" href="#fetch" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/site/[id]/</pre>
 </div>
 </div>
 </div>
 <div class="section" id="users">
-<h2>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
+<h3>Users<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h3>
 <p>User objects can be queried to retrieve information about LocalWiki users. Emails, passwords, etc are not included in responses.</p>
 <p>Example User object:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
@@ -127,24 +135,24 @@ version 1 of the API.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="section" id="id1">
-<h3>Schema<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h4>Schema<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/user/schema/</pre>
 </div>
 </div>
-<div class="section" id="id2">
-<h3>List<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id3">
+<h4>List<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/user/</pre>
 </div>
 </div>
-<div class="section" id="id3">
-<h3>Fetch<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id4">
+<h4>Fetch<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/user/[id]/</pre>
 </div>
 </div>
 </div>
 <div class="section" id="pages">
-<h2>Pages<a class="headerlink" href="#pages" title="Permalink to this headline">¶</a></h2>
+<h3>Pages<a class="headerlink" href="#pages" title="Permalink to this headline">¶</a></h3>
 <p>Pages are the base objects in a LocalWiki.  Pages contain, among other
 things, a <tt class="docutils literal"><span class="pre">content</span></tt> field consisting of a special subset of HTML5
 markup.</p>
@@ -160,47 +168,45 @@ markup.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="section" id="id4">
-<h3>Schema<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h4>Schema<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/page/schema/</pre>
 </div>
 </div>
-<div class="section" id="id5">
-<h3>List<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h4>List<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/page/</pre>
 </div>
 </div>
-<div class="section" id="id6">
-<h3>Fetch<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h4>Fetch<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/page/[name]</pre>
 </div>
 </div>
 <div class="section" id="create">
-<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
+<h4>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h4>
 <p>To create a new page, POST a JSON document containing at least the <tt class="docutils literal"><span class="pre">name</span></tt> and <tt class="docutils literal"><span class="pre">content</span></tt> properties to /api/page/. Other properties such as <tt class="docutils literal"><span class="pre">map</span></tt> may also be set.</p>
 </div>
 <div class="section" id="update">
-<h3>Update<a class="headerlink" href="#update" title="Permalink to this headline">¶</a></h3>
+<h4>Update<a class="headerlink" href="#update" title="Permalink to this headline">¶</a></h4>
 <p>To update an existing page, PUT a JSON document containing all the resource attributes to /api/page/[name].  You may also update a single field in a page by issuing a PATCH to /api/page/[name] with just the relevant field (e.g. <tt class="docutils literal"><span class="pre">content</span></tt>).</p>
 </div>
 <div class="section" id="delete">
-<h3>Delete<a class="headerlink" href="#delete" title="Permalink to this headline">¶</a></h3>
+<h4>Delete<a class="headerlink" href="#delete" title="Permalink to this headline">¶</a></h4>
 <p>To delete an existing page, issue a DELETE to /api/page/[name].</p>
 </div>
 </div>
 <div class="section" id="maps">
-<h2>Maps<a class="headerlink" href="#maps" title="Permalink to this headline">¶</a></h2>
+<h3>Maps<a class="headerlink" href="#maps" title="Permalink to this headline">¶</a></h3>
 <p>Maps are collections of geographic data that are associated with a given
 page.  Maps contain <tt class="docutils literal"><span class="pre">points</span></tt>, <tt class="docutils literal"><span class="pre">lines</span></tt>, and <tt class="docutils literal"><span class="pre">polys</span></tt> fields, each
-containing GeoJSON (or an XML/format-specific equivalent).  Maps also
-contain a <tt class="docutils literal"><span class="pre">length</span></tt> field, which you do not need to manually provide
-when issuing POSTs.</p>
+containing <a class="reference external" href="http://en.wikipedia.org/wiki/GeoJSON">GeoJSON</a>
+(or an XML/format-specific equivalent).  Maps also contain a <tt class="docutils literal"><span class="pre">length</span></tt>
+field, which you do not need to manually provide when issuing POSTs.</p>
 <p>The <tt class="docutils literal"><span class="pre">geom</span></tt> field is a collection of the
 <tt class="docutils literal"><span class="pre">points</span></tt>, <tt class="docutils literal"><span class="pre">lines</span></tt> and <tt class="docutils literal"><span class="pre">polys</span></tt> fields.  Sometimes it&#8217;s convient to
-use this all-in-one field, though the <tt class="docutils literal"><span class="pre">geom</span></tt> field is limited in that
-we cannot filter on it.</p>
-<p>For more information on GeoJSON see
-<a class="reference external" href="http://en.wikipedia.org/wiki/GeoJSON">the wikipedia page</a>.</p>
+use this all-in-one field, though we cannot filter using the <tt class="docutils literal"><span class="pre">geom</span></tt>
+field.</p>
 <p>Example Map object:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
     <span class="s2">&quot;geom&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -233,36 +239,36 @@ we cannot filter on it.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="section" id="id7">
-<h3>Schema<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h4>Schema<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/map/schema/</pre>
 </div>
 </div>
-<div class="section" id="id8">
-<h3>List<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h4>List<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/map/</pre>
 </div>
 </div>
-<div class="section" id="id9">
-<h3>Fetch<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<h4>Fetch<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/map/[pagename]</pre>
 </div>
 </div>
-<div class="section" id="id10">
-<h3>Create<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
-<p>To create a new map, POST a JSON document containing at least a <tt class="docutils literal"><span class="pre">geom</span></tt> attribute and a <tt class="docutils literal"><span class="pre">page</span></tt> attribute.  <tt class="docutils literal"><span class="pre">geom</span></tt> should be a GeoJSON GeometryCollection and <tt class="docutils literal"><span class="pre">page</span></tt> should be an api-relative URI of a <tt class="docutils literal"><span class="pre">page</span></tt> resource.  Instead of providing the <tt class="docutils literal"><span class="pre">geom</span></tt> attribute you may instead provide one or more of the <tt class="docutils literal"><span class="pre">points</span></tt> (MultiPoint), <tt class="docutils literal"><span class="pre">lines</span></tt> (MultiLineString) and <tt class="docutils literal"><span class="pre">polys</span></tt> (MultiPolygon) properties.</p>
-</div>
 <div class="section" id="id11">
-<h3>Update<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
-<p>To update an existing map, PUT a JSON document containing all the resource attributes to /api/map/[pagename].  You may also update a single field in a page by issuing a PATCH to /api/map/[pagename] with just the relevant field (e.g. <tt class="docutils literal"><span class="pre">points</span></tt>).</p>
+<h4>Create<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
+<p>To create a new map, POST a JSON document containing at least a <tt class="docutils literal"><span class="pre">geom</span></tt> attribute and a <tt class="docutils literal"><span class="pre">page</span></tt> attribute.  <tt class="docutils literal"><span class="pre">geom</span></tt> should be a <a class="reference external" href="http://geojson.org/geojson-spec.html">GeoJSON GeometryCollection</a> and <tt class="docutils literal"><span class="pre">page</span></tt> should be an api-relative URI of a <tt class="docutils literal"><span class="pre">page</span></tt> resource.  Instead of providing the <tt class="docutils literal"><span class="pre">geom</span></tt> attribute you may instead provide one or more of the <tt class="docutils literal"><span class="pre">points</span></tt> (MultiPoint), <tt class="docutils literal"><span class="pre">lines</span></tt> (MultiLineString) and <tt class="docutils literal"><span class="pre">polys</span></tt> (MultiPolygon) properties.</p>
 </div>
 <div class="section" id="id12">
-<h3>Delete<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<h4>Update<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
+<p>To update an existing map, PUT a JSON document containing all the resource attributes to /api/map/[pagename].  You may also update a single field in a page by issuing a PATCH to /api/map/[pagename] with just the relevant field (e.g. <tt class="docutils literal"><span class="pre">points</span></tt>).</p>
+</div>
+<div class="section" id="id13">
+<h4>Delete<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h4>
 <p>To delete an existing map, issue a DELETE to /api/map/[pagename].</p>
 </div>
 </div>
 <div class="section" id="tags">
-<h2>Tags<a class="headerlink" href="#tags" title="Permalink to this headline">¶</a></h2>
+<h3>Tags<a class="headerlink" href="#tags" title="Permalink to this headline">¶</a></h3>
 <p>Tags are simple keywords associated with pages.  With tags, there are
 two resources you&#8217;ll be interested in using:  <tt class="docutils literal"><span class="pre">tag</span></tt> and
 <tt class="docutils literal"><span class="pre">page_tags</span></tt>.  The <tt class="docutils literal"><span class="pre">tag</span></tt> resource represents the global <em>tag</em>
@@ -279,37 +285,37 @@ spaces and other characters).</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="section" id="id13">
-<h3>Schema<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id14">
+<h4>Schema<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/tag/schema/</pre>
 </div>
 </div>
-<div class="section" id="id14">
-<h3>List<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id15">
+<h4>List<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/tag/</pre>
 </div>
 </div>
-<div class="section" id="id15">
-<h3>Fetch<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id16">
+<h4>Fetch<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/tag/[slug]/</pre>
 </div>
 </div>
-<div class="section" id="id16">
-<h3>Create<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id17">
+<h4>Create<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h4>
 <p>To create a new <tt class="docutils literal"><span class="pre">tag</span></tt>, POST a JSON document containing at least a
 <tt class="docutils literal"><span class="pre">slug</span></tt> attribute to /api/tag/.</p>
 </div>
-<div class="section" id="id17">
-<h3>Update<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id18">
+<h4>Update<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h4>
 <p>You cannot currently update a tag.</p>
 </div>
-<div class="section" id="id18">
-<h3>Delete<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id19">
+<h4>Delete<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h4>
 <p>You cannot currently delete a tag.</p>
 </div>
 </div>
 <div class="section" id="page-tags">
-<h2>Page Tags<a class="headerlink" href="#page-tags" title="Permalink to this headline">¶</a></h2>
+<h3>Page Tags<a class="headerlink" href="#page-tags" title="Permalink to this headline">¶</a></h3>
 <p><tt class="docutils literal"><span class="pre">page_tags</span></tt> are the particular set of <tt class="docutils literal"><span class="pre">tags</span></tt> associated with a given
 <tt class="docutils literal"><span class="pre">page</span></tt>.</p>
 <p>A <tt class="docutils literal"><span class="pre">page_tags</span></tt> resource is represented by a <tt class="docutils literal"><span class="pre">page</span></tt> API URI and a <tt class="docutils literal"><span class="pre">tags</span></tt>
@@ -327,23 +333,23 @@ attribute, which is a list of <tt class="docutils literal"><span class="pre">tag
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="section" id="id19">
-<h3>Schema<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id20">
+<h4>Schema<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/page_tags/schema/</pre>
 </div>
 </div>
-<div class="section" id="id20">
-<h3>List<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id21">
+<h4>List<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/page_tags/</pre>
 </div>
 </div>
-<div class="section" id="id21">
-<h3>Fetch<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id22">
+<h4>Fetch<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python"><pre>http://localhost:8000/api/page_tags/[pagename]</pre>
 </div>
 </div>
-<div class="section" id="id22">
-<h3>Create<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id23">
+<h4>Create<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h4>
 <p>To create a new <tt class="docutils literal"><span class="pre">page_tags</span></tt> set, POST a JSON document containing at least a
 <tt class="docutils literal"><span class="pre">page</span></tt> attribute (path to a <tt class="docutils literal"><span class="pre">page</span></tt> resource) and a <tt class="docutils literal"><span class="pre">tags</span></tt>
 attribute (a list of paths to <tt class="docutils literal"><span class="pre">tag</span></tt> resources).</p>
@@ -351,20 +357,18 @@ attribute (a list of paths to <tt class="docutils literal"><span class="pre">tag
 If they don&#8217;t exist yet you&#8217;ll want to create them first with a POST to
 the <tt class="docutils literal"><span class="pre">tag</span></tt> endpoint.</p>
 </div>
-<div class="section" id="id23">
-<h3>Update<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id24">
+<h4>Update<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h4>
 <p>To update an existing <tt class="docutils literal"><span class="pre">page_tags</span></tt> set, PUT a JSON document all the
 resource attributes to /api/page_tags/[pagename].</p>
+<p><strong>Note</strong> that all the <tt class="docutils literal"><span class="pre">tag</span></tt> resources you specify <strong>must already exist</strong>.
+If they don&#8217;t exist yet you&#8217;ll want to create them first with a POST to
+the <tt class="docutils literal"><span class="pre">tag</span></tt> endpoint.</p>
 </div>
-<div class="section" id="id24">
-<h3>Delete<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id25">
+<h4>Delete<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h4>
 <p>To delete a <tt class="docutils literal"><span class="pre">page_tags</span></tt> set, issue a DELETE to
 /api/page_tags/[pagename].</p>
-<p>Contents:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="api_examples.html">Examples</a></li>
-</ul>
 </div>
 </div>
 </div>
@@ -380,8 +384,11 @@ resource attributes to /api/page_tags/[pagename].</p>
   <ul>
 <li><a class="reference internal" href="#">API Documentation</a><ul>
 <li><a class="reference internal" href="#api-versioning">API versioning</a></li>
-<li><a class="reference internal" href="#api-formats">API formats</a></li>
-<li><a class="reference internal" href="#api-structure">API structure</a></li>
+<li><a class="reference internal" href="#formats">Formats</a></li>
+<li><a class="reference internal" href="#api-examples">API Examples</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#resources">Resources</a><ul>
 <li><a class="reference internal" href="#site">Site</a><ul>
 <li><a class="reference internal" href="#schema">Schema</a></li>
 <li><a class="reference internal" href="#list">List</a></li>
@@ -389,45 +396,45 @@ resource attributes to /api/page_tags/[pagename].</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#users">Users</a><ul>
-<li><a class="reference internal" href="#id1">Schema</a></li>
-<li><a class="reference internal" href="#id2">List</a></li>
-<li><a class="reference internal" href="#id3">Fetch</a></li>
+<li><a class="reference internal" href="#id2">Schema</a></li>
+<li><a class="reference internal" href="#id3">List</a></li>
+<li><a class="reference internal" href="#id4">Fetch</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#pages">Pages</a><ul>
-<li><a class="reference internal" href="#id4">Schema</a></li>
-<li><a class="reference internal" href="#id5">List</a></li>
-<li><a class="reference internal" href="#id6">Fetch</a></li>
+<li><a class="reference internal" href="#id5">Schema</a></li>
+<li><a class="reference internal" href="#id6">List</a></li>
+<li><a class="reference internal" href="#id7">Fetch</a></li>
 <li><a class="reference internal" href="#create">Create</a></li>
 <li><a class="reference internal" href="#update">Update</a></li>
 <li><a class="reference internal" href="#delete">Delete</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#maps">Maps</a><ul>
-<li><a class="reference internal" href="#id7">Schema</a></li>
-<li><a class="reference internal" href="#id8">List</a></li>
-<li><a class="reference internal" href="#id9">Fetch</a></li>
-<li><a class="reference internal" href="#id10">Create</a></li>
-<li><a class="reference internal" href="#id11">Update</a></li>
-<li><a class="reference internal" href="#id12">Delete</a></li>
+<li><a class="reference internal" href="#id8">Schema</a></li>
+<li><a class="reference internal" href="#id9">List</a></li>
+<li><a class="reference internal" href="#id10">Fetch</a></li>
+<li><a class="reference internal" href="#id11">Create</a></li>
+<li><a class="reference internal" href="#id12">Update</a></li>
+<li><a class="reference internal" href="#id13">Delete</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#tags">Tags</a><ul>
-<li><a class="reference internal" href="#id13">Schema</a></li>
-<li><a class="reference internal" href="#id14">List</a></li>
-<li><a class="reference internal" href="#id15">Fetch</a></li>
-<li><a class="reference internal" href="#id16">Create</a></li>
-<li><a class="reference internal" href="#id17">Update</a></li>
-<li><a class="reference internal" href="#id18">Delete</a></li>
+<li><a class="reference internal" href="#id14">Schema</a></li>
+<li><a class="reference internal" href="#id15">List</a></li>
+<li><a class="reference internal" href="#id16">Fetch</a></li>
+<li><a class="reference internal" href="#id17">Create</a></li>
+<li><a class="reference internal" href="#id18">Update</a></li>
+<li><a class="reference internal" href="#id19">Delete</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#page-tags">Page Tags</a><ul>
-<li><a class="reference internal" href="#id19">Schema</a></li>
-<li><a class="reference internal" href="#id20">List</a></li>
-<li><a class="reference internal" href="#id21">Fetch</a></li>
-<li><a class="reference internal" href="#id22">Create</a></li>
-<li><a class="reference internal" href="#id23">Update</a></li>
-<li><a class="reference internal" href="#id24">Delete</a><ul>
+<li><a class="reference internal" href="#id20">Schema</a></li>
+<li><a class="reference internal" href="#id21">List</a></li>
+<li><a class="reference internal" href="#id22">Fetch</a></li>
+<li><a class="reference internal" href="#id23">Create</a></li>
+<li><a class="reference internal" href="#id24">Update</a></li>
+<li><a class="reference internal" href="#id25">Delete</a></li>
 </ul>
 </li>
 </ul>
@@ -441,7 +448,7 @@ resource attributes to /api/page_tags/[pagename].</p>
                         title="previous chapter">Advanced topics</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="api_examples.html"
-                        title="next chapter">Examples</a></p>
+                        title="next chapter">API Examples</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/api.txt"
@@ -471,7 +478,7 @@ resource attributes to /api/page_tags/[pagename].</p>
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="api_examples.html" title="Examples"
+          <a href="api_examples.html" title="API Examples"
              >next</a> |</li>
         <li class="right" >
           <a href="advanced.html" title="Advanced topics"
