@@ -435,6 +435,6 @@ but also has version-related fields.  These version-related fields are:
       * ``6`` - Reverted/Deleted
       * ``7`` - Reverted/Deleted via cascade
       * ``8`` - Reverted via cascade
-
+    * ``history_user`` - the user who made the change. If this is ``null`` then this edit was made while not logged in.
     * ``history_user_ip`` - the IP address of the user who made the change
     * ``history_id`` - not really useful, you should feel free to ignore this. This is the per-resource-class (not instance) history id.
