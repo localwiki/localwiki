@@ -371,6 +371,32 @@ the <tt class="docutils literal"><span class="pre">tag</span></tt> endpoint.</p>
 /api/page_tags/[pagename].</p>
 </div>
 </div>
+<div class="section" id="historical-resources">
+<h3>Historical resources<a class="headerlink" href="#historical-resources" title="Permalink to this headline">¶</a></h3>
+<p>All versioned resources have a corresponding <tt class="docutils literal"><span class="pre">*_version</span></tt>
+resource.  This resource has all of the fields of the original resource
+but also has version-related fields.  These version-related fields are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">history_comment</span></tt> - the comment made by the user when the resource was saved.</li>
+<li><tt class="docutils literal"><span class="pre">history_date</span></tt> - the date the resource was saved.  In <a class="reference external" href="http://en.wikipedia.org/wiki/ISO_8601">ISO-8601 format</a>.</li>
+<li><tt class="docutils literal"><span class="pre">history_type</span></tt> - the <em>type</em> of change that was made.  Valid options are:<ul>
+<li><tt class="docutils literal"><span class="pre">0</span></tt> - Added</li>
+<li><tt class="docutils literal"><span class="pre">1</span></tt> - Updated</li>
+<li><tt class="docutils literal"><span class="pre">2</span></tt> - Deleted</li>
+<li><tt class="docutils literal"><span class="pre">3</span></tt> - Deleted through a foreign key cascade</li>
+<li><tt class="docutils literal"><span class="pre">4</span></tt> - Reverted</li>
+<li><tt class="docutils literal"><span class="pre">5</span></tt> - Reverted/Added</li>
+<li><tt class="docutils literal"><span class="pre">6</span></tt> - Reverted/Deleted</li>
+<li><tt class="docutils literal"><span class="pre">7</span></tt> - Reverted/Deleted via cascade</li>
+<li><tt class="docutils literal"><span class="pre">8</span></tt> - Reverted via cascade</li>
+</ul>
+</li>
+<li><tt class="docutils literal"><span class="pre">history_user_ip</span></tt> - the IP address of the user who made the change</li>
+<li><tt class="docutils literal"><span class="pre">history_id</span></tt> - not really useful, you should feel free to ignore this. This is the per-resource-class (not instance) history id.</li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 </div>
 
@@ -437,6 +463,7 @@ the <tt class="docutils literal"><span class="pre">tag</span></tt> endpoint.</p>
 <li><a class="reference internal" href="#id25">Delete</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#historical-resources">Historical resources</a></li>
 </ul>
 </li>
 </ul>

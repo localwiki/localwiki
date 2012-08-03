@@ -414,3 +414,27 @@ Delete
 To delete a ``page_tags`` set, issue a DELETE to
 /api/page_tags/[pagename].
 
+
+Historical resources
+--------------------
+
+All versioned resources have a corresponding ``*_version``
+resource.  This resource has all of the fields of the original resource
+but also has version-related fields.  These version-related fields are:
+
+    * ``history_comment`` - the comment made by the user when the resource was saved.
+    * ``history_date`` - the date the resource was saved.  In `ISO-8601 format <http://en.wikipedia.org/wiki/ISO_8601>`_.
+    * ``history_type`` - the *type* of change that was made.  Valid options are:
+
+      * ``0`` - Added
+      * ``1`` - Updated
+      * ``2`` - Deleted
+      * ``3`` - Deleted through a foreign key cascade
+      * ``4`` - Reverted
+      * ``5`` - Reverted/Added
+      * ``6`` - Reverted/Deleted
+      * ``7`` - Reverted/Deleted via cascade
+      * ``8`` - Reverted via cascade
+
+    * ``history_user_ip`` - the IP address of the user who made the change
+    * ``history_id`` - not really useful, you should feel free to ignore this. This is the per-resource-class (not instance) history id.
