@@ -9,6 +9,7 @@ from tastypie.utils import trailing_slash
 
 from pages.models import Page, PageFile, name_to_url, url_to_name
 from sapling.api import api
+from sapling.api.resources import ModelHistoryResource
 from sapling.api.authentication import ApiKeyWriteAuthentication
 
 
@@ -75,7 +76,7 @@ class FileResource(ModelResource):
         authorization = DjangoAuthorization()
 
 
-class FileHistoryResource(FileResource):
+class FileHistoryResource(FileResource, ModelHistoryResource):
     class Meta:
         resource_name = 'file_version'
         queryset = PageFile.versions.all()
@@ -152,7 +153,7 @@ class PageResource(PageURLMixin, ModelResource):
 # too complicated to generate pretty URLs with the historical version
 # identifiers. TODO: Fix this. Maybe easier now with
 # `detail_uri_name`
-class PageHistoryResource(ModelResource):
+class PageHistoryResource(ModelHistoryResource):
     class Meta:
         resource_name = 'page_version'
         queryset = Page.versions.all()

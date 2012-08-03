@@ -5,6 +5,7 @@ from tastypie.constants import ALL_WITH_RELATIONS
 from models import Tag, PageTagSet
 import pages
 from sapling.api import api
+from sapling.resources import ModelHistoryResource
 from sapling.api.authentication import ApiKeyWriteAuthentication
 from sapling.api.authorization import ExtendedDjangoAuthorization
 
@@ -56,7 +57,7 @@ class PageTagSetResource(pages.api.PageURLMixin, ModelResource):
 # to generate pretty URLs with the historical version identifers.
 # TODO: Fix this. Maybe easier now with `detail_uri_name` and the uri prep
 # method.
-class PageTagSetHistoryResource(ModelResource):
+class PageTagSetHistoryResource(ModelHistoryResource):
     page = fields.ToOneField(pages.api.PageHistoryResource, 'page')
     tags = fields.ToManyField(TagResource, 'tags')
 
