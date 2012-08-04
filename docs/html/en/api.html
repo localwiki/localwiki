@@ -55,8 +55,7 @@
 <h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
 <p>LocalWiki provides a RESTful, read/write API with advanced geospatial
 capabilities.  Reading (using <tt class="docutils literal"><span class="pre">GET</span></tt> requests) is allowed for all users,
-but to write (<tt class="docutils literal"><span class="pre">POST</span></tt>, <tt class="docutils literal"><span class="pre">PUT</span></tt>, <tt class="docutils literal"><span class="pre">PATCH</span></tt>, <tt class="docutils literal"><span class="pre">DELETE</span></tt>) you&#8217;ll need to generate an API
-key.</p>
+but to write (<tt class="docutils literal"><span class="pre">POST</span></tt>, <tt class="docutils literal"><span class="pre">PUT</span></tt>, <tt class="docutils literal"><span class="pre">PATCH</span></tt>, <tt class="docutils literal"><span class="pre">DELETE</span></tt>) you&#8217;ll need to <a class="reference internal" href="#apikey"><em>generate an API key</em></a>.</p>
 <p>The LocalWiki API follows the conventions of <a class="reference external" href="https://github.com/toastdriven/django-tastypie">Tastypie</a>.  If this documentation seems incomplete, refer to Tastypie&#8217;s page on <a class="reference external" href="http://django-tastypie.readthedocs.org/en/latest/interacting.html">Interacting with the API</a> to become familiar with the common idiom.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -399,6 +398,25 @@ but also has version-related fields.  These version-related fields are:</p>
 </div></blockquote>
 </div>
 </div>
+<div class="section" id="generating-an-api-key">
+<span id="apikey"></span><h2>Generating an API key<a class="headerlink" href="#generating-an-api-key" title="Permalink to this headline">¶</a></h2>
+<p>Currently, you&#8217;ll need to generate an API key before you can write to
+the API.  <strong>Be careful who you give an API key to</strong>, because there are
+currently no API limits in place.  To create or revoke an API key, simply
+visit the <a class="reference external" href="settings">administrative interface</a> and the &#8220;Api keys&#8221; area:</p>
+<div class="figure">
+<img alt="_images/admin_apikey_1.png" src="_images/admin_apikey_1.png" />
+</div>
+<p>and then click &#8220;Add api key&#8221; and fill out the form. Pick the user you&#8217;d
+like to have an API key, leave the &#8220;Key&#8221; field blank and save:</p>
+<div class="figure">
+<img alt="_images/admin_apikey_2.png" src="_images/admin_apikey_2.png" />
+</div>
+<p>then you can copy the created Key and pass it along to the user:</p>
+<div class="figure">
+<img alt="_images/admin_apikey_3.png" src="_images/admin_apikey_3.png" />
+</div>
+</div>
 </div>
 
 
@@ -467,6 +485,7 @@ but also has version-related fields.  These version-related fields are:</p>
 <li><a class="reference internal" href="#historical-resources">Historical resources</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#generating-an-api-key">Generating an API key</a></li>
 </ul>
 </li>
 </ul>

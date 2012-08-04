@@ -4,8 +4,7 @@ API Documentation
 
 LocalWiki provides a RESTful, read/write API with advanced geospatial
 capabilities.  Reading (using ``GET`` requests) is allowed for all users,
-but to write (``POST``, ``PUT``, ``PATCH``, ``DELETE``) you'll need to generate an API
-key.
+but to write (``POST``, ``PUT``, ``PATCH``, ``DELETE``) you'll need to :ref:`generate an API key <apikey>`.
 
 The LocalWiki API follows the conventions of `Tastypie <https://github.com/toastdriven/django-tastypie>`_.  If this documentation seems incomplete, refer to Tastypie's page on `Interacting with the API <http://django-tastypie.readthedocs.org/en/latest/interacting.html>`_ to become familiar with the common idiom.
 
@@ -438,3 +437,25 @@ but also has version-related fields.  These version-related fields are:
     * ``history_user`` - the user who made the change. If this is ``null`` then this edit was made while not logged in.
     * ``history_user_ip`` - the IP address of the user who made the change
     * ``history_id`` - not really useful, you should feel free to ignore this. This is the per-resource-class (not instance) history id.
+
+
+.. _apikey:
+
+Generating an API key
+=====================
+
+Currently, you'll need to generate an API key before you can write to
+the API.  **Be careful who you give an API key to**, because there are
+currently no API limits in place.  To create or revoke an API key, simply
+visit the `administrative interface <settings>`_ and the "Api keys" area:
+
+.. figure:: /_static/images/admin_apikey_1.png
+
+and then click "Add api key" and fill out the form. Pick the user you'd
+like to have an API key, leave the "Key" field blank and save:
+
+.. figure:: /_static/images/admin_apikey_2.png
+
+then you can copy the created Key and pass it along to the user:
+
+.. figure:: /_static/images/admin_apikey_3.png
