@@ -362,7 +362,8 @@ class EmbedCodeNode(Node):
     # We allow the iframe tag in embeds.
     allowed_tags.append('iframe')
     allowed_attributes['iframe'] = [
-        'allowfullscreen', 'width', 'height', 'src']
+        'allowfullscreen', 'width', 'height', 'src', 'style']
+    allowed_styles_map['iframe'] = ['width', 'height']
 
     def __init__(self, nodelist):
         self.nodelist = nodelist
