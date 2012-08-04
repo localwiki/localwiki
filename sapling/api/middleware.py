@@ -1,5 +1,6 @@
 import re
 
+from django.core.urlresolvers import reverse
 from django.utils.text import compress_string
 from django.utils.cache import patch_vary_headers
 
@@ -37,8 +38,9 @@ class XsSharing(object):
         if response.has_header('Access-Control-Allow-Origin'):
             return response
             
-        # Only set the CORS headers for the API.        
-        if request.path.find('api') == 1:
+        # Only set the CORS headers for the API.       
+        api_base = reverse('api', kwargs={'rest': ''}) 
+        if request.path.startswith(api_base):
             response['Access-Control-Allow-Origin']  = XS_SHARING_ALLOWED_ORIGINS 
             response['Access-Control-Allow-Methods'] = ",".join( XS_SHARING_ALLOWED_METHODS )
 
