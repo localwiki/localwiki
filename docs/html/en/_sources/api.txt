@@ -75,21 +75,21 @@ Schema
 
 ::
 
-    http://localhost:8000/api/site/schema/
+    /api/site/schema/
 
 List
 ~~~~~~
 
 ::
 
-    http://localhost:8000/api/site/
+    /api/site/
 
 Fetch
 ~~~~~~
 
 ::
 
-    http://localhost:8000/api/site/[id]/
+    /api/site/[id]/
 
 
 Users
@@ -115,21 +115,21 @@ Schema
 
 ::
 
-    http://localhost:8000/api/user/schema/
+    /api/user/schema/
 
 List
 ~~~~
 
 ::
 
-    http://localhost:8000/api/user/
+    /api/user/
 
 Fetch
 ~~~~~
 
 ::
 
-    http://localhost:8000/api/user/[id]/
+    /api/user/[id]/
 
 
 
@@ -159,21 +159,21 @@ Schema
 
 ::
 
-    http://localhost:8000/api/page/schema/
+    /api/page/schema/
 
 List
 ~~~~
 
 ::
 
-    http://localhost:8000/api/page/
+    /api/page/
 
 Fetch
 ~~~~~
 
 ::
 
-    http://localhost:8000/api/page/[name]
+    /api/page/[name]
 
 Create
 ~~~~~~
@@ -246,21 +246,21 @@ Schema
 
 ::
 
-    http://localhost:8000/api/map/schema/
+    /api/map/schema/
 
 List
 ~~~~
 
 ::
 
-    http://localhost:8000/api/map/
+    /api/map/
 
 Fetch
 ~~~~~
 
 ::
 
-    http://localhost:8000/api/map/[pagename]
+    /api/map/[pagename]
 
 Create
 ~~~~~~
@@ -307,21 +307,21 @@ Schema
 
 ::
 
-    http://localhost:8000/api/tag/schema/
+    /api/tag/schema/
 
 List
 ~~~~
 
 ::
 
-    http://localhost:8000/api/tag/
+    /api/tag/
 
 Fetch
 ~~~~~
 
 ::
 
-    http://localhost:8000/api/tag/[slug]/
+    /api/tag/[slug]/
 
 Create
 ~~~~~~
@@ -370,21 +370,21 @@ Schema
 
 ::
 
-    http://localhost:8000/api/page_tags/schema/
+    /api/page_tags/schema/
 
 List
 ~~~~
 
 ::
 
-    http://localhost:8000/api/page_tags/
+    /api/page_tags/
 
 Fetch
 ~~~~~
 
 ::
 
-    http://localhost:8000/api/page_tags/[pagename]
+    /api/page_tags/[pagename]
 
 Create
 ~~~~~~
