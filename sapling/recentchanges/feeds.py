@@ -31,6 +31,7 @@ class RecentChangesFeed(Feed):
         return _("Recent changes on %s") % self.site().name
 
     def format_change_set(self, change_obj, change_set):
+        formatted_changes = []
         for obj in change_set:
             obj.classname = change_obj.classname
             obj.page = change_obj.page(obj)
@@ -38,14 +39,15 @@ class RecentChangesFeed(Feed):
             obj.slug = obj.page.slug
             obj.diff_url = change_obj.diff_url(obj)
             obj.as_of_url = change_obj.as_of_url(obj)
-        return change_set
+            formatted_changes.append(obj)
+        return formatted_changes
 
     def items(self):
         change_sets = []
 
         for change_class in get_changes_classes():
             change_obj = change_class()
-            change_set = change_obj.queryset()[:MAX_CHANGES]
+            change_set = change_obj.queryset()[:MAX_CHANGES].iterator()
             change_sets.append(
                 self.format_change_set(change_obj, change_set))
 
@@ -77,7 +79,10 @@ class RecentChangesFeed(Feed):
             return item.as_of_url
         if item.version_info.type in [
                 TYPE_DELETED, TYPE_DELETED_CASCADE, TYPE_REVERTED_DELETED]:
-            return item.get_absolute_url()
+            try:
+                return item.get_absolute_url()
+            except:
+                pass
         return item.diff_url
 
     def item_author_name(self, item):
