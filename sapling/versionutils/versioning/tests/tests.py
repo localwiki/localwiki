@@ -1208,3 +1208,9 @@ class ChangesTrackingTest(TestCase):
 #
 #        pass
 #
+
+    def tests_defer_queryset(self):
+        # defer() should work on versioned querysets
+        m1_hs = M1.versions.all().defer('a')
+        m = m1_hs.get(d="D2!")
+        self.assertEqual(m.a, "A2!")

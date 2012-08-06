@@ -1,0 +1,33 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, LocalWiki team
+# This file is distributed under the same license as the LocalWiki package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LocalWiki 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-18 03:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/advanced.rst:2
+# 46bf26931b004c0bbf68176c19c1af66
+msgid "Advanced topics"
+msgstr ""
+
+#: ../source/advanced.rst:6
+# 8e8476a4d9e24c6dbd4b8f49388f34b3
+msgid "SSL"
+msgstr ""
+
+#: ../source/advanced.rst:8
+# c50f069780de4d448b543f44330a1de6
+msgid "See http://dev.localwiki.org/Setting_up_SSL"
+msgstr ""
+

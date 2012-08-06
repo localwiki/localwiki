@@ -1,0 +1,38 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, LocalWiki team
+# This file is distributed under the same license as the LocalWiki package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LocalWiki 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-18 03:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/contribute.rst:2
+# 494ac3e5600f45c495d84158cc6e281d
+msgid "Contributing"
+msgstr ""
+
+#: ../source/contribute.rst:4
+# 5b3449aacc674484b2ad0a4f7969b089
+msgid "LocalWiki is an open-source project, and we need your contributions to make it even more awesome.  If you see any bugs, please let us know.  If you want to contribute a patch, even better!"
+msgstr ""
+
+#: ../source/contribute.rst:8
+# 0bf4da067f3940e1868a9faef5e2dc8f
+msgid "Everything you need to contribute can be found at https://dev.localwiki.org"
+msgstr ""
+
+#: ../source/contribute.rst:10
+# 4d32e6c436cb4563a475516986b5cb99
+msgid "The fastest way to reach the main developers is on the `#localwiki IRC channel <irc://irc.freenode.net/#localwiki>`_"
+msgstr ""
+

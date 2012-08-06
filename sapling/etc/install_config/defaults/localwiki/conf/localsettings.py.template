@@ -18,11 +18,11 @@ DATABASES = {
 # Get an API key at http://cloudmade.com/start.
 CLOUDMADE_API_KEY = 'CLOUDMADEAPIKEYHERE'
 
-# Use these email settings when running the python debugging smtp server
-# python -m smtpd -n -c DebuggingServer localhost:1025
+# For testing, you can start the python debugging smtp server like so:
+# sudo python -m smtpd -n -c DebuggingServer localhost:25
 EMAIL_HOST = 'localhost'
 EMAIL_HOST_PASSWORD = ''
-EMAIL_PORT = 1025
+EMAIL_PORT = 25
 EMAIL_USE_TLS = False
 
 #######################################################################

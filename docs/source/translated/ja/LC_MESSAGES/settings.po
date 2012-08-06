@@ -1,0 +1,108 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, LocalWiki team
+# This file is distributed under the same license as the LocalWiki package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LocalWiki 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-18 03:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/settings.rst:2
+# bb46df0c4ace42d19bd8938007271984
+msgid "Settings"
+msgstr ""
+
+#: ../source/settings.rst:5
+# 762e4ae0fa6c429b997958832e1dee87
+msgid "Administration interface"
+msgstr ""
+
+#: ../source/settings.rst:7
+# 0bcfdbe40b0f4fab9d13a6cebfd60ac3
+msgid "LocalWiki comes with a web-based admin interface.  If LocalWiki is running on your machine, it can be found at ``http://localhost/admin/``.  Otherwise, you can find the admin interface at ``http://<your server's address>/admin/``"
+msgstr ""
+
+#: ../source/settings.rst:13
+# b1c5c490b91340a2925d2936f4c2f29f
+msgid "At the prompt, enter your superuser login and password.  If you don't have a superuser login and password, you can create one by running ``sudo localwiki-manage createsuperuser``."
+msgstr ""
+
+#: ../source/settings.rst:17
+# cdca5d51436645f2b5e559e5c4e30d32
+msgid "When you login, you will see all of the object types that you can modify on the left, and a list of recent actions done by administrators on the right(if any)."
+msgstr ""
+
+#: ../source/settings.rst:25
+# d2ef7c5b8ccf4eabab1d591b7d4c1ba2
+msgid "Domain name and site name"
+msgstr ""
+
+#: ../source/settings.rst:27
+# 8c2884661aab4541b2f04e893e772457
+msgid "In the admin interface, go to \"Sites\", click on the site you want to modify, enter the domain name and display name and press \"Save\"."
+msgstr ""
+
+#: ../source/settings.rst:34
+# 851d680d930b41599312407f1f96ca82
+msgid "Setting the default map location"
+msgstr ""
+
+#: ../source/settings.rst:36
+# 88899ea444264eebb1396a496e3d8518
+msgid "You'll need to edit your ``localsettings.py`` file and set the default map location.  See the ``localsettings.py`` section below."
+msgstr ""
+
+#: ../source/settings.rst:41
+# 37037fcb44ad49148dc985577db758cb
+msgid "``localsettings.py``"
+msgstr ""
+
+#: ../source/settings.rst:43
+# a387d48123be4bf3a263ea558d73b3c8
+msgid "Settings particular to your installation go in this file, found at ``/usr/share/localwiki/conf/localsettings.py`` on your system. Here are some things you may need or wish to modify:"
+msgstr ""
+
+#: ../source/settings.rst:48
+# b1073f652085491f8e8de885e16a3c9e
+msgid "Defaults for all map widgets, including default location, theme, navigation controls, colors, etc."
+msgstr ""
+
+#: ../source/settings.rst:51
+# 2ea0564011834cddac2dba933f092ded
+msgid "You will want to set the the **default map location** on your localwiki. Simply change ``default_lat`` and ``default_lon``.  Use this tool to look it up: http://www.getlatlon.com/"
+msgstr ""
+
+#: ../source/settings.rst:56
+# 1713a28b8d1b44fa85d971717e1c69c4
+msgid "Your developer API key from `Cloudmade <http://developers.cloudmade.com/>`_"
+msgstr ""
+
+#: ../source/settings.rst:59
+# cb7c39f74ca445a1907f36542b8b7285
+msgid "The name of the directory under ``themes`` to look for the theme templates and static files.  We'll have more detail on creating a theme soon."
+msgstr ""
+
+#: ../source/settings.rst:63
+# d5327271366c418d81c72435418523ae
+msgid "This is a list of regular expressions used to restrict what kinds of content users can embed.  If an embedded URL does not pass any of the regular expressions in this list, it will not be shown."
+msgstr ""
+
+#: ../source/settings.rst:68
+# 5489cbce72ba470b933ea1dc9ade41b3
+msgid "LocalWiki is fully localized and is currently translated into a number of languages.  To change your instance's language, set this to one of: ``en-us`` (for English), ``ja`` (Japanese), ``pt_PT`` (Portuguese), ``ru_RU`` (Russian), ``de_CH`` (German, CH), ``es_AR`` (Spanish, Argentina), ``da_DK`` (Danish)."
+msgstr ""
+
+#: ../source/settings.rst:74
+# 1fcb669616064e10a1e42fd4f5342200
+msgid "After changing settings you'll need to restart Apache.  On most systems you can do this by running ``sudo /etc/init.d/apache2 restart``."
+msgstr ""
+

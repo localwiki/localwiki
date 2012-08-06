@@ -1,0 +1,93 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, LocalWiki team
+# This file is distributed under the same license as the LocalWiki package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LocalWiki 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-18 03:07\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/configure.rst:2
+# 7a36b63fc9f246758d8f8b9f27c95479
+msgid "Web server configuration"
+msgstr ""
+
+#: ../source/configure.rst:6
+# 47b0900c62204ff692fed49e4f982e67
+msgid "Normal installation"
+msgstr ""
+
+#: ../source/configure.rst:8
+# b9c06fac603d4b27be9df184216cc46d
+msgid "If you installed the LocalWiki software using the Ubuntu package then an Apache site should be automatically up and running.  Its configuration file can found in ``/etc/apache2/sites-enabled/example.com``.  You'll want to open that file and change the server name, etc."
+msgstr ""
+
+#: ../source/configure.rst:13
+# 3f5206497bdd4773b13f462bdef965b2
+msgid "Please see the `official Apache documentation <http://httpd.apache.org/docs/>`_ for all possible configuration values."
+msgstr ""
+
+#: ../source/configure.rst:18
+# 859cd98330f7418f9201f8e2aaa22ace
+msgid "Development server"
+msgstr ""
+
+#: ../source/configure.rst:20
+# c60d9e3cde4c467cb2f705a2c4b5fcd4
+msgid "If you're doing development or testing, you can run ``localwiki-manage runserver`` to start the built-in webserver.  Don't use this in production."
+msgstr ""
+
+#: ../source/configure.rst:25
+# 0453baf4b0154d57b90767f99dd12771
+msgid "Manual installations"
+msgstr ""
+
+#: ../source/configure.rst:27
+# 5ff650c5c8a341778f940bf15cdeddf4
+msgid "If you installed LocalWiki manually then you'll need to copy the wsgi template file and edit it::"
+msgstr ""
+
+#: ../source/configure.rst:33
+# 3367e5b8366e4af984009893eff11eb5
+msgid "Then open up ``localwiki.wsgi`` and set ``VIRTUAL_ENV_PATH`` to the absolute path to the virtualenv you installed LocalWiki in."
+msgstr ""
+
+#: ../source/configure.rst:36
+# 34f306725e10467c95ee67092cbb94a9
+msgid "Then you'll need to create an Apache configuration file.  Here's a sample::"
+msgstr ""
+
+#: ../source/configure.rst:93
+# 8f2f35f6b64542a29dadb2699982b823
+msgid "You'll need to set some of these values:"
+msgstr ""
+
+#: ../source/configure.rst:95
+# 323980dbdff445bc9a1e441c6bea7667
+msgid "``ServerAdmin``, ``ServerName``, and ``ServerAlias`` should be self-explanatory.  Read the Apache docs for more info."
+msgstr ""
+
+#: ../source/configure.rst:98
+# 7c56d4d1245f438080035e469bf5e41e
+msgid "``WSGIScriptAlias / /path/to/your/deploy/localwiki.wsgi`` -- you'll need to change ``/path/to/your/deploy/`` to be the path to where the ``localwiki.wsgi`` file lives."
+msgstr ""
+
+#: ../source/configure.rst:102
+# 823bf9c43ed44d1684e2917cef6e1642
+msgid "In all of the ``Alias ...`` lines you'll need to change ``/path/to/your/env`` to be the absolute path to the virtualenv where you installed LocalWiki."
+msgstr ""
+
+#: ../source/configure.rst:106
+# a81fb87939c84620b628296fb9a573a0
+msgid "After you make you're changes you'll need to restart Apache. Please see the `official Apache documentation <http://httpd.apache.org/docs/>`_ for more on all this."
+msgstr ""
+
