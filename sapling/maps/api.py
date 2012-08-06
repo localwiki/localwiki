@@ -1,15 +1,16 @@
 from tastypie import fields
 from tastypie.authorization import DjangoAuthorization
 from tastypie.resources import ALL, ALL_WITH_RELATIONS
-from tastypie.contrib.gis.resources import ModelResource
+from tastypie.contrib import gis
 
 from models import MapData
 import pages.api  # Scoped import to prevent ImportError.
 from sapling.api import api
+from sapling.api.resources import ModelHistoryResource
 from sapling.api.authentication import ApiKeyWriteAuthentication
 
 
-class MapResource(pages.api.PageURLMixin, ModelResource):
+class MapResource(pages.api.PageURLMixin, gis.resources.ModelResource):
     page = fields.ToOneField(pages.api.PageResource, 'page')
 
     class Meta:
@@ -33,7 +34,7 @@ class MapResource(pages.api.PageURLMixin, ModelResource):
 # to generate pretty URLs with the historical version identifers.
 # TODO: Fix this. Maybe easier now with `detail_uri_name` and the uri prep
 # method.
-class MapHistoryResource(ModelResource):
+class MapHistoryResource(gis.resources.ModelResource, ModelHistoryResource):
     page = fields.ToOneField(pages.api.PageHistoryResource, 'page')
 
     class Meta:

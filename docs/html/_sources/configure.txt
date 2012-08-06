@@ -89,6 +89,7 @@ sample::
     <Location /media/>
             Header set Content-Disposition attachment
     </Location>
+  </VirtualHost>
 
 You'll need to set some of these values:
 

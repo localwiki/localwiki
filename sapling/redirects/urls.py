@@ -12,5 +12,4 @@ urlpatterns = patterns('',
         % (DATETIME_REGEXP, DATETIME_REGEXP),
         RedirectCompareView.as_view(), name='compare-dates'),
     url(r'^(?P<slug>.+)/', RedirectUpdateView.as_view(), name='edit'),
-        
 )

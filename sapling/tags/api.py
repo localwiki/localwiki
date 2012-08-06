@@ -1,23 +1,37 @@
 from tastypie.resources import ModelResource, ALL
 from tastypie import fields
 from tastypie.constants import ALL_WITH_RELATIONS
-from tastypie.authorization import DjangoAuthorization
 
 from models import Tag, PageTagSet
 import pages
 from sapling.api import api
+from sapling.resources import ModelHistoryResource
 from sapling.api.authentication import ApiKeyWriteAuthentication
+from sapling.api.authorization import ExtendedDjangoAuthorization
+
+
+# Tags can be edited if the page can be edited.
+class ChangePageAuthorization(ExtendedDjangoAuthorization):
+    permission_map = {
+        'POST': ['pages.change_page'],
+        'PUT': ['pages.change_page'],
+        'DELETE': ['pages.change_page'],
+        'PATCH': ['pages.change_page']
+    }
 
 
 class TagResource(ModelResource):
     class Meta:
-        resource_name = 'tags'
+        resource_name = 'tag'
         queryset = Tag.objects.all()
         detail_uri_name = 'slug'
         filtering = {
             'name': ALL,
             'slug': ALL,
         }
+        list_allowed_methods = ['get', 'post']
+        authentication = ApiKeyWriteAuthentication()
+        authorization = ChangePageAuthorization()
 
 api.register(TagResource())
 
@@ -36,14 +50,14 @@ class PageTagSetResource(pages.api.PageURLMixin, ModelResource):
         }
         list_allowed_methods = ['get', 'post']
         authentication = ApiKeyWriteAuthentication()
-        authorization = DjangoAuthorization()
+        authorization = ChangePageAuthorization()
 
 
 # We don't use detail_uri_name here because it becomes too complicated
 # to generate pretty URLs with the historical version identifers.
 # TODO: Fix this. Maybe easier now with `detail_uri_name` and the uri prep
 # method.
-class PageTagSetHistoryResource(ModelResource):
+class PageTagSetHistoryResource(ModelHistoryResource):
     page = fields.ToOneField(pages.api.PageHistoryResource, 'page')
     tags = fields.ToManyField(TagResource, 'tags')
 

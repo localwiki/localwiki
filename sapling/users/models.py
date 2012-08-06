@@ -53,7 +53,3 @@ class UserProfile(models.Model):
     # this field is required
     user = models.OneToOneField(User)
     subscribed = models.BooleanField(verbose_name=settings.SUBSCRIBE_MESSAGE)
-
-
-import signals  # to fire signals
-import api  # to fire register

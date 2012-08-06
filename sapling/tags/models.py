@@ -77,8 +77,3 @@ class PageTagSetDiff(diff.BaseModelDiff):
 
 diff.register(PageTagSet, PageTagSetDiff)
 versioning.register(PageTagSet)
-
-
-import feeds  # To fire register() calls.
-import signals  # To fire signals
-import api  # To fire register() calls.

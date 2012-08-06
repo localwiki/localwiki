@@ -61,6 +61,7 @@ LANGUAGES = (
     ('de_CH', _('German (Swiss)')),
     ('es_AR', _('Spanish (Argentina)')),
     ('da_DK', _('Danish')),
+    ('it_IT', _('Italian')),
     ('pt_PT', _('Portuguese')),
 )
 
@@ -207,6 +208,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.cache.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
     'api.middleware.XsSharing',
+    'utils.middleware.ServerStartupMiddleware',
 )
 
 # Dummy cache - TODO: switch to memcached by default

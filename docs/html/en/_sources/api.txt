@@ -4,8 +4,7 @@ API Documentation
 
 LocalWiki provides a RESTful, read/write API with advanced geospatial
 capabilities.  Reading (using ``GET`` requests) is allowed for all users,
-but to write (``POST``, ``PUT``, ``PATCH``, ``DELETE``) you'll need to generate an API
-key.
+but to write (``POST``, ``PUT``, ``PATCH``, ``DELETE``) you'll need to :ref:`generate an API key <apikey>`.
 
 The LocalWiki API follows the conventions of `Tastypie <https://github.com/toastdriven/django-tastypie>`_.  If this documentation seems incomplete, refer to Tastypie's page on `Interacting with the API <http://django-tastypie.readthedocs.org/en/latest/interacting.html>`_ to become familiar with the common idiom.
 
@@ -30,13 +29,29 @@ For instance, ``Accept: application/vnd.api.v1+json`` will request
 version 1 of the API.
 
 
-API structure
-==============
+Formats
+=======
 
-blah blah REST self-describing.
+This documentation gives examples in ``json``.  However, the API also supports the ``xml``, ``yaml``, ``jsonp``, and ``plist`` (binary plist) formats.  The ``jsonp`` format takes an optional ``callback`` querystring.
+
+
+API Examples
+============
+
+To get a handle on how to interact with the API, and how to
+use the filtering system, see the `api examples <api_examples>`_.
+
+.. toctree::
+   :maxdepth: 1
+
+   api_examples
+
+
+Resources
+=========
 
 Site
-====
+----
 
 The Site object can be queried to retrieve information about the LocalWiki instance.
 
@@ -56,29 +71,29 @@ Example Site object:
         }
 
 Schema
-------
+~~~~~~
 
 ::
 
-    http://localhost:8000/api/site/schema/
+    /api/site/schema/
 
 List
-----
+~~~~~~
 
 ::
 
-    http://localhost:8000/api/site/
+    /api/site/
 
 Fetch
------
+~~~~~~
 
 ::
 
-    http://localhost:8000/api/site/[id]/
+    /api/site/[id]/
 
 
 Users
-=====
+-----
 
 User objects can be queried to retrieve information about LocalWiki users. Emails, passwords, etc are not included in responses.
 
@@ -96,30 +111,30 @@ Example User object:
 
 
 Schema
-------
+~~~~~~
 
 ::
 
-    http://localhost:8000/api/user/schema/
+    /api/user/schema/
 
 List
-----
+~~~~
 
 ::
 
-    http://localhost:8000/api/user/
+    /api/user/
 
 Fetch
------
+~~~~~
 
 ::
 
-    http://localhost:8000/api/user/[id]/
+    /api/user/[id]/
 
 
 
 Pages
-=====
+-----
 
 Pages are the base objects in a LocalWiki.  Pages contain, among other
 things, a ``content`` field consisting of a special subset of HTML5
@@ -140,60 +155,57 @@ Example Page object:
     }
 
 Schema
-------
+~~~~~~
 
 ::
 
-    http://localhost:8000/api/page/schema/
+    /api/page/schema/
 
 List
-----
+~~~~
 
 ::
 
-    http://localhost:8000/api/page/
+    /api/page/
 
 Fetch
------
+~~~~~
 
 ::
 
-    http://localhost:8000/api/page/[name]
+    /api/page/[name]
 
 Create
-------
+~~~~~~
 
 To create a new page, POST a JSON document containing at least the ``name`` and ``content`` properties to /api/page/. Other properties such as ``map`` may also be set.
 
 
 Update
-------
+~~~~~~
 
 To update an existing page, PUT a JSON document containing all the resource attributes to /api/page/[name].  You may also update a single field in a page by issuing a PATCH to /api/page/[name] with just the relevant field (e.g. ``content``).
 
 
 Delete
-------
+~~~~~~
 
 To delete an existing page, issue a DELETE to /api/page/[name].
 
 
 Maps
-====
+----
 
 Maps are collections of geographic data that are associated with a given
 page.  Maps contain ``points``, ``lines``, and ``polys`` fields, each
-containing GeoJSON (or an XML/format-specific equivalent).  Maps also
-contain a ``length`` field, which you do not need to manually provide
-when issuing POSTs.
+containing `GeoJSON <http://en.wikipedia.org/wiki/GeoJSON>`_
+(or an XML/format-specific equivalent).  Maps also contain a ``length``
+field, which you do not need to manually provide when issuing POSTs.
 
 The ``geom`` field is a collection of the
 ``points``, ``lines`` and ``polys`` fields.  Sometimes it's convient to
-use this all-in-one field, though the ``geom`` field is limited in that
-we cannot filter on it.
-
-For more information on GeoJSON see
-`the wikipedia page <http://en.wikipedia.org/wiki/GeoJSON>`_.
+use this all-in-one field, though we cannot filter using the ``geom``
+field.
 
 Example Map object:
 
@@ -230,46 +242,220 @@ Example Map object:
     }
 
 Schema
-------
+~~~~~~
 
 ::
 
-    http://localhost:8000/api/map/schema/
+    /api/map/schema/
 
 List
-----
+~~~~
 
 ::
 
-    http://localhost:8000/api/map/
+    /api/map/
 
 Fetch
------
+~~~~~
 
 ::
 
-    http://localhost:8000/api/map/[pagename]
+    /api/map/[pagename]
 
 Create
-------
+~~~~~~
 
-To create a new map, POST a JSON document containing at least a ``geom`` attribute and a ``page`` attribute.  ``geom`` should be a GeoJSON GeometryCollection and ``page`` should be an api-relative URI of a ``page`` resource.  Instead of providing the ``geom`` attribute you may instead provide one or more of the ``points``, ``lines`` and ``polys`` properties.
+To create a new map, POST a JSON document containing at least a ``geom`` attribute and a ``page`` attribute.  ``geom`` should be a `GeoJSON GeometryCollection <http://geojson.org/geojson-spec.html>`_ and ``page`` should be an api-relative URI of a ``page`` resource.  Instead of providing the ``geom`` attribute you may instead provide one or more of the ``points`` (MultiPoint), ``lines`` (MultiLineString) and ``polys`` (MultiPolygon) properties.
 
 Update
-------
+~~~~~~
 
 To update an existing map, PUT a JSON document containing all the resource attributes to /api/map/[pagename].  You may also update a single field in a page by issuing a PATCH to /api/map/[pagename] with just the relevant field (e.g. ``points``).
 
 
 Delete
-------
+~~~~~~
 
 To delete an existing map, issue a DELETE to /api/map/[pagename].
 
 
-Contents:
+Tags
+----
 
-.. toctree::
-   :maxdepth: 1
+Tags are simple keywords associated with pages.  With tags, there are
+two resources you'll be interested in using:  ``tag`` and
+``page_tags``.  The ``tag`` resource represents the global *tag*
+that may be used on many different pages.  ``page_tags`` are the tags
+associated with a particular page.
 
-   api_examples
+A ``tag`` is represented by a ``name`` and a ``slug`` (name without
+spaces and other characters).
+
+Example Tag object:
+
+.. code-block:: javascript
+
+    {
+        "id": 71, 
+        "name": "coffee shop", 
+        "resource_uri": "/api/tag/coffeeshop/", 
+        "slug": "coffeeshop"
+    }
+
+Schema
+~~~~~~
+
+::
+
+    /api/tag/schema/
+
+List
+~~~~
+
+::
+
+    /api/tag/
+
+Fetch
+~~~~~
+
+::
+
+    /api/tag/[slug]/
+
+Create
+~~~~~~
+
+To create a new ``tag``, POST a JSON document containing at least a
+``slug`` attribute to /api/tag/.
+
+Update
+~~~~~~
+
+You cannot currently update a tag.
+
+
+Delete
+~~~~~~
+
+You cannot currently delete a tag.
+
+Page Tags
+---------
+
+``page_tags`` are the particular set of ``tags`` associated with a given
+``page``.
+
+A ``page_tags`` resource is represented by a ``page`` API URI and a ``tags``
+attribute, which is a list of ``tag`` URIs.
+
+Example PageTags object:
+
+.. code-block:: javascript
+
+    {
+        "id": 2, 
+        "page": "/api/page/Lake_Ella", 
+        "resource_uri": "/api/page_tags/Lake_Ella", 
+        "tags": [
+            "/api/tag/lakes/", 
+            "/api/tag/parks/", 
+            "/api/tag/recreation/"
+        ]
+    }
+
+
+Schema
+~~~~~~
+
+::
+
+    /api/page_tags/schema/
+
+List
+~~~~
+
+::
+
+    /api/page_tags/
+
+Fetch
+~~~~~
+
+::
+
+    /api/page_tags/[pagename]
+
+Create
+~~~~~~
+
+To create a new ``page_tags`` set, POST a JSON document containing at least a
+``page`` attribute (path to a ``page`` resource) and a ``tags``
+attribute (a list of paths to ``tag`` resources).
+
+**Note** that all the ``tag`` resources you specify **must already exist**.
+If they don't exist yet you'll want to create them first with a POST to
+the ``tag`` endpoint.
+
+Update
+~~~~~~
+
+To update an existing ``page_tags`` set, PUT a JSON document all the
+resource attributes to /api/page_tags/[pagename].
+
+**Note** that all the ``tag`` resources you specify **must already exist**.
+If they don't exist yet you'll want to create them first with a POST to
+the ``tag`` endpoint.
+
+Delete
+~~~~~~
+
+To delete a ``page_tags`` set, issue a DELETE to
+/api/page_tags/[pagename].
+
+
+Historical resources
+--------------------
+
+All versioned resources have a corresponding ``*_version``
+resource.  This resource has all of the fields of the original resource
+but also has version-related fields.  These version-related fields are:
+
+    * ``history_comment`` - the comment made by the user when the resource was saved.
+    * ``history_date`` - the date the resource was saved.  In `ISO-8601 format <http://en.wikipedia.org/wiki/ISO_8601>`_.
+    * ``history_type`` - the *type* of change that was made.  Valid options are:
+
+      * ``0`` - Added
+      * ``1`` - Updated
+      * ``2`` - Deleted
+      * ``3`` - Deleted through a foreign key cascade
+      * ``4`` - Reverted
+      * ``5`` - Reverted/Added
+      * ``6`` - Reverted/Deleted
+      * ``7`` - Reverted/Deleted via cascade
+      * ``8`` - Reverted via cascade
+    * ``history_user`` - the user who made the change. If this is ``null`` then this edit was made while not logged in.
+    * ``history_user_ip`` - the IP address of the user who made the change
+    * ``history_id`` - not really useful, you should feel free to ignore this. This is the per-resource-class (not instance) history id.
+
+
+.. _apikey:
+
+Generating an API key
+=====================
+
+Currently, you'll need to generate an API key before you can write to
+the API.  **Be careful who you give an API key to**, because there are
+currently no API limits in place.  To create or revoke an API key, simply
+visit the `administrative interface <settings>`_ and the "Api keys" area:
+
+.. figure:: /_static/images/admin_apikey_1.png
+
+and then click "Add api key" and fill out the form. Pick the user you'd
+like to have an API key, leave the "Key" field blank and save:
+
+.. figure:: /_static/images/admin_apikey_2.png
+
+then you can copy the created Key and pass it along to the user:
+
+.. figure:: /_static/images/admin_apikey_3.png

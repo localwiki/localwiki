@@ -13,8 +13,9 @@ class PageChanges(RecentChanges):
 
     def queryset(self, start_at=None):
         if start_at:
-            return Page.versions.filter(version_info__date__gte=start_at)
-        return Page.versions.all()
+            return Page.versions.filter(version_info__date__gte=start_at
+                ).defer('content')
+        return Page.versions.all().defer('content')
 
     def page(self, obj):
         return obj
@@ -39,7 +40,8 @@ class PageFileChanges(RecentChanges):
         return page
 
     def title(self, obj):
-        return _('File %(filename)s on page "%(pagename)s"') % {'filename': obj.name, 'pagename': self.page(obj).name}
+        return _('File %(filename)s on page "%(pagename)s"') % {
+            'filename': obj.name, 'pagename': self.page(obj).name}
 
     def diff_url(self, obj):
         return reverse('pages:file-compare-dates', kwargs={
@@ -76,5 +78,6 @@ class PageFileChangesFeed(ChangesOnItemFeed):
         obj = PageFile(slug=slugify(slug), name=file)
         page = Page(slug=slugify(slug))
         obj.page = page.versions.most_recent()
-        obj.title = _('File %(filename)=s on page "%(pagename)s"') % {'filename': obj.name, 'pagename': obj.pageobj.name}
+        obj.title = _('File %(filename)=s on page "%(pagename)s"') % {
+            'filename': obj.name, 'pagename': obj.pageobj.name}
         return obj
