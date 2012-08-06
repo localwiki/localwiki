@@ -110,14 +110,15 @@ def _wrap_m2m_relation_lookups(m):
     Args:
         m: A historical record instance.
     """
-    model_meta = m.version_info._object._meta
-    orig_obj = m.version_info._object
+    model_meta = m._original_model._meta
     non_versioned_m2m_fields = [f for f in model_meta.local_many_to_many if
         isinstance(f, models.fields.related.RelatedField) and
         not is_versioned(f.rel.to)
     ]
     for field in non_versioned_m2m_fields:
-        _lookup = partial(getattr, orig_obj, field.name)
+        def _lookup():
+            orig_obj = m.version_info._object
+            return getattr(orig_obj, field.name)
         m._wrapped_lookup_fields[field.name] = SimpleLazyObject(_lookup)
 
 
@@ -210,7 +211,7 @@ def _wrap_reverse_lookups(m):
                 getattr(parent_model, hist_name).model._meta.object_name)
         return obj
 
-    model_meta = m.version_info._object._meta
+    model_meta = m._original_model._meta
     related_objects = model_meta.get_all_related_objects()
     related_objects += model_meta.get_all_related_many_to_many_objects()
     related_versioned = [o for o in related_objects if is_versioned(o.model)]
