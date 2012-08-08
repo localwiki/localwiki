@@ -189,7 +189,8 @@ CKEDITOR.plugins.add( 'simpleimage',
             		return false;
             	};
             	jQuery(evt.target).one('dragend', moveImage)
-            			 .parent().one('dragend', moveImage);
+            			 .parent().one('dragend', moveImage)
+            			 .closest('body').one('dragend', moveImage);
             });
             
             // delete image -> delete its parent frame
