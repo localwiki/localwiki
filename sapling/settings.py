@@ -195,6 +195,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'utils.middleware.ServerStartupMiddleware',
     'utils.middleware.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -207,8 +208,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.transaction.TransactionMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
-
-    'utils.middleware.ServerStartupMiddleware',
 )
 
 # Dummy cache - TODO: switch to memcached by default

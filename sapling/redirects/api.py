@@ -1,5 +1,5 @@
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
-from tastypie.authorization import DjangoAuthorization
+from tastypie.authorization import Authorization
 from tastypie import fields
 
 from models import Redirect
@@ -19,8 +19,7 @@ class RedirectResource(ModelResource):
             'destination': ALL_WITH_RELATIONS,
             'source': ALL,
         }
-        authentication = ApiKeyWriteAuthentication()
-        authorization = DjangoAuthorization()
+        authorization = Authorization()
 
 
 # We don't use the SlugifyMixin approach here because it becomes

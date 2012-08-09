@@ -5,7 +5,7 @@ from tastypie.constants import ALL_WITH_RELATIONS
 from models import Tag, PageTagSet
 import pages
 from sapling.api import api
-from sapling.resources import ModelHistoryResource
+from sapling.api.resources import ModelHistoryResource
 from sapling.api.authentication import ApiKeyWriteAuthentication
 from sapling.api.authorization import ExtendedDjangoAuthorization
 
