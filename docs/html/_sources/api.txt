@@ -35,8 +35,8 @@ Formats
 This documentation gives examples in ``json``.  However, the API also supports the ``xml``, ``yaml``, ``jsonp``, and ``plist`` (binary plist) formats.  The ``jsonp`` format takes an optional ``callback`` querystring.
 
 
-API Examples
-============
+API Examples & Tools
+====================
 
 To get a handle on how to interact with the API, and how to
 use the filtering system, see the `api examples <api_examples>`_.
@@ -45,6 +45,7 @@ use the filtering system, see the `api examples <api_examples>`_.
    :maxdepth: 1
 
    api_examples
+   api_tools
 
 
 Resources
@@ -535,3 +536,11 @@ request.  The format is ``Authorization: ApiKey <username>:<api_key>``.
 E.g.::
 
     Authorization: ApiKey daniel:204db7bcfafb2deb7506b89eb3b9b715b09905c8
+
+Some webservers may be configured to block the ``Authorization`` header.
+In that case, simply send a request with a querystring containing a
+``username`` and an ``api_key`` attribute, e.g.::
+
+    /api/page/?username=daniel&api_key=204db7bcfafb2deb7506b89eb3b9b715b09905c8
+
+The header approach is perfered, though.

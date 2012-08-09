@@ -35,8 +35,8 @@ Formats
 This documentation gives examples in ``json``.  However, the API also supports the ``xml``, ``yaml``, ``jsonp``, and ``plist`` (binary plist) formats.  The ``jsonp`` format takes an optional ``callback`` querystring.
 
 
-API Examples
-============
+API Examples & Tools
+====================
 
 To get a handle on how to interact with the API, and how to
 use the filtering system, see the `api examples <api_examples>`_.
@@ -45,6 +45,7 @@ use the filtering system, see the `api examples <api_examples>`_.
    :maxdepth: 1
 
    api_examples
+   api_tools
 
 
 Resources
