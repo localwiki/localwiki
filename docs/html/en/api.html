@@ -465,6 +465,14 @@ like to have an API key, leave the &#8220;Key&#8221; field blank and save:</p>
 <div class="figure">
 <img alt="_images/admin_apikey_3.png" src="_images/admin_apikey_3.png" />
 </div>
+<div class="section" id="using-the-api-key">
+<h3>Using the API key<a class="headerlink" href="#using-the-api-key" title="Permalink to this headline">¶</a></h3>
+<p>To use the API key, send an <tt class="docutils literal"><span class="pre">Authorization</span></tt> header along with your
+request.  The format is <tt class="docutils literal"><span class="pre">Authorization:</span> <span class="pre">ApiKey</span> <span class="pre">&lt;username&gt;:&lt;api_key&gt;</span></tt>.
+E.g.:</p>
+<div class="highlight-python"><pre>Authorization: ApiKey daniel:204db7bcfafb2deb7506b89eb3b9b715b09905c8</pre>
+</div>
+</div>
 </div>
 </div>
 
@@ -543,7 +551,10 @@ like to have an API key, leave the &#8220;Key&#8221; field blank and save:</p>
 <li><a class="reference internal" href="#historical-resources">Historical resources</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#generating-an-api-key">Generating an API key</a></li>
+<li><a class="reference internal" href="#generating-an-api-key">Generating an API key</a><ul>
+<li><a class="reference internal" href="#using-the-api-key">Using the API key</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

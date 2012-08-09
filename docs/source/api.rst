@@ -525,3 +525,21 @@ like to have an API key, leave the "Key" field blank and save:
 then you can copy the created Key and pass it along to the user:
 
 .. figure:: /_static/images/admin_apikey_3.png
+
+
+Using the API key
+-----------------
+
+To use the API key, send an ``Authorization`` header along with your
+request.  The format is ``Authorization: ApiKey <username>:<api_key>``.
+E.g.::
+
+    Authorization: ApiKey daniel:204db7bcfafb2deb7506b89eb3b9b715b09905c8
+
+Some webservers may be configured to block the ``Authorization`` header.
+In that case, simply send a request with a querystring containing a
+``username`` and an ``api_key`` attribute, e.g.::
+
+    /api/page/?username=daniel&api_key=204db7bcfafb2deb7506b89eb3b9b715b09905c8
+
+The header approach is perfered, though.
