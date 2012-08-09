@@ -193,6 +193,72 @@ Delete
 To delete an existing page, issue a DELETE to /api/page/[name].
 
 
+Files
+-----
+
+Files are binary objects associated with a a given page.  Unlike other
+resources, a ``file`` is connected to a page through its ``slug``
+field, which specifies the ``slug`` of the ``page`` it is connected to.
+
+Example File object:
+
+.. code-block:: javascript
+
+   {
+        "file": "/media/pages/files/jvxvjj8xl9wehwma.jpg", 
+        "id": 2, 
+        "name": "my_headshot.jpg", 
+        "resource_uri": "/api/file/2/", 
+        "slug": "golden gate park"
+    }
+
+
+Schema
+~~~~~~
+
+::
+
+    /api/file/schema/
+
+List
+~~~~
+
+::
+
+    /api/file/
+
+Fetch
+~~~~~
+
+::
+
+    /api/file/[id]/
+
+Create
+~~~~~~
+
+To create a new file, POST a ``multipart/form-data`` form to
+``/api/file/`` with form fields ``name`` (the filename), ``slug`` (the
+``slug`` of the page the file should be attached to) and a field named
+``file`` containing the file data.
+
+Update
+~~~~~~
+
+To update an existing file, PUT a ``multipart/form-data`` form to
+``/api/file/[id]/`` with form fields ``name`` (the filename), ``slug`` (the
+``slug`` of the page the file should be attached to) and a field named
+``file`` containing the file data.
+
+
+
+Delete
+~~~~~~
+
+To delete an existing file, issue a DELETE to ``/api/file/[id]/``.
+
+
+
 Maps
 ----
 
