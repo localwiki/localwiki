@@ -4,8 +4,7 @@ from django.http import Http404
 
 from tastypie import fields
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
-from tastypie.authorization import DjangoAuthorization, Authorization
-from tastypie.authentication import Authentication
+from tastypie.authorization import DjangoAuthorization
 from tastypie.utils import trailing_slash
 
 from pages.models import Page, PageFile, name_to_url, url_to_name
@@ -73,7 +72,8 @@ class FileResource(ModelResource):
             'slug': ALL,
         }
         list_allowed_methods = ['get', 'post']
-        authorization = Authorization()
+        authentication = ApiKeyWriteAuthentication()
+        authorization = DjangoAuthorization()
 
 
 class FileHistoryResource(FileResource, ModelHistoryResource):
@@ -99,7 +99,8 @@ class PageResource(PageURLMixin, ModelResource):
             'map': ALL_WITH_RELATIONS,
         }
         list_allowed_methods = ['get', 'post']
-        authorization = Authorization()
+        authentication = ApiKeyWriteAuthentication()
+        authorization = DjangoAuthorization()
 
     def prepend_urls(self):
         # For searching.
