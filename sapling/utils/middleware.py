@@ -83,8 +83,8 @@ class ServerStartupMiddleware(object):
     def __init__(self):
         for appname in reversed(settings.INSTALLED_APPS):
             try:
-                import_module("%s.startup" % appname)
-            except:
+                import_module("sapling.%s.startup" % appname)
+            except ImportError:
                 pass
 
         raise MiddlewareNotUsed
