@@ -79,5 +79,5 @@ class PageFileChangesFeed(ChangesOnItemFeed):
         page = Page(slug=slugify(slug))
         obj.page = page.versions.most_recent()
         obj.title = _('File %(filename)=s on page "%(pagename)s"') % {
-            'filename': obj.name, 'pagename': obj.pageobj.name}
+                'filename': obj.name, 'pagename': obj.page.name}
         return obj
