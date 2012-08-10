@@ -80,6 +80,10 @@ Instead of 'install'.  This makes the code update without having to run
 
 You'll also probably want to set DEBUG to False in share/conf/localsettings.py
 
+To build the docs you'll want to install the optional requirements:
+
+    (env)$ pip install -r install_config/optional.txt
+
 -------------------------------------------------------------------------------
 We've really only tested things on Ubuntu Server Edition 10.04 LTS.  It should
 be very possible to run this on any Unix-y system.  You'll need to:

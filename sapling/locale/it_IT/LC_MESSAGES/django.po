@@ -1,0 +1,1328 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-04 14:00-0700\n"
+"PO-Revision-Date: 2012-07-24 07:58\n"
+"Last-Translator: Anonymous User <anonymous@user.tld>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt-PT\n"
+"X-Translated-Using: django-rosetta 0.6.5\n"
+
+#: settings.py:33
+msgid ""
+"<p>Except where otherwise noted, this content is licensed under a <a "
+"rel=\"license\" "
+"href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons "
+"Attribution License</a>. See <a href=\"/Copyrights\">Copyrights.</p>"
+msgstr ""
+"<p>Ad eccezione da dove espressamente indicato, questo contenuto è "
+"distribuito con licenza <a rel=\"license\" "
+"href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons "
+"Attribution License</a>. Verifica i <a href=\"/Copyrights\">Copyright.</p>"
+
+#: settings.py:35
+msgid ""
+"<p>By clicking \"Save Changes\" you are agreeing to release your "
+"contribution under the <a rel=\"license\" "
+"href=\"http://creativecommons.org/licenses/by/3.0/\" "
+"target=\"_blank\">Creative Commons-By license</a>, unless noted otherwise. "
+"See <a href=\"/Copyrights\" target=\"_blank\">Copyrights</a>.</p>"
+msgstr ""
+"<p>Cliccando su \"Salva Modifiche\" accetti di rilasciare i tuoi contenuti "
+"rispettando la <a rel=\"license\" "
+"href=\"http://creativecommons.org/licenses/by/3.0/\" "
+"target=\"_blank\">licenza Creative Commons-By</a>, se non espressamente "
+"indicato. Verifica i <a href=\"/Copyrights\" "
+"target=\"_blank\">Copyright</a>.</p>"
+
+#: settings.py:37
+msgid ""
+"I agree to release my contributions under the <a rel=\"license\" "
+"href=\"http://creativecommons.org/licenses/by/3.0/\" "
+"target=\"_blank\">Creative Commons-By license</a>, unless noted otherwise. "
+"See <a href=\"/Copyrights\" target=\"_blank\">Copyrights</a>."
+msgstr ""
+"Sono d\\'accordo a rilasciare i miei contenuti rispettando la <a "
+"rel=\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\" "
+"target=\"_blank\">licenza Creative Commons-By</a>, se non espressamente "
+"specificato. Verifica i <a href=\"/Copyrights\" "
+"target=\"_blank\">Copyright</a>."
+
+#: settings.py:39
+msgid ""
+"I would like to receive occasional updates about this project via email."
+msgstr "Desidero ricevere tramite email aggiornamenti su questo progetto."
+
+#: settings.py:58
+msgid "English"
+msgstr "Inglese"
+
+#: settings.py:59
+msgid "Portuguese"
+msgstr "Portoghese"
+
+#: settings.py:60
+msgid "German (CH)"
+msgstr "Tedesco (CH)"
+
+#: ckeditor/models.py:30
+msgid "This field contains invalid data."
+msgstr "Questo campo contiene dati non validi."
+
+#: ckeditor/models.py:178
+msgid "XML text"
+msgstr "testo XML"
+
+#: ckeditor/models.py:188
+msgid "XHTML text"
+msgstr "testo XHTML"
+
+#: ckeditor/models.py:197
+msgid "HTML5 text"
+msgstr "testo HTML5"
+
+#: ckeditor/models.py:228
+msgid "HTML5 fragment text"
+msgstr "frammento di testo HTML5"
+
+#: ckeditor/views.py:14
+msgid "Unable to upload"
+msgstr "Impossibile caricare"
+
+#: ckeditor/templates/ckeditor/upload_result.html:4
+msgid "Upload result"
+msgstr "Risultato del caricamento"
+
+#: dashboard/views.py:130 dashboard/views.py:145
+msgid "pages"
+msgstr "pagine"
+
+#: dashboard/views.py:131 dashboard/views.py:148
+msgid "maps"
+msgstr "mappe"
+
+#: dashboard/views.py:132 dashboard/views.py:151
+msgid "files"
+msgstr "file"
+
+#: dashboard/views.py:134 dashboard/views.py:154
+msgid "redirects"
+msgstr "redirezioni"
+
+#: dashboard/templates/dashboard/index.html:6
+msgid "Dashboard"
+msgstr "Pannello"
+
+#: dashboard/templates/dashboard/index.html:19
+msgid "Statistics loading.  This may take several minutes the first time."
+msgstr ""
+"Statistiche in caricamento. La prima volta questo potrebbe richiedere alcuni"
+" minuti."
+
+#: dashboard/templates/dashboard/index.html:23
+#: dashboard/templates/dashboard/render.html:4
+msgid "Pages"
+msgstr "Pagine"
+
+#: dashboard/templates/dashboard/index.html:24
+#: dashboard/templates/dashboard/render.html:5
+#: pages/templates/pages/cke_filebrowser.html:7
+#: pages/templates/pages/page_files.html:4
+msgid "Files"
+msgstr "File"
+
+#: dashboard/templates/dashboard/index.html:25
+#: dashboard/templates/dashboard/render.html:6
+msgid "Maps"
+msgstr "Mappe"
+
+#: dashboard/templates/dashboard/index.html:26
+#: dashboard/templates/dashboard/render.html:7
+msgid "Redirects"
+msgstr "Redirezioni"
+
+#: dashboard/templates/dashboard/index.html:27
+#: dashboard/templates/dashboard/render.html:8
+msgid "Users"
+msgstr "Utenti"
+
+#: dashboard/templates/dashboard/index.html:32
+#: dashboard/templates/dashboard/render.html:13
+msgid "Growth over time"
+msgstr "Crescita nel tempo"
+
+#: dashboard/templates/dashboard/index.html:39
+#: dashboard/templates/dashboard/render.html:20
+msgid "Edits over time"
+msgstr "Modifiche"
+
+#: dashboard/templates/dashboard/index.html:46
+#: dashboard/templates/dashboard/render.html:27
+msgid "Page content growth over time"
+msgstr "Andamento del contenuto della pagina nel tempo"
+
+#: dashboard/templates/dashboard/index.html:53
+#: dashboard/templates/dashboard/render.html:34
+msgid "Users registered over time"
+msgstr "Andamento degli utenti registrati"
+
+#: maps/feeds.py:21 maps/feeds.py:38
+#, python-format
+msgid "Map for \"%s\""
+msgstr "Mappa di \"%s\""
+
+#: maps/fields.py:169
+#, python-format
+msgid ""
+"The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
+"instances."
+msgstr ""
+"L'attributo '%(fieldname)s' è accessibile solo dalle istanze di (ownername)s"
+" "
+
+#: maps/fields.py:214
+#, python-format
+msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
+msgstr ""
+"non posso aggiornare la CollectionFrom %(cname)s con un valore di tipo: "
+"%(vtype)s"
+
+#: maps/validators.py:14
+#, python-format
+msgid "Map error: %s."
+msgstr "Errore mappa: %s,"
+
+#: maps/templates/maps/attribution.html:2
+msgid "Map data"
+msgstr "Dati mappa"
+
+#: maps/templates/maps/attribution.html:2
+msgid "Map tiles via"
+msgstr "Tile di mappa via"
+
+#: maps/templates/maps/base.html:5
+msgid "Recent changes on this Map"
+msgstr "Modifiche recenti in questa Mappa"
+
+#: maps/templates/maps/base.html:14 maps/templates/maps/mapdata_list.html:22
+#: maps/templates/maps/mapdata_list.html:28
+#: themes/sapling/templates/site/nav.html:6
+msgid "Map"
+msgstr "Mappa"
+
+#: maps/templates/maps/base.html:31 maps/templates/maps/mapdata_detail.html:50
+#: maps/templates/maps/mapdata_form.html:84
+#: maps/templates/maps/mapdata_versions.html:22
+#: pages/templates/pages/base.html:26 pages/templates/pages/page_form.html:60
+#: pages/templates/pages/page_versions.html:25
+msgid "Edit"
+msgstr "Modifica"
+
+#: maps/templates/maps/base.html:32 maps/templates/maps/mapdata_form.html:85
+#: maps/templates/maps/mapdata_versions.html:23
+#: pages/templates/pages/base.html:27 pages/templates/pages/page_form.html:61
+#: pages/templates/pages/page_versions.html:26
+msgid "Info"
+msgstr "Info"
+
+#: maps/templates/maps/editor_actions.html:4
+msgid "Delete map"
+msgstr "Elimina mappa"
+
+#: maps/templates/maps/mapdata_confirm_delete.html:14
+#: pages/templates/pages/page_confirm_delete.html:14
+#: pages/templates/pages/pagefile_confirm_delete.html:14
+#: redirects/templates/redirects/redirect_confirm_delete.html:14
+msgid "Delete"
+msgstr "Elimina"
+
+#: maps/templates/maps/mapdata_confirm_revert.html:14
+#: pages/templates/pages/page_confirm_revert.html:14
+#: tags/templates/tags/pagetagset_confirm_revert.html:14
+msgid "Revert"
+msgstr "Torna"
+
+#: maps/templates/maps/mapdata_detail.html:21
+msgid "Map for"
+msgstr "Mappa per"
+
+#: maps/templates/maps/mapdata_detail.html:35
+#: maps/templates/maps/mapdata_diff.html:59
+#: maps/templates/maps/mapdata_diff.html:64
+#: redirects/templates/redirects/redirect_diff.html:43
+#: redirects/templates/redirects/redirect_diff.html:48
+#: tags/templates/tags/pagetagset_diff.html:37
+#: tags/templates/tags/pagetagset_diff.html:42
+#: tags/templates/tags/pagetagset_version_detail.html:17
+msgid "Revision"
+msgstr "Revisione"
+
+#: maps/templates/maps/mapdata_detail.html:36
+#: maps/templates/maps/mapdata_diff.html:60
+#: maps/templates/maps/mapdata_diff.html:65
+#: redirects/templates/redirects/redirect_diff.html:44
+#: redirects/templates/redirects/redirect_diff.html:49
+#: tags/templates/tags/pagetagset_diff.html:38
+#: tags/templates/tags/pagetagset_diff.html:43
+#: tags/templates/tags/pagetagset_version_detail.html:18
+#: versionutils/templates/versionutils/history/form.html:34
+msgid "by"
+msgstr "di"
+
+#: maps/templates/maps/mapdata_detail.html:50
+msgid "this map"
+msgstr "questa mappa"
+
+#: maps/templates/maps/mapdata_detail.html:50
+#, python-format
+msgid "last modified %(tsince)s ago"
+msgstr "ultima modifica %(tsince)s fa"
+
+#: maps/templates/maps/mapdata_diff.html:49
+msgid "Differences for map on"
+msgstr "Differenze per mappa su"
+
+#: maps/templates/maps/mapdata_diff.html:50
+#, python-format
+msgid "Differences for <a href=\"%(maps_global)s\">Map</a>"
+msgstr "Differenze per <a href=\"%(maps_global)s\">Mappa</a>"
+
+#: maps/templates/maps/mapdata_diff.html:70
+#: pages/templates/pages/page_diff.html:41
+#: tags/templates/tags/pagetagset_diff.html:48
+msgid "Deletions are marked like this"
+msgstr "Le cancellazioni sono evidenziate così"
+
+#: maps/templates/maps/mapdata_diff.html:73
+#: pages/templates/pages/page_diff.html:44
+#: tags/templates/tags/pagetagset_diff.html:51
+msgid "Additions are marked like this"
+msgstr "Le aggiunte sono indicate come segue"
+
+#: maps/templates/maps/mapdata_form.html:32
+msgid "Editing map for"
+msgstr "Modifica mappa per"
+
+#: maps/templates/maps/mapdata_form.html:62
+#: pages/templates/pages/page_form.html:38
+msgid "Please comment about this change:"
+msgstr "Per favore, lascia un commento riguardo questa modifica:"
+
+#: maps/templates/maps/mapdata_form.html:66
+#: pages/templates/pages/page_form.html:42
+msgid "Save changes"
+msgstr "Salva modifiche"
+
+#: maps/templates/maps/mapdata_form.html:67
+#: pages/templates/pages/page_detail.html:61
+#: pages/templates/pages/page_form.html:43
+msgid "Cancel"
+msgstr "Annulla"
+
+#: maps/templates/maps/mapdata_new.html:3
+msgid "Map for page not found"
+msgstr "Mappa per la pagina non trovata"
+
+#: maps/templates/maps/mapdata_new.html:4
+msgid "Map for page"
+msgstr "Mappa per la pagina"
+
+#: maps/templates/maps/mapdata_new.html:4
+msgid "does not exist (yet!)"
+msgstr "non esiste (ancora!)"
+
+#: maps/templates/maps/mapdata_new.html:12
+msgid "Create this map"
+msgstr "Crea questa mappa"
+
+#: maps/templates/maps/mapdata_versions.html:13
+msgid "Previous versions of map for"
+msgstr "Versioni precedenti della mappa per"
+
+#: pages/feeds.py:42
+#, python-format
+msgid "File %(filename)s on page \"%(pagename)s\""
+msgstr "File %(filename)s nella pagina \"%(pagename)s\""
+
+#: pages/feeds.py:79
+msgid "File %(filename)=s on page \"%(pagename)s\""
+msgstr "File %(filename)=s nella pagina \"%(pagename)s\""
+
+#: pages/fields.py:22
+#, python-format
+msgid "Page %s does not exist!  Please enter a valid page name."
+msgstr "La pagina %s non esiste! Per favore, inserisci un nome pagina valido."
+
+#: pages/forms.py:15
+msgid ""
+"Warning: someone else saved this page before you.  Please resolve edit "
+"conflicts and save again."
+msgstr ""
+"Attenzione: qualcun altro ha salvato questa pagina prima di te. Per favore, "
+"risolvi i conflitti di versione e salva di nuovo."
+
+#: pages/forms.py:46
+msgid "A page with this name already exists"
+msgstr "Esiste già una pagina con questo nome"
+
+#: pages/forms.py:62
+msgid "The new file should be of the same type"
+msgstr "Il nuovo file dovrebbe essere dello stesso tipo"
+
+#: pages/models.py:91
+msgid "Page name is invalid."
+msgstr "Nome pagina non valido"
+
+#: pages/models.py:141 pages/models.py:153
+#, python-format
+msgid "Renamed from \"%s\""
+msgstr "Rinominata da \"%s\""
+
+#: pages/models.py:145
+#, python-format
+msgid "The page '%s' already exists!"
+msgstr "La pagina '%s' esiste già!"
+
+#: pages/models.py:195 pages/models.py:208 pages/models.py:227
+msgid "Parent page renamed"
+msgstr "Pagina di livello superiore rinominata"
+
+#: pages/models.py:241
+msgid "file"
+msgstr "file"
+
+#: pages/plugins.py:397
+msgid ""
+"The embedded URL is not on the list of approved providers.  Contact the site"
+" administrator to add it."
+msgstr ""
+"L\\'URL incorporato non fa parte della lista dei provider accettati. "
+"Contatta l'amministratore del sito per aggiungerlo."
+
+#: pages/plugins.py:401
+msgid "Invalid embed code"
+msgstr "Codice incorporato non valido"
+
+#: pages/plugins.py:413 search/templates/search/search.html:12
+#: themes/sapling/templates/site/search_form.html:5
+msgid "Search or create page"
+msgstr "Cerca o crea pagina"
+
+#: pages/signals.py:13
+msgid "Redirect created"
+msgstr "Creata redirezione"
+
+#: pages/signals.py:19
+msgid "Page created"
+msgstr "Pagina creata"
+
+#: pages/views.py:104
+msgid "Thank you for your changes. Your attention to detail is appreciated."
+msgstr ""
+"Grazie per le tue modifiche. La tua attenzione ai dettagli è stata molto "
+"apprezzata."
+
+#: pages/views.py:107
+#, python-format
+msgid ""
+"Changes saved! To use your name when editing, please <a "
+"href=\"%(login_url)s?next=%(current_path)s\"><strong>log in</strong></a> or "
+"<a href=\"%(register_url)s?next=%(current_path)s\"><strong>create an "
+"account</strong></a>."
+msgstr ""
+"Modifiche salvate! Per utilizzare il tuo nome quando effettui delle "
+"modifiche, per favore <a "
+"href=\"%(login_url)s?next=%(current_path)s\"><strong>accedi</strong></a> o "
+"<a href=\"%(register_url)s?next=%(current_path)s\"><strong>crea un "
+"account</strong></a>."
+
+#: pages/views.py:119
+#, python-format
+msgid ""
+"<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
+"class=\"text\">Create a map</span></a> for this page?</p>"
+msgstr ""
+"<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
+"class=\"text\">Vuoi creare una mappa</span></a> per questa pagina?</p>"
+
+#: pages/views.py:131
+#, python-format
+msgid "<p>Describe %s here</p>"
+msgstr "<p>Descrivi %s qui</p>"
+
+#: pages/views.py:344
+msgid "A file with this name already exists"
+msgstr "Un file con questo nome esiste già"
+
+#: pages/views.py:349
+msgid "Pagename"
+msgstr "Nome pagina"
+
+#: pages/views.py:350 versionutils/versioning/forms.py:17
+msgid "Comment"
+msgstr "Commento"
+
+#: pages/views.py:376
+#, python-format
+msgid "Page renamed to \"%s\""
+msgstr "Pagina rinominata come \"%s\""
+
+#: pages/templates/pages/base.html:5
+msgid "Recent changes on this Page"
+msgstr "Modifiche recenti su questa Pagina"
+
+#: pages/templates/pages/editor_actions.html:4
+msgid "Edit map"
+msgstr "Modifica mappa"
+
+#: pages/templates/pages/editor_actions.html:5
+msgid "Delete page"
+msgstr "Elimina pagina"
+
+#: pages/templates/pages/editor_actions.html:6
+msgid "Rename page"
+msgstr "Rinomina pagina"
+
+#: pages/templates/pages/editor_actions.html:8
+msgid "Redirect"
+msgstr "Redirezione"
+
+#: pages/templates/pages/page_detail.html:16
+msgid "Redirected from"
+msgstr "Redirezione da"
+
+#: pages/templates/pages/page_detail.html:30
+#, python-format
+msgid ""
+"Revision %(page.version_info.version_number)s\n"
+"          (%(date)s by %(user_link)s)"
+msgstr ""
+"Revisione %(page.version_info.version_number)s\n"
+"(%(date)s effettuata da %(user_link)s)"
+
+#: pages/templates/pages/page_detail.html:38
+#: tags/templates/tags/tagged_list_snippet.html:7
+msgid "View map"
+msgstr "Visualizza mappa"
+
+#: pages/templates/pages/page_detail.html:55
+msgid "Edit tags"
+msgstr "Modifica tag"
+
+#: pages/templates/pages/page_detail.html:55
+msgid "Add tags"
+msgstr "Aggiungi tag"
+
+#: pages/templates/pages/page_detail.html:71
+#, python-format
+msgid "This page was last modified %(ago)s ago"
+msgstr "Questa pagina è stata modificata %(ago)s fa"
+
+#: pages/templates/pages/page_diff.html:19
+#, python-format
+msgid "Differences for %(name)s"
+msgstr "Differenze per %(name)s"
+
+#: pages/templates/pages/page_diff.html:20
+#, python-format
+msgid "Differences for <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
+msgstr "Differenze per <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
+
+#: pages/templates/pages/page_diff.html:30
+#, python-format
+msgid ""
+"Revision %(version_number)s\n"
+"                  ( %(date)s by %(user_link)s)"
+msgstr "Revisione %(version_number)s ( %(date)s di %(user_link)s)"
+
+#: pages/templates/pages/page_diff.html:35
+#: pages/templates/pages/pagefile_diff.html:43
+#, python-format
+msgid ""
+"Revision %(version_number)s\n"
+"                  (%(date)s by %(user_link)s)"
+msgstr "Revisione %(version_number)s (%(date)s di %(user_link)s)"
+
+#: pages/templates/pages/page_files.html:19
+msgid "Files attached to this page:"
+msgstr "File allegati a questa pagina:"
+
+#: pages/templates/pages/page_files.html:34
+msgid "View page"
+msgstr "Visualizza pagina"
+
+#: pages/templates/pages/page_form.html:4
+#, python-format
+msgid "Editing page \"%(name)s\" - %(super)s"
+msgstr "Modifica pagina \"%(name)s\" - %(super)s"
+
+#: pages/templates/pages/page_list.html:4
+#: pages/templates/pages/page_list.html:6
+#: themes/sapling/templates/site/nav.html:8
+msgid "All Pages"
+msgstr "Tutte le Pagine"
+
+#: pages/templates/pages/page_new.html:4
+msgid "Page not found"
+msgstr "Pagina non trovata"
+
+#: pages/templates/pages/page_new.html:5
+#, python-format
+msgid "Page \"%(name)s\" does not exist (yet!)"
+msgstr "La pagina \"%(name)s\" non esiste (ancora!)"
+
+#: pages/templates/pages/page_new.html:14
+#: search/templates/search/search.html:35
+#: search/templates/search/search.html:73
+msgid "Create this page"
+msgstr "Crea questa pagina"
+
+#: pages/templates/pages/page_new.html:18
+msgid "Or use one of these templates:"
+msgstr "O usa uno di questi template:"
+
+#: pages/templates/pages/page_new.html:21
+#, python-format
+msgid "Create with %(name)s template"
+msgstr "Crea con template %(name)s"
+
+#: pages/templates/pages/page_rename.html:12
+msgid "Submit"
+msgstr "Invia"
+
+#: pages/templates/pages/page_versions.html:13
+#, python-format
+msgid "Previous versions of page \"%(name)s\" - %(super)s"
+msgstr "Precedenti versioni della pagina \"%(name)s\" - %(super)s"
+
+#: pages/templates/pages/page_versions.html:18
+msgid ""
+" Looking for <a href=\"../_files/\">files</a> or <a "
+"href=\"../_tags/_history/\">tags</a>?"
+msgstr ""
+"Stai cercando <a href=\"../_files/\">file</a> o <a "
+"href=\"../_tags/_history/\">tag</a>?"
+
+#: pages/templates/pages/pagefile_diff.html:34
+#, python-format
+msgid "Differences for %(new_name)s on %(new_slug)s"
+msgstr "Differenze per %(new_name)s in %(new_slug)s"
+
+#: pages/templates/pages/pagefile_diff.html:35
+#, python-format
+msgid ""
+"Differences for %(new_name)s on <a "
+"href=\"%(url_pages_show)s\">%(new_attached_to_page)s</a>"
+msgstr ""
+"Differenze per %(new_name)s in <a "
+"href=\"%(url_pages_show)s\">%(new_attached_to_page)s</a>"
+
+#: pages/templates/pages/pagefile_diff.html:48
+#, python-format
+msgid ""
+"Revision %(version_number)s\n"
+"                (%(date)s by %(user_link)s)"
+msgstr "Revisione %(version_number)s (%(date)s di %(user_link)s)"
+
+#: pages/templates/pages/pagefile_diff.html:59
+msgid "File info"
+msgstr "Informazioni file"
+
+#: pages/templates/pages/pagefile_info.html:4
+msgid "Recent changes for this file"
+msgstr "Modifiche recenti per questo file"
+
+#: pages/templates/pages/pagefile_info.html:11
+#, python-format
+msgid "Information about \"%(name)s\" on %(slug)s - %(super)s"
+msgstr "Informazioni su \"%(name)s\" in %(slug)s - %(super)s"
+
+#: pages/templates/pages/pagefile_info.html:12
+#, python-format
+msgid ""
+"Information about \"%(name)s\" on <a "
+"href=\"%(pages_show_url)s\">%(attached_to_page)s</a>"
+msgstr ""
+"Informazioni su \"%(name)s\" in <a "
+"href=\"%(pages_show_url)s\">%(attached_to_page)s</a>"
+
+#: pages/templates/pages/pagefile_info.html:36
+#, python-format
+msgid "Download %(name)s"
+msgstr "Scarica %(name)s"
+
+#: pages/templates/pages/pagefile_info.html:41
+msgid "Upload a new version"
+msgstr "Carica una nuova versione"
+
+#: pages/templates/pages/pagefile_info.html:48
+msgid "Upload"
+msgstr "Carica"
+
+#: pages/templates/pages/pagefile_info.html:54
+#: tags/templates/tags/pagetagset_versions.html:25
+msgid "Previous versions:"
+msgstr "Precedenti versioni:"
+
+#: pages/templatetags/pages_tags.py:109
+#, python-format
+msgid ""
+"Unable to include <a href=\"%(page_url)s\" "
+"class=\"missing_link\">%(page_name)s</a>"
+msgstr ""
+"Impossibile includere <a href=\"%(page_url)s\" "
+"class=\"missing_link\">%(page_name)s</a>"
+
+#: pages/templatetags/pages_tags.py:117
+#, python-format
+msgid ""
+"Unable to include <a href=\"%(page_url)s\">%(page_name)s</a>: endless "
+"include loop."
+msgstr ""
+"Impossibile includere <a href=\"%(page_url)s\">%(page_name)s</a>: inclusione"
+" infinita."
+
+#: recentchanges/feeds.py:25
+#, python-format
+msgid "Recent Changes on %s"
+msgstr "Modifiche Recenti in %s"
+
+#: recentchanges/feeds.py:31
+#, python-format
+msgid "Recent changes on %s"
+msgstr "Modifiche recenti in %s"
+
+#: recentchanges/feeds.py:64 recentchanges/feeds.py:152
+#, python-format
+msgid "to version %s"
+msgstr "alla versione %s"
+
+#: recentchanges/feeds.py:71 recentchanges/feeds.py:159
+#, python-format
+msgid " with comment \"%s\""
+msgstr "con commento \"%s\""
+
+#: recentchanges/feeds.py:72 recentchanges/feeds.py:160
+#, python-format
+msgid "%(title)s was %(change_type)s by %(user)s%(comment)s."
+msgstr "%(title)s era %(change_type)s da %(user)s%(comment)s."
+
+#: recentchanges/feeds.py:124 recentchanges/feeds.py:130
+#, python-format
+msgid "Changes for %(title)s on %(site_name)s"
+msgstr "Modifiche per %(title)s in %(site_name)s"
+
+#: recentchanges/templates/recentchanges/recentchanges.html:5
+#: recentchanges/templates/recentchanges/recentchanges.html:7
+#: recentchanges/templates/recentchanges/recentchanges.html:9
+#: themes/sapling/templates/site/nav.html:7
+msgid "Recent Changes"
+msgstr "Modifiche Recenti"
+
+#: recentchanges/templates/recentchanges/recentchanges.html:15
+msgid "Show all changes in the last"
+msgstr "Mostra tutte le modifiche negli ultimi"
+
+#: recentchanges/templates/recentchanges/recentchanges.html:22
+msgid "days."
+msgstr "giorni."
+
+#: recentchanges/templates/recentchanges/recentchanges.html:40
+#, python-format
+msgid "last modified %(version_date)s ago"
+msgstr "ultima modifica %(version_date)s fa"
+
+#: recentchanges/templates/recentchanges/recentchanges.html:48
+msgid "new"
+msgstr "nuovo"
+
+#: recentchanges/templates/recentchanges/recentchanges.html:50
+msgid "deleted"
+msgstr "eliminato"
+
+#: recentchanges/templates/recentchanges/recentchanges.html:52
+msgid "changes"
+msgstr "modifiche"
+
+#: recentchanges/templates/recentchanges/recentchanges.html:56
+#, python-format
+msgid "Reverted to version from %(version_date_timesince)s ago"
+msgstr "Riportato alla versione di %(version_date_timesince)s fa"
+
+#: recentchanges/templates/recentchanges/recentchanges.html:62
+#, python-format
+msgid "Redirected to <a href=\"%(url)s\">%(destination)s</a>"
+msgstr "Redirezionato a <a href=\"%(url)s\">%(destination)s</a>"
+
+#: recentchanges/templates/recentchanges/recentchanges.html:88
+#, python-format
+msgid ""
+"For statistics about pages, maps, and more, check out the <a "
+"href=\"%(dashboard_main_url)s\">dashboard</a>"
+msgstr ""
+"Per statistiche riguardo pagine, mappe e altro, controlla la <a "
+"href=\"%(dashboard_main_url)s\">bacheca</a>"
+
+#: redirects/feeds.py:25
+#, python-format
+msgid "Redirect %(objsrc)s --> %(objdest)s"
+msgstr "Redirezione %(objsrc)s --> %(objdest)s"
+
+#: redirects/forms.py:13
+msgid "Destination"
+msgstr "Destinazione"
+
+#: redirects/models.py:29
+msgid "You cannot redirect a page to itself"
+msgstr "Non puoi redirezionare una pagina a se stessa"
+
+#: redirects/views.py:41 redirects/views.py:101
+#: versionutils/versioning/views.py:67
+msgid "Thank you for your changes. "
+msgstr "Grazie per aver modificato."
+
+#: redirects/views.py:42
+#, python-format
+msgid "This page now redirects to <a href=\"%(url)s\">%(obj)s</a>."
+msgstr "Questa pagina ora redireziona a <a href=\"%(url)s\">%(obj)s</a>."
+
+#: redirects/views.py:102
+msgid "The redirect has been deleted"
+msgstr "La redirezione è stata eliminata"
+
+#: redirects/templates/redirects/redirect_diff.html:34
+#: redirects/templates/redirects/redirect_diff.html:35
+#, python-format
+msgid "Differences for %(new.source)s redirect"
+msgstr "Differenze per la redirezione %(new.source)s"
+
+#: redirects/templates/redirects/redirect_form.html:24
+msgid "Update redirect"
+msgstr "Aggiorna redirezione"
+
+#: redirects/templates/redirects/redirect_form.html:25
+msgid "Delete redirect"
+msgstr "Elimina redirezione"
+
+#: redirects/templates/redirects/redirect_form.html:27
+msgid "Create redirect"
+msgstr "Crea redirezione"
+
+#: search/templates/search/search.html:10
+#: search/templates/search/search.html:23
+msgid "Search results for"
+msgstr "Risultati della ricerca per"
+
+#: search/templates/search/search.html:25
+msgid "Search or create a new page"
+msgstr "Cerca o crea una nuova pagina"
+
+#: search/templates/search/search.html:34
+#, python-format
+msgid "No page with the exact title \"%(query)s\" exists."
+msgstr "Nessuna pagina con il titolo \"%(query)s\" esiste."
+
+#: search/templates/search/search.html:54
+msgid "No results found."
+msgstr "Nessun risultato trovato."
+
+#: search/templates/search/search.html:60
+msgid "Previous"
+msgstr "Precedente"
+
+#: search/templates/search/search.html:63
+msgid "Next"
+msgstr "Successivo"
+
+#: search/templates/search/search.html:70
+msgid "Create a new page:"
+msgstr "Crea una nuova pagina:"
+
+#: search/templates/search/search.html:77
+msgid "Search for pages:"
+msgstr "Cerca per pagine:"
+
+#: search/templates/search/search.html:80
+msgid "Search"
+msgstr "Cerca"
+
+#: tags/forms.py:76
+#, python-format
+msgid "removed %(name)s %(deleted)s."
+msgid_plural "removed %(name)s %(deleted)s."
+msgstr[0] "rimosso %(name)s %(deleted)s."
+msgstr[1] "rimosso %(name)s %(deleted)s."
+
+#: tags/forms.py:85
+#, python-format
+msgid "removed %(count)i %(name)s."
+msgid_plural "removed %(count)i %(name)s."
+msgstr[0] "rimossi %(count)i %(name)s."
+msgstr[1] "rimossi %(count)i %(name)s."
+
+#: tags/forms.py:96
+#, python-format
+msgid "added %(name)s %(added)s."
+msgid_plural "added %(name)s %(added)s."
+msgstr[0] "aggiunto %(name)s %(added)s."
+msgstr[1] "aggiunto %(name)s %(added)s."
+
+#: tags/forms.py:105
+#, python-format
+msgid "added %(count)i %(name)s."
+msgid_plural "added %(count)i %(name)s."
+msgstr[0] "aggiunti %(count)i %(name)s."
+msgstr[1] "aggiunti %(count)i %(name)s."
+
+#: tags/forms.py:114
+msgid "no changes made"
+msgstr "nessuna modifica effettuata"
+
+#: tags/forms.py:115 tags/forms.py:118
+msgid " and "
+msgstr "e"
+
+#: tags/models.py:33
+msgid "Tag"
+msgstr "Tag"
+
+#: tags/models.py:34 tags/templates/tags/pagetagset_list.html:4
+#: tags/templates/tags/pagetagset_list.html:5
+#: tags/templates/tags/tag_list.html:4
+msgid "Tags"
+msgstr "Tag"
+
+#: tags/templates/tags/pagetagset_diff.html:28
+#: tags/templates/tags/pagetagset_diff.html:29
+#, python-format
+msgid "Differences for tag versions for %(new_name)s"
+msgstr "Differenze tra la versioni dei tag per %(new_name)s"
+
+#: tags/templates/tags/pagetagset_diff.html:61
+msgid "Tags history"
+msgstr "Storia dei tag"
+
+#: tags/templates/tags/pagetagset_form.html:9
+#: tags/templates/tags/pagetagset_form.html:10
+#: tags/templates/tags/pagetagset_version_detail.html:12
+#: tags/templates/tags/pagetagset_versions.html:11
+msgid "Tags for"
+msgstr "Tag per"
+
+#: tags/templates/tags/pagetagset_form_snippet.html:8
+msgid "Save"
+msgstr "Salva"
+
+#: tags/templates/tags/pagetagset_version_detail.html:11
+#: tags/templates/tags/pagetagset_versions.html:10
+msgid "Tags for "
+msgstr "Tag per"
+
+#: tags/templates/tags/pagetagset_versions.html:19
+#, python-format
+msgid ""
+"\n"
+"        This page has no tags.  <a href=\"%(page_url)s\">Add some!</a>\n"
+"    "
+msgstr ""
+"\n"
+"Questa pagina non ha tag. <a href=\"%(page_url)s\">Aggiungine qualcuno</a>"
+
+#: tags/templates/tags/tag_list.html:5
+msgid "All tags"
+msgstr "Tutti i tag"
+
+#: tags/templates/tags/tag_list.html:17
+msgid "Alphabetical"
+msgstr "Alfabetico"
+
+#: tags/templates/tags/tag_list.html:18
+msgid "Most popular"
+msgstr "Più popolari"
+
+#: tags/templates/tags/tag_list.html:19
+msgid "As a cloud"
+msgstr "Come una cloud"
+
+#: tags/templates/tags/tag_list.html:58
+msgid "There are no tags. Add some!"
+msgstr "Non ci sono tag. Aggiungine qualcuno!"
+
+#: tags/templates/tags/tagged_list_snippet.html:17
+#, python-format
+msgid "There are no pages with the tag \"%(tag_name)s\"."
+msgstr "Non ci sono pagine con il tag \"%(tag_name)s\"."
+
+#: templates/registration/login.html:5
+msgid "Log in"
+msgstr "Accedi"
+
+#: templates/registration/login.html:9
+msgid "Your username and password didn't match. Please try again."
+msgstr ""
+"La tua username e la tua password non corrispondono. Per favore, riprova."
+
+#: templates/registration/login.html:10 templates/registration/login.html:22
+msgid "Forgot your password?"
+msgstr "Dimenticato la password?"
+
+#: templates/registration/login.html:18
+#: templates/registration/registration_form.html:34
+msgid "login"
+msgstr "accedi"
+
+#: templates/registration/password_reset_complete.html:5
+#: templates/registration/password_reset_complete.html:6
+#: templates/registration/password_reset_complete.html:9
+msgid "Password reset complete"
+msgstr "Azzeramento password completato"
+
+#: templates/registration/password_reset_complete.html:11
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr "La tua password è stata registrata. Ora puoi proseguire e accedere."
+
+#: templates/registration/password_reset_complete.html:13
+msgid "Sign in"
+msgstr "Registrati"
+
+#: templates/registration/password_reset_confirm.html:4
+#: templates/registration/password_reset_confirm.html:6
+#: templates/registration/password_reset_form.html:4
+#: templates/registration/password_reset_form.html:5
+#: templates/registration/password_reset_form.html:8
+msgid "Password reset"
+msgstr "Password azzerata"
+
+#: templates/registration/password_reset_confirm.html:11
+msgid "Enter new password"
+msgstr "Inserisci nuova password"
+
+#: templates/registration/password_reset_confirm.html:13
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+"Per favore inserisci la tua nuova password due volte così da poter "
+"verificare che sia stata inserita correttamente."
+
+#: templates/registration/password_reset_confirm.html:17
+msgid "New password:"
+msgstr "Nuova password:"
+
+#: templates/registration/password_reset_confirm.html:19
+msgid "Confirm password:"
+msgstr "Conferma password:"
+
+#: templates/registration/password_reset_confirm.html:20
+msgid "Change my password"
+msgstr "Modifica la mia password"
+
+#: templates/registration/password_reset_confirm.html:24
+msgid "Password reset unsuccessful"
+msgstr "Azzerramento password non riuscito"
+
+#: templates/registration/password_reset_confirm.html:26
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+"Il link per l\\'azzeramento password non era valido, probabilmente perché è "
+"già stato utilizzato. Per favore richiedi un nuovo azzeramento per la tua "
+"password."
+
+#: templates/registration/password_reset_done.html:4
+#: templates/registration/password_reset_done.html:5
+#: templates/registration/password_reset_done.html:8
+msgid "Password reset successful"
+msgstr "Azzerramento password riuscito"
+
+#: templates/registration/password_reset_done.html:10
+msgid ""
+"We've e-mailed you instructions for setting your password to the e-mail "
+"address you submitted. You should be receiving it shortly."
+msgstr ""
+"Ti abbiamo appena inviato via email le istruzioni per impostare la tua nuova"
+" password. Dovresti riceverle a breve."
+
+#: templates/registration/password_reset_email.html:2
+#, python-format
+msgid ""
+"You're receiving this e-mail because you requested a password reset for your"
+" user account at %(site_name)s."
+msgstr ""
+"Ricevi questa email perché hai richiesto sul sito %(site_name)s un reset "
+"della password per il tuo account utente."
+
+#: templates/registration/password_reset_email.html:4
+msgid "Please go to the following page and choose a new password:"
+msgstr "Per favore accedi alla seguente pagina e scegli una nuova password:"
+
+#: templates/registration/password_reset_email.html:8
+msgid "Your username, in case you've forgotten:"
+msgstr "La tua username, nel caso l\\'avessi dimenticato:"
+
+#: templates/registration/password_reset_email.html:10
+msgid "Thanks for using our site!"
+msgstr "Grazie per utilizzare il nostro sito!"
+
+#: templates/registration/password_reset_email.html:12
+#, python-format
+msgid "The %(site_name)s team"
+msgstr "Il team di %(site_name)s"
+
+#: templates/registration/password_reset_form.html:10
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll e-mail "
+"instructions for setting a new one."
+msgstr ""
+"Dimenticata la password? Inserisci il tuo indirizzo email sotto, e ti "
+"invieremo via email le istruzioni per impostarne una nuova."
+
+#: templates/registration/password_reset_form.html:14
+msgid "E-mail address:"
+msgstr "Indirizzo email:"
+
+#: templates/registration/password_reset_form.html:14
+msgid "Reset my password"
+msgstr "Azzera la mia password"
+
+#: templates/registration/registration_form.html:5
+msgid "Create account"
+msgstr "Crea un account"
+
+#: themes/sapling/templates/site/login_info.html:6
+msgid "Welcome"
+msgstr "Benvenuto/a"
+
+#: themes/sapling/templates/site/login_info.html:9
+msgid "log out"
+msgstr "disconnetti"
+
+#: themes/sapling/templates/site/login_info.html:13
+msgid "log in"
+msgstr "accedi"
+
+#: themes/sapling/templates/site/login_info.html:13
+msgid "or"
+msgstr "o"
+
+#: themes/sapling/templates/site/login_info.html:13
+msgid "create account"
+msgstr "crea un account"
+
+#: themes/sapling/templates/site/nav.html:4
+msgid "Front Page"
+msgstr "Pagina Principale"
+
+#: themes/sapling/templates/site/nav.html:5
+msgid "People"
+msgstr "Persone"
+
+#: users/__init__.py:7
+msgid "You are now logged out."
+msgstr "Sei ora disconnesso."
+
+#: users/admin.py:16
+msgid "Personal info"
+msgstr "Informazioni personali"
+
+#: users/admin.py:17
+msgid "Permissions"
+msgstr "Permessi"
+
+#: users/admin.py:19
+msgid "Important dates"
+msgstr "Date importanti"
+
+#: users/admin.py:20
+msgid "Groups"
+msgstr "Gruppi"
+
+#: users/registration_backend/__init__.py:46
+msgid "You are signed up and logged in!"
+msgstr "Sei registrato e hai avuto accesso al sistema!"
+
+#: users/registration_backend/__init__.py:48
+#, python-format
+msgid "Tell us who you are by <a href=\"%s\">creating a page for yourself!</a>"
+msgstr "Dicci chi sei <a href=\"%s\">creando una pagina su di te!</a>"
+
+#: users/registration_backend/forms.py:29
+msgid "Username"
+msgstr "Username"
+
+#: users/registration_backend/forms.py:31
+msgid "This value may contain only letters (a-z), numbers, +, - and ."
+msgstr "Questo campo può contenere solo lettere (a-z), numeri, +, - e ."
+
+#: users/registration_backend/forms.py:36
+msgid "E-mail"
+msgstr "Email"
+
+#: users/registration_backend/forms.py:39
+msgid "Password"
+msgstr "Password"
+
+#: users/registration_backend/forms.py:40
+msgid "Your name"
+msgstr "Tuo nome"
+
+#: users/registration_backend/forms.py:45
+msgid "You must agree to the terms to register"
+msgstr "Devi accettare le condizioni per registrarti"
+
+#: users/registration_backend/forms.py:60
+msgid "A user with that username already exists."
+msgstr "Un utente con questo username esiste già."
+
+#: users/registration_backend/forms.py:69
+msgid ""
+"This email address is already in use. Please supply a different email "
+"address."
+msgstr ""
+"Questo indirizzo email è già utilizzato. Per favore utilizza un indirizzo "
+"email differente."
+
+#: users/templates/users/subscribed_list.html:4
+msgid "List of subscribers"
+msgstr "Lista degli iscritti"
+
+#: users/templates/users/subscribed_list.html:8
+msgid "Subscriber emails:"
+msgstr "Email degli iscritti:"
+
+#: utils/views.py:82
+msgid "Sorry, you are not allowed to perform this action."
+msgstr "Mi dispiace, ma non sei abilitato ad effettuare questa operazione."
+
+#: utils/views.py:83
+msgid ""
+"Anonymous users may not perform this action. Please <a "
+"href=\"/Users/login/\">log in</a>."
+msgstr ""
+"Gli utenti anonimi non possono effettuare questa operazione. Per favore <a "
+"href=\"/Users/login/\">accedi</a>."
+
+#: utils/templates/utils/history/form.html:13
+msgid "revert"
+msgstr "Torna"
+
+#: versionutils/diff/diffutils.py:103 versionutils/diff/diffutils.py:206
+#: versionutils/diff/diffutils.py:294 versionutils/diff/diffutils.py:314
+#: versionutils/diff/diffutils.py:379 versionutils/diff/diffutils.py:393
+#: versionutils/diff/diffutils.py:496
+msgid "No differences found"
+msgstr "Nessuna differenza trovata"
+
+#: versionutils/diff/diffutils.py:531 versionutils/diff/diffutils.py:541
+#: versionutils/diff/diffutils.py:554 versionutils/diff/diffutils.py:564
+msgid "Stayed the same"
+msgstr "Invariato"
+
+#: versionutils/diff/diffutils.py:534 versionutils/diff/diffutils.py:546
+msgid "Removed"
+msgstr "Rimosso"
+
+#: versionutils/diff/diffutils.py:557 versionutils/diff/diffutils.py:569
+#: versionutils/versioning/constants.py:14
+msgid "Added"
+msgstr "Aggiunto"
+
+#: versionutils/diff/templates/diff/file_diff.html:8
+msgid "Download deleted version"
+msgstr "Scarica la versione eliminata"
+
+#: versionutils/diff/templates/diff/file_diff.html:9
+msgid "Download added version"
+msgstr "Scarica la versione aggiunta"
+
+#: versionutils/merging/forms.py:53
+msgid ""
+"Warning: someone else made changes before you.  Please review the changes "
+"and save again."
+msgstr ""
+"Attenzione: qualcun altro ha fatto delle modifiche prima di te. Per favore, "
+"verifica le modifiche e salva di nuovo."
+
+#: versionutils/merging/forms.py:55
+msgid ""
+"Someone else made changes before you but yourchanges were successfully "
+"merged."
+msgstr ""
+"Qualcun altro ha fatto delle modifiche prima di te, ma le tue modifiche sono"
+" state inserite correttamente."
+
+#: versionutils/templates/versionutils/history/form.html:8
+#: versionutils/templates/versionutils/history/form.html:15
+msgid "Compare"
+msgstr "Confronta"
+
+#: versionutils/templates/versionutils/history/form.html:45
+msgid "There is no revision history."
+msgstr "Non c\\'è nessuna storia delle revisioni."
+
+#: versionutils/templates/versionutils/history/media.html:47
+msgid "Please select two versions to compare"
+msgstr "Per favore, seleziona due versioni da confrontare"
+
+#: versionutils/versioning/constants.py:15
+msgid "Updated"
+msgstr "Aggiornato"
+
+#: versionutils/versioning/constants.py:16
+msgid "Deleted"
+msgstr "Eliminato"
+
+#: versionutils/versioning/constants.py:17
+msgid "Deleted via cascade"
+msgstr "Eliminazione Multipla"
+
+#: versionutils/versioning/constants.py:18
+msgid "Reverted"
+msgstr "Annullato"
+
+#: versionutils/versioning/constants.py:19
+msgid "Reverted/Added"
+msgstr "Annulato/Aggiunto"
+
+#: versionutils/versioning/constants.py:20
+msgid "Reverted/Deleted"
+msgstr "Annullato/Eliminato"
+
+#: versionutils/versioning/constants.py:21
+msgid "Reverted/Deleted via cascade"
+msgstr "Annullato/Eliminazione Multipla"
+
+#: versionutils/versioning/constants.py:22
+msgid "Reverted via cascade"
+msgstr "Annullamento multiplo"
+
+#: versionutils/versioning/forms.py:47
+msgid "Reason for deletion"
+msgstr "Motivo della cancellazione"
+
+#: versionutils/versioning/forms.py:57
+msgid "Reason for revert"
+msgstr "Motivo dell\\'annullamento"
+
+#: versionutils/versioning/views.py:68
+msgid "Your attention to detail is appreciated."
+msgstr "La tua attenzione ai dettagli è molto gradita!"
+
+#: versionutils/versioning/views.py:100
+msgid "Successfully deleted!"
+msgstr "Eliminato correttamente!"
+
+#: versionutils/versioning/views.py:146
+#, python-format
+msgid "Reverted to version %s."
+msgstr "Riportato alla versione %s."

@@ -89,9 +89,11 @@ class TaggedList(ListView):
         return context
 
 
-class PageTagSetUpdateView(PageNotFoundMixin, CreateObjectMixin, UpdateView):
+class PageTagSetUpdateView(PageNotFoundMixin, PermissionRequiredMixin,
+        CreateObjectMixin, UpdateView):
     model = PageTagSet
     form_class = PageTagSetForm
+    permission = 'pages.change_page'
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
@@ -106,6 +108,9 @@ class PageTagSetUpdateView(PageNotFoundMixin, CreateObjectMixin, UpdateView):
         if next:
             return next
         return reverse('pages:tags', args=[self.kwargs.get('slug')])
+
+    def get_protected_object(self):
+        return self.object.page
 
 
 class PageTagSetVersions(PageNotFoundMixin, VersionsList):

@@ -5,6 +5,7 @@ from tastypie import fields
 from models import Redirect
 from pages.api import PageResource, PageHistoryResource
 from sapling.api import api
+from sapling.api.resources import ModelHistoryResource
 from sapling.api.authentication import ApiKeyWriteAuthentication
 
 
@@ -25,7 +26,7 @@ class RedirectResource(ModelResource):
 # We don't use the SlugifyMixin approach here because it becomes
 # too complicated to generate pretty URLs with the historical version
 # identifiers.
-class RedirectHistoryResource(ModelResource):
+class RedirectHistoryResource(ModelHistoryResource):
     destination = fields.ForeignKey(PageHistoryResource, 'destination')
 
     class Meta:

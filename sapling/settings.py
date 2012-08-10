@@ -61,6 +61,7 @@ LANGUAGES = (
     ('de_CH', _('German (Swiss)')),
     ('es_AR', _('Spanish (Argentina)')),
     ('da_DK', _('Danish')),
+    ('it_IT', _('Italian')),
     ('pt_PT', _('Portuguese')),
 )
 
@@ -171,6 +172,8 @@ HONEYPOT_FIELD_NAME = 'content2'
 HONEYPOT_USE_JS_FIELD = True
 HONEYPOT_REDIRECT_URL = '/'
 
+TASTYPIE_ALLOW_MISSING_SLASH = True
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -194,6 +197,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'utils.middleware.ServerStartupMiddleware',
     'utils.middleware.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

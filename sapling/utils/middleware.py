@@ -1,5 +1,7 @@
 from django.middleware.cache import UpdateCacheMiddleware
-
+from django.core.exceptions import MiddlewareNotUsed
+from django.conf import settings
+from django.utils.importlib import import_module
 from django.utils.cache import learn_cache_key, get_max_age
 
 
@@ -68,3 +70,21 @@ class TrackPOSTMiddleware(object):
     def process_request(self, request):
         if request.method == 'POST' and 'has_POSTed' not in request.session:
             request.session['has_POSTed'] = True
+
+
+class ServerStartupMiddleware(object):
+    """
+    This is a total hack.  See https://code.djangoproject.com/ticket/13024 and
+    http://stackoverflow.com/questions/2781383/where-to-put-django-startup-code.
+
+    We can usually put startup code in models.py or urls.py, but this really
+    helps cut down on potential circular imports.
+    """
+    def __init__(self):
+        for appname in reversed(settings.INSTALLED_APPS):
+            try:
+                import_module("%s.startup" % appname)
+            except:
+                pass
+
+        raise MiddlewareNotUsed

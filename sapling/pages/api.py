@@ -9,6 +9,7 @@ from tastypie.utils import trailing_slash
 
 from pages.models import Page, PageFile, name_to_url, url_to_name
 from sapling.api import api
+from sapling.api.resources import ModelHistoryResource
 from sapling.api.authentication import ApiKeyWriteAuthentication
 
 
@@ -54,7 +55,7 @@ class PageURLMixin(object):
             # Slugs can't start with the _ character or contain a
             # slash surrounded by the _ character. We do this so we can
             # define URLs for sub-resources more easily.
-            url(r"^(?P<resource_name>%s)/(?P<%s>[^_]((?!(/_)|(_/)).)*?)%s*$" %
+            url(r"^(?P<resource_name>%s)/(?P<%s>[^_]((?!(/_)|(_/)).)*?)%s$" %
                 (self._meta.resource_name, self._meta.detail_uri_name,
                  trailing_slash()), self.wrap_view('dispatch_detail'),
                 name="api_dispatch_detail"),
@@ -75,7 +76,7 @@ class FileResource(ModelResource):
         authorization = DjangoAuthorization()
 
 
-class FileHistoryResource(FileResource):
+class FileHistoryResource(FileResource, ModelHistoryResource):
     class Meta:
         resource_name = 'file_version'
         queryset = PageFile.versions.all()
@@ -152,7 +153,7 @@ class PageResource(PageURLMixin, ModelResource):
 # too complicated to generate pretty URLs with the historical version
 # identifiers. TODO: Fix this. Maybe easier now with
 # `detail_uri_name`
-class PageHistoryResource(ModelResource):
+class PageHistoryResource(ModelHistoryResource):
     class Meta:
         resource_name = 'page_version'
         queryset = Page.versions.all()

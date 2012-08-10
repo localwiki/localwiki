@@ -29,25 +29,16 @@ class AutoTrackUserInfoMiddleware(object):
         if request.method in IGNORE_USER_INFO_METHODS:
             pass
 
-        user = None
-        if hasattr(request, 'user') and request.user.is_authenticated():
-            user = request.user
-        ip = request.META.get('REMOTE_ADDR', None)
-        self._set_lookup_fields(user=user, ip=ip)
-
+        _threadlocal.request = request
         signals.pre_save.connect(self.update_fields, weak=False)
 
-    def _set_lookup_fields(self, **kws):
-        for k, v in kws.iteritems():
-            setattr(_threadlocal, '_userinfo_%s' % k, v)
-
     def _lookup_field_value(self, field):
+        request = _threadlocal.request
         if isinstance(field, AutoUserField):
-            field_type = 'user'
+            if hasattr(request, 'user') and request.user.is_authenticated():
+                return request.user
         elif isinstance(field, AutoIPAddressField):
-            field_type = 'ip'
-
-        return getattr(_threadlocal, '_userinfo_%s' % field_type)
+            return request.META.get('REMOTE_ADDR', None)
 
     def update_fields(self, sender, instance, **kws):
         for field in instance._meta.fields:
