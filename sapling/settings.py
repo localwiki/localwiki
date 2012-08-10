@@ -172,6 +172,8 @@ HONEYPOT_FIELD_NAME = 'content2'
 HONEYPOT_USE_JS_FIELD = True
 HONEYPOT_REDIRECT_URL = '/'
 
+TASTYPIE_ALLOW_MISSING_SLASH = True
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
