@@ -197,7 +197,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'utils.middleware.ServerStartupMiddleware',
     'utils.middleware.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -252,16 +251,16 @@ INSTALLED_APPS = (
     'versionutils.versioning',
     'versionutils.diff',
     'ckeditor',
-    'pages',
     'maps',
+    'pages',
+    'redirects',
+    'tags',
     'users',
     'recentchanges',
     'search',
-    'redirects',
     'dashboard',
     'api',
     'utils',
-    'tags',
 )
 
 LOCAL_INSTALLED_APPS = ()

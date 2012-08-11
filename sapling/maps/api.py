@@ -11,7 +11,7 @@ from sapling.api.authentication import ApiKeyWriteAuthentication
 
 
 class MapResource(pages.api.PageURLMixin, gis_resources.ModelResource):
-    page = fields.ToOneField(pages.api.PageResource, 'page')
+    page = fields.ToOneField('pages.api.PageResource', 'page')
 
     class Meta:
         queryset = MapData.objects.all()
@@ -35,7 +35,7 @@ class MapResource(pages.api.PageURLMixin, gis_resources.ModelResource):
 # TODO: Fix this. Maybe easier now with `detail_uri_name` and the uri prep
 # method.
 class MapHistoryResource(gis_resources.ModelResource, ModelHistoryResource):
-    page = fields.ToOneField(pages.api.PageHistoryResource, 'page')
+    page = fields.ToOneField('pages.api.PageHistoryResource', 'page')
 
     class Meta:
         queryset = MapData.versions.all()

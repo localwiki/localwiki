@@ -7,7 +7,6 @@ from django.utils.html import strip_tags
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
-from pages.models import Page
 from versionutils import versioning, diff
 
 
@@ -48,7 +47,7 @@ slugify = stringfilter(slugify)
 
 
 class PageTagSet(models.Model):
-    page = models.OneToOneField(Page)
+    page = models.OneToOneField('pages.Page')
     tags = models.ManyToManyField(Tag)
 
     def __unicode__(self):
@@ -77,3 +76,9 @@ class PageTagSetDiff(diff.BaseModelDiff):
 
 diff.register(PageTagSet, PageTagSetDiff)
 versioning.register(PageTagSet)
+
+
+# For registration calls
+import signals
+import api
+import feeds

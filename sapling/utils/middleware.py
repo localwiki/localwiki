@@ -70,21 +70,3 @@ class TrackPOSTMiddleware(object):
     def process_request(self, request):
         if request.method == 'POST' and 'has_POSTed' not in request.session:
             request.session['has_POSTed'] = True
-
-
-class ServerStartupMiddleware(object):
-    """
-    This is a total hack.  See https://code.djangoproject.com/ticket/13024 and
-    http://stackoverflow.com/questions/2781383/where-to-put-django-startup-code.
-
-    We can usually put startup code in models.py or urls.py, but this really
-    helps cut down on potential circular imports.
-    """
-    def __init__(self):
-        for appname in reversed(settings.INSTALLED_APPS):
-            try:
-                import_module("sapling.%s.startup" % appname)
-            except ImportError:
-                pass
-
-        raise MiddlewareNotUsed

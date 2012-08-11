@@ -7,7 +7,7 @@ from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.authorization import DjangoAuthorization
 from tastypie.utils import trailing_slash
 
-from pages.models import Page, PageFile, name_to_url, url_to_name
+from models import Page, PageFile, name_to_url, url_to_name
 from sapling.api import api
 from sapling.api.resources import ModelHistoryResource
 from sapling.api.authentication import ApiKeyWriteAuthentication

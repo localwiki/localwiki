@@ -6,29 +6,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.db.models.aggregates import Count
-from django.views.generic import UpdateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 
-from utils.views import CreateObjectMixin, PermissionRequiredMixin,\
-    Custom404Mixin
 from versionutils.versioning.views import VersionsList, RevertView, UpdateView
 from versionutils.diff.views import CompareView
-from maps.views import MapForTag
-from maps.widgets import InfoMap
-from tags.models import PageTagSet, Tag, slugify
-from tags.forms import PageTagSetForm
+from models import PageTagSet, Tag, slugify
+from forms import PageTagSetForm
 from pages.models import Page
 
-from versionutils.versioning.views import VersionsList, RevertView, UpdateView
-from versionutils.diff.views import CompareView
 from utils.views import CreateObjectMixin, PermissionRequiredMixin,\
     Custom404Mixin
-from tags.models import PageTagSet, Tag, slugify
-from tags.forms import PageTagSetForm
-from pages.models import Page
-from maps.views import MapForTag
-from maps.widgets import InfoMap
 
 
 class PageNotFoundMixin(Custom404Mixin):
@@ -63,12 +51,15 @@ class TaggedList(ListView):
             return None
         # We re-use the MapForTag view's logic here to embed a mini-map on the
         # tags list page
+        from maps.views import MapForTag
         map_view = MapForTag()
         map_view.kwargs = dict(tag=self.tag.slug)
         map_view.object_list = map_view.get_queryset()
         return map_view.get_map_objects()
 
     def get_context_data(self, *args, **kwargs):
+        from maps.widgets import InfoMap
+
         context = super(TaggedList, self).get_context_data(*args, **kwargs)
         context['tag'] = self.tag
         context['tag_name'] = self.tag_name

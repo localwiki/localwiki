@@ -346,3 +346,9 @@ def url_to_name(value):
     value = unquote_plus(value.encode('utf-8')).decode('utf-8')
     return re.sub('_', ' ', value).strip()
 url_to_name = stringfilter(url_to_name)
+
+
+# For registration calls
+import signals
+import api
+import feeds

@@ -3,7 +3,7 @@ from tastypie import fields
 from tastypie.constants import ALL_WITH_RELATIONS
 
 from models import Tag, PageTagSet
-from pages.api import PageURLMixin, PageResource, PageHistoryResource
+#from pages.api import PageURLMixin
 from sapling.api import api
 from sapling.api.resources import ModelHistoryResource
 from sapling.api.authentication import ApiKeyWriteAuthentication
@@ -36,8 +36,8 @@ class TagResource(ModelResource):
 api.register(TagResource())
 
 
-class PageTagSetResource(PageURLMixin, ModelResource):
-    page = fields.ToOneField(PageResource, 'page')
+class PageTagSetResource(ModelResource):
+    page = fields.ToOneField('pages.api.PageResource', 'page')
     tags = fields.ToManyField(TagResource, 'tags')
 
     class Meta:
@@ -58,7 +58,7 @@ class PageTagSetResource(PageURLMixin, ModelResource):
 # TODO: Fix this. Maybe easier now with `detail_uri_name` and the uri prep
 # method.
 class PageTagSetHistoryResource(ModelHistoryResource):
-    page = fields.ToOneField(PageHistoryResource, 'page')
+    page = fields.ToOneField('pages.api.PageHistoryResource', 'page')
     tags = fields.ToManyField(TagResource, 'tags')
 
     class Meta:
