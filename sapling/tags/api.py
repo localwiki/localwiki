@@ -3,7 +3,7 @@ from tastypie import fields
 from tastypie.constants import ALL_WITH_RELATIONS
 
 from models import Tag, PageTagSet
-#from pages.api import PageURLMixin
+from pages.api import PageURLMixin
 from sapling.api import api
 from sapling.api.resources import ModelHistoryResource
 from sapling.api.authentication import ApiKeyWriteAuthentication
@@ -36,7 +36,7 @@ class TagResource(ModelResource):
 api.register(TagResource())
 
 
-class PageTagSetResource(ModelResource):
+class PageTagSetResource(PageURLMixin, ModelResource):
     page = fields.ToOneField('pages.api.PageResource', 'page')
     tags = fields.ToManyField(TagResource, 'tags')
 
