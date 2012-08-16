@@ -110,7 +110,7 @@ class PageResource(PageURLMixin, ModelResource):
                  self.wrap_view('get_search'), name="api_get_search"),
         ]
         # and get the base class' URLs (our slug stuff)
-        l += super(PageResource, self).override_urls()
+        l += super(PageResource, self).prepend_urls()
         return l
 
     def get_search(self, request, **kwargs):
