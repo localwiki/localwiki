@@ -3,7 +3,6 @@ from django.conf.urls.defaults import *
 from utils.constants import DATETIME_REGEXP
 from views import *
 from feeds import MapChangesFeed
-from maps.views import MapObjectsForBounds
 
 urlpatterns = patterns('',
     url(r'^$', MapGlobalView.as_view(), name='global'),

@@ -17,6 +17,7 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
+    (r'^api$', redirect_to, {'url': '/api/'}),
     (r'^api/(?P<rest>.*)', api_router.as_view()),
     (r'^map/', include(maps.site.urls)),
     (r'^tags$', redirect_to, {'url': '/tags/'}),
