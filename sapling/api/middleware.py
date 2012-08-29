@@ -7,7 +7,7 @@ from django.utils.cache import patch_vary_headers
 from django import http
 
 try:
-    import settings 
+    from django.conf import settings
     XS_SHARING_ALLOWED_ORIGINS = settings.XS_SHARING_ALLOWED_ORIGINS
     XS_SHARING_ALLOWED_METHODS = settings.XS_SHARING_ALLOWED_METHODS
 except:
