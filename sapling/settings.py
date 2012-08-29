@@ -209,6 +209,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.transaction.TransactionMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
+    'api.middleware.XsSharing',
+    'utils.middleware.ServerStartupMiddleware',
 )
 
 # Dummy cache - TODO: switch to memcached by default
