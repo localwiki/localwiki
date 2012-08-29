@@ -145,7 +145,8 @@ setup(
     packages=find_packages(),
     package_dir={'sapling': 'sapling'},
     data_files=gen_data_files(
-        ('docs', 'share/localwiki/docs')
+        ('docs', 'share/localwiki/docs'),
+        ('install_config', 'share/localwiki/install_config'),
     ),
     package_data=find_package_data(exclude_directories=standard_exclude_directories + ('deb_utils',) ),
     install_requires=install_requires,
