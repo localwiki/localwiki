@@ -5,8 +5,10 @@ import sys
 
 # We have to hard-code these here, as we run a few setup commands (in
 # setup_all) that execute before the settings can be safely loaded.
-DATA_ROOT = os.path.join(sys.prefix, 'share', 'localwiki')
-PROJECT_ROOT = os.path.split(os.path.abspath(__file__))[0]
+DATA_ROOT = os.environ.get('LOCALWIKI_DATA_ROOT') or \
+    os.path.join(sys.prefix, 'share', 'localwiki')
+PROJECT_ROOT = os.environ.get('LOCALWIKI_PROJECT_ROOT') or \
+    os.path.split(os.path.abspath(__file__))[0]
 
 # Add virtualenv packages
 site_packages = os.path.join(DATA_ROOT, 'env', 'lib',
