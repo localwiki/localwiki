@@ -177,7 +177,7 @@ CKEDITOR.dialog.add( 'includetag', function( editor )
 			this.setupContent( data );
 			// Set up autocomplete.
 			var urlField = this.getContentElement( 'info', 'tag' );
-            $('#' + urlField.domId + ' input').autocomplete({source: '/api/tags/suggest'})
+            $('#' + urlField.domId + ' input').autocomplete({source: '/_api/tags/suggest'})
 		},
 		onOk : function()
 		{

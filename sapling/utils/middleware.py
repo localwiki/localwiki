@@ -1,5 +1,7 @@
 from django.middleware.cache import UpdateCacheMiddleware
-
+from django.core.exceptions import MiddlewareNotUsed
+from django.conf import settings
+from django.utils.importlib import import_module
 from django.utils.cache import learn_cache_key, get_max_age
 
 

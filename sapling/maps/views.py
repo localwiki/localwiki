@@ -19,7 +19,6 @@ from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, VersionsList
 from pages.models import Page
 from pages.models import slugify
-import tags.models as tags
 
 from widgets import InfoMap
 from models import MapData
@@ -137,6 +136,8 @@ class MapForTag(MapGlobalView):
     zoom_to_data = True
 
     def get_queryset(self):
+        import tags.models as tags
+
         qs = super(MapGlobalView, self).get_queryset()
         self.tag = tags.Tag.objects.get(slug=tags.slugify(self.kwargs['tag']))
         tagsets = tags.PageTagSet.objects.filter(tags=self.tag)

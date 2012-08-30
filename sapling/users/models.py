@@ -55,4 +55,6 @@ class UserProfile(models.Model):
     subscribed = models.BooleanField(verbose_name=settings.SUBSCRIBE_MESSAGE)
 
 
-import signals  # to fire signals
+# For registration calls
+import signals
+import api
