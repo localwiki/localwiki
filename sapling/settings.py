@@ -16,8 +16,10 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATA_ROOT = os.path.join(sys.prefix, 'share', 'localwiki')
-PROJECT_ROOT = os.path.join(os.path.dirname(__file__))
+DATA_ROOT = os.environ.get('LOCALWIKI_DATA_ROOT') or \
+    os.path.join(sys.prefix, 'share', 'localwiki')
+PROJECT_ROOT = os.environ.get('LOCALWIKI_PROJECT_ROOT') or \
+    os.path.split(os.path.abspath(__file__))[0]
 
 DATABASES = {
     'default': {
