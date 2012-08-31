@@ -453,7 +453,7 @@ but also has version-related fields.  These version-related fields are:</p>
 <p>Currently, you&#8217;ll need to generate an API key before you can write to
 the API.  <strong>Be careful who you give an API key to</strong>, because there are
 currently no API limits in place.  To create or revoke an API key, simply
-visit the <a class="reference external" href="settings">administrative interface</a> and the &#8220;Api keys&#8221; area:</p>
+visit the <a class="reference internal" href="settings.html"><em>administrative interface</em></a> and the &#8220;Api keys&#8221; area:</p>
 <div class="figure">
 <img alt="_images/admin_apikey_1.png" src="_images/admin_apikey_1.png" />
 </div>
@@ -478,7 +478,11 @@ In that case, simply send a request with a querystring containing a
 <tt class="docutils literal"><span class="pre">username</span></tt> and an <tt class="docutils literal"><span class="pre">api_key</span></tt> attribute, e.g.:</p>
 <div class="highlight-python"><pre>/api/page/?username=daniel&amp;api_key=204db7bcfafb2deb7506b89eb3b9b715b09905c8</pre>
 </div>
-<p>The header approach is perfered, though.</p>
+<p>The header approach is perfered, though.  If the header approach isn&#8217;t
+working and you&#8217;re running Apache be sure that you have the <tt class="docutils literal"><span class="pre">WSGIPassAuthorization</span> <span class="pre">On</span></tt>
+directive in your apache configuration.  See the <a class="reference internal" href="configure.html"><em>web server
+configuration docs</em></a> for an
+example.</p>
 </div>
 </div>
 </div>

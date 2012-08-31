@@ -514,7 +514,7 @@ Generating an API key
 Currently, you'll need to generate an API key before you can write to
 the API.  **Be careful who you give an API key to**, because there are
 currently no API limits in place.  To create or revoke an API key, simply
-visit the `administrative interface <settings>`_ and the "Api keys" area:
+visit the :doc:`administrative interface <settings>` and the "Api keys" area:
 
 .. figure:: /_static/images/admin_apikey_1.png
 
@@ -543,4 +543,8 @@ In that case, simply send a request with a querystring containing a
 
     /api/page/?username=daniel&api_key=204db7bcfafb2deb7506b89eb3b9b715b09905c8
 
-The header approach is perfered, though.
+The header approach is perfered, though.  If the header approach isn't
+working and you're running Apache be sure that you have the ``WSGIPassAuthorization On``
+directive in your apache configuration.  See the :doc:`web server
+configuration docs <configure>` for an
+example.
