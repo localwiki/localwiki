@@ -1,11 +1,9 @@
 from django.contrib.gis.db import models
-from django.contrib.gis.geos import *
 from django.core.urlresolvers import reverse
 
 from versionutils import versioning
-from pages.models import Page
 
-from fields import *
+from fields import FlatCollectionFrom
 
 
 class MapData(models.Model):
@@ -15,7 +13,7 @@ class MapData(models.Model):
     geom = FlatCollectionFrom(points='points', lines='lines', polys='polys')
     length = models.FloatField(null=True, editable=False)
 
-    page = models.OneToOneField(Page)
+    page = models.OneToOneField('pages.Page')
 
     objects = models.GeoManager()
 
@@ -37,4 +35,7 @@ class MapData(models.Model):
 
 versioning.register(MapData)
 
-import feeds # To fire register() calls.
+
+# For registration calls
+import api
+import feeds

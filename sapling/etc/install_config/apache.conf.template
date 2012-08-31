@@ -30,6 +30,8 @@
 
     WSGIDaemonProcess example.com processes=2 threads=15 display-name=%{GROUP}
     WSGIProcessGroup example.com
+    # For API Authorization header support
+    WSGIPassAuthorization On
 
     WSGIScriptAlias / /usr/share/localwiki/deploy/localwiki.wsgi
 

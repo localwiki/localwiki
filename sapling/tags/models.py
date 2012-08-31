@@ -3,12 +3,11 @@ import re
 from django.db import models
 from django.db.utils import IntegrityError
 from django.template.defaultfilters import stringfilter
-
-from pages.models import Page
-from versionutils import versioning, diff
 from django.utils.html import strip_tags
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+
+from versionutils import versioning, diff
 
 
 class Tag(models.Model):
@@ -48,7 +47,7 @@ slugify = stringfilter(slugify)
 
 
 class PageTagSet(models.Model):
-    page = models.OneToOneField(Page)
+    page = models.OneToOneField('pages.Page')
     tags = models.ManyToManyField(Tag)
 
     def __unicode__(self):
@@ -79,5 +78,7 @@ diff.register(PageTagSet, PageTagSetDiff)
 versioning.register(PageTagSet)
 
 
-import feeds  # To fire register() calls.
-import signals  # To fire signals
+# For registration calls
+import signals
+import api
+import feeds

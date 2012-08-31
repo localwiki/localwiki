@@ -348,5 +348,7 @@ def url_to_name(value):
 url_to_name = stringfilter(url_to_name)
 
 
-import feeds  # To fire register() calls.
-import signals  # To fire signal calls.
+# For registration calls
+import signals
+import api
+import feeds

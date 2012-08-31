@@ -140,16 +140,34 @@ CKEDITOR.plugins.add( 'simpleimage',
             	var oldHtml = oldFrame.length ? oldFrame.outerHTML() : img.outerHTML();
             	img.addClass('cke_moved');
             	oldFrame.addClass('cke_moved');
+            	jQuery('img', editor.document.$).addClass('cke_unmoved'); // for FF workaround, below
+            	jQuery('img', editor.document.$).addClass('cke_unmoved');
             	var floated = oldFrame.hasClass('image_right') || oldFrame.hasClass('image_left');
             	var moveImage = function(evt){
-                    oldFrame.remove();
             		var moved_image = jQuery('img.cke_moved', editor.document.$);
+            		if(moved_image.length == 0)
+            		{
+            			// workaround for Firefox 13+ to find what was moved
+            			// see https://github.com/localwiki/localwiki/issues/316
+            			moved_image = jQuery('img:not(.cke_unmoved)', editor.document.$);
+            		}
             		if(moved_image.length == 0)
             		{
             		    restoreImages();
             		    return;
             		}
+            		else if(!moved_image.parent().is(oldFrame))
+            		{
+            			// remove frame unless image wasn't really moved
+            			oldFrame.remove();
+            		}
             		var moved_frame = jQuery('span.cke_moved', editor.document.$);
+            		if(moved_frame.length == 0)
+            		{
+            			// workaround for Firefox 13+ to find what was moved
+            			// see https://github.com/localwiki/localwiki/issues/316
+            			moved_frame = jQuery('span.image_frame:not(.cke_unmoved)', editor.document.$);
+            		}
             		var moved_element = moved_frame.length ? moved_frame : moved_image;
             		var outerFrame = moved_element.parent().closest('span.image_frame');
             		if(outerFrame.length)
@@ -189,7 +207,8 @@ CKEDITOR.plugins.add( 'simpleimage',
             		return false;
             	};
             	jQuery(evt.target).one('dragend', moveImage)
-            			 .parent().one('dragend', moveImage);
+            			 .parent().one('dragend', moveImage)
+            			 .closest('body').one('dragend', moveImage);
             });
             
             // delete image -> delete its parent frame

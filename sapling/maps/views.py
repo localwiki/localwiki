@@ -17,10 +17,8 @@ from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin, JSONResponseMixin
 from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, VersionsList
-from pages.models import Page
-from pages.models import slugify, name_to_url
+from pages.models import Page, slugify, name_to_url
 from pages.constants import page_base_path
-import tags.models as tags
 
 from widgets import InfoMap
 from models import MapData
@@ -143,6 +141,9 @@ class MapForTag(MapGlobalView):
     zoom_to_data = True
 
     def get_queryset(self):
+        import tags.models as tags
+
+        qs = super(MapGlobalView, self).get_queryset()
         self.tag = tags.Tag.objects.get(slug=tags.slugify(self.kwargs['tag']))
         tagsets = tags.PageTagSet.objects.filter(tags=self.tag)
         pages = Page.objects.filter(pagetagset__in=tagsets)

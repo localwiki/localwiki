@@ -78,60 +78,45 @@ cp install_config/localwiki_virtualenv.wsgi.template deploy/localwiki.wsgi</pre>
 path to the virtualenv you installed LocalWiki in.</p>
 <p>Then you&#8217;ll need to create an Apache configuration file.  Here&#8217;s a
 sample:</p>
-<div class="highlight-python"><pre>&lt;VirtualHost *:80&gt;
-  ServerAdmin webmaster@example.org
-  ServerName example.org
-  ServerAlias example.org www.example.org
+<div class="highlight-python"><pre># LocalWiki Apache config file
+# After modifying and saving, you may need to run these commands:
+#     $ sudo a2ensite example.com
+#     $ sudo /etc/init.d/apache2 reload
 
-  CustomLog /var/log/apache2/access.log combined
+&lt;VirtualHost *:80&gt;
 
-  # gzip content for much faster page loads.
-  &lt;Location /&gt;
-      # Insert filter
-      SetOutputFilter DEFLATE
+    ServerName www.example.com
+    ServerAlias example.com
+    ServerAdmin webmaster@example.com
 
-      # Netscape 4.x has some problems...
-      BrowserMatch ^Mozilla/4 gzip-only-text/html
-      # Netscape 4.06-4.08 have some more problems
-      BrowserMatch ^Mozilla/4\.0[678] no-gzip
-      # MSIE masquerades as Netscape, but it is fine
-      # BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
-      # NOTE: Due to a bug in mod_setenvif up to Apache 2.0.48
-      # the above regex won't work. You can use the following
-      # workaround to get the desired effect:
-      BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+    # The media directory, which contains user-uploaded content, should be set
+    # to force downloads. This is *extremely* important for security reasons.
+    # Note: The /media/ directory must be writable by the www-data user
+    Alias /media/ /usr/share/localwiki/media/
+    &lt;Location /media/&gt;
+        Header set Content-Disposition attachment
+    &lt;/Location&gt;
 
-      # Don't compress images
-      SetEnvIfNoCase Request_URI \
-      \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+    Alias /static/ /usr/share/localwiki/static/
+    Alias /robots.txt /usr/share/localwiki/static/robots.txt
+    Alias /favicon.ico /usr/share/localwiki/static/favicon.ico
 
-      # Make sure proxies don't deliver the wrong content
-      Header append Vary User-Agent env=!dont-vary
-  &lt;/Location&gt;
+    &lt;Directory /usr/share/localwiki/&gt;
+        Options -Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+    &lt;/Directory&gt;
 
-  # Dont' gzip the user-uploaded content in the media directory.
-  # The content is assumed to be JPEG, PNG, etc, which is already
-  # compressed.
-  &lt;Location /media/&gt;
-      SetEnv no-gzip
-  &lt;/Location&gt;
+    WSGIDaemonProcess example.com processes=2 threads=15 display-name=%{GROUP}
+    WSGIProcessGroup example.com
+    # For API Authorization header support
+    WSGIPassAuthorization On
 
-  WSGIDaemonProcess localwiki threads=15 maximum-requests=10000
-  WSGIScriptAlias / /path/to/your/deploy/localwiki.wsgi
-  WSGIProcessGroup localwiki
+    WSGIScriptAlias / /usr/share/localwiki/deploy/localwiki.wsgi
 
-  Alias /robots.txt /path/to/your/env/share/localwiki/static/robots.txt
-  Alias /favicon.ico /path/to/your/env/share/localwiki/static/favicon.ico
-  Alias /media/ /path/to/your/env/share/localwiki/media/
-  Alias /static/ /path/to/your/env/share/localwiki/static/
-
-  # The media directory, which contains user-uploaded content,
-  # should be set to force downloads. This is *extremely* important
-  # for security reasons.
-  &lt;Location /media/&gt;
-          Header set Content-Disposition attachment
-  &lt;/Location&gt;
-&lt;/VirtualHost&gt;</pre>
+&lt;/VirtualHost&gt;
+</pre>
 </div>
 <p>You&#8217;ll need to set some of these values:</p>
 <p><tt class="docutils literal"><span class="pre">ServerAdmin</span></tt>, <tt class="docutils literal"><span class="pre">ServerName</span></tt>, and <tt class="docutils literal"><span class="pre">ServerAlias</span></tt> should be

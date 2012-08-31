@@ -16,8 +16,10 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATA_ROOT = os.path.join(sys.prefix, 'share', 'localwiki')
-PROJECT_ROOT = os.path.join(os.path.dirname(__file__))
+DATA_ROOT = os.environ.get('LOCALWIKI_DATA_ROOT') or \
+    os.path.join(sys.prefix, 'share', 'localwiki')
+PROJECT_ROOT = os.environ.get('LOCALWIKI_PROJECT_ROOT') or \
+    os.path.split(os.path.abspath(__file__))[0]
 
 DATABASES = {
     'default': {
@@ -172,6 +174,8 @@ HONEYPOT_FIELD_NAME = 'content2'
 HONEYPOT_USE_JS_FIELD = True
 HONEYPOT_REDIRECT_URL = '/'
 
+TASTYPIE_ALLOW_MISSING_SLASH = True
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -207,6 +211,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.transaction.TransactionMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
+    'api.middleware.XsSharing',
 )
 
 # Dummy cache - TODO: switch to memcached by default
@@ -242,21 +247,23 @@ INSTALLED_APPS = (
     'staticfiles',
     'guardian',
     'south',
+    'tastypie',
     'honeypot',
 
     # Our apps
     'versionutils.versioning',
     'versionutils.diff',
     'ckeditor',
-    'pages',
     'maps',
+    'pages',
+    'redirects',
+    'tags',
     'users',
     'recentchanges',
     'search',
-    'redirects',
     'dashboard',
+    'api',
     'utils',
-    'tags',
 )
 
 LOCAL_INSTALLED_APPS = ()

@@ -16,6 +16,7 @@ Contents:
    contribute
    customizing
    advanced
+   api
 
 Indices and tables
 ==================
