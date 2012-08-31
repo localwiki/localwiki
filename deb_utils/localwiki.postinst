@@ -28,7 +28,7 @@ case "$1" in
         . "$datadir/env/bin/activate"
         cd "$confdir"
         echo "Installing required python packages ..."
-        pip install --upgrade -r requirements.txt
+        yes w | pip install --upgrade -r requirements.txt
         deactivate
 
         # For Ubuntu 11.10, 12.04 (with PostgreSQL 9.1), we have an issue with
