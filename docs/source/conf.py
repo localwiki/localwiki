@@ -48,6 +48,7 @@ copyright = u'2012, LocalWiki team'
 # built documents.
 #
 # The short X.Y version.
+sys.path.append(os.path.abspath(os.path.join(__file__, '..', '..')))
 import sapling
 version = "%s.%s" % (sapling.VERSION[0], sapling.VERSION[1])
 # The full version, including alpha/beta/rc tags.
