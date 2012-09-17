@@ -68,6 +68,7 @@ class PageTagSetHistoryResource(ModelHistoryResource):
             'page': ALL_WITH_RELATIONS,
             'tags': ALL_WITH_RELATIONS,
         }
+        ordering = ['history_date']
 
 api.register(PageTagSetResource())
 api.register(PageTagSetHistoryResource())
