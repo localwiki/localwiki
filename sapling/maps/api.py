@@ -48,6 +48,7 @@ class MapHistoryResource(gis_resources.ModelResource, ModelHistoryResource):
             'geom': ALL,
             'length': ALL,
         }
+        ordering = ['history_date']
 
 
 api.register(MapResource())

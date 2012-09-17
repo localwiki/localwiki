@@ -97,6 +97,7 @@ class FileHistoryResource(FileResource, ModelHistoryResource):
     class Meta:
         resource_name = 'file_version'
         queryset = PageFile.versions.all()
+        ordering = ['history_date']
 
 
 class PageResource(PageURLMixin, ModelResource):
@@ -180,6 +181,7 @@ class PageHistoryResource(ModelHistoryResource):
             'slug': ALL,
             'history_date': ALL,
         }
+        ordering = ['history_date']
 
 
 api.register(PageResource())
