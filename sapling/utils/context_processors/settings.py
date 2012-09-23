@@ -6,4 +6,5 @@ def license_agreements(context):
         'GLOBAL_LICENSE_NOTE': settings.GLOBAL_LICENSE_NOTE,
         'EDIT_LICENSE_NOTE': settings.EDIT_LICENSE_NOTE,
         'SIGNUP_TOS': settings.SIGNUP_TOS,
+        'GOOGLE_ANALYTICS_ID': settings.GOOGLE_ANALYTICS_ID,
     }
