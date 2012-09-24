@@ -99,6 +99,9 @@ class Page(models.Model):
             return True
         return False
 
+    def is_front_page(self):
+        return self.name.lower() == 'front page'
+
     def pretty_slug(self):
         if not self.name:
             return self.slug
