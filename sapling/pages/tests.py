@@ -527,7 +527,7 @@ class HTMLToTemplateTextTest(TestCase):
         template_text = html_to_template_text(html)
         self.assertEqual(template_text, imports + '<p><a name="blah"></a></p>')
 
-
+        
 class PluginTest(TestCase):
     def setUp(self):
         self.old_allowed_src = getattr(settings, 'EMBED_ALLOWED_SRC', ['.*'])
@@ -678,6 +678,14 @@ class PluginTest(TestCase):
         self.failUnless(
             '<iframe src="http://www.youtube.com/embed/JVRsWAjvQSg"></iframe>'
             in rendered)
+
+    def test_amp_in_link_with_class(self):
+        page = Page(name='Explore')
+        html = ('<p><a class="external something" '
+                   'href="http://example.org/?t=1&amp;i=2">hi</a></p>')
+        template = Template(html_to_template_text(html))
+        rendered = template.render(Context({'page': page}))
+        self.failUnless('http://example.org/?t=1&amp;i=2' in rendered)
 
 
 class XSSTest(TestCase):
