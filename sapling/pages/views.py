@@ -65,6 +65,8 @@ class PageDetailView(Custom404Mixin, DetailView):
             map_controls = map_opts.get('controls', [])
             if 'PanZoomBar' in map_controls:
                 map_controls.remove('PanZoomBar')
+            if 'KeyboardDefaults' in map_controls:
+                map_controls.remove('KeyboardDefaults')
             olwidget_options['map_options'] = map_opts
             olwidget_options['map_div_class'] = 'mapwidget small'
             context['map'] = InfoMap(
