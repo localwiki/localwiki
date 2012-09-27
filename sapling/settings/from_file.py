@@ -2,7 +2,7 @@
 
 from .defaults import *
 
- Where localsettings.py lives
+# Where localsettings.py lives
 sys.path.append(os.path.join(DATA_ROOT, 'conf'))
 try:
     from localsettings import *
