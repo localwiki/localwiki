@@ -15,5 +15,5 @@ except:
 # Allow localsettings.py to define LOCAL_INSTALLED_APPS.
 INSTALLED_APPS = tuple(list(INSTALLED_APPS) + list(LOCAL_INSTALLED_APPS))
 
-TEMPLATE_DIRS = theme_template_dirs(DATA_ROOT, PROJECT_ROOT, SITE_THEME) + list(TEMPLATE_DIRS)
+TEMPLATE_DIRS = theme_template_dirs([DATA_ROOT, PROJECT_ROOT], SITE_THEME) + list(TEMPLATE_DIRS)
 STATICFILES_DIRS = theme_staticfiles_dirs(DATA_ROOT, PROJECT_ROOT, SITE_THEME)

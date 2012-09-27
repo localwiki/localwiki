@@ -1,22 +1,16 @@
 import os.path
 
 
-def theme_template_dirs(DATA_ROOT, PROJECT_ROOT, SITE_THEME):
-	###############################
-	# Setup template directories
-	###############################
-	LOCAL_TEMPLATE_DIR = os.path.join(DATA_ROOT, 'templates')
-	PROJECT_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'templates')
-
-	# A site theme uses a template directory with a particular name.
-	# Site themes can live in either the global themes/ directory
-	# or in the local themes/ directory (in DATA_ROOT).
-	PROJECT_THEME_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'templates')
-	LOCAL_THEME_TEMPLATE_DIR = os.path.join(DATA_ROOT, 'themes', SITE_THEME, 'templates')
-
-	return [LOCAL_TEMPLATE_DIR, PROJECT_TEMPLATE_DIR, LOCAL_THEME_TEMPLATE_DIR,
-		PROJECT_THEME_TEMPLATE_DIR]
-
+def theme_template_dirs(root_dirs, site_theme):
+	# root_dirs is a list of paths to folders containing templates
+	# and/or themes, usually PROJECT_ROOT and DATA_ROOT.
+	# A site theme uses a template directory with a particular name
+	# inside of the themes/ directory in a root_dir.
+	template_dirs = [os.path.join(root_dir, 'templates') for root_dir in root_dirs]
+	theme_template_dirs = [
+		os.path.join(root_dir, 'themes', site_theme, 'templates') for
+			root_dir in root_dirs]
+	return template_dirs + theme_template_dirs
 
 def theme_staticfiles_dirs(DATA_ROOT, PROJECT_ROOT, SITE_THEME):
 	STATICFILES_DIRS = []
