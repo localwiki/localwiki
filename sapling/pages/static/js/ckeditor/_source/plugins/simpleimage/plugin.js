@@ -110,10 +110,19 @@ CKEDITOR.plugins.add( 'simpleimage',
 				jQuery(editor.document.$).one('mouseup', function(evt){
 					var caption = jQuery(frame).css({'width':'', 'height':''}).find('span.image_caption');
 					var img = jQuery(frame).find('img');
+					// set image width and height via css, not attributes
+					var width_attr = img.attr('width')
+					if(width_attr)
+						img.css('width', width_attr);
+					var height_attr = img.attr('height')
+					if(height_attr)
+						img.css('height', height_attr);
+					img.removeAttr('width').removeAttr('height');
 					caption.css({'width':img.css('width'), 'height':''});
 					jQuery(window).resize();
 				});
 			});
+			// prevent screwed up images and frames during a drag and drop
             jQuery(editor.document.$.body).bind('dragstart', function(evt){
                 editor.fire('saveSnapshot');
                 var savedImages = {};

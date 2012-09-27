@@ -5,7 +5,7 @@ from models import Page
 
 
 class PageAdmin(GuardedModelAdmin):
-    pass
+    readonly_fields = ('name', 'content')
 
 
 admin.site.register(Page, PageAdmin)

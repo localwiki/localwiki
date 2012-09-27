@@ -1,13 +1,17 @@
+import re
+
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.utils.safestring import mark_safe
-from django.forms.models import fields_for_model
 
 from users.models import UserProfile
 
 attrs_dict = {'class': 'required'}
+
+# We don't allow certain characters in usernames
+username_regex = re.compile(r'^[\w0-9.+-]+$', re.UNICODE)
 
 
 class RegistrationForm(forms.Form):
@@ -23,7 +27,7 @@ class RegistrationForm(forms.Form):
     registration backend.
     """
     username = forms.RegexField(
-        regex=r'^[a-zA-Z0-9.+-]+$',
+        regex=username_regex,
         max_length=30,
         widget=forms.TextInput(attrs=attrs_dict),
         label=_("Username"),

@@ -4,10 +4,11 @@ from django.http import Http404
 
 from tastypie import fields
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
+from tastypie.validation import Validation
 from tastypie.authorization import DjangoAuthorization
 from tastypie.utils import trailing_slash
 
-from models import Page, PageFile, name_to_url, url_to_name
+from models import Page, PageFile, name_to_url, url_to_name, clean_name
 from sapling.api import api
 from sapling.api.resources import ModelHistoryResource
 from sapling.api.authentication import ApiKeyWriteAuthentication
@@ -62,6 +63,22 @@ class PageURLMixin(object):
         ]
 
 
+class PageValidation(Validation):
+    def is_valid(self, bundle, request=None):
+        errors = {}
+
+        pagename = bundle.data.get('name')
+        if pagename:
+            if pagename != clean_name(pagename):
+                errors['name'] = ['Pagename cannot contain underscores or '
+                    'a / character surrounded by spaces. Please replace '
+                    'underscores with spaces and remove spaces surrounding the'
+                    ' / character.'
+                ]
+        print 'ERROS', errors
+        return errors
+
+
 # TODO: move this under /page/<slug>/_file/<filename>?
 class FileResource(ModelResource):
     class Meta:
@@ -80,6 +97,7 @@ class FileHistoryResource(FileResource, ModelHistoryResource):
     class Meta:
         resource_name = 'file_version'
         queryset = PageFile.versions.all()
+        ordering = ['history_date']
 
 
 class PageResource(PageURLMixin, ModelResource):
@@ -99,6 +117,7 @@ class PageResource(PageURLMixin, ModelResource):
             'map': ALL_WITH_RELATIONS,
         }
         list_allowed_methods = ['get', 'post']
+        validation = PageValidation()
         authentication = ApiKeyWriteAuthentication()
         authorization = DjangoAuthorization()
 
@@ -162,6 +181,7 @@ class PageHistoryResource(ModelHistoryResource):
             'slug': ALL,
             'history_date': ALL,
         }
+        ordering = ['history_date']
 
 
 api.register(PageResource())

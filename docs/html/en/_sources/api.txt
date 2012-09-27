@@ -394,7 +394,7 @@ Create
 ~~~~~~
 
 To create a new ``tag``, POST a JSON document containing at least a
-``slug`` attribute to /api/tag/.
+``name`` attribute to /api/tag/.
 
 Update
 ~~~~~~

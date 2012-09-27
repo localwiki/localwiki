@@ -36,6 +36,7 @@ class RedirectHistoryResource(ModelHistoryResource):
             'destination': ALL,
             'source': ALL,
         }
+        ordering = ['history_date']
 
 api.register(RedirectResource())
 api.register(RedirectHistoryResource())

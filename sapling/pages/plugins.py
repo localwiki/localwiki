@@ -283,7 +283,7 @@ def html_to_template_text(unsafe_html, context=None, render_plugins=True):
                             plugin_handlers[p](elem, context)
                         except:
                             pass
-            continue
+                continue
         if not elem.tag in tag_handlers:
             continue
         for handler in tag_handlers[elem.tag]:

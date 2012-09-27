@@ -29,3 +29,7 @@ def _validate_redirect(sender, instance, raw, **kws):
                     _("You cannot redirect a page to itself"))
 
 pre_save.connect(_validate_redirect, sender=Redirect)
+
+# For registration calls
+import feeds
+import api
