@@ -18,8 +18,10 @@ MANAGERS = ADMINS
 
 DATA_ROOT = os.environ.get('LOCALWIKI_DATA_ROOT') or \
     os.path.join(sys.prefix, 'share', 'localwiki')
+
+_settings_package_path = os.path.dirname(__file__)
 PROJECT_ROOT = os.environ.get('LOCALWIKI_PROJECT_ROOT') or \
-    os.path.split(os.path.abspath(__file__))[0]
+    os.path.dirname(_settings_package_path)
 
 DATABASES = {
     'default': {
