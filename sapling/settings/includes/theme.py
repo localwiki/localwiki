@@ -12,15 +12,10 @@ def theme_template_dirs(root_dirs, site_theme):
 			root_dir in root_dirs]
 	return template_dirs + theme_template_dirs
 
-def theme_staticfiles_dirs(DATA_ROOT, PROJECT_ROOT, SITE_THEME):
-	STATICFILES_DIRS = []
-	# A site theme uses a static assets directory with a particular name.
-	# Site themes can live in either the global themes/ directory
-	# or in the local themes/ directory (in DATA_ROOT).
-	_local_theme_dir = os.path.join(DATA_ROOT, 'themes', SITE_THEME, 'assets')
-	_global_theme_dir = os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'assets')
-	if os.path.exists(_local_theme_dir):
-	    STATICFILES_DIRS.append(('theme', _local_theme_dir))
-	if os.path.exists(_global_theme_dir):
-	    STATICFILES_DIRS.append(('theme', _global_theme_dir))
-	return STATICFILES_DIRS
+def theme_staticfiles_dirs(root_dirs, site_theme):
+	# Returns a list of assets/ directories inside of theme folders in
+	# root_dirs as described above.
+	asset_dirs = [os.path.join(root_dir, 'themes', site_theme, 'assets') for
+		root_dir in root_dirs]
+	return [('theme', asset_dir) for asset_dir in asset_dirs if
+		os.path.exists(asset_dir)]
