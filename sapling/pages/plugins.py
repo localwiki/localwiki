@@ -221,10 +221,14 @@ def handle_image(elem, context=None):
         before = '{%% thumbnail "%s" "%dx%d" as im %%}' % (escaped_filename,
                                                            width, height)
         after = '{% endthumbnail %}'
-        # HTML will want to encode {{ }} inside a src, and we don't want that,
-        # so we will just rename it to src_thumb until just before it's output
+        # HTML will want to encode {{ }} inside a src / srcset, and we don't
+        # want that, so we will just rename it to src_thumb until just before
+        # it's output.
         del elem.attrib['src']
         elem.attrib['src_thumb'] = '{{ im.url }}'
+        elem.attrib['srcset_thumb'] = (
+            '{{ im.url|resolution:"2x" }} 2x, '
+            '{{ im.url|resolution:"1.5x" }} 1.5x')
         insert_text_before(before, elem)
         elem.tail = after + (elem.tail or '')
     else:
@@ -301,6 +305,7 @@ def html_to_template_text(unsafe_html, context=None, render_plugins=True):
         tag_imports + [container_text] + template_bits))
     # Restore img src for thumbnails
     template_text = template_text.replace('src_thumb', 'src')
+    template_text = template_text.replace('srcset_thumb', 'srcset')
     return template_text.decode('utf-8')
 
 
