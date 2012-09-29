@@ -117,7 +117,7 @@ install_requires = [
     'setuptools',
     'django==1.3',
     'html5lib==0.95',
-    'sorl-thumbnail==11.12',
+    'sorl-thumbnail==11.12-custom2',
     'python-dateutil==1.5',
     'pysolr==2.1.0-beta',
     'django-haystack==1.2.6',
@@ -154,6 +154,7 @@ setup(
         'https://github.com/philipn/olwidget/tarball/custom_base_layers_fixed#egg=django-olwidget-0.46-custom1',
         'https://github.com/philipn/django-honeypot/tarball/master#egg=django-honeypot-0.3.0-custom3',
         'https://github.com/philipn/django-tastypie/tarball/localwiki_master#egg=django-tastypie-0.9.12-custom5',
+        'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom2',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=sapling.manage:main'],
