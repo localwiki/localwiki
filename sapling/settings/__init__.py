@@ -1,1 +1,1 @@
-from .from_file import *
+from .load_localsettings import *
