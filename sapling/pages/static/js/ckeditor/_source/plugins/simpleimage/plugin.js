@@ -85,6 +85,9 @@ CKEDITOR.plugins.add( 'simpleimage',
                 caption.css('width', CKEDITOR.tools.cssLength(jQuery(img.$).width()));
 		        caption.mousedown(function(){ jQuery(caption).removeClass('editor_temp'); });
 		        jQuery(frame.$).append(caption);
+		        // fix the selection
+		        var selection = editor.getSelection();
+		        selection.selectElement(img);
 		    }
 		}
 		
