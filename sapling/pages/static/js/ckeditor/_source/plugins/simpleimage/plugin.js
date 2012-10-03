@@ -232,10 +232,10 @@ CKEDITOR.plugins.add( 'simpleimage',
                 {
 					var sel = editor.getSelection(),
 						element = sel.getStartElement();
-                    if ( element && element.is('img'))
+                    if ( element && element.is('img', 'span'))
                     {
                         element = element.getAscendant('span', true);
-                        if(!element)
+                        if(!element || !element.hasClass('image_frame'))
                             return;
                         // Make undo snapshot.
                         editor.fire( 'saveSnapshot' );
