@@ -18,8 +18,10 @@ MANAGERS = ADMINS
 
 DATA_ROOT = os.environ.get('LOCALWIKI_DATA_ROOT') or \
     os.path.join(sys.prefix, 'share', 'localwiki')
+
+_settings_package_path = os.path.dirname(__file__)
 PROJECT_ROOT = os.environ.get('LOCALWIKI_PROJECT_ROOT') or \
-    os.path.split(os.path.abspath(__file__))[0]
+    os.path.dirname(_settings_package_path)
 
 DATABASES = {
     'default': {
@@ -267,44 +269,44 @@ INSTALLED_APPS = (
 )
 
 LOCAL_INSTALLED_APPS = ()
-# We set this manually, after localsettings import, below.
 TEMPLATE_DIRS = ()
 
 SITE_THEME = 'sapling'
 
-# Where localsettings.py lives
-sys.path.append(os.path.join(DATA_ROOT, 'conf'))
-try:
-    from localsettings import *
-except:
-    pass
+# For testing, you can start the python debugging smtp server like so:
+# sudo python -m smtpd -n -c DebuggingServer localhost:25
+EMAIL_HOST = 'localhost'
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = 25
+EMAIL_USE_TLS = False
 
-# Allow localsettings.py to define LOCAL_INSTALLED_APPS.
-INSTALLED_APPS = tuple(list(INSTALLED_APPS) + list(LOCAL_INSTALLED_APPS))
+#######################################################################
+# Other config values.
+#######################################################################
 
-###############################
-# Setup template directories
-###############################
-LOCAL_TEMPLATE_DIR = os.path.join(DATA_ROOT, 'templates')
-PROJECT_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'templates')
+OLWIDGET_DEFAULT_OPTIONS = {
+    'default_lat': 37.76,
+    'default_lon': -122.43,
+    'default_zoom': 12,
+    'zoom_to_data_extent_min': 16,
 
-# A site theme uses a template directory with a particular name.
-# Site themes can live in either the global themes/ directory
-# or in the local themes/ directory (in DATA_ROOT).
-PROJECT_THEME_TEMPLATE_DIR = os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'templates')
-LOCAL_THEME_TEMPLATE_DIR = os.path.join(DATA_ROOT, 'themes', SITE_THEME, 'templates')
+    'layers': ['cloudmade.35165', 've.aerial'],
+    'map_options': {
+        'controls': ['Navigation', 'PanZoomBar', 'KeyboardDefaults'],
+        'theme': '/static/openlayers/theme/sapling/style.css',
+    },
+    'overlay_style': {'fillColor': '#ffc868',
+                      'strokeColor': '#db9e33',
+                      'strokeDashstyle': 'solid'},
+    'map_div_class': 'mapwidget',
+}
 
-TEMPLATE_DIRS = tuple([LOCAL_TEMPLATE_DIR, PROJECT_TEMPLATE_DIR, LOCAL_THEME_TEMPLATE_DIR, PROJECT_THEME_TEMPLATE_DIR] +
-                      list(TEMPLATE_DIRS))
+DAISYDIFF_URL = 'http://localhost:8080/daisydiff/diff'
+DAISYDIFF_MERGE_URL = 'http://localhost:8080/daisydiff/merge'
 
+# list of regular expressions for white listing embedded URLs
+EMBED_ALLOWED_SRC = ['.*']
 
-STATICFILES_DIRS = []
-# A site theme uses a static assets directory with a particular name.
-# Site themes can live in either the global themes/ directory
-# or in the local themes/ directory (in DATA_ROOT).
-_local_theme_dir = os.path.join(DATA_ROOT, 'themes', SITE_THEME, 'assets')
-_global_theme_dir = os.path.join(PROJECT_ROOT, 'themes', SITE_THEME, 'assets')
-if os.path.exists(_local_theme_dir):
-    STATICFILES_DIRS.append(('theme', _local_theme_dir))
-if os.path.exists(_global_theme_dir):
-    STATICFILES_DIRS.append(('theme', _global_theme_dir))
+HAYSTACK_SOLR_URL = 'http://localhost:8080/solr'
+
+CACHE_BACKEND = 'dummy:///'
