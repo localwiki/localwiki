@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -228,7 +228,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 						}
 						else
 						{
-							var _tmpName = character.toLowerCase().replace( '&', '' ).replace( ';', '' ).replace( '#', '' );
+							var _tmpName = character.replace( '&', '' ).replace( ';', '' ).replace( '#', '' );
 
 							// Use character in case description unavailable.
 							charDesc = lang[ _tmpName ] || character;
