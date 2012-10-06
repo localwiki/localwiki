@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -44,14 +44,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			typeof extendEmptyBlock == 'function' && ( extendEmptyBlock( block ) === false ) ) )
 			return false;
 
-        // 1. For IE version >=8,  empty blocks are displayed correctly themself in wysiwiyg;
-        // 2. For the rest, at least table cell and list item need no filler space.
-        // (#6248)
-        if ( fromSource && CKEDITOR.env.ie &&
-                ( document.documentMode > 7
-                || block.name in CKEDITOR.dtd.tr
-                || block.name in CKEDITOR.dtd.$listItem ) )
-            return false;
+	// 1. For IE version >=8,  empty blocks are displayed correctly themself in wysiwiyg;
+	// 2. For the rest, at least table cell and list item need no filler space.
+	// (#6248)
+	if ( fromSource && CKEDITOR.env.ie &&
+		( document.documentMode > 7
+			|| block.name in CKEDITOR.dtd.tr
+			|| block.name in CKEDITOR.dtd.$listItem ) )
+		return false;
 
 		var lastChild = lastNoneSpaceChild( block );
 
@@ -95,14 +95,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	delete blockLikeTags.pre;
 	var defaultDataFilterRules =
 	{
-		elements : {
-			a : function( element )
-			{
-				var attrs = element.attributes;
-				if ( attrs && attrs[ 'data-cke-saved-name' ] )
-					attrs[ 'class' ] = ( attrs[ 'class' ] ? attrs[ 'class' ] + ' ' : '' ) + 'cke_anchor';
-			}
-		},
+		elements : {},
 		attributeNames :
 		[
 			// Event attributes (onXYZ) must not be directly set. They can become
@@ -296,7 +289,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	}
 
 	var protectElementRegex = /<(a|area|img|input)\b([^>]*)>/gi,
-		protectAttributeRegex = /\b(href|src|name)\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|(?:[^ "'>]+))/gi;
+		protectAttributeRegex = /\b(on\w+|href|src|name)\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|(?:[^ "'>]+))/gi;
 
 	var protectElementsRegex = /(?:<style(?=[ >])[^>]*>[\s\S]*<\/style>)|(?:<(:?link|meta|base)[^>]*>)/gi,
 		encodedElementsRegex = /<cke:encoded>([^<]*)<\/cke:encoded>/gi;
@@ -312,9 +305,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			return '<' +  tag + attributes.replace( protectAttributeRegex, function( fullAttr, attrName )
 			{
+				// Avoid corrupting the inline event attributes (#7243).
 				// We should not rewrite the existed protected attributes, e.g. clipboard content from editor. (#5218)
-				if ( attributes.indexOf( 'data-cke-saved-' + attrName ) == -1 )
-					return ' data-cke-saved-' + fullAttr + ' ' + fullAttr;
+				if ( !( /^on/ ).test( attrName ) && attributes.indexOf( 'data-cke-saved-' + attrName ) == -1 )
+					return ' data-cke-saved-' + fullAttr + ' data-cke-' + CKEDITOR.rnd + '-' + fullAttr;
 
 				return fullAttr;
 			}) + '>';
@@ -428,7 +422,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					);
 
 					// Avoid protecting over protected, e.g. /\{.*?\}/
-					return /cke_temp(comment)?/.test( match ) ? match
+					return ( /cke_temp(comment)?/ ).test( match ) ? match
 						: '<!--{cke_temp}' + ( protectedHtml.push( match ) - 1 ) + '-->';
 				});
 		}
@@ -448,8 +442,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			return match.replace( /<!--\{cke_protected\}([\s\S]+?)-->/g, function( match, data )
 			{
 				store[ store.id ] = decodeURIComponent( data );
-				return '{cke_protected_'+ store.id++  + '}';
-			})
+				return '{cke_protected_'+ ( store.id++ )  + '}';
+			});
 		});
 	}
 
@@ -522,9 +516,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// Call the browser to help us fixing a possibly invalid HTML
 			// structure.
 			var div = new CKEDITOR.dom.element( 'div' );
+
 			// Add fake character to workaround IE comments bug. (#3801)
 			div.setHtml( 'a' + data );
 			data = div.getHtml().substr( 1 );
+
+			// Restore shortly protected attribute names.
+			data = data.replace( new RegExp( ' data-cke-' + CKEDITOR.rnd + '-', 'ig' ), ' ' );
 
 			// Unprotect "some" of the protected elements at this point.
 			data = unprotectElementNames( data );

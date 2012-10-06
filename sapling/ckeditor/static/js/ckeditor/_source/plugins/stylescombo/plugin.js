@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -14,7 +14,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var config = editor.config,
 				lang = editor.lang.stylesCombo,
 				styles = {},
-				stylesList = [];
+				stylesList = [],
+				combo;
 
 			function loadStylesSet( callback )
 			{
@@ -62,7 +63,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					init : function()
 					{
-						var combo = this;
+						combo = this;
 
 						loadStylesSet( function()
 							{
@@ -70,7 +71,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									styleName,
 									lastType,
 									type,
-									i;
+									i,
+									count;
 
 								// Loop over the Array, adding all items to the
 								// combo.
@@ -94,7 +96,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 								combo.commit();
 
-								combo.onOpen();
 							});
 					},
 
@@ -166,7 +167,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							else if ( type == CKEDITOR.STYLE_OBJECT && !style.checkApplicable( elementPath ) )
 							{
 								this.hideItem( name );
-								continue;
+								counter[ type ]--;
 							}
 
 							counter[ type ]++;
@@ -180,6 +181,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						if ( !counter[ CKEDITOR.STYLE_OBJECT ] )
 							this.hideGroup( lang[ 'panelTitle' + String( CKEDITOR.STYLE_OBJECT ) ] );
+					},
+
+					// Force a reload of the data
+					reset: function()
+					{
+						if ( combo )
+						{
+							delete combo._.panel;
+							delete combo._.list;
+							combo._.committed = 0;
+							combo._.items = {};
+							combo._.state = CKEDITOR.TRISTATE_OFF;
+						}
+						styles = {};
+						stylesList = [];
+						loadStylesSet();
 					}
 				});
 

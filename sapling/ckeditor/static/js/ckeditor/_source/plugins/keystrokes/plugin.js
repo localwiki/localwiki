@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -210,7 +210,7 @@ CKEDITOR.config.keystrokes =
 	[ CKEDITOR.CTRL + 73 /*I*/, 'italic' ],
 	[ CKEDITOR.CTRL + 85 /*U*/, 'underline' ],
 
-	[ CKEDITOR.ALT + 109 /*-*/, 'toolbarCollapse' ],
+	[ CKEDITOR.ALT + ( CKEDITOR.env.ie || CKEDITOR.env.webkit ? 189 : 109 ) /*-*/, 'toolbarCollapse' ],
 	[ CKEDITOR.ALT + 48 /*0*/, 'a11yHelp' ]
 ];
 
