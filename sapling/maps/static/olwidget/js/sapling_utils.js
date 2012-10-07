@@ -4,6 +4,7 @@ SaplingMap = {
 
     init_openlayers: function() {
         OpenLayers.Control.LayerSwitcher.prototype.roundedCorner = false;
+        OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
         var base_initOptions = olwidget.Map.prototype.initOptions;
         /* Resize map to fit content area */
         olwidget.Map.prototype.initOptions = function(options) {
