@@ -6,28 +6,28 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: LocalWiki 0.3\n"
+"Project-Id-Version: LocalWiki 0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-18 03:07\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-11-11 16:46\n"
+"PO-Revision-Date: 2012-11-14 18:41+0900\n"
+"Last-Translator: Taro Matsuzawa <btm@tech.email.ne.jp>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../source/advanced.rst:2
-# 46bf26931b004c0bbf68176c19c1af66
+# a055cc8c6b854f549dc10b38fa96e46d
 msgid "Advanced topics"
-msgstr ""
+msgstr "追加情報"
 
 #: ../source/advanced.rst:6
-# 8e8476a4d9e24c6dbd4b8f49388f34b3
+# 6a67bc192b6a40df83d9b2f9e04ffc6c
 msgid "SSL"
-msgstr ""
+msgstr "SSL"
 
 #: ../source/advanced.rst:8
-# c50f069780de4d448b543f44330a1de6
+# 0da5f2d5f73f498880a54a107dcfaaca
 msgid "See http://dev.localwiki.org/Setting_up_SSL"
-msgstr ""
+msgstr "http://dev.localwiki.org/Setting_up_SSL を参照してください。"
 
