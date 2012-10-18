@@ -2,4 +2,4 @@ VERSION = (0, 4, 3)
 
 
 def get_version():
-    return '%s.%s.%src1' % VERSION
+    return '%s.%s.%src2' % VERSION
