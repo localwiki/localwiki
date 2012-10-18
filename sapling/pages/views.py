@@ -308,6 +308,18 @@ class PageCreateView(RedirectView):
             return reverse('pages:edit', args=[pagename])
 
 
+def _find_available_filename(filename, slug):
+    """
+    Returns a filename that isn't taken for the given page slug.
+    """
+    basename, ext = filename.rsplit(".", 1)
+    suffix_count = 1
+    while PageFile.objects.filter(name=filename, slug=slug).exists():
+        suffix_count += 1
+        filename = "%s %d.%s" % (basename, suffix_count, ext)
+    return filename
+
+
 @permission_required('pages.change_page', (Page, 'slug', 'slug'))
 def upload(request, slug, **kwargs):
     # For GET, just return blank response. See issue #327.
@@ -337,9 +349,10 @@ def upload(request, slug, **kwargs):
                                             args=[slug, kwargs['file']]))
 
     # uploaded from ckeditor
-    relative_url = '_files/' + urlquote(uploaded.name)
+    filename = _find_available_filename(uploaded.name, slug)
+    relative_url = '_files/' + urlquote(filename)
     try:
-        file = PageFile(file=uploaded, name=uploaded.name, slug=slug)
+        file = PageFile(file=uploaded, name=filename, slug=slug)
         file.save()
         return ck_upload_result(request, url=relative_url)
     except IntegrityError:
