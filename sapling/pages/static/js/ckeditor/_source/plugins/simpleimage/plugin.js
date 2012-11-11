@@ -152,8 +152,7 @@ CKEDITOR.plugins.add( 'simpleimage',
             	var oldHtml = oldFrame.length ? oldFrame.outerHTML() : img.outerHTML();
             	img.addClass('cke_moved');
             	oldFrame.addClass('cke_moved');
-            	jQuery('img', editor.document.$).addClass('cke_unmoved'); // for FF workaround, below
-            	jQuery('img', editor.document.$).addClass('cke_unmoved');
+            	jQuery('img,span.image_frame', editor.document.$).addClass('cke_unmoved'); // for FF workaround, below
             	var floated = oldFrame.hasClass('image_right') || oldFrame.hasClass('image_left');
             	var moveImage = function(evt){
             		var moved_image = jQuery('img.cke_moved', editor.document.$);
