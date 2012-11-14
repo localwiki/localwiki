@@ -6,103 +6,103 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: LocalWiki 0.3\n"
+"Project-Id-Version: LocalWiki 0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-18 03:07\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-11-11 16:46\n"
+"PO-Revision-Date: 2012-11-11 17:26+0900\n"
+"Last-Translator: Satoshi IIDA <nyampire@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../source/settings.rst:2
-# bb46df0c4ace42d19bd8938007271984
+# 7abe16bc90a342b68045f559992b8247
 msgid "Settings"
-msgstr ""
+msgstr "設定方法"
 
 #: ../source/settings.rst:5
-# 762e4ae0fa6c429b997958832e1dee87
+# f0563efccae44f9ca1e4ba7a2c658b2b
 msgid "Administration interface"
-msgstr ""
+msgstr "Localwiki管理画面"
 
 #: ../source/settings.rst:7
-# 0bcfdbe40b0f4fab9d13a6cebfd60ac3
+# 55083e1dded94fc0bd322193db99db56
 msgid "LocalWiki comes with a web-based admin interface.  If LocalWiki is running on your machine, it can be found at ``http://localhost/admin/``.  Otherwise, you can find the admin interface at ``http://<your server's address>/admin/``"
-msgstr ""
+msgstr "Localwikiの管理は、ブラウザベースの管理画面上で操作を行います。Localwikiがあなたのマシン上で動作している場合、管理画面には ``http://localhost/admin/`` からアクセスすることが可能です。自分のマシン以外で起動している場合は、 ``http://<your server's address>/admin/`` からアクセスしてください。"
 
 #: ../source/settings.rst:13
-# b1c5c490b91340a2925d2936f4c2f29f
+# 192faa7ac70f4769953efc9d373c48cd
 msgid "At the prompt, enter your superuser login and password.  If you don't have a superuser login and password, you can create one by running ``sudo localwiki-manage createsuperuser``."
-msgstr ""
+msgstr "初期設定時に設定した スーパーユーザとパスワードを、入力フォームに入れてください。スーパーユーザとパスワードを設定しなかった場合は、 ``sudo localwiki-manage createsuperuser`` コマンドで作成が可能です。"
 
 #: ../source/settings.rst:17
-# cdca5d51436645f2b5e559e5c4e30d32
+# c542734e62714673b8d1f03e18685646
 msgid "When you login, you will see all of the object types that you can modify on the left, and a list of recent actions done by administrators on the right(if any)."
-msgstr ""
+msgstr "ログインすると、変更可能なオブジェクト種別の一覧が画面左側に表示されます。(もし実行した操作があれば)これまで行った操作の一覧が画面右側に表示されます。"
 
 #: ../source/settings.rst:25
-# d2ef7c5b8ccf4eabab1d591b7d4c1ba2
+# 7e533937de6e4383887dbafe4fc96499
 msgid "Domain name and site name"
-msgstr ""
+msgstr "ドメイン名とサイト名"
 
 #: ../source/settings.rst:27
-# 8c2884661aab4541b2f04e893e772457
+# 8ece5835daa44755ac3fc0e786acf31b
 msgid "In the admin interface, go to \"Sites\", click on the site you want to modify, enter the domain name and display name and press \"Save\"."
-msgstr ""
+msgstr "管理画面を表示して \"Sites\"を選択した後、編集したいウェブサイトを選択してください。 ドメイン名、およびブラウザ上に表示したいサイト名を入力して、 \"Save\"を押します。"
 
 #: ../source/settings.rst:34
-# 851d680d930b41599312407f1f96ca82
+# 9d0cd5dc202a498f82c49538e914da24
 msgid "Setting the default map location"
-msgstr ""
+msgstr "マップ表示位置の初期設定"
 
 #: ../source/settings.rst:36
-# 88899ea444264eebb1396a496e3d8518
+# 0f5bb2adce024a9aa4ed2769d35cba8f
 msgid "You'll need to edit your ``localsettings.py`` file and set the default map location.  See the ``localsettings.py`` section below."
-msgstr ""
+msgstr "マップを表示させる際のデフォルトの表示位置を変更するには、 ``localsettings.py`` を修正します。 ``localsettings.py`` の以下の箇所を参考にしてください。"
 
 #: ../source/settings.rst:41
-# 37037fcb44ad49148dc985577db758cb
+# a46a8029795f48599c398c3d3cd3919f
 msgid "``localsettings.py``"
 msgstr ""
 
 #: ../source/settings.rst:43
-# a387d48123be4bf3a263ea558d73b3c8
+# 03eb0ba05380459c9da5c6b15a64ba22
 msgid "Settings particular to your installation go in this file, found at ``/usr/share/localwiki/conf/localsettings.py`` on your system. Here are some things you may need or wish to modify:"
-msgstr ""
+msgstr "サイト特有の設定を行うには、このファイルを編集します。 システム上では、``/usr/share/localwiki/conf/localsettings.py`` に配置されています。必要な項目を編集してください。:"
 
 #: ../source/settings.rst:48
-# b1073f652085491f8e8de885e16a3c9e
+# c9b30a0ce23b42e28042ebe36a3cb5fc
 msgid "Defaults for all map widgets, including default location, theme, navigation controls, colors, etc."
-msgstr ""
+msgstr "マップに関するウィジェットのすべてのデフォルト値を設定します。 例えば、初期表示の位置、テーマ、操作項目、色彩などが該当します。"
 
 #: ../source/settings.rst:51
-# 2ea0564011834cddac2dba933f092ded
+# 3d8cb7e140f94ea1b91b520a56db0387
 msgid "You will want to set the the **default map location** on your localwiki. Simply change ``default_lat`` and ``default_lon``.  Use this tool to look it up: http://www.getlatlon.com/"
-msgstr ""
+msgstr "Localwiki上でマップを表示させる際に **最初に表示される位置** を設定するには、``default_lat`` と ``default_lon`` 項目を修正してください。 緯度と経度を調べるには http://www.getlatlon.com/ などが利用可能です。"
 
 #: ../source/settings.rst:56
-# 1713a28b8d1b44fa85d971717e1c69c4
+# ae041e7917ce4e95973f3fb88b66a824
 msgid "Your developer API key from `Cloudmade <http://developers.cloudmade.com/>`_"
-msgstr ""
+msgstr "`Cloudmade <http://developers.cloudmade.com/>`_ を利用するためのAPIキーを入力します。"
 
 #: ../source/settings.rst:59
-# cb7c39f74ca445a1907f36542b8b7285
+# 6f653ee13dcd42948321a2b0b12ef0db
 msgid "The name of the directory under ``themes`` to look for the theme templates and static files.  We'll have more detail on creating a theme soon."
-msgstr ""
+msgstr "``theme`` ディレクトリの配下にあるテンプレートや、特定のファイル名を指定します。テーマに関しては、別途詳細な内容を追記予定です。"
 
 #: ../source/settings.rst:63
-# d5327271366c418d81c72435418523ae
+# bd1371faf8794efdacb193dbc9505a20
 msgid "This is a list of regular expressions used to restrict what kinds of content users can embed.  If an embedded URL does not pass any of the regular expressions in this list, it will not be shown."
-msgstr ""
+msgstr "ユーザが埋め込み可能なコンテンツの種別を正規表現で表現したものを、リストとして記述します。ユーザが記述したURLが、この項目の表現のいづれにもマッチしなかった場合、URLは表示されません。"
 
 #: ../source/settings.rst:68
-# 5489cbce72ba470b933ea1dc9ade41b3
-msgid "LocalWiki is fully localized and is currently translated into a number of languages.  To change your instance's language, set this to one of: ``en-us`` (for English), ``ja`` (Japanese), ``pt_PT`` (Portuguese), ``ru_RU`` (Russian), ``de_CH`` (German, CH), ``es_AR`` (Spanish, Argentina), ``da_DK`` (Danish)."
-msgstr ""
+# 47e6ebf46cfe434cbc54275be2983b0d
+msgid "LocalWiki is fully localized and is currently translated into a number of languages.  To change your instance's language, set this to one of: ``en-us`` (for English), ``ja`` (Japanese), ``it_IT`` (Italian), ``pt_PT`` (Portuguese), ``ru_RU`` (Russian), ``de_CH`` (German, CH), ``es_AR`` (Spanish, Argentina), ``da_DK`` (Danish)."
+msgstr "Localwikiは現在、いくつかの言語に翻訳されています。 利用する言語を変更するには、この項目を以下のいづれかから選択します。 ``en-us`` (英語), ``ja`` (日本語), ``pt_PT`` (ポルトガル語), ``ru_RU`` (ロシア語), ``de_CH`` (ドイツ語, CH), ``es_AR`` (スペイン語, アルゼンチン語), ``da_DK`` (デンマーク語). (訳注) 日本語に変更する場合、 ``localsettings.py`` のどこかに ``LANGUAGE_CODE = \"ja\"`` と追記します。"
 
 #: ../source/settings.rst:74
-# 1fcb669616064e10a1e42fd4f5342200
+# 34dd619055b042538a53dd9d29b1ff9c
 msgid "After changing settings you'll need to restart Apache.  On most systems you can do this by running ``sudo /etc/init.d/apache2 restart``."
-msgstr ""
+msgstr "変更した設定を反映させるには、Apacheを再起動する必要があります。 たいていのシステムでは、``sudo /etc/init.d/apache2 restart`` コマンドで反映することができるはずです。"
 

@@ -6,88 +6,88 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: LocalWiki 0.3\n"
+"Project-Id-Version: LocalWiki 0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-18 03:07\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-11-11 16:46\n"
+"PO-Revision-Date: 2012-11-11 17:15+0900\n"
+"Last-Translator: Satoshi IIDA <nyampire@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../source/configure.rst:2
-# 7a36b63fc9f246758d8f8b9f27c95479
+# 2c20495d6b034f2d80ec9d9e1c030f57
 msgid "Web server configuration"
-msgstr ""
+msgstr "Web サーバ設定"
 
 #: ../source/configure.rst:6
-# 47b0900c62204ff692fed49e4f982e67
+# b1ccec3bb639430798fc034c7bd2ffe6
 msgid "Normal installation"
-msgstr ""
+msgstr "通常インストール"
 
 #: ../source/configure.rst:8
-# b9c06fac603d4b27be9df184216cc46d
+# 51c631bd4b644cf88d1130e770c0fefc
 msgid "If you installed the LocalWiki software using the Ubuntu package then an Apache site should be automatically up and running.  Its configuration file can found in ``/etc/apache2/sites-enabled/example.com``.  You'll want to open that file and change the server name, etc."
-msgstr ""
+msgstr "Ubuntuパッケージを利用してLocalwikiをインストールする場合、WebサーバとしてApacheが自動的にインストールされます。 Apacheの設定は ``/etc/apache2/sites-enabled/example.com`` で行います。 サーバ名などを変更したい場合、このファイルを編集してください。"
 
 #: ../source/configure.rst:13
-# 3f5206497bdd4773b13f462bdef965b2
+# d6357517f31143a4952d7bca222e9cea
 msgid "Please see the `official Apache documentation <http://httpd.apache.org/docs/>`_ for all possible configuration values."
-msgstr ""
+msgstr "また、Apacheの設定については `Apache 公式ドキュメント <http://httpd.apache.org/docs/>`_ を参照してください。"
 
 #: ../source/configure.rst:18
-# 859cd98330f7418f9201f8e2aaa22ace
+# beeff857b85449a79b5c382f9151390a
 msgid "Development server"
-msgstr ""
+msgstr "開発用サーバ設定"
 
 #: ../source/configure.rst:20
-# c60d9e3cde4c467cb2f705a2c4b5fcd4
+# e4bd590cf04840a0b6e8d6b3faa3004d
 msgid "If you're doing development or testing, you can run ``localwiki-manage runserver`` to start the built-in webserver.  Don't use this in production."
-msgstr ""
+msgstr "開発用、あるいはテスト用としてサーバを起動する場合、ビルトインされている ``localwiki-manage runserver`` を利用することも可能です。 公開環境でこのサーバを利用することは避けてください。"
 
 #: ../source/configure.rst:25
-# 0453baf4b0154d57b90767f99dd12771
+# 94f40e11d0244960ab64fab6a902b2d1
 msgid "Manual installations"
-msgstr ""
+msgstr "手動インストール"
 
 #: ../source/configure.rst:27
-# 5ff650c5c8a341778f940bf15cdeddf4
+# 30086a5ae79b4b4e9905724394bfa21b
 msgid "If you installed LocalWiki manually then you'll need to copy the wsgi template file and edit it::"
-msgstr ""
+msgstr "Localwikiを手動でインストールした場合、 wsgiテンプレートファイルをコピーして編集する必要があります。 ::"
 
 #: ../source/configure.rst:33
-# 3367e5b8366e4af984009893eff11eb5
+# 6528c5199d3e4d36908714a50490129b
 msgid "Then open up ``localwiki.wsgi`` and set ``VIRTUAL_ENV_PATH`` to the absolute path to the virtualenv you installed LocalWiki in."
-msgstr ""
+msgstr "``localwiki.wsgi`` を開き、Localwikiのインストール先を絶対パスで ``VIRTUAL_ENV_PATH`` に指定してください。"
 
 #: ../source/configure.rst:36
-# 34f306725e10467c95ee67092cbb94a9
-msgid "Then you'll need to create an Apache configuration file.  Here's a sample::"
-msgstr ""
+# 2b5ce08633dd4574a11f172aefbd900b
+msgid "Then you'll need to create an Apache configuration file.  Here's a sample:"
+msgstr "次に、Apacheの設定ファイルを作成します。以下がサンプルです:"
 
-#: ../source/configure.rst:93
-# 8f2f35f6b64542a29dadb2699982b823
+#: ../source/configure.rst:41
+# 7792b763c3c1410fb80efb62496c807d
 msgid "You'll need to set some of these values:"
-msgstr ""
+msgstr "必要な箇所の編集を行います。"
 
-#: ../source/configure.rst:95
-# 323980dbdff445bc9a1e441c6bea7667
+#: ../source/configure.rst:43
+# d763ca2fc3bc41b2b8a5ac1c453df84b
 msgid "``ServerAdmin``, ``ServerName``, and ``ServerAlias`` should be self-explanatory.  Read the Apache docs for more info."
-msgstr ""
+msgstr "``ServerAdmin``, ``ServerName``, そして ``ServerAlias`` は、自分自身の値に変更する必要があります。 詳細は Apacheのドキュメントを参照してください。"
 
-#: ../source/configure.rst:98
-# 7c56d4d1245f438080035e469bf5e41e
+#: ../source/configure.rst:46
+# d1e2cb92cdf94a828d3e772bbc5299db
 msgid "``WSGIScriptAlias / /path/to/your/deploy/localwiki.wsgi`` -- you'll need to change ``/path/to/your/deploy/`` to be the path to where the ``localwiki.wsgi`` file lives."
-msgstr ""
+msgstr "``WSGIScriptAlias / /path/to/your/deploy/localwiki.wsgi`` -- ``/path/to/your/deploy/`` を 自身のサーバの ``localwiki.wsgi`` のファイルがあるディレクトリに変更してください。"
 
-#: ../source/configure.rst:102
-# 823bf9c43ed44d1684e2917cef6e1642
+#: ../source/configure.rst:50
+# b4b24edfe517438a97a06cbd3be054b7
 msgid "In all of the ``Alias ...`` lines you'll need to change ``/path/to/your/env`` to be the absolute path to the virtualenv where you installed LocalWiki."
-msgstr ""
+msgstr "``Alias ...`` で始まる行に含まれている ``/path/to/your/env`` の部分を、自身のサーバのLocalwikiインストール先ディレクトリの絶対パスに変更してください。"
 
-#: ../source/configure.rst:106
-# a81fb87939c84620b628296fb9a573a0
+#: ../source/configure.rst:54
+# 9015e74985e541f9872b4524477496ed
 msgid "After you make you're changes you'll need to restart Apache. Please see the `official Apache documentation <http://httpd.apache.org/docs/>`_ for more on all this."
-msgstr ""
+msgstr "設定ファイルを編集した後は、Apacheを再起動する必要があります。再起動の詳細な手順については `Apache 公式ドキュメント <http://httpd.apache.org/docs/>`_ を参照してください。"
 
