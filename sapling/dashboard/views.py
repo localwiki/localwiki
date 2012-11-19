@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from django.core.cache import cache
 from django.contrib.auth.models import User
@@ -15,6 +15,8 @@ from utils.views import JSONView
 
 from versionutils.versioning.constants import *
 
+import time
+
 COMPLETE_CACHE_TIME = 60 * 60 * 5
 EASIER_CACHE_TIME = 60  # cache easier stuff for 60 seconds.
 
@@ -24,16 +26,23 @@ class DashboardView(JSONView):
         nums = cache.get('dashboard_nums')
         if nums is None:
             nums = {
-                'num_pages': len(Page.objects.all()),
-                'num_files': len(PageFile.objects.all()),
-                'num_maps': len(MapData.objects.all()),
-                'num_redirects': len(Redirect.objects.all()),
-                'num_users': len(User.objects.all())
+                'num_pages': Page.objects.count(),
+                'num_files': PageFile.objects.count(),
+                'num_maps': MapData.objects.count(),
+                'num_redirects': Redirect.objects.count(),
+                'num_users': User.objects.count()
             }
             cache.set('dashboard_nums', nums, EASIER_CACHE_TIME)
         return nums
 
     def get_context_data(self, **kwargs):
+        start_at = time.time()   # profiling
+        oldest = cache.get('dashboard_oldest')
+        if oldest is None:
+            qs = Page.versions.order_by('history_date')
+            qs = qs.filter(history_date__gte=date(2000, 1, 1))
+            oldest = qs[0].version_info.date
+            cache.set('dashboard_oldest', oldest, COMPLETE_CACHE_TIME)
         context = cache.get('dashboard')
         if context is not None:
             context.update(self.get_nums())
@@ -52,15 +61,22 @@ class DashboardView(JSONView):
 
             cache.set('dashboard_generating', True)
             context = {
-                'num_items_over_time': items_over_time(),
-                'num_edits_over_time': edits_over_time(),
-                'page_content_over_time': page_content_over_time(),
+                'num_items_over_time': items_over_time(oldest),
+                '_duration_items': time.time() - start_at,
+                'num_edits_over_time': edits_over_time(oldest),
+                '_duration_edits': time.time() - start_at,
+                'page_content_over_time': page_content_over_time(oldest),
+                '_duration_pagecontent': time.time() - start_at,
                 'users_registered_over_time': users_registered_over_time(),
+                '_duration_urot': time.time() - start_at,
             }
             context.update(self.get_nums())
+            context['_duration_getnums'] = time.time() - start_at
 
             context['generated'] = True
-            cache.set('dashboard', context, COMPLETE_CACHE_TIME)
+            # This is either too huge to cache, or small enough that we don't
+            # need to cache.  Only way to win is not to play at all.
+            #cache.set('dashboard', context, COMPLETE_CACHE_TIME)
             cache.set('dashboard_generating', False)
 
         return context
@@ -90,9 +106,7 @@ def _sum_from_add_del(added_series, deleted_series):
     return l
 
 
-def items_over_time():
-    oldest_page = Page.versions.all().order_by(
-        'history_date')[0].version_info.date
+def items_over_time(oldest_page):
     graph = pyflot.Flot()
 
     pages_added = qsstats.QuerySetStats(
@@ -136,9 +150,7 @@ def items_over_time():
     return [graph.prepare_series(s) for s in graph._series]
 
 
-def edits_over_time():
-    oldest_page = Page.versions.all().order_by(
-        'history_date')[0].version_info.date
+def edits_over_time(oldest_page):
     graph = pyflot.Flot()
 
     qss = qsstats.QuerySetStats(Page.versions.all(), 'history_date')
@@ -156,41 +168,24 @@ def edits_over_time():
     return [graph.prepare_series(s) for s in graph._series]
 
 
-def page_content_over_time():
-    oldest_page = Page.versions.all().order_by(
-        'history_date')[0].version_info.date
-
-    # TODO: There's probably a much faster way to do this.  But it's
-    # fast enough for now.
+def page_content_over_time(oldest_page):
+    qs = Page.versions.extra({'content_length': "length(content)",
+                              'history_day': "date(history_date)"})
+    qs = qs.order_by('history_day')
+    qs = qs.values('content_length', 'history_day', 'slug')
 
     graph = pyflot.Flot()
     page_dict = {}
     page_contents = []
-    now = datetime.now()
+    current_day = oldest_page.date()
 
-    d = datetime(oldest_page.year, oldest_page.month, oldest_page.day)
-    while (now.year, now.month, now.day) != (d.year, d.month, d.day):
-        next_d = d + timedelta(days=1)
-
-        page_edits_this_day = Page.versions.filter(
-            version_info__date__gte=d, version_info__date__lt=next_d)
-        # Group the edits by slug and annotate with the max history date
-        # for the associated page.
-        slugs_with_date = page_edits_this_day.values(
-            'slug', 'content').annotate(Max('history_date'))
-
-        for item in slugs_with_date:
-            page_dict[item['slug']] = len(item['content'])
-
-        total_content_today = 0
-        for slug, length in page_dict.iteritems():
-            total_content_today += length
-
-        page_contents.append((d, total_content_today))
-        d = next_d
+    for page in qs.iterator():
+        if page['history_day'] > current_day:
+            page_contents.append((current_day, sum(page_dict.values())))
+            current_day = page['history_day']
+        page_dict[page['slug']] = page['content_length']
 
     graph.add_time_series(page_contents)
-
     return [graph.prepare_series(s) for s in graph._series]
 
 
