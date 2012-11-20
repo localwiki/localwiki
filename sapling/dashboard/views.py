@@ -33,53 +33,61 @@ class DashboardView(JSONView):
                 'num_users': User.objects.count()
             }
             cache.set('dashboard_nums', nums, EASIER_CACHE_TIME)
+            nums['_regenerated_nums'] = True
+        nums['generated'] = True
         return nums
 
-    def get_context_data(self, **kwargs):
-        start_at = time.time()   # profiling
+    def get_oldest_page_date(self):
         oldest = cache.get('dashboard_oldest')
         if oldest is None:
             qs = Page.versions.order_by('history_date')
             qs = qs.filter(history_date__gte=date(2000, 1, 1))
             oldest = qs[0].version_info.date
             cache.set('dashboard_oldest', oldest, COMPLETE_CACHE_TIME)
-        context = cache.get('dashboard')
+        return oldest
+
+    def get_context_data_for_chart(self, function, key):
+        context = cache.get('dashboard_%s' % key)
+
         if context is not None:
-            context.update(self.get_nums())
+            context['_cached'] = True
+            context['_age'] = time.time() - context['_built']
+            context['generated'] = True
             return context
 
-        if 'check_cache' in self.request.GET:
-            # We tell the browser it hasn't been generated yet, and the browser
-            # then shows a "loading" message as the page is generated.
-            # TODO: Make this process better.  Job-queue + structured
-            # poll/socketio.
-            context = {'generated': False}
-        else:
-            if cache.get('dashboard_generating'):
-                # Cache is generating in a different request.
-                return {'generated': False}
+        if 'check_cache' in self.request.GET or cache.get('dashboard_generating_%s' % key, False):
+            return {'generated': False}
 
-            cache.set('dashboard_generating', True)
-            context = {
-                'num_items_over_time': items_over_time(oldest),
-                '_duration_items': time.time() - start_at,
-                'num_edits_over_time': edits_over_time(oldest),
-                '_duration_edits': time.time() - start_at,
-                'page_content_over_time': page_content_over_time(oldest),
-                '_duration_pagecontent': time.time() - start_at,
-                'users_registered_over_time': users_registered_over_time(),
-                '_duration_urot': time.time() - start_at,
-            }
-            context.update(self.get_nums())
-            context['_duration_getnums'] = time.time() - start_at
+        cache.set('dashboard_generating_%s' % key, True, 60)
 
-            context['generated'] = True
-            # This is either too huge to cache, or small enough that we don't
-            # need to cache.  Only way to win is not to play at all.
-            #cache.set('dashboard', context, COMPLETE_CACHE_TIME)
-            cache.set('dashboard_generating', False)
+        start_at = time.time()
+        oldest = self.get_oldest_page_date()
+        context = {}
+        context[key] = function(oldest)
+
+        context['_built'] = time.time()
+        context['_duration'] = time.time() - start_at
+        context['generated'] = True
+        cache.set('dashboard_%s' % key, context, COMPLETE_CACHE_TIME)
+        cache.set('dashboard_generating_%s' % key, False)
+
+        context['_age'] = time.time() - context['_built']
+        context['_cached'] = False
 
         return context
+
+    def get_context_data(self, **kwargs):
+        if 'graph' in self.request.GET:
+            if self.request.GET.get('graph', None) == 'num_items_over_time':
+                return self.get_context_data_for_chart(items_over_time, 'num_items_over_time')
+            if self.request.GET.get('graph', None) == 'num_edits_over_time':
+                return self.get_context_data_for_chart(edits_over_time, 'num_edits_over_time')
+            if self.request.GET.get('graph', None) == 'users_registered_over_time':
+                return self.get_context_data_for_chart(users_registered_over_time, 'users_registered_over_time')
+            if self.request.GET.get('graph', None) == 'page_content_over_time':
+                return self.get_context_data_for_chart(page_content_over_time, 'page_content_over_time')
+
+        return self.get_nums()
 
 
 def _summed_series(series):
@@ -189,7 +197,7 @@ def page_content_over_time(oldest_page):
     return [graph.prepare_series(s) for s in graph._series]
 
 
-def users_registered_over_time():
+def users_registered_over_time(oldest_page=None):
     oldest_user = User.objects.order_by('date_joined')[0].date_joined
     graph = pyflot.Flot()
 
