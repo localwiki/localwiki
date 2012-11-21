@@ -62,7 +62,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	border-right:1px solid #DAD9D9;
 	float:left;
 	padding: 2px;
-	height: 21px;
+	height: 22px;
 	margin-right: 6px;
 	margin-bottom: 5px;
 }
@@ -101,7 +101,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 .cke_skin_sapling .cke_rcombo .cke_inline_label
 {
-	line-height: 21px;
+	line-height: 22px;
 	font-style: italic;
 	color: #666666;
 }
@@ -122,8 +122,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	filter: alpha(opacity=70); /* IE */
 	opacity: 0.70; /* Safari, Opera and Mozilla */
 
-	height: 21px;
-	line-height: 21px;
+	height: 22px;
+	line-height: 22px;
 	width:60px;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -140,8 +140,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 .cke_skin_sapling .cke_rcombo .cke_openbutton
 {
 	display: inline-block;
-    height: 23px;
-    margin-top: -1px;
 }
 
 .cke_skin_sapling .cke_rcombo .cke_openbutton .cke_icon
@@ -152,8 +150,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	background-position: 0 -68px;
 	background-repeat: no-repeat;
 	width: 17px;
-	height: 19px;
-	margin: 1px 2px;
+	height: 20px;
+	margin: 2px 2px;
 }
 
 .cke_skin_sapling .cke_hc .cke_rcombo .cke_openbutton .cke_icon
@@ -182,7 +180,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 .cke_skin_sapling .cke_rcombo .cke_on .cke_openbutton
 {
 	border-color: #316ac5;
-	background-color: #dff1ff;
 }
 
 .cke_skin_sapling .cke_rcombo .cke_on .cke_text

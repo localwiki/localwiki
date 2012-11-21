@@ -6,33 +6,33 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: LocalWiki 0.3\n"
+"Project-Id-Version: LocalWiki 0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-18 03:07\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-11-11 16:46\n"
+"PO-Revision-Date: 2012-11-11 18:41+0900\n"
+"Last-Translator: Satoshi IIDA <nyampire@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../source/contribute.rst:2
-# 494ac3e5600f45c495d84158cc6e281d
+# 2456e5293b1941c48600adcf8c37f8f0
 msgid "Contributing"
-msgstr ""
+msgstr "Localwikiへのお手伝い"
 
 #: ../source/contribute.rst:4
-# 5b3449aacc674484b2ad0a4f7969b089
+# 5b1bb2bb600d4f73953cca07e157f36f
 msgid "LocalWiki is an open-source project, and we need your contributions to make it even more awesome.  If you see any bugs, please let us know.  If you want to contribute a patch, even better!"
-msgstr ""
+msgstr "Localwikiはオープンソースプロジェクトです。 つまり、あなたの手を借りることでよりよいソフトウェアに変わってゆくことができます。 Localwikiにバグを発見したら、是非私達へご連絡ください。 コードへのパッチを提供してくれたら、なおのこと嬉しく思います！"
 
 #: ../source/contribute.rst:8
-# 0bf4da067f3940e1868a9faef5e2dc8f
+# c38a3c150ac94bedad457c23353e6c14
 msgid "Everything you need to contribute can be found at https://dev.localwiki.org"
-msgstr ""
+msgstr "私達の活動に対して手を貸したいという方は、まず https://dev.localwiki.org を一読ください。"
 
 #: ../source/contribute.rst:10
-# 4d32e6c436cb4563a475516986b5cb99
+# 44c88764fd574376b9cc84432ef5bc05
 msgid "The fastest way to reach the main developers is on the `#localwiki IRC channel <irc://irc.freenode.net/#localwiki>`_"
-msgstr ""
+msgstr "また、主要な開発陣と急いで連絡をとりたい場合、IRCの `#localwiki IRC channel <irc://irc.freenode.net/#localwiki>`_ で連絡をいただいてもかまいません。"
 

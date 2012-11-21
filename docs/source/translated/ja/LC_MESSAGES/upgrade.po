@@ -6,38 +6,38 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: LocalWiki 0.3\n"
+"Project-Id-Version: LocalWiki 0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-18 03:07\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-11-11 16:46\n"
+"PO-Revision-Date: 2012-11-11 18:36+0900\n"
+"Last-Translator: Taro Matsuzawa <btm@tech.email.ne.jp>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../source/upgrade.rst:2
-# 53cc61d59bce44fea3afa85592da7509
+# 380b91e6c38440bd8456af684276fcbf
 msgid "Upgrading"
-msgstr ""
+msgstr "アップグレード"
 
 #: ../source/upgrade.rst:4
-# 06bfd114e79c4bb3b67e99503efda0d9
+# c7a0df676b8e4c7b9aa05b79530d11ea
 msgid "When a new version of LocalWiki is released, you should upgrade to it. If you installed using the Ubuntu packages, then upgrading to a new release is very simple."
-msgstr ""
+msgstr "Localwikiの新規バージョンがリリースされたときは、更新をお勧めします。Ubuntuのパッケージを利用している場合、更新方法は非常に単純です。"
 
 #: ../source/upgrade.rst:8
-# b6407b979a8a464683b3a527d5307001
+# 583e532f850246558ce1ea85a871636e
 msgid "Run these commands to upgrade::"
-msgstr ""
+msgstr "更新するには次のコマンドを実行します::"
 
 #: ../source/upgrade.rst:13
-# b987582cc0404e57971eec9f3bae911f
+# fddb7dfd2d5d4f9bbdae5b4b7eed5b7d
 msgid "This will upgrade all of your packages, including LocalWiki. All of your data will be preserved during the upgrade."
-msgstr ""
+msgstr "Localwikiを含めて、あなたのシステムで利用しているすべてのパッケージが更新されます。パッケージを更新している間も、あなたのデータは保存されます。"
 
 #: ../source/upgrade.rst:16
-# 20c259f6fe694797a65c12bfffcd5e32
+# 33d1dd620e7f45f59a30d7007a45568a
 msgid "If you installed manually, read the upgrade instructions here: http://dev.localwiki.org/Upgrading_LocalWiki"
-msgstr ""
+msgstr "手動でインストールを行った場合は、以下の更新手順に従ってください。: http://dev.localwiki.org/Upgrading_LocalWiki"
 

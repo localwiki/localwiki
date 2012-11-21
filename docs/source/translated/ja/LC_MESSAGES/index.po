@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: LocalWiki 0.3\n"
+"Project-Id-Version: LocalWiki 0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-18 03:07\n"
+"POT-Creation-Date: 2012-10-12 10:53\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,32 +17,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../source/index.rst:2
-# fe4b9ce8e1234f3d84c49bee0670f187
+# 780ae84cb4ca47d295854a34ecf480bb
 msgid "LocalWiki Documentation"
 msgstr ""
 
 #: ../source/index.rst:5
-# 80599b7f74274fe29c43e980aee6b7c3
+# 663f745b899a4d679f4d73c1e1a5ae65
 msgid "Contents:"
 msgstr ""
 
-#: ../source/index.rst:21
-# 642335b022b449b1a4eca88528e873ee
+#: ../source/index.rst:22
+# 5f22934830d54c7f90477d12f6912056
 msgid "Indices and tables"
 msgstr ""
 
-#: ../source/index.rst:23
-# 21012c3da8ff4e40a7f830cb0006b344
+#: ../source/index.rst:24
+# 690d77c94b5d4f0d99e393c970eb5432
 msgid ":ref:`genindex`"
 msgstr ""
 
-#: ../source/index.rst:24
-# 8ae35992fdb94ca089b633d167c0ae97
+#: ../source/index.rst:25
+# abe9ac3f43934f2e9f08d1fceda793da
 msgid ":ref:`modindex`"
 msgstr ""
 
-#: ../source/index.rst:25
-# cfaa435bd4384fe88412166658cd92ea
+#: ../source/index.rst:26
+# 335797b35265416fa89abf3ed57e5ff1
 msgid ":ref:`search`"
 msgstr ""
 
