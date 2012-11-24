@@ -42,6 +42,8 @@ class DashboardView(JSONView):
         if oldest is None:
             qs = Page.versions.order_by('history_date')
             qs = qs.filter(history_date__gte=date(2000, 1, 1))
+            if not qs.exists():
+                return None
             oldest = qs[0].version_info.date
             cache.set('dashboard_oldest', oldest, COMPLETE_CACHE_TIME)
         return oldest
@@ -55,13 +57,18 @@ class DashboardView(JSONView):
             context['generated'] = True
             return context
 
+        start_at = time.time()
+        oldest = self.get_oldest_page_date()
+
+        if oldest is None:
+            # We probably have no pages yet
+            return {'generated': True, key: [], '_error': 'No page data'}
+
         if 'check_cache' in self.request.GET or cache.get('dashboard_generating_%s' % key, False):
             return {'generated': False}
 
         cache.set('dashboard_generating_%s' % key, True, 60)
 
-        start_at = time.time()
-        oldest = self.get_oldest_page_date()
         context = {}
         context[key] = function(oldest)
 

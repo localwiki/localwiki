@@ -18,6 +18,7 @@
 <div class="loading" id="loading">
   {% trans "Statistics loading.  This may take several minutes the first time." %}
 </div>
+
 <table class="stats" id="main_stats">
   <thead><tr><td>
     <div id="num_pages" class="stat_number"><div class="type">{% trans "Pages" %}</div></div>
@@ -73,7 +74,6 @@
 function generate_graphs(stats) {
 
     if(stats.num_items_over_time) {
-        $("#num_items_over_time_loading").hide();
         $.plot($("#num_items_over_time"),
                stats.num_items_over_time,
                { 
@@ -84,10 +84,10 @@ function generate_graphs(stats) {
                    'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
                }
         );
+        $("#num_items_over_time_loading").hide();
     }
 
     if(stats.num_edits_over_time) {
-        $("#num_edits_over_time_loading").hide();
         $.plot($("#num_edits_over_time"),
                stats.num_edits_over_time,
                { 
@@ -100,10 +100,10 @@ function generate_graphs(stats) {
                }
 
         );
+        $("#num_edits_over_time_loading").hide();
     }
 
     if(stats.page_content_over_time) {
-        $("#page_content_over_time_loading").hide();
         $.plot($("#page_content_over_time"),
                stats.page_content_over_time,
                { 
@@ -115,10 +115,10 @@ function generate_graphs(stats) {
                    'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
                }
         );
+        $("#page_content_over_time_loading").hide();
     }
 
     if(stats.users_registered_over_time) {
-        $("#users_registered_over_time_loading").hide();
         $.plot($("#users_registered_over_time"),
                stats.users_registered_over_time,
                { 
@@ -130,17 +130,22 @@ function generate_graphs(stats) {
                    'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
                }
         );
+        $("#users_registered_over_time_loading").hide();
     }
 }
 
 function populateData(data) {
-    $('#loading').hide();
-    $('#main_stats').fadeIn();
     $('#num_pages').prepend(data.num_pages);
     $('#num_files').prepend(data.num_files);
     $('#num_maps').prepend(data.num_maps);
     $('#num_redirects').prepend(data.num_redirects);
     $('#num_users').prepend(data.num_users);
+    $('#loading').hide();
+    $('#main_stats').show();
+    getData('num_items_over_time', '?check_cache=1', 1)
+    getData('num_edits_over_time', '?check_cache=1', 1)
+    getData('page_content_over_time', '?check_cache=1', 1)
+    getData('users_registered_over_time', '?check_cache=1', 1)
 }
 
 function getData(graph, qs, timeout) {
@@ -167,10 +172,6 @@ $(function() {
             populateData(data);
         }
     });
-    getData('num_items_over_time', '?check_cache=1', 1)
-    getData('num_edits_over_time', '?check_cache=1', 1)
-    getData('page_content_over_time', '?check_cache=1', 1)
-    getData('users_registered_over_time', '?check_cache=1', 1)
 });
 
 </script>
