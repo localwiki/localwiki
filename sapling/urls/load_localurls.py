@@ -1,7 +1,9 @@
 # Load custom urls from localurls.py in DATA_ROOT.
 
 from .defaults import *
-import sys, os
+from settings import DATA_ROOT
+import sys
+import os
 
 # Where localurls.py lives
 sys.path.append(os.path.join(DATA_ROOT, 'conf'))
