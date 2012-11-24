@@ -14,4 +14,5 @@ except:
 
 
 # Allow localurls.py to define localurlpatterns.
-urlpatterns = localurlpatterns + urlpatterns
+if localurlpatterns is not None:
+    urlpatterns = localurlpatterns + urlpatterns
