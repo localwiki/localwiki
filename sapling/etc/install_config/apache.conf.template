@@ -35,4 +35,6 @@
 
     WSGIScriptAlias / /usr/share/localwiki/deploy/localwiki.wsgi
 
+    CustomLog /var/log/apache2/access.log combined
+
 </VirtualHost>
