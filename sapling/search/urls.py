@@ -26,6 +26,9 @@ class CreatePageSearchView(SearchView):
         # Remove the PanZoomBar.
         if 'PanZoomBar' in map_controls:
             map_controls.remove('PanZoomBar')
+        # Remove the Keyboard scrolling behavior.
+        if 'KeyboardDefaults' in map_controls:
+            map_controls.remove('KeyboardDefaults')
         widget_options['map_options'] = map_opts
         widget_options['map_div_class'] = 'mapwidget small'
         map = InfoMap([(obj.geom, popup_html(obj)) for obj in maps],
