@@ -8,20 +8,20 @@ CKEDITOR.dialog.add( 'includetag', function( editor )
 	var pagelink_plugin = CKEDITOR.plugins.pagelink;
 
 	return {
-		title : 'List of tagged pages',
+		title : gettext('List of tagged pages'),
 		minWidth : 250,
 		minHeight : 120,
 		contents : [
 			{
 				id : 'info',
-				label : 'List of tagged pages',
-				title : 'List of tagged pages',
+				label : gettext('List of tagged pages'),
+				title : gettext('List of tagged pages'),
 				elements :
 				[
 					{
 						type : 'text',
 						id : 'tag',
-						label : 'Tag',
+						label : gettext('Tag'),
 						required: true,
 						onLoad : function ()
 						{
@@ -42,7 +42,7 @@ CKEDITOR.dialog.add( 'includetag', function( editor )
 						validate : function()
 						{
 							var dialog = this.getDialog();
-							var func = CKEDITOR.dialog.validate.notEmpty( 'Please enter a tag' );
+							var func = CKEDITOR.dialog.validate.notEmpty( gettext('Please enter a tag') );
 							return func.apply( this );
 						},
 						setup : function( data )
@@ -61,7 +61,7 @@ CKEDITOR.dialog.add( 'includetag', function( editor )
 					{
 						type : 'checkbox',
 						id : 'showtitle',
-						label : 'Show title',
+						label : gettext('Show title'),
 						setup : function( data )
 						{
 							if ( data.showtitle )
@@ -81,7 +81,7 @@ CKEDITOR.dialog.add( 'includetag', function( editor )
 							{
 								type : 'text',
 								id : 'width',
-								label : 'Width',
+								label : gettext('Width'),
 								setup : function( data )
 								{
 									if ( data.width )
@@ -107,8 +107,8 @@ CKEDITOR.dialog.add( 'includetag', function( editor )
 								'default' : 'px',
 								items :
 								[
-									[ 'pixels', 'px' ],
-									[ 'percent', '%' ]
+									[ gettext('pixels'), 'px' ],
+									[ gettext('percent'), '%' ]
 								],
 								setup : function( data )
 								{
@@ -123,12 +123,12 @@ CKEDITOR.dialog.add( 'includetag', function( editor )
 					{
 						type : 'radio',
 						id : 'align',
-						label : 'Align',
+						label : gettext('Align'),
 						'default' : '',
 						items :
 						[
 							[ editor.lang.common.alignLeft , 'left'],
-							[ 'None' , ''],
+							[ gettext('None') , ''],
 							[ editor.lang.common.alignRight , 'right']
 						],
 						setup : function( data )
@@ -177,7 +177,7 @@ CKEDITOR.dialog.add( 'includetag', function( editor )
 			this.setupContent( data );
 			// Set up autocomplete.
 			var urlField = this.getContentElement( 'info', 'tag' );
-            $('#' + urlField.domId + ' input').autocomplete({source: '/api/tags/suggest'})
+            $('#' + urlField.domId + ' input').autocomplete({source: '/_api/tags/suggest'})
 		},
 		onOk : function()
 		{
@@ -209,7 +209,8 @@ CKEDITOR.dialog.add( 'includetag', function( editor )
 				var selection = editor.getSelection(),
 					ranges = selection.getRanges( true );
 
-				var textLabel = 'List of pages tagged "' + data.tag + '"';
+                var fmts = gettext('List of pages tagged "%s"');
+				var textLabel = interpolate(fmts, [data.tag]);
 
 				var text = new CKEDITOR.dom.text( textLabel, editor.document );
 				ranges[0].insertNode( text );

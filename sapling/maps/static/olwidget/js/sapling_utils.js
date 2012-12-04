@@ -327,6 +327,10 @@ SaplingMap = {
         "olwidget.EditableLayerSwitcher") { 
                 layer = map.vectorLayers[0];
                 if (layer.controls) {
+                    /* Temporary until issue #286 is fixed */
+                    if ( $.browser.msie && (parseInt($.browser.version, 10) >= 8) ) {
+                        alert("At the moment, map editing doesn't work in IE 8 & 9. Please use Firefox or Chrome instead to edit maps.");
+                    }
                     this._remove_unneeded_controls(layer);
                     map.controls[i].setEditing(layer);
 

@@ -217,7 +217,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 			this.setupContent( processLink.apply( this, [ editor, element, selected_text ] ) );
 			// Set up autocomplete.
 			var urlField = this.getContentElement( 'info', 'url' );
-            $('#' + urlField.domId + ' input').autocomplete({source: '/api/pages/suggest'});
+            $('#' + urlField.domId + ' input').autocomplete({source: '/_api/pages/suggest'});
 		},
 		onOk : function()
 		{
@@ -271,6 +271,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 				var style = new CKEDITOR.style( { element : 'a', attributes : attributes } );
 				style.type = CKEDITOR.STYLE_INLINE;		// need to override... dunno why.
 				style.apply( editor.document );
+				selection = editor.getSelection();
 				var selected = selection.getStartElement();
 				ranges[0].setStartAfter( selected );
 				ranges[0].setEndAfter( selected );

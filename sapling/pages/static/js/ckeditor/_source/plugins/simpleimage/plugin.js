@@ -85,6 +85,9 @@ CKEDITOR.plugins.add( 'simpleimage',
                 caption.css('width', CKEDITOR.tools.cssLength(jQuery(img.$).width()));
 		        caption.mousedown(function(){ jQuery(caption).removeClass('editor_temp'); });
 		        jQuery(frame.$).append(caption);
+		        // fix the selection
+		        var selection = editor.getSelection();
+		        selection.selectElement(img);
 		    }
 		}
 		
@@ -110,10 +113,19 @@ CKEDITOR.plugins.add( 'simpleimage',
 				jQuery(editor.document.$).one('mouseup', function(evt){
 					var caption = jQuery(frame).css({'width':'', 'height':''}).find('span.image_caption');
 					var img = jQuery(frame).find('img');
+					// set image width and height via css, not attributes
+					var width_attr = img.attr('width')
+					if(width_attr)
+						img.css('width', width_attr);
+					var height_attr = img.attr('height')
+					if(height_attr)
+						img.css('height', height_attr);
+					img.removeAttr('width').removeAttr('height');
 					caption.css({'width':img.css('width'), 'height':''});
 					jQuery(window).resize();
 				});
 			});
+			// prevent screwed up images and frames during a drag and drop
             jQuery(editor.document.$.body).bind('dragstart', function(evt){
                 editor.fire('saveSnapshot');
                 var savedImages = {};
@@ -140,15 +152,33 @@ CKEDITOR.plugins.add( 'simpleimage',
             	var oldHtml = oldFrame.length ? oldFrame.outerHTML() : img.outerHTML();
             	img.addClass('cke_moved');
             	oldFrame.addClass('cke_moved');
+            	jQuery('img,span.image_frame', editor.document.$).addClass('cke_unmoved'); // for FF workaround, below
+            	var floated = oldFrame.hasClass('image_right') || oldFrame.hasClass('image_left');
             	var moveImage = function(evt){
-                    oldFrame.remove();
             		var moved_image = jQuery('img.cke_moved', editor.document.$);
+            		if(moved_image.length == 0)
+            		{
+            			// workaround for Firefox 13+ to find what was moved
+            			// see https://github.com/localwiki/localwiki/issues/316
+            			moved_image = jQuery('img:not(.cke_unmoved)', editor.document.$);
+            		}
             		if(moved_image.length == 0)
             		{
             		    restoreImages();
             		    return;
             		}
+            		else if(!moved_image.parent().is(oldFrame))
+            		{
+            			// remove frame unless image wasn't really moved
+            			oldFrame.remove();
+            		}
             		var moved_frame = jQuery('span.cke_moved', editor.document.$);
+            		if(moved_frame.length == 0)
+            		{
+            			// workaround for Firefox 13+ to find what was moved
+            			// see https://github.com/localwiki/localwiki/issues/316
+            			moved_frame = jQuery('span.image_frame:not(.cke_unmoved)', editor.document.$);
+            		}
             		var moved_element = moved_frame.length ? moved_frame : moved_image;
             		var outerFrame = moved_element.parent().closest('span.image_frame');
             		if(outerFrame.length)
@@ -160,7 +190,18 @@ CKEDITOR.plugins.add( 'simpleimage',
             		        outerFrame.before(oldHtml);
             		    else outerFrame.after(oldHtml);
             		} else {
-            		    moved_element.before(oldHtml);
+            			var top_level = moved_element.parentsUntil('body,td,th').last();
+            		    if(floated && top_level.length)
+            		    {
+            		        if(!top_level.is('p'))
+            		            top_level.before('<p>' + oldHtml + '</p>');
+            		        else
+            		            top_level.prepend(oldHtml);
+            		    }
+            		    else
+            		    {
+            		        moved_element.before(oldHtml);
+            		    }
             		}
             		// fix the cursor position
             		var selection = editor.getSelection();
@@ -177,7 +218,8 @@ CKEDITOR.plugins.add( 'simpleimage',
             		return false;
             	};
             	jQuery(evt.target).one('dragend', moveImage)
-            			 .parent().one('dragend', moveImage);
+            			 .parent().one('dragend', moveImage)
+            			 .closest('body').one('dragend', moveImage);
             });
             
             // delete image -> delete its parent frame
@@ -189,10 +231,10 @@ CKEDITOR.plugins.add( 'simpleimage',
                 {
 					var sel = editor.getSelection(),
 						element = sel.getStartElement();
-                    if ( element && element.is('img'))
+                    if ( element && element.is('img', 'span'))
                     {
                         element = element.getAscendant('span', true);
-                        if(!element)
+                        if(!element || !element.hasClass('image_frame'))
                             return;
                         // Make undo snapshot.
                         editor.fire( 'saveSnapshot' );

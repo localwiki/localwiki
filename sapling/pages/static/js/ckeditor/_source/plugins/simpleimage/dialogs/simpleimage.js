@@ -819,7 +819,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                                     items :
                                                     [
                                                         [ editor.lang.common.alignLeft , 'left'],
-                                                        [ 'None' , ''],
+                                                        [ gettext('None') , ''],
                                                         [ editor.lang.common.alignRight , 'right']
                                                         // Backward compatible with v2 on setup when specified as attribute value,
                                                         // while these values are no more available as select options.
@@ -876,8 +876,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                                                         	element.removeClass("image_right");
                                                             if ( value ) {
                                                             	element.addClass("image_" + value);
+                                                            	// Move to top level in the DOM when floated
+                                                            	top_level = jQuery(element.$).parentsUntil('body,td,th').last();
+                                                            	if(top_level.length)
+                                                            	{
+                                                            		jQuery(element.$).remove();
+                                                            		// wrap in paragraph if not already wrapped
+                                                            		if(!top_level.is('p'))
+                                                            			top_level.before(jQuery(element.$).wrap('p'));
+                                                            		else
+                                                            			top_level.prepend(jQuery(element.$));
+                                                            	}
                                                             }
-
                                                             if ( !internalCommit && type == IMAGE )
                                                             {
                                                                 value = ( element.getAttribute( 'align' ) || '' ).toLowerCase();

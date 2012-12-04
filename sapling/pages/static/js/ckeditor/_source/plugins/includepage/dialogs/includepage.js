@@ -128,7 +128,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 						items :
 						[
 							[ editor.lang.common.alignLeft , 'left'],
-							[ 'None' , ''],
+							[ gettext('None') , ''],
 							[ editor.lang.common.alignRight , 'right']
 						],
 						setup : function( data )
@@ -149,7 +149,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 			var editor = this.getParentEditor(),
 				selection = editor.getSelection(),
 				element = null,
-				data = { page : '' };
+				data = { page : '', showtitle : true };
 
 			// Fill in all the relevant fields if there's already one link selected.
 			if ( ( element = pagelink_plugin.getSelectedLink( editor ) )
@@ -163,6 +163,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				data.page = decodeURIComponent(element.getAttribute( 'href' ));
 				if(element.hasClass('includepage_showtitle'))
 					data.showtitle = true;
+				else data.showtitle = false;
 				if(element.hasClass('includepage_left'))
 					data.align = 'left';
 				if(element.hasClass('includepage_right'))
@@ -174,7 +175,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 			this.setupContent( data );
 			// Set up autocomplete.
 			var urlField = this.getContentElement( 'info', 'page' );
-            $('#' + urlField.domId + ' input').autocomplete({source: '/api/pages/suggest'});
+            $('#' + urlField.domId + ' input').autocomplete({source: '/_api/pages/suggest'});
 		},
 		onOk : function()
 		{
@@ -229,7 +230,7 @@ CKEDITOR.dialog.add( 'includepage', function( editor )
 				var element = this._.selectedElement;
 
 				element.setAttributes( attributes );
-                var fmts = gettext('Include page %(page)s');
+                var fmts = gettext('Include page %s');
 				var textLabel = interpolate(fmts, [data.page]);
 				element.setHtml( textLabel );
 			}

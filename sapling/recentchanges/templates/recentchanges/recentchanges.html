@@ -14,10 +14,10 @@
       <div id="limit_to">
         <span>{% trans "Show all changes in the last" %}</span>
         <span class="pagination">
-            <a href="{{ rc_url }}?days_back=1"{% ifequal days_back '1' %}class="current"{% endifequal %}>1</a>
-            <a href="{{ rc_url }}?days_back=2"{% ifequal days_back '2' %}class="current"{% else %}{% if not days_back %}class="current"{% endif %}{% endifequal %}>2</a>
-            <a href="{{ rc_url }}?days_back=3"{% ifequal days_back '3' %}class="current"{% endifequal %}>3</a>
-            <a href="{{ rc_url }}?days_back=7"{% ifequal days_back '7' %}class="current"{% endifequal %}>7</a>
+            <a href="{{ rc_url }}?days_back=1"{% ifequal days_back '1' %} class="current"{% endifequal %}>1</a>
+            <a href="{{ rc_url }}?days_back=2"{% ifequal days_back '2' %} class="current"{% else %}{% if not days_back %} class="current"{% endif %}{% endifequal %}>2</a>
+            <a href="{{ rc_url }}?days_back=3"{% ifequal days_back '3' %} class="current"{% endifequal %}>3</a>
+            <a href="{{ rc_url }}?days_back=7"{% ifequal days_back '7' %} class="current"{% endifequal %}>7</a>
         </span>
         <span>{% trans "days." %}</span>
       </div>

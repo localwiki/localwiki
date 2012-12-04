@@ -14,7 +14,7 @@ import os
 from launchpadlib.launchpad import Launchpad
 
 archs = ["i386"]
-releases = ["lucid", "maverick", "natty", "oneiric"]
+releases = ["lucid", "maverick", "natty", "oneiric", "precise"]
 releases.reverse()
 
 if len(sys.argv) < 3:
@@ -40,13 +40,13 @@ for ppa in ppas:
             base = "https://api.launchpad.net/devel/ubuntu/"
             url = base + release + "/" + arch
 
-            binaries = getPB(status='Published', distro_arch_series=url)
+            binaries = getPB(distro_arch_series=url)
             for binary in binaries:
                 totals = binary.getDailyDownloadTotals()
                 for date, downloads in totals.items():
                     if date not in stats:
                         stats[date] = dict([(r, 0) for r in releases])
-                    stats[date][release] += downloads
+                    stats[date][release] = downloads
 
 try:
     import numpy as np
@@ -54,15 +54,17 @@ try:
     # prevent interactive pop-up
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
-    from matplotlib.dates import datestr2num
+    from matplotlib.dates import datestr2num, MonthLocator, DateFormatter
 
     dates = datestr2num(stats)
     # 2d array to store totals by release and by date
     all = np.array([[stats[x][r] for x in stats] for r in releases])
-
+    fig = plt.figure(figsize=(12,5))
     a=1. # alpha
     kwargs = dict(linewidth=0,color='g', alpha=a, align='center')
     ax = plt.subplot(1,1,1)
+    ax.xaxis.set_major_locator(MonthLocator())
+    ax.xaxis.set_major_formatter(DateFormatter('%B'))
     ax.xaxis_date()
     for i,r in enumerate(releases):
         if i==0:
@@ -70,11 +72,10 @@ try:
         prev=prev-all[i]
         kwargs.update(alpha=a,label=r,bottom=prev)
         ax.bar(dates, all[i],**kwargs)
-        a*=.66
-    plt.gcf().autofmt_xdate()
+        a*=.72
+    plt.gcf().autofmt_xdate(rotation=0, ha='left')
     l = plt.legend()
     l.set_frame_on(False)
-    ax.set_ylabel("Downloads")
     # Liberate axis!
     ax.yaxis.tick_left()
     ax.xaxis.tick_bottom()
@@ -86,7 +87,7 @@ try:
     print "Graph saved as %s" % image_file
 
     print "Totals by date:"
-    for d,t in reversed(zip(stats,all.sum(0))):
+    for d,t in zip(stats,all.sum(0))[::-1]:
         print "%4d :"%t,d
     print "Totals by release:"
     for r,t in zip(releases,all.sum(1)):
@@ -96,3 +97,4 @@ except ImportError:
     # Couldn't import matplotlib, let's do the old thing
     for date, downloads in reversed(stats.items()):
         print date, downloads
+

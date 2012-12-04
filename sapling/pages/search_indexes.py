@@ -2,7 +2,6 @@ from haystack.indexes import *
 from haystack import site
 
 from models import Page
-from tags.models import PageTagSet
 
 
 class PageIndex(RealTimeSearchIndex):
@@ -12,6 +11,7 @@ class PageIndex(RealTimeSearchIndex):
     tags = MultiValueField(boost=1.25)
 
     def prepare_tags(self, obj):
+        from tags.models import PageTagSet
         try:
             return [tag.name  for tag in obj.pagetagset.tags.all()]
         except PageTagSet.DoesNotExist:

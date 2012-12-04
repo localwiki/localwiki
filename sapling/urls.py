@@ -11,9 +11,14 @@ import redirects
 import dashboard
 from users.admin import SubscribedList
 
+from api import api_router
+
 admin.autodiscover()
 
+
 urlpatterns = patterns('',
+    (r'^api$', redirect_to, {'url': '/api/'}),
+    url(r'^api/(?P<rest>.*)', api_router.as_view(), name="api"),
     (r'^map/', include(maps.site.urls)),
     (r'^tags$', redirect_to, {'url': '/tags/'}),
     (r'^tags/', include('sapling.tags.urls', 'tags', 'tags')),

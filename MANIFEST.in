@@ -3,3 +3,5 @@ include COPYING
 include INSTALL
 include README
 recursive-include docs *
+recursive-include install_config *
+recursive-include sapling *

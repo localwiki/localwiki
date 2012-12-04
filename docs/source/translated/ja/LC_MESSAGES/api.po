@@ -1,0 +1,500 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, LocalWiki team
+# This file is distributed under the same license as the LocalWiki package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LocalWiki 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-12 10:53\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/api.rst:3
+# cfddf360a98f46f28e8f20523ce55e42
+msgid "API Documentation"
+msgstr ""
+
+#: ../source/api.rst:5
+# c2209c74fdc747e6b58e7bec74258947
+msgid "LocalWiki provides a RESTful, read/write API with advanced geospatial capabilities.  Reading (using ``GET`` requests) is allowed for all users, but to write (``POST``, ``PUT``, ``PATCH``, ``DELETE``) you'll need to :ref:`generate an API key <apikey>`."
+msgstr ""
+
+#: ../source/api.rst:9
+# b1893419f79b46aeaf04b396d405fa97
+msgid "The LocalWiki API follows the conventions of `Tastypie <https://github.com/toastdriven/django-tastypie>`_.  If this documentation seems incomplete, refer to Tastypie's page on `Interacting with the API <http://django-tastypie.readthedocs.org/en/latest/interacting.html>`_ to become familiar with the common idiom."
+msgstr ""
+
+#: ../source/api.rst:13
+# 1eb797c98e4244deaeb25c490bc69b37
+msgid "You will probably want to try these URLs in your browser. In order to make them work in a browser, you'll need to append the ``format`` query string parameter.  For example, to view the `page` resource list, you'll want visit a URL like this::"
+msgstr ""
+
+#: ../source/api.rst:17
+# c12698ec43364c71afa679e1aebacf6b
+msgid "Unless otherwise specified, all endpoints that return lists support the ``limit`` and ``offset`` parameters for pagination. Pagination information is contained in the embedded ``meta`` object within the response."
+msgstr ""
+
+#: ../source/api.rst:21
+# 96e7022dc66e49c09362cdf6535014f4
+msgid "API versioning"
+msgstr ""
+
+#: ../source/api.rst:23
+# cbaaa2bbc54a420282ac2a0096e90356
+msgid "The LocalWiki API sends API version information in the ``Content-type`` header.  For instance, ``Content-Type: application/vnd.api.v1+json; charset=utf-8``"
+msgstr ""
+
+#: ../source/api.rst:26
+# 2ae445cbdddf46d69c3687247f91ab2b
+msgid "You can lock your application to a particular version of the API by sending an ``Accept`` header with an appropriate version string. For instance, ``Accept: application/vnd.api.v1+json`` will request version 1 of the API."
+msgstr ""
+
+#: ../source/api.rst:33
+# 23f48a97ad1149c88b5e83162c4a3bb3
+msgid "Formats"
+msgstr ""
+
+#: ../source/api.rst:35
+# a7e64e9298e944c9bf2c6a6510726d77
+msgid "This documentation gives examples in ``json``.  However, the API also supports the ``xml``, ``yaml``, ``jsonp``, and ``plist`` (binary plist) formats.  The ``jsonp`` format takes an optional ``callback`` querystring."
+msgstr ""
+
+#: ../source/api.rst:39
+# 1e00a7358910470598b25c800b570737
+msgid "API Examples & Tools"
+msgstr ""
+
+#: ../source/api.rst:41
+# f291680b10f942c8a332b906301325df
+msgid "To get a handle on how to interact with the API, and how to use the filtering system, see the `api examples <api_examples>`_."
+msgstr ""
+
+#: ../source/api.rst:52
+# a431f3099a674ae183ca76005a2ab2f8
+msgid "Resources"
+msgstr ""
+
+#: ../source/api.rst:55
+# a45d36fe320a47b6a71c794b6b45695d
+msgid "Site"
+msgstr ""
+
+#: ../source/api.rst:57
+# a7df15859656488da35227e7fa37c0e5
+msgid "The Site object can be queried to retrieve information about the LocalWiki instance."
+msgstr ""
+
+#: ../source/api.rst:59
+# 1739be8189d14342bb52c607e4d4a0b3
+msgid "Example Site object:"
+msgstr ""
+
+#: ../source/api.rst:75
+#: ../source/api.rst:115
+#: ../source/api.rst:159
+#: ../source/api.rst:218
+#: ../source/api.rst:312
+#: ../source/api.rst:373
+#: ../source/api.rst:436
+# 9a43d2a1956a4e30836fc9533f0fe4a7
+# 280ab4243c90477598907b155abb3bdd
+# 789ab7b4dc1743a9aaa13ee914460179
+# 7e0bd06baae444a18af8e7a8f0aecf4e
+# f3e49124788c4c509a8fcdd86979b767
+# 7d3aeddde55a466089afd9118ae0bc19
+# 1e6a0f64b54d419686232d871a79248a
+msgid "Schema"
+msgstr ""
+
+#: ../source/api.rst:82
+#: ../source/api.rst:122
+#: ../source/api.rst:166
+#: ../source/api.rst:225
+#: ../source/api.rst:319
+#: ../source/api.rst:380
+#: ../source/api.rst:443
+# 7e845af2856b45fa8ec9dc79f2313a81
+# 4683238ba738458ab7384d23dd741c9e
+# f950f5efa4db4330b72eb2d5e98c4c50
+# 0d9aabb53c8c4e4584afcbad9fb15d1d
+# 6ec8aaa0b4bb4cd99e5839b7edc1f28e
+# d164a7849b3942cd84bab7b357789f95
+# 2f29e0d51379470696537e6894067450
+msgid "List"
+msgstr ""
+
+#: ../source/api.rst:89
+#: ../source/api.rst:129
+#: ../source/api.rst:173
+#: ../source/api.rst:232
+#: ../source/api.rst:326
+#: ../source/api.rst:387
+#: ../source/api.rst:450
+# 34863b85320441b784a1b135c2ae2a2c
+# 99aab4b76ccc4295be8431c0e66adb1f
+# 12b2d51612c64593861ee8a79b50da8a
+# bed0072571ab406482d93f0779ac6760
+# 62d00e36f7de4a199635edaf6186eb60
+# d745977eb28e447a8a2f0aef93ac018a
+# 3f5ac68fed60431f80be4b9014f7b598
+msgid "Fetch"
+msgstr ""
+
+#: ../source/api.rst:97
+# f23257be5700477f80b9f6fa61f7856e
+msgid "Users"
+msgstr ""
+
+#: ../source/api.rst:99
+# 146013d27c6d4a5ab4e0247b1c295a70
+msgid "User objects can be queried to retrieve information about LocalWiki users. Emails, passwords, etc are not included in responses."
+msgstr ""
+
+#: ../source/api.rst:101
+# 63555b37ea0b45b6b8181cb56a2eedbb
+msgid "Example User object:"
+msgstr ""
+
+#: ../source/api.rst:138
+# c6cbd0a7ec924d17a35b8baa62638d83
+msgid "Pages"
+msgstr ""
+
+#: ../source/api.rst:140
+# f1bbac0b9b5d470c82e93d35ecb3b0bf
+msgid "Pages are the base objects in a LocalWiki.  Pages contain, among other things, a ``content`` field consisting of a special subset of HTML5 markup."
+msgstr ""
+
+#: ../source/api.rst:144
+# ea0e1da9c995421eabab62d221a5bc34
+msgid "Example Page object:"
+msgstr ""
+
+#: ../source/api.rst:180
+#: ../source/api.rst:239
+#: ../source/api.rst:333
+#: ../source/api.rst:394
+#: ../source/api.rst:457
+# 847e27476cd04b0a8e8bb065827e189e
+# 6a66204cff34466193e4dfe9e1c169dc
+# 8cbfbe25b86e43aaacf19025ee01d99d
+# 0747f3321c164fbaae4374eaa86b6a73
+# 6b43e934aa9143e8bbf851e4cbed1eef
+msgid "Create"
+msgstr ""
+
+#: ../source/api.rst:182
+# 1ce625545cc64f80a2514727960bbf24
+msgid "To create a new page, POST a JSON document containing at least the ``name`` and ``content`` properties to /api/page/. Other properties such as ``map`` may also be set."
+msgstr ""
+
+#: ../source/api.rst:186
+#: ../source/api.rst:247
+#: ../source/api.rst:338
+#: ../source/api.rst:400
+#: ../source/api.rst:468
+# 36e2db24b10c4773998c80847f45a5f9
+# 5f5d63f95bc54f27b46ca8bbcc271e5d
+# dc8a39a781354d90822fff58d52d378c
+# 3c6dbcad619944e4bfcd0c2589c90ab9
+# f8ee2e5e40bc4687994544a77da91e05
+msgid "Update"
+msgstr ""
+
+#: ../source/api.rst:188
+# 0a983948d40947a7a6e9dfbf53e31ec7
+msgid "To update an existing page, PUT a JSON document containing all the resource attributes to /api/page/[name].  You may also update a single field in a page by issuing a PATCH to /api/page/[name] with just the relevant field (e.g. ``content``)."
+msgstr ""
+
+#: ../source/api.rst:192
+#: ../source/api.rst:257
+#: ../source/api.rst:344
+#: ../source/api.rst:406
+#: ../source/api.rst:478
+# 3538d4a2716e4ae4aff5c20053542e3e
+# f90b0194bbdb44a586a3b91d9fc366ea
+# f7fc61af501c4d7ba7c4c3c1b127321f
+# eeb66d0fc8f449a8ab6d477b0b170014
+# 1647e4000ce1489ebf24861aadf432e6
+msgid "Delete"
+msgstr ""
+
+#: ../source/api.rst:194
+# 8c29a28573d74be3ade7bb9e9c879277
+msgid "To delete an existing page, issue a DELETE to /api/page/[name]."
+msgstr ""
+
+#: ../source/api.rst:198
+# fa585fca87bd43a68aa06e7b8f4c6ce6
+msgid "Files"
+msgstr ""
+
+#: ../source/api.rst:200
+# 7274973cdd3046188fdaaf67bb540e6d
+msgid "Files are binary objects associated with a a given page.  Unlike other resources, a ``file`` is connected to a page through its ``slug`` field, which specifies the ``slug`` of the ``page`` it is connected to."
+msgstr ""
+
+#: ../source/api.rst:204
+# ea280a353ee14d56bc56591c4248402b
+msgid "Example File object:"
+msgstr ""
+
+#: ../source/api.rst:241
+# d98fa43a243f4b6ba1ec181041056c80
+msgid "To create a new file, POST a ``multipart/form-data`` form to ``/api/file/`` with form fields ``name`` (the filename), ``slug`` (the ``slug`` of the page the file should be attached to) and a field named ``file`` containing the file data."
+msgstr ""
+
+#: ../source/api.rst:249
+# 189d6e363dd847a181b7945d4019d94b
+msgid "To update an existing file, PUT a ``multipart/form-data`` form to ``/api/file/[id]/`` with form fields ``name`` (the filename), ``slug`` (the ``slug`` of the page the file should be attached to) and a field named ``file`` containing the file data."
+msgstr ""
+
+#: ../source/api.rst:259
+# 632dc01adcc14104852c257e48ccf0ae
+msgid "To delete an existing file, issue a DELETE to ``/api/file/[id]/``."
+msgstr ""
+
+#: ../source/api.rst:264
+# fb84b095557c4be7ac04769edc905aa7
+msgid "Maps"
+msgstr ""
+
+#: ../source/api.rst:266
+# 643952db24ad45fc83577ae0d75cf5bd
+msgid "Maps are collections of geographic data that are associated with a given page.  Maps contain ``points``, ``lines``, and ``polys`` fields, each containing `GeoJSON <http://en.wikipedia.org/wiki/GeoJSON>`_ (or an XML/format-specific equivalent).  Maps also contain a ``length`` field, which you do not need to manually provide when issuing POSTs."
+msgstr ""
+
+#: ../source/api.rst:272
+# 65d18b46d03f482890997d7a8ba7ec25
+msgid "The ``geom`` field is a collection of the ``points``, ``lines`` and ``polys`` fields.  Sometimes it's convient to use this all-in-one field, though we cannot filter using the ``geom`` field."
+msgstr ""
+
+#: ../source/api.rst:277
+# 85e866d975224ac093d21122f1cdaea5
+msgid "Example Map object:"
+msgstr ""
+
+#: ../source/api.rst:335
+# e3b53da1b79e4dbf8de8dc5e703eb961
+msgid "To create a new map, POST a JSON document containing at least a ``geom`` attribute and a ``page`` attribute.  ``geom`` should be a `GeoJSON GeometryCollection <http://geojson.org/geojson-spec.html>`_ and ``page`` should be an api-relative URI of a ``page`` resource.  Instead of providing the ``geom`` attribute you may instead provide one or more of the ``points`` (MultiPoint), ``lines`` (MultiLineString) and ``polys`` (MultiPolygon) properties."
+msgstr ""
+
+#: ../source/api.rst:340
+# d1519626c4e44f5190eeb405ec428830
+msgid "To update an existing map, PUT a JSON document containing all the resource attributes to /api/map/[pagename].  You may also update a single field in a page by issuing a PATCH to /api/map/[pagename] with just the relevant field (e.g. ``points``)."
+msgstr ""
+
+#: ../source/api.rst:346
+# 26fa632288104ddaac608ce31b0cd3ac
+msgid "To delete an existing map, issue a DELETE to /api/map/[pagename]."
+msgstr ""
+
+#: ../source/api.rst:350
+# 80441f9ada674cd98300684238b2a4cc
+msgid "Tags"
+msgstr ""
+
+#: ../source/api.rst:352
+# 7e4c104f8a9647eb8715c891153287da
+msgid "Tags are simple keywords associated with pages.  With tags, there are two resources you'll be interested in using:  ``tag`` and ``page_tags``.  The ``tag`` resource represents the global *tag* that may be used on many different pages.  ``page_tags`` are the tags associated with a particular page."
+msgstr ""
+
+#: ../source/api.rst:358
+# b2e48ab595444f888a2efebe70994b01
+msgid "A ``tag`` is represented by a ``name`` and a ``slug`` (name without spaces and other characters)."
+msgstr ""
+
+#: ../source/api.rst:361
+# fcee5b93b9cc4426aa3a5d3b0af376a2
+msgid "Example Tag object:"
+msgstr ""
+
+#: ../source/api.rst:396
+# cbe5d2858032404dbc594c758a3016a2
+msgid "To create a new ``tag``, POST a JSON document containing at least a ``name`` attribute to /api/tag/."
+msgstr ""
+
+#: ../source/api.rst:402
+# 18429f86564e420b9859a97f1465131e
+msgid "You cannot currently update a tag."
+msgstr ""
+
+#: ../source/api.rst:408
+# e0a384ea30bb4837b17e83db3076e4d0
+msgid "You cannot currently delete a tag."
+msgstr ""
+
+#: ../source/api.rst:411
+# d657ae30292a4d7aa235ae0bebef3964
+msgid "Page Tags"
+msgstr ""
+
+#: ../source/api.rst:413
+# 6268de17740241c486fbed3797cb8949
+msgid "``page_tags`` are the particular set of ``tags`` associated with a given ``page``."
+msgstr ""
+
+#: ../source/api.rst:416
+# 17f244d90c7b4c59a3e423f192fe83ac
+msgid "A ``page_tags`` resource is represented by a ``page`` API URI and a ``tags`` attribute, which is a list of ``tag`` URIs."
+msgstr ""
+
+#: ../source/api.rst:419
+# bc81b690f8924d219ff595464088e419
+msgid "Example PageTags object:"
+msgstr ""
+
+#: ../source/api.rst:459
+# 4efe54617a89428eb7a55df4a65bf227
+msgid "To create a new ``page_tags`` set, POST a JSON document containing at least a ``page`` attribute (path to a ``page`` resource) and a ``tags`` attribute (a list of paths to ``tag`` resources)."
+msgstr ""
+
+#: ../source/api.rst:463
+#: ../source/api.rst:473
+# 31f7adb8947b469ab5674b7e77412597
+# 4351de753ee94a0a9e4204202a0ebd09
+msgid "**Note** that all the ``tag`` resources you specify **must already exist**. If they don't exist yet you'll want to create them first with a POST to the ``tag`` endpoint."
+msgstr ""
+
+#: ../source/api.rst:470
+# 687eb3ca6b1040aabbeee7316b4b734e
+msgid "To update an existing ``page_tags`` set, PUT a JSON document all the resource attributes to /api/page_tags/[pagename]."
+msgstr ""
+
+#: ../source/api.rst:480
+# fa47a61b796f4cdb88aa2ec9a0247e1d
+msgid "To delete a ``page_tags`` set, issue a DELETE to /api/page_tags/[pagename]."
+msgstr ""
+
+#: ../source/api.rst:485
+# 53c729f7446c4a0f972876d5b2eceb5e
+msgid "Historical resources"
+msgstr ""
+
+#: ../source/api.rst:487
+# 3e74c9e17bfd4d5fa5fb69b121596a2c
+msgid "All versioned resources have a corresponding ``*_version`` resource.  This resource has all of the fields of the original resource but also has version-related fields.  These version-related fields are:"
+msgstr ""
+
+#: ../source/api.rst:491
+# 0538b4c5dd3d44699b748420282cd161
+msgid "``history_comment`` - the comment made by the user when the resource was saved."
+msgstr ""
+
+#: ../source/api.rst:492
+# b1aa164792e24401974fe2642e5d674f
+msgid "``history_date`` - the date the resource was saved.  In `ISO-8601 format <http://en.wikipedia.org/wiki/ISO_8601>`_."
+msgstr ""
+
+#: ../source/api.rst:493
+# f4c623d5ab274f0a9e1dfd975aed7735
+msgid "``history_type`` - the *type* of change that was made.  Valid options are:"
+msgstr ""
+
+#: ../source/api.rst:495
+# 7f83479b660f479faeb32a5a89f56dfd
+msgid "``0`` - Added"
+msgstr ""
+
+#: ../source/api.rst:496
+# eedd2170c8544adc87e577aa127fc6c9
+msgid "``1`` - Updated"
+msgstr ""
+
+#: ../source/api.rst:497
+# b034efdaf62b49cfaec4cf14fb5ea742
+msgid "``2`` - Deleted"
+msgstr ""
+
+#: ../source/api.rst:498
+# 47f91f38419a4048bf41725980e6cf7a
+msgid "``3`` - Deleted through a foreign key cascade"
+msgstr ""
+
+#: ../source/api.rst:499
+# b5a8bd841791411dbc4c790f9b271ef2
+msgid "``4`` - Reverted"
+msgstr ""
+
+#: ../source/api.rst:500
+# 39031ededb54456c86508cc70424f44f
+msgid "``5`` - Reverted/Added"
+msgstr ""
+
+#: ../source/api.rst:501
+# b8abab7e8ecd4bedb2545ab2631fdb25
+msgid "``6`` - Reverted/Deleted"
+msgstr ""
+
+#: ../source/api.rst:502
+# 1fb9c4b8b56a4b09bbbc961308d06690
+msgid "``7`` - Reverted/Deleted via cascade"
+msgstr ""
+
+#: ../source/api.rst:503
+# 64497ba6bb1f435fb242a2f18cdc0554
+msgid "``8`` - Reverted via cascade"
+msgstr ""
+
+#: ../source/api.rst:504
+# 6534a47998384ad3ae4ceb7768e24eca
+msgid "``history_user`` - the user who made the change. If this is ``null`` then this edit was made while not logged in."
+msgstr ""
+
+#: ../source/api.rst:505
+# 8e4fd82ec68546fbb4fc0fe072d23048
+msgid "``history_user_ip`` - the IP address of the user who made the change"
+msgstr ""
+
+#: ../source/api.rst:506
+# ad961afac6ad44aca8f4f754f65dce86
+msgid "``history_id`` - not really useful, you should feel free to ignore this. This is the per-resource-class (not instance) history id."
+msgstr ""
+
+#: ../source/api.rst:512
+# df1dc2e9ce914e388be2e30212c04d07
+msgid "Generating an API key"
+msgstr ""
+
+#: ../source/api.rst:514
+# e5657a3709c04a5897a621e8dd2597ed
+msgid "Currently, you'll need to generate an API key before you can write to the API.  **Be careful who you give an API key to**, because there are currently no API limits in place.  To create or revoke an API key, simply visit the :doc:`administrative interface <settings>` and the \"Api keys\" area:"
+msgstr ""
+
+#: ../source/api.rst:521
+# 312d5d1039264321880b2648c26cc58f
+msgid "and then click \"Add api key\" and fill out the form. Pick the user you'd like to have an API key, leave the \"Key\" field blank and save:"
+msgstr ""
+
+#: ../source/api.rst:526
+# 38994aceec5a403ebf6d50b01b152272
+msgid "then you can copy the created Key and pass it along to the user:"
+msgstr ""
+
+#: ../source/api.rst:532
+# 8d7591057e614f5fa1e4d309fb9c3bf9
+msgid "Using the API key"
+msgstr ""
+
+#: ../source/api.rst:534
+# 5571f01490d8419ca621ca0e88329f70
+msgid "To use the API key, send an ``Authorization`` header along with your request.  The format is ``Authorization: ApiKey <username>:<api_key>``. E.g.::"
+msgstr ""
+
+#: ../source/api.rst:540
+# 0cb29ca5290f407a8a7ebca18e572226
+msgid "Some webservers may be configured to block the ``Authorization`` header. In that case, simply send a request with a querystring containing a ``username`` and an ``api_key`` attribute, e.g.::"
+msgstr ""
+
+#: ../source/api.rst:546
+# 9438bedecbcf46799289cda5a708cbdd
+msgid "The header approach is perfered, though.  If the header approach isn't working and you're running Apache be sure that you have the ``WSGIPassAuthorization On`` directive in your apache configuration.  See the :doc:`web server configuration docs <configure>` for an example."
+msgstr ""
+

@@ -1,23 +1,22 @@
 import copy
-
 from dateutil.parser import parse as dateparser
 
-from utils.views import CreateObjectMixin, PermissionRequiredMixin,\
-    Custom404Mixin
-from tags.models import PageTagSet, Tag, slugify
-from tags.forms import PageTagSetForm
-from pages.models import Page
 from django.core.urlresolvers import reverse
-from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
-from versionutils.versioning.views import VersionsList, RevertView, UpdateView
-from django.views.generic.detail import DetailView
-from versionutils.diff.views import CompareView
-from maps.views import MapForTag
-from maps.widgets import InfoMap
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.db.models.aggregates import Count
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+
+from versionutils.versioning.views import VersionsList, RevertView, UpdateView
+from versionutils.diff.views import CompareView
+from models import PageTagSet, Tag, slugify
+from forms import PageTagSetForm
+from pages.models import Page
+
+from utils.views import CreateObjectMixin, PermissionRequiredMixin,\
+    Custom404Mixin
 
 
 class PageNotFoundMixin(Custom404Mixin):
@@ -52,12 +51,15 @@ class TaggedList(ListView):
             return None
         # We re-use the MapForTag view's logic here to embed a mini-map on the
         # tags list page
+        from maps.views import MapForTag
         map_view = MapForTag()
         map_view.kwargs = dict(tag=self.tag.slug)
         map_view.object_list = map_view.get_queryset()
         return map_view.get_map_objects()
 
     def get_context_data(self, *args, **kwargs):
+        from maps.widgets import InfoMap
+
         context = super(TaggedList, self).get_context_data(*args, **kwargs)
         context['tag'] = self.tag
         context['tag_name'] = self.tag_name
@@ -70,6 +72,8 @@ class TaggedList(ListView):
             map_controls = map_opts.get('controls', [])
             if 'PanZoomBar' in map_controls:
                 map_controls.remove('PanZoomBar')
+            if 'KeyboardDefaults' in map_controls:
+                map_controls.remove('KeyboardDefaults')
             olwidget_options['map_options'] = map_opts
             olwidget_options['map_div_class'] = 'mapwidget small'
             context['map'] = InfoMap(
@@ -78,9 +82,11 @@ class TaggedList(ListView):
         return context
 
 
-class PageTagSetUpdateView(PageNotFoundMixin, CreateObjectMixin, UpdateView):
+class PageTagSetUpdateView(PageNotFoundMixin, PermissionRequiredMixin,
+        CreateObjectMixin, UpdateView):
     model = PageTagSet
     form_class = PageTagSetForm
+    permission = 'pages.change_page'
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
@@ -95,6 +101,9 @@ class PageTagSetUpdateView(PageNotFoundMixin, CreateObjectMixin, UpdateView):
         if next:
             return next
         return reverse('pages:tags', args=[self.kwargs.get('slug')])
+
+    def get_protected_object(self):
+        return self.object.page
 
 
 class PageTagSetVersions(PageNotFoundMixin, VersionsList):
@@ -160,8 +169,8 @@ class PageTagSetRevertView(PermissionRequiredMixin, RevertView):
     def get_object(self):
         page_slug = self.kwargs.get('slug')
         page = Page.objects.get(slug=page_slug)
-        return page.pagetagset.versions.as_of(version=int(
-                                                    self.kwargs['version']))
+        return page.pagetagset.versions.as_of(
+            version=int(self.kwargs['version']))
 
     def get_protected_object(self):
         return self.object.page

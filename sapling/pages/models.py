@@ -99,6 +99,9 @@ class Page(models.Model):
             return True
         return False
 
+    def is_front_page(self):
+        return self.name.lower() == 'front page'
+
     def pretty_slug(self):
         if not self.name:
             return self.slug
@@ -348,5 +351,7 @@ def url_to_name(value):
 url_to_name = stringfilter(url_to_name)
 
 
-import feeds  # To fire register() calls.
-import signals  # To fire signal calls.
+# For registration calls
+import signals
+import api
+import feeds
