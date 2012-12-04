@@ -291,8 +291,6 @@ SaplingMap = {
                        var feature_label = selectedFeature.attributes.html;
                    header = gettext('Things near ') + feature_label + ':';
                    listResult = selectedFeature.geometry.distanceTo(feature.geometry) < threshold;
-                   if(feature.geometry.containsPoint)
-                       listResult = listResult && !feature.geometry.containsPoint(selectedFeature.geometry);
                }
            }
            if(listResult || !selectedFeature)
