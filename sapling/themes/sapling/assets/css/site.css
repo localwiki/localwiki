@@ -338,6 +338,14 @@ textarea, input, select {
   padding-left: 25px;
   font-size: 90%;
 }
+#map .simple_pagination {
+  padding-top: 0.4em;
+  padding-bottom: 0.3em;
+  height: 1.5em!important;
+}
+#map .simple_pagination a {
+  margin-right: 0.5em;
+}
 
 /* Map widget, when it's part of page content */
 #page #map {
