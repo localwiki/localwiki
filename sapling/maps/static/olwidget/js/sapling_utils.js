@@ -69,6 +69,26 @@ SaplingMap = {
         if(map.opts.permalink) {
             map.addControl(new OpenLayers.Control.Permalink({anchor: true}));
         }
+
+        this.setup_link_hover_activation(map);
+    },
+
+    setup_link_hover_activation: function(map) {
+        var layer = map.vectorLayers[0];
+        var url_to_features = {};
+        $.each(layer.features, function(index, feature) {
+            // Find URL in html.
+            var quoted = /"(.*?)"/;
+            var url = quoted.exec(feature.attributes.html)[1];
+            url_to_features[url] = feature;
+        })
+
+        $('#content a').each(function() {
+            var feature = url_to_features[$(this).attr('href')];
+            $(this).bind('mouseover', function (){
+                SaplingMap._highlightResult(this, feature, map);
+            });
+        });
     },
 
     _set_selected_style: function(map, feature) {
@@ -218,11 +238,8 @@ SaplingMap = {
         }
     },
 
-    _displayRelated: function(map) {
-        var layer = map.vectorLayers[0];
-        var highlightResult = function (result, feature) {
+    _highlightResult: function (result, feature, map) {
             var lonlat = feature.geometry.getBounds().getCenterLonLat();
-            var infomap = map;
             var popup = new olwidget.Popup(null,
                 lonlat, null, feature.attributes.html, null, false,
                 null,
@@ -256,9 +273,24 @@ SaplingMap = {
                 if(existingPopup)
                     map.addPopup(existingPopup);
             });
-        };
+    },
+
+    _displayRelated: function(map) {
+        var layer = map.vectorLayers[0];
         
-        var selectedFeature = layer._selectedFeature;
+        var setAlpha = function(feature, viewedArea) {
+            if(feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon")
+            {
+                var alpha =  0.5 - 0.5 * Math.min(1, feature.geometry.getArea()/viewedArea);
+                var polyStyle = $.extend({}, 
+                          feature.layer.styleMap.styles['default'].defaultStyle,
+                          { fillOpacity: alpha });
+                feature.style = polyStyle;
+                feature.defaultStyle = polyStyle;
+                feature.layer.drawFeature(feature);
+            }
+        };
+        var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
         var header = gettext('Things on this map:');
         var results = $('<ol>');
         var set_feature_alpha = SaplingMap._set_feature_alpha;
@@ -303,7 +335,7 @@ SaplingMap = {
                   var result = $('<li class="map_result">')
                                .html(feature.attributes.html)
                                .bind('mouseover', function (){
-                                   highlightResult(this, feature);
+                                   SaplingMap._highlightResult(this, feature, map);
                                })
                                .bind('click', function (evt){
                                    // hack to prevent olwidget from placing popup incorrectly
