@@ -125,9 +125,10 @@ def include_content(elem, plugin_tag, context=None):
                     if c.startswith('includepage_')]
     args = ['"%s"' % escape_quotes(href)] + args
     container = etree.Element('div')
+    container.attrib['class'] = 'included_page_wrapper'
     align = [a for a in args if a in ['left', 'right']]
     if len(align):
-        container.attrib['class'] = 'includepage_' + align[0]
+        container.attrib['class'] += ' includepage_' + align[0]
     style = parse_style(elem.attrib.get('style', ''))
     if 'width' in style:
         container.attrib['style'] = 'width: ' + style['width'] + ';'
