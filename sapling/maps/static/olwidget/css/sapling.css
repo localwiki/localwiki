@@ -164,3 +164,21 @@
     background: url("../img/sapling_popup_icons.png") no-repeat scroll -96px 0px;
     top: 5px!important;
 }
+
+.olwidgetPopupPagination {
+    float: left!important;
+    display: table-cell;
+    width: 100%;
+    min-width: 9em;
+    padding-top: 0!important;
+    padding-left: 0!important;
+    padding-right: 0!important;
+    padding-bottom: 0.3em;
+    margin-top: -0.4em;
+}
+.olwidgetPaginationPrevious {
+    margin-left: 10px;
+}
+.olwidgetPaginationCount {
+    margin-top: -0.3em;
+}

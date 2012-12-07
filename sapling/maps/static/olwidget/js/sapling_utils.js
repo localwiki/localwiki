@@ -4,6 +4,7 @@ SaplingMap = {
 
     init_openlayers: function() {
         OpenLayers.Control.LayerSwitcher.prototype.roundedCorner = false;
+        OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
         var base_initOptions = olwidget.Map.prototype.initOptions;
         /* Resize map to fit content area */
         olwidget.Map.prototype.initOptions = function(options) {
@@ -17,6 +18,11 @@ SaplingMap = {
             $('#content_wrapper').css('border', 'none');
             return opts;
         }
+        /* Set the render default to Canvas rather than SVG */
+        OpenLayers.Layer.Vector.prototype.renderers = ['Canvas', 'SVG', 'VML'];
+
+        SaplingMap._setup_clustering_strategy();
+
         olwidget.EditableLayerSwitcher.prototype.roundedCorner = false;
         var base_onClick = olwidget.EditingToolbar.prototype.onClick;
         olwidget.EditingToolbar.prototype.onClick = function (ctrl, evt) {
@@ -85,11 +91,31 @@ SaplingMap = {
         });
     },
 
-    setup_dynamic_map: function(map) {
-        var layer = map.vectorLayers[0];
-        layer.dataExtent = map.getExtent();
-        loadObjects = this._loadObjects;
+    _set_selected_style: function(map, feature) {
+        var viewedArea = map.getExtent().toGeometry().getArea();
+        var area_ratio = Math.min(1, feature.geometry.getArea()/viewedArea);
+        var fillAlpha =  0.2 - 0.2 * area_ratio;
+        // Always have some stroke for selected features.
+        var strokeAlpha = Math.max(0.2, 1 - 1 * area_ratio);
+        var strokeWidth = Math.max(2, 15 * area_ratio);
+        var zoomedStyle = $.extend({}, 
+            layer.styleMap.styles['select'].defaultStyle,
+            { fillOpacity: fillAlpha,
+              // TODO: Not sure why we need to specify strokeWidth
+              // here.
+              strokeWidth: strokeWidth, strokeOpacity: strokeAlpha,
+              label: null });
+        if(feature.geometry.CLASS_NAME != "OpenLayers.Geometry.Point")
+          {
+              feature.style = zoomedStyle;
+              layer.drawFeature(feature);
+          }
+    },
+
+    _setup_dynamic_events: function(map, layer) {
+        loadObjects = this._loadObjects
         displayRelated = this._displayRelated;
+
         // make popups persistent when zooming
         map.events.remove('zoomend');
         layer.events.register("moveend", null, function(evt) {
@@ -103,37 +129,112 @@ SaplingMap = {
           }
         });
         layer.events.register("featureselected", null, function(evt) {
+          var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
+          // Hack to maintain selected feature state throughout events.
+          // Not sure why this is required.
+          layer._selectedFeature = selectedFeature;
           var feature = evt.feature;
           var featureBounds = feature.geometry.bounds;
           $('#results_pane').css('display', 'block');
           $('.mapwidget').css('float', 'left');
           size_map();
           map.updateSize();
+
           if(feature.geometry.CLASS_NAME != "OpenLayers.Geometry.Point")
           {
               map.zoomToExtent(featureBounds);
           }
-          $('#header_title_detail').empty().append(gettext(' for ') + feature.attributes.html);
-          var zoomedStyle = $.extend({}, 
-              layer.styleMap.styles.select.defaultStyle,
-              { fillOpacity: '0', strokeDashstyle: 'dash' });
-          if(feature.geometry.CLASS_NAME != "OpenLayers.Geometry.Point")
-          {
-              feature.style = zoomedStyle;
-              layer.drawFeature(feature);
-          }
+          if (selectedFeature.cluster)
+            var feature_label = selectedFeature.cluster[0].attributes.html;
+          else
+            var feature_label = selectedFeature.attributes.html;
+          $('#header_title_detail').empty().append(gettext(' for ') + feature_label);
+
+          SaplingMap._set_selected_style(map, feature);
           displayRelated(map);
         });
         layer.events.register("featureunselected", null, function(evt) {
-          evt.feature.style = evt.feature.defaultStyle;
+          // Hack to maintain selected feature state throughout events.
+          // Not sure why this is required.
+          layer._selectedFeature = null;
+          SaplingMap._set_feature_alpha(evt.feature, layer, map);
           layer.drawFeature(evt.feature);
+          $('#header_title_detail').empty();
         })
-        loadObjects(map, layer);
+    },
+
+    setup_dynamic_map: function(map, layer) {
+        if (!layer) {
+            var layer = map.vectorLayers[0];
+        }
+        
+        layer.dataExtent = map.getExtent();
+        var set_feature_alpha = SaplingMap._set_feature_alpha;
+        var is_feature_invisible = SaplingMap._is_feature_invisible;
+        var invisible_features = [];
+        $.each(layer.features, function(index, feature) {
+           set_feature_alpha(feature, layer, map);
+           if (is_feature_invisible(feature, layer, map))
+               invisible_features.push(feature);
+        });
+        layer.redraw();
+        if (invisible_features)
+            layer.removeFeatures(invisible_features);
+
+        this._setup_dynamic_events(map, layer);
     },
 
     beforeUnload: function(e) {
         if(SaplingMap.is_dirty) {
             return e.returnValue = gettext("You've made changes but haven't saved.  Are you sure you want to leave this page?");
+        }
+    },
+
+    _set_feature_alpha: function(feature, layer, map) {
+        if (!feature)
+            return;
+        var viewedRegion = map.getExtent().toGeometry();
+        if(feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon")
+        {
+            var area_ratio = Math.min(1, feature.geometry.getArea()/viewedRegion.getArea());
+            var fillAlpha =  0.5 - 0.5 * area_ratio;
+            var strokeAlpha = 1 - 1 * area_ratio;
+            var strokeWidth = Math.max(2, 15 * area_ratio);
+
+            var polyStyle = $.extend({},
+                layer.styleMap.styles['default'].defaultStyle,
+                // TODO: Not sure why we have to explicitly set
+                // strokeWidth and label here. It's like we need to somehow pass
+                // the variables' context in but I couldn't figure out
+                // how.
+                { fillOpacity: fillAlpha, strokeOpacity: strokeAlpha, strokeWidth: strokeWidth, label: null });
+            feature.style = polyStyle;
+        }
+        else if(feature.geometry.CLASS_NAME == "OpenLayers.Geometry.LineString")
+        {
+            var length_ratio = Math.min(1, feature.geometry.getLength()/viewedRegion.getLength());
+            var strokeAlpha = 0.5; //1 - 1 * length_ratio;
+            var strokeWidth = 2; //Math.max(2, 15 * length_ratio);
+
+            var lineStyle = $.extend({},
+                layer.styleMap.styles['default'].defaultStyle,
+                // TODO: Not sure why we have to explicitly set
+                // strokeWidth and label here. It's like we need to somehow pass
+                // the variables' context in but I couldn't figure out
+                // how.
+                { strokeOpacity: strokeAlpha, strokeWidth: strokeWidth, label: null });
+            feature.style = lineStyle;
+        }
+    },
+
+    _is_feature_invisible: function(feature, layer, map) {
+        var viewedRegion = map.getExtent().toGeometry();
+        if (!feature)
+            return
+        if(feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Polygon") {
+            if ((feature.geometry.getArea()/viewedRegion.getArea()) >= 1) {
+                return true;
+            }
         }
     },
 
@@ -149,13 +250,26 @@ SaplingMap = {
             if(existingPopup)
                 map.removePopup(existingPopup);
             map.addPopup(popup);
-            feature.style = layer.styleMap.styles.select.defaultStyle;
+            feature.style = $.extend({}, layer.styleMap.styles['select'].defaultStyle, {label: null});
             layer.drawFeature(feature);
             $(result).bind('mouseout', function(){
                 $(this).unbind('mouseout');
                 map.removePopup(popup);
                 feature.style = feature.defaultStyle;
-                layer.drawFeature(feature);
+                // Points are clustered, so we erase the feature to
+                // prevent the non-clustered point from being drawn.
+                if (feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Point") {
+                    layer.eraseFeatures(feature);
+                }
+                else {
+                    layer.drawFeature(feature);
+                    // Keep the selected feature on top of other
+                    // features after they've been drawn.
+                    if (layer._selectedFeature) {
+                        layer.eraseFeatures([layer._selectedFeature]);
+                        SaplingMap._set_selected_style(map, layer._selectedFeature);
+                    }
+                }
                 if(existingPopup)
                     map.addPopup(existingPopup);
             });
@@ -179,11 +293,15 @@ SaplingMap = {
         var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
         var header = gettext('Things on this map:');
         var results = $('<ol>');
-        var viewedArea = map.getExtent().toGeometry().getArea();
+        var set_feature_alpha = SaplingMap._set_feature_alpha;
+        var is_feature_invisible = SaplingMap._is_feature_invisible;
+        var invisible_features = [];
         $.each(layer.features, function(index, feature) {
            if(feature == selectedFeature)
                 return;
-           setAlpha(feature, viewedArea);
+           if (is_feature_invisible(feature, layer, map)) {
+               invisible_features.push(feature);
+           }
            var listResult = false;
            if(selectedFeature)
            {
@@ -199,72 +317,103 @@ SaplingMap = {
                    });
                } else {
                    var threshold = 500; // TODO: what units is this?
-                   header = gettext('Things near ') + selectedFeature.attributes.html + ':';
+                   if (selectedFeature.cluster)
+                       var feature_label = selectedFeature.cluster[0].attributes.html;
+                   else
+                       var feature_label = selectedFeature.attributes.html;
+                   header = gettext('Things near ') + feature_label + ':';
                    listResult = selectedFeature.geometry.distanceTo(feature.geometry) < threshold;
-                   if(feature.geometry.containsPoint)
-                       listResult = listResult && !feature.geometry.containsPoint(selectedFeature.geometry);
                }
            }
            if(listResult || !selectedFeature)
            {
-               var result = $('<li class="map_result">')
-                            .html(feature.attributes.html)
-                            .bind('mouseover', function (){
-                                SaplingMap._highlightResult(this, feature, map);
-                            })
-                            .bind('click', function (evt){
-                                // hack to prevent olwidget from placing popup incorrectly
-                                var mapSize = map.getSize();
-                                var center = { x: mapSize.w / 2, y: mapSize.h / 2};
-                                map.selectControl.handlers.feature.evt.xy = center;
-                                map.selectControl.unselectAll();
-                                map.selectControl.select(feature);
-                            });
-               results.append(result);
+               var feature_items = [feature];
+               if (feature.cluster) {
+                 feature_items = feature.cluster;
+               }
+               $.each(feature_items, function(index, feature) {
+                  var result = $('<li class="map_result">')
+                               .html(feature.attributes.html)
+                               .bind('mouseover', function (){
+                                   SaplingMap._highlightResult(this, feature, map);
+                               })
+                               .bind('click', function (evt){
+                                   // hack to prevent olwidget from placing popup incorrectly
+                                   var mapSize = map.getSize();
+                                   var center = { x: mapSize.w / 2, y: mapSize.h / 2};
+                                   map.selectControl.handlers.feature.evt.xy = center;
+                                   map.selectControl.unselectAll();
+                                   map.selectControl.select(feature);
+                               });
+                  results.append(result);
+               });
            }
         });
+        if (invisible_features)
+            layer.removeFeatures(invisible_features);
         $('#results_pane').empty().append($('<h3/>').html(header)).append(results);
     },
 
+    _format_bbox_data: function(data) {
+        for (var i=0; i<data.length; i++) {
+            var item = data[i];
+            var slug = encodeURIComponent(item[1].replace(' ', '_'));
+            var page_url = '/' + slug;
+            data[i][1] = '<a href="' + page_url + '">' + item[1] + '</a>';
+        }
+        return data;
+    },
+
     _loadObjects: function(map, layer, callback) {
-        var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
-        var setAlpha = this._setAlpha;
+        var selectedFeature = layer._selectedFeature;
         var extent = map.getExtent().scale(1.5);
         var bbox = extent.clone().transform(layer.projection,
                        new OpenLayers.Projection('EPSG:4326')).toBBOX();
-              
         var zoom = map.getZoom();
+        var set_feature_alpha = SaplingMap._set_feature_alpha;
         var myDataToken = Math.random();
         layer.dataToken = myDataToken;
+
         $.get('_objects/', { 'bbox': bbox, 'zoom': zoom }, function(data){
             if(layer.dataToken != myDataToken)
             {
                 return;
             }
             layer.dataExtent = extent;
-            var temp = new olwidget.InfoLayer(data);
+
+            // Turn off clustering before fiddling with the layer.
+            layer.strategies[0].deactivate();
+
+            var temp = new olwidget.InfoLayer(SaplingMap._format_bbox_data(data));
             temp.visibility = false;
             map.addLayer(temp);
             layer.removeAllFeatures();
-            if(selectedFeature)
-            {
-              layer.addFeatures(selectedFeature);
-              layer.selectedFeatures = [selectedFeature];
-            }
+
             $.each(temp.features, function(index, feature) {
-              feature.map = map;
-              if(selectedFeature && selectedFeature.geometry.toString() == feature.geometry.toString())
-                  return;
-              layer.addFeatures(feature);
+                if(selectedFeature && selectedFeature.geometry.toString() == feature.geometry.toString()) {
+                    temp.features[index] = selectedFeature;
+                    SaplingMap._set_selected_style(map, selectedFeature);
+                }
+                else {
+                    set_feature_alpha(feature, temp, map);
+                }
             });
+
+            layer.addFeatures(temp.features);
+            if (selectedFeature)
+                layer.selectedFeatures = [selectedFeature];
             map.removeLayer(temp);
+
+            // Turn clustering back on.
+            layer.strategies[0].activate();
+
             if(callback){
                 callback();
             }
         })
     },
 
-    _registerEvents: function(map, layer) {
+    _register_edit_events: function(map, layer) {
         // Switch to "modify" mode after adding a feature.
         var self = this;
         layer.events.register("featureadded", null, function () {
@@ -356,7 +505,7 @@ SaplingMap = {
                     map.controls[i].setEditing(layer);
 
                     this._set_modify_control(layer);
-                    this._registerEvents(map, layer);
+                    this._register_edit_events(map, layer);
                 }
                 break; 
             } 
@@ -370,6 +519,78 @@ SaplingMap = {
                 layer.controls.splice(i, 1);
                 break; 
             } 
+        }
+    },
+
+    // Our custom OpenLayers clustering logic. This is the usual Cluster strategy except we ignore
+    // polygons and lines.  TODO: move this to a separate file.
+    _setup_clustering_strategy: function() {
+
+        var base_shouldCluster = OpenLayers.Strategy.Cluster.prototype.shouldCluster;
+        OpenLayers.Strategy.Cluster.prototype.shouldCluster = function(cluster, feature) {
+            if (feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Point") {
+                return base_shouldCluster.call(this, cluster, feature);
+            }
+            return false;
+        };
+        
+        OpenLayers.Strategy.Cluster.prototype.cluster = function(event) {
+        
+            if((!event || event.zoomChanged) && this.features) {
+                var resolution = this.layer.map.getResolution();
+                if(resolution != this.resolution || !this.clustersExist()) {
+                    this.resolution = resolution;
+                    var clusters = [];
+                    var feature, clustered, cluster;
+                    for(var i=0; i<this.features.length; ++i) {
+                        feature = this.features[i];
+                        if(feature.geometry) {
+                            clustered = false;
+                            for(var j=clusters.length-1; j>=0; --j) {
+                                cluster = clusters[j];
+                                if(this.shouldCluster(cluster, feature)) {
+                                    this.addToCluster(cluster, feature);
+                                    clustered = true;
+                                    break;
+                                }
+                            }
+                            if(!clustered) {
+                                if(this.features[i].geometry.CLASS_NAME == "OpenLayers.Geometry.Point") {
+                                   clusters.push(this.createCluster(this.features[i]));
+                                }
+                                else {
+                                   var cluster = this.features[i];
+                                   cluster.cluster = [this.features[i]];
+                                   clusters.push(cluster);
+                                }
+                            }
+                        }
+                    }
+                    this.layer.removeAllFeatures();
+                    if(clusters.length > 0) {
+                        if(this.threshold > 1) {
+                            var clone = clusters.slice();
+                            clusters = [];
+                            var candidate;
+                            for(var i=0, len=clone.length; i<len; ++i) {
+                                candidate = clone[i];
+                                if(candidate.attributes.count < this.threshold) {
+                                    Array.prototype.push.apply(clusters, candidate.cluster);
+                                } else {
+                                    clusters.push(candidate);
+                                }
+                            }
+                        }
+                        this.clustering = true;
+                        // A legitimate feature addition could occur during this
+                        // addFeatures call.  For clustering to behave well, features
+                        // should be removed from a layer before requesting a new batch.
+                        this.layer.addFeatures(clusters);
+                        this.clustering = false;
+                    }
+                    this.clusters = clusters;
+                }
+            }
         }
     },
 };
