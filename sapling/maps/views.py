@@ -1,4 +1,5 @@
 from dateutil.parser import parse as dateparser
+from urlparse import urljoin
 
 from django.views.generic import DetailView, ListView
 from django.views.generic.simple import direct_to_template
@@ -8,7 +9,6 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 
 from django.views.generic.list import BaseListView
-from olwidget import utils
 from olwidget.widgets import InfoMap as OLInfoMap
 from django.contrib.gis.geos.polygon import Polygon
 from django.utils.safestring import mark_safe
@@ -17,8 +17,8 @@ from versionutils import diff
 from utils.views import Custom404Mixin, CreateObjectMixin, JSONResponseMixin
 from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, VersionsList
-from pages.models import Page
-from pages.models import slugify
+from pages.models import Page, slugify, name_to_url
+from pages.constants import page_base_path
 
 from widgets import InfoMap
 from models import MapData
@@ -61,7 +61,7 @@ class MapDetailView(Custom404Mixin, DetailView):
 
 def filter_by_bounds(queryset, bbox):
     return queryset.filter(Q(points__intersects=bbox)
-                         | Q(lines__intersects=bbox)
+                         | Q(lines__within=bbox)
                          | Q(polys__intersects=bbox))
 
 
@@ -74,10 +74,13 @@ def filter_by_zoom(queryset, zoom):
     return queryset
 
 
-def popup_html(map_data):
-    page = map_data.page
-    return mark_safe('<a href="%s">%s</a>' %
-                     (page.get_absolute_url(), page.name))
+def popup_html(mapdata=None, pagename=None):
+    if mapdata:
+        pagename = mapdata.page.name
+    slug = name_to_url(pagename)
+    # Use page_base_path() to avoid reverse() overhead.
+    page_url = urljoin(page_base_path(), slug)
+    return mark_safe('<a href="%s">%s</a>' % (page_url, pagename))
 
 
 class MapGlobalView(ListView):
@@ -108,9 +111,11 @@ class MapGlobalView(ListView):
 
     def get_map(self):
         map_objects = self.get_map_objects()
-        return InfoMap(map_objects, options={'dynamic': self.dynamic,
-                                        'zoomToDataExtent': self.zoom_to_data,
-                                        'permalink': self.permalink})
+        return InfoMap(map_objects, options={
+            'dynamic': self.dynamic,
+            'zoomToDataExtent': self.zoom_to_data,
+            'permalink': self.permalink,
+            'cluster': True})
 
 
 class MapAllObjectsAsPointsView(MapGlobalView):
@@ -142,7 +147,7 @@ class MapForTag(MapGlobalView):
         self.tag = tags.Tag.objects.get(slug=tags.slugify(self.kwargs['tag']))
         tagsets = tags.PageTagSet.objects.filter(tags=self.tag)
         pages = Page.objects.filter(pagetagset__in=tagsets)
-        return qs.filter(page__in=pages)
+        return MapData.objects.filter(page__in=pages).order_by('-length')
 
     def get_map_title(self):
         d = {
@@ -175,17 +180,15 @@ class MapObjectsForBounds(JSONResponseMixin, BaseListView):
         zoom = self.request.GET.get('zoom', None)
         if zoom:
             # We order by -length so that the geometries are in that
-            # order when rendered by OpenLayers -- this creates the
+            # order when rendered by OpenLayers. This creates the
             # correct stacking order.
             queryset = filter_by_zoom(queryset, int(zoom)).order_by('-length')
-        return queryset
+        return queryset.select_related('page')
 
     def get_context_data(self, **kwargs):
-        map_objects = [(obj.geom, popup_html(obj)) for obj in self.object_list]
-        return self.objects_to_wkt(map_objects)
-
-    def objects_to_wkt(self, info):
-        return [[utils.get_ewkt(geom), attr] for geom, attr in info]
+        objs = self.object_list.values('geom', 'page__name')
+        map_objects = [(o['geom'].ewkt, o['page__name']) for o in objs]
+        return map_objects
 
 
 class MapVersionDetailView(MapDetailView):

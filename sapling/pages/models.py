@@ -334,7 +334,11 @@ def name_to_url(value):
     """Converts page name to its canonical URL path
     """
     # spaces to underscore
-    value = re.sub('[\s]', '_', value.strip())
+    # This is performance-critical, sad name_to_url can be called
+    # thousands of times on some results (e.g. map points' urls).
+    # Still faster than re.sub.
+    value = value.strip().replace(' ', '_').replace('\t', '_'
+        ).replace('\r', '_').replace('\n', '_')
     # url-encode
     value = quote(value.encode('utf-8'))
     return mark_safe(value)
