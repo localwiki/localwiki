@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 
 
 class Command(BaseCommand):
-    help = 'Sets the email address of the specified username.'
+    help = 'Sets the email address of the specified username.\n'+
+           'Usage: localwiki-manage set_email <username> <email address>'
 
     def handle(self, user_name=None, email_address="", **options):
         if user_name is None:
@@ -21,8 +22,9 @@ class Command(BaseCommand):
         try:
             uname.save()
         except IntegrityError:
-            raise CommandError('That password is already in use by another '+
-                               'user. You must specify a unique password.')
+            raise CommandError('That email address is already in use by '+
+                               'another user. You must specify a unique '+
+                               'password.')
         
         self.stdout.write('Successfully set email address for "%s" to "%s".\n' % (
                               user_name, email_address))
