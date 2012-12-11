@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-23 17:36-0500\n"
+"POT-Creation-Date: 2012-12-11 14:27-0600\n"
 "PO-Revision-Date: 2012-05-18 00:06\n"
 "Last-Translator: Anonymous User <anonymous@user.tld>\n"
+"Language: pt-PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt-PT\n"
 "X-Translated-Using: django-rosetta 0.6.5\n"
 
 #: ckeditor/models.py:30
@@ -45,19 +45,19 @@ msgstr "Загрузка прошла неуспешно"
 msgid "Upload result"
 msgstr "Результат загрузки"
 
-#: dashboard/views.py:113 dashboard/views.py:157
+#: dashboard/views.py:159 dashboard/views.py:172
 msgid "pages"
 msgstr "страниц"
 
-#: dashboard/views.py:114 dashboard/views.py:158
+#: dashboard/views.py:160 dashboard/views.py:175
 msgid "maps"
 msgstr "карт"
 
-#: dashboard/views.py:115 dashboard/views.py:159
+#: dashboard/views.py:161 dashboard/views.py:178
 msgid "files"
 msgstr "файлов"
 
-#: dashboard/views.py:117 dashboard/views.py:160
+#: dashboard/views.py:163 dashboard/views.py:181
 msgid "redirects"
 msgstr "перенаправлений"
 
@@ -69,49 +69,56 @@ msgstr "Приборная панель"
 msgid "Statistics loading.  This may take several minutes the first time."
 msgstr "Загружается статистика. В первый раз это может занять несколько минут."
 
-#: dashboard/templates/dashboard/index.html:23
+#: dashboard/templates/dashboard/index.html:24
 #: dashboard/templates/dashboard/render.html:4
 msgid "Pages"
 msgstr "Страниц"
 
-#: dashboard/templates/dashboard/index.html:24
+#: dashboard/templates/dashboard/index.html:25
 #: dashboard/templates/dashboard/render.html:5
 #: pages/templates/pages/cke_filebrowser.html:7
 #: pages/templates/pages/page_files.html:4
 msgid "Files"
 msgstr "Файлов"
 
-#: dashboard/templates/dashboard/index.html:25
+#: dashboard/templates/dashboard/index.html:26
 #: dashboard/templates/dashboard/render.html:6
 msgid "Maps"
 msgstr "Карт"
 
-#: dashboard/templates/dashboard/index.html:26
+#: dashboard/templates/dashboard/index.html:27
 #: dashboard/templates/dashboard/render.html:7
 msgid "Redirects"
 msgstr "Перенаправлений"
 
-#: dashboard/templates/dashboard/index.html:27
+#: dashboard/templates/dashboard/index.html:28
 #: dashboard/templates/dashboard/render.html:8
 msgid "Users"
 msgstr "Пользователей"
 
-#: dashboard/templates/dashboard/index.html:32
+#: dashboard/templates/dashboard/index.html:33
 #: dashboard/templates/dashboard/render.html:13
 msgid "Growth over time"
 msgstr "Рост"
 
-#: dashboard/templates/dashboard/index.html:39
+#: dashboard/templates/dashboard/index.html:35
+#: dashboard/templates/dashboard/index.html:45
+#: dashboard/templates/dashboard/index.html:55
+#: dashboard/templates/dashboard/index.html:65
+msgid "Generating graph..."
+msgstr ""
+
+#: dashboard/templates/dashboard/index.html:43
 #: dashboard/templates/dashboard/render.html:20
 msgid "Edits over time"
 msgstr "Правки"
 
-#: dashboard/templates/dashboard/index.html:46
+#: dashboard/templates/dashboard/index.html:53
 #: dashboard/templates/dashboard/render.html:27
 msgid "Page content growth over time"
 msgstr "Рост контента"
 
-#: dashboard/templates/dashboard/index.html:53
+#: dashboard/templates/dashboard/index.html:63
 #: dashboard/templates/dashboard/render.html:34
 msgid "Users registered over time"
 msgstr "Зарегистрированные пользователи"
@@ -261,7 +268,7 @@ msgid "Save changes"
 msgstr "Сохранить"
 
 #: maps/templates/maps/mapdata_form.html:67
-#: pages/templates/pages/page_detail.html:61
+#: pages/templates/pages/page_detail.html:63
 #: pages/templates/pages/page_form.html:43
 msgid "Cancel"
 msgstr "Отмена"
@@ -286,13 +293,9 @@ msgstr "Создать карту"
 msgid "Previous versions of map for"
 msgstr "Предыдущиe версии карты на странице"
 
-#: pages/feeds.py:42
+#: pages/feeds.py:43 pages/feeds.py:81
 #, python-format
 msgid "File %(filename)s on page \"%(pagename)s\""
-msgstr "Файл %(filename)s на странице \"%(pagename)s\""
-
-#: pages/feeds.py:79
-msgid "File %(filename)=s on page \"%(pagename)s\""
 msgstr "Файл %(filename)s на странице \"%(pagename)s\""
 
 #: pages/fields.py:22
@@ -320,25 +323,25 @@ msgstr "Новый файл должен быть такого-же типа"
 msgid "Page name is invalid."
 msgstr "Название страницы является недопустимым."
 
-#: pages/models.py:141 pages/models.py:153
+#: pages/models.py:144 pages/models.py:156
 #, python-format
 msgid "Renamed from \"%s\""
 msgstr "Страница переименована из \"%s\""
 
-#: pages/models.py:145
+#: pages/models.py:148
 #, python-format
 msgid "The page '%s' already exists!"
 msgstr "Страница '%s' уже существует!"
 
-#: pages/models.py:195 pages/models.py:208 pages/models.py:227
+#: pages/models.py:198 pages/models.py:211 pages/models.py:230
 msgid "Parent page renamed"
 msgstr "Страница переименована"
 
-#: pages/models.py:241
+#: pages/models.py:244
 msgid "file"
 msgstr "файл"
 
-#: pages/plugins.py:391
+#: pages/plugins.py:398
 msgid ""
 "The embedded URL is not on the list of approved providers.  Contact the site "
 "administrator to add it."
@@ -346,11 +349,11 @@ msgstr ""
 "Встроенный URL-адрес не входит в список утвержденных сайтов. Свяжитесь с "
 "администратором сайта, чтобы добавить его."
 
-#: pages/plugins.py:395
+#: pages/plugins.py:402
 msgid "Invalid embed code"
 msgstr "Неправильный код встраивания"
 
-#: pages/plugins.py:407 search/templates/search/search.html:12
+#: pages/plugins.py:414 search/templates/search/search.html:13
 #: themes/sapling/templates/site/search_form.html:5
 msgid "Search or create page"
 msgstr "Найти или создать"
@@ -363,24 +366,24 @@ msgstr "Перенаправление создано"
 msgid "Page created"
 msgstr "Страница создана"
 
-#: pages/views.py:104
+#: pages/views.py:106
 msgid "Thank you for your changes. Your attention to detail is appreciated."
 msgstr "Спасибо за изменения! Мы ценим ваше внимание к деталям."
 
-#: pages/views.py:107
+#: pages/views.py:109
 #, python-format
 msgid ""
 "Changes saved! To use your name when editing, please <a href=\"%(login_url)s?"
-"next=%(current_path)s\"><strong>log in</strong></a> or <a href=\"%"
-"(register_url)s?next=%(current_path)s\"><strong>create an account</strong></"
-"a>."
+"next=%(current_path)s\"><strong>log in</strong></a> or <a href="
+"\"%(register_url)s?next=%(current_path)s\"><strong>create an account</"
+"strong></a>."
 msgstr ""
 "Изменения сохранены! Чтобы пользоваться своим именем при редактировании, <a "
 "href=\"%(login_url)s?next=%(current_path)s\"><strong>войдите в аккаунт</"
 "strong></a> или <a href=\"%(register_url)s?next=%(current_path)s"
 "\"><strong>зарегистрируйтесь</strong></a>."
 
-#: pages/views.py:119
+#: pages/views.py:121
 #, python-format
 msgid ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
@@ -389,27 +392,51 @@ msgstr ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
 "class=\"text\">Создать карту</span></a> для этой страницы?</p>"
 
-#: pages/views.py:131
+#: pages/views.py:133
 #, python-format
 msgid "<p>Describe %s here</p>"
 msgstr "<p>Опишите %s здесь</p>"
 
-#: pages/views.py:344
+#: pages/views.py:359
 msgid "A file with this name already exists"
 msgstr "Файл с таким именем уже существует"
 
-#: pages/views.py:349
+#: pages/views.py:364
 msgid "Pagename"
 msgstr "Название"
 
-#: pages/views.py:350 versionutils/versioning/forms.py:17
+#: pages/views.py:365 versionutils/versioning/forms.py:17
 msgid "Comment"
 msgstr "Комментарий"
 
-#: pages/views.py:376
+#: pages/views.py:391
 #, python-format
 msgid "Page renamed to \"%s\""
 msgstr "Страница переименована на \"%s\""
+
+#: pages/widgets.py:27
+msgid "Normal"
+msgstr ""
+
+#: pages/widgets.py:28
+msgid "Heading 1"
+msgstr ""
+
+#: pages/widgets.py:29
+msgid "Heading 2"
+msgstr ""
+
+#: pages/widgets.py:30
+msgid "Heading 3"
+msgstr ""
+
+#: pages/widgets.py:31
+msgid "Formatted"
+msgstr ""
+
+#: pages/widgets.py:32
+msgid "Typewriter"
+msgstr ""
 
 #: pages/templates/pages/base.html:5
 msgid "Recent changes on this Page"
@@ -431,11 +458,11 @@ msgstr "Переименовать"
 msgid "Redirect"
 msgstr "Перенаправить"
 
-#: pages/templates/pages/page_detail.html:16
+#: pages/templates/pages/page_detail.html:17
 msgid "Redirected from"
 msgstr "Перенаправлено с"
 
-#: pages/templates/pages/page_detail.html:30
+#: pages/templates/pages/page_detail.html:32
 #, python-format
 msgid ""
 "Revision %(page.version_info.version_number)s\n"
@@ -444,20 +471,20 @@ msgstr ""
 "Версия %(page.version_info.version_number)s\n"
 "          (%(date)s пользователем %(user_link)s)"
 
-#: pages/templates/pages/page_detail.html:38
+#: pages/templates/pages/page_detail.html:40
 #: tags/templates/tags/tagged_list_snippet.html:7
 msgid "View map"
 msgstr "Посмотреть карту"
 
-#: pages/templates/pages/page_detail.html:55
+#: pages/templates/pages/page_detail.html:57
 msgid "Edit tags"
 msgstr "Править метки"
 
-#: pages/templates/pages/page_detail.html:55
+#: pages/templates/pages/page_detail.html:57
 msgid "Add tags"
 msgstr "Добавить метки"
 
-#: pages/templates/pages/page_detail.html:71
+#: pages/templates/pages/page_detail.html:73
 #, python-format
 msgid "This page was last modified %(ago)s ago"
 msgstr "Последнее изменение %(ago)s назад"
@@ -520,8 +547,8 @@ msgid "Page \"%(name)s\" does not exist (yet!)"
 msgstr "Страница \"%(name)s\" не существует(пока!)"
 
 #: pages/templates/pages/page_new.html:14
-#: search/templates/search/search.html:35
-#: search/templates/search/search.html:73
+#: search/templates/search/search.html:48
+#: search/templates/search/search.html:102
 msgid "Create this page"
 msgstr "Создать страницу"
 
@@ -559,8 +586,8 @@ msgstr "Сравнение версий %(new_name)s на странице %(new
 #: pages/templates/pages/pagefile_diff.html:35
 #, python-format
 msgid ""
-"Differences for %(new_name)s on <a href=\"%(url_pages_show)s\">%"
-"(new_attached_to_page)s</a>"
+"Differences for %(new_name)s on <a href=\"%(url_pages_show)s\">"
+"%(new_attached_to_page)s</a>"
 msgstr ""
 "Сравнение версий \"%(new_name)s\" на странице <a href=\"%(url_pages_show)s\">"
 "%(new_attached_to_page)s</a>"
@@ -590,11 +617,11 @@ msgstr "Информация о файле \"%(name)s\" на странице %(
 #: pages/templates/pages/pagefile_info.html:12
 #, python-format
 msgid ""
-"Information about \"%(name)s\" on <a href=\"%(pages_show_url)s\">%"
-"(attached_to_page)s</a>"
+"Information about \"%(name)s\" on <a href=\"%(pages_show_url)s\">"
+"%(attached_to_page)s</a>"
 msgstr ""
-"Информация о файле \"%(name)s\" на странице <a href=\"%(pages_show_url)s\">%"
-"(attached_to_page)s</a>"
+"Информация о файле \"%(name)s\" на странице <a href=\"%(pages_show_url)s\">"
+"%(attached_to_page)s</a>"
 
 #: pages/templates/pages/pagefile_info.html:36
 #, python-format
@@ -617,11 +644,11 @@ msgstr "Предыдущие версии:"
 #: pages/templatetags/pages_tags.py:109
 #, python-format
 msgid ""
-"Unable to include <a href=\"%(page_url)s\" class=\"missing_link\">%"
-"(page_name)s</a>"
+"Unable to include <a href=\"%(page_url)s\" class=\"missing_link\">"
+"%(page_name)s</a>"
 msgstr ""
-"Не могу включить страницу <a href=\"%(page_url)s\" class=\"missing_link\">%"
-"(page_name)s</a>"
+"Не могу включить страницу <a href=\"%(page_url)s\" class=\"missing_link\">"
+"%(page_name)s</a>"
 
 #: pages/templatetags/pages_tags.py:117
 #, python-format
@@ -642,22 +669,22 @@ msgstr "Свежие правки на %s"
 msgid "Recent changes on %s"
 msgstr "Свежие правки на %s"
 
-#: recentchanges/feeds.py:64 recentchanges/feeds.py:152
+#: recentchanges/feeds.py:66 recentchanges/feeds.py:157
 #, python-format
 msgid "to version %s"
 msgstr "на версию %s"
 
-#: recentchanges/feeds.py:71 recentchanges/feeds.py:159
+#: recentchanges/feeds.py:73 recentchanges/feeds.py:164
 #, python-format
 msgid " with comment \"%s\""
 msgstr "с комментарием \"%s\""
 
-#: recentchanges/feeds.py:72 recentchanges/feeds.py:160
+#: recentchanges/feeds.py:74 recentchanges/feeds.py:165
 #, python-format
 msgid "%(title)s was %(change_type)s by %(user)s%(comment)s."
 msgstr "%(title)s %(change_type)s пользователем %(user)s%(comment)s."
 
-#: recentchanges/feeds.py:124 recentchanges/feeds.py:130
+#: recentchanges/feeds.py:129 recentchanges/feeds.py:135
 #, python-format
 msgid "Changes for %(title)s on %(site_name)s"
 msgstr "Правки страницы %(title)s на сайте %(site_name)s"
@@ -707,11 +734,11 @@ msgstr "Перенаправлена на страницу <a href=\"%(url)s\">%
 #: recentchanges/templates/recentchanges/recentchanges.html:88
 #, python-format
 msgid ""
-"For statistics about pages, maps, and more, check out the <a href=\"%"
-"(dashboard_main_url)s\">dashboard</a>"
+"For statistics about pages, maps, and more, check out the <a href="
+"\"%(dashboard_main_url)s\">dashboard</a>"
 msgstr ""
-"Посмотрите статистику страниц, карт, и многого другого, на <a href=\"%"
-"(dashboard_main_url)s\">приборной панели</a>"
+"Посмотрите статистику страниц, карт, и многого другого, на <a href="
+"\"%(dashboard_main_url)s\">приборной панели</a>"
 
 #: redirects/feeds.py:25
 #, python-format
@@ -758,43 +785,107 @@ msgstr "Удалить перенаправление"
 msgid "Create redirect"
 msgstr "Создать перенаправление"
 
-#: search/templates/search/search.html:10
-#: search/templates/search/search.html:23
+#: search/templates/search/search.html:11
+#: search/templates/search/search.html:36
 msgid "Search results for"
 msgstr "Результаты поиска по запросу"
 
-#: search/templates/search/search.html:25
+#: search/templates/search/search.html:38
 msgid "Search or create a new page"
 msgstr "Найти или создать страницу"
 
-#: search/templates/search/search.html:34
+#: search/templates/search/search.html:47
 #, python-format
 msgid "No page with the exact title \"%(query)s\" exists."
 msgstr "Нет страницы с точным названием \"%(query)s\"."
 
-#: search/templates/search/search.html:54
-msgid "No results found."
-msgstr "Ничего не найдено."
-
-#: search/templates/search/search.html:60
+#: search/templates/search/search.html:57
+#: search/templates/search/search.html:89
 msgid "Previous"
 msgstr "Предыдущая"
 
-#: search/templates/search/search.html:63
+#: search/templates/search/search.html:60
+#: search/templates/search/search.html:92
 msgid "Next"
 msgstr "Следующая"
 
-#: search/templates/search/search.html:70
+#: search/templates/search/search.html:82
+msgid "No results found."
+msgstr "Ничего не найдено."
+
+#: search/templates/search/search.html:99
 msgid "Create a new page:"
 msgstr "Создать новую страницу:"
 
-#: search/templates/search/search.html:77
+#: search/templates/search/search.html:106
 msgid "Search for pages:"
 msgstr "Поиск страниц:"
 
-#: search/templates/search/search.html:80
+#: search/templates/search/search.html:109
 msgid "Search"
 msgstr "Найти"
+
+#: settings/defaults.py:37
+msgid ""
+"<p>Except where otherwise noted, this content is licensed under a <a rel="
+"\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\">Creative "
+"Commons Attribution License</a>. See <a href=\"/Copyrights\">Copyrights</a>."
+"</p>"
+msgstr ""
+
+#: settings/defaults.py:39
+msgid ""
+"<p>By clicking \"Save Changes\" you are agreeing to release your "
+"contribution under the <a rel=\"license\" href=\"http://creativecommons.org/"
+"licenses/by/3.0/\" target=\"_blank\">Creative Commons-By license</a>, unless "
+"noted otherwise. See <a href=\"/Copyrights\" target=\"_blank\">Copyrights</"
+"a>.</p>"
+msgstr ""
+
+#: settings/defaults.py:41
+msgid ""
+"I agree to release my contributions under the <a rel=\"license\" href="
+"\"http://creativecommons.org/licenses/by/3.0/\" target=\"_blank\">Creative "
+"Commons-By license</a>, unless noted otherwise. See <a href=\"/Copyrights\" "
+"target=\"_blank\">Copyrights</a>."
+msgstr ""
+
+#: settings/defaults.py:43
+msgid ""
+"I would like to receive occasional updates about this project via email."
+msgstr ""
+
+#: settings/defaults.py:62
+msgid "English"
+msgstr ""
+
+#: settings/defaults.py:63
+msgid "Japanese"
+msgstr ""
+
+#: settings/defaults.py:64
+msgid "Russian"
+msgstr ""
+
+#: settings/defaults.py:65
+msgid "German (Swiss)"
+msgstr ""
+
+#: settings/defaults.py:66
+msgid "Spanish (Argentina)"
+msgstr ""
+
+#: settings/defaults.py:67
+msgid "Danish"
+msgstr ""
+
+#: settings/defaults.py:68
+msgid "Italian"
+msgstr ""
+
+#: settings/defaults.py:69
+msgid "Portuguese"
+msgstr ""
 
 #: tags/forms.py:76
 #, python-format
@@ -832,11 +923,11 @@ msgstr "нет изменений"
 msgid " and "
 msgstr " и "
 
-#: tags/models.py:33
+#: tags/models.py:32
 msgid "Tag"
 msgstr "Метка"
 
-#: tags/models.py:34 tags/templates/tags/pagetagset_list.html:4
+#: tags/models.py:33 tags/templates/tags/pagetagset_list.html:4
 #: tags/templates/tags/pagetagset_list.html:5
 #: tags/templates/tags/tag_list.html:4
 msgid "Tags"
@@ -852,8 +943,8 @@ msgstr "Сравнение версий меток на странице %(new_n
 msgid "Tags history"
 msgstr "История меток"
 
-#: tags/templates/tags/pagetagset_form.html:9
-#: tags/templates/tags/pagetagset_form.html:10
+#: tags/templates/tags/pagetagset_form.html:13
+#: tags/templates/tags/pagetagset_form.html:14
 #: tags/templates/tags/pagetagset_version_detail.html:12
 #: tags/templates/tags/pagetagset_versions.html:11
 msgid "Tags for"
@@ -1096,35 +1187,35 @@ msgstr "Вы зарегистрировались и вошли в аккаун�
 msgid "Tell us who you are by <a href=\"%s\">creating a page for yourself!</a>"
 msgstr "Расскажите о себе на<a href=\"%s\">вашей личной странице</a>!"
 
-#: users/registration_backend/forms.py:29
+#: users/registration_backend/forms.py:33
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: users/registration_backend/forms.py:31
+#: users/registration_backend/forms.py:35
 msgid "This value may contain only letters (a-z), numbers, +, - and ."
 msgstr "Это поле может содержать только латинские буквы (a-z), цифры, +, - и ."
 
-#: users/registration_backend/forms.py:36
+#: users/registration_backend/forms.py:40
 msgid "E-mail"
 msgstr "Адрес электронной почты"
 
-#: users/registration_backend/forms.py:39
+#: users/registration_backend/forms.py:43
 msgid "Password"
 msgstr "Пароль"
 
-#: users/registration_backend/forms.py:40
+#: users/registration_backend/forms.py:44
 msgid "Your name"
 msgstr "Ваше имя"
 
-#: users/registration_backend/forms.py:45
+#: users/registration_backend/forms.py:49
 msgid "You must agree to the terms to register"
 msgstr "Вы должны согласиться с условиями регистрации"
 
-#: users/registration_backend/forms.py:60
+#: users/registration_backend/forms.py:64
 msgid "A user with that username already exists."
 msgstr "Пользователь с таким именем уже существует."
 
-#: users/registration_backend/forms.py:69
+#: users/registration_backend/forms.py:73
 msgid ""
 "This email address is already in use. Please supply a different email "
 "address."
@@ -1264,3 +1355,6 @@ msgstr "Успешно удалено!"
 #, python-format
 msgid "Reverted to version %s."
 msgstr "Восстановлена версия %s."
+
+#~ msgid "File %(filename)=s on page \"%(pagename)s\""
+#~ msgstr "Файл %(filename)s на странице \"%(pagename)s\""
