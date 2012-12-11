@@ -34,7 +34,7 @@ DATABASES = {
     }
 }
 
-GLOBAL_LICENSE_NOTE = _("""<p>Except where otherwise noted, this content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights.</p>""")
+GLOBAL_LICENSE_NOTE = _("""<p>Except where otherwise noted, this content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights</a>.</p>""")
 
 EDIT_LICENSE_NOTE = _("""<p>By clicking "Save Changes" you are agreeing to release your contribution under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>""")
 
