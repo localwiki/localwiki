@@ -302,7 +302,7 @@ textarea, input, select {
 /* The entire-map div */
 #map {
     background: #E8ECEF url(../img/header-bg.png) top left repeat;
-    padding: 10px 10px 4px 10px;
+    padding: 10px;
     border-bottom: 1px solid #DAE1E5;
     border-left: 1px solid #DAE1E5;
     border-right: 1px solid #DAE1E5;
@@ -328,8 +328,6 @@ textarea, input, select {
 }
 #map .info {
   padding-top: 0.3em;
-  padding-bottom: 0.15em;
-
 }
 #map .info a {
   background-image: url(../img/magnifying_glass.png);
@@ -340,7 +338,6 @@ textarea, input, select {
 }
 #map .simple_pagination {
   padding-top: 0.4em;
-  padding-bottom: 0.3em;
   height: 1.5em!important;
 }
 #map .simple_pagination a {

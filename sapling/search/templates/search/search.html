@@ -58,9 +58,9 @@
                 {% endif %}
                 {% if page.has_next %}
                 <a href="?q={{ query }}&amp;page={{ page.next_page_number }}" class="tiny button">{% trans "Next" %} &raquo;</a>
-            {% endif %}
-        {% endif %}
+                {% endif %}
             </div>
+            {% endif %}
             </div>
         {% endif %}
         <div id="results_list"{% if map %}class="with_map"{% endif %}>
