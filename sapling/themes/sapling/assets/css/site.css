@@ -63,13 +63,13 @@ pre, code {
     padding: .5em;
     white-space: pre-wrap;
     overflow: auto;
-    font-family: "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+    font-family: 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
     line-height: 20px;
     border: 1px solid #CBCBCB;
     background-color: #FFF8ED;
 }
 textarea, input, select {
-    font-family: "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+    font-family: 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
     font-size: 16px;
     line-height: 20px;
 }
@@ -557,7 +557,7 @@ select {
     max-height: 300px;
     width: 250px;
     margin-bottom: 10px;
-    font: 16/20px "Inconsolata", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+    font: 16/20px 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
 }
 input[type="submit"], input[type="button"], button, .button {
     font: 16px/25px "Cabin", Arial, "Helvetica Neue", "Helvetica", sans-serif;
