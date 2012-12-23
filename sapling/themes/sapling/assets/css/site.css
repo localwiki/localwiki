@@ -84,6 +84,12 @@ textarea, input, select {
     margin-left: 5em;
     margin-right: 8em;
 }
+@media screen and (max-width: 700px) {
+    #main {
+        margin-left: 1em;
+        margin-right: 1.5em;
+    }
+}
 
 /*
 ====================================
@@ -129,6 +135,25 @@ textarea, input, select {
     padding: 0 3.5em;
     min-height: 4.2em;
 }
+@media screen and (max-width: 700px) {
+    #header {
+        background: #fafafa url(../img/body-bg.png) top left repeat;
+        border: none;
+        margin: 0;
+        padding: 0;
+    }
+    #header_bar {
+        background: #E8ECEF url(../img/header-bg.png) top left repeat;
+        margin: 0;
+        margin-top: 3.5em;
+        padding: 0 1em;
+        min-height: 0;
+        border-bottom: 1px solid #DAE1E5;
+    }
+    #header_bar > div {
+        margin: 0.5em;
+    }
+}
 #header_bar a, #header_bar a:link {
     color: #444;
 }
@@ -167,6 +192,13 @@ textarea, input, select {
     font-size: 80%;
     color: #747474;
 }
+@media screen and (max-width: 700px) {
+    #object_title {
+      font-size: 150%;
+      padding: 0.6em 0 0.4em 0;
+      vertical-align: middle;
+    }
+}
 
 #site_title {
     background: #fafafa url(../img/body-bg.png) top left repeat;
@@ -194,6 +226,25 @@ textarea, input, select {
 }
 #site_title a:hover {
     color: #111;
+}
+@media screen and (max-width: 700px) {
+    #site_title {
+        margin: 0;
+        padding: 0;
+        border: none;
+        clear: both;
+        min-height: 0;
+        position: relative;
+        top: -2em;
+    }
+    #site_title h1 {
+        margin: 0.3em;
+    }
+}
+@media screen and (max-width: 500px) {
+    #site_title {
+        display: none;
+    }
 }
 
 #object_actions {
@@ -272,13 +323,47 @@ textarea, input, select {
     float: left;
     margin-right: 0.8em;
 }
+@media screen and (max-width: 700px){
+    #login_info {
+        display: block;
+        float: none;
+        text-align: right;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+     }
+    #login_info > div {
+        margin: 0.5em;
+    }
+}
+@media screen and (max-width: 500px) {
+    #login_info {
+        display: none;
+    }
+}
 
 #header .site_search {
     float: right;
     clear: right;
-    margin-top: 0.6em;
+    margin-top: -3.5em;
     margin-right: 2em;
 }
+@media screen and (max-width: 700px) {
+    #header .site_search {
+        float: left;
+        margin-top: -2em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+}
+@media screen and (max-width: 500px) {
+    #header .site_search {
+        float: none;
+        margin: 0;
+        margin-top: 0.5em;
+    }
+}
+
 #header .site_search input {
     float: left;
 }
@@ -291,6 +376,16 @@ textarea, input, select {
     background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 10px;
     padding-left: 30px;
     margin-right: 0.5em;
+}
+
+@media screen and (max-width: 440px) {
+    .site_search input[type="submit"] {
+        display: none;
+    }
+    #header .site_search input[type="text"], #header .site_search #id_q {
+        width: 100%;
+        padding: 0;
+    }
 }
 
 /*
@@ -377,7 +472,7 @@ textarea, input, select {
  Nav 
 ====================================
 */
-#nav {
+#nav ul {
     list-style-type: none;
     position: absolute;
     margin-left: 2em;
@@ -410,6 +505,78 @@ textarea, input, select {
     background-color: #bfbfbf;
     border: 1px solid #bfbfbf;
     color: #111;
+}
+#nav a#pull {
+    display: none;  
+}
+@media screen and (max-width: 700px) {
+    #nav ul {
+        font-size: 86%;
+        margin: 0.5em;
+        padding: 0;
+        float: none;
+        position: relative;
+        top: -3em;
+    }
+    #nav li {
+        margin: 0.2em;
+    }
+    
+    #nav li a {
+        padding: 0.5em 0.3em 0.5em 0.3em;
+    }
+}
+@media screen and (max-width: 500px) {
+    #nav ul {
+        margin: 0;
+        padding: 0;
+        top: 0;
+    }
+    #nav li, #nav li a {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        float: none;
+        font-size: 110%;
+	    text-shadow: 1px 1px 0px #283744;
+        background-color: #455868;
+        color: #fff!important;
+	    display: block;
+	    text-align: center;
+	    text-decoration: none;
+	    line-height: 40px;
+    }
+    #nav li a {
+        border: none;
+        border-bottom: 1px solid #576979;
+        border-radius: 0;
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+    }
+    #nav li a:hover, #nav li a:active {
+        background-color: #8c99a4;
+        border: none;
+        border-bottom: 1px solid #576979;
+    }
+    #nav a#pull {  
+        display: block;  
+        color: white;
+        font-weight: bold;
+        min-height: 40px;
+        background-color: #283744;  
+        width: 100%;  
+        position: relative;  
+    }  
+    #nav a#pull:after {  
+        content:"";  
+        background: url('../img/nav-icon.png') no-repeat;  
+        width: 30px;  
+        height: 30px;  
+        display: inline-block;  
+        position: absolute;  
+        right: 15px;  
+        top: 10px;  
+    }
 }
 
 /*
@@ -546,6 +713,13 @@ input[type="text"], input[type="password"] {
     height: 20px;
     margin-bottom: 5px;
     background: #fff;
+}
+@media screen and (max-width: 700px) {
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
 }
 select {
     display: block;
@@ -799,6 +973,21 @@ div.templates li {
     margin-left: 0.4em;
     margin-right: 0.4em;
     margin-top: -0.6em;
+}
+@media screen and (max-width: 500px) {
+    #recentchanges #limit_to {
+        float: none;
+        height: 2em;
+        margin: 0;
+        font-size: 95%;
+    }
+    #recentchanges h3 {
+        font-size: 100%;
+    }
+    #recentchanges li {
+        padding-left: 0;
+        margin-left: 0;
+    }
 }
 
 
