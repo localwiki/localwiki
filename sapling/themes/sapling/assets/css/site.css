@@ -531,6 +531,7 @@ textarea, input, select {
         margin: 0;
         padding: 0;
         top: 0;
+        display: none;
     }
     #nav li, #nav li a {
         width: 100%;
@@ -1177,7 +1178,7 @@ div.templates li {
 }
 #editor_actions .extra_actions {
     float: right;
-    margin-top: -4em;
+    margin-top: -2.8em;
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
     border-radius: 5px 5px 5px 5px;
     -moz-border-radius: 5px 5px 5px 5px;
@@ -1196,12 +1197,65 @@ div.templates li {
 #editor_actions input[type="submit"] {
     padding: 8px 12px;
 }
-#editor_actions .button.cancel {
+#editor_actions .cancel .button {
     margin-top: 0.70em;
+}
+@media screen and (max-width: 1075px) {
+    #editor_actions .extra_actions {
+        padding: 0;
+        margin-left: 2em;
+        background: none;
+    }
+    #editor_actions .extra_actions li, #editor_actions .extra_actions li:first-child {
+        display: block;
+        float: none;
+        margin: 0;
+        margin-top: 0.5em;
+        width: 100%;
+    }
+    #editor_actions .extra_actions li a {
+        display: block;
+        width: 200px;
+        text-align: center;
+        margin-bottom: 0.5em;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+    }
+}
+@media screen and (max-width: 600px) {
+    #editor_actions .save_area {
+        text-align: center;
+        margin-right: 0.5em;
+    }
+    #editor_actions .save {
+        width: 74%;
+        float: left;
+    }
+    #editor_actions .save input[type="submit"] {
+        width: 100%;
+    }
+    #editor_actions .cancel {
+        float: right;
+        width: 20%;
+    }
+    #editor_actions .cancel .button {
+        width: 100%;
+    }
+    #editor_actions .extra_actions {
+        float: none;
+        margin: 0;
+        display: block;
+    }
+    #editor_actions .extra_actions li a {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
 }
 
 #id_comment {
-    width: 30em;
+    max-width: 30em;
+    width: 50%;
 }
 form #content_footer {
     padding-top: 0.6em;
