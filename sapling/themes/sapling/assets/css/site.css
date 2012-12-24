@@ -1200,6 +1200,22 @@ div.templates li {
 #editor_actions .cancel .button {
     margin-top: 0.70em;
 }
+
+#id_comment {
+    max-width: 30em;
+    width: 50%;
+    padding-right: 0.2em;
+    padding-left: 0.5em;
+}
+form #content_footer {
+    margin-top: -1em;
+}
+.mapdata form #content_footer {
+    padding-left: 5em;
+    padding-right: 5em;
+    margin-top: 0.16em;
+}
+
 @media screen and (max-width: 1075px) {
     #editor_actions .extra_actions {
         padding: 0;
@@ -1227,6 +1243,9 @@ div.templates li {
         text-align: center;
         margin-right: 0.5em;
     }
+    #content_footer h3 {
+        font-size: 100%;
+    }
     #editor_actions .save {
         width: 74%;
         float: left;
@@ -1251,21 +1270,11 @@ div.templates li {
         margin-left: 0;
         margin-right: 0;
     }
+    #id_comment {
+        width: 100%;
+    }
 }
 
-#id_comment {
-    max-width: 30em;
-    width: 50%;
-}
-form #content_footer {
-    padding-top: 0.6em;
-    margin-top: -1em;
-}
-.mapdata form #content_footer {
-    padding-left: 5em;
-    padding-right: 5em;
-    margin-top: 0.16em;
-}
 
 /*
 =======================================
