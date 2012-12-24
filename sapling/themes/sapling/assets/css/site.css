@@ -1231,6 +1231,7 @@ form #content_footer {
     }
     #editor_actions .extra_actions li a {
         display: block;
+        float: none;
         width: 200px;
         text-align: center;
         margin-bottom: 0.5em;
@@ -1239,6 +1240,10 @@ form #content_footer {
     }
 }
 @media screen and (max-width: 600px) {
+    #editor_actions {
+        margin: 0;
+        height: auto;
+    }
     #editor_actions .save_area {
         text-align: center;
         margin-right: 0.5em;
@@ -1263,7 +1268,10 @@ form #content_footer {
     #editor_actions .extra_actions {
         float: none;
         margin: 0;
-        display: block;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        display: inline-block;
+        width: 100%;
     }
     #editor_actions .extra_actions li a {
         width: 100%;
@@ -1273,7 +1281,13 @@ form #content_footer {
     #id_comment {
         width: 100%;
     }
+
+    #editor_actions .button {
+        float: none;
+    }
 }
+
+
 
 
 /*
