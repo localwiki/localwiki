@@ -154,6 +154,11 @@ textarea, input, select {
         margin: 0.5em;
     }
 }
+@media screen and (max-width: 500px) {
+    #header_bar {
+        margin-top: 0;
+    }
+}
 #header_bar a, #header_bar a:link {
     color: #444;
 }
@@ -348,22 +353,6 @@ textarea, input, select {
     margin-top: -3.5em;
     margin-right: 2em;
 }
-@media screen and (max-width: 700px) {
-    #header .site_search {
-        float: left;
-        margin-top: -2em;
-        padding-left: 0.5em;
-        padding-right: 0.5em;
-    }
-}
-@media screen and (max-width: 500px) {
-    #header .site_search {
-        float: none;
-        margin: 0;
-        margin-top: 0.5em;
-    }
-}
-
 #header .site_search input {
     float: left;
 }
@@ -378,13 +367,43 @@ textarea, input, select {
     margin-right: 0.5em;
 }
 
-@media screen and (max-width: 440px) {
-    .site_search input[type="submit"] {
+@media screen and (max-width: 700px) {
+    #header .site_search {
+        float: left;
+        margin-top: -2em;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+}
+@media screen and (max-width: 500px) {
+    #header .site_search {
+        float: none;
+        margin: 0;
+        margin-top: -44px;
+        margin-right: 80px;
+        padding: 0;
+        /*padding-left: 65px;*/
+        padding-left: 5px;
+        padding-top: 5px;
+        position: relative;
+        height: 27px;
+    }
+    .site_search form {
+        height: 100%;
+    }
+    #header .site_search input {
+        float: none;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+    }
+    #header .site_search input[type="submit"] {
         display: none;
     }
     #header .site_search input[type="text"], #header .site_search #id_q {
         width: 100%;
-        padding: 0;
+        height: 100%;
+        background-position: 10px 8px;
     }
 }
 
@@ -506,7 +525,7 @@ textarea, input, select {
     border: 1px solid #bfbfbf;
     color: #111;
 }
-#nav a#pull {
+#nav #pull {
     display: none;  
 }
 @media screen and (max-width: 700px) {
@@ -527,6 +546,20 @@ textarea, input, select {
     }
 }
 @media screen and (max-width: 500px) {
+    #nav {
+        color: #666!important;
+        font-weight: bold;
+        border: none;
+        margin-bottom: 5px;
+        /* TODO: explore using purely CSS gradients */
+        background: #e6e6e6 url(../img/gradient.png) repeat-x bottom left;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+        border-bottom: 1px solid #bfbfbf;
+        text-decoration: none;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+        -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+        -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+    }
     #nav ul {
         margin: 0;
         padding: 0;
@@ -559,24 +592,22 @@ textarea, input, select {
         border: none;
         border-bottom: 1px solid #576979;
     }
-    #nav a#pull {  
+    #nav #pull {  
         display: block;  
-        color: white;
-        font-weight: bold;
-        min-height: 40px;
-        background-color: #283744;  
-        width: 100%;  
-        position: relative;  
+        height: 40px;
     }  
-    #nav a#pull:after {  
+    #nav #pull .button {
+        float: none;
+    }
+    #nav #pull:after {  
         content:"";  
         background: url('../img/nav-icon.png') no-repeat;  
         width: 30px;  
         height: 30px;  
-        display: inline-block;  
-        position: absolute;  
-        right: 15px;  
-        top: 10px;  
+        display: block;  
+        position: absolute;
+        margin-top: 10px;  
+        right: 5px;  
     }
 }
 
