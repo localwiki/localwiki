@@ -878,6 +878,16 @@ div.templates li {
     padding-right: 1em;
 }
 
+@media screen and (max-width: 700px) {
+    #compare_form {
+        font-size: 70%;
+    }
+    #compare_form td {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+}
+
 /* Login form */
 #login_form table td, #login_form table {
 }
