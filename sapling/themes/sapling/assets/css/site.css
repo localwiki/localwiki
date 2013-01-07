@@ -126,13 +126,17 @@ textarea, input, select {
 
 
 #header {
-    background: #E8ECEF url(../img/header-bg.png) top left repeat;
+    background: #fafafa url(../img/body-bg.png) top left repeat;
+    padding: 0;
+    margin: 0;
     border: 1px solid #E8ECEF;
     border-bottom: 1px solid #DAE1E5;
 }
 #header_bar {
-    margin: 0 1.5em;
-    padding: 1.13em 3.5em 1.13em 3.5em;
+    margin: 0;
+    padding: 1.13em 3.5em 1.13em 5em;
+    background: #E8ECEF url(../img/header-bg.png) top left repeat;
+    min-height: 0;
 }
 #header_bar a, #header_bar a:link {
     color: #444;
@@ -144,33 +148,34 @@ textarea, input, select {
     margin: 0.5em 0;
     display: table-cell;
 }
-/* Header is different on mapdata pages */
-.mapdata #header_bar {
-    padding-left: 3.5em;
-    background: url(../img/map-icon.png) 0.95em 45% no-repeat;
+/* Header has an icon on map, tag pages - pages with a special content
+ * type */
+.content_type #header_bar .inner:before {
+    content:"";
+    display: block;
+    float: left;
+    width: 32px;
+    height: 32px;
+    margin-left: -2.75em;
 }
-/* Header is different on tag pages */
-.tagpage #header_bar {
-    padding-left: 3.5em;
-    background: url(../img/tag-icon.png) 0.75em 45% no-repeat;
+.mapdata #header_bar .inner:before {
+    background: url(../img/map-icon.png) 3px 0 no-repeat;
+}
+.tagpage #header_bar .inner:before {
+    background: url(../img/tag-icon.png) no-repeat;
 }
 @media screen and (max-width: 700px) {
-    #header {
-        background: #fafafa url(../img/body-bg.png) top left repeat;
-        border: none;
-        margin: 0;
-        padding: 0;
-    }
     #header_bar {
-        background: #E8ECEF url(../img/header-bg.png) top left repeat;
-        margin: 0;
         margin-top: 3.5em;
         padding: 1.13em 1em 1.13em 1em;
-        min-height: 0;
-        border-bottom: 1px solid #DAE1E5;
     }
     #header_bar > div {
         margin: 0.5em;
+    }
+    .content_type #header_bar .inner:before {
+        margin-left: 0;
+        margin-right: 0.2em;
+        background-size: auto 88%;
     }
 }
 @media screen and (max-width: 500px) {
