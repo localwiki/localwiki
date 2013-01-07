@@ -132,8 +132,27 @@ textarea, input, select {
 }
 #header_bar {
     margin: 0 1.5em;
-    padding: 0 3.5em;
-    min-height: 4.2em;
+    padding: 1.13em 3.5em 1.13em 3.5em;
+}
+#header_bar a, #header_bar a:link {
+    color: #444;
+}
+#header_bar a:hover {
+    color: #111;
+}
+#header_bar .inner {
+    margin: 0.5em 0;
+    display: table-cell;
+}
+/* Header is different on mapdata pages */
+.mapdata #header_bar {
+    padding-left: 3.5em;
+    background: url(../img/map-icon.png) 0.95em 45% no-repeat;
+}
+/* Header is different on tag pages */
+.tagpage #header_bar {
+    padding-left: 3.5em;
+    background: url(../img/tag-icon.png) 0.75em 45% no-repeat;
 }
 @media screen and (max-width: 700px) {
     #header {
@@ -146,7 +165,7 @@ textarea, input, select {
         background: #E8ECEF url(../img/header-bg.png) top left repeat;
         margin: 0;
         margin-top: 3.5em;
-        padding: 0 1em;
+        padding: 1.13em 1em 1.13em 1em;
         min-height: 0;
         border-bottom: 1px solid #DAE1E5;
     }
@@ -156,35 +175,18 @@ textarea, input, select {
 }
 @media screen and (max-width: 500px) {
     #header_bar {
-        margin-top: 0;
+        margin-top: 8px;
+        padding: 0.5em 1em 0.5em 1em;
     }
-}
-#header_bar a, #header_bar a:link {
-    color: #444;
-}
-#header_bar a:hover {
-    color: #111;
-}
-#header_bar .inner {
-    margin: 0.5em 0;
-}
-/* Header is different on mapdata pages */
-.mapdata #header_bar {
-    padding-left: 3.5em;
-    background: url(../img/map-icon.png) 0.95em 45% no-repeat;
-}
-/* Header is different on tag pages */
-.tagpage #header_bar {
-    padding-left: 3.5em;
-    background: url(../img/tag-icon.png) 0.75em 45% no-repeat;
+    #header_bar .inner {
+        display: block;
+    }
 }
 
 #object_title {
-    padding: 0;
     margin: 0;
-    display: table-cell;
-    vertical-align: top;
     padding: 0.4em 0;
+    display: inline;
 }
 #object_title a {
     text-decoration: none;
@@ -200,8 +202,6 @@ textarea, input, select {
 @media screen and (max-width: 700px) {
     #object_title {
       font-size: 150%;
-      padding: 0.6em 0 0.4em 0;
-      vertical-align: middle;
     }
 }
 
@@ -253,10 +253,8 @@ textarea, input, select {
 }
 
 #object_actions {
-    display: table-cell;
-    height: 100%;
+    float: right;
     padding-left: 1.5em;
-    padding-top: 0.8em;
 }
 #object_actions ul {
     list-style-type: none;
@@ -270,6 +268,11 @@ textarea, input, select {
     margin-top: 0;
     margin-bottom: 0;
     margin-right: 0.5em;
+}
+@media screen and (max-width: 500px) {
+    #object_actions {
+        padding-left: 0.6em;
+    }
 }
 
 #object_tags {
@@ -606,7 +609,7 @@ textarea, input, select {
         height: 30px;  
         display: block;  
         position: absolute;
-        margin-top: 10px;  
+        margin-top: 11px;  
         right: 5px;  
     }
 }
