@@ -104,6 +104,17 @@ textarea, input, select {
 #content.has_map {
     min-height: 340px;
 }
+@media screen and (max-width: 500px) {
+    /* for margin collapse behavior */
+    #content.has_map {
+        border-top: 1px solid #fafafa;
+        border-bottom: 1px solid #fafafa;
+    }
+    #content.has_map #page {
+        margin-top: 244px;
+    }
+}
+
 /* Map detail view - we want map to have no margins. */
 #main.mapdata_detail {
     margin-left: 0;
@@ -466,6 +477,31 @@ textarea, input, select {
     margin: 0.5em;
     margin-left: 0;
 }
+@media screen and (max-width: 700px) {
+    #map {
+        float: none;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .mapwidget.small {
+        width: 100%!important;
+        height: 200px!important;
+    }
+}
+@media screen and (max-width: 500px) {
+    #map {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .mapwidget.small {
+        border-left: none;
+        border-right: none;
+    }
+}
+
 /* Overview map */
 .mapdata #results_pane {
   background: #E8ECEF url(../img/header-bg.png) top left repeat;
