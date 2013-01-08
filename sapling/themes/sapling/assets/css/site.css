@@ -1060,30 +1060,12 @@ div.templates li {
     margin-right: 0.4em;
     margin-top: -0.6em;
 }
-@media screen and (max-width: 500px) {
-    #recentchanges #limit_to {
-        float: none;
-        height: 2em;
-        margin: 0;
-        font-size: 95%;
-    }
-    #recentchanges h3 {
-        font-size: 100%;
-    }
-    #recentchanges li {
-        padding-left: 0;
-        margin-left: 0;
-    }
-}
-
-
 #recentchanges li {
     list-style-type: none;
     margin-left: 0;
     padding-left: 30px;
     margin-bottom: 0.7em;
 }
-
 #recentchanges .changelabel {
     width: 5.2em;
     /* This is basically .little.button */
@@ -1173,6 +1155,57 @@ div.templates li {
     background: url(../img/tag-icon-small.png) 0 0 no-repeat;
     padding-left: 20px;
 }
+
+@media screen and (max-width: 700px) {
+    #recentchanges #limit_to {
+        float: none;
+        height: 2em;
+        margin: 0;
+        font-size: 95%;
+    }
+    #recentchanges h3 {
+        font-size: 110%;
+        margin-top: 0.6em;
+    }
+    #recentchanges li {
+        padding-left: 0;
+        margin-left: 0;
+    }
+}
+@media screen and (max-width: 500px) {
+    #recentchanges #limit_to {
+        clear: both;
+        float: none;
+        height: 5em;
+    }
+    #recentchanges #limit_to span {
+        display: block;
+        float: left;
+        margin-bottom: 0.5em;
+    }
+    #recentchanges #limit_to .pagination {
+        padding: 0;
+        margin: 0;
+        clear: both;
+        margin-right: 0.4em;
+    }
+    #recentchanges .changelabel {
+        width: 100%;
+        margin-bottom: 0.5em;
+        padding-top: 10px;
+        padding-bottom: 11px;
+    }
+    #recentchanges .changelabel.updated {
+        /* Slightly different padding*/
+        padding-top: 9px;
+        padding-bottom: 10px;
+    }
+    #recentchanges hr {
+        margin-left: -1em;
+        margin-right: -1.5em;
+    }
+}
+
 
 .see_also {
     margin-top: 2em;
