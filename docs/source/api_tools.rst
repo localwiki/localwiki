@@ -34,3 +34,9 @@ Here's some examples using slumber with the LocalWiki API::
     # Create a new page
     api.page.post({'name': 'My new page', 'content': '<p>Hello.</p>'},
         username=username, api_key=api_key)
+
+
+Ruby
+----
+
+Work has begun on a Ruby API client.  Check it out at https://github.com/codeforseattle/localwiki_client.  It's in a very early stage at this point, so you may want to help with its development!
