@@ -8,7 +8,7 @@ Page examples
 Get all pages whose title end in "park", case-insensitive
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``/api/page/?name__iendswith=park``
+``/api/page/?name__endswith=park``
 
 .. code-block:: javascript
 
