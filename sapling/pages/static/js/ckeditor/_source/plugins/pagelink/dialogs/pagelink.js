@@ -211,6 +211,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
                     if (CKEDITOR.env.ie) {
                         selection.unlock(true);
                         selected_text = String(selection.getNative().createRange().text);
+                        selection.lock();  // Fix for https://github.com/localwiki/localwiki/issues/442
                     }
                 }
             }
