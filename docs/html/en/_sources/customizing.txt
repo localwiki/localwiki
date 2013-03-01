@@ -249,34 +249,13 @@ to ``/usr/share/localwiki/static/img`` (or
 ``env/share/locawiki/static/img`` for manual installations)
 
 4. Now we want to reference this new ``denton.css`` file from the HTML
-of all the pages.  Let's go back into the localwiki code directory,
-referenced in the beginning of :ref:`Example 1 <example1>` and copy over ``sites/base.html``
-to our global templates directory::
+of all the pages.  Let's go into our local template directory,
+``/usr/share/localwiki/templates/`` and create the file
+``site/extra_media.html`` and then we add the extra CSS into the file::
 
-    $ cd /path/to/localwiki/code/directory
-    $ cd themes/sapling/templates/site
-    $ ls
-    base.html  login_info.html  nav.html  search_form.html  site_title.html
-    $ cp base.html /usr/share/localwiki/templates/site/
-
-and then open up the new
-``/usr/share/localwiki/templates/site/base.html``
-file.  We'll change this portion of the file::
-
-  {% block media %}
-  <link rel="stylesheet" href="{% static "theme/css/reset.css" %}">
-  <link rel="stylesheet" href="{% static "theme/css/site.css" %}">
-  {% endblock %}
-
-to look like this::
-
-  {% block media %}
-  <link rel="stylesheet" href="{% static "theme/css/reset.css" %}">
-  <link rel="stylesheet" href="{% static "theme/css/site.css" %}">
   <link rel="stylesheet" href="{{ STATIC_URL }}css/denton.css?v=1">
-  {% endblock %}
 
-Then we simply restart the webserver::
+Then we save the file and restart the webserver::
 
     sudo /etc/init.d/apache2 restart
 
