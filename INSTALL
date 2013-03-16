@@ -43,7 +43,7 @@ delete it without first backing up the share/localwiki directory inside it.
 4.  Allow the search, diff services to start & back up existing config.  This will
 differ between systems.  We use this setup_jetty.sh script on Ubuntu systems:
 
-    (env)$ sudo install_config/setup_jetty.sh
+    (env)$ install_config/setup_jetty.sh
 
 Take a look at the setup_jetty.sh script (it's short). You may need to
 customize it for your particular OS.
