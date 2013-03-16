@@ -1,5 +1,5 @@
 @font-face {
-    font-family: 'CabinRegular';
+    font-family: 'Cabin';
     src: local('Cabin Regular'), local('Cabin-Regular'), url('../fonts/cabin/Cabin-Regular-webfont.eot');
     src: local('Cabin Regular'), local('Cabin-Regular'),
          url('../fonts/cabin/Cabin-Regular-webfont.eot?#iefix') format('embedded-opentype'),
@@ -11,7 +11,7 @@
 }
 
 @font-face {
-    font-family: 'CabinItalic';
+    font-family: 'Cabin';
     src: local('Cabin Italic'), local('Cabin-Italic'), url('../fonts/cabin/Cabin-Italic-webfont.eot');
     src: local('Cabin Italic'), local('Cabin-Italic'),
          url('../fonts/cabin/Cabin-Italic-webfont.eot?#iefix') format('embedded-opentype'),
@@ -19,17 +19,17 @@
          url('../fonts/cabin/Cabin-Italic-webfont.ttf') format('truetype'),
          url('../fonts/cabin/Cabin-Italic-webfont.svg#CabinItalic') format('svg');
     font-weight: normal;
-    font-style: normal;
+    font-style: italic;
 }
 
 @font-face {
-    font-family: 'CabinBold';
+    font-family: 'Cabin';
     src: local('Cabin Bold'), local('Cabin-Bold'), url('../fonts/cabin/Cabin-Bold-webfont.eot');
     src: local('Cabin Bold'), local('Cabin-Bold'),
          url('../fonts/cabin/Cabin-Bold-webfont.eot?#iefix') format('embedded-opentype'),
          url('../fonts/cabin/Cabin-Bold-webfont.woff') format('woff'),
          url('../fonts/cabin/Cabin-Bold-webfont.ttf') format('truetype'),
          url('../fonts/cabin/Cabin-Bold-webfont.svg#CabinBold') format('svg');
-    font-weight: normal;
+    font-weight: bold;
     font-style: normal;
 }
