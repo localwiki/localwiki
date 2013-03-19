@@ -193,6 +193,15 @@ Delete
 
 To delete an existing page, issue a DELETE to /api/page/[name].
 
+More examples
+~~~~~~~~~~~~~
+
+All pages tagged with [mytag], in JSON format
+
+::
+
+    /api/page/?page_tags__tags__slug=[mytag]&format=json
+
 
 Files
 -----
