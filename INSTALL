@@ -41,7 +41,7 @@ delete it without first backing up the share/localwiki directory inside it.
 	(env)$ python setup.py install
 
 4.  Allow the search, diff services to start & back up existing config.  This will
-differ between systems.  We use this setup_jetty.sh script on Ubuntu systems:
+differ between systems.  We use this setup_jetty.sh script on Ubuntu & OS X:
 
     (env)$ install_config/setup_jetty.sh
 
