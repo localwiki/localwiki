@@ -2,10 +2,11 @@
 API Examples
 ============
 
+.. _api_examples_page:
 Page examples
 -------------
 
-Get all pages whose title end in "park", case-insensitive
+Get all pages whose title ends in "park", case-insensitive
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``/api/page/?name__iendswith=park``
@@ -212,6 +213,13 @@ Let's find all versions of pages that were edited after June 25th, 2012 at 22:21
   }
 
 
+All pages tagged with [sometag]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``/api/page/?page_tags__tags__slug=sometag&format=json``
+
+
+.. _api_examples_file:
 File examples
 -------------
 
@@ -254,6 +262,7 @@ We can retrieve the file itself by visiting the location specified in
 the `file` attribute.
 
 
+.. _api_examples_map:
 Map examples
 ------------
 
@@ -635,9 +644,9 @@ With polygons within:
   }
 
 
+.. _api_examples_tag:
 Tag examples
 ------------
-
 
 Pages with a particular tag
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -845,6 +854,7 @@ Full detail:
   }
 
 
+.. _api_examples_redirect:
 Redirect examples
 -----------------
 
