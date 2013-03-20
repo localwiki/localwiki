@@ -23,7 +23,7 @@ class Command(object):
             self.has_postgres_user = True
 
     def _as_postgres_user(self):
-        if _is_os_x(self):
+        if self._is_os_x(self):
             # OS X doesn't have a postgres user, at least for homebrew installs.
             # So let's just use the default system user.
             return ''
