@@ -3,11 +3,12 @@ API Examples
 ============
 
 .. _api_examples_page:
+
 Page examples
 -------------
 
 Get all pages whose title ends in "park", case-insensitive
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ``/api/page/?name__iendswith=park``
 
@@ -220,6 +221,7 @@ All pages tagged with [sometag]
 
 
 .. _api_examples_file:
+
 File examples
 -------------
 
@@ -263,6 +265,7 @@ the `file` attribute.
 
 
 .. _api_examples_map:
+
 Map examples
 ------------
 
@@ -645,6 +648,7 @@ With polygons within:
 
 
 .. _api_examples_tag:
+
 Tag examples
 ------------
 
@@ -855,6 +859,7 @@ Full detail:
 
 
 .. _api_examples_redirect:
+
 Redirect examples
 -----------------
 
