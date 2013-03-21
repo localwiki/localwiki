@@ -35,13 +35,9 @@ class Command(object):
                'Fill out the form (details don\'t matter)')
         print '3. Paste the API key below:'
         cloudmade_api_key = raw_input().strip()
-        print 'Optional: Get a Google Analytics ID and paste it below. ' \
-            'To skip, just press enter without pasting anything.'
-        google_analytics_id = raw_input().strip()
 
         self._write_settings({
             'CLOUDMADEAPIKEYHERE': cloudmade_api_key,
-            'GOOGLEANALYTICSIDHERE': google_analytics_id,
             'SECRETKEYHERE': self._generate_secret_key(),
         })
 

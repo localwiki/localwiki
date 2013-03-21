@@ -55,6 +55,9 @@ things you may need or wish to modify:
 ``CLOUDMADE_API_KEY``
     Your developer API key from `Cloudmade <http://developers.cloudmade.com/>`_
 
+``GOOGLE_ANALYTICS_ID``
+    Your ID from `Google Analytics <http://www.google.com/analytics/>`_
+
 ``SITE_THEME``
     The name of the directory under ``themes`` to look for the theme templates
     and static files.  We'll have more detail on creating a theme soon.

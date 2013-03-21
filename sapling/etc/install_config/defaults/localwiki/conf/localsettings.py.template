@@ -19,7 +19,7 @@ DATABASES = {
 CLOUDMADE_API_KEY = 'CLOUDMADEAPIKEYHERE'
 
 # Get a Google Analytics ID at https://www.google.com/analytics.
-GOOGLE_ANALYTICS_ID = 'GOOGLEANALYTICSIDHERE'
+GOOGLE_ANALYTICS_ID = ''
 
 # For testing, you can start the python debugging smtp server like so:
 # sudo python -m smtpd -n -c DebuggingServer localhost:25
