@@ -4,8 +4,10 @@
 }
 
 .tag_link {
-    background: url(../../img/tag-icon-small.png) top left no-repeat;
-    padding-left: 22px;
+    background: url(../../img/tag-icon-small.png) no-repeat;
+    background-position: left center;
+    padding-left: 18px;
+    margin-left: 1px;
 }
 
 /* File icons */
