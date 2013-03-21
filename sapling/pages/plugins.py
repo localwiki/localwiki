@@ -326,6 +326,8 @@ class LinkNode(Node):
                         cls = ' class="file_%s"' % file.rough_type
                     except PageFile.DoesNotExist:
                         cls = ' class="missing_link"'
+                elif unquote_plus(url).startswith('tags/'):
+                    cls = ' class="tag_link"'
                 else:
                     try:
                         page = Page.objects.get(slug__exact=slugify(url))
