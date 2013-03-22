@@ -335,6 +335,15 @@ textarea, input, select {
   background-repeat: no-repeat;
   background-position: 9px 50%;
 }
+#map .info a {
+  display: block;
+  padding-top: 12px;
+  padding-bottom: 13px;
+  padding-right: 0.8em;
+  font-weight: normal;
+  margin-top: 0.5em;
+  margin-right: 0.5em;
+}
 #map .info a.view {
   background-image: url(../img/magnifying_glass.png);
 }
