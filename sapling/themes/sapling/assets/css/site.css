@@ -330,11 +330,25 @@ textarea, input, select {
   padding-top: 0.3em;
 }
 #map .info a {
-  background-image: url(../img/magnifying_glass.png);
-  background-repeat: no-repeat;
-  background-position: 9px 50%;
   padding-left: 25px;
   font-size: 90%;
+  background-repeat: no-repeat;
+  background-position: 9px 50%;
+}
+#map .info a {
+  display: block;
+  padding-top: 12px;
+  padding-bottom: 13px;
+  padding-right: 0.8em;
+  font-weight: normal;
+  margin-top: 0.5em;
+  margin-right: 0.5em;
+}
+#map .info a.view {
+  background-image: url(../img/magnifying_glass.png);
+}
+#map .info a.edit {
+  background-image: url(../img/edit_icon.png);
 }
 #map .simple_pagination {
   padding-top: 0.4em;
