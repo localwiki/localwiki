@@ -188,6 +188,7 @@ TEMPLATE_LOADERS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     "utils.context_processors.sites.current_site",
     "utils.context_processors.settings.license_agreements",
+    "utils.context_processors.settings.services",
 
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
