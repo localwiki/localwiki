@@ -542,7 +542,8 @@ class PluginTest(TestCase):
         template_text = html_to_template_text(html)
         imports = ''.join(tag_imports)
         self.assertEqual(template_text,
-                         imports + ('<div>{% include_page "Front_Page" %}'
+                         imports + ('<div class="included_page_wrapper">'
+                                    '{% include_page "Front_Page" %}'
                                     '</div>'))
 
     def test_include_plugin(self):
@@ -558,7 +559,7 @@ class PluginTest(TestCase):
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
         self.assertEqual(html,
-                    '<div><p>Some text</p></div>')
+                    '<div class="included_page_wrapper"><p>Some text</p></div>')
 
     def test_include_showtitle(self):
         a = Page(name='Front Page')
@@ -574,8 +575,10 @@ class PluginTest(TestCase):
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
         self.assertEqual(html,
-                    ('<div><h2><a href="/Explore">Explore</a></h2>'
-                     '<p>Some text</p></div>'))
+                    ('<div class="included_page_wrapper">'
+                     '<h2><a href="/Explore">Explore</a></h2>'
+                     '<p>Some text</p>'
+                     '</div>'))
 
     def test_include_left(self):
         a = Page(name='Front Page')
@@ -591,7 +594,8 @@ class PluginTest(TestCase):
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
         self.assertEqual(html,
-                    '<div class="includepage_left"><p>Some text</p></div>')
+            '<div class="included_page_wrapper includepage_left">'
+            '<p>Some text</p></div>')
 
     def test_include_width(self):
         a = Page(name='Front Page')
@@ -607,8 +611,8 @@ class PluginTest(TestCase):
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
         self.assertEqual(html,
-                    ('<div style="width: 100px;">'
-                     '<p>Some text</p></div>'))
+            ('<div class="included_page_wrapper" style="width: 100px;">'
+             '<p>Some text</p></div>'))
 
     def test_include_nonexistant(self):
         """ Should give an error message when including nonexistant page
@@ -650,7 +654,8 @@ class PluginTest(TestCase):
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
         self.assertEqual(html,
-            ('<div><p>Some text</p></div><div><p>Some text</p></div>'))
+            ('<div class="included_page_wrapper"><p>Some text</p></div>'
+             '<div class="included_page_wrapper"><p>Some text</p></div>'))
 
     def test_embed_tag(self):
         html = ('<span class="plugin embed">&lt;strong&gt;Hello&lt;/strong&gt;'
