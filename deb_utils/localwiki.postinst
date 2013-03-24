@@ -9,13 +9,16 @@ datadir=/usr/share/localwiki
 
 fix_ubuntu_12_10 ()
 {
-    # Fix a bug in Ubuntu 12.10 that prevents the solr-jetty
-    # package from being properly loaded. See https://bugs.launchpad.net/ubuntu/+source/lucene-solr/+bug/1080814
-    # Can remove this once that bug is fixed in Ubuntu.
-    if [ -L "/var/lib/jetty/webapps/solr" ];
+    if [[ `lsb_release -rs` == "12.10" ]]
     then
-        rm /var/lib/jetty/webapps/solr
-        ln -s /usr/share/solr/web /var/lib/jetty/webapps/solr
+        # Fix a bug in Ubuntu 12.10 that prevents the solr-jetty
+        # package from being properly loaded. See https://bugs.launchpad.net/ubuntu/+source/lucene-solr/+bug/1080814
+        # Can remove this once that bug is fixed in Ubuntu.
+        if [ -L "/var/lib/jetty/webapps/solr" ];
+        then
+            rm /var/lib/jetty/webapps/solr
+            ln -s /usr/share/solr/web /var/lib/jetty/webapps/solr
+        fi
     fi
 }
 
