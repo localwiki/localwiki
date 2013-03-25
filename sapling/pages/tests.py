@@ -561,6 +561,22 @@ class PluginTest(TestCase):
         self.assertEqual(html,
                     '<div class="included_page_wrapper"><p>Some text</p></div>')
 
+    def test_include_plugin_utf8(self):
+        a = Page(name='Front Page')
+        a.content = (u'<a class="plugin includepage" '
+                     u'href="青平台基金會">dummy</a>')
+        a.save()
+
+        b = Page(name=u'青平台基金會')
+        b.content = u'<p>青平台基金會</p>'
+        b.save()
+
+        context = Context({'page': a})
+        template = Template(html_to_template_text(a.content, context))
+        html = template.render(context)
+        self.assertEqual(html, u'<div class="included_page_wrapper">'
+                         u'<p>青平台基金會</p></div>')
+
     def test_include_showtitle(self):
         a = Page(name='Front Page')
         a.content = ('<a class="plugin includepage includepage_showtitle"'
