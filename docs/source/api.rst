@@ -333,6 +333,14 @@ List
 
     /api/map/
 
+Parameters
+__________
+
+full
+
+* `False`: (default) pages for maps are returned as links
+* `True`: pages for maps are returned in full (see `Pages`_ example object)
+
 Fetch
 ~~~~~
 

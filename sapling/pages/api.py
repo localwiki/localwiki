@@ -167,6 +167,11 @@ class PageResource(PageURLMixin, ModelResource):
         self.log_throttled_access(request)
         return self.create_response(request, object_list)
 
+    def dehydrate(self, bundle):
+        if not bundle.request.GET.get('full'):
+            bundle = bundle.data['resource_uri']
+        return bundle
+
 
 # We don't use the PageURLMixin approach here because it becomes
 # too complicated to generate pretty URLs with the historical version
