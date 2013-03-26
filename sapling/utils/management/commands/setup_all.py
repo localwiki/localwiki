@@ -14,8 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         call_command('syncdb', verbosity=0)
         call_command('migrate', verbosity=0)
-        call_command('collectstatic', interactive=False, verbosity=0,
-            clear=True)
+        call_command('collectstatic', interactive=False, verbosity=0)
         call_command('reset_permissions', verbosity=0)
 
         if not has_pages():
