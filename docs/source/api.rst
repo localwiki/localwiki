@@ -90,7 +90,7 @@ Fetch
 
 ::
 
-    /api/site/[id]/
+    /api/site/[id]
 
 
 Users
@@ -130,7 +130,7 @@ Fetch
 
 ::
 
-    /api/user/[id]/
+    /api/user/[id]
 
 
 
@@ -239,7 +239,7 @@ Fetch
 
 ::
 
-    /api/file/[id]/
+    /api/file/[id]
 
 Create
 ~~~~~~
@@ -413,7 +413,7 @@ Fetch
 
 ::
 
-    /api/tag/[slug]/
+    /api/tag/[slug]
 
 Create
 ~~~~~~
