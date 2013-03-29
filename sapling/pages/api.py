@@ -88,6 +88,7 @@ class FileResource(ModelResource):
             'name': ALL,
             'slug': ALL,
         }
+        ordering = ['name', 'slug']
         list_allowed_methods = ['get', 'post']
         authentication = ApiKeyWriteAuthentication()
         authorization = DjangoAuthorization()
@@ -117,6 +118,7 @@ class PageResource(PageURLMixin, ModelResource):
             'map': ALL_WITH_RELATIONS,
         }
         list_allowed_methods = ['get', 'post']
+        ordering = ['name', 'slug']
         validation = PageValidation()
         authentication = ApiKeyWriteAuthentication()
         authorization = DjangoAuthorization()

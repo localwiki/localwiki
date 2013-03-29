@@ -16,6 +16,9 @@ The LocalWiki API follows the conventions of `Tastypie <https://github.com/toast
 
 Unless otherwise specified, all endpoints that return lists support the ``limit`` and ``offset`` parameters for pagination. Pagination information is contained in the embedded ``meta`` object within the response.
 
+Many list endpoints also support ordering by certain fields. Order-by fields
+are listed for each resource.
+
 
 API versioning
 ==============
@@ -125,6 +128,12 @@ List
 
     /api/user/
 
+Order by: ``username``, ``first_name``, ``last_name``, ``date_joined``
+
+::
+
+    /api/user/?order_by=date_joined
+
 Fetch
 ~~~~~
 
@@ -168,6 +177,12 @@ List
 ::
 
     /api/page/
+
+Order by: ``name``, ``slug``
+
+::
+
+    /api/page/?order_by=name
 
 Fetch
 ~~~~~
@@ -233,6 +248,12 @@ List
 ::
 
     /api/file/
+
+Order by: ``name``, ``slug``
+
+::
+
+    /api/file/?order_by=slug
 
 Fetch
 ~~~~~
@@ -408,6 +429,12 @@ List
 
     /api/tag/
 
+Order by: ``name``, ``slug``
+
+::
+
+    /api/tag/?order_by=name
+
 Fetch
 ~~~~~
 
@@ -477,6 +504,12 @@ List
 ::
 
     /api/page_tags/
+
+Order by: ``page``, ``tags``
+
+::
+
+    /api/page_tags/?order_by=page
 
 Fetch
 ~~~~~
