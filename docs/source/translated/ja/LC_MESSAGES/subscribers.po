@@ -6,38 +6,38 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: LocalWiki 0.3\n"
+"Project-Id-Version: LocalWiki 0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-18 03:07\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-11-11 16:46\n"
+"PO-Revision-Date: 2012-11-11 18:13+0900\n"
+"Last-Translator: Satoshi IIDA <nyampire@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../source/subscribers.rst:2
-# 6640c7ee6a834794bf2c48dee281bd94
+# 2567d84de6e04044b0503c0e31359d6c
 msgid "Subscriber list"
-msgstr ""
+msgstr "サイト登録者一覧"
 
 #: ../source/subscribers.rst:4
-# bb069d2a6bdf443a9a9df8d7cc580c41
+# 692821f202fe42c0bdf91c99b54df596
 msgid "As a website administrator, you often want to send updates or newsletters to your users. To do this, you need a list of email addresses. But it's not nice to send unsolicited email without a person's permission, so LocalWiki provides an opt-in list."
-msgstr ""
+msgstr "サイトを運営する上で、サイトのユーザに対して管理者からのメッセージを送付することがあります。 ユーザに対してメッセージを送るには、対象のe-mailアドレスのリストが必要です。 しかし、ユーザの了承ないままメッセージを送付することはあまり良いことではありません。 そのため、Localwikiでは明示的に了承を得ているユーザを一覧として提供しています。"
 
 #: ../source/subscribers.rst:9
-# 9672058a894f4f42aa58aa37eecaecb3
+# bd66869c96d74931b7be7537f17d8709
 msgid "When users register on your LocalWiki site, they can opt-in to receive email updates. Those who opt-in are added to a list, which is available to you, the administrator, at this address:"
-msgstr ""
+msgstr "ユーザーがLocalwikiに登録する際、e-mailによる連絡を受けるかどうかの明示的に選択する必要があります。e-mailによる連絡を受けることを希望するユーザは、管理者だけが閲覧可能な以下のリストに追加されます::"
 
 #: ../source/subscribers.rst:13
-# e45fec405cea4928897e4504396f5ca4
+# 5f36aaf9a8464db88228c9e452981675
 msgid "``http://<your server's address>/admin/subscribers/``"
 msgstr ""
 
 #: ../source/subscribers.rst:15
-# a5634f4d484a48f18b579dc749b203a5
+# 61eb797f6aa04e9c82762d7e146f717f
 msgid "From here, you can copy this list and import it into your email software."
-msgstr ""
+msgstr "このリストを使って、e-mailのアドレス一覧をコピーし、メールアプリケーションでインポートすることが可能です。"
 

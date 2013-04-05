@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 set -e
 
@@ -7,12 +7,30 @@ set -e
 confdir=/usr/share/pyshared/sapling/etc/install_config
 datadir=/usr/share/localwiki
 
+fix_ubuntu_12_10 ()
+{
+    if [[ `lsb_release -rs` == "12.10" ]]
+    then
+        # Fix a bug in Ubuntu 12.10 that prevents the solr-jetty
+        # package from being properly loaded. See https://bugs.launchpad.net/ubuntu/+source/lucene-solr/+bug/1080814
+        # Can remove this once that bug is fixed in Ubuntu.
+        if [ -L "/var/lib/jetty/webapps/solr" ];
+        then
+            rm /var/lib/jetty/webapps/solr
+            ln -s /usr/share/solr/web /var/lib/jetty/webapps/solr
+        fi
+    fi
+}
+
 case "$1" in
     configure)
         # we want our setup to run last, so just activate our trigger
         dpkg-trigger localwiki-setup
 ;;
     triggered)
+        # fix bug in Ubuntu 12.10
+        fix_ubuntu_12_10
+
         # do the real work here
         cd "$confdir"
         echo "Configuring jetty ..."

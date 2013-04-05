@@ -4,7 +4,7 @@
   {{ map.media }}
   <div id="map">
     {{ map }}
-    <div class="info"><a href="{% url maps:tagged tag=tag.slug %}">{% trans "View map" %}</a></div>
+    <div class="info"><a class="view tiny button" href="{% url maps:tagged tag=tag.slug %}">{% trans "View" %}</a></div>
   </div>
 {% endif %}
 {% if pagetagset_list %}

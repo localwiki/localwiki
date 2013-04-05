@@ -14,7 +14,7 @@ import os
 from launchpadlib.launchpad import Launchpad
 
 archs = ["i386"]
-releases = ["lucid", "maverick", "natty", "oneiric", "precise"]
+releases = ["lucid", "maverick", "natty", "oneiric", "precise", "quantal"]
 releases.reverse()
 
 if len(sys.argv) < 3:
@@ -59,12 +59,12 @@ try:
     dates = datestr2num(stats)
     # 2d array to store totals by release and by date
     all = np.array([[stats[x][r] for x in stats] for r in releases])
-    fig = plt.figure(figsize=(12,5))
+    fig = plt.figure(figsize=(30,5))
     a=1. # alpha
     kwargs = dict(linewidth=0,color='g', alpha=a, align='center')
     ax = plt.subplot(1,1,1)
     ax.xaxis.set_major_locator(MonthLocator())
-    ax.xaxis.set_major_formatter(DateFormatter('%B'))
+    ax.xaxis.set_major_formatter(DateFormatter('%b'))
     ax.xaxis_date()
     for i,r in enumerate(releases):
         if i==0:

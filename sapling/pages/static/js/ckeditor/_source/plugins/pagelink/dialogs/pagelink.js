@@ -211,6 +211,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
                     if (CKEDITOR.env.ie) {
                         selection.unlock(true);
                         selected_text = String(selection.getNative().createRange().text);
+                        selection.lock();  // Fix for https://github.com/localwiki/localwiki/issues/442
                     }
                 }
             }
@@ -271,6 +272,7 @@ CKEDITOR.dialog.add( 'pagelink', function( editor )
 				var style = new CKEDITOR.style( { element : 'a', attributes : attributes } );
 				style.type = CKEDITOR.STYLE_INLINE;		// need to override... dunno why.
 				style.apply( editor.document );
+				selection = editor.getSelection();
 				var selected = selection.getStartElement();
 				ranges[0].setStartAfter( selected );
 				ranges[0].setEndAfter( selected );

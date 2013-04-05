@@ -12,5 +12,5 @@ django-staticfiles==1.2.1
 django-registration==0.8.0
 django-qsstats-magic==0.7
 -e git+git://github.com/philipn/olwidget.git@72de64cd25ffdc3644bc92d14668c145533d6d45#egg=django-olwidget-0.46-custom1
--e git+git://github.com/philipn/django-honeypot.git#egg=django-honeypot-0.3.0-custom3
+-e git+git://github.com/philipn/django-honeypot.git@b4991c140849901d2f8842df2c4672813e73381b#egg=django-honeypot-0.3.0-custom4
 -e git+git://github.com/philipn/django-tastypie.git@localwiki_master#egg=django-tastypie-0.9.12-custom5

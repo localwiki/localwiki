@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API Documentation &mdash; LocalWiki 0.4.2 documentation</title>
+    <title>API Documentation &mdash; LocalWiki 0.5.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.4.2',
+        VERSION:     '0.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="LocalWiki 0.4.2 documentation" href="index.html" />
+    <link rel="top" title="LocalWiki 0.5.0 documentation" href="index.html" />
     <link rel="next" title="API Examples" href="api_examples.html" />
     <link rel="prev" title="Advanced topics" href="advanced.html" /> 
   </head>
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="advanced.html" title="Advanced topics"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">LocalWiki 0.5.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -195,6 +195,10 @@ markup.</p>
 <h4>Delete<a class="headerlink" href="#delete" title="Permalink to this headline">¶</a></h4>
 <p>To delete an existing page, issue a DELETE to /api/page/[name].</p>
 </div>
+<div class="section" id="more-api-examples-for-pages">
+<h4>More API Examples for Pages<a class="headerlink" href="#more-api-examples-for-pages" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference internal" href="api_examples.html#api-examples-page"><em>Page examples</em></a></p>
+</div>
 </div>
 <div class="section" id="files">
 <h3>Files<a class="headerlink" href="#files" title="Permalink to this headline">¶</a></h3>
@@ -243,6 +247,10 @@ field, which specifies the <tt class="docutils literal"><span class="pre">slug</
 <div class="section" id="id12">
 <h4>Delete<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
 <p>To delete an existing file, issue a DELETE to <tt class="docutils literal"><span class="pre">/api/file/[id]/</span></tt>.</p>
+</div>
+<div class="section" id="more-api-examples-for-files">
+<h4>More API Examples for Files<a class="headerlink" href="#more-api-examples-for-files" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference internal" href="api_examples.html#api-examples-file"><em>File examples</em></a></p>
 </div>
 </div>
 <div class="section" id="maps">
@@ -315,6 +323,10 @@ field.</p>
 <h4>Delete<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h4>
 <p>To delete an existing map, issue a DELETE to /api/map/[pagename].</p>
 </div>
+<div class="section" id="more-api-examples-for-maps">
+<h4>More API Examples for Maps<a class="headerlink" href="#more-api-examples-for-maps" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference internal" href="api_examples.html#api-examples-map"><em>Map examples</em></a></p>
+</div>
 </div>
 <div class="section" id="tags">
 <h3>Tags<a class="headerlink" href="#tags" title="Permalink to this headline">¶</a></h3>
@@ -361,6 +373,10 @@ spaces and other characters).</p>
 <div class="section" id="id24">
 <h4>Delete<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h4>
 <p>You cannot currently delete a tag.</p>
+</div>
+<div class="section" id="more-api-examples-for-tags">
+<h4>More API Examples for Tags<a class="headerlink" href="#more-api-examples-for-tags" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference internal" href="api_examples.html#api-examples-tag"><em>Tag examples</em></a></p>
 </div>
 </div>
 <div class="section" id="page-tags">
@@ -521,6 +537,7 @@ example.</p>
 <li><a class="reference internal" href="#create">Create</a></li>
 <li><a class="reference internal" href="#update">Update</a></li>
 <li><a class="reference internal" href="#delete">Delete</a></li>
+<li><a class="reference internal" href="#more-api-examples-for-pages">More API Examples for Pages</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#files">Files</a><ul>
@@ -530,6 +547,7 @@ example.</p>
 <li><a class="reference internal" href="#id10">Create</a></li>
 <li><a class="reference internal" href="#id11">Update</a></li>
 <li><a class="reference internal" href="#id12">Delete</a></li>
+<li><a class="reference internal" href="#more-api-examples-for-files">More API Examples for Files</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#maps">Maps</a><ul>
@@ -539,6 +557,7 @@ example.</p>
 <li><a class="reference internal" href="#id16">Create</a></li>
 <li><a class="reference internal" href="#id17">Update</a></li>
 <li><a class="reference internal" href="#id18">Delete</a></li>
+<li><a class="reference internal" href="#more-api-examples-for-maps">More API Examples for Maps</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#tags">Tags</a><ul>
@@ -548,6 +567,7 @@ example.</p>
 <li><a class="reference internal" href="#id22">Create</a></li>
 <li><a class="reference internal" href="#id23">Update</a></li>
 <li><a class="reference internal" href="#id24">Delete</a></li>
+<li><a class="reference internal" href="#more-api-examples-for-tags">More API Examples for Tags</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#page-tags">Page Tags</a><ul>
@@ -610,7 +630,7 @@ example.</p>
         <li class="right" >
           <a href="advanced.html" title="Advanced topics"
              >previous</a> |</li>
-        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">LocalWiki 0.5.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

@@ -3,6 +3,13 @@
     border-bottom: 1px dashed;
 }
 
+.tag_link {
+    background: url(../../img/tag-icon-small.png) no-repeat;
+    background-position: left center;
+    padding-left: 18px;
+    margin-left: 1px;
+}
+
 /* File icons */
 .no_icon {
    background: inherit !important;

@@ -10,6 +10,26 @@ class Command(object):
     Creates a DB user, DB name, and strong, random DB password.
     Also creates a spatial DB template if needed.
     """
+    def check_postgres_user(self):
+        """
+        Does the system have a `postgres` user?
+        """
+        try:
+            subprocess.check_call("id postgres", shell=True, 
+                stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        except subprocess.CalledProcessError:
+            self.has_postgres_user = False
+        else:
+            self.has_postgres_user = True
+
+    def _as_postgres_user(self):
+        if self._is_os_x():
+            # OS X doesn't have a postgres user, at least for homebrew installs.
+            # So let's just use the default system user.
+            return ''
+        if self.has_postgres_user:
+            return 'sudo -u postgres'
+        return ''
 
     def _is_debian(self):
         if not os.path.exists('/etc/issue'):
@@ -29,9 +49,15 @@ class Command(object):
 
         return False
 
+    def _is_os_x(self):
+        import platform
+        return platform.platform().startswith('Darwin')
+
     def create_spatial_template(self):
         if self._is_debian():
             script = 'create_template_postgis-debian.sh'
+        elif self._is_os_x():
+            script = 'create_template_postgis-os_x.sh'
         else:
             which_pgis = raw_input(
 """Which version of PostGIS are you running?:\n
@@ -58,7 +84,7 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
         # Make the temp script executable.
         os.chmod(temp_path, 0775)
 
-        p = subprocess.Popen('sudo -u postgres %s' % temp_path,
+        p = subprocess.Popen(self._as_postgres_user() + (' %s' % temp_path),
             shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         retval = p.wait()
         if retval != 0:
@@ -77,8 +103,8 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
         rand_password = self.gen_password()
         # First, let's try and create the default username.
         username = default_username
-        p = subprocess.Popen("""sudo -u postgres psql -d template1 """
-            """-c "CREATE USER %s WITH PASSWORD '%s'" """
+        p = subprocess.Popen(self._as_postgres_user() +
+            """ psql -d template1 -c "CREATE USER %s WITH PASSWORD '%s'" """
             % (username, rand_password),
             shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         retval = p.wait()
@@ -91,8 +117,8 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
             print ("Default DB username '%s' already taken. "
                    "Enter new DB username:" % default_username)
             username = raw_input().strip()
-            p = subprocess.Popen("""sudo -u postgres psql -d template1 """
-                """-c "CREATE USER %s WITH PASSWORD '%s'" """
+            p = subprocess.Popen(self._as_postgres_user() +
+                """ psql -d template1 -c "CREATE USER %s WITH PASSWORD '%s'" """
                 % (username, rand_password),
                 shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             retval = p.wait()
@@ -102,8 +128,9 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
 
         # Now let's try and create the default database.'
         dbname = default_dbname
-        p = subprocess.Popen("""sudo -u postgres createdb -E UTF8 """
-                """-T template_postgis -O %s %s""" % (username, dbname),
+        p = subprocess.Popen(self._as_postgres_user() +
+                """ createdb -E UTF8 -T template_postgis -O %s %s""" %
+                (username, dbname),
                 shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         retval = p.wait()
         if retval != 0:
@@ -115,8 +142,9 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
             print ("Default DB name '%s' already taken. "
                    "Enter new DB name:" % default_dbname)
             dbname = raw_input().strip()
-            p = subprocess.Popen("""sudo -u postgres createdb -E UTF8 """
-                """-T template_postgis -O %s %s""" % (username, dbname),
+            p = subprocess.Popen(self._as_postgres_user() +
+                """ createdb -E UTF8 -T template_postgis -O %s %s""" %
+                (username, dbname),
                 shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             retval = p.wait()
             for line in p.stdout:
@@ -143,6 +171,7 @@ Enter "1", "2" or "3".\n""").strip().strip('"')[0]
         f.close()
 
     def handle(self, *args, **options):
+        self.check_postgres_user()
         self.create_spatial_template()
         self.create_db()
         self.update_settings()

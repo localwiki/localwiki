@@ -6,68 +6,68 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: LocalWiki 0.3\n"
+"Project-Id-Version: LocalWiki 0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-18 03:07\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-11-11 16:46\n"
+"PO-Revision-Date: 2012-11-11 16:52+0900\n"
+"Last-Translator: Satoshi IIDA <nyampire@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../source/install.rst:2
-# 2c959b8c766e497bbe5732543af7f9c3
+# 1c031571dc0749b4a3f425a565ee4b89
 msgid "Installing"
-msgstr ""
+msgstr "インストール方法"
 
 #: ../source/install.rst:4
-# 5b6297fa631846148faf3db359c9d739
+# 0813019764f74656a83edcd14eb710ef
 msgid "The easiest way to install LocalWiki is by using our Ubuntu package."
-msgstr ""
+msgstr "Localwikiのインストールには Ubuntuパッケージを利用するのが最も簡易な方法です。"
 
 #: ../source/install.rst:7
-# fa25af6261014f4d8981ab287dbc4304
+# 3bd6fff39f8d4e6fbeb2f995017edeaa
 msgid "Installing on Ubuntu"
-msgstr ""
+msgstr "Ubuntuへのインストール"
 
 #: ../source/install.rst:9
-# 9195c5c0adf146f1a86500eb6335160b
+# 6d1d4e2bdac341468bf3c3b6c0bc4702
 msgid "LocalWiki is available as a prebuilt package for Ubuntu 10.04 LTS or newer."
-msgstr ""
+msgstr "Localwikiでは、Ubuntu 10.04 LTS以降のバージョンに対するビルト済みパッケージを提供しています。"
 
 #: ../source/install.rst:11
-# af6fdb61f8414a6eb21bf64afc0d7ed1
+# 15a8cdab12894f0989535948500f8d9b
 msgid "Just open a terminal and run these commands::"
-msgstr ""
+msgstr "インストール先のUbuntuでターミナルを開き、以下のコマンドを入力してください。 ::"
 
 #: ../source/install.rst:18
-# 680ca69c6fc04aaf89cdc1297d81af91
+# 4c8eea0a771a4a4089e47903f96d8d03
 msgid "That's it! Follow the prompts to configure LocalWiki."
-msgstr ""
+msgstr "これで完了です！ 表示されるプロンプトに従って、Localwikiを設定してください。"
 
 #: ../source/install.rst:23
-# 391b43263d66479c8c94d5e9a2d0796e
+# b4eea2f135b344eebcd4eb3080a353f0
 msgid "Installing on other systems"
-msgstr ""
+msgstr "その他のシステムへのLocalwikiインストール"
 
 #: ../source/install.rst:25
-# 139f488faff54cf28d01d4cd6439c8ba
+# e1314dfa31654777bd3548d4e1326926
 msgid "This installation method should only be used if you can't use the Ubuntu package or if you want to set up a development enviroment."
-msgstr ""
+msgstr "以下の方法は、Ubuntuパッケージを利用できない場合、あるいは開発環境を設定する場合にのみ利用してください。"
 
 #: ../source/install.rst:29
-# 989f6ab331e74df0b2b3ac04980ceedc
+# 95ca5a896f1c4b73b8319edb554558e8
 msgid "See our ``INSTALL`` file for detailed instructions.  The file is also included here:"
-msgstr ""
+msgstr "詳細な手順は、Localwiki本体の ``INSTALL`` ファイルにも記述されています。同じ文章を以下に掲載します。 :"
 
 #: ../source/install.rst:36
-# 76de0e4d9dfc4e9d954aeef6daacbe31
+# a960e653a5ac433685ae4a9128e438e3
 msgid "More info"
-msgstr ""
+msgstr "追加情報"
 
 #: ../source/install.rst:38
-# 231f106c4f364424a4d549b2613369bd
+# 735882bb73d64b26a3112d570ee384df
 msgid "See https://dev.localwiki.org for more information on installation."
-msgstr ""
+msgstr "より詳細なインストール方法については https://dev.localwiki.org を参照してください。"
 

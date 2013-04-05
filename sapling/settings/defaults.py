@@ -34,7 +34,7 @@ DATABASES = {
     }
 }
 
-GLOBAL_LICENSE_NOTE = _("""<p>Except where otherwise noted, this content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights.</p>""")
+GLOBAL_LICENSE_NOTE = _("""<p>Except where otherwise noted, this content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights</a>.</p>""")
 
 EDIT_LICENSE_NOTE = _("""<p>By clicking "Save Changes" you are agreeing to release your contribution under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>""")
 
@@ -166,7 +166,7 @@ HAYSTACK_SEARCH_ENGINE = 'solr'
 
 THUMBNAIL_BACKEND = 'utils.sorl_backends.AutoFormatBackend'
 
-OL_API = STATIC_URL + 'openlayers/OpenLayers.js?tm=1330130829'
+OL_API = STATIC_URL + 'openlayers/OpenLayers.js?tm=1348975452'
 OLWIDGET_CSS = '%solwidget/css/sapling.css?tm=1317359250' % STATIC_URL
 OLWIDGET_JS = '%solwidget/js/olwidget.js?tm=1317359250' % STATIC_URL
 CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js?tm=1317359250' % STATIC_URL
@@ -188,6 +188,7 @@ TEMPLATE_LOADERS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     "utils.context_processors.sites.current_site",
     "utils.context_processors.settings.license_agreements",
+    "utils.context_processors.settings.services",
 
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",

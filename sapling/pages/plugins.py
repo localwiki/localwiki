@@ -125,9 +125,10 @@ def include_content(elem, plugin_tag, context=None):
                     if c.startswith('includepage_')]
     args = ['"%s"' % escape_quotes(href)] + args
     container = etree.Element('div')
+    container.attrib['class'] = 'included_page_wrapper'
     align = [a for a in args if a in ['left', 'right']]
     if len(align):
-        container.attrib['class'] = 'includepage_' + align[0]
+        container.attrib['class'] += ' includepage_' + align[0]
     style = parse_style(elem.attrib.get('style', ''))
     if 'width' in style:
         container.attrib['style'] = 'width: ' + style['width'] + ';'
@@ -141,14 +142,18 @@ def include_tag(elem, context=None):
     if not 'href' in elem.attrib:
         return
     href = unquote_url(desanitize(elem.attrib['href']))
-    elem.attrib['href'] = prefixed_url_to_name(href, 'tags/')
+    elem.attrib['href'] = prefixed_url_to_name(
+        href.decode('utf-8'), 'tags/'
+    ).decode('utf-8')
     return include_content(elem, 'include_tag', context)
 
 
 def include_page(elem, context=None):
     if not 'href' in elem.attrib:
         return
-    elem.attrib['href'] = unquote_url(desanitize(elem.attrib['href']))
+    elem.attrib['href'] = unquote_url(
+        desanitize(elem.attrib['href'])
+    ).decode('utf-8')
     if elem.attrib['href'].startswith('tags/'):
         return include_tag(elem, context)
     return include_content(elem, 'include_page', context)
@@ -325,6 +330,8 @@ class LinkNode(Node):
                         cls = ' class="file_%s"' % file.rough_type
                     except PageFile.DoesNotExist:
                         cls = ' class="missing_link"'
+                elif unquote_plus(url).startswith('tags/'):
+                    cls = ' class="tag_link"'
                 else:
                     try:
                         page = Page.objects.get(slug__exact=slugify(url))

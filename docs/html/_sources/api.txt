@@ -194,6 +194,12 @@ Delete
 To delete an existing page, issue a DELETE to /api/page/[name].
 
 
+More API Examples for Pages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:ref:`api_examples_page`
+
+
 Files
 -----
 
@@ -258,6 +264,11 @@ Delete
 
 To delete an existing file, issue a DELETE to ``/api/file/[id]/``.
 
+
+More API Examples for Files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:ref:`api_examples_file`
 
 
 Maps
@@ -346,6 +357,12 @@ Delete
 To delete an existing map, issue a DELETE to /api/map/[pagename].
 
 
+More API Examples for Maps
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:ref:`api_examples_map`
+
+
 Tags
 ----
 
@@ -406,6 +423,13 @@ Delete
 ~~~~~~
 
 You cannot currently delete a tag.
+
+
+More API Examples for Tags
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:ref:`api_examples_tag`
+
 
 Page Tags
 ---------

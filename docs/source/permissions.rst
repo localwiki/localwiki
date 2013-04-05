@@ -74,6 +74,26 @@ Click on the username, and scroll down "Groups" section. Hold down
    "active" checkbox for that user.
 
 
+Adding a new administrator
+--------------------------
+
+To add a new administator, go pull up a user account in the *Users*
+area, check both the *Staff status* and *Superuser status* checkboxes,
+and save.
+
+.. figure:: /_static/images/admin_add_new_admin.png
+
+.. warning::
+
+   Be care about who you set as an administrator.  By default,
+   administrators can permanently delete data.  Also, **be sure that all
+   admins have strong passwords**, otherwise someone may hijack their
+   account and do evil things!
+
+   You can selectively add more granular permissions in the *User
+   permissions* area.
+
+
 Setting permissions for specific objects
 ----------------------------------------
 
