@@ -460,7 +460,8 @@ textarea, input, select {
   height: 300px!important;
 }
 #map .info {
-  padding-top: 0.3em;
+  display: table-cell;
+  padding-top: 10px;
 }
 #map .info a {
   padding-left: 25px;
@@ -474,7 +475,6 @@ textarea, input, select {
   padding-bottom: 13px;
   padding-right: 0.8em;
   font-weight: normal;
-  margin-top: 0.5em;
   margin-right: 0.5em;
 }
 #map .info a.view {
@@ -518,6 +518,9 @@ textarea, input, select {
     .mapwidget.small {
         border-left: none;
         border-right: none;
+    }
+    #map .info {
+        padding-left: 1em;
     }
 }
 
