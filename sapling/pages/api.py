@@ -188,6 +188,7 @@ class PageHistoryResource(ModelHistoryResource):
             'name': ALL,
             'slug': ALL,
             'history_date': ALL,
+            'history_type': ALL,
         }
         ordering = ['history_date']
 
