@@ -69,6 +69,8 @@ class PageTagSetHistoryResource(ModelHistoryResource):
         filtering = {
             'page': ALL_WITH_RELATIONS,
             'tags': ALL_WITH_RELATIONS,
+            'history_type': ALL,
+            'history_date': ALL,
         }
         ordering = ['history_date']
 

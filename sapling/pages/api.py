@@ -98,6 +98,12 @@ class FileHistoryResource(FileResource, ModelHistoryResource):
     class Meta:
         resource_name = 'file_version'
         queryset = PageFile.versions.all()
+        filtering = {
+            'name': ALL,
+            'slug': ALL,
+            'history_date': ALL,
+            'history_type': ALL,
+        }
         ordering = ['history_date']
 
 
