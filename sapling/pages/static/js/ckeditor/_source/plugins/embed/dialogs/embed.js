@@ -72,8 +72,8 @@ CKEDITOR.dialog.add( 'embed', function( editor )
 			attributes['class'] = 'plugin embed';
 			var style = [];
 			var node = $(data.code),
-				width = node.attr('width'),
-				height = node.attr('height');
+				width = node.width(),
+				height = node.height();
 			if(width)
 				style.push('width: ' + width + 'px;');
 			if(height)
