@@ -1,13 +1,19 @@
-from django.conf.urls.defaults import url
-from django.core.paginator import Paginator, InvalidPage
-from django.http import Http404
+from urllib import urlencode
 
+from django.conf.urls.defaults import url
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, InvalidPage
+from django.http import Http404, HttpResponseRedirect
+
+from tastypie import http
 from tastypie import fields
+from tastypie.bundle import Bundle
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie.validation import Validation
 from tastypie.authorization import DjangoAuthorization
 from tastypie.utils import trailing_slash
 
+from redirects.models import Redirect
 from models import Page, PageFile, name_to_url, url_to_name, clean_name
 from sapling.api import api
 from sapling.api.resources import ModelHistoryResource
@@ -139,6 +145,26 @@ class PageResource(PageURLMixin, ModelResource):
         # and get the base class' URLs (our slug stuff)
         l += super(PageResource, self).prepend_urls()
         return l
+
+    def get_detail(self, request, **kwargs):
+        resp = super(PageResource, self).get_detail(request, **kwargs)
+        if not isinstance(resp, http.HttpNotFound):
+            return resp
+        # check if the page has been redirected
+        try:
+            obj = Redirect.objects.get(
+                source=self.remove_api_resource_names(kwargs)['name']
+            ).destination
+            redirect_url = (self.get_resource_uri(obj) + 
+                            '?' + urlencode(request.GET))
+            return HttpResponseRedirect(redirect_url)
+        except ObjectDoesNotExist:
+            return resp
+
+        bundle = self.build_bundle(obj=obj, request=request)
+        bundle = self.full_dehydrate(bundle)
+        bundle = self.alter_detail_data_to_serialize(request, bundle)
+        return self.create_response(request, bundle)
 
     def get_search(self, request, **kwargs):
         """
