@@ -192,7 +192,7 @@ textarea, input, select {
 @media screen and (max-width: 500px) {
     #header_bar {
         margin-top: 8px;
-        padding: 0.5em 1em 0.5em 1em;
+        padding: 0.5em 1em 1em 1em;
     }
     #header_bar .inner {
         display: block;
