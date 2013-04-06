@@ -170,8 +170,11 @@ class PageResource(PageURLMixin, ModelResource):
         return self.create_response(request, object_list)
 
     def dehydrate(self, bundle):
-        if (not bundle.request.META['PATH_INFO'].startswith('/api/page') and
-            not bundle.request.GET.get('full')):
+        in_page_api = False
+        for pattern in self.urls:
+            if pattern.resolve(bundle.request.path.replace('/api/', '')):
+                in_page_api = True
+        if (not in_page_api and not bundle.request.GET.get('full')):
             bundle = bundle.data['resource_uri']
         return bundle
 
