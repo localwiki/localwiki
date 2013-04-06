@@ -87,7 +87,7 @@ textarea, input, select {
 @media screen and (max-width: 700px) {
     #main {
         margin-left: 1em;
-        margin-right: 1.5em;
+        margin-right: 1em;
     }
 }
 
@@ -1073,6 +1073,7 @@ div.templates li {
 #recentchanges #limit_to {
     float: right;
     margin-top: 0.1em;
+    padding-bottom: 0.7em;
 }
 #recentchanges #limit_to span {
     float: left;
@@ -1199,6 +1200,7 @@ div.templates li {
         clear: both;
         float: none;
         height: 5em;
+        padding-bottom: 0;
     }
     #recentchanges #limit_to span {
         display: block;
@@ -1212,10 +1214,11 @@ div.templates li {
         margin-right: 0.4em;
     }
     #recentchanges .changelabel {
+        display: block;
         width: 100%;
+        clear: both;
         margin-bottom: 0.5em;
-        padding-top: 10px;
-        padding-bottom: 11px;
+        padding: 10px 0 11px 0;
     }
     #recentchanges .changelabel.updated {
         /* Slightly different padding*/
