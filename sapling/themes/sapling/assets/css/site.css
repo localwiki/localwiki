@@ -190,6 +190,9 @@ textarea, input, select {
     }
 }
 @media screen and (max-width: 500px) {
+    #header {
+        border: 0;
+    }
     #header_bar {
         margin-top: 8px;
         padding: 0.5em 1em 1em 1em;
@@ -616,21 +619,18 @@ textarea, input, select {
         color: #666!important;
         font-weight: bold;
         border: none;
-        margin-bottom: 5px;
+        margin-bottom: 4px;
         /* TODO: explore using purely CSS gradients */
         background: #e6e6e6 url(../img/gradient.png) repeat-x bottom left;
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
         border-bottom: 1px solid #bfbfbf;
         text-decoration: none;
-        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
-        -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
-        -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
     }
     #nav ul {
         margin: 0;
         padding: 0;
         top: 0;
         display: none;
+        border: none;
     }
     #nav li, #nav li a {
         width: 100%;
@@ -638,9 +638,8 @@ textarea, input, select {
         margin: 0;
         float: none;
         font-size: 110%;
-	    text-shadow: 1px 1px 0px #283744;
         background-color: #455868;
-        color: #fff!important;
+        color: #f4f4f4!important;
 	    display: block;
 	    text-align: center;
 	    text-decoration: none;
@@ -648,15 +647,21 @@ textarea, input, select {
     }
     #nav li a {
         border: none;
-        border-bottom: 1px solid #576979;
+        border-bottom: 2px solid #576979;
         border-radius: 0;
         -moz-border-radius: 0;
         -webkit-border-radius: 0;
     }
+    #nav li:last-child a {
+        border-bottom: none;
+    }
     #nav li a:hover, #nav li a:active {
         background-color: #8c99a4;
         border: none;
-        border-bottom: 1px solid #576979;
+        border-bottom: 2px solid #576979;
+    }
+    #nav li:last-child a:hover, #nav li:last-child a:active {
+        border-bottom: none;
     }
     #nav #pull {  
         display: block;  

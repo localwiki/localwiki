@@ -42,7 +42,7 @@ $(function() {
   
     $(pull).on('click', function(e) {  
         e.preventDefault();  
-        menu.slideToggle();  
+        menu.slideToggle(300);
     });  
 
     $(window).resize(function(){  
