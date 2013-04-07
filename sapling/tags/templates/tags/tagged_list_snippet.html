@@ -7,6 +7,7 @@
     <div class="info"><a class="view tiny button" href="{% url maps:tagged tag=tag.slug %}">{% trans "View" %}</a></div>
   </div>
 {% endif %}
+<div id="pagetagset">
 {% if pagetagset_list %}
   <ul>
   {% for pagetags in pagetagset_list %}
@@ -16,3 +17,4 @@
 {% else %}
   {% blocktrans %}There are no pages with the tag "{{ tag_name }}".{% endblocktrans %}
 {% endif %}
+</div>

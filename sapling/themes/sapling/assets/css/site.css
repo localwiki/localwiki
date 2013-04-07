@@ -110,7 +110,7 @@ textarea, input, select {
         border-top: 1px solid #fafafa;
         border-bottom: 1px solid #fafafa;
     }
-    #content.has_map #page {
+    #content.has_map #page, #content.has_map #pagetagset {
         margin-top: 244px;
     }
 }
@@ -553,7 +553,6 @@ textarea, input, select {
 .pagefile form table td, .pagefile form table, .pagefile form th {
     border: none;
 }
-
 
 /*
 ====================================
