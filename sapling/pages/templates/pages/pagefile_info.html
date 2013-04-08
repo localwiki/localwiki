@@ -27,7 +27,7 @@
   	{% spaceless %}
     <a class="no_icon" href="{% url pages:file slug=file.slug file=file.name|urlencode %}">
     	{% thumbnail file.file "800x800" upscale=False as im %}
-    	<img src="{{ im.url }}" />
+    	<img src="{{ im.url }}" srcset="{{ im.url|resolution:"2x" }} 2x, {{ im.url|resolution:"1.5x" }} 1.5x"/>
     	{% endthumbnail %}
     </a>
     {% endspaceless %}

@@ -29,6 +29,7 @@ class TagResource(ModelResource):
             'name': ALL,
             'slug': ALL,
         }
+        ordering = ['name', 'slug']
         list_allowed_methods = ['get', 'post']
         authentication = ApiKeyWriteAuthentication()
         authorization = ChangePageAuthorization()
@@ -48,6 +49,7 @@ class PageTagSetResource(PageURLMixin, ModelResource):
             'page': ALL_WITH_RELATIONS,
             'tags': ALL_WITH_RELATIONS,
         }
+        ordering = ['page', 'tags']
         list_allowed_methods = ['get', 'post']
         authentication = ApiKeyWriteAuthentication()
         authorization = ChangePageAuthorization()
@@ -67,6 +69,8 @@ class PageTagSetHistoryResource(ModelHistoryResource):
         filtering = {
             'page': ALL_WITH_RELATIONS,
             'tags': ALL_WITH_RELATIONS,
+            'history_type': ALL,
+            'history_date': ALL,
         }
         ordering = ['history_date']
 

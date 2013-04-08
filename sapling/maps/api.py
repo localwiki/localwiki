@@ -47,6 +47,8 @@ class MapHistoryResource(gis_resources.ModelResource, ModelHistoryResource):
             'polys': ALL,
             'geom': ALL,
             'length': ALL,
+            'history_date': ALL,
+            'history_type': ALL,
         }
         ordering = ['history_date']
 

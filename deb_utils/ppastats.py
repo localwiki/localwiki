@@ -48,7 +48,7 @@ for ppa in ppas:
                         stats[date] = dict([(r, 0) for r in releases])
                     stats[date][release] = downloads
 
-try:
+def plot_stats(stats):
     import numpy as np
     import matplotlib
     # prevent interactive pop-up
@@ -73,7 +73,8 @@ try:
         kwargs.update(alpha=a,label=r,bottom=prev)
         ax.bar(dates, all[i],**kwargs)
         a*=.72
-    plt.gcf().autofmt_xdate(rotation=0, ha='left')
+    plt.gcf().autofmt_xdate(rotation=70, ha='right')
+    plt.setp(ax.xaxis.get_majorticklabels(), rotation_mode='anchor', va='center')
     l = plt.legend()
     l.set_frame_on(False)
     # Liberate axis!
@@ -93,6 +94,11 @@ try:
     for r,t in zip(releases,all.sum(1)):
         print '%4d :'%t,r
     print "Total downloads: ", all.sum()
+
+
+
+try:
+    plot_stats(stats)
 except ImportError:
     # Couldn't import matplotlib, let's do the old thing
     for date, downloads in reversed(stats.items()):
