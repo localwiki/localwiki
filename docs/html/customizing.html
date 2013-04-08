@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Customizing your localwiki’s appearance &mdash; LocalWiki 0.4.2 documentation</title>
+    <title>Customizing your localwiki’s appearance &mdash; LocalWiki 0.5.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.4.2',
+        VERSION:     '0.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="LocalWiki 0.4.2 documentation" href="index.html" />
+    <link rel="top" title="LocalWiki 0.5.0 documentation" href="index.html" />
     <link rel="next" title="Advanced topics" href="advanced.html" />
     <link rel="prev" title="Contributing" href="contribute.html" /> 
   </head>
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="contribute.html" title="Contributing"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">LocalWiki 0.5.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -271,31 +271,12 @@ Page.  You&#8217;ll want to copy
 to <tt class="docutils literal"><span class="pre">/usr/share/localwiki/static/img</span></tt> (or
 <tt class="docutils literal"><span class="pre">env/share/locawiki/static/img</span></tt> for manual installations)</p>
 <p>4. Now we want to reference this new <tt class="docutils literal"><span class="pre">denton.css</span></tt> file from the HTML
-of all the pages.  Let&#8217;s go back into the localwiki code directory,
-referenced in the beginning of <a class="reference internal" href="#example1"><em>Example 1</em></a> and copy over <tt class="docutils literal"><span class="pre">sites/base.html</span></tt>
-to our global templates directory:</p>
-<div class="highlight-python"><pre>$ cd /path/to/localwiki/code/directory
-$ cd themes/sapling/templates/site
-$ ls
-base.html  login_info.html  nav.html  search_form.html  site_title.html
-$ cp base.html /usr/share/localwiki/templates/site/</pre>
+of all the pages.  Let&#8217;s go into our local template directory,
+<tt class="docutils literal"><span class="pre">/usr/share/localwiki/templates/</span></tt> and create the file
+<tt class="docutils literal"><span class="pre">site/extra_media.html</span></tt> and then we add the extra CSS into the file:</p>
+<div class="highlight-python"><pre>&lt;link rel="stylesheet" href="{{ STATIC_URL }}css/denton.css?v=1"&gt;</pre>
 </div>
-<p>and then open up the new
-<tt class="docutils literal"><span class="pre">/usr/share/localwiki/templates/site/base.html</span></tt>
-file.  We&#8217;ll change this portion of the file:</p>
-<div class="highlight-python"><pre>{% block media %}
-&lt;link rel="stylesheet" href="{% static "theme/css/reset.css" %}"&gt;
-&lt;link rel="stylesheet" href="{% static "theme/css/site.css" %}"&gt;
-{% endblock %}</pre>
-</div>
-<p>to look like this:</p>
-<div class="highlight-python"><pre>{% block media %}
-&lt;link rel="stylesheet" href="{% static "theme/css/reset.css" %}"&gt;
-&lt;link rel="stylesheet" href="{% static "theme/css/site.css" %}"&gt;
-&lt;link rel="stylesheet" href="{{ STATIC_URL }}css/denton.css?v=1"&gt;
-{% endblock %}</pre>
-</div>
-<p>Then we simply restart the webserver:</p>
+<p>Then we save the file and restart the webserver:</p>
 <div class="highlight-python"><pre>sudo /etc/init.d/apache2 restart</pre>
 </div>
 <p>and we&#8217;ll have the <tt class="docutils literal"><span class="pre">denton.css</span></tt> file referenced on all our pages!</p>
@@ -408,7 +389,7 @@ simply define <tt class="docutils literal"><span class="pre">themes/nameofyourth
         <li class="right" >
           <a href="contribute.html" title="Contributing"
              >previous</a> |</li>
-        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">LocalWiki 0.5.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

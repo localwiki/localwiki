@@ -4,6 +4,7 @@
 {% load url from future %}
 {% load tags_tags %}
 {% load search_tags %}
+{% load static from staticfiles %}
 
 {% block title %}
    {% if query %}
@@ -16,6 +17,18 @@
 {% block media %}
    {{ block.super }}
    {% page_tags_form_media %}
+   {% if map %}
+       {{ map.media }}
+       <script type="text/javascript" src="{% static "js/jquery/jquery-scrolltofixed-min.js" %}"></script>
+       <script type="text/javascript">
+       $(document).ready(function() {
+           $('#map').scrollToFixed({
+              limit: (
+                $('#search_results').height() - $('#search_results h3').height() - $('#create_page_dialog').height() - $('#search_results .simple_pagination').height())
+});
+       });
+       </script>
+   {% endif %}
 {% endblock %}
 
 {% block header_title %}
@@ -35,7 +48,22 @@
               <div><a href="{% url 'pages:show' slug=query_slug %}" class="button">{% trans "Create this page" %}</a></div>
           </div>
         {% endif %}
-
+        {% if map %}
+          <div id="map">
+            {{ map }}
+            {% if page.has_previous or page.has_next %}
+            <div class="simple_pagination">
+                {% if page.has_previous %}
+                <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}" class="tiny button">&laquo; {% trans "Previous" %}</a>
+                {% endif %}
+                {% if page.has_next %}
+                <a href="?q={{ query }}&amp;page={{ page.next_page_number }}" class="tiny button">{% trans "Next" %} &raquo;</a>
+                {% endif %}
+            </div>
+            {% endif %}
+            </div>
+        {% endif %}
+        <div id="results_list"{% if map %}class="with_map"{% endif %}>
         {% for result in page.object_list %}
             {% ifequal result.model_name "page" %}
             <h3>
@@ -53,6 +81,7 @@
         {% empty %}
             <p>{% trans "No results found." %}</p>
         {% endfor %}
+        </div>
 
         {% if page.has_previous or page.has_next %}
             <div class="simple_pagination">

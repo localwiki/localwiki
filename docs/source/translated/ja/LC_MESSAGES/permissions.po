@@ -6,153 +6,153 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: LocalWiki 0.3\n"
+"Project-Id-Version: LocalWiki 0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-18 03:07\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-11-11 16:46\n"
+"PO-Revision-Date: 2012-11-11 17:46+0900\n"
+"Last-Translator: Satoshi IIDA <nyampire@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../source/permissions.rst:2
-# 01804b0606fe40f4962468039b929faa
+# 997467f89b2d414caa3723438eb39995
 msgid "Permissions"
-msgstr ""
+msgstr "アクセス権限設定"
 
 #: ../source/permissions.rst:4
-# e6eab23b3f354b13890fdc461b6d538a
+# 5e93963a199449ee817f7785d79aa1cb
 msgid "LocalWiki uses a pretty flexible system of permissions that allows the administrator to say who is allowed to add, change, and delete different objects (pages, maps, files, etc.).  It also lets the administrator ban users who are malicious."
-msgstr ""
+msgstr "Localwikiでは柔軟なアクセス管理方式を採用しており、それぞれのオブジェクト(ページ、マップ、ファイル、その他)に対して、ユーザが追加、変更、削除の権限をどこまで有するかを管理者によって設定することができます。また、悪意のあるユーザに対する禁止ユーザ登録も実施可能です。"
 
 #: ../source/permissions.rst:9
-# 7b184a9c222c4f24b033c3a41af84912
+# fa116bcd8f7747bcb3e8a1f014589084
 msgid "There are two levels of permissions: by type of object (i.e., page, map, etc.) and by specific object (i.e., \"Front Page\").  This allows you to set the default permissions for all objects and still adjust them for certain objects that should be more protected (or more open)."
-msgstr ""
+msgstr "アクセス権限設定には2つのレベルがあります。: 1つはオブジェクトの種類(例:ページ、マップ、その他)に対する設定、もう一つは特定のオブジェクト(例: \"Front Page\"というページ)に対する設定です。 この方式によって、まずは全てのオブジェクトに対する規定の制限を設定し、その上で幾つかのオブジェクトに対してはさらに細かい制限を設けたり、逆に設定をゆるめたりすることが可能です。"
 
 #: ../source/permissions.rst:16
-# 30a2f09d20fd42c7aff60ce4cd59e3d7
+# 7de0021062f042c7af255480a3f9110c
 msgid "Users and groups"
-msgstr ""
+msgstr "ユーザとグループ"
 
 #: ../source/permissions.rst:18
-# bfc7947775704998aacb406a331ccd6f
+# 4b266eccff624ee99d09a0055638ef80
 msgid "Users can belong to one or more Group, and new groups can be added any time. You can grant permissions to each group, and the users in that group will inherit those permissions.  This makes role-based permissions possible, allowing you, for example, to create a group called \"Trusted Users\" and give this group additional permissions."
-msgstr ""
+msgstr "ユーザは1つ以上のグループに所属させることができます。また、グループはいつでも新規に作成することが可能です。 管理者は特定のアクセス権限をグループ毎に付与し、グループに所属しているユーザはグループに対するアクセス権限設定を引き継ぎます。 役割ベースのアクセス権限設定によって、例えば \"Trusted Users(信頼済みのユーザ)\" のようなグループを作成し、そのグループに対して追加のアクセス権限設定を付与することができます。"
 
 #: ../source/permissions.rst:26
-# c9f4a0ea87d941afaf008a4761f55871
+# c6e62e6787a4498290282608bf17ee7f
 msgid "It is good practice to grant permissions to groups instead of individual users because it's more manageable (there are lots of users and few groups) and maintainable (users come and go, and it's much easier to add and remove them from groups as needed)."
-msgstr ""
+msgstr "アクセス権限設定は、個別のユーザではなくグループに対して行うことを推奨します。そのほうが管理性が高く(多数のユーザと少数のグループ)、なおかつ、メンテナンス性も向上します(ユーザは入れ替わることがあり、必要に応じてグループへ編集するほうが便利です)。"
 
 #: ../source/permissions.rst:32
-# bff66e92f85849e89a2bfcf785f26581
+# 3e09d157af2347f787e7773cdc3c2b38
 msgid "If you followed the installation instructions, you should have the following groups out of the box:"
-msgstr ""
+msgstr "インストール手順に沿ってインストールを行った場合、以下のグループが規定で設定されているはずです:"
 
 #: ../source/permissions.rst:38
-# a035c98dbc864f7f8aebf5a7b8d25a10
+# 82edc0b5d72f4649b35e63c1bed12a4d
 msgid "This group contains ``AnonymousUser``, which is used to set permissions for people who are not logged in."
-msgstr ""
+msgstr "このグループは ``AnonymousUser`` (匿名ユーザ)を意味します。ログインをおこなっていない訪問者に対する権限設定となります。"
 
 #: ../source/permissions.rst:42
-# 53bdc14bc08649ba81e00f1dfa126dcc
+# 6653e0758a2e4420bacc76cf0d6bb9e1
 msgid "This group contains every user except ``AnonymousUser``.  New users are automatically added to this group.  It's a catch-all group to make it easy to set the default settings for everyone who's logged in."
-msgstr ""
+msgstr "このグループは ``AnonymousUser`` (認証済みユーザ)、すなわちログインを行ったユーザを意味します。 新しく作成されたユーザは自動的にこのグループに追加されます。 ログインを行ったユーザ全てに対するデフォルトの設定として、このグループの設定を利用するのが便利です。"
 
 #: ../source/permissions.rst:47
-# f61cbca401aa473aa32825bd438146ca
+# 05f224ab376646109f1857daf5eb1f3b
 msgid "Users added to this group will be denied all permissions, regardless of what permissions are set for this group or what other groups they belong to."
-msgstr ""
+msgstr "全てのアクセス権限設定を剥奪されたグループです。 ユーザが他に所属しているグループの権限に関係なく、すべてのアクセス権限が剥奪されます。"
 
 #: ../source/permissions.rst:53
-# c959527db4db479fb75a5fa26b3b1e1a
+# f35f0cffe5754568946c96b202675e94
 msgid "Banning a user"
-msgstr ""
+msgstr "禁止ユーザ設定"
 
 #: ../source/permissions.rst:55
-# 86be70baa9e14d5b9b031b0a83838160
+# bba543aed67f46d680c8ae2931021d60
 msgid "To ban a user, simply add the user to the ``Banned`` group.  You do not need to remove the user from other groups.  Any user in the ``Banned`` group will not have any permissions."
-msgstr ""
+msgstr "ユーザの禁止設定を行うには、単純にそのユーザを ``Banned`` グループに追加してください。その他のグループからそのユーザを除外する必要はありません。 ``Banned`` グループに追加されたユーザはすべてのアクセス権限設定を剥奪されます。"
 
 #: ../source/permissions.rst:59
-# 9df1a51582594c6c826c88fa9dfec46f
+# c3983ca63c2e4f2187d8b1672845c79f
 msgid "First, find the user in the admin interface, using the search box:"
-msgstr ""
+msgstr "まずは、管理画面内の検索ボックスを使って対象のユーザを特定します:"
 
 #: ../source/permissions.rst:63
-# 09f36947dc7a4ea79288866af476ed71
+# e28fce49ba6e49fe8493b9b870908526
 msgid "Click on the username, and scroll down \"Groups\" section. Hold down \"Control\" (\"Command\" on a Mac) while selecting ``Banned`` group, and press \"Save\"."
-msgstr ""
+msgstr "ユーザ名をクリックし、 \"Groups\"の位置まで画面をスクロールさせます。 \"Control\" (Macでは \"Command\")キーを押しながら ``Banned`` グループを選択し、\"Save\"を行います。"
 
 #: ../source/permissions.rst:71
-# b9a3b69987c84af5835c1bde41f05a9e
+# 0aece73684da4ac58316bd3cc25c4455
 msgid "While it's possible in the admin interface to delete a user, this is **NOT** recommended as it will also delete every change the user has made. If you need to disable a user's account, it's best to just unmark the \"active\" checkbox for that user."
-msgstr ""
+msgstr "管理画面ではユーザの削除も可能ですが、ユーザの削除は **推奨されません。** これは、ユーザの削除を行うことで、そのユーザが行った編集作業がすべて削除されてしまうためです。ユーザアカウントの停止が必要な場合は、当該ユーザの \"active\"チェックボックスのチェックを外してください。"
 
 #: ../source/permissions.rst:78
-# da673474e95b4f8b8873b5bddbc3c180
+# 927a1a4ffc3d4fc2b9a658e8f3bd85e4
 msgid "Setting permissions for specific objects"
-msgstr ""
+msgstr "特定のオブジェクトに対するアクセス権限設定"
 
 #: ../source/permissions.rst:80
-# 4df28cd9a2b54ac786de6101fc02eab0
+# e8fe383f0f254e429421ee03830b13ba
 msgid "If you view a Page in the admin interface and then click \"Object permissions\" you can then enter a group name and select which permissions the given group should have for that specific Page.  Only those groups you choose will be able to add, edit, and delete the Page."
-msgstr ""
+msgstr "管理画面の Page項目の中に表示される \"Object permissions\" をクリックすると、グループの一覧が表示されます。この画面から、そのページに対してのアクセス権限をグループごとに設定することが可能です。"
 
 #: ../source/permissions.rst:85
-# c2439315ce594e9e8764573e73ca1a09
+# 83e582eebb4f406cba428f3ed8580d9b
 msgid "Say, for example, you want to lock down a page so that only logged-in users can edit it.  First, find the page in the admin interface and click on \"Object permissions\" in the top right."
-msgstr ""
+msgstr "例えば特定のページに対しては、ログインしているユーザだけが編集できるように設定したいとします。この場合、まずは管理画面の一覧から当該のページを特定し、右上の \"Object permissions\"をクリックします。"
 
 #: ../source/permissions.rst:91
-# 6c50b0c136ae4f479408862970ec7663
+# 489c7ce18d5e401d84e97312a878c073
 msgid "Then in the Groups section enter \"Authenticated\" and click \"Manage group\"."
-msgstr ""
+msgstr "次にグループセクションで \"Authenticated\" と入力し、 \"Manage group\" をクリックします。"
 
 #: ../source/permissions.rst:95
-# f4bb65c2d1484dc396c9b2b6163fafc6
+# c134985707254a9aba80f78f1337ee57
 msgid "Click the \"Choose all\" button and press \"Save\"."
-msgstr ""
+msgstr "\"Choose all\"をクリックして、 \"Save\" を押します。"
 
 #: ../source/permissions.rst:99
-# aeec6fbe01234a91b365a47e20896264
+# 5bad0f10752c4d4aaaa572d171d48896
 msgid "Now, only those users who have logged in will be able to edit this page."
-msgstr ""
+msgstr "これで、ログインが完了しているユーザだけがこのページを編集できるように、設定が変更されました。"
 
 #: ../source/permissions.rst:101
-# d6919b8e030d4d5fbb3cd676c58c1cbf
+# 43ad07b6906745f49973198b46ba6786
 msgid "To clear out per-object permissions and go back to the defaults, on the \"Object permissions\" screen click \"edit\" next to each group and clear out all permissions.  When there are no groups or users shown on the \"Object permissions\" screen, the application will look at the default permissions for that object type."
-msgstr ""
+msgstr "もしオブジェクト毎のアクセス権限設定を解除してデフォルトの設定を適用する場合は、 \"Object permissions\"画面で \"edit\"をクリックし、全てのアクセス権限設定をクリアしてください。 \"Object permissions\"画面でグループとユーザが1つも表示されなくなった場合、そのオブジェクト種別に対してはデフォルトのアクセス権限設定が適用されます。"
 
 #: ../source/permissions.rst:109
-# 853ce924e76c439fb1d082a8cef4ec45
+# 857274fce7cc4cd7a8cc0b5d02c4456b
 msgid "Setting default permissions"
-msgstr ""
+msgstr "デフォルトのアクセス権限を設定"
 
 #: ../source/permissions.rst:111
-# 61460a3d59654389adc58b47954b3e62
+# 545926d68f5141cf9eaadae91700258f
 msgid "When per-object permissions are not set for an object, the permissions backend looks at what permissions the user has (either directly or through the groups to which the user belongs) for that type of object."
-msgstr ""
+msgstr "オブジェクトに対して特定のアクセス権限が適用されていない場合、オブジェクトに対するアクセス権限設定は、ユーザに対して付与されたアクセス権限設定が適用されます(ユーザに対する直接的な付与であっても、あるいはグループを通した間接的な付与であっても違いはありません)。"
 
 #: ../source/permissions.rst:115
-# d01e9344f0794b4c9c7ab5dd63e0d5c9
+# dccbc82df6014eeabaf5e72111932968
 msgid "If needed, you can set these permissions through the admin interface.  Edit each group and select which default permissions the group should have."
-msgstr ""
+msgstr "デフォルトのアクセス権限設定を変更する必要が有る場合は、管理画面から変更が可能です。それぞれのグループを編集し、グループに対してデフォルトのアクセス権限を設定してください。"
 
 #: ../source/permissions.rst:118
-# a141603072fc402fb5d8245fcafaf0d2
+# 4a34dd070a59421d9566733c606b8f70
 msgid "Editing all of your group permissions by hand can be a lot to manage, so we provide a setting you can modify in ``settings.py`` and a command to apply them.  At the time of writing this, the setting looks like this::"
-msgstr ""
+msgstr "また、全てのグループに対して手動で権限設定を実施するのは管理が大変です。 そのため、別の方法として、``settings.py`` を編集して適用する方法も用意されています。 このドキュメントを記述している時点では、設定は以下のように記述します::"
 
 #: ../source/permissions.rst:158
-# 7278aef0f7d34f57a60e80556794748b
+# ec709d05e1ae4384bab62af41c6d9abd
 msgid "You can edit this setting by adding or removing permissions for certain groups or adding your own groups.  To apply these permissions (and overwrite the previously set defaults), run the following command::"
-msgstr ""
+msgstr "この設定ファイルに対して特定のグループを追加したり除外したりすることで、デフォルトのアクセス権限を設定することが可能です。編集した内容を適用(あるいは上書き)するには、以下のコマンドを入力します::"
 
 #: ../source/permissions.rst:165
-# fcd3c79b06174294be75500773d25b0b
+# 478531b21239455abcb426e50ffd3736
 msgid "Regardless of everything said in this section, administrators and superusers are always granted all permissions, no matter what groups they are in or even whether they are in the ``Banned`` group."
-msgstr ""
+msgstr "この章で説明されている内容に限らず、管理者と特権ユーザに対しては、所属しているグループに関わらず、常に全てのアクセス権限が許可されています。 ``Banned`` グループに所属してしまっている場合でも、管理者と特権ユーザに対しては全てのアクセス権限が許可されます。"
 

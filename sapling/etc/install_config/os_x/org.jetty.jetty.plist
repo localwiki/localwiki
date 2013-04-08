@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>org.jetty.jetty</string>
+        <key>ServiceDescription</key>
+        <string>Jetty 8</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>ProgramArguments</key>
+        <array>
+            <string>/usr/bin/java</string>
+            <string>-Djetty.home=/usr/local/Cellar/jetty/jetty/libexec/</string>
+            <string>-Dsolr.solr.home=/usr/local/Cellar/solr14/solr/libexec/example/solr/</string>
+            <string>-jar</string>
+            <string>/usr/local/Cellar/jetty/jetty/libexec/start.jar</string>
+        </array>
+        <key>WorkingDirectory</key>
+        <string>/usr/local</string>
+    </dict>
+</plist>
+

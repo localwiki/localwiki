@@ -11,7 +11,7 @@ from sapling.api.authentication import ApiKeyWriteAuthentication
 
 
 class MapResource(pages.api.PageURLMixin, gis_resources.ModelResource):
-    page = fields.ToOneField('pages.api.PageResource', 'page')
+    page = fields.ToOneField('pages.api.PageResource', 'page', full=True)
 
     class Meta:
         queryset = MapData.objects.all()
@@ -47,6 +47,8 @@ class MapHistoryResource(gis_resources.ModelResource, ModelHistoryResource):
             'polys': ALL,
             'geom': ALL,
             'length': ALL,
+            'history_date': ALL,
+            'history_type': ALL,
         }
         ordering = ['history_date']
 

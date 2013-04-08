@@ -63,13 +63,13 @@ pre, code {
     padding: .5em;
     white-space: pre-wrap;
     overflow: auto;
-    font-family: "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+    font-family: 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
     line-height: 20px;
     border: 1px solid #CBCBCB;
     background-color: #FFF8ED;
 }
 textarea, input, select {
-    font-family: "inconsolata-1", "inconsolata-2", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+    font-family: 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
     font-size: 16px;
     line-height: 20px;
 }
@@ -302,7 +302,7 @@ textarea, input, select {
 /* The entire-map div */
 #map {
     background: #E8ECEF url(../img/header-bg.png) top left repeat;
-    padding: 10px 10px 4px 10px;
+    padding: 10px;
     border-bottom: 1px solid #DAE1E5;
     border-left: 1px solid #DAE1E5;
     border-right: 1px solid #DAE1E5;
@@ -328,15 +328,34 @@ textarea, input, select {
 }
 #map .info {
   padding-top: 0.3em;
-  padding-bottom: 0.15em;
-
 }
 #map .info a {
-  background-image: url(../img/magnifying_glass.png);
-  background-repeat: no-repeat;
-  background-position: 9px 50%;
   padding-left: 25px;
   font-size: 90%;
+  background-repeat: no-repeat;
+  background-position: 9px 50%;
+}
+#map .info a {
+  display: block;
+  padding-top: 12px;
+  padding-bottom: 13px;
+  padding-right: 0.8em;
+  font-weight: normal;
+  margin-top: 0.5em;
+  margin-right: 0.5em;
+}
+#map .info a.view {
+  background-image: url(../img/magnifying_glass.png);
+}
+#map .info a.edit {
+  background-image: url(../img/edit_icon.png);
+}
+#map .simple_pagination {
+  padding-top: 0.4em;
+  height: 1.5em!important;
+}
+#map .simple_pagination a {
+  margin-right: 0.5em;
 }
 
 /* Map widget, when it's part of page content */
@@ -552,7 +571,7 @@ select {
     max-height: 300px;
     width: 250px;
     margin-bottom: 10px;
-    font: 16/20px "Inconsolata", 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+    font: 16/20px 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
 }
 input[type="submit"], input[type="button"], button, .button {
     font: 16px/25px "Cabin", Arial, "Helvetica Neue", "Helvetica", sans-serif;
@@ -949,6 +968,16 @@ div.templates li {
     padding-left: 30px;
     margin-right: 0.5em;
     margin-bottom: 0.5em;
+}
+
+#search_results #results_list.with_map {
+    margin-right: 480px;
+}
+
+#search_results #map {
+    margin-top: 1em;
+    margin-left: 0!important;
+    right: 8em;
 }
 
 /*

@@ -8,75 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-19 17:21-0700\n"
+"POT-Creation-Date: 2012-12-11 14:27-0600\n"
 "PO-Revision-Date: 2012-06-21 22:11\n"
 "Last-Translator: Anonymous User <anonymous@user.tld>\n"
+"Language: pt-PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt-PT\n"
 "X-Translated-Using: django-rosetta 0.6.5\n"
-
-#: settings.py:33
-msgid ""
-"<p>Except where otherwise noted, this content is licensed under a <a "
-"rel=\"license\" "
-"href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons "
-"Attribution License</a>. See <a href=\"/Copyrights\">Copyrights.</p>"
-msgstr ""
-"<p>特段の注釈が無い限り、このコンテンツは <a rel=\"license\" "
-"href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons "
-"Attribution License</a>の下にライセンスされます。 <a href=\"/Copyrights\">著作権</a>を参照。</p>"
-
-#: settings.py:35
-msgid ""
-"<p>By clicking \"Save Changes\" you are agreeing to release your "
-"contribution under the <a rel=\"license\" "
-"href=\"http://creativecommons.org/licenses/by/3.0/\" "
-"target=\"_blank\">Creative Commons-By license</a>, unless noted otherwise. "
-"See <a href=\"/Copyrights\" target=\"_blank\">Copyrights</a>.</p>"
-msgstr ""
-"<p>\"変更を保存\" をクリックすると、特段の注釈が無い限り、あなたは自分の投稿を <a rel=\"license\" "
-"href=\"http://creativecommons.org/licenses/by/3.0/\" "
-"target=\"_blank\">Creative Commons-By license</a>の下にリリースすることに同意したことになります。 <a"
-" href=\"/Copyrights\" target=\"_blank\">著作権</a>を参照。</p>"
-
-#: settings.py:37
-msgid ""
-"I agree to release my contributions under the <a rel=\"license\" "
-"href=\"http://creativecommons.org/licenses/by/3.0/\" "
-"target=\"_blank\">Creative Commons-By license</a>, unless noted otherwise. "
-"See <a href=\"/Copyrights\" target=\"_blank\">Copyrights</a>."
-msgstr ""
-"特段の注釈が無い限り、私は自分の投稿を <a rel=\"license\" "
-"href=\"http://creativecommons.org/licenses/by/3.0/\" "
-"target=\"_blank\">Creative Commons-By</a>の下にリリースすることに同意します。 <a "
-"href=\"/Copyrights\" target=\"_blank\">著作権</a>参照。"
-
-#: settings.py:39
-msgid ""
-"I would like to receive occasional updates about this project via email."
-msgstr "このプロジェクトのアップデートを不定期にメールで受け取ります。"
-
-#: settings.py:58
-msgid "English"
-msgstr "英語"
-
-#: settings.py:59
-msgid "Portuguese"
-msgstr "ポルトガル語"
-
-#: settings.py:60
-msgid "German (Swiss)"
-msgstr "ドイツ語 (スイス)"
-
-#: settings.py:61
-msgid "Spanish (Argentina)"
-msgstr "スペイン語 (アルゼンチン)"
-
-#: settings.py:62
-msgid "Danish"
-msgstr "デンマーク語"
 
 #: ckeditor/models.py:30
 msgid "This field contains invalid data."
@@ -106,19 +45,19 @@ msgstr "アップロードできません"
 msgid "Upload result"
 msgstr "アップロード結果"
 
-#: dashboard/views.py:130 dashboard/views.py:145
+#: dashboard/views.py:159 dashboard/views.py:172
 msgid "pages"
 msgstr "ページ"
 
-#: dashboard/views.py:131 dashboard/views.py:148
+#: dashboard/views.py:160 dashboard/views.py:175
 msgid "maps"
 msgstr "マップ"
 
-#: dashboard/views.py:132 dashboard/views.py:151
+#: dashboard/views.py:161 dashboard/views.py:178
 msgid "files"
 msgstr "ファイル"
 
-#: dashboard/views.py:134 dashboard/views.py:154
+#: dashboard/views.py:163 dashboard/views.py:181
 msgid "redirects"
 msgstr "リダイレクト"
 
@@ -130,49 +69,56 @@ msgstr "ダッシュボード"
 msgid "Statistics loading.  This may take several minutes the first time."
 msgstr "統計をロード中。初回は数分掛かることがあります。"
 
-#: dashboard/templates/dashboard/index.html:23
+#: dashboard/templates/dashboard/index.html:24
 #: dashboard/templates/dashboard/render.html:4
 msgid "Pages"
 msgstr "ページ"
 
-#: dashboard/templates/dashboard/index.html:24
+#: dashboard/templates/dashboard/index.html:25
 #: dashboard/templates/dashboard/render.html:5
 #: pages/templates/pages/cke_filebrowser.html:7
 #: pages/templates/pages/page_files.html:4
 msgid "Files"
 msgstr "ファイル"
 
-#: dashboard/templates/dashboard/index.html:25
+#: dashboard/templates/dashboard/index.html:26
 #: dashboard/templates/dashboard/render.html:6
 msgid "Maps"
 msgstr "マップ"
 
-#: dashboard/templates/dashboard/index.html:26
+#: dashboard/templates/dashboard/index.html:27
 #: dashboard/templates/dashboard/render.html:7
 msgid "Redirects"
 msgstr "リダイレクト"
 
-#: dashboard/templates/dashboard/index.html:27
+#: dashboard/templates/dashboard/index.html:28
 #: dashboard/templates/dashboard/render.html:8
 msgid "Users"
 msgstr "ユーザ"
 
-#: dashboard/templates/dashboard/index.html:32
+#: dashboard/templates/dashboard/index.html:33
 #: dashboard/templates/dashboard/render.html:13
 msgid "Growth over time"
 msgstr "成長の経時比較"
 
-#: dashboard/templates/dashboard/index.html:39
+#: dashboard/templates/dashboard/index.html:35
+#: dashboard/templates/dashboard/index.html:45
+#: dashboard/templates/dashboard/index.html:55
+#: dashboard/templates/dashboard/index.html:65
+msgid "Generating graph..."
+msgstr ""
+
+#: dashboard/templates/dashboard/index.html:43
 #: dashboard/templates/dashboard/render.html:20
 msgid "Edits over time"
 msgstr "編集の経時比較"
 
-#: dashboard/templates/dashboard/index.html:46
+#: dashboard/templates/dashboard/index.html:53
 #: dashboard/templates/dashboard/render.html:27
 msgid "Page content growth over time"
 msgstr "ページコンテンツの経時比較"
 
-#: dashboard/templates/dashboard/index.html:53
+#: dashboard/templates/dashboard/index.html:63
 #: dashboard/templates/dashboard/render.html:34
 msgid "Users registered over time"
 msgstr "ユーザ登録数の経時比較"
@@ -187,12 +133,14 @@ msgstr "\"%s\" 向けのマップ"
 msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
 "instances."
-msgstr "\"%(fieldname)s\" 属性は %(ownername)s インスタンスからのみアクセスできます。"
+msgstr ""
+"\"%(fieldname)s\" 属性は %(ownername)s インスタンスからのみアクセスできます。"
 
 #: maps/fields.py:214
 #, python-format
 msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
-msgstr "種別: %(vtype)s の値を持つ CollectionFrom %(cname)s をセットできません。"
+msgstr ""
+"種別: %(vtype)s の値を持つ CollectionFrom %(cname)s をセットできません。"
 
 #: maps/validators.py:14
 #, python-format
@@ -346,14 +294,10 @@ msgstr "このマップを作成"
 msgid "Previous versions of map for"
 msgstr "マップのひとつ前のバージョン"
 
-#: pages/feeds.py:42
+#: pages/feeds.py:43 pages/feeds.py:81
 #, python-format
 msgid "File %(filename)s on page \"%(pagename)s\""
 msgstr "ページ \"%(pagename)s\" 上のファイル %(filename)s"
-
-#: pages/feeds.py:79
-msgid "File %(filename)=s on page \"%(pagename)s\""
-msgstr "ページ \"%(pagename)s\" 上のファイル %(filename)=s"
 
 #: pages/fields.py:22
 #, python-format
@@ -364,7 +308,9 @@ msgstr "ページ %s が見つかりません！正しいページ名を入力�
 msgid ""
 "Warning: someone else saved this page before you.  Please resolve edit "
 "conflicts and save again."
-msgstr "警告： あなたの前に誰か別の人がこのページを保存しました。編集の競合を解決してから保存し直してください。"
+msgstr ""
+"警告： あなたの前に誰か別の人がこのページを保存しました。編集の競合を解決して"
+"から保存し直してください。"
 
 #: pages/forms.py:46
 msgid "A page with this name already exists"
@@ -378,35 +324,37 @@ msgstr "新しいファイルは同じ種別でなければなりません"
 msgid "Page name is invalid."
 msgstr "ページの名前が正しくありません。"
 
-#: pages/models.py:141 pages/models.py:153
+#: pages/models.py:144 pages/models.py:156
 #, python-format
 msgid "Renamed from \"%s\""
 msgstr "\"%s\" にリネームされました"
 
-#: pages/models.py:145
+#: pages/models.py:148
 #, python-format
 msgid "The page '%s' already exists!"
 msgstr "ページ '%s' は既に存在しています！"
 
-#: pages/models.py:195 pages/models.py:208 pages/models.py:227
+#: pages/models.py:198 pages/models.py:211 pages/models.py:230
 msgid "Parent page renamed"
 msgstr "親ページがリネームされました"
 
-#: pages/models.py:241
+#: pages/models.py:244
 msgid "file"
 msgstr "ファイル"
 
-#: pages/plugins.py:397
+#: pages/plugins.py:398
 msgid ""
-"The embedded URL is not on the list of approved providers.  Contact the site"
-" administrator to add it."
-msgstr "埋め込みURLは承認済み提供者一覧にありません。サイト管理者にレンr買うして追加してください。"
+"The embedded URL is not on the list of approved providers.  Contact the site "
+"administrator to add it."
+msgstr ""
+"埋め込みURLは承認済み提供者一覧にありません。サイト管理者にレンr買うして追加"
+"してください。"
 
-#: pages/plugins.py:401
+#: pages/plugins.py:402
 msgid "Invalid embed code"
 msgstr "埋め込みコードが正しくありません"
 
-#: pages/plugins.py:413 search/templates/search/search.html:12
+#: pages/plugins.py:414 search/templates/search/search.html:13
 #: themes/sapling/templates/site/search_form.html:5
 msgid "Search or create page"
 msgstr "検索するか新しいページを作成"
@@ -419,50 +367,50 @@ msgstr "リダイレクトが作成されました"
 msgid "Page created"
 msgstr "ページが作成されました"
 
-#: pages/views.py:104
+#: pages/views.py:106
 msgid "Thank you for your changes. Your attention to detail is appreciated."
 msgstr "変更ありがとうございます。詳細を確認して頂ければ幸いです。"
 
-#: pages/views.py:107
+#: pages/views.py:109
 #, python-format
 msgid ""
-"Changes saved! To use your name when editing, please <a "
-"href=\"%(login_url)s?next=%(current_path)s\"><strong>log in</strong></a> or "
-"<a href=\"%(register_url)s?next=%(current_path)s\"><strong>create an "
-"account</strong></a>."
+"Changes saved! To use your name when editing, please <a href=\"%(login_url)s?"
+"next=%(current_path)s\"><strong>log in</strong></a> or <a href="
+"\"%(register_url)s?next=%(current_path)s\"><strong>create an account</"
+"strong></a>."
 msgstr ""
-"変更は保存されました！編集時にあなたの名前を使うには <a "
-"href=\"%(login_url)s?next=%(current_path)s\"><strong>ログイン</strong></a> "
-"するか、<a "
-"href=\"%(register_url)s?next=%(current_path)s\"><strong>アカウントを作成</strong></a>してください。"
+"変更は保存されました！編集時にあなたの名前を使うには <a href=\"%(login_url)s?"
+"next=%(current_path)s\"><strong>ログイン</strong></a> するか、<a href="
+"\"%(register_url)s?next=%(current_path)s\"><strong>アカウントを作成</"
+"strong></a>してください。"
 
-#: pages/views.py:119
+#: pages/views.py:121
 #, python-format
 msgid ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
 "class=\"text\">Create a map</span></a> for this page?</p>"
-
 msgstr ""
-"<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span \"class=\"text\">マップを作成</span></a> しますか？</p>"
+"<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
+"\"class=\"text\">マップを作成</span></a> しますか？</p>"
 
-#: pages/views.py:131
+#: pages/views.py:133
 #, python-format
 msgid "<p>Describe %s here</p>"
 msgstr "<p>こちらで %s を記述</p>"
 
-#: pages/views.py:344
+#: pages/views.py:359
 msgid "A file with this name already exists"
 msgstr "この名前のファイルは既に存在しています"
 
-#: pages/views.py:349
+#: pages/views.py:364
 msgid "Pagename"
 msgstr "ページ名"
 
-#: pages/views.py:350 versionutils/versioning/forms.py:17
+#: pages/views.py:365 versionutils/versioning/forms.py:17
 msgid "Comment"
 msgstr "コメント"
 
-#: pages/views.py:376
+#: pages/views.py:391
 #, python-format
 msgid "Page renamed to \"%s\""
 msgstr "ページは \"%s\" にリネームされました"
@@ -600,8 +548,8 @@ msgid "Page \"%(name)s\" does not exist (yet!)"
 msgstr "ページ \"%(name)s\" はありません(まだ！)"
 
 #: pages/templates/pages/page_new.html:14
-#: search/templates/search/search.html:35
-#: search/templates/search/search.html:73
+#: search/templates/search/search.html:48
+#: search/templates/search/search.html:102
 msgid "Create this page"
 msgstr "このページを作成"
 
@@ -625,11 +573,11 @@ msgstr "ページ \"%(name)s\" - %(super)s の以前のバージョン"
 
 #: pages/templates/pages/page_versions.html:18
 msgid ""
-" Looking for <a href=\"../_files/\">files</a> or <a "
-"href=\"../_tags/_history/\">tags</a>?"
+" Looking for <a href=\"../_files/\">files</a> or <a href=\"../_tags/_history/"
+"\">tags</a>?"
 msgstr ""
-"<a href=\"../_files/\">ファイル</a> や <a "
-"href=\"../_tags/_history/\">タグ</a>をお探しですか？"
+"<a href=\"../_files/\">ファイル</a> や <a href=\"../_tags/_history/\">タグ</"
+"a>をお探しですか？"
 
 #: pages/templates/pages/pagefile_diff.html:34
 #, python-format
@@ -639,8 +587,8 @@ msgstr "%(new_slug)s に関する %(new_name)s への差異 "
 #: pages/templates/pages/pagefile_diff.html:35
 #, python-format
 msgid ""
-"Differences for %(new_name)s on <a "
-"href=\"%(url_pages_show)s\">%(new_attached_to_page)s</a>"
+"Differences for %(new_name)s on <a href=\"%(url_pages_show)s\">"
+"%(new_attached_to_page)s</a>"
 msgstr ""
 "<a href=\"%(url_pages_show)s\">%(new_attached_to_page)s</a> に関する "
 "\"%(new_name)s\" への差異 "
@@ -668,11 +616,11 @@ msgstr "%(slug)s - %(super)s に関する \"%(name)s\" についての情報"
 #: pages/templates/pages/pagefile_info.html:12
 #, python-format
 msgid ""
-"Information about \"%(name)s\" on <a "
-"href=\"%(pages_show_url)s\">%(attached_to_page)s</a>"
+"Information about \"%(name)s\" on <a href=\"%(pages_show_url)s\">"
+"%(attached_to_page)s</a>"
 msgstr ""
-"<a href=\"%(pages_show_url)s\">%(attached_to_page)s</a> に関する \"%(name)s\" "
-"についての情報 "
+"<a href=\"%(pages_show_url)s\">%(attached_to_page)s</a> に関する \"%(name)s"
+"\" についての情報 "
 
 #: pages/templates/pages/pagefile_info.html:36
 #, python-format
@@ -695,18 +643,20 @@ msgstr "以前のバージョン："
 #: pages/templatetags/pages_tags.py:109
 #, python-format
 msgid ""
-"Unable to include <a href=\"%(page_url)s\" "
-"class=\"missing_link\">%(page_name)s</a>"
+"Unable to include <a href=\"%(page_url)s\" class=\"missing_link\">"
+"%(page_name)s</a>"
 msgstr ""
-"<a href=\"%(page_url)s\" class=\"missing_link\">%(page_name)s</a> "
-"をインクルードできません"
+"<a href=\"%(page_url)s\" class=\"missing_link\">%(page_name)s</a> をインク"
+"ルードできません"
 
 #: pages/templatetags/pages_tags.py:117
 #, python-format
 msgid ""
 "Unable to include <a href=\"%(page_url)s\">%(page_name)s</a>: endless "
 "include loop."
-msgstr "<a href=\"%(page_url)s\">%(page_name)s</a> をインクルードできません： インクルードの無限ループ。"
+msgstr ""
+"<a href=\"%(page_url)s\">%(page_name)s</a> をインクルードできません： インク"
+"ルードの無限ループ。"
 
 #: recentchanges/feeds.py:25
 #, python-format
@@ -718,22 +668,22 @@ msgstr "%s 上の最近の変更"
 msgid "Recent changes on %s"
 msgstr "%s 上の最近の変更"
 
-#: recentchanges/feeds.py:64 recentchanges/feeds.py:152
+#: recentchanges/feeds.py:66 recentchanges/feeds.py:157
 #, python-format
 msgid "to version %s"
 msgstr "バージョン %s へ"
 
-#: recentchanges/feeds.py:71 recentchanges/feeds.py:159
+#: recentchanges/feeds.py:73 recentchanges/feeds.py:164
 #, python-format
 msgid " with comment \"%s\""
 msgstr "コメント \"%s\" 付き"
 
-#: recentchanges/feeds.py:72 recentchanges/feeds.py:160
+#: recentchanges/feeds.py:74 recentchanges/feeds.py:165
 #, python-format
 msgid "%(title)s was %(change_type)s by %(user)s%(comment)s."
 msgstr "%(title)s は %(change_type)s されました。作成者 %(user)s%(comment)s。"
 
-#: recentchanges/feeds.py:124 recentchanges/feeds.py:130
+#: recentchanges/feeds.py:129 recentchanges/feeds.py:135
 #, python-format
 msgid "Changes for %(title)s on %(site_name)s"
 msgstr "%(site_name)s 上の %(title)s への変更 "
@@ -783,9 +733,11 @@ msgstr "<a href=\"%(url)s\">%(destination)s</a>へのリダイレクト"
 #: recentchanges/templates/recentchanges/recentchanges.html:88
 #, python-format
 msgid ""
-"For statistics about pages, maps, and more, check out the <a "
-"href=\"%(dashboard_main_url)s\">dashboard</a>"
-msgstr "ページやマップなどの統計は <a href=\"%(dashboard_main_url)s\">ダッシュボード</a>をチェックしてください"
+"For statistics about pages, maps, and more, check out the <a href="
+"\"%(dashboard_main_url)s\">dashboard</a>"
+msgstr ""
+"ページやマップなどの統計は <a href=\"%(dashboard_main_url)s\">ダッシュボード"
+"</a>をチェックしてください"
 
 #: redirects/feeds.py:25
 #, python-format
@@ -832,43 +784,120 @@ msgstr "リダイレクトを削除"
 msgid "Create redirect"
 msgstr "リダイレクトを作成"
 
-#: search/templates/search/search.html:10
-#: search/templates/search/search.html:23
+#: search/templates/search/search.html:11
+#: search/templates/search/search.html:36
 msgid "Search results for"
 msgstr "検索結果"
 
-#: search/templates/search/search.html:25
+#: search/templates/search/search.html:38
 msgid "Search or create a new page"
 msgstr "新しいページを検索または作成"
 
-#: search/templates/search/search.html:34
+#: search/templates/search/search.html:47
 #, python-format
 msgid "No page with the exact title \"%(query)s\" exists."
 msgstr "\"%(query)s\" と全く同じタイトルのページはありません。"
 
-#: search/templates/search/search.html:54
-msgid "No results found."
-msgstr "結果はありません。"
-
-#: search/templates/search/search.html:60
+#: search/templates/search/search.html:57
+#: search/templates/search/search.html:89
 msgid "Previous"
 msgstr "前"
 
-#: search/templates/search/search.html:63
+#: search/templates/search/search.html:60
+#: search/templates/search/search.html:92
 msgid "Next"
 msgstr "次"
 
-#: search/templates/search/search.html:70
+#: search/templates/search/search.html:82
+msgid "No results found."
+msgstr "結果はありません。"
+
+#: search/templates/search/search.html:99
 msgid "Create a new page:"
 msgstr "新しいページを作成："
 
-#: search/templates/search/search.html:77
+#: search/templates/search/search.html:106
 msgid "Search for pages:"
 msgstr "ページを検索："
 
-#: search/templates/search/search.html:80
+#: search/templates/search/search.html:109
 msgid "Search"
 msgstr "検索"
+
+#: settings/defaults.py:37
+#, fuzzy
+msgid ""
+"<p>Except where otherwise noted, this content is licensed under a <a rel="
+"\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\">Creative "
+"Commons Attribution License</a>. See <a href=\"/Copyrights\">Copyrights</a>."
+"</p>"
+msgstr ""
+"<p>特段の注釈が無い限り、このコンテンツは <a rel=\"license\" href=\"http://"
+"creativecommons.org/licenses/by/3.0/\">Creative Commons Attribution License</"
+"a>の下にライセンスされます。 <a href=\"/Copyrights\">著作権</a>を参照。</p>"
+
+#: settings/defaults.py:39
+msgid ""
+"<p>By clicking \"Save Changes\" you are agreeing to release your "
+"contribution under the <a rel=\"license\" href=\"http://creativecommons.org/"
+"licenses/by/3.0/\" target=\"_blank\">Creative Commons-By license</a>, unless "
+"noted otherwise. See <a href=\"/Copyrights\" target=\"_blank\">Copyrights</"
+"a>.</p>"
+msgstr ""
+"<p>\"変更を保存\" をクリックすると、特段の注釈が無い限り、あなたは自分の投稿"
+"を <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\" "
+"target=\"_blank\">Creative Commons-By license</a>の下にリリースすることに同意"
+"したことになります。 <a href=\"/Copyrights\" target=\"_blank\">著作権</a>を参"
+"照。</p>"
+
+#: settings/defaults.py:41
+msgid ""
+"I agree to release my contributions under the <a rel=\"license\" href="
+"\"http://creativecommons.org/licenses/by/3.0/\" target=\"_blank\">Creative "
+"Commons-By license</a>, unless noted otherwise. See <a href=\"/Copyrights\" "
+"target=\"_blank\">Copyrights</a>."
+msgstr ""
+"特段の注釈が無い限り、私は自分の投稿を <a rel=\"license\" href=\"http://"
+"creativecommons.org/licenses/by/3.0/\" target=\"_blank\">Creative Commons-"
+"By</a>の下にリリースすることに同意します。 <a href=\"/Copyrights\" target="
+"\"_blank\">著作権</a>参照。"
+
+#: settings/defaults.py:43
+msgid ""
+"I would like to receive occasional updates about this project via email."
+msgstr "このプロジェクトのアップデートを不定期にメールで受け取ります。"
+
+#: settings/defaults.py:62
+msgid "English"
+msgstr "英語"
+
+#: settings/defaults.py:63
+msgid "Japanese"
+msgstr ""
+
+#: settings/defaults.py:64
+msgid "Russian"
+msgstr ""
+
+#: settings/defaults.py:65
+msgid "German (Swiss)"
+msgstr "ドイツ語 (スイス)"
+
+#: settings/defaults.py:66
+msgid "Spanish (Argentina)"
+msgstr "スペイン語 (アルゼンチン)"
+
+#: settings/defaults.py:67
+msgid "Danish"
+msgstr "デンマーク語"
+
+#: settings/defaults.py:68
+msgid "Italian"
+msgstr ""
+
+#: settings/defaults.py:69
+msgid "Portuguese"
+msgstr "ポルトガル語"
 
 #: tags/forms.py:76
 #, python-format
@@ -906,11 +935,11 @@ msgstr "変更はありません"
 msgid " and "
 msgstr "かつ"
 
-#: tags/models.py:33
+#: tags/models.py:32
 msgid "Tag"
 msgstr "タグ"
 
-#: tags/models.py:34 tags/templates/tags/pagetagset_list.html:4
+#: tags/models.py:33 tags/templates/tags/pagetagset_list.html:4
 #: tags/templates/tags/pagetagset_list.html:5
 #: tags/templates/tags/tag_list.html:4
 msgid "Tags"
@@ -1047,7 +1076,9 @@ msgstr "パスワードリセットに失敗しました"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
-msgstr "パスワードリセットのリンクが正しくありません。既に使用されている可能性があります。新しいパスワードリセットをリクエストしてください。"
+msgstr ""
+"パスワードリセットのリンクが正しくありません。既に使用されている可能性があり"
+"ます。新しいパスワードリセットをリクエストしてください。"
 
 #: templates/registration/password_reset_done.html:4
 #: templates/registration/password_reset_done.html:5
@@ -1059,14 +1090,18 @@ msgstr "パスワードリセットに成功しました"
 msgid ""
 "We've e-mailed you instructions for setting your password to the e-mail "
 "address you submitted. You should be receiving it shortly."
-msgstr "登録済みのメールアドレス宛にパスワードの設定手順を送信しました。しばらくしたら届くでしょう。"
+msgstr ""
+"登録済みのメールアドレス宛にパスワードの設定手順を送信しました。しばらくした"
+"ら届くでしょう。"
 
 #: templates/registration/password_reset_email.html:2
 #, python-format
 msgid ""
-"You're receiving this e-mail because you requested a password reset for your"
-" user account at %(site_name)s."
-msgstr "あなたがこのメールを受け取ったのは %(site_name)s であなたのユーザアカウントのパスワードリセット要求があったためです。"
+"You're receiving this e-mail because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+"あなたがこのメールを受け取ったのは %(site_name)s であなたのユーザアカウントの"
+"パスワードリセット要求があったためです。"
 
 #: templates/registration/password_reset_email.html:4
 msgid "Please go to the following page and choose a new password:"
@@ -1089,7 +1124,9 @@ msgstr "%(site_name)s チーム"
 msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll e-mail "
 "instructions for setting a new one."
-msgstr "パスワードを忘れてしまいましたか？下記にメールアドレスを入力すると新しいパスワードの設定手順をメールでお送りします。"
+msgstr ""
+"パスワードを忘れてしまいましたか？下記にメールアドレスを入力すると新しいパス"
+"ワードの設定手順をメールでお送りします。"
 
 #: templates/registration/password_reset_form.html:14
 msgid "E-mail address:"
@@ -1160,39 +1197,40 @@ msgstr "サインアップしてログインしました！"
 msgid "Tell us who you are by <a href=\"%s\">creating a page for yourself!</a>"
 msgstr "<a href=\"%s\">自分のページを作って</a>あなたのことを教えてください！"
 
-#: users/registration_backend/forms.py:29
+#: users/registration_backend/forms.py:33
 msgid "Username"
 msgstr "ユーザ名"
 
-#: users/registration_backend/forms.py:31
+#: users/registration_backend/forms.py:35
 msgid "This value may contain only letters (a-z), numbers, +, - and ."
 msgstr "この値は文字 (a-z), 数字, +, - y だけが許可されています。"
 
-#: users/registration_backend/forms.py:36
+#: users/registration_backend/forms.py:40
 msgid "E-mail"
 msgstr "メールアドレス"
 
-#: users/registration_backend/forms.py:39
+#: users/registration_backend/forms.py:43
 msgid "Password"
 msgstr "パスワード"
 
-#: users/registration_backend/forms.py:40
+#: users/registration_backend/forms.py:44
 msgid "Your name"
 msgstr "あなたの名前"
 
-#: users/registration_backend/forms.py:45
+#: users/registration_backend/forms.py:49
 msgid "You must agree to the terms to register"
 msgstr "登録するには規約に同意する必要があります"
 
-#: users/registration_backend/forms.py:60
+#: users/registration_backend/forms.py:64
 msgid "A user with that username already exists."
 msgstr "このユーザ名のユーザは既に存在します。"
 
-#: users/registration_backend/forms.py:69
+#: users/registration_backend/forms.py:73
 msgid ""
 "This email address is already in use. Please supply a different email "
 "address."
-msgstr "メールアドレスは既に使用されています。別のメールアドレスをお使いください。"
+msgstr ""
+"メールアドレスは既に使用されています。別のメールアドレスをお使いください。"
 
 #: users/templates/users/subscribed_list.html:4
 msgid "List of subscribers"
@@ -1208,9 +1246,11 @@ msgstr "申し訳ありません、あなたにはこの操作の権限があり
 
 #: utils/views.py:83
 msgid ""
-"Anonymous users may not perform this action. Please <a "
-"href=\"/Users/login/\">log in</a>."
-msgstr "匿名ユーザはこの操作を実行できません。<a href=\"/Users/login/\">ログイン</a>してください。"
+"Anonymous users may not perform this action. Please <a href=\"/Users/login/"
+"\">log in</a>."
+msgstr ""
+"匿名ユーザはこの操作を実行できません。<a href=\"/Users/login/\">ログイン</a>"
+"してください。"
 
 #: utils/templates/utils/history/form.html:13
 msgid "revert"
@@ -1249,13 +1289,16 @@ msgstr "追加されたバージョンをダウンロード"
 msgid ""
 "Warning: someone else made changes before you.  Please review the changes "
 "and save again."
-msgstr "警告： あなたの前に別の人が変更しました。変更をレビューして保存し直してください。"
+msgstr ""
+"警告： あなたの前に別の人が変更しました。変更をレビューして保存し直してくださ"
+"い。"
 
 #: versionutils/merging/forms.py:55
 msgid ""
 "Someone else made changes before you but yourchanges were successfully "
 "merged."
-msgstr "あなたの前に別の人が変更しましたが、あなたの変更は正しくマージされました。"
+msgstr ""
+"あなたの前に別の人が変更しましたが、あなたの変更は正しくマージされました。"
 
 #: versionutils/templates/versionutils/history/form.html:8
 #: versionutils/templates/versionutils/history/form.html:15
@@ -1322,3 +1365,6 @@ msgstr "削除しました！"
 #, python-format
 msgid "Reverted to version %s."
 msgstr "バージョン %s に戻しました。"
+
+#~ msgid "File %(filename)=s on page \"%(pagename)s\""
+#~ msgstr "ページ \"%(pagename)s\" 上のファイル %(filename)=s"

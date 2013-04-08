@@ -35,6 +35,8 @@ class RedirectHistoryResource(ModelHistoryResource):
         filtering = {
             'destination': ALL,
             'source': ALL,
+            'history_date': ALL,
+            'history_type': ALL,
         }
         ordering = ['history_date']
 

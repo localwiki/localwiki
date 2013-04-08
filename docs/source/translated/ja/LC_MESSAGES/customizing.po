@@ -6,323 +6,323 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: LocalWiki 0.3\n"
+"Project-Id-Version: LocalWiki 0.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-18 03:07\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2012-11-11 16:46\n"
+"PO-Revision-Date: 2012-11-14 18:39+0900\n"
+"Last-Translator: Taro Matsuzawa <btm@tech.email.ne.jp>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../source/customizing.rst:2
-# d27c096f9af04cf298bc1b1f7c9ee953
+# 101f1b558953492d9db6c503d9acf7cf
 msgid "Customizing your localwiki's appearance"
-msgstr ""
+msgstr "Localwikiの外観カスタマイズ"
 
 #: ../source/customizing.rst:4
-# ae4a5ac20c824dc393354ff5cba4238d
+# 7d425d637dc44866b7b2b26473ca2e86
 msgid "It's possible to completely customize the appearance and some of the behavior of the LocalWiki software without having to dig into the underlying code.  You can do this by customizing the site's CSS, the site's templates, and by creating entirely new themes."
-msgstr ""
+msgstr "Localwikiはサイトの外観や挙動の一部を変更することが可能です。その際、ソースコードまで掘り下げて変更する必要はありません。変更は、サイトのCSSや、外観のテンプレート、あるいは全く新規にテーマを作成することで行います。"
 
 #: ../source/customizing.rst:9
-# 37044325e0794e0381389f08be76a39f
+# 2e702b1d8b6b449e825517bfbdfad79b
 msgid "We're hoping to make the process of altering templates and CSS a bit less technical at some point.  For now you'll need to be comfortable with moving things around on a server, editing files and have some knowledge of CSS and HTML."
-msgstr ""
+msgstr "テンプレートやCSSの修正という手順は、ソースコードを改変するよりも多少技術的な敷居が低いと考えています。ただし、操作するにはサーバ上での設定ファイル修正方法や、HTML・CSSについての若干の知識が必要です。"
 
 #: ../source/customizing.rst:14
-# 80606a0ecadb4db484f8ed73959fa0af
+# 0906999f0ce8463ab57bd16508e7fd89
 msgid "If you're a developer and have been playing around, make sure you have set ``DEBUG`` to ``False`` in ``localsettings.py``, otherwise you won't see static media show up when using ``localwiki-manage runsever``."
-msgstr ""
+msgstr "もしあなたが開発者で、既に上記の知識に慣れ親しんでいる場合、``localsettings.py`` の ``DEBUG`` 項目を ``False`` に変更してください。 Trueのままで運用を行った場合、``localwiki-manage runserver`` を実行した際に静的なメディアファイルを読み込むことができません。"
 
 #: ../source/customizing.rst:21
-# 8152a34b6395430cb260c39311be4ff8
+# ba25bb2a850044ebb3fe57c873256677
 msgid "Template files"
-msgstr ""
+msgstr "テンプレートファイル"
 
 #: ../source/customizing.rst:23
-# e93a82d7e666426babe01b3eebe31952
+# 806c6d632de246d99fa3c6d7096d3a2a
 msgid "The LocalWiki software has the concept of a *template*.  A template is a text file on the server running the LocalWiki software, and it's used to generate pages throughout the site."
-msgstr ""
+msgstr "Localwikiには *テンプレート* という概念があります。テンプレートとは、Localwikiが稼働しているサーバ上に配置されたテキストファイルで、サイト内のページを生成するために利用されます。"
 
 #: ../source/customizing.rst:27
-# 3f19fda96e4347bcbc2cc061582bf8d8
+# f772aa14c58844e3a681b2d10c365b2e
 msgid "These *template files* are very different from \"Template pages\" on the wiki. Template pages on the wiki are for creating new pages more easily. *Template files* on the server are used by the LocalWiki software to generate the site itself."
-msgstr ""
+msgstr "これらの *テンプレートファイル* は、Wiki上の \"テンプレートページ\" とは異なります。Wiki上のテンプレートページは、ページの新規作成の手間を削減するために用意されています。サーバ上に配置されている *テンプレートファイル* とは、Localwikiソフトウェアがサイト自体を生成するために利用するファイルです。"
 
 #: ../source/customizing.rst:32
-# ea16c72ca88141a6870de683f7166ba1
+# 7cf90c00d3904d12bfb1b86638ad4fc8
 msgid "These templates are simply `Django templates <https://docs.djangoproject.com/en/dev/topics/templates/>`_ and support the full range of capabilities of the Django templating language.  Check out the `Django template documentation <https://docs.djangoproject.com/en/dev/topics/templates/>`_ for everything that's possible with the templates.  You don't need to read the template documentation to make simple customizations, though."
-msgstr ""
+msgstr "これらのテンプレートファイルは `Django テンプレート <https://docs.djangoproject.com/en/dev/topics/templates/>`_ を基礎としており、特に改変を加えていません。Djangoテンプレート言語は、すべてサポートされています。 テンプレートについての詳細は `Django テンプレートドキュメント <https://docs.djangoproject.com/en/dev/topics/templates/>`_ を参照してください。 ただし、細かい修正であればテンプレートドキュメントを読み込むまでもなく変更することができます。"
 
 #: ../source/customizing.rst:39
-# 03b9c63be24643cb8f09a01d1c0d0f4f
+# 2e35e51956224a9ebac2af63138629f6
 msgid "The global template directory is ``/usr/share/localwiki/templates``, or ``env/share/localwiki/templates`` (for manual installations)."
-msgstr ""
+msgstr "グローバルのテンプレートディレクトリは ``/usr/share/localwiki/templates`` 、あるいは ``env/share/localwiki/templates``  (手動インストール時)です。"
 
 #: ../source/customizing.rst:44
-# 69e458ac615546e9b2a6015bf3a58875
+# b4735be348b9433ca2887de2af468afc
 msgid "Themes"
-msgstr ""
+msgstr "テーマ"
 
 #: ../source/customizing.rst:46
-# 632c3d434a0f4effbec6e9d5d42a4ed8
+# 33a6b81be7d0438887d2bc383dc25dd7
 msgid "A *theme* is a collection of templates and static assets that together control the look of the entire site."
-msgstr ""
+msgstr "*テーマ* はテンプレートファイルと静的なアセットファイルを一揃えのセットにしたもので、サイト全体の外観を左右します。"
 
 #: ../source/customizing.rst:49
-# 4e9cb297c1ac4673912a6b8bd154aa95
+# 0359695fd5244ebba651add2c852b5c0
 msgid "Each theme is simply a directory containing:"
-msgstr ""
+msgstr "それぞれのテーマはディレクトリに分けられ、以下のファイルが配置されます:"
 
 #: ../source/customizing.rst:51
-# 2beb635b54bf4d40bf07e51cfea8eb4f
+# 87db87e50cda4990b8e4d40d16471d89
 msgid "A directory with templates (``templates/``)"
-msgstr ""
+msgstr "テンプレート用ディレクトリ ( ``templates/`` )"
 
 #: ../source/customizing.rst:52
-# 1c9cfbcebe924b1da2f8f822f5005c90
+# d801913f0c774b7fb4edbcd8e35794b6
 msgid "A directory with static assets (``assets/``) like CSS and images."
-msgstr ""
+msgstr "静的なアセット設定ディレクトリ ( ``assets/`` ) 例えば、CSSファイルや画像ファイル等"
 
 #: ../source/customizing.rst:55
-# f8d44fc0263a410da715a4bd79d4d936
+# c7833a1112094843a4f11ad8105dcbae
 msgid "The global themes directory is ``/usr/share/localwiki/themes``, or ``env/share/localwiki/themes`` (for manual installations).  *NOTE*: If you are running localwiki-0.2-beta-12 you may have to create this directory by hand."
-msgstr ""
+msgstr "グローバルのテーマディレクトリは ``/usr/share/localwiki/themes`` 、あるいは ``env/share/localwiki/themes`` (手動インストール時)です。 *注意* :もしlocalwiki-0.2-beta-12を利用している場合は、上記のディレクトリを手動で作成する必要があります。"
 
 #: ../source/customizing.rst:62
-# 313e6d2296324af69840fb3c4635a2ad
+# db63b101581a41019b118fe1b43c8510
 msgid "Tutorial"
-msgstr ""
+msgstr "チュートリアル"
 
 #: ../source/customizing.rst:64
-# 5602eaadea7c40af85abdc94b5118ef3
+# d43161ce3e4745c89f332a615ea17f51
 msgid "The theme system is best explained through a few simple examples."
-msgstr ""
+msgstr "テーマの仕組みを解説するために、いくつか例をあげて説明します。"
 
 #: ../source/customizing.rst:69
-# 22ea24d2d5ad40c1a0cb8d576c14e713
+# ec3d4fa67e48403abac81febbb091d03
 msgid "Example 1: Adding a logo"
-msgstr ""
+msgstr "例 1: ロゴ画像の追加"
 
 #: ../source/customizing.rst:70
-# 83a9851c6a7f4ca8a50f71160157eebb
+# 1842dffd02d84fc1a58120fa8f4d0783
 msgid "Let's add a logo to our site.  Because this is just a simple change, making an new theme is overkill."
-msgstr ""
+msgstr "それでは、自身のサイトにロゴ画像を追加してみましょう。最初から全く新規のテーマを作成するのは手に余りますので、まずはちょっとした変更から始めてみましょう。"
 
 #: ../source/customizing.rst:73
-# 0889aa99fb05467ba91bd25c38e0f17e
+# 84fe7f43a3e848c9923a68743dd2fff0
 msgid "First, let's find the built-in templates.  Type::"
-msgstr ""
+msgstr "まずは、既に適用されているテンプレートファイルの位置を特定します。 シェルに以下を入力してください。 ::"
 
 #: ../source/customizing.rst:77
-# 308b6c66c60f4a87b8e2da99f05c0e92
+# 8c06dccb801c4af2b9da323087d0d113
 msgid "then once you're in the localwiki shell, copy and paste this::"
-msgstr ""
+msgstr "localwiki操作用のシェルが起動したら、以下をコピーして貼り付けます。 ::"
 
 #: ../source/customizing.rst:81
-# 7af5f63ec5e44660bf592a38dbe4a362
+# 186fe40f376b4991b8cb556e94e6f30e
 msgid "This will print out where the localwiki code itself lives on your system."
-msgstr ""
+msgstr "コマンドの結果として、あなたのサーバのlocalwikiのインストール先ディレクトリが出力されます。"
 
 #: ../source/customizing.rst:84
-# 660010f7df38411396cf7ba5ddce88e0
+# 1df0216bf9de449c9c97b5c00b0eebfa
 msgid "It's not a good idea to modify the files in the code directory directly, as they're likely to be replaced when you upgrade.  If you want to customize the code you should do a :ref:`development install <dev-install>`."
-msgstr ""
+msgstr "コードが配置されているディレクトリにあるファイルを直接編集するのは推奨されません。アップグレードの際に、それらのファイルが上書きされてしまう可能性があるためです。コードを直接編集する必要が有る場合は、:ref:`development install <dev-install>` の手順に従うようにしてください。"
 
 #: ../source/customizing.rst:88
-# 76d76f2a1dc6422fa65ab250e5835ad4
+# 34a34cd9c78846688e078e93e440eb55
 msgid "Copy the path printed out and ``cd`` there.  You'll see there's a ``themes`` directory in that directory.  Inside the ``themes`` directory is a directory for the default built-in theme, ``sapling``."
-msgstr ""
+msgstr "先ほどのコマンドの結果で出力されたlocalwikiのインストール先ディレクトリをコピーして、 ``cd`` で移動してください。 ``theme`` ディレクトリが配置されているはずです。 さらに、 ``theme`` ディレクトリの配下には、既に適用されているテーマ ``sapling`` が配置されています。"
 
 #: ../source/customizing.rst:92
-# 3863979df8bd4d71b9497647b223bee8
+# cf6f29220d854e2281976d8f928b2d87
 msgid "As explained earlier, the ``sapling`` theme directory has an ``assets`` and a ``templates`` directory inside of it::"
-msgstr ""
+msgstr "先に説明した通り、 ``sapling`` テーマディレクトリの配下には ``assets`` と ``templates`` ディレクトリが配置されています。 ::"
 
 #: ../source/customizing.rst:98
-# 4e4818635c9642caaccbf402fd9e1d2f
+# 45cd67cf6bec4d528a4b7c225c1b1b9e
 msgid "If we go inside the templates directory, we'll see a ``site`` directory containing some template files::"
-msgstr ""
+msgstr "``template`` ディレクトリの中には、テンプレートファイルが配置されている ``site`` ディレクトリが存在します。 ::"
 
 #: ../source/customizing.rst:108
-# ee29b340cf554a5db579177f0ad8da74
+# 45b0aa5965334e8a925066a4fa8bfabd
 msgid "Taking a look at the template files, the ``site_title.html`` file is what we want to customize to add our own logo.  Let's copy that template over to our global templates directory and then customize it."
-msgstr ""
+msgstr "テンプレートファイルの中にある ``site_title.html`` が、今回のロゴ追加作業で変更対象となるファイルです。テンプレートファイルを、自身のサイトのグローバルテンプレートディレクトリにコピーして、編集を行いましょう。"
 
 #: ../source/customizing.rst:112
-# caa03a92456d47f681a4d8a987fce0ae
+# 64ba092cabe64e8b9cd533cd6fc98501
 msgid "First, let's make a ``site`` directory inside our global template directory (explained above)."
-msgstr ""
+msgstr "まずは、``site`` ディレクトリをまるごと、グローバルテンプレートディレクトリ(前述)へコピーします。"
 
 #: ../source/customizing.rst:115
-# 61addebcde6342b29e79d8d90ecb18c1
+# 82e7fc9d6ebf4cbda044f463a5ec42e0
 msgid "The global template directory is ``/usr/share/localwiki/templates``, or ``env/share/localwiki/templates`` (for manual installs)::"
-msgstr ""
+msgstr "グローバルテンプレートディレクトリは ``/usr/share/localwiki/templates`` か、あるいは ``env/share/localwiki/templates``  (手動インストールの場合)です。 ::"
 
 #: ../source/customizing.rst:120
-# e202d2b2bf22428c980391d8a1e2473a
+# de99b9241a3a401b815f1631f4f203a6
 msgid "then copy the file over::"
-msgstr ""
+msgstr "ファイルをコピーしましょう。 ::"
 
 #: ../source/customizing.rst:124
-# e8a5efc653854b97bba20917be60a3fe
+# 76e695ec12f04191958193971bd5ef87
 msgid "Now we simply open up the copy of the template we made, ``/usr/share/localwiki/templates/site/site_title.html``.  It looks like this::"
-msgstr ""
+msgstr "コピーが終わったら、 ``/usr/share/localwiki/templates/site/site_title.html`` を開いて編集します。 以下の内容が記載されているはずです。 ::"
 
 #: ../source/customizing.rst:134
-# ea8d8fee0a1c476c8c934ccf5f21e929
+# 53614c73eae84a55bce726f4100c34b8
 msgid "Let's change it to look like this::"
-msgstr ""
+msgstr "以下のように編集します。 ::"
 
 #: ../source/customizing.rst:142
-# e4b48db94fdb4a7698d23a3c26456530
+# 73943ac5bded43f0ab69eff934a2c9a7
 msgid "Now we need to go design a pretty logo, name it ``logo.png`` and move it into the static directory, located at ``/usr/share/localwiki/static`` or ``env/share/localwiki/static`` (for manual installations)."
-msgstr ""
+msgstr "ロゴ用の画像を編集して、ファイル名を ``logo.png`` に変更します。画像ファイルは静的ファイル用ディレクトリに配置します。場所は ``/usr/share/localwiki/static`` 、あるいは ``env/share/localwiki/static`` (手動インストールの場合)です。"
 
 #: ../source/customizing.rst:146
-# 7a2cf19d87b54679a0ca6cfe10b82690
+# 15c8de6a869647e5bcb7dc04743cb9c8
 msgid "Once we've done all this we'll need to restart the webserver.  You can usually do this by running the command::"
-msgstr ""
+msgstr "ここまでの手順が完了したら、ウェブサーバを再起動します。 以下のコマンドを入力してください。 ::"
 
 #: ../source/customizing.rst:151
-# 468705d58bd1485db1de652533f3eb13
+# c333624e1a554cc9a981fb963029e116
 msgid "And you'll have a shiny new logo on your site!"
-msgstr ""
+msgstr "新しいロゴが表示されます！"
 
 #: ../source/customizing.rst:155
-# cf086fb60c8d48739b42923cdd762c44
+# f1a06e3d72374806a34a8735a4f921aa
 msgid "Example 2: Adding a custom CSS file on every page"
-msgstr ""
+msgstr "例 2: ページ毎に独自のCSSファイルを適用する"
 
 #: ../source/customizing.rst:157
-# 6409c4ccd85e4b109b44445e0c2f6b9e
+# e034491e82d74e658006d88b63a68bc7
 msgid "If you look at https://dentonwiki.org, you'll see they've got a cool \"I want to create a page about _______\" banner on their front page:"
-msgstr ""
+msgstr "https://dentonwiki.org のFrontPageには、 \"I want to create a page about _______\" という文字が入ったバナーが表示されています。"
 
 #: ../source/customizing.rst:162
-# b0b4eabafee9410aba3fa484177a1b4e
+# 8d79991c57ec4bd2a9a14ff6eb786298
 msgid "The DentonWiki achieves this by creating a table and then giving it a custom CSS class.  If you click on \"View source\" on https://dentonwiki.org, you'll see::"
-msgstr ""
+msgstr "DentonWiki ではこの機能を、表を1つ作成し、カスタマイズしたCSSクラスをそれに与えることで実現しています。 https://dentonwiki.org で \"ページのソースを表示\" を実行すると、以下のHTMLソースが表示されます。 ::"
 
 #: ../source/customizing.rst:188
-# c61a2fa2857d4a64bd4fad64694de2c7
+# 3b3602768c564337b01ddfe4dd8342b2
 msgid "You can easily add a custom CSS class to a table by right-clicking on it while editing and going to Table properties -> Advanced settings -> CSS classes."
-msgstr ""
+msgstr "独自のCSSクラスを表に対して追加するには、編集中に右クリックを押し、 Table properties -> Advanced settings -> CSS classes から行うことができます。"
 
 #: ../source/customizing.rst:191
-# f34a711c6f604594a3de012410b5c75b
+# a13956ee66204b4db6babdd3c93bef7d
 msgid "But in order to make a custom CSS class work, we'll need to make a new CSS file and reference it from the page's HTML.  Here's how we do this:"
-msgstr ""
+msgstr "しかし、カスタマイズしたCSSを適用させるには、新規にCSSファイルを作成し、ページのHTMLからCSSファイルを参照させる必要があります。以下に方法を示します。 :"
 
 #: ../source/customizing.rst:194
-# 65a497e17e4d410ca7b03b3de15a9d1b
+# 28eafc9dfff042c486d790ad682679ea
 msgid "1. We make a new file, in our case named ``denton.css``, inside of the global static directory.  In our case, this is ``/usr/share/localwiki/static/css/denton.css`` (or ``env/share/localwiki/static/css`` for manual installations)."
-msgstr ""
+msgstr "1. グローバルスタティックディレクトリに ``denton.css`` という名称のファイルを作成します。今回の状況では ``/usr/share/localwiki/static/css/denton.css`` (あるいは手動インストールの場合 ``env/share/localwiki/static/css`` )です。"
 
 #: ../source/customizing.rst:199
-# 0bc2233ac1ce48ceac4f58d32d84a39d
+# c34d1eb692084396b4563862b6300eef
 msgid "2. Inside ``denton.css`` we place the following contents, which customize the appearance of tables with the class ``welcome``::"
-msgstr ""
+msgstr "2. ``denton.css`` に対して、以下の記述を行います。クラス ``welcome`` を使って、表の見た目を変更しています。 ::"
 
 #: ../source/customizing.rst:243
-# e569718eab0a41d3bbbbfc11cfac10cf
+# 1ad8b378fe7649f2a4da508dd758e4b9
 msgid "3. The CSS file references two images -- ``/static/img/80_trans_white_bg.png`` and ``/front_page/_files/welcome.jpg``.   The ``welcome.jpg`` image can be added simply by uploading a file named ``welcome.jpg`` to the Front Page.  You'll want to copy `80_trans_white_bg.png <https://dentonwiki.org/static/img/80_trans_white_bg.png>`_ to ``/usr/share/localwiki/static/img`` (or ``env/share/locawiki/static/img`` for manual installations)"
-msgstr ""
+msgstr "3. CSSファイルは2つの画像ファイルを参照しています。 ``/static/img/80_trans_white_bg.png`` と ``/front_page/_files/welcome.jpg`` です。 ``welcome.jpg`` 画像の追加は、単純に ``welcome.jpg`` という名称のファイルをFront Pageへ追加することで行います。また、 ``/usr/share/localwiki/static/img`` (あるいは手動インストールの場合 ``env/share/locawiki/static/img`` )へ、 `80_trans_white_bg.png <https://dentonwiki.org/static/img/80_trans_white_bg.png>`_ をコピーします。"
 
 #: ../source/customizing.rst:251
-# c28c8c6ab51c4bfc813d68706bf76bf6
+# 21a739ec546544adbbd87d4cf6880301
 msgid "4. Now we want to reference this new ``denton.css`` file from the HTML of all the pages.  Let's go back into the localwiki code directory, referenced in the beginning of :ref:`Example 1 <example1>` and copy over ``sites/base.html`` to our global templates directory::"
-msgstr ""
+msgstr "4. こうして作成した ``denton.css`` を、全てのページのHTMLファイルから参照させます。 :ref: `例 1 <example1>` で行った操作を参考にして localwikiのコードディレクトリへ移動し、 ``sites/base.html`` をグローバルテンプレートディレクトリへコピーします。 ::"
 
 #: ../source/customizing.rst:262
-# ef10c62ea5a442159a0ad6f7b8d8addc
+# db7a99b26b8041fc9d4ccbb92dc04270
 msgid "and then open up the new ``/usr/share/localwiki/templates/site/base.html`` file.  We'll change this portion of the file::"
-msgstr ""
+msgstr "次に、新しくコピーした ``/usr/share/localwiki/templates/site/base.html`` ファイルを開きましょう。ファイルの一部を以下のように編集します。 ::"
 
 #: ../source/customizing.rst:271
-# a5dc2b60bccd469c85f46f4abed78f2b
+# b4c51b4f47a2406989a9034bd8be8f0b
 msgid "to look like this::"
-msgstr ""
+msgstr "以下のように書き換えます。 ::"
 
 #: ../source/customizing.rst:279
-# bc6db1a05dfa4f4f9ae40f7c9d94bc2c
+# 53a978bf0d794b20ac0642c23921734a
 msgid "Then we simply restart the webserver::"
-msgstr ""
+msgstr "編集が完了したら、ウェブサーバを再起動します。 ::"
 
 #: ../source/customizing.rst:283
-# e9bfdd117eae4be5b7403969398f2884
+# 1d601853efb94dd9b496f0edb6d520d0
 msgid "and we'll have the ``denton.css`` file referenced on all our pages!"
-msgstr ""
+msgstr "自身の全てのページから、``denton.css`` ファイルが参照されるようになります！"
 
 #: ../source/customizing.rst:287
-# 17dd2578119b464a8768b3bfdd826ea7
+# 235ead0b60f74932b576b8e227eb18e1
 msgid "Creating an entirely new theme"
-msgstr ""
+msgstr "テーマの新規作成"
 
 #: ../source/customizing.rst:289
-# e89e934c92cc4ba6a2655c15ffd3fcf3
+# 0d3e4bac003b40348f0781cf67cd37da
 msgid "After a certain amount of customization it may make sense to create an entirely new theme.  Here's how you'd go about doing this:"
-msgstr ""
+msgstr "カスタマイズに慣れてきたら、完全に新しいテーマを自作することも可能です。以下に方法を示します。:"
 
 #: ../source/customizing.rst:292
-# 4e9d24ace0f9447484d44edb1e99c1d4
+# 35b0aa44d2e54cd1a3efe787cc02df1c
 msgid "1. Go into the localwiki code directory, referenced in the beginning of Example 1, and copy the ``sapling`` theme directory to your global ``themes`` directory::"
-msgstr ""
+msgstr "1. localwikiのコードディレクトリへ移動し、 :ref: `例 1 <example1>` で行った操作を参考にして Localwikiのコードディレクトリへ移動して、 ``sapling`` テーマを、自身のグローバルテンプレートディレクトリの ``theme`` へコピーします。 ::"
 
 #: ../source/customizing.rst:300
-# 58c412202c4843ea8f0839219e96c89e
+# b1975844478c47e1a188a9fafedb964e
 msgid "In localwiki-0.12-beta-12 there wasn't a ``themes`` directory in share/localwiki.  Create it if it's missing."
-msgstr ""
+msgstr "localwiki-0.12-beta-12 では、``themes`` ディレクトリが share/localwiki にありません。もしディレクトリが存在しない場合は新しく作成してください。"
 
 #: ../source/customizing.rst:303
-# 524506fb2ea44b9b9b46cc43f9e12756
+# 75c1505d5989431e91ed4032572dc26d
 msgid "Then edit the ``/usr/share/localwiki/conf/localsettings.py`` file and change the ``SITE_THEME`` value from ``sapling`` to ``nameofyourtheme``."
-msgstr ""
+msgstr "次に、``/usr/share/localwiki/conf/localsettings.py`` ファイルを編集し、``SITE_THEME`` の値を ``sapling`` から ``nameofyourtheme`` (自分の好きな名称) に変更します。"
 
 #: ../source/customizing.rst:306
-# 144d10a63cba456e9fca7e3dd45facff
+# af0d0bc8f59a418e9b9c89fa9af61bee
 msgid "Then simply run::"
-msgstr ""
+msgstr "完了したら、以下のコマンドを実行します。 :"
 
 #: ../source/customizing.rst:310
-# ed916bcb4a5d473dbecf71dd8c557015
+# 1dc61dacc61d4103b294a4602b802d9e
 msgid "and restart the webserver::"
-msgstr ""
+msgstr "ウェブサーバの再起動を行います。 ::"
 
 #: ../source/customizing.rst:314
-# 8328abdf1d524a0c854e81d36a1213f8
+# 478a294c28e34a5b977306a6574723b9
 msgid "and the site will be using your new theme."
-msgstr ""
+msgstr "上記の手順で、あなたが自作した新規テーマを利用することが可能です。"
 
 #: ../source/customizing.rst:316
-# 110543413e994707b56ee200007e416e
+# d0e2f7cb009f423e8ef2fdd347cc6059
 msgid "As you develop your theme you'll need to restart the webserver whenever you change the ``templates/`` and run ``localwiki-manage collectstatic`` whenever you change the ``assets/``."
-msgstr ""
+msgstr "テーマの開発を行う際、 ``template/`` 配下のファイルを変更した場合はウェブサーバの再起動が必要です。また、 ``assets/`` 配下のファイルを変更した場合は ``localwiki-manage collectstatic`` を実行する必要があります。"
 
 #: ../source/customizing.rst:322
-# 71133c594c424cc8b8033c25d1daedc4
+# 3fbabaddda7d4603b8647b4e951b318a
 msgid "Referring to static assets in templates"
-msgstr ""
+msgstr "テンプレート内から静的なアセットを参照"
 
 #: ../source/customizing.rst:324
-# 387058c5657b4b20bb161f5947bd0b94
+# 80512a2b5c9a4301bd8cd48f1cd2ec40
 msgid "Your theme templates can refer to static assets like this::"
-msgstr ""
+msgstr "テーマテンプレートの中で、静的なアセットを参照することが可能です。 ::"
 
 #: ../source/customizing.rst:328
-# ed00d144cd8749e6aaeb07ea63c1d754
+# 95525b4f87884c98a67f8a903303db9d
 msgid "That will pull up the file that lives at themes/yourtheme/img/mybutton.png."
-msgstr ""
+msgstr "この例では、themes/yourtheme/img/mybutton.png に配置されているファイルを呼び出しています。"
 
 #: ../source/customizing.rst:331
-# 7ce9966c0ac4442ea50713a9c3a3bf4b
+# 28bfe302749e4c0486255919ca681f86
 msgid "Overriding built-in templates"
-msgstr ""
+msgstr "既に配置されているテンプレートの上書き"
 
 #: ../source/customizing.rst:333
-# 9298d845b8f44496ab68cabdc1fc4abc
+# e7b955367b2d40b2a4d338750a80d371
 msgid "More detail on this soon.  You'll probably be able to figure this out if you dig around.  But, as an example, to override ``pages/base.html``, you simply define ``themes/nameofyourtheme/templates/pages/base.html``"
-msgstr ""
+msgstr "詳細は近日追記予定です。 自分で方法を編み出せる方のために記載しておくと、例えば ``pages/base.html`` を上書きするには ``themes/nameofyourtheme/templates/pages/base.html`` ファイルを作成して定義する必要があります。"
 

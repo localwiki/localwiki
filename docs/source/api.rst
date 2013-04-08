@@ -16,6 +16,9 @@ The LocalWiki API follows the conventions of `Tastypie <https://github.com/toast
 
 Unless otherwise specified, all endpoints that return lists support the ``limit`` and ``offset`` parameters for pagination. Pagination information is contained in the embedded ``meta`` object within the response.
 
+Many list endpoints also support ordering by certain fields. Order-by fields
+are listed for each resource.
+
 
 API versioning
 ==============
@@ -90,7 +93,7 @@ Fetch
 
 ::
 
-    /api/site/[id]/
+    /api/site/[id]
 
 
 Users
@@ -125,12 +128,18 @@ List
 
     /api/user/
 
+Order by: ``username``, ``first_name``, ``last_name``, ``date_joined``
+
+::
+
+    /api/user/?order_by=date_joined
+
 Fetch
 ~~~~~
 
 ::
 
-    /api/user/[id]/
+    /api/user/[id]
 
 
 
@@ -169,6 +178,12 @@ List
 
     /api/page/
 
+Order by: ``name``, ``slug``
+
+::
+
+    /api/page/?order_by=name
+
 Fetch
 ~~~~~
 
@@ -192,6 +207,12 @@ Delete
 ~~~~~~
 
 To delete an existing page, issue a DELETE to /api/page/[name].
+
+
+More API Examples for Pages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:ref:`api_examples_page`
 
 
 Files
@@ -228,12 +249,18 @@ List
 
     /api/file/
 
+Order by: ``name``, ``slug``
+
+::
+
+    /api/file/?order_by=slug
+
 Fetch
 ~~~~~
 
 ::
 
-    /api/file/[id]/
+    /api/file/[id]
 
 Create
 ~~~~~~
@@ -258,6 +285,11 @@ Delete
 
 To delete an existing file, issue a DELETE to ``/api/file/[id]/``.
 
+
+More API Examples for Files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:ref:`api_examples_file`
 
 
 Maps
@@ -322,6 +354,14 @@ List
 
     /api/map/
 
+Parameters
+__________
+
+full
+
+* `False`: (default) pages for maps are returned as links
+* `True`: pages for maps are returned in full (see `Pages`_ example object)
+
 Fetch
 ~~~~~
 
@@ -344,6 +384,12 @@ Delete
 ~~~~~~
 
 To delete an existing map, issue a DELETE to /api/map/[pagename].
+
+
+More API Examples for Maps
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:ref:`api_examples_map`
 
 
 Tags
@@ -383,12 +429,18 @@ List
 
     /api/tag/
 
+Order by: ``name``, ``slug``
+
+::
+
+    /api/tag/?order_by=name
+
 Fetch
 ~~~~~
 
 ::
 
-    /api/tag/[slug]/
+    /api/tag/[slug]
 
 Create
 ~~~~~~
@@ -406,6 +458,13 @@ Delete
 ~~~~~~
 
 You cannot currently delete a tag.
+
+
+More API Examples for Tags
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:ref:`api_examples_tag`
+
 
 Page Tags
 ---------
@@ -445,6 +504,12 @@ List
 ::
 
     /api/page_tags/
+
+Order by: ``page``, ``tags``
+
+::
+
+    /api/page_tags/?order_by=page
 
 Fetch
 ~~~~~

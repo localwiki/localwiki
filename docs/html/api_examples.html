@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>API Examples &mdash; LocalWiki 0.4.2 documentation</title>
+    <title>API Examples &mdash; LocalWiki 0.5.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.4.2',
+        VERSION:     '0.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="LocalWiki 0.4.2 documentation" href="index.html" />
+    <link rel="top" title="LocalWiki 0.5.0 documentation" href="index.html" />
     <link rel="up" title="API Documentation" href="api.html" />
     <link rel="next" title="API Tools" href="api_tools.html" />
     <link rel="prev" title="API Documentation" href="api.html" /> 
@@ -43,7 +43,7 @@
         <li class="right" >
           <a href="api.html" title="API Documentation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li>
+        <li><a href="index.html">LocalWiki 0.5.0 documentation</a> &raquo;</li>
           <li><a href="api.html" accesskey="U">API Documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -56,9 +56,9 @@
   <div class="section" id="api-examples">
 <h1>API Examples<a class="headerlink" href="#api-examples" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="page-examples">
-<h2>Page examples<a class="headerlink" href="#page-examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="get-all-pages-whose-title-end-in-park-case-insensitive">
-<h3>Get all pages whose title end in &#8220;park&#8221;, case-insensitive<a class="headerlink" href="#get-all-pages-whose-title-end-in-park-case-insensitive" title="Permalink to this headline">¶</a></h3>
+<span id="api-examples-page"></span><h2>Page examples<a class="headerlink" href="#page-examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="get-all-pages-whose-title-ends-in-park-case-insensitive">
+<h3>Get all pages whose title ends in &#8220;park&#8221;, case-insensitive<a class="headerlink" href="#get-all-pages-whose-title-ends-in-park-case-insensitive" title="Permalink to this headline">¶</a></h3>
 <p><tt class="docutils literal"><span class="pre">/api/page/?name__iendswith=park</span></tt></p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
     <span class="s2">&quot;meta&quot;</span><span class="o">:</span> <span class="p">{</span>
@@ -244,9 +244,13 @@
 </div>
 </div>
 </div>
+<div class="section" id="all-pages-tagged-with-sometag">
+<h3>All pages tagged with [sometag]<a class="headerlink" href="#all-pages-tagged-with-sometag" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">/api/page/?page_tags__tags__slug=sometag&amp;format=json</span></tt></p>
+</div>
 </div>
 <div class="section" id="file-examples">
-<h2>File examples<a class="headerlink" href="#file-examples" title="Permalink to this headline">¶</a></h2>
+<span id="api-examples-file"></span><h2>File examples<a class="headerlink" href="#file-examples" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="get-all-files-on-a-given-page">
 <h3>Get all files on a given page<a class="headerlink" href="#get-all-files-on-a-given-page" title="Permalink to this headline">¶</a></h3>
 <p>Let&#8217;s get all files on the &#8216;Golden Gate Park&#8217; page.</p>
@@ -283,7 +287,7 @@ the <cite>file</cite> attribute.</p>
 </div>
 </div>
 <div class="section" id="map-examples">
-<h2>Map examples<a class="headerlink" href="#map-examples" title="Permalink to this headline">¶</a></h2>
+<span id="api-examples-map"></span><h2>Map examples<a class="headerlink" href="#map-examples" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="get-the-map-associated-with-a-particular-page">
 <h3>Get the map associated with a particular page<a class="headerlink" href="#get-the-map-associated-with-a-particular-page" title="Permalink to this headline">¶</a></h3>
 <p>Let&#8217;s get the map data on the &#8220;Lake Ella&#8221; page.  We can just visit the
@@ -635,7 +639,7 @@ succession.</p>
 </div>
 </div>
 <div class="section" id="tag-examples">
-<h2>Tag examples<a class="headerlink" href="#tag-examples" title="Permalink to this headline">¶</a></h2>
+<span id="api-examples-tag"></span><h2>Tag examples<a class="headerlink" href="#tag-examples" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="pages-with-a-particular-tag">
 <h3>Pages with a particular tag<a class="headerlink" href="#pages-with-a-particular-tag" title="Permalink to this headline">¶</a></h3>
 <p>Get all pages tagged with &#8216;park&#8217;:</p>
@@ -821,7 +825,7 @@ And so we can tie these all together, giving us:</p>
 </div>
 </div>
 <div class="section" id="redirect-examples">
-<h2>Redirect examples<a class="headerlink" href="#redirect-examples" title="Permalink to this headline">¶</a></h2>
+<span id="api-examples-redirect"></span><h2>Redirect examples<a class="headerlink" href="#redirect-examples" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="get-all-redirects-pointed-at-a-particular-page">
 <h3>Get all redirects pointed at a particular page<a class="headerlink" href="#get-all-redirects-pointed-at-a-particular-page" title="Permalink to this headline">¶</a></h3>
 <p>Find all the redirects that point to the page with the slug &#8216;coffee&#8217;:</p>
@@ -865,13 +869,14 @@ And so we can tie these all together, giving us:</p>
   <ul>
 <li><a class="reference internal" href="#">API Examples</a><ul>
 <li><a class="reference internal" href="#page-examples">Page examples</a><ul>
-<li><a class="reference internal" href="#get-all-pages-whose-title-end-in-park-case-insensitive">Get all pages whose title end in &#8220;park&#8221;, case-insensitive</a></li>
+<li><a class="reference internal" href="#get-all-pages-whose-title-ends-in-park-case-insensitive">Get all pages whose title ends in &#8220;park&#8221;, case-insensitive</a></li>
 <li><a class="reference internal" href="#find-pages-that-contain-the-word-cafe">Find pages that contain the word &#8216;cafe&#8217;</a></li>
 <li><a class="reference internal" href="#page-versions">Page versions</a><ul>
 <li><a class="reference internal" href="#all-versions-of-pages-that-were-edited-after-a-certain-date">All versions of pages that were edited after a certain date</a></li>
 <li><a class="reference internal" href="#all-versions-of-pages-that-were-edited-after-a-certain-date-and-have-a-certain-title">All versions of pages that were edited after a certain date and have a certain title</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#all-pages-tagged-with-sometag">All pages tagged with [sometag]</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#file-examples">File examples</a><ul>
@@ -940,7 +945,7 @@ And so we can tie these all together, giving us:</p>
         <li class="right" >
           <a href="api.html" title="API Documentation"
              >previous</a> |</li>
-        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li>
+        <li><a href="index.html">LocalWiki 0.5.0 documentation</a> &raquo;</li>
           <li><a href="api.html" >API Documentation</a> &raquo;</li> 
       </ul>
     </div>

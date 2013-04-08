@@ -85,6 +85,9 @@ CKEDITOR.plugins.add( 'simpleimage',
                 caption.css('width', CKEDITOR.tools.cssLength(jQuery(img.$).width()));
 		        caption.mousedown(function(){ jQuery(caption).removeClass('editor_temp'); });
 		        jQuery(frame.$).append(caption);
+		        // fix the selection
+		        var selection = editor.getSelection();
+		        selection.selectElement(img);
 		    }
 		}
 		
@@ -149,8 +152,7 @@ CKEDITOR.plugins.add( 'simpleimage',
             	var oldHtml = oldFrame.length ? oldFrame.outerHTML() : img.outerHTML();
             	img.addClass('cke_moved');
             	oldFrame.addClass('cke_moved');
-            	jQuery('img', editor.document.$).addClass('cke_unmoved'); // for FF workaround, below
-            	jQuery('img', editor.document.$).addClass('cke_unmoved');
+            	jQuery('img,span.image_frame', editor.document.$).addClass('cke_unmoved'); // for FF workaround, below
             	var floated = oldFrame.hasClass('image_right') || oldFrame.hasClass('image_left');
             	var moveImage = function(evt){
             		var moved_image = jQuery('img.cke_moved', editor.document.$);
@@ -229,10 +231,10 @@ CKEDITOR.plugins.add( 'simpleimage',
                 {
 					var sel = editor.getSelection(),
 						element = sel.getStartElement();
-                    if ( element && element.is('img'))
+                    if ( element && element.is('img', 'span'))
                     {
                         element = element.getAscendant('span', true);
-                        if(!element)
+                        if(!element || !element.hasClass('image_frame'))
                             return;
                         // Make undo snapshot.
                         editor.fire( 'saveSnapshot' );

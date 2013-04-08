@@ -18,6 +18,7 @@
 <div class="loading" id="loading">
   {% trans "Statistics loading.  This may take several minutes the first time." %}
 </div>
+
 <table class="stats" id="main_stats">
   <thead><tr><td>
     <div id="num_pages" class="stat_number"><div class="type">{% trans "Pages" %}</div></div>
@@ -30,6 +31,9 @@
 <tr><td>
 <div class="stat_detail">
    <h2>{% trans "Growth over time" %}</h2>
+   <div id="num_items_over_time_loading" class="loading">
+    {% trans "Generating graph..." %}
+   </div>
    <div id="num_items_over_time" class="graph"></div>
 </div>
 </td></tr>
@@ -37,6 +41,9 @@
 <tr><td>
 <div class="stat_detail">
     <h2>{% trans "Edits over time" %}</h2>
+    <div id="num_edits_over_time_loading" class="loading">
+    {% trans "Generating graph..." %}
+    </div>
     <div id="num_edits_over_time" class="graph"></div>
 </div>
 </td></tr>
@@ -44,6 +51,9 @@
 <tr><td>
 <div class="stat_detail">
     <h2>{% trans "Page content growth over time" %}</h2>
+    <div id="page_content_over_time_loading" class="loading">
+    {% trans "Generating graph..." %}
+    </div>
     <div id="page_content_over_time" class="graph"></div>
 </div>
 </td></tr>
@@ -51,6 +61,9 @@
 <tr><td>
 <div class="stat_detail">
     <h2>{% trans "Users registered over time" %}</h2>
+    <div id="users_registered_over_time_loading" class="loading">
+    {% trans "Generating graph..." %}
+    </div>
     <div id="users_registered_over_time" class="graph"></div>
 </div>
 </td></tr>
@@ -59,56 +72,66 @@
 
 <script type="text/javascript">
 function generate_graphs(stats) {
-    $('#loading').hide();
-    $('#main_stats').show();
 
-    $.plot($("#num_items_over_time"),
-           stats.num_items_over_time,
-           { 
-               'xaxes': [{'mode': 'time'}],
-               'yaxes': [{'panRange': [0, null]}],
-               'zoom': {'interactive': true},
-               'pan': {'interactive': true},
-               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
-           }
-    );
+    if(stats.num_items_over_time) {
+        $.plot($("#num_items_over_time"),
+               stats.num_items_over_time,
+               { 
+                   'xaxes': [{'mode': 'time'}],
+                   'yaxes': [{'panRange': [0, null]}],
+                   'zoom': {'interactive': true},
+                   'pan': {'interactive': true},
+                   'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
+               }
+        );
+        $("#num_items_over_time_loading").hide();
+    }
 
-    $.plot($("#num_edits_over_time"),
-           stats.num_edits_over_time,
-           { 
-               'xaxes': [{'mode': 'time'}],
-               'yaxes': [{'panRange': [0, null]}],
-               'series': {'bars': {'show': true}},
-               'zoom': {'interactive': true},
-               'pan': {'interactive': true},
-               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
-           }
+    if(stats.num_edits_over_time) {
+        $.plot($("#num_edits_over_time"),
+               stats.num_edits_over_time,
+               { 
+                   'xaxes': [{'mode': 'time'}],
+                   'yaxes': [{'panRange': [0, null]}],
+                   'series': {'bars': {'show': true}},
+                   'zoom': {'interactive': true},
+                   'pan': {'interactive': true},
+                   'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
+               }
 
-    );
+        );
+        $("#num_edits_over_time_loading").hide();
+    }
 
-    $.plot($("#page_content_over_time"),
-           stats.page_content_over_time,
-           { 
-               'xaxes': [{'mode': 'time'}],
-               'yaxes': [{'panRange': [0, null]}],
-               'series': {'lines': {'show': true, 'fill': true}},
-               'zoom': {'interactive': true},
-               'pan': {'interactive': true},
-               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
-           }
-    );
+    if(stats.page_content_over_time) {
+        $.plot($("#page_content_over_time"),
+               stats.page_content_over_time,
+               { 
+                   'xaxes': [{'mode': 'time'}],
+                   'yaxes': [{'panRange': [0, null]}],
+                   'series': {'lines': {'show': true, 'fill': true}},
+                   'zoom': {'interactive': true},
+                   'pan': {'interactive': true},
+                   'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
+               }
+        );
+        $("#page_content_over_time_loading").hide();
+    }
 
-    $.plot($("#users_registered_over_time"),
-           stats.users_registered_over_time,
-           { 
-               'xaxes': [{'mode': 'time'}],
-               'yaxes': [{'panRange': [0, null]}],
-               'series': {'lines': {'show': true}},
-               'zoom': {'interactive': true},
-               'pan': {'interactive': true},
-               'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
-           }
-    );
+    if(stats.users_registered_over_time) {
+        $.plot($("#users_registered_over_time"),
+               stats.users_registered_over_time,
+               { 
+                   'xaxes': [{'mode': 'time'}],
+                   'yaxes': [{'panRange': [0, null]}],
+                   'series': {'lines': {'show': true}},
+                   'zoom': {'interactive': true},
+                   'pan': {'interactive': true},
+                   'grid': {'backgroundColor': {'colors': ["#fff", "#eee"]}}
+               }
+        );
+        $("#users_registered_over_time_loading").hide();
+    }
 }
 
 function populateData(data) {
@@ -117,33 +140,38 @@ function populateData(data) {
     $('#num_maps').prepend(data.num_maps);
     $('#num_redirects').prepend(data.num_redirects);
     $('#num_users').prepend(data.num_users);
-
-    var stats = {
-        'num_items_over_time': data.num_items_over_time,
-        'num_edits_over_time': data.num_edits_over_time,
-        'page_content_over_time': data.page_content_over_time,
-        'users_registered_over_time': data.users_registered_over_time
-    };
-    generate_graphs(stats);
+    $('#loading').hide();
+    $('#main_stats').show();
+    getData('num_items_over_time', '?check_cache=1', 1)
+    getData('num_edits_over_time', '?check_cache=1', 1)
+    getData('page_content_over_time', '?check_cache=1', 1)
+    getData('users_registered_over_time', '?check_cache=1', 1)
 }
 
-function getData(qs, timeout) {
-    if (!qs) qs = '';
+function getData(graph, qs, timeout) {
+    if (qs) qs = qs + '&graph=' + graph;
+    if (!qs) qs = '?graph=' + graph;
     $.ajax({
         url: '{% url dashboard:render %}' + qs,
         dataType: 'json',
         success: function(data) {
             if (!data.generated) {
                 if (!timeout) timeout = 1000 * 20;
-                return setTimeout('getData()', timeout);
+                return setTimeout('getData(\'' + graph + '\')', timeout);
             }
-            populateData(data)
+            generate_graphs(data);
         }
     });
 }
 
 $(function() {
-    getData('?check_cache=1', 1)
+    $.ajax({
+        url: '{% url dashboard:render %}',
+        dataType: 'json',
+        success: function(data) {
+            populateData(data);
+        }
+    });
 });
 
 </script>

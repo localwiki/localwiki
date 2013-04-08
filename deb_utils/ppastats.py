@@ -14,7 +14,7 @@ import os
 from launchpadlib.launchpad import Launchpad
 
 archs = ["i386"]
-releases = ["lucid", "maverick", "natty", "oneiric", "precise"]
+releases = ["lucid", "maverick", "natty", "oneiric", "precise", "quantal"]
 releases.reverse()
 
 if len(sys.argv) < 3:
@@ -48,7 +48,7 @@ for ppa in ppas:
                         stats[date] = dict([(r, 0) for r in releases])
                     stats[date][release] = downloads
 
-try:
+def plot_stats(stats):
     import numpy as np
     import matplotlib
     # prevent interactive pop-up
@@ -59,12 +59,12 @@ try:
     dates = datestr2num(stats)
     # 2d array to store totals by release and by date
     all = np.array([[stats[x][r] for x in stats] for r in releases])
-    fig = plt.figure(figsize=(12,5))
+    fig = plt.figure(figsize=(30,5))
     a=1. # alpha
     kwargs = dict(linewidth=0,color='g', alpha=a, align='center')
     ax = plt.subplot(1,1,1)
     ax.xaxis.set_major_locator(MonthLocator())
-    ax.xaxis.set_major_formatter(DateFormatter('%B'))
+    ax.xaxis.set_major_formatter(DateFormatter('%b'))
     ax.xaxis_date()
     for i,r in enumerate(releases):
         if i==0:
@@ -73,7 +73,8 @@ try:
         kwargs.update(alpha=a,label=r,bottom=prev)
         ax.bar(dates, all[i],**kwargs)
         a*=.72
-    plt.gcf().autofmt_xdate(rotation=0, ha='left')
+    plt.gcf().autofmt_xdate(rotation=70, ha='right')
+    plt.setp(ax.xaxis.get_majorticklabels(), rotation_mode='anchor', va='center')
     l = plt.legend()
     l.set_frame_on(False)
     # Liberate axis!
@@ -93,6 +94,11 @@ try:
     for r,t in zip(releases,all.sum(1)):
         print '%4d :'%t,r
     print "Total downloads: ", all.sum()
+
+
+
+try:
+    plot_stats(stats)
 except ImportError:
     # Couldn't import matplotlib, let's do the old thing
     for date, downloads in reversed(stats.items()):

@@ -9,21 +9,39 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
   <title>{% block title %}{% if current_site %}{{ current_site.name }}{% else %}Wiki{% endif %}{% endblock %}</title>
-  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
-  <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  
   {% block search_robots %}
   <meta name="robots" content="index,follow">
   {% endblock %}
 
-  <link href="//fonts.googleapis.com/css?family=Cabin:regular,regularitalic,bold" rel="stylesheet" type="text/css">
-  <link href="//fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css">
-
   {% block media %}
-  <link rel="stylesheet" href="{% static "theme/css/reset.css" %}">
-  <link rel="stylesheet" href="{% static "theme/css/site.css" %}">
-  <script type="text/javascript" src="{% static "js/srcset.min.js" %}"></script>
+    <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <link rel="stylesheet" href="{% static "theme/css/font_face.css" %}">
+    <link rel="stylesheet" href="{% static "theme/css/reset.css" %}">
+    <link rel="stylesheet" href="{% static "theme/css/site.css" %}">
+    <script type="text/javascript" src="{% static "js/srcset.min.js" %}"></script>
+    {% include "site/extra_media.html" %}
   {% endblock %}
+
+  {% block analytics %}
+  {% if GOOGLE_ANALYTICS_ID %}
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '{{ GOOGLE_ANALYTICS_ID }}']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </script>
+  {% endif %}
+  {% endblock %}
+
   {% block head_extra %}{% endblock %}
 </head>
 
@@ -75,8 +93,8 @@
         </div>
         {% endblock %}
       {% endblock %}
-    {% endblock %}
     </div>
+    {% endblock %}
 
     <div id="footer">
      {% block footer %}

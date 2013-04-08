@@ -1,0 +1,378 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, LocalWiki team
+# This file is distributed under the same license as the LocalWiki package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LocalWiki 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-12 10:53\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/api_examples.rst:3
+# a80838acf5084343b1d4366b766c1cec
+msgid "API Examples"
+msgstr ""
+
+#: ../source/api_examples.rst:6
+# f4603cf383c848589d1649e59c4e01dd
+msgid "Page examples"
+msgstr ""
+
+#: ../source/api_examples.rst:9
+# 7facdd40262b47e282fcd8663545e794
+msgid "Get all pages whose title end in \"park\", case-insensitive"
+msgstr ""
+
+#: ../source/api_examples.rst:11
+# 188a26e09eed414f942ec828cc358449
+msgid "``/api/page/?name__iendswith=park``"
+msgstr ""
+
+#: ../source/api_examples.rst:41
+# db692c0fb9ea4217a301af66518b80ef
+msgid "Alternatively, we could have filtered on the `slug` field, which is always lowercase:"
+msgstr ""
+
+#: ../source/api_examples.rst:43
+# 1df2cda1959940b093ec031341d73f3c
+msgid "``/api/page/?slug__endswith=park``"
+msgstr ""
+
+#: ../source/api_examples.rst:47
+# 6a3f5ab576044e5784285dc37db0aebe
+msgid "Find pages that contain the word 'cafe'"
+msgstr ""
+
+#: ../source/api_examples.rst:49
+# 416ea977bcbf4cac98911aa4de0e815b
+msgid "If we try to do something like:"
+msgstr ""
+
+#: ../source/api_examples.rst:51
+# 2d2dd6a01f384de7b3709dfb3ef0ad34
+msgid "``/api/page/?content__contains=cafe``"
+msgstr ""
+
+#: ../source/api_examples.rst:53
+# c0241be9a5d04ba6a876fa1a8bca4e54
+msgid "We get the message \"The 'content' field does not allow filtering.\"  Instead, for full-text searches we'll want to use the ``/search/`` method on the `page` resource.  Search takes a query parameter, `q`, which is a URL-encoded search string.  E.g.:"
+msgstr ""
+
+#: ../source/api_examples.rst:55
+# b79590ca96274ba082d192ed5ef0a36f
+msgid "``/api/page/search/?q=cafe``"
+msgstr ""
+
+#: ../source/api_examples.rst:71
+# 1ce034bc60e0455bad3831d341d6f27d
+msgid "*Note*: You currently cannot use other filters on top of a `search` method."
+msgstr ""
+
+#: ../source/api_examples.rst:75
+# c02d2ed0a0c243ba97c6ed799775cd92
+msgid "Page versions"
+msgstr ""
+
+#: ../source/api_examples.rst:78
+# 3faf1ab927ba40d383663416b245109b
+msgid "All versions of pages that were edited after a certain date"
+msgstr ""
+
+#: ../source/api_examples.rst:80
+# 0cf6a48ca7084b40b6abe94525b94dae
+msgid "Let's find all versions of pages that were edited after June 25th, 2012 at 22:21:30 :"
+msgstr ""
+
+#: ../source/api_examples.rst:82
+# 467fd9431b654c859c4e32c6e5d99269
+msgid "``/api/page_version/history_date__gte=2012-06-25T22:21:30``"
+msgstr ""
+
+#: ../source/api_examples.rst:142
+# e5b3dbeb4fe544578d1acafc1ef29bec
+msgid "All versions of pages that were edited after a certain date and have a certain title"
+msgstr ""
+
+#: ../source/api_examples.rst:144
+# 78e0995615ab4ecf8ba5ee1491b59957
+msgid "Let's find all versions of pages that were edited after June 25th, 2012 at 22:21:30 and whose title ends with 'park':"
+msgstr ""
+
+#: ../source/api_examples.rst:146
+# 27911543eb6d4aa9aa0ea7a7d3b16420
+msgid "``/api/page_version/?slug__endswith=park&history_date__gte=2012-06-25T22:21:30``"
+msgstr ""
+
+#: ../source/api_examples.rst:216
+# 5bb176640c504cd887d7fd9b2d8da816
+msgid "File examples"
+msgstr ""
+
+#: ../source/api_examples.rst:219
+# b66bfb4c6d574f5e95d16a9b2a915c67
+msgid "Get all files on a given page"
+msgstr ""
+
+#: ../source/api_examples.rst:221
+# 74668806eb8040ac8a95cffe1ccea379
+msgid "Let's get all files on the 'Golden Gate Park' page."
+msgstr ""
+
+#: ../source/api_examples.rst:223
+# 0a3e4d6c4d1d4b30931f0ad158d3febd
+msgid "``/api/file/slug=golden gate park``"
+msgstr ""
+
+#: ../source/api_examples.rst:253
+# cdd59028bcef45be8b9964e71fa52baf
+msgid "We can retrieve the file itself by visiting the location specified in the `file` attribute."
+msgstr ""
+
+#: ../source/api_examples.rst:258
+# e16b6f44f4c6455e9b56c8170e169893
+msgid "Map examples"
+msgstr ""
+
+#: ../source/api_examples.rst:261
+# 58a3163f947549d9a4eeef0e473e3377
+msgid "Get the map associated with a particular page"
+msgstr ""
+
+#: ../source/api_examples.rst:263
+# 7957fb7e271a43adad621143dc3988df
+msgid "Let's get the map data on the \"Lake Ella\" page.  We can just visit the URI without any filtering:"
+msgstr ""
+
+#: ../source/api_examples.rst:266
+# 6798a125bad14557876715903627060c
+msgid "``/api/map/Lake_Ella``"
+msgstr ""
+
+#: ../source/api_examples.rst:298
+# b67c6955a100495da8b5661e3a39f425
+msgid "Get all maps associated with pages ending in 'Park'"
+msgstr ""
+
+#: ../source/api_examples.rst:300
+# 4f506ecffe684f34bf538dad0cb818fe
+msgid "Get all the map data for all pages whose title end in 'park':"
+msgstr ""
+
+#: ../source/api_examples.rst:302
+# ccb342b1048c42d0a0d20d7a13a1ceed
+msgid "``/api/map/?page__slug__endswith=park``"
+msgstr ""
+
+#: ../source/api_examples.rst:387
+# 6f571e5ec7a04f00a0d455ac7db8069d
+msgid "Find all maps that contain a particular point"
+msgstr ""
+
+#: ../source/api_examples.rst:389
+# 46647cea374f4b0f9e0ac274b09d61c9
+msgid "Let's find all maps that contain a point that lies inside of Golden Gate Park:"
+msgstr ""
+
+#: ../source/api_examples.rst:392
+# 39d0e2ff041f4b728606fa4b8d4057aa
+msgid "``/api/map/?polys__contains={\"type\": \"Point\", \"coordinates\": [-122.475233, 37.768617]}``"
+msgstr ""
+
+#: ../source/api_examples.rst:433
+# 604f918f7e774e92a89afb569a861e3f
+msgid "As expected, we get back the map for Golden Gate Park."
+msgstr ""
+
+#: ../source/api_examples.rst:437
+# 0777c45c217a446f9508d702f60f9864
+msgid "Find all maps inside of a region"
+msgstr ""
+
+#: ../source/api_examples.rst:439
+# 9453fcb67f014c32b6a31dc6e70e3f49
+msgid "Let's find all maps inside of a polygon region roughly representing the United States."
+msgstr ""
+
+#: ../source/api_examples.rst:442
+# bd2e66c535894a6c8702fe7bea2a6591
+msgid "Due to technical limitations, we can only query for one geometry type (points, lines or polygons) at a time.  So we query for each in succession."
+msgstr ""
+
+#: ../source/api_examples.rst:446
+# c4ea96a8d58047398e0b4fcbd822f780
+msgid "First, let's find the points that lay inside:"
+msgstr ""
+
+#: ../source/api_examples.rst:448
+# f062c901e902450ba8752e0817ee4467
+msgid "``/api/map/?points__within={ \"type\": \"Polygon\", \"coordinates\": [[[-125.363617, 48.656273], [-123.254242, 31.608656], [-77.902679, 26.068811], [-65.597992, 44.301984], [-125.363617, 48.656273]]]}``"
+msgstr ""
+
+#: ../source/api_examples.rst:450
+# c8a5551db7464c729b3c834460bad457
+msgid "Then the lines:"
+msgstr ""
+
+#: ../source/api_examples.rst:452
+# 33dc54530c3546dba3fb0f378ba95b17
+msgid "``/api/map/?lines__within={ \"type\": \"Polygon\", \"coordinates\": [[[-125.363617, 48.656273], [-123.254242, 31.608656], [-77.902679, 26.068811], [-65.597992, 44.301984], [-125.363617, 48.656273]]]}``"
+msgstr ""
+
+#: ../source/api_examples.rst:454
+# c90261d8c1e645718447162b116461a5
+msgid "Finally, the polygons:"
+msgstr ""
+
+#: ../source/api_examples.rst:456
+# 119135bf43824ac2bc72b0f8acb0fb25
+msgid "``/api/map/?polys__within={ \"type\": \"Polygon\", \"coordinates\": [[[-125.363617, 48.656273], [-123.254242, 31.608656], [-77.902679, 26.068811], [-65.597992, 44.301984], [-125.363617, 48.656273]]]}``"
+msgstr ""
+
+#: ../source/api_examples.rst:458
+# 7ab7c8f4717f4fdc801551c9c19c8ce6
+msgid "Here are the results:"
+msgstr ""
+
+#: ../source/api_examples.rst:460
+# c38f90365145401383a3396d95659f1b
+msgid "With points within:"
+msgstr ""
+
+#: ../source/api_examples.rst:519
+# 694e323b75ee4408bd4235e206fe79bc
+msgid "With lines within:"
+msgstr ""
+
+#: ../source/api_examples.rst:569
+# 9131df38d6094aa1ba8214a33845c7da
+msgid "With polygons within:"
+msgstr ""
+
+#: ../source/api_examples.rst:639
+# 858fb0cc331e419a95eeceb3f6568ccc
+msgid "Tag examples"
+msgstr ""
+
+#: ../source/api_examples.rst:643
+# d4667f16d2dd4ffaa4a201c4310a1d40
+msgid "Pages with a particular tag"
+msgstr ""
+
+#: ../source/api_examples.rst:645
+# 370170eee6284e67af936d249b81d9cb
+msgid "Get all pages tagged with 'park':"
+msgstr ""
+
+#: ../source/api_examples.rst:647
+# cf9d49a6e41c4477bb8225160b0624d1
+msgid "``/api/page_tags/?tags__slug=park``"
+msgstr ""
+
+#: ../source/api_examples.rst:687
+# 3a1be2f81c2e4b7c9596318aba56ac2f
+msgid "Pages with a tag or another tag"
+msgstr ""
+
+#: ../source/api_examples.rst:689
+# fd512dda7d6f46c988a6d40a56e570b2
+msgid "Get all pages tagged with 'park' or 'food:"
+msgstr ""
+
+#: ../source/api_examples.rst:691
+# 86d66102a4614019821c7579884a7c61
+msgid "``/api/page_tags/?tags__slug__in=park,food``"
+msgstr ""
+
+#: ../source/api_examples.rst:732
+# e2a0f13a6957420f986907ec7b58ea57
+msgid "Geographic data for all pages with a particular tag"
+msgstr ""
+
+#: ../source/api_examples.rst:734
+# a8350cdc4e7b4a62aef44ea5eace417f
+msgid "While we could iterate through a list of pages-with-a-particular-tag and retrieve pages' maps individually, we can also do this in a single query by tying together attributes across relations."
+msgstr ""
+
+#: ../source/api_examples.rst:738
+# c43514ae905649a58fa57da2e43b47a4
+msgid "Because each `map` resource has a `page` resource attached to it, and each `page` resource has a `page_tags` resource attached to it, we can tie these all together to get what we want!"
+msgstr ""
+
+#: ../source/api_examples.rst:742
+# 1aec520c8b7f4255b3cc974f347e473a
+msgid "We know we can do ``/api/page_tags/?tags__slug=park`` to get all pages with the tag `park`.  And so we can tie these all together, giving us:"
+msgstr ""
+
+#: ../source/api_examples.rst:745
+# bb8bbaa6507e488dbc9d05373f1de33b
+msgid "``/api/map/?page__page_tags__tags__slug=park``"
+msgstr ""
+
+#: ../source/api_examples.rst:747
+# e4d2f851a27b4c049f5eafc206a1453d
+msgid "To retrieve all the geographic data for all pages tagged with 'park':"
+msgstr ""
+
+#: ../source/api_examples.rst:787
+# 0d374f600bbf4a8ea716023c38c088d0
+msgid "Pages with a particular tag inside a particular geographic region"
+msgstr ""
+
+#: ../source/api_examples.rst:789
+# 89a3b4f616c342e5b0ad642d864f2d30
+msgid "Let's get all pages tagged with 'park' inside of an area roughly equal to San Francisco, California."
+msgstr ""
+
+#: ../source/api_examples.rst:792
+# d68b0bef402e41faba9c1d84680903b1
+msgid "We know the `map` resource has an associated `page` resource as an attribute, and the `page` resource has a `page_tags` resource."
+msgstr ""
+
+#: ../source/api_examples.rst:795
+# 8f510f21ff064ec5ba1690e8b80215f9
+msgid "We know we can do ``/api/page_tags/?tags__slug=park`` to get all pages with the tag `park`.  And we can do ``/api/map/?polys__within=<geojson>`` to get all pages with polygons that are within the provided geojson. And so we can tie these all together, giving us:"
+msgstr ""
+
+#: ../source/api_examples.rst:800
+# 89cb070c67af4c8dbad69e06bbb02b31
+msgid "``/api/map/?page__page_tags__tags__slug=parks&polys__within=<geojson>``"
+msgstr ""
+
+#: ../source/api_examples.rst:802
+# 890b2c4ee46944e98b1678de8c4367be
+msgid "Full detail:"
+msgstr ""
+
+#: ../source/api_examples.rst:804
+# e50052cce5ca4f699a589cd1a0242889
+msgid "``/api/map/?page__page_tags__tags__slug=parks&polys__within={\"type\": \"Polygon\", \"coordinates\": [[[-122.521248, 37.798391], [-122.397651, 37.817378], [-122.353020, 37.718590], [-122.504082, 37.701751], [-122.521248, 37.798391]]]}``"
+msgstr ""
+
+#: ../source/api_examples.rst:849
+# 99fb0355010f4fa4a2cdef9461f1472b
+msgid "Redirect examples"
+msgstr ""
+
+#: ../source/api_examples.rst:852
+# ce0c7ccbb52d4e7fb8e2bdec0e403439
+msgid "Get all redirects pointed at a particular page"
+msgstr ""
+
+#: ../source/api_examples.rst:854
+# ec1dd058c4364732bd725e748fbd9971
+msgid "Find all the redirects that point to the page with the slug 'coffee':"
+msgstr ""
+
+#: ../source/api_examples.rst:856
+# a9cbafcbcaf64b59a0b3409f38eb3901
+msgid "``/api/redirect/destination__slug=coffee``"
+msgstr ""
+

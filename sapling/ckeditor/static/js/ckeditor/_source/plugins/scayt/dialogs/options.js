@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -203,7 +203,7 @@ CKEDITOR.dialog.add( 'scaytcheck', function( editor )
 
 	var scayt_control = CKEDITOR.plugins.scayt.getScayt( editor );
 
-	for ( var i = 0; i < tags.length; i++ )
+	for ( i = 0; i < tags.length; i++ )
 	{
 		if ( tags[ i ] == 1 )
 			contents[ contents.length ] = tags_contents[ i ];
