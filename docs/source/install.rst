@@ -8,12 +8,16 @@ Installing on Ubuntu
 
 LocalWiki is available as a prebuilt package for Ubuntu 10.04 LTS or newer.
 
-Just open a terminal and run these commands::
+For Ubuntu 12.04 or newer, just open a terminal and run these commands::
 
    sudo apt-get install python-software-properties
    sudo apt-add-repository ppa:localwiki
    sudo apt-get update
    sudo apt-get install localwiki
+
+For Ubuntu 12.10, the apt-add-repository package has moved::
+
+   sudo apt-get install software-properties-common
 
 That's it! Follow the prompts to configure LocalWiki.
 
