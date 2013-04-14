@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-11 14:27-0600\n"
+"POT-Creation-Date: 2013-04-14 18:50+0200\n"
 "PO-Revision-Date: 2012-02-24 04:40\n"
 "Last-Translator: Anonymous User <anonymous@user.tld>\n"
 "Language: pt-PT\n"
@@ -108,7 +108,7 @@ msgstr "Verlauf des Wachstums"
 #: dashboard/templates/dashboard/index.html:55
 #: dashboard/templates/dashboard/index.html:65
 msgid "Generating graph..."
-msgstr ""
+msgstr "Generierung des Graphen..."
 
 #: dashboard/templates/dashboard/index.html:43
 #: dashboard/templates/dashboard/render.html:20
@@ -353,7 +353,7 @@ msgstr "Übergeordnete Seite umbenannt"
 msgid "file"
 msgstr "Dateien"
 
-#: pages/plugins.py:398
+#: pages/plugins.py:405
 msgid ""
 "The embedded URL is not on the list of approved providers.  Contact the site "
 "administrator to add it."
@@ -361,11 +361,11 @@ msgstr ""
 "Die eingebettete URL ist nicht auf der Liste der zugelassenen Provider. "
 "Kontaktiere den Administrator, um den Provider hinzuzufügen."
 
-#: pages/plugins.py:402
+#: pages/plugins.py:409
 msgid "Invalid embed code"
 msgstr "Ungültiger Einbettungs-Code"
 
-#: pages/plugins.py:414 search/templates/search/search.html:13
+#: pages/plugins.py:421 search/templates/search/search.html:13
 #: themes/sapling/templates/site/search_form.html:5
 msgid "Search or create page"
 msgstr "Seite suchen oder erstellen"
@@ -430,27 +430,27 @@ msgstr "Seite umbenannt in \"%s\""
 
 #: pages/widgets.py:27
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: pages/widgets.py:28
 msgid "Heading 1"
-msgstr ""
+msgstr "Überschrift 1"
 
 #: pages/widgets.py:29
 msgid "Heading 2"
-msgstr ""
+msgstr "Überschrift 2"
 
 #: pages/widgets.py:30
 msgid "Heading 3"
-msgstr ""
+msgstr "Überschrift 3"
 
 #: pages/widgets.py:31
 msgid "Formatted"
-msgstr ""
+msgstr "Formatiert"
 
 #: pages/widgets.py:32
 msgid "Typewriter"
-msgstr ""
+msgstr "Schreibmaschine"
 
 #: pages/templates/pages/base.html:5
 msgid "Recent changes on this Page"
@@ -487,22 +487,23 @@ msgstr ""
 
 #: pages/templates/pages/page_detail.html:40
 #: tags/templates/tags/tagged_list_snippet.html:7
-msgid "View map"
+#, fuzzy
+msgid "View"
 msgstr "Karte ansehen"
 
 #: pages/templates/pages/page_detail.html:57
 #, fuzzy
 msgid "Edit tags"
-msgstr "Karte bearbeiten"
+msgstr "Tags bearbeiten"
 
 #: pages/templates/pages/page_detail.html:57
 msgid "Add tags"
-msgstr ""
+msgstr "Tags hinzufügen"
 
 #: pages/templates/pages/page_detail.html:73
 #, fuzzy, python-format
 msgid "This page was last modified %(ago)s ago"
-msgstr "vor %(tsince)s zuletzt geändert"
+msgstr "Diese Seite wurde zuletzt vor %(ago)s geändert"
 
 #: pages/templates/pages/page_diff.html:19
 #, python-format
@@ -586,7 +587,9 @@ msgstr "Vorherige Versionen der Seite \"%(name)s\" - %(super)s"
 msgid ""
 " Looking for <a href=\"../_files/\">files</a> or <a href=\"../_tags/_history/"
 "\">tags</a>?"
-msgstr "<a href=\"../_files/\">Dateien</a> suchen"
+msgstr ""
+"Suchst Du nach <a href=\"../_files/\">Dateien</a> oder <a href=\"../_tags/"
+"_history/\">Tags</a>?"
 
 #: pages/templates/pages/pagefile_diff.html:34
 #, fuzzy, python-format
@@ -748,6 +751,8 @@ msgid ""
 "For statistics about pages, maps, and more, check out the <a href="
 "\"%(dashboard_main_url)s\">dashboard</a>"
 msgstr ""
+"Statistiken über Seiten, Karten und mehr finden sich im <a href="
+"\"%(dashboard_main_url)s\">Dashboard</a>"
 
 #: redirects/feeds.py:25
 #, python-format
@@ -845,6 +850,10 @@ msgid ""
 "Commons Attribution License</a>. See <a href=\"/Copyrights\">Copyrights</a>."
 "</p>"
 msgstr ""
+"<p>Mit Ausnahme von anders gekennzeichten Inhalten ist dieser Inhalt unter "
+"einer <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/3.0/"
+"\">Creative Commons Attributions-Lizenz</a> lizenzsiert. Siehe <a href=\"/"
+"Copyrights\">Urheberrechte</a>.</p>"
 
 #: settings/defaults.py:39
 msgid ""
@@ -854,6 +863,11 @@ msgid ""
 "noted otherwise. See <a href=\"/Copyrights\" target=\"_blank\">Copyrights</"
 "a>.</p>"
 msgstr ""
+"<p>Durch das Drücken von \"Änderungen speichern\" stimmst Du dazu Deine "
+"Änderungen unter der <a rel=\"license\" href=\"http://creativecommons.org/"
+"licenses/by/3.0/\" target=\"_blank\">Creative Commons BY-Lizenz</a> zu "
+"lizensieren, sofern nicht anderweitig vermerkt. Siehe dazu <a href=\"/"
+"Copyrights\" target=\"_blank\">Urheberrechte</a>.</p>"
 
 #: settings/defaults.py:41
 msgid ""
@@ -862,43 +876,48 @@ msgid ""
 "Commons-By license</a>, unless noted otherwise. See <a href=\"/Copyrights\" "
 "target=\"_blank\">Copyrights</a>."
 msgstr ""
+"Ich stimme zu meine Beiträge unter der <a rel=\"license\" href=\"http://"
+"creativecommons.org/licenses/by/3.0/\" target=\"_blank\">Creative Commons BY-"
+"Lizenz</a> zu lizensieren, sofern nicht anders vermerkt. Siehe dazu <a href="
+"\"/Copyrights\" target=\"_blank\">Urheberrechte</a>."
 
 #: settings/defaults.py:43
 msgid ""
 "I would like to receive occasional updates about this project via email."
 msgstr ""
+"Ich möchte periodische Informationen über dieses Projekt per Email erhalten"
 
 #: settings/defaults.py:62
 msgid "English"
-msgstr ""
+msgstr "Englisch"
 
 #: settings/defaults.py:63
 msgid "Japanese"
-msgstr ""
+msgstr "Japanisch"
 
 #: settings/defaults.py:64
 msgid "Russian"
-msgstr ""
+msgstr "Russisch"
 
 #: settings/defaults.py:65
 msgid "German (Swiss)"
-msgstr ""
+msgstr "Deutsch (Schweiz)"
 
 #: settings/defaults.py:66
 msgid "Spanish (Argentina)"
-msgstr ""
+msgstr "Spanisch (Argentinisch)"
 
 #: settings/defaults.py:67
 msgid "Danish"
-msgstr ""
+msgstr "Dänisch"
 
 #: settings/defaults.py:68
 msgid "Italian"
-msgstr ""
+msgstr "Italienisch"
 
 #: settings/defaults.py:69
 msgid "Portuguese"
-msgstr ""
+msgstr "Portugiesisch"
 
 #: tags/forms.py:76
 #, python-format
@@ -931,22 +950,22 @@ msgstr[1] ""
 #: tags/forms.py:114
 #, fuzzy
 msgid "no changes made"
-msgstr "Änderungen"
+msgstr "keine Änderungen vorgenommen"
 
 #: tags/forms.py:115 tags/forms.py:118
 msgid " and "
-msgstr ""
+msgstr " und "
 
 #: tags/models.py:32
 msgid "Tag"
-msgstr ""
+msgstr "Tag"
 
 #: tags/models.py:33 tags/templates/tags/pagetagset_list.html:4
 #: tags/templates/tags/pagetagset_list.html:5
 #: tags/templates/tags/tag_list.html:4
 #, fuzzy
 msgid "Tags"
-msgstr "Seiten"
+msgstr "Tags"
 
 #: tags/templates/tags/pagetagset_diff.html:28
 #: tags/templates/tags/pagetagset_diff.html:29
@@ -956,7 +975,7 @@ msgstr "Unterschiede für %(new_name)s"
 
 #: tags/templates/tags/pagetagset_diff.html:61
 msgid "Tags history"
-msgstr ""
+msgstr "Tag-Protokoll"
 
 #: tags/templates/tags/pagetagset_form.html:13
 #: tags/templates/tags/pagetagset_form.html:14
@@ -964,17 +983,17 @@ msgstr ""
 #: tags/templates/tags/pagetagset_versions.html:11
 #, fuzzy
 msgid "Tags for"
-msgstr "Karte für"
+msgstr "Tags für"
 
 #: tags/templates/tags/pagetagset_form_snippet.html:8
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: tags/templates/tags/pagetagset_version_detail.html:11
 #: tags/templates/tags/pagetagset_versions.html:10
 #, fuzzy
 msgid "Tags for "
-msgstr "Karte für"
+msgstr "Tags für"
 
 #: tags/templates/tags/pagetagset_versions.html:19
 #, fuzzy, python-format
@@ -982,7 +1001,11 @@ msgid ""
 "\n"
 "        This page has no tags.  <a href=\"%(page_url)s\">Add some!</a>\n"
 "    "
-msgstr "Diese Seite leitet nun auf <a href=\"%(url)s\">%(obj)s</a> weiter."
+msgstr ""
+"\n"
+"        Diese Seite hat keine Tags. <a href=\"%(page_url)s\">Füge welche "
+"hinzu!</a>\n"
+"    "
 
 #: tags/templates/tags/tag_list.html:5
 #, fuzzy
@@ -991,24 +1014,24 @@ msgstr "Alle Seiten"
 
 #: tags/templates/tags/tag_list.html:17
 msgid "Alphabetical"
-msgstr ""
+msgstr "Alphabetisch"
 
 #: tags/templates/tags/tag_list.html:18
 msgid "Most popular"
-msgstr ""
+msgstr "Am populärsten"
 
 #: tags/templates/tags/tag_list.html:19
 msgid "As a cloud"
-msgstr ""
+msgstr "Als Wolke"
 
 #: tags/templates/tags/tag_list.html:58
 msgid "There are no tags. Add some!"
-msgstr ""
+msgstr "Es sind keine Tags vorhanden. Füge welche hinzu!"
 
 #: tags/templates/tags/tagged_list_snippet.html:17
 #, python-format
 msgid "There are no pages with the tag \"%(tag_name)s\"."
-msgstr ""
+msgstr "Es gibt keine Seiten mit dem Tag \"%(tag_name)s\"."
 
 #: templates/registration/login.html:5
 #, fuzzy
@@ -1261,6 +1284,8 @@ msgid ""
 "Anonymous users may not perform this action. Please <a href=\"/Users/login/"
 "\">log in</a>."
 msgstr ""
+"Anonyme Benutzer dürfen diese Aktion nicht ausführen. Bitte <a href=\"/Users/"
+"login/\">melde dich an</a>."
 
 #: utils/templates/utils/history/form.html:13
 msgid "revert"
