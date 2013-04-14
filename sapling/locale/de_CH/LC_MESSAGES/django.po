@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-11 14:27-0600\n"
+"POT-Creation-Date: 2013-04-14 18:50+0200\n"
 "PO-Revision-Date: 2012-02-24 04:40\n"
 "Last-Translator: Anonymous User <anonymous@user.tld>\n"
 "Language: pt-PT\n"
@@ -353,7 +353,7 @@ msgstr "Übergeordnete Seite umbenannt"
 msgid "file"
 msgstr "Dateien"
 
-#: pages/plugins.py:398
+#: pages/plugins.py:405
 msgid ""
 "The embedded URL is not on the list of approved providers.  Contact the site "
 "administrator to add it."
@@ -361,11 +361,11 @@ msgstr ""
 "Die eingebettete URL ist nicht auf der Liste der zugelassenen Provider. "
 "Kontaktiere den Administrator, um den Provider hinzuzufügen."
 
-#: pages/plugins.py:402
+#: pages/plugins.py:409
 msgid "Invalid embed code"
 msgstr "Ungültiger Einbettungs-Code"
 
-#: pages/plugins.py:414 search/templates/search/search.html:13
+#: pages/plugins.py:421 search/templates/search/search.html:13
 #: themes/sapling/templates/site/search_form.html:5
 msgid "Search or create page"
 msgstr "Seite suchen oder erstellen"
@@ -487,7 +487,8 @@ msgstr ""
 
 #: pages/templates/pages/page_detail.html:40
 #: tags/templates/tags/tagged_list_snippet.html:7
-msgid "View map"
+#, fuzzy
+msgid "View"
 msgstr "Karte ansehen"
 
 #: pages/templates/pages/page_detail.html:57
@@ -585,10 +586,10 @@ msgstr "Vorherige Versionen der Seite \"%(name)s\" - %(super)s"
 #, fuzzy
 msgid ""
 " Looking for <a href=\"../_files/\">files</a> or <a href=\"../_tags/_history/"
-""
+"\">tags</a>?"
 msgstr ""
-"Suchst Du nach <a href=\"../_files/\">Dateien</a> oder <a "
-"href=\"../_tags/_history/\">Tags</a>?"
+"Suchst Du nach <a href=\"../_files/\">Dateien</a> oder <a href=\"../_tags/"
+"_history/\">Tags</a>?"
 
 #: pages/templates/pages/pagefile_diff.html:34
 #, fuzzy, python-format
@@ -849,10 +850,10 @@ msgid ""
 "Commons Attribution License</a>. See <a href=\"/Copyrights\">Copyrights</a>."
 "</p>"
 msgstr ""
-"<p>Mit Ausnahme von anders gekennzeichten Inhalten ist dieser Inhalt unter einer "
-"<a rel=\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\">Creative "
-"Commons Attributions-Lizenz</a> lizenzsiert. Siehe <a "
-"href=\"/Copyrights\">Urheberrechte</a>.</p>"
+"<p>Mit Ausnahme von anders gekennzeichten Inhalten ist dieser Inhalt unter "
+"einer <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/3.0/"
+"\">Creative Commons Attributions-Lizenz</a> lizenzsiert. Siehe <a href=\"/"
+"Copyrights\">Urheberrechte</a>.</p>"
 
 #: settings/defaults.py:39
 msgid ""
@@ -865,8 +866,8 @@ msgstr ""
 "<p>Durch das Drücken von \"Änderungen speichern\" stimmst Du dazu Deine "
 "Änderungen unter der <a rel=\"license\" href=\"http://creativecommons.org/"
 "licenses/by/3.0/\" target=\"_blank\">Creative Commons BY-Lizenz</a> zu "
-"lizensieren, sofern nicht anderweitig vermerkt. Siehe dazu <a "
-"href=\"/Copyrights\" target=\"_blank\">Urheberrechte</a>.</p>"
+"lizensieren, sofern nicht anderweitig vermerkt. Siehe dazu <a href=\"/"
+"Copyrights\" target=\"_blank\">Urheberrechte</a>.</p>"
 
 #: settings/defaults.py:41
 msgid ""
@@ -875,17 +876,16 @@ msgid ""
 "Commons-By license</a>, unless noted otherwise. See <a href=\"/Copyrights\" "
 "target=\"_blank\">Copyrights</a>."
 msgstr ""
-"Ich stimme zu meine Beiträge unter der <a rel=\"license\" href="
-"\"http://creativecommons.org/licenses/by/3.0/\" target=\"_blank\">Creative "
-"Commons BY-Lizenz</a> zu lizensieren, sofern nicht anders vermerkt. Siehe "
-"dazu <a href=\"/Copyrights\" target=\"_blank\">Urheberrechte</a>."
+"Ich stimme zu meine Beiträge unter der <a rel=\"license\" href=\"http://"
+"creativecommons.org/licenses/by/3.0/\" target=\"_blank\">Creative Commons BY-"
+"Lizenz</a> zu lizensieren, sofern nicht anders vermerkt. Siehe dazu <a href="
+"\"/Copyrights\" target=\"_blank\">Urheberrechte</a>."
 
 #: settings/defaults.py:43
 msgid ""
 "I would like to receive occasional updates about this project via email."
 msgstr ""
-"Ich möchte periodische Informationen über dieses Projekt per Email "
-"erhalten"
+"Ich möchte periodische Informationen über dieses Projekt per Email erhalten"
 
 #: settings/defaults.py:62
 msgid "English"
@@ -1006,6 +1006,7 @@ msgstr ""
 "        Diese Seite hat keine Tags. <a href=\"%(page_url)s\">Füge welche "
 "hinzu!</a>\n"
 "    "
+
 #: tags/templates/tags/tag_list.html:5
 #, fuzzy
 msgid "All tags"
@@ -1283,8 +1284,8 @@ msgid ""
 "Anonymous users may not perform this action. Please <a href=\"/Users/login/"
 "\">log in</a>."
 msgstr ""
-"Anonyme Benutzer dürfen diese Aktion nicht ausführen. Bitte "
-"<a href=\"/Users/login/\">melde dich an</a>."
+"Anonyme Benutzer dürfen diese Aktion nicht ausführen. Bitte <a href=\"/Users/"
+"login/\">melde dich an</a>."
 
 #: utils/templates/utils/history/form.html:13
 msgid "revert"
