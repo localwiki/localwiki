@@ -502,7 +502,7 @@ msgstr "Tags hinzufügen"
 #: pages/templates/pages/page_detail.html:73
 #, fuzzy, python-format
 msgid "This page was last modified %(ago)s ago"
-msgstr "vor %(tsince)s zuletzt geändert"
+msgstr "Diese Seite wurde zuletzt vor %(ago)s geändert"
 
 #: pages/templates/pages/page_diff.html:19
 #, python-format
@@ -585,8 +585,10 @@ msgstr "Vorherige Versionen der Seite \"%(name)s\" - %(super)s"
 #, fuzzy
 msgid ""
 " Looking for <a href=\"../_files/\">files</a> or <a href=\"../_tags/_history/"
-"\">tags</a>?"
-msgstr "<a href=\"../_files/\">Dateien</a> suchen"
+""
+msgstr ""
+"Suchst Du nach <a href=\"../_files/\">Dateien</a> oder <a "
+"href=\"../_tags/_history/\">Tags</a>?"
 
 #: pages/templates/pages/pagefile_diff.html:34
 #, fuzzy, python-format
