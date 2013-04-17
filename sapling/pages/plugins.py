@@ -59,9 +59,7 @@ from ckeditor.models import parse_style, sanitize_html_fragment
 from redirects.models import Redirect
 
 from models import Page, name_to_url, url_to_name, PageFile
-from models import allowed_tags as pages_allowed_tags
-from models import allowed_attributes_map as pages_allowed_attributes_map
-from models import allowed_styles_map as pages_allowed_styles_map
+from fields import WikiHTMLField
 from models import slugify
 from exceptions import IFrameSrcNotApproved
 
@@ -355,9 +353,9 @@ class LinkNode(Node):
 
 
 class EmbedCodeNode(Node):
-    allowed_tags = copy(pages_allowed_tags)
-    allowed_attributes = copy(pages_allowed_attributes_map)
-    allowed_styles_map = copy(pages_allowed_styles_map)
+    allowed_tags = copy(WikiHTMLField.allowed_elements)
+    allowed_attributes = copy(WikiHTMLField.allowed_attributes_map)
+    allowed_styles_map = copy(WikiHTMLField.allowed_styles_map)
 
     # We allow the iframe tag in embeds.
     allowed_tags.append('iframe')
