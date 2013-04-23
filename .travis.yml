@@ -1,0 +1,20 @@
+language: python
+python:
+    - "2.7"
+before_install:
+    - sudo apt-get install python-setuptools solr-jetty
+    - sudo apt-get install gdal-bin proj default-jre-headless
+    - sudo apt-get install postgresql-9.1-postgis
+    - pip install -r sapling/etc/install_config/travis.txt
+install:
+    - python setup.py install
+    - install_config/setup_jetty.sh
+    - localwiki-manage init_data_dir
+    - localwiki-manage init_db
+    - localwiki-manage init_settings --skip-cloudmade-key
+before_script:
+    # for https://code.djangoproject.com/ticket/16778
+    - echo "standard_conforming_strings=off" | sudo tee -a /etc/postgresql/9.1/main/postgresql.conf
+    - sudo /etc/init.d/postgresql restart
+    - psql localwiki -c "alter role localwiki createdb;"
+script: localwiki-manage test pages maps tags versioning diff ckeditor redirects users
