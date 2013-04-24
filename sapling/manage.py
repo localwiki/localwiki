@@ -26,18 +26,24 @@ def main(set_apps_path=True):
         if apps_path not in sys.path:
             sys.path.append(apps_path)
 
-    if len(sys.argv) >= 2 and sys.argv[1] == 'setup_all':
-        # We have to special-case this commands, it happens before the
-        # install's localsettings.py is installed, so the usual django
-        # management machinery will throw errors about settings not
-        # being set yet.  But after we have run the setup commands we
-        # let it fall through to the normal django method.
-        if not os.path.exists(os.path.join(DATA_ROOT, 'conf')):
-            init_data_dir.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
-            init_db.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
-            init_settings.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
-        else:
-            print "Existing localwiki data directory found! Using %s\n" % DATA_ROOT
+    if len(sys.argv) >= 2:
+        options = sys.argv[2:]
+        if '--skip-cloudmade-key' in options:
+            init_options = {'skip_cloudmade_key': True,}
+        if sys.argv[1] == 'setup_all':
+            # We have to special-case this commands, it happens before the
+            # install's localsettings.py is installed, so the usual django
+            # management machinery will throw errors about settings not
+            # being set yet.  But after we have run the setup commands we
+            # let it fall through to the normal django method.
+            if not os.path.exists(os.path.join(DATA_ROOT, 'conf')):
+                init_data_dir.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
+                init_db.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
+                init_settings.run(DATA_ROOT=DATA_ROOT,
+                                  PROJECT_ROOT=PROJECT_ROOT,
+                                  **init_options)
+            else:
+                print "Existing localwiki data directory found! Using %s\n" % DATA_ROOT
 
     if len(sys.argv) >= 2:
         if sys.argv[1] == 'init_data_dir':
@@ -47,7 +53,8 @@ def main(set_apps_path=True):
             init_db.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
             return
         if sys.argv[1] == 'init_settings':
-            init_settings.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT)
+            init_settings.run(DATA_ROOT=DATA_ROOT, PROJECT_ROOT=PROJECT_ROOT,
+                              **init_options)
             return
 
     try:
