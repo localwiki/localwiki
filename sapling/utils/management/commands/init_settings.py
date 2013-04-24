@@ -12,7 +12,7 @@ class Command(object):
                               action='store_true',
                               dest='skip_cloudmade_key',
                               default=False,
-                              help="Skip prompt for Cloudemade API key"
+                              help="Skip prompt for Cloudmade API key"
                              )
 
     def _write_settings(self, vals):
