@@ -4,26 +4,28 @@ LocalWiki
 
 LocalWiki is tool for collaborating in local, geographic communities.
 
-We're _really_ just getting started here.
+We're *really* just getting started here.
 
 General install instructions here:
 
   http://localwiki.org/install/
 
-For developers, see the INSTALL file.
+Development
+===========
 
-For project development information, please see:
+.. image:: https://travis-ci.org/localwiki/localwiki.png?branch=master
 
-  https://dev.localwiki.org
+:Code:          https://github.com/localwiki/localwiki
+:Issues:        https://github.com/localwiki/localwiki/issues
+:Dev Docs:      https://dev.localwiki.org
+:Mailing list:  http://lists.localwiki.org/mailman/listinfo/localwiki-dev
+:IRC:           irc://irc.freenode.net/localwiki
+:License:       GPLv2; see COPYING file
 
-We've got a development mailing list here:
-
-  http://lists.localwiki.org/mailman/listinfo/localwiki-dev
-
-We hang out in IRC #localwiki on the FreeNode network.  Join us & help out!
-=============================================
-
+Legal Stuff
+===========
 Copyright (c) 2010-2012 by Philip Neustrom <philip@localwiki.org>
+
 Copyright (c) 2010-2012 by Mike Ivanov <mike@localwiki.org>
 
 All rights reserved, see COPYING for details.
