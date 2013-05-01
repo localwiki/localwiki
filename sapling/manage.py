@@ -28,6 +28,7 @@ def main(set_apps_path=True):
 
     if len(sys.argv) >= 2:
         options = sys.argv[2:]
+        init_options = {}
         if '--skip-cloudmade-key' in options:
             init_options = {'skip_cloudmade_key': True,}
         if sys.argv[1] == 'setup_all':
