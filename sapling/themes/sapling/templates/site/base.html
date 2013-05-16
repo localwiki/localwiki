@@ -30,6 +30,12 @@
   <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', '{{ GOOGLE_ANALYTICS_ID }}']);
+    {% if GOOGLE_ANALYTICS_SUBDOMAINS %}
+      _gaq.push(['_setDomainName', '{{ GOOGLE_ANALYTICS_SUBDOMAINS }}']);
+      {% if GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS %}
+        _gaq.push(['_setAllowLinker', true]);
+      {% endif %}
+    {% endif %}
     _gaq.push(['_trackPageview']);
     (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
