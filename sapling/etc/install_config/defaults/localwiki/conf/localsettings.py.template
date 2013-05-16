@@ -20,6 +20,10 @@ CLOUDMADE_API_KEY = 'CLOUDMADEAPIKEYHERE'
 
 # Get a Google Analytics ID at https://www.google.com/analytics.
 GOOGLE_ANALYTICS_ID = ''
+# If use 'Subdomains' with Google Analytics, set here
+GOOGLE_ANALYTICS_SUBDOMAINS = ''
+# If use 'Multiple top-level domains' with Google Analytics, comment out here
+# GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS = True
 
 # For testing, you can start the python debugging smtp server like so:
 # sudo python -m smtpd -n -c DebuggingServer localhost:25

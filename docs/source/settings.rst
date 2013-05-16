@@ -58,6 +58,12 @@ things you may need or wish to modify:
 ``GOOGLE_ANALYTICS_ID``
     Your ID from `Google Analytics <http://www.google.com/analytics/>`_
 
+``GOOGLE_ANALYTICS_SUBDOMAINS``
+    If you use subdomains with `Google Analytics <http://www.google.com/analytics/>`_ , set your subdomains.
+
+``GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS``
+    If you use multiple top-level domains with `Google Analytics <http://www.google.com/analytics/>`_ , set ``True``.
+    
 ``SITE_THEME``
     The name of the directory under ``themes`` to look for the theme templates
     and static files.  We'll have more detail on creating a theme soon.
