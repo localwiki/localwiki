@@ -31,6 +31,8 @@ def main(set_apps_path=True):
         init_options = {}
         if '--skip-cloudmade-key' in options:
             init_options = {'skip_cloudmade_key': True,}
+        else:
+            init_options = {'skip_cloudmade_key': False,}
         if sys.argv[1] == 'setup_all':
             # We have to special-case this commands, it happens before the
             # install's localsettings.py is installed, so the usual django
