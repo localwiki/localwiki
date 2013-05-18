@@ -10,7 +10,7 @@ function before_unload(e)
 
 function reset_dirty() {
     for (var i in CKEDITOR.instances) {
-        CKEDITOR.instances[i].reset_dirty();
+        CKEDITOR.instances[i].resetDirty();
     }
 }
 
