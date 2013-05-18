@@ -110,8 +110,13 @@ textarea, input, select {
         border-top: 1px solid #fafafa;
         border-bottom: 1px solid #fafafa;
     }
+    /* For a tag page */
     #content.has_map #page, #content.has_map #pagetagset {
         margin-top: 244px;
+    }
+    /* For an included list of tagged pages */
+    .included_page_wrapper #pagetagset.has_map {
+        margin-top: 290px;
     }
 }
 
