@@ -93,8 +93,6 @@ class WikiEditor(CKEditor):
         js = (
               reverse_lazy('django.views.i18n.javascript_catalog',
                            args=['pages']),
-              static_url('js/jquery/jquery-1.7.min.js'),
               static_url('js/jquery/jquery-ui-1.8.16.custom.min.js'),
-              static_url('js/enquire.min.js'),
               static_url('js/ckeditor/sapling_utils.js'),
         )

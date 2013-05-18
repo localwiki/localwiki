@@ -684,6 +684,9 @@ textarea, input, select {
         margin-top: 11px;  
         right: 5px;  
     }
+    #nav li {
+        text-transform: capitalize;
+    }
 }
 
 /*

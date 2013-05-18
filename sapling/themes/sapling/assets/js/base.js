@@ -1,3 +1,25 @@
+/* Show login/logout in #nav when screen is small. */
+function add_login_info_actions() {
+    $('#login_info .actions a').each(function() {
+        var item = $('<li>');
+        item.attr('class', 'remove');
+        item.append($(this).clone());
+        $('#nav ul').append(item);
+    });
+};
+
+function hide_login_info_actions() {
+    $("#nav ul li.remove").remove()
+};
+
+$(function() {
+    enquire.register("screen and (max-width:500px)", {
+        match: add_login_info_actions,
+        unmatch: hide_login_info_actions,
+    });
+    enquire.listen(); 
+});
+
 /* hide-address-bar.js. inlined for speed */
 /*! Normalized address bar hiding for iOS & Android (c) @scottjehl MIT License */
 (function( win ){
