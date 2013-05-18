@@ -1240,17 +1240,6 @@ div.templates li {
     margin-top: 2em;
     clear: both;
 }
-/*
-====================================
- Attributions
-====================================
-*/
-
-#attributions {
-    margin: 1.5em 1em 0.5em 1em;
-    font-size: 80%;
-    text-align: center;
-}
 
 
 /*
@@ -1296,6 +1285,32 @@ div.templates li {
     margin-top: 1em;
     margin-left: 0!important;
     right: 8em;
+}
+
+@media screen and (max-width: 500px) {
+    #search_results #results_list.with_map {
+        margin-top: 260px;
+    }
+    #search_results #map {
+        margin-top: 0.3em;
+    }
+}
+@media screen and (max-width: 700px) {
+    #search_results #results_list.with_map {
+        margin-top: 1em;
+    }
+}
+
+/*
+====================================
+ Attributions
+====================================
+*/
+
+#attributions {
+    margin: 1.5em 1em 0.5em 1em;
+    font-size: 80%;
+    text-align: center;
 }
 
 /*
