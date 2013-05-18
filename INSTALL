@@ -14,6 +14,7 @@ installs.
 python-setuptools, virtualenv, gdal, postgresql with postgis.  Here's how we
 get these packages in Ubuntu 12.04 LTS:
 
+    $ sudo apt-get update
     $ sudo apt-get install python-setuptools solr-jetty python-lxml python-imaging
     $ sudo apt-get install gdal-bin proj python-psycopg2 default-jre-headless
     $ sudo easy_install --upgrade virtualenv

@@ -1,3 +1,4 @@
+from optparse import make_option
 import os
 from random import choice
 
@@ -6,6 +7,13 @@ class Command(object):
     """
     Asks questions to auto-populate the local settings.
     """
+
+    option_list = make_option('--skip-cloudmade-key',
+                              action='store_true',
+                              dest='skip_cloudmade_key',
+                              default=False,
+                              help="Skip prompt for Cloudmade API key"
+                             )
 
     def _write_settings(self, vals):
         localsettings = open(os.path.join(self.DATA_ROOT, 'conf',
@@ -34,7 +42,10 @@ class Command(object):
         print ('2. After you\'ve signed in, click "Get an API Key". '
                'Fill out the form (details don\'t matter)')
         print '3. Paste the API key below:'
-        cloudmade_api_key = raw_input().strip()
+        if not options['skip_cloudmade_key']:
+            cloudmade_api_key = raw_input().strip()
+        else:
+            cloudmade_api_key = 'Get an API key at http://cloudmade.com'
 
         self._write_settings({
             'CLOUDMADEAPIKEYHERE': cloudmade_api_key,
@@ -42,8 +53,8 @@ class Command(object):
         })
 
 
-def run(DATA_ROOT=None, PROJECT_ROOT=None):
+def run(DATA_ROOT=None, PROJECT_ROOT=None, **options):
     c = Command()
     c.DATA_ROOT = DATA_ROOT
     c.PROJECT_ROOT = PROJECT_ROOT
-    c.handle()
+    c.handle(**options)
