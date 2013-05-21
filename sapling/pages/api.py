@@ -1,6 +1,6 @@
 from urllib import urlencode
 
-from django.conf.urls.defaults import url
+from django.conf.urls import url
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404, HttpResponseRedirect

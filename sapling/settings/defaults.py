@@ -97,11 +97,6 @@ STATICFILES_FINDERS = (
 
 STATICFILES_STORAGE = 'staticfiles.storage.CachedStaticFilesStorage'
 
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash. For integration with staticfiles, this should be the same as
-# STATIC_URL followed by 'admin/'
-ADMIN_MEDIA_PREFIX = '/static/admin/'
-
 AUTHENTICATION_BACKENDS = (
     'sapling.users.backends.CaseInsensitiveModelBackend',
     'sapling.users.backends.RestrictiveBackend',

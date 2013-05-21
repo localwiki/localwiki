@@ -1,6 +1,6 @@
 import copy
 
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.conf import settings
 from django.utils.safestring import mark_safe
 
