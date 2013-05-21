@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     (r'^api$', RedirectView.as_view(url='/api/')),
     url(r'^api/(?P<rest>.*)', api_router.as_view(), name="api"),
     (r'^map/', include(maps.site.urls)),
-    (r'^tags$', redirect_to, {'url': '/tags/'}),
+    (r'^tags$', RedirectView.as_view(url='/tags/')),
     (r'^tags/', include('sapling.tags.urls', 'tags', 'tags')),
     (r'^_redirect/', include(redirects.site.urls)),
     (r'^(?i)Users/', include('sapling.users.urls')),
@@ -31,7 +31,7 @@ urlpatterns = patterns('',
     # JS i18n support.
     (r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
 
-    (r'^admin$', redirect_to, {'url': '/admin/'}),
+    (r'^admin$', RedirectView.as_view(url='/admin/')),
     (r'^admin/subscribers/$', staff_member_required(SubscribedList.as_view())),
     (r'^admin/', include(admin.site.urls)),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
