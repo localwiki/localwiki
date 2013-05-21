@@ -331,7 +331,8 @@ slugify = stringfilter(slugify)
 
 
 def name_to_url(value):
-    """Converts page name to its canonical URL path
+    """
+    Converts page name to its canonical URL path
     """
     # spaces to underscore
     # This is performance-critical, sad name_to_url can be called
@@ -342,12 +343,12 @@ def name_to_url(value):
     # url-encode
     value = quote(value.encode('utf-8'))
     return mark_safe(value)
-name_to_url.is_safe = True
 name_to_url = stringfilter(name_to_url)
 
 
 def url_to_name(value):
-    """Converts URL to the intended page name
+    """
+    Converts URL to the intended page name
     """
     # decode URL-encoded chars
     value = unquote_plus(value.encode('utf-8')).decode('utf-8')

@@ -14,10 +14,9 @@ from django.core.urlresolvers import reverse
 register = template.Library()
 
 
-@register.filter
+@register.filter(is_safe=True)
 def name_to_url(value):
     return models.name_to_url(value)
-name_to_url.is_safe = True
 
 
 class PageContentNode(BaseIncludeNode):
