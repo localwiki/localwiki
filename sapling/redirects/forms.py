@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from versionutils.versioning.forms import CommentMixin
 from pages.models import Page
 from pages.fields import PageChoiceField
-from utils.static import static_url
+from utils.static_helpers import static_url
 
 from models import Redirect
 

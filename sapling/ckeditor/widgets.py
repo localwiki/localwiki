@@ -11,7 +11,7 @@ from django.template.loader import render_to_string
 from django.utils import translation
 from django.utils.safestring import mark_safe
 
-from utils.static import static_url
+from utils.static_helpers import static_url
 
 ckeditor_path = 'js/ckeditor/ckeditor.js'
 if settings.DEBUG:

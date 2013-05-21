@@ -6,7 +6,7 @@ from django.conf import settings
 
 from olwidget import widgets
 from utils import reverse_lazy
-from utils.static import static_url
+from utils.static_helpers import static_url
 
 OUR_JS = [
     reverse_lazy('django.views.i18n.javascript_catalog',

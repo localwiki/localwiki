@@ -1,9 +1,10 @@
 from django import forms
-from utils.static import static_url
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.forms.util import flatatt
 from django.template.loader import render_to_string
+
+from utils.static_helpers import static_url
 
 
 class TagEdit(forms.TextInput):

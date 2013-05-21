@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
-from utils.static import static_url
+from utils.static_helpers import static_url
 from utils import reverse_lazy
 from ckeditor.widgets import CKEditor
 import models
