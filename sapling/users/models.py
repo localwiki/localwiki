@@ -2,6 +2,7 @@ import urllib
 
 from django.contrib.auth.models import User
 from django.utils.encoding import smart_str
+from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -52,7 +53,7 @@ User.get_absolute_url = get_absolute_url
 class UserProfile(models.Model):
     # this field is required
     user = models.OneToOneField(User)
-    subscribed = models.BooleanField(verbose_name=settings.SUBSCRIBE_MESSAGE)
+    subscribed = models.BooleanField(verbose_name=_(settings.SUBSCRIBE_MESSAGE))
 
 
 # For registration calls

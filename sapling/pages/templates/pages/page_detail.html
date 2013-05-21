@@ -37,7 +37,7 @@
     {% if map %}
     <div id="map">
       {{ map }}
-      <div class="info"><a class="view tiny button" href="{% url maps:show slug=page.pretty_slug %}">{% trans "View" %}</a><a class="edit tiny button" href="{% url maps:edit slug=page.pretty_slug %}">Edit</a></div>
+      <div class="info"><a class="view tiny button" href="{% url maps:show slug=page.pretty_slug %}">{% trans "View" %}</a><a class="edit tiny button" href="{% url maps:edit slug=page.pretty_slug %}">{% trans "Edit" %}</a></div>
     </div>
     {% endif %}
 
