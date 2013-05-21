@@ -21,6 +21,11 @@ INSTALLED_APPS.append('versionutils.versioning.tests')
 mgr.set(INSTALLED_APPS=INSTALLED_APPS)
 
 
+def is_sqlite():
+    default_db = settings.DATABASES.keys()[0]
+    return settings.DATABASES[default_db]['ENGINE'] == 'sqlite3'
+
+
 class ChangesTrackingTest(TestCase):
     def _create_test_models(self):
         """
@@ -429,7 +434,7 @@ class ChangesTrackingTest(TestCase):
         # Reverting should give us the same result.
         self.assertEqual(m.a.a, "a2")
 
-    @skipIf(settings.DATABASE_ENGINE == 'sqlite3',
+    @skipIf(is_sqlite(),
             'See Django ticket #10164. Sqlite recycles primary keys')
     def test_queryset_bulk(self):
         m2 = M2(a="a oh a", b="b oh b", c=10)
@@ -926,7 +931,7 @@ class ChangesTrackingTest(TestCase):
         self.assertEqual(len(related_set.filter(name="relatedtest2")), 1)
         self.assertEqual(len(related_set.filter(name="relatedtest!")), 1)
 
-    @skipIf(settings.DATABASE_ENGINE == 'sqlite3',
+    @skipIf(is_sqlite(),
             'See Django ticket #10164. Sqlite recycles primary keys')
     def test_fk_cascade(self):
         child = M2(a="oh yes", b="uh huh", c=10)

@@ -214,6 +214,7 @@ def unique_lookup_values_for(m):
 
 
 def is_pk_recycle_a_problem(instance):
-    if (settings.DATABASE_ENGINE == 'sqlite3' and
-        not unique_lookup_values_for(instance)):
-        return True
+    for label, db in settings.DATABASES.iteritems():
+        if (db['ENGINE'] == 'sqlite3' and
+            not unique_lookup_values_for(instance)):
+            return True
