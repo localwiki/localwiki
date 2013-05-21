@@ -1,4 +1,7 @@
 {% extends "tags/base.html" %}
+
+{% load url from future %}
+
 {% load i18n %}
 {% load diff_tags %}
 {% load tags_tags %}
@@ -58,6 +61,6 @@
     </tbody>
   </table>
   <p>
-      <a href="{% url pages:tags-history slug=pagetagset.page.slug %}">{% trans "Tags history" %}</a>
+      <a href="{% url 'pages:tags-history' slug=pagetagset.page.slug %}">{% trans "Tags history" %}</a>
   </p>
 {% endblock %}

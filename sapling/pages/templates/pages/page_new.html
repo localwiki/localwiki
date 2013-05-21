@@ -1,4 +1,7 @@
 {% extends "pages/base.html" %}
+
+{% load url from future %}
+
 {% load i18n %}
 
 {% block title %}{% trans "Page not found" %}{% endblock %}
@@ -11,14 +14,14 @@
 {% block content %}
 {% load pages_tags %}
   <div id="create_page">
-    <a href="{% url pages:edit slug=page.pretty_slug %}" class="button">{% trans "Create this page" %}</a>
+    <a href="{% url 'pages:edit' slug=page.pretty_slug %}" class="button">{% trans "Create this page" %}</a>
   </div>
   {% if page_templates %}
     <div class="templates">
       <p>{% trans "Or use one of these templates:" %}</p>
       <ul>
         {% for template in page_templates %}
-          <li><a href="{% url pages:edit slug=page.pretty_slug %}?template={{template.slug}}">{% blocktrans with name=template.name_parts.1 %}Create with {{name}} template{% endblocktrans %}</a></li>
+          <li><a href="{% url 'pages:edit' slug=page.pretty_slug %}?template={{template.slug}}">{% blocktrans with name=template.name_parts.1 %}Create with {{name}} template{% endblocktrans %}</a></li>
         {% endfor %}
       </ul>
     </div>

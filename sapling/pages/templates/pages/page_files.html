@@ -1,4 +1,7 @@
 {% extends "pages/base.html" %}
+
+{% load url from future %}
+
 {% load i18n %}
 {% load thumbnail %}
 {% block title %}{% trans "Files" %} - {{ block.super }}{% endblock %}
@@ -31,6 +34,6 @@
   {% endfor %}
   </ul>
   <p>
-    <a href="{% url pages:show slug=slug %}">{% trans "View page" %}</a>
+    <a href="{% url 'pages:show' slug=slug %}">{% trans "View page" %}</a>
   </p>
 {% endblock %}

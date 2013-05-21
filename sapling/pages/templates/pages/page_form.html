@@ -1,4 +1,7 @@
 {% extends "pages/base.html" %}
+
+{% load url from future %}
+
 {% load i18n %}
 
 {% block title %}{% blocktrans with name=form.instance.name super=block.super %}Editing page "{{ name }}" - {{ super }}{% endblocktrans %}{% endblock %}
@@ -58,7 +61,7 @@
   <ul>
     {% if page %}
         <li><a href="#" class="button active">{% trans "Edit" %}</a></li>
-        <li><a href="{% url pages:history slug=page.pretty_slug %}" class="button">{% trans "Info" %}</a></li>
+        <li><a href="{% url 'pages:history' slug=page.pretty_slug %}" class="button">{% trans "Info" %}</a></li>
     {% endif %}
   </ul>
 {% endblock %}

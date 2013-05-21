@@ -1,4 +1,7 @@
 {% extends "pages/base.html" %}
+
+{% load url from future %}
+
 {% load i18n %}
 
 {% block title %}{% trans "All Pages" %}{% endblock %}
@@ -8,7 +11,7 @@
 {% block content %}
   <ul>
   {% for page in page_list %}
-    <li><a href="{% url pages:show slug=page.pretty_slug %}">{{ page.name }}</a></li>
+    <li><a href="{% url 'pages:show' slug=page.pretty_slug %}">{{ page.name }}</a></li>
   {% endfor %}
   </ul>
 {% endblock %}

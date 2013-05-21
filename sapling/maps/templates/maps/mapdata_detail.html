@@ -1,4 +1,7 @@
 {% extends "maps/base.html" %}
+
+{% load url from future %}
+
 {% load i18n %}
 
 {% block media %}
@@ -47,6 +50,6 @@
 {% block footer %}
   {{ block.super }}
   <p>
-    <a href="{% url maps:edit slug=mapdata.page.pretty_slug %}">{% trans "Edit" %}</a> {% trans "this map" %} ({% blocktrans with tsince=date|timesince %}last modified {{ tsince }} ago{% endblocktrans %})
+    <a href="{% url 'maps:edit' slug=mapdata.page.pretty_slug %}">{% trans "Edit" %}</a> {% trans "this map" %} ({% blocktrans with tsince=date|timesince %}last modified {{ tsince }} ago{% endblocktrans %})
   </p>
 {% endblock %}  
