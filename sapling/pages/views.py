@@ -3,7 +3,6 @@ import copy
 
 from django.conf import settings
 from django.views.generic.base import RedirectView
-from django.views.generic.simple import direct_to_template
 from django.views.generic import (DetailView, ListView,
     FormView)
 from django.http import (HttpResponseNotFound, HttpResponseRedirect,
@@ -12,7 +11,7 @@ from django import forms
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.db import IntegrityError
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.utils.html import escape
 from django.utils.http import urlquote
 from django.utils.translation import ugettext as _
@@ -49,9 +48,9 @@ class PageDetailView(Custom404Mixin, DetailView):
         page_templates = Page.objects.filter(slug__startswith='templates/')\
                                      .order_by('name')
         return HttpResponseNotFound(
-            direct_to_template(request, 'pages/page_new.html',
-                               {'page': Page(name=name, slug=kwargs['slug']),
-                                'page_templates': page_templates})
+            render(request, 'pages/page_new.html',
+                   {'page': Page(name=name, slug=kwargs['slug']),
+                    'page_templates': page_templates})
         )
 
     def get_context_data(self, **kwargs):

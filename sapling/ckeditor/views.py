@@ -4,7 +4,7 @@ import urlparse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.utils.translation import  ugettext_lazy as _
-from django.views.generic.simple import direct_to_template
+from django.shortcuts import render
 
 
 def ck_upload(request, upload_folder):
@@ -46,4 +46,4 @@ def ck_upload_result(request, url='', message=''):
         'message': message,
         }
 
-    return direct_to_template(request, 'ckeditor/upload_result.html', context)
+    return render(request, 'ckeditor/upload_result.html', context)

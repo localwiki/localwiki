@@ -18,7 +18,7 @@ arguments.  Example::
 
     old = page.history.as_of(version=old)
     new = page.history.as_of(version=new)
-    return direct_to_template(request, 'your_template.html',
+    return render(request, 'your_template.html',
         {'old': old, 'new': new})
 
 Then in your template just do::

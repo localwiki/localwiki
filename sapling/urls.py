@@ -2,7 +2,7 @@ from django.conf.urls import *
 from django.conf import settings
 from django.contrib import admin
 from django.conf.urls.static import static
-from django.views.generic.simple import redirect_to
+from django.views.generic import RedirectView 
 from django.contrib.admin.views.decorators import staff_member_required
 
 import pages
@@ -17,7 +17,7 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    (r'^api$', redirect_to, {'url': '/api/'}),
+    (r'^api$', RedirectView.as_view(url='/api/')),
     url(r'^api/(?P<rest>.*)', api_router.as_view(), name="api"),
     (r'^map/', include(maps.site.urls)),
     (r'^tags$', redirect_to, {'url': '/tags/'}),

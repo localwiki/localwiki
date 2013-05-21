@@ -1,11 +1,12 @@
 from django.conf.urls import *
-from django.views.generic.simple import direct_to_template
+from django.views.generic import TemplateView
 
 from views import DashboardView
 
 urlpatterns = patterns('',
     url(r'^dashboard/render', DashboardView.as_view(),
         name="render"),
-    url(r'^dashboard', direct_to_template,
-        {'template': 'dashboard/index.html'}, name='main'),
+    url(r'^dashboard',
+        TemplateView.as_view(template_name='dashboard/index.html'),
+        name='main'),
 )
