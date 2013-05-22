@@ -509,6 +509,10 @@ class ChangesTracker(object):
         Args:
             attname: Attribute name of the m2m field on the base model.
         """
+        if not hasattr(instance, '_track_changes'):
+            # Skip this signal when we have version tracking disabled.
+            return
+
         if pk_set:
             changed_ms = [model.objects.get(pk=pk) for pk in pk_set]
             hist_changed_ms = []
