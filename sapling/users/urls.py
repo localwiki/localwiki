@@ -5,7 +5,7 @@ from registration.views import register
 
 urlpatterns = patterns('',
     url(r'^register/$', register,
-        {'backend': 'sapling.users.registration_backend.SaplingBackend'},
+        {'backend': 'users.registration_backend.SaplingBackend'},
         name='registration_register'),
     url(r'^register/closed/$', TemplateView.as_view(
             template_name='registration/registration_closed.html'),

@@ -21,7 +21,7 @@ DATA_ROOT = os.environ.get('LOCALWIKI_DATA_ROOT') or \
 
 _settings_package_path = os.path.dirname(__file__)
 PROJECT_ROOT = os.environ.get('LOCALWIKI_PROJECT_ROOT') or \
-    os.path.dirname(_settings_package_path)
+    os.path.join(os.path.dirname(_settings_package_path), '..')
 
 DATABASES = {
     'default': {
@@ -98,8 +98,8 @@ STATICFILES_FINDERS = (
 STATICFILES_STORAGE = 'staticfiles.storage.CachedStaticFilesStorage'
 
 AUTHENTICATION_BACKENDS = (
-    'sapling.users.backends.CaseInsensitiveModelBackend',
-    'sapling.users.backends.RestrictiveBackend',
+    'users.backends.CaseInsensitiveModelBackend',
+    'users.backends.RestrictiveBackend',
 )
 
 AUTH_PROFILE_MODULE = 'users.UserProfile'
@@ -209,7 +209,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.transaction.TransactionMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
-    'api.middleware.XsSharing',
+    'sapling.api.middleware.XsSharing',
 )
 
 # Dummy cache - TODO: switch to memcached by default
@@ -260,7 +260,7 @@ INSTALLED_APPS = (
     'recentchanges',
     'search',
     'dashboard',
-    'api',
+    'sapling.api',
     'utils',
 )
 
