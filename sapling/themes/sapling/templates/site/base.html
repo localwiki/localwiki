@@ -1,4 +1,5 @@
 {% load static from staticfiles %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,7 +102,7 @@
 
     <div id="attributions">
      {% block attributions %}
-        {{ GLOBAL_LICENSE_NOTE|safe }}
+       {% trans GLOBAL_LICENSE_NOTE|safe %}
      {% endblock %}
     </div>
 
