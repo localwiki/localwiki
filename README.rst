@@ -14,6 +14,10 @@ Development
 ===========
 
 .. image:: https://travis-ci.org/localwiki/localwiki.png?branch=master
+    :target: https://travis-ci.org/localwiki/localwiki
+
+.. image:: https://coveralls.io/repos/localwiki/localwiki/badge.png?branch=master
+    :target: https://coveralls.io/r/localwiki/localwiki
 
 :Code:          https://github.com/localwiki/localwiki
 :Issues:        https://github.com/localwiki/localwiki/issues
