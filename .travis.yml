@@ -2,6 +2,7 @@ language: python
 python:
     - "2.7"
 before_install:
+    - sudo apt-get update
     - sudo apt-get install python-setuptools solr-jetty
     - sudo apt-get install gdal-bin proj default-jre-headless
     - sudo apt-get install postgresql-9.1-postgis
