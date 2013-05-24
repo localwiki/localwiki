@@ -131,6 +131,8 @@ install_requires = [
     'django-honeypot==0.3.0-custom4',
     'django-tastypie==0.9.12-custom5',
     'django-qsstats-magic==0.7',
+    'django-picklefield==0.3.0',
+    'django-constance==0.6.0',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
