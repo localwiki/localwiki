@@ -132,7 +132,7 @@ install_requires = [
     'django-tastypie==0.9.12-custom5',
     'django-qsstats-magic==0.7',
     'django-picklefield==0.3.0',
-    'django-constance==0.6.0',
+    'django-constance==0.6.0-custom1',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
@@ -156,6 +156,7 @@ setup(
         'https://github.com/philipn/olwidget/tarball/custom_base_layers_fixed#egg=django-olwidget-0.46-custom1',
         'https://github.com/philipn/django-honeypot/tarball/b4991c140849901d2f8842df2c4672813e73381b#egg=django-honeypot-0.3.0-custom4',
         'https://github.com/philipn/django-tastypie/tarball/localwiki_master#egg=django-tastypie-0.9.12-custom5',
+        'https://github.com/smellman/django-constance/tarball/localwiki_master#egg=django-constance-0.6.0-custom1',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=sapling.manage:main'],
