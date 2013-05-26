@@ -58,8 +58,8 @@ from django.conf import settings
 from ckeditor.models import parse_style, sanitize_html_fragment
 from redirects.models import Redirect
 
-from models import Page, name_to_url, url_to_name, PageFile
 from fields import WikiHTMLField
+from models import Page, name_to_url, url_to_name, PageFile
 from models import slugify
 from exceptions import IFrameSrcNotApproved
 
