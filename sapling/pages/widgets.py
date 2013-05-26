@@ -4,7 +4,9 @@ from django.utils.translation import ugettext as _
 from utils.static import static_url
 from utils import reverse_lazy
 from ckeditor.widgets import CKEditor
+
 import models
+from fields import WikiHTMLField
 
 
 class WikiEditor(CKEditor):
@@ -17,9 +19,9 @@ class WikiEditor(CKEditor):
             'filebrowserInsertimageBrowseUrl': '_filebrowser/images',
             'filebrowserAttachfileUploadUrl': '_upload',
             'filebrowserAttachfileBrowseUrl': '_filebrowser/files',
-            'domcleanupAllowedTags': models.allowed_tags,
-            'domcleanupAllowedAttributes': models.allowed_attributes_map,
-            'domcleanupAllowedStyles': models.allowed_styles_map,
+            'domcleanupAllowedTags': WikiHTMLField.allowed_elements,
+            'domcleanupAllowedAttributes': WikiHTMLField.allowed_attributes_map,
+            'domcleanupAllowedStyles': WikiHTMLField.allowed_styles_map,
             'toolbarCanCollapse': False,
             'disableNativeSpellChecker': False,
             'browserContextMenuOnCtrl': True,
