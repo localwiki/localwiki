@@ -11,5 +11,7 @@ def license_agreements(context):
 
 def services(context):
     return {
-        'GOOGLE_ANALYTICS_ID': getattr(settings, 'GOOGLE_ANALYTICS_ID', '')
+        'GOOGLE_ANALYTICS_ID': getattr(settings, 'GOOGLE_ANALYTICS_ID', ''),
+        'GOOGLE_ANALYTICS_SUBDOMAINS': getattr(settings, 'GOOGLE_ANALYTICS_SUBDOMAINS', ''),
+        'GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS': getattr(settings, 'GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS', False)
     }
