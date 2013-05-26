@@ -324,5 +324,7 @@ CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 CONSTANCE_DATABASE_CACHE_BACKEND = 'default'
 
 CONSTANCE_CONFIG = {
-    'GOOGLE_ANALYTICS_ID': ('', 'UA-* identifier to use for Google Analytics'),
+    'GOOGLE_ANALYTICS_ID': ('', 'UA-* identifier to pass to GA _setAccount'),
+    'GOOGLE_ANALYTICS_SUBDOMAINS': ('', 'Subdomain value to pass to GA _setDomainName'),
+    'GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS': ('', 'Truthy/Falsey value to trigger GA _setAllowLinker'),
 }

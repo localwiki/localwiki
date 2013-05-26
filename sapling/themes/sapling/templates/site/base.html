@@ -32,7 +32,7 @@
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', '{{ config.GOOGLE_ANALYTICS_ID }}']);
     {% if config.GOOGLE_ANALYTICS_SUBDOMAINS %}
-      _gaq.push(['_setDomainName', '{{ GOOGLE_ANALYTICS_SUBDOMAINS }}']);
+      _gaq.push(['_setDomainName', '{{ config.GOOGLE_ANALYTICS_SUBDOMAINS }}']);
       {% if config.GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS %}
         _gaq.push(['_setAllowLinker', true]);
       {% endif %}
