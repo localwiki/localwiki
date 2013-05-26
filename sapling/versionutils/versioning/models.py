@@ -35,36 +35,35 @@ class ChangesTracker(object):
 
         do_versioning = getattr(
             settings, 'VERSIONUTILS_VERSIONING_ENABLED', True)
-        if not do_versioning:
-            # We still create the historical models but don't set any
-            # signals for saving/deleting.
-            return
 
-        setattr(m, '_track_changes', True)
+        # Even if versioning is disabled, we still create the historical models
+        # but don't set any signals for saving/deleting.
+        if do_versioning:
+            setattr(m, '_track_changes', True)
 
-        # Over-ride the save, delete methods to allow arguments to be passed in
-        # such as comment="Made a small change."
-        setattr(m, 'save', save_func(m.save))
-        setattr(m, 'delete', delete_func(m.delete))
+            # Over-ride the save, delete methods to allow arguments to be passed in
+            # such as comment="Made a small change."
+            setattr(m, 'save', save_func(m.save))
+            setattr(m, 'delete', delete_func(m.delete))
 
-        # We also attach signal handlers to the save, delete methods.  It's
-        # easier to have two things going on (signal, and an overridden method)
-        # because the signal handlers tell us if the object is new or not.
-        # (Just checking object.pk is None is not enough!)
-        # Signal handlers are called when a bulk QuerySet.delete()
-        # is issued -- custom delete() and save() methods aren't called
-        # in that case.
+            # We also attach signal handlers to the save, delete methods.  It's
+            # easier to have two things going on (signal, and an overridden method)
+            # because the signal handlers tell us if the object is new or not.
+            # (Just checking object.pk is None is not enough!)
+            # Signal handlers are called when a bulk QuerySet.delete()
+            # is issued -- custom delete() and save() methods aren't called
+            # in that case.
 
-        _post_save = partial(self.post_save, m)
-        _pre_delete = partial(self.pre_delete, m)
-        _post_delete = partial(self.post_delete, m)
-        # The ChangesTracker object will be discarded, so the signal handlers
-        # can't use weak references.
-        models.signals.post_save.connect(_post_save, weak=False)
-        models.signals.pre_delete.connect(_pre_delete, weak=False)
-        models.signals.post_delete.connect(_post_delete, weak=False)
+            _post_save = partial(self.post_save, m)
+            _pre_delete = partial(self.pre_delete, m)
+            _post_delete = partial(self.post_delete, m)
+            # The ChangesTracker object will be discarded, so the signal handlers
+            # can't use weak references.
+            models.signals.post_save.connect(_post_save, weak=False)
+            models.signals.pre_delete.connect(_pre_delete, weak=False)
+            models.signals.post_delete.connect(_post_delete, weak=False)
 
-        self.wrap_model_fields(m)
+            self.wrap_model_fields(m)
 
         descriptor = manager.HistoryDescriptor(history_model)
         setattr(m, self.manager_name, descriptor)
@@ -510,6 +509,10 @@ class ChangesTracker(object):
         Args:
             attname: Attribute name of the m2m field on the base model.
         """
+        if not hasattr(instance, '_track_changes'):
+            # Skip this signal when we have version tracking disabled.
+            return
+
         if pk_set:
             changed_ms = [model.objects.get(pk=pk) for pk in pk_set]
             hist_changed_ms = []

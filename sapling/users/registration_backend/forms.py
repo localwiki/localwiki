@@ -44,7 +44,7 @@ class RegistrationForm(forms.Form):
     name = forms.CharField(required=False, label=_("Your name"))
 
     tos = forms.BooleanField(widget=forms.CheckboxInput(attrs=attrs_dict),
-            label=mark_safe(settings.SIGNUP_TOS),
+            label=mark_safe(_(settings.SIGNUP_TOS)),
             error_messages={'required':
                 _("You must agree to the terms to register")})
 
