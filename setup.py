@@ -4,8 +4,7 @@ import sys
 from fnmatch import fnmatchcase
 from distutils.util import convert_path
 
-from sapling import get_version
-
+from localwiki import get_version
 
 # Provided as an attribute, so you can append to these instead
 # of replicating them:
@@ -115,12 +114,12 @@ def gen_data_files(*dirs):
 
 install_requires = [
     'setuptools',
-    'django==1.3',
+    'django==1.4',
     'html5lib==0.95',
     'sorl-thumbnail==11.12',
     'python-dateutil==1.5',
     'pysolr==2.1.0-beta',
-    'django-haystack==1.2.6',
+    'django-haystack==1.2.7',
     'django-randomfilenamestorage==1.1',
     'django-guardian==1.0.4',
     'South==0.7.4',
@@ -156,7 +155,7 @@ setup(
         'https://github.com/philipn/django-tastypie/tarball/localwiki_master#egg=django-tastypie-0.9.12-custom5',
     ],
     entry_points={
-        'console_scripts': ['localwiki-manage=sapling.manage:main'],
+        'console_scripts': ['localwiki-manage=localwiki.manage:main'],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',

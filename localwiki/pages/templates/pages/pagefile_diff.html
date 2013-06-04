@@ -1,0 +1,64 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+
+{% load i18n %}
+
+{% load diff_tags %}
+{% load pages_tags %}
+
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
+{% block media %}
+  {{ block.super }}
+  <style>
+    del {
+      background: #FDC6C6;
+      text-decoration: none;
+    }
+    ins {
+      background: #b4ff78;
+      text-decoration: none;
+    }
+    del img {
+      border: 0.5em #FDC6C6 solid;
+    }
+    ins img{
+      border: 0.5em #b4ff78 solid;
+    }
+    td.revision_details {
+      font-style: italic;
+    }
+  </style>
+{% endblock %}
+
+{% block title %}{% blocktrans with new_name=new.name new_slug=new.slug %}Differences for {{ new_name }} on {{ new_slug }}{% endblocktrans %}{% endblock %}
+{% block header_title %}{% url 'pages:show' slug=new.slug as url_pages_show %}{% blocktrans with new_name=new.name new_attached_to_page=new.attached_to_page %}Differences for {{ new_name }} on <a href="{{ url_pages_show }}">{{ new_attached_to_page }}</a>{% endblocktrans %}{% endblock %}
+
+{% block content %}
+  <table width="100%">
+    <thead>
+        <tr>
+            <td class="revision_details">
+                {% if old %}
+                  {% blocktrans with version_number=old.version_info.version_number date=old.version_info.date user_link=old.version_info.user_link|safe %}Revision {{ version_number }}
+                  ({{ date }} by {{ user_link }}){% endblocktrans %}
+                {% endif %}
+            </td>
+            <td class="revision_details">
+                {% blocktrans with version_number=new.version_info.version_number date=new.version_info.date user_link=new.version_info.user_link|safe %}Revision {{ version_number }}
+                ({{ date }} by {{ user_link }}){% endblocktrans %}
+            </td>
+        </tr>
+    </thead>
+    {% diff old new as pagefile_diff %}
+    <tbody valign="top">
+        {{ pagefile_diff.file }}
+    </tbody>
+  </table>
+  <p>
+      <a href="{% url 'pages:file-info' slug=slug file=pagefile.name|urlencode %}">{% trans "File info" %}</a>
+  </p>
+{% endblock %}
