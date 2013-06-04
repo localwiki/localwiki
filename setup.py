@@ -112,6 +112,20 @@ def gen_data_files(*dirs):
     return results
 
 
+def find_packages_in(dirs):
+    """
+    Given a list of directories, `dirs`, we use `find_packages()` on each and
+    return the result as a list of qualified packages, e.g.
+
+    find_packages_in(['localwiki']) -> ['localwiki', 'localwiki.pages', ...]
+    """
+    packages = []
+    for dir in dirs:
+        packages.append(dir)
+        packages += [ '%s.%s' % (dir, p) for p in find_packages(dir) ]
+    return packages
+
+
 install_requires = [
     'setuptools',
     'django==1.4',
@@ -142,8 +156,8 @@ setup(
     author='Mike Ivanov',
     author_email='mivanov@gmail.com',
     url='http://localwiki.org',
-    packages=find_packages(),
-    package_dir={'sapling': 'sapling'},
+    packages=find_packages_in(['localwiki']),
+    package_dir={'localwiki': 'localwiki'},
     data_files=gen_data_files(
         ('docs', 'share/localwiki/docs'),
     ),
