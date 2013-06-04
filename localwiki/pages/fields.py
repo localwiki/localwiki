@@ -1,7 +1,59 @@
 from django import forms
 from django.utils.translation import  ugettext_lazy as _
 
-from .models import Page, slugify
+from ckeditor.models import HTML5FragmentField
+
+
+class WikiHTMLField(HTML5FragmentField):
+    allowed_elements = [
+        'p', 'br', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3',
+        'h4', 'h5', 'h6', 'hr', 'ul', 'ol', 'li', 'pre', 'table',
+        'thead', 'tbody', 'tr', 'th', 'td', 'span', 'strike', 'sub',
+        'sup', 'tt', 'input']
+    
+    allowed_attributes_map = {
+        'p': ['class', 'style'],
+        'h1': ['style'],
+        'h2': ['style'],
+        'h3': ['style'],
+        'h4': ['style'],
+        'h5': ['style'],
+        'h6': ['style'],
+        'ul': ['class'],
+        'a': ['class', 'name', 'href', 'style'],
+        'img': ['class', 'src', 'alt', 'title', 'style'],
+        'span': ['class', 'style'],
+        'table': ['class', 'style'],
+        'th': ['class', 'colspan', 'rowspan', 'style'],
+        'td': ['class', 'colspan', 'rowspan', 'style'],
+        'input': ['class', 'type', 'value']
+    }
+    
+    allowed_styles_map = {
+        'p': ['text-align'],
+        'h1': ['text-align'],
+        'h2': ['text-align'],
+        'h3': ['text-align'],
+        'h4': ['text-align'],
+        'h5': ['text-align'],
+        'h6': ['text-align'],
+        'img': ['width', 'height'],
+        'span': ['width', 'height'],
+        'table': ['width', 'height'],
+        'th': ['text-align', 'background-color'],
+        'td': ['text-align', 'background-color', 'width',
+               'height', 'vertical-align'],
+        'a': ['width']
+    }
+    
+    rename_elements = {'b': 'strong', 'i': 'em'}
+
+    def __init__(self, *args, **kwargs):
+        super(WikiHTMLField, self).__init__(*args, **kwargs)
+        self.allowed_elements = self.__class__.allowed_elements
+        self.allowed_attributes_map = self.__class__.allowed_attributes_map
+        self.allowed_styles_map = self.__class__.allowed_styles_map
+        self.rename_elements = self.__class__.rename_elements
 
 
 class PageChoiceField(forms.ModelChoiceField):
@@ -13,6 +65,8 @@ class PageChoiceField(forms.ModelChoiceField):
         super(PageChoiceField, self).__init__(*args, **kwargs)
 
     def clean(self, value):
+        from .models import slugify
+
         if not value and not self.required:
             return None
         try:
@@ -23,6 +77,8 @@ class PageChoiceField(forms.ModelChoiceField):
                     self.queryset.model._meta.verbose_name,))
 
     def prepare_value(self, value):
+        from .models import Page
+
         if isinstance(value, basestring):
             # already a page name
             return

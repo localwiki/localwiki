@@ -56,7 +56,7 @@ class HTMLSanitizer(sanitizer.HTMLSanitizer):
                 tag = token["name"]
                 if "data" in token:
                     allowed_attrs = self.allowed_attributes
-                    if self.allowed_attributes_map:
+                    if self.allowed_attributes_map is not None:
                         allowed_attrs = self.allowed_attributes_map.get(tag,
                                                                         [])
                     attrs = dict([(name, val) for name, val in
@@ -84,7 +84,7 @@ class HTMLSanitizer(sanitizer.HTMLSanitizer):
                         del attrs['xlink:href']
                     if 'style' in attrs:
                         attrs['style'] = self.sanitize_css(attrs['style'])
-                        if self.allowed_styles_map:
+                        if self.allowed_styles_map is not None:
                             ok_styles = self.allowed_styles_map.get(tag, [])
                             attrs['style'] = self.filter_styles(
                                                             attrs['style'],
@@ -146,12 +146,12 @@ def sanitize_html(unsafe):
     return tree.toxml()
 
 
-def sanitize_html_fragment(unsafe, allowed_elements=None,
-        allowed_attributes_map=None, allowed_styles_map=None,
-        rename_elements=None, encoding='UTF-8'):
+def sanitize_html_fragment(unsafe, allowed_elements=[],
+        allowed_attributes_map={}, allowed_styles_map={},
+        rename_elements={}, encoding='UTF-8'):
     # TODO: make this more simple / understandable and factor out from
     # plugins.html_to_template_text
-    if not allowed_elements:
+    if allowed_elements is None:
         allowed_elements = sanitizer.HTMLSanitizer.allowed_elements
 
     tokenizer = custom_sanitizer(allowed_elements, allowed_attributes_map,
@@ -223,14 +223,15 @@ class HTML5FragmentField(models.TextField):
             rename_elements={'b': 'strong', 'i': 'em'}
         )
 
-    All of these are optional, and, when missing, imply anything is allowed.
+    If you don't provide any elements, attributes, etc then they will not be
+    allowed -- this is a whitelist.
     """
     description = _("HTML5 fragment text")
     encoding = 'UTF-8'
 
-    def __init__(self, verbose_name=None, name=None, allowed_elements=None,
-                 allowed_attributes_map=None, allowed_styles_map=None,
-                 rename_elements=None, **kwargs):
+    def __init__(self, verbose_name=None, name=None, allowed_elements=[],
+                 allowed_attributes_map={}, allowed_styles_map={},
+                 rename_elements={}, **kwargs):
         models.Field.__init__(self, verbose_name, name, **kwargs)
         self.allowed_elements = allowed_elements
         self.allowed_attributes_map = allowed_attributes_map
@@ -239,11 +240,13 @@ class HTML5FragmentField(models.TextField):
 
     def clean(self, value, model_instance):
         value = super(HTML5FragmentField, self).clean(value, model_instance)
-        return sanitize_html_fragment(value, self.allowed_elements,
-                                      self.allowed_attributes_map,
-                                      self.allowed_styles_map,
-                                      self.rename_elements,
-                                      encoding=self.encoding)
+        return sanitize_html_fragment(value,
+            self.allowed_elements,
+            self.allowed_attributes_map,
+            self.allowed_styles_map,
+            self.rename_elements,
+            encoding=self.encoding
+        )
 
     def formfield(self, **kwargs):
         defaults = {

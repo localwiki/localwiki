@@ -15,65 +15,17 @@ from django.utils.translation import ugettext_lazy
 from django_randomfilenamestorage.storage import (
     RandomFilenameFileSystemStorage)
 
-from ckeditor.models import HTML5FragmentField
 from versionutils import diff
 from versionutils import versioning
 
 import exceptions
-
-
-allowed_tags = ['p', 'br', 'a', 'em', 'strong', 'u', 'img', 'h1', 'h2', 'h3',
-                'h4', 'h5', 'h6', 'hr', 'ul', 'ol', 'li', 'pre', 'table',
-                'thead', 'tbody', 'tr', 'th', 'td', 'span', 'strike', 'sub',
-                'sup', 'tt', 'input']
-
-allowed_attributes_map = {'p': ['class', 'style'],
-                          'h1': ['style'],
-                          'h2': ['style'],
-                          'h3': ['style'],
-                          'h4': ['style'],
-                          'h5': ['style'],
-                          'h6': ['style'],
-                          'ul': ['class'],
-                          'a': ['class', 'name', 'href', 'style'],
-                          'img': ['class', 'src', 'alt', 'title', 'style'],
-                          'span': ['class', 'style'],
-                          'table': ['class', 'style'],
-                          'th': ['class', 'colspan', 'rowspan', 'style'],
-                          'td': ['class', 'colspan', 'rowspan', 'style'],
-                          'input': ['class', 'type', 'value']
-                         }
-
-
-allowed_styles_map = {'p': ['text-align'],
-                      'h1': ['text-align'],
-                      'h2': ['text-align'],
-                      'h3': ['text-align'],
-                      'h4': ['text-align'],
-                      'h5': ['text-align'],
-                      'h6': ['text-align'],
-                      'img': ['width', 'height'],
-                      'span': ['width', 'height'],
-                      'table': ['width', 'height'],
-                      'th': ['text-align', 'background-color'],
-                      'td': ['text-align', 'background-color', 'width',
-                             'height', 'vertical-align'],
-                      'a': ['width']
-                     }
-
-
-rename_elements = {'b': 'strong',
-                   'i': 'em'
-                   }
+from fields import WikiHTMLField
 
 
 class Page(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False, unique=True)
-    content = HTML5FragmentField(allowed_elements=allowed_tags,
-                                 allowed_attributes_map=allowed_attributes_map,
-                                 allowed_styles_map=allowed_styles_map,
-                                 rename_elements=rename_elements)
+    content = WikiHTMLField()
 
     def __unicode__(self):
         return self.name
