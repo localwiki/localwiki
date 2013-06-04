@@ -23,12 +23,8 @@ class HTML5Model(models.Model):
 
 
 class HTML5FragmentModel(models.Model):
-    html = HTML5FragmentField()
-
-
-class RestrictedHTML5FragmentModel(models.Model):
     html = HTML5FragmentField(allowed_elements=['a', 'span'],
-                              allowed_attributes_map={'a': ['href'],
+                              allowed_attributes_map={'a': ['href', 'name'],
                                                       'span': ['style']},
                               allowed_styles_map={'span': ['width']},
                               rename_elements={'div': 'span'})
@@ -74,52 +70,56 @@ class HTML5FragmentField(TestCase):
         self.assertEquals(m.html, '&lt;script/&gt;')
 
     def test_allowed_elements(self):
-        m = RestrictedHTML5FragmentModel()
+        m = HTML5FragmentModel()
         m.html = '<p><a href="#top">This link</a> takes you to the top</p>'
         m.clean_fields()
+        # We don't allow <p> so it should be escaped.
         self.assertEquals(m.html, ('&lt;p&gt;<a href="#top">This link</a>'
                                    ' takes you to the top&lt;/p&gt;'))
 
     def test_allowed_attributes(self):
-        m = RestrictedHTML5FragmentModel()
+        m = HTML5FragmentModel()
         m.html = ('<span style="width: 300px;" class="myclass">'
                   'Click <a href="www.example.com" target="_top">here</a>'
                   '</span>')
         m.clean_fields()
+        # We don't allow class so it should be stripped.
         self.assertEquals(m.html, ('<span style="width: 300px;">'
                             'Click <a href="www.example.com">here</a></span>'))
 
     def test_allowed_styles(self):
-        m = RestrictedHTML5FragmentModel()
+        m = HTML5FragmentModel()
         m.html = ('<span style="width: 300px; height:100px">Blah</span>')
         m.clean_fields()
+        # We don't allow height: so it should be stripped.
         self.assertEquals(m.html, '<span style="width: 300px;">Blah</span>')
 
     def test_rename_elements(self):
-        m = RestrictedHTML5FragmentModel()
+        m = HTML5FragmentModel()
         m.html = '<div>This should be a span</div>'
         m.clean_fields()
         self.assertEquals(m.html, '<span>This should be a span</span>')
 
     def test_empty_a_element(self):
         m = HTML5FragmentModel()
-        m.html = '<p><a name="test"></a></p>'
+        m.html = '<span><a name="test"></a></span>'
         m.clean_fields()
-        self.assertEquals(m.html, '<p><a name="test"></a></p>')
+        self.assertEquals(m.html, '<span><a name="test"></a></span>')
 
     def test_nbsp(self):
-        ''' We store UTF-8, so &nbsp; should be stored as \xc2\xa0 (2 chars)
-        '''
+        """
+        We store UTF-8, so &nbsp; should be stored as \xc2\xa0 (2 chars)
+        """
         m = HTML5FragmentModel()
-        m.html = '<p>&nbsp;</p>&nbsp;'
+        m.html = '<span>&nbsp;</span>&nbsp;'
         m.clean_fields()
-        self.assertEquals(m.html, '<p>\xc2\xa0</p>\xc2\xa0')
+        self.assertEquals(m.html, '<span>\xc2\xa0</span>\xc2\xa0')
 
     def test_charset(self):
         m = HTML5FragmentModel()
-        m.html = '<p>Привет</p>'
+        m.html = '<span>Привет</span>'
         m.clean_fields()
-        self.assertEquals(m.html, '<p>Привет</p>')
+        self.assertEquals(m.html, '<span>Привет</span>')
 
 
 class CKEditorWidgetTest(TestCase):
