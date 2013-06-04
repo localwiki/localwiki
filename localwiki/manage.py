@@ -61,7 +61,7 @@ def main(set_apps_path=True):
                               **init_options)
             return
 
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sapling.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "main.settings")
     execute_from_command_line(sys.argv)
 
 if __name__ == "__main__":

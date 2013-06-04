@@ -3,7 +3,7 @@ from django.conf import settings
 
 from tastypie.resources import ModelResource
 
-from sapling.api import api
+from main.api import api
 
 
 class SiteResource(ModelResource):

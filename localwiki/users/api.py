@@ -1,7 +1,7 @@
 from tastypie.resources import ModelResource, ALL
 
 from django.contrib.auth.models import User
-from sapling.api import api
+from main.api import api
 
 
 class UserResource(ModelResource):

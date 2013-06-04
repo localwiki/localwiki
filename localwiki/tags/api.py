@@ -4,10 +4,10 @@ from tastypie.constants import ALL_WITH_RELATIONS
 
 from models import Tag, PageTagSet
 from pages.api import PageURLMixin
-from sapling.api import api
-from sapling.api.resources import ModelHistoryResource
-from sapling.api.authentication import ApiKeyWriteAuthentication
-from sapling.api.authorization import ExtendedDjangoAuthorization
+from main.api import api
+from main.api.resources import ModelHistoryResource
+from main.api.authentication import ApiKeyWriteAuthentication
+from main.api.authorization import ExtendedDjangoAuthorization
 
 
 # Tags can be edited if the page can be edited.

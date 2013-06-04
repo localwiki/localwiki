@@ -15,9 +15,9 @@ from tastypie.utils import trailing_slash
 
 from redirects.models import Redirect
 from models import Page, PageFile, name_to_url, url_to_name, clean_name
-from sapling.api import api
-from sapling.api.resources import ModelHistoryResource
-from sapling.api.authentication import ApiKeyWriteAuthentication
+from main.api import api
+from main.api.resources import ModelHistoryResource
+from main.api.authentication import ApiKeyWriteAuthentication
 
 
 class PageURLMixin(object):

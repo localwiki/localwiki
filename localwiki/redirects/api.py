@@ -4,9 +4,9 @@ from tastypie import fields
 
 from models import Redirect
 from pages.api import PageResource, PageHistoryResource
-from sapling.api import api
-from sapling.api.resources import ModelHistoryResource
-from sapling.api.authentication import ApiKeyWriteAuthentication
+from main.api import api
+from main.api.resources import ModelHistoryResource
+from main.api.authentication import ApiKeyWriteAuthentication
 
 
 class RedirectResource(ModelResource):

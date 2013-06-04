@@ -1,4 +1,4 @@
-# Django settings for sapling project.
+# Django settings for localwiki project.
 import sys
 import os
 
@@ -156,7 +156,7 @@ SHOW_IP_ADDRESSES = True
 
 LOGIN_REDIRECT_URL = '/'
 
-HAYSTACK_SITECONF = 'sapling.search_sites'
+HAYSTACK_SITECONF = 'main.search_sites'
 HAYSTACK_SEARCH_ENGINE = 'solr'
 
 THUMBNAIL_BACKEND = 'utils.sorl_backends.AutoFormatBackend'
@@ -209,7 +209,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.transaction.TransactionMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
-    'sapling.api.middleware.XsSharing',
+    'main.api.middleware.XsSharing',
 )
 
 # Dummy cache - TODO: switch to memcached by default
@@ -219,7 +219,7 @@ CACHES = {
     }
 }
 
-ROOT_URLCONF = 'sapling.urls'
+ROOT_URLCONF = 'main.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(DATA_ROOT, 'templates'),
@@ -260,7 +260,7 @@ INSTALLED_APPS = (
     'recentchanges',
     'search',
     'dashboard',
-    'sapling.api',
+    'main.api',
     'utils',
 )
 
