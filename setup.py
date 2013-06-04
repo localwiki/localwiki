@@ -4,8 +4,7 @@ import sys
 from fnmatch import fnmatchcase
 from distutils.util import convert_path
 
-from sapling import get_version
-
+from localwiki import get_version
 
 # Provided as an attribute, so you can append to these instead
 # of replicating them:
@@ -156,7 +155,7 @@ setup(
         'https://github.com/philipn/django-tastypie/tarball/localwiki_master#egg=django-tastypie-0.9.12-custom5',
     ],
     entry_points={
-        'console_scripts': ['localwiki-manage=sapling.manage:main'],
+        'console_scripts': ['localwiki-manage=localwiki.manage:main'],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',
