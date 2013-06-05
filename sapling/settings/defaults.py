@@ -34,6 +34,11 @@ DATABASES = {
     }
 }
 
+SOUTH_MIGRATION_MODULES = {
+    # HACK: South treats 'database' as the name of constance.backends.database
+    'database': 'migrations.south.constance',
+}
+
 GLOBAL_LICENSE_NOTE = _("""<p>Except where otherwise noted, this content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights</a>.</p>""")
 
 EDIT_LICENSE_NOTE = _("""<p>By clicking "Save Changes" you are agreeing to release your contribution under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>""")
@@ -188,7 +193,6 @@ TEMPLATE_LOADERS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     "utils.context_processors.sites.current_site",
     "utils.context_processors.settings.license_agreements",
-    "utils.context_processors.settings.services",
 
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
@@ -199,6 +203,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "staticfiles.context_processors.static",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
+
+    "constance.context_processors.config",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -252,6 +258,8 @@ INSTALLED_APPS = (
     'south',
     'tastypie',
     'honeypot',
+    'constance.backends.database',
+    'constance',
 
     # Our apps
     'versionutils.versioning',
@@ -311,3 +319,12 @@ EMBED_ALLOWED_SRC = ['.*']
 HAYSTACK_SOLR_URL = 'http://localhost:8080/solr'
 
 CACHE_BACKEND = 'dummy:///'
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+CONSTANCE_DATABASE_CACHE_BACKEND = 'default'
+
+CONSTANCE_CONFIG = {
+    'GOOGLE_ANALYTICS_ID': ('', 'UA-* identifier to pass to GA _setAccount'),
+    'GOOGLE_ANALYTICS_SUBDOMAINS': ('', 'Subdomain value to pass to GA _setDomainName'),
+    'GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS': ('', 'Truthy/Falsey value to trigger GA _setAllowLinker'),
+}
