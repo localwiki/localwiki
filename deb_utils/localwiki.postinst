@@ -69,12 +69,15 @@ case "$1" in
         # Enable mod_wsgi
         a2enmod wsgi > /dev/null 2>&1
 
+        # We update the WSGI template sometimes, so let's copy it over each
+        # time.
+        cp "$confdir/localwiki.wsgi.template" "$datadir/deploy/localwiki.wsgi"
+
         # If first time setup, initialize site and wiki
         if [ ! -d "$datadir/deploy" ]; then
             echo "Configuring apache ..."
             mkdir "$datadir/deploy"
             cp "$confdir/localwiki.wsgi.template" "$datadir/deploy/localwiki.wsgi"
-            cp "$confdir/apache.conf.template" "/etc/apache2/sites-available/example.com"
 
             # Allow apache to save uploads
             chown www-data:www-data "$datadir/media"
