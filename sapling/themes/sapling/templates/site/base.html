@@ -27,10 +27,16 @@
   {% endblock %}
 
   {% block analytics %}
-  {% if GOOGLE_ANALYTICS_ID %}
+  {% if config.GOOGLE_ANALYTICS_ID %}
   <script type="text/javascript">
     var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '{{ GOOGLE_ANALYTICS_ID }}']);
+    _gaq.push(['_setAccount', '{{ config.GOOGLE_ANALYTICS_ID }}']);
+    {% if config.GOOGLE_ANALYTICS_SUBDOMAINS %}
+      _gaq.push(['_setDomainName', '{{ config.GOOGLE_ANALYTICS_SUBDOMAINS }}']);
+      {% if config.GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS %}
+        _gaq.push(['_setAllowLinker', true]);
+      {% endif %}
+    {% endif %}
     _gaq.push(['_trackPageview']);
     (function() {
       var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;

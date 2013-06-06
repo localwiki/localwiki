@@ -30,6 +30,23 @@ enter the domain name and display name and press "Save".
 .. figure:: /_static/images/admin_site.png
 
 
+Adding Google Analytics
+-----------------------
+
+In the admin interface, go to "Config" under "Constance".
+
+``GOOGLE_ANALYTICS_ID``
+    Your UA identifier from `Google Analytics <http://www.google.com/analytics/>`_ that will pass to the _setAccount method.
+
+``GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS``
+    If you use `multiple top-level domains with Google Analytics <https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingSite#multipleDomains>`_ , set to a Truthy value (e.g., 1).
+
+``GOOGLE_ANALYTICS_SUBDOMAINS``
+    If you use `subdomains with Google Analytics <https://developers.google.com/analytics/devguides/collection/gajs/gaTrackingSite#domainSubDomains>`_ , set your subdomains value to pass to the _setDomainName method.
+
+.. figure:: /_static/images/admin_ga.png
+
+
 Setting the default map location
 --------------------------------
 
@@ -47,16 +64,13 @@ things you may need or wish to modify:
 ``OLWIDGET_DEFAULT_OPTIONS``
     Defaults for all map widgets, including default location, theme, navigation
     controls, colors, etc.
-    
+
     You will want to set the the **default map location** on your localwiki.
     Simply change ``default_lat`` and ``default_lon``.  Use this tool to look it
     up: http://www.getlatlon.com/
 
 ``CLOUDMADE_API_KEY``
     Your developer API key from `Cloudmade <http://developers.cloudmade.com/>`_
-
-``GOOGLE_ANALYTICS_ID``
-    Your ID from `Google Analytics <http://www.google.com/analytics/>`_
 
 ``SITE_THEME``
     The name of the directory under ``themes`` to look for the theme templates
