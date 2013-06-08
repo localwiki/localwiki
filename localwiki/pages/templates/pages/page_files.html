@@ -1,0 +1,39 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+
+{% load i18n %}
+{% load thumbnail %}
+{% block title %}{% trans "Files" %} - {{ block.super }}{% endblock %}
+{% block media %}
+{{ block.super }}
+<style>
+    ul.file_list {
+        list-style-type: none;
+        text-indent: -1em;
+    }
+
+    .file_list img {
+        vertical-align: text-bottom;
+        padding: 2px;
+    }
+</style>
+{% endblock %}
+{% block header_title %}{% trans "Files attached to this page:" %} {% endblock %}
+
+{% block content %}
+  <ul class="file_list">
+  {% for file in file_list %}
+    <li>
+      {% thumbnail file.file "16x16" as im %}
+      <a style="background: url({{ im.url }}) no-repeat left center; padding-left: 16px;" href="{{ file.name|urlencode }}/_info/">{{ file.name }}</a>
+      {% empty %}
+      <a class="file_{{ file.rough_type }}" href="{{ file.name|urlencode }}/_info/">{{ file.name }}</a>
+      {% endthumbnail %}
+    </li>
+  {% endfor %}
+  </ul>
+  <p>
+    <a href="{% url 'pages:show' slug=slug %}">{% trans "View page" %}</a>
+  </p>
+{% endblock %}

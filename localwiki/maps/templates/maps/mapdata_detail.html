@@ -1,0 +1,55 @@
+{% extends "maps/base.html" %}
+
+{% load url from future %}
+
+{% load i18n %}
+
+{% block media %}
+{{block.super}}
+{{ map.media }}
+
+<script type="text/javascript">
+    function size_map() {
+        $('.mapwidget').height(($(window).height() -
+            $('#header').outerHeight() - $('#main_header').outerHeight()) -
+            $('#content_header').outerHeight() -
+            $('#content_footer').outerHeight() -
+            ($('#content_wrapper').outerHeight() - $('#content').outerHeight())
+        );
+    }
+    $(window).resize(size_map);
+</script>
+{% endblock %}
+
+{% block title %}{% trans "Map for" %} {{ mapdata.page.name }} - {{ block.super }}{% endblock %}
+
+{% block main_wrapper %}
+    <div id="main" class="mapdata_detail">
+        {% block main %}
+            {{ block.super }}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block main_header %}
+    {{ block.super }}
+    {% if show_revision %}
+        <em class="revision_details">
+            {% trans "Revision" %} {{ mapdata.version_info.version_number }}
+            ({{ mapdata.version_info.date }} {% trans "by" %} {{ mapdata.version_info.user_link|safe }})
+        </em>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div>
+        {{ map }}
+    </div>
+{% endblock %}
+
+{% block footer %}
+  {{ block.super }}
+  <p>
+    <a href="{% url 'maps:edit' slug=mapdata.page.pretty_slug %}">{% trans "Edit" %}</a> {% trans "this map" %} ({% blocktrans with tsince=date|timesince %}last modified {{ tsince }} ago{% endblocktrans %})
+  </p>
+{% endblock %}  
