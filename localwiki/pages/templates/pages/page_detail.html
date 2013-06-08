@@ -1,0 +1,78 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+
+{% load i18n %}
+
+{% load pages_tags %}
+{% load tags_tags %}
+
+{% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.min.js"></script>
+{% endblock %}
+
+{% block title %}{% if not page.is_front_page %}{{ page.name }} - {% endif %}{{ block.super }}{% endblock %}
+{% block header_title %}<a href="{% url 'pages:show' slug=page.pretty_slug %}">{{ page.name }}</a>{% endblock %}
+
+{% block header_subtitle %}
+  {% if request.GET.redirected_from %}
+    <div id="object_subtitle">
+    {% trans "Redirected from" %} <a href="{% url 'pages:show' slug=request.GET.redirected_from %}?show=1">{{ request.GET.redirected_from }}</a>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block content_wrapper %}
+<div id="content_wrapper">
+  {% if map %}
+    <div id="content" class="has_map">
+  {% else %}
+    <div id="content">
+  {% endif %}
+  {% block content %}
+    {% if show_revision %}
+      <em class="revision_details">
+          {% blocktrans with version_number=page.version_info.version_number page=old.version_info.date user_link=page.version_info.user_link|safe %}Revision {{ page.version_info.version_number }}
+          ({{ date }} by {{ user_link }}){% endblocktrans %}
+      </em>
+    {% endif %}
+    
+    {% if map %}
+    <div id="map">
+      {{ map }}
+      <div class="info"><a class="view tiny button" href="{% url 'maps:show' slug=page.pretty_slug %}">{% trans "View" %}</a><a class="edit tiny button" href="{% url 'maps:edit' slug=page.pretty_slug %}">{% trans "Edit" %}</a></div>
+    </div>
+    {% endif %}
+
+    <div id="page">
+      {% render_plugins page.content %}
+      <div style="clear:both;"></div>
+      
+    <div style="clear:both;"></div>
+    </div>
+  {% endblock %}
+  </div>
+  <div id="object_tags">
+  {% if not page.version_info %}
+    <div class="tags_show">
+      {% page_tags page %}
+      <a class="tiny button edit_tags" href="{% url 'pages:tags' slug=page.pretty_slug %}" onclick="$(this).closest('div').hide().next().show().find('#tagedit-input').focus(); return false;">
+        <span>{% if page.pagetagset.tags.count %}{% trans "Edit tags" %}{% else %}{% trans "Add tags" %}{% endif %}</span>
+      </a>
+    </div>
+    <div class="tags edit" style="display: none">
+      {% page_tags_form_media %}
+      {% page_tags_form page %}
+      <a class="edit_tags_cancel" href="{% url 'pages:show' slug=page.pretty_slug %}">{% trans "Cancel" %}</a>
+    </div>
+  {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+  {{ block.super }}
+  <p>
+    {% blocktrans with ago=date|timesince %}This page was last modified {{ ago }} ago{% endblocktrans %}
+  </p>
+{% endblock %}
