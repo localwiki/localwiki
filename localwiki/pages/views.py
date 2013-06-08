@@ -1,4 +1,5 @@
 from dateutil.parser import parse as dateparser
+import time
 import copy
 
 from django.conf import settings
@@ -301,6 +302,11 @@ class PageCreateView(RedirectView):
     """
     def get_redirect_url(self, **kwargs):
         pagename = self.request.GET.get('pagename')
+        if not pagename.strip():
+            # No page name provided, so let's return a useful error message.
+            messages.add_message(self.request, messages.SUCCESS,
+                _('You must provide a page name when creating a page.'))
+            return reverse('haystack_search')
         if Page.objects.filter(slug=slugify(pagename)):
             return Page.objects.get(slug=slugify(pagename)).get_absolute_url()
         else:
