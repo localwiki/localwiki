@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from views import *
 from feeds import PageChangesFeed, PageFileChangesFeed
 import models
-from utils.constants import DATETIME_REGEXP
+from localwiki.utils.constants import DATETIME_REGEXP
 from models import Page
 from views import PageFilebrowserView
 from tags.views import PageTagSetUpdateView, suggest_tags, PageTagSetVersions,\

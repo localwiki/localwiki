@@ -21,13 +21,14 @@ from ckeditor.views import ck_upload_result
 from versionutils import diff
 from versionutils.versioning.views import UpdateView, DeleteView
 from versionutils.versioning.views import RevertView, VersionsList
-from utils.views import (Custom404Mixin, CreateObjectMixin,
+from localwiki.utils.views import (Custom404Mixin, CreateObjectMixin,
     PermissionRequiredMixin)
 from models import Page, PageFile, url_to_name
 from forms import PageForm, PageFileForm
 from maps.widgets import InfoMap
 
 from models import slugify, clean_name
+from utils import is_user_page
 from exceptions import PageExistsError
 from users.decorators import permission_required
 
@@ -114,7 +115,7 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin, UpdateView):
                    }
                 )
         map_create_link = ''
-        if not hasattr(self.object, 'mapdata'):
+        if not hasattr(self.object, 'mapdata') and not is_user_page(self.object):
             slug = self.object.pretty_slug
             map_create_link = (_(
                 '<p class="create_map"><a href="%s" class="button little map">'
