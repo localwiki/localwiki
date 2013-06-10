@@ -9,6 +9,7 @@ from django.core.files import File
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.base import ContentFile
 from django.utils.unittest import skipIf
+from django.test.utils import override_settings
 
 from utils import TestSettingsManager
 from models import *
@@ -1219,3 +1220,12 @@ class ChangesTrackingTest(TestCase):
         m1_hs = M1.versions.all().defer('a')
         m = m1_hs.get(d="D2!")
         self.assertEqual(m.a, "A2!")
+
+
+    @override_settings(VERSIONUTILS_VERSIONING_ENABLED=False)
+    def test_versioning_disabled(self):
+        m = M16Unique(a="versioning is off", b="yup yup", c=555)
+        m.save()
+        self.assertEqual(len(m.versions.all()), 0)
+        m.delete()
+        self.assertEqual(len(m.versions.all()), 0)

@@ -397,6 +397,8 @@ class ChangesTracker(object):
         return meta
 
     def post_save(self, parent, instance, created, **kws):
+        if not getattr(settings, 'VERSIONUTILS_VERSIONING_ENABLED', True):
+            return
         # To support subclassing.
         if not isinstance(instance, parent):
             return
@@ -423,6 +425,8 @@ class ChangesTracker(object):
         self.m2m_init(instance, hist_instance)
 
     def pre_delete(self, parent, instance, **kws):
+        if not getattr(settings, 'VERSIONUTILS_VERSIONING_ENABLED', True):
+            return
         # To support subclassing.
         if not isinstance(instance, parent):
             return
@@ -449,6 +453,8 @@ class ChangesTracker(object):
                 instance._track_changes = False
 
     def post_delete(self, parent, instance, **kws):
+        if not getattr(settings, 'VERSIONUTILS_VERSIONING_ENABLED', True):
+            return
         # To support subclassing.
         if not isinstance(instance, parent):
             return
