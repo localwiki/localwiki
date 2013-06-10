@@ -79,8 +79,11 @@ SaplingMap = {
         $.each(layer.features, function(index, feature) {
             // Find URL in html.
             var quoted = /"(.*?)"/;
-            var url = quoted.exec(feature.attributes.html)[1];
-            url_to_features[url] = feature;
+            var quoted_match = quoted.exec(feature.attributes.html);
+            if (quoted_match) {
+                var url = quoted.exec(feature.attributes.html)[1];
+                url_to_features[url] = feature;
+            }
         })
 
         $('#content a').each(function() {
