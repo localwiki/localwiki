@@ -1,0 +1,91 @@
+{% extends "maps/base.html" %}
+
+{% load url from future %}
+
+{% load i18n %}
+{% block media %}
+{{ block.super }}
+{{ form.media }}
+
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
+<script type="text/javascript">
+    function size_map() {
+        /* We want to size the map to the size of the container when the
+        window is resized. */
+        $('.mapwidget').height(
+            ($(window).height() - $('#header').height() - $('#main_header').height() -
+            $('#content_header').height()) - $('#content_footer').height()
+        );
+    }
+    $(document).ready(size_map);
+    $(window).resize(size_map);
+
+    /* Always display LayerSwitcher in edit view. */
+    var base_initMap = olwidget.Map.prototype.initMap;
+    olwidget.Map.prototype.initMap = function(mapDivId, opts) {
+        base_initMap.call(this, mapDivId, opts);
+        this.addControl(new OpenLayers.Control.LayerSwitcher());
+    };
+</script>
+{% endblock %}
+
+{% block title %}{% trans "Editing map for" %} "{{ form.instance.page.name }}" - {{ block.super }}{% endblock %}
+
+{% block main_wrapper %}
+    <div id="main" class="mapdata_detail">
+        {% block main %}
+            {{ block.super }}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block messages %}
+  {% if form.errors %}
+    <ul class="messages">
+      {% for errors in form.errors.values %}
+        {% for msg in errors %}
+          <li>{{ msg }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="">{% csrf_token %}
+      {{ form.geom }}
+      {{ form.version_date }}
+
+      {% block content_footer %}
+      <div id="content_footer">
+        <h3>{% trans "Please comment about this change:" %}</h3>
+        {{ form.comment }}
+        <div id="editor_actions">
+          <ul>
+            <li><input type="submit" value="{% trans 'Save changes' %}"/></li>
+            <li><a href="." class="button cancel">{% trans "Cancel" %}</a></li>
+          </ul>
+          <ul class="extra_actions">
+          {% with form.instance as map %}
+            {% include "maps/editor_actions.html" %}
+          {% endwith %}
+          </ul>
+        </div>
+      </div>
+      {% endblock %}
+    </form>
+    {% include "tos/license_in_edit.html" %}
+{% endblock %}
+
+{% block object_actions %}
+<ul>
+  {% if mapdata %}
+      <li><a href="#" class="button active">{% trans "Edit" %}</a></li>
+      <li><a href="{% url 'maps:history' slug=mapdata.page.pretty_slug %}" class="button">{% trans "Info" %}</a></li>
+  {% endif %}
+</ul>
+{% endblock %}

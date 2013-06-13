@@ -49,32 +49,21 @@ case "$1" in
         yes w | pip install --upgrade -r requirements.txt
         deactivate
 
-        # For Ubuntu 11.10, 12.04 (with PostgreSQL 9.1), we have an issue with
-        # GeoDjango.  We have to turn off standard string formatting.  We can
-        # re-enable it once it's fixed, in Django 1.3.2
-
-        if [ -d "/etc/postgresql/9.1/main" ]
-        then
-            echo "#" >> /etc/postgresql/9.1/main/postgresql.conf
-            echo "# Following line added by localwiki" >> /etc/postgresql/9.1/main/postgresql.conf
-            echo "standard_conforming_strings = off" >> /etc/postgresql/9.1/main/postgresql.conf
-            echo "#" >> /etc/postgresql/9.1/main/postgresql.conf
-
-            /etc/init.d/postgresql restart
-        fi
-
         echo "Configuring localwiki ..."
         localwiki-manage setup_all
 
         # Enable mod_wsgi
         a2enmod wsgi > /dev/null 2>&1
 
+        # We update the WSGI template sometimes, so let's copy it over each
+        # time.
+        cp "$confdir/localwiki.wsgi.template" "$datadir/deploy/localwiki.wsgi"
+
         # If first time setup, initialize site and wiki
         if [ ! -d "$datadir/deploy" ]; then
             echo "Configuring apache ..."
             mkdir "$datadir/deploy"
             cp "$confdir/localwiki.wsgi.template" "$datadir/deploy/localwiki.wsgi"
-            cp "$confdir/apache.conf.template" "/etc/apache2/sites-available/example.com"
 
             # Allow apache to save uploads
             chown www-data:www-data "$datadir/media"

@@ -4,8 +4,7 @@ import sys
 from fnmatch import fnmatchcase
 from distutils.util import convert_path
 
-from sapling import get_version
-
+from localwiki import get_version
 
 # Provided as an attribute, so you can append to these instead
 # of replicating them:
@@ -113,14 +112,28 @@ def gen_data_files(*dirs):
     return results
 
 
+def find_packages_in(dirs):
+    """
+    Given a list of directories, `dirs`, we use `find_packages()` on each and
+    return the result as a list of qualified packages, e.g.
+
+    find_packages_in(['localwiki']) -> ['localwiki', 'localwiki.pages', ...]
+    """
+    packages = []
+    for dir in dirs:
+        packages.append(dir)
+        packages += [ '%s.%s' % (dir, p) for p in find_packages(dir) ]
+    return packages
+
+
 install_requires = [
     'setuptools',
-    'django==1.3',
+    'django==1.4',
     'html5lib==0.95',
     'sorl-thumbnail==11.12-custom3',
     'python-dateutil==1.5',
     'pysolr==2.1.0-beta',
-    'django-haystack==1.2.6',
+    'django-haystack==1.2.7',
     'django-randomfilenamestorage==1.1',
     'django-guardian==1.0.4',
     'South==0.7.4',
@@ -131,6 +144,8 @@ install_requires = [
     'django-honeypot==0.3.0-custom4',
     'django-tastypie==0.9.12-custom5',
     'django-qsstats-magic==0.7',
+    'django-picklefield==0.3.0',
+    'django-constance==0.6.0',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
@@ -143,8 +158,8 @@ setup(
     author='Mike Ivanov',
     author_email='mivanov@gmail.com',
     url='http://localwiki.org',
-    packages=find_packages(),
-    package_dir={'sapling': 'sapling'},
+    packages=find_packages_in(['localwiki']),
+    package_dir={'localwiki': 'localwiki'},
     data_files=gen_data_files(
         ('docs', 'share/localwiki/docs'),
     ),
@@ -157,7 +172,7 @@ setup(
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom3',
     ],
     entry_points={
-        'console_scripts': ['localwiki-manage=sapling.manage:main'],
+        'console_scripts': ['localwiki-manage=localwiki.manage:main'],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',

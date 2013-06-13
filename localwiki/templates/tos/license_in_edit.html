@@ -1,0 +1,4 @@
+{% load i18n %}
+{% if not request.user.is_authenticated %}
+  {% trans EDIT_LICENSE_NOTE|safe %}
+{% endif %}
