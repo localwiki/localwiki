@@ -89,7 +89,7 @@ SaplingMap = {
         $('#content a').each(function() {
             var feature = url_to_features[$(this).attr('href')];
             $(this).bind('mouseover', function (){
-                SaplingMap._highlightResult(this, feature, map);
+                SaplingMap._highlightResult(this, feature, map, true);
             });
         });
     },
@@ -241,7 +241,7 @@ SaplingMap = {
         }
     },
 
-    _highlightResult: function (result, feature, map) {
+    _highlightResult: function (result, feature, map, is_inside_page) {
             var lonlat = feature.geometry.getBounds().getCenterLonLat();
             var popup = new olwidget.Popup(null,
                 lonlat, null, feature.attributes.html, null, false,
@@ -259,18 +259,24 @@ SaplingMap = {
                 $(this).unbind('mouseout');
                 map.removePopup(popup);
                 feature.style = feature.defaultStyle;
-                // Points are clustered, so we erase the feature to
-                // prevent the non-clustered point from being drawn.
-                if (feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Point") {
-                    layer.eraseFeatures(feature);
+                if (is_inside_page) {
+                    feature.style = $.extend({}, layer.styleMap.styles['default'].defaultStyle, {label: null});
+                    layer.drawFeature(feature);
                 }
                 else {
-                    layer.drawFeature(feature);
-                    // Keep the selected feature on top of other
-                    // features after they've been drawn.
-                    if (layer._selectedFeature) {
-                        layer.eraseFeatures([layer._selectedFeature]);
-                        SaplingMap._set_selected_style(map, layer._selectedFeature);
+                    // Points are clustered, so we erase the feature to
+                    // prevent the non-clustered point from being drawn.
+                    if (feature.geometry.CLASS_NAME == "OpenLayers.Geometry.Point") {
+                        layer.eraseFeatures(feature);
+                    }
+                    else {
+                        layer.drawFeature(feature);
+                        // Keep the selected feature on top of other
+                        // features after they've been drawn.
+                        if (layer._selectedFeature) {
+                            layer.eraseFeatures([layer._selectedFeature]);
+                            SaplingMap._set_selected_style(map, layer._selectedFeature);
+                        }
                     }
                 }
                 if(existingPopup)
