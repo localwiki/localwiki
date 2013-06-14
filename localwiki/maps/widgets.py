@@ -31,6 +31,14 @@ class InfoMap(MediaMixin, widgets.InfoMap):
         # Potentially limit # of layers on InfoMaps, for now. This helps
         # with quicker load times on most pages.
         max_layers = getattr(settings, 'OLWIDGET_INFOMAP_MAX_LAYERS', 1)
+        controls = self.options.get('map_options', {}).get('controls', [])
+        # TODO: This is an ugly hack caused by the fact we hard-coded map
+        # controls into localsettings.py, making this sort of thing difficult
+        # to change without a hack like this.  Break out map controls, etc
+        # to some other place later.
+        if 'PanZoomBar' in controls:
+            controls.remove('PanZoomBar')
+            controls.append('PanZoom')
         self.options['layers'] = self.options['layers'][:max_layers]
         return val
 
