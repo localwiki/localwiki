@@ -11,6 +11,10 @@ SaplingMap = {
             var opts = base_initOptions.call(this, options) 
             var border_height = 0;
             var map_height = $(window).height() - $('#header').outerHeight() - $('#main_header').outerHeight() - $('#content_header').outerHeight() - $('#content_footer').outerHeight() - ($('#content_wrapper').outerHeight() - $('#content').outerHeight() - border_height);
+            // Let's make sure it's not any smaller than 300px for mobile devices
+            if (map_height < 300) {
+                map_height = 300;
+            }
             opts['mapDivStyle']['height'] = map_height + 'px';
             opts['mapDivStyle']['width'] = '100%';
             // Remove the dummy CSS border we put in to get the map
