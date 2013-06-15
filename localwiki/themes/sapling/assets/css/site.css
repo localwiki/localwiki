@@ -1391,9 +1391,9 @@ form #content_footer {
     margin-top: -1em;
 }
 .mapdata form #content_footer {
-    padding-left: 5em;
-    padding-right: 5em;
-    margin-top: 0.16em;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+    margin-top: 1em;
 }
 
 @media screen and (max-width: 1075px) {
@@ -1467,6 +1467,11 @@ form #content_footer {
         width: 100%;
     }
 
+    .mapdata form #content_footer {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
     #editor_actions .button {
         float: none;
     }
@@ -1500,4 +1505,9 @@ form #content_footer {
     position: absolute;
     left: 130px;
     margin-top: 10px;
+}
+@media screen and (max-width: 500px) {
+    .olControlLayerSwitcher {
+        display: none;    
+    }
 }
