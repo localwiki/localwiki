@@ -112,7 +112,7 @@ textarea, input, select {
     }
     /* For a tag page */
     #content.has_map #page, #content.has_map #pagetagset {
-        margin-top: 244px;
+        margin-top: 250px;
     }
     /* For an included list of tagged pages */
     .included_page_wrapper #pagetagset.has_map {
