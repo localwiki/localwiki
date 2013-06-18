@@ -97,7 +97,6 @@ a[href$='.DOCX'] {
 
     /* Responsive scale of image frame */
     max-width: 100%;
-    /* Fix padding on percent-based scale */
     padding-right: 4px!important;
 }
 
@@ -105,8 +104,7 @@ a[href$='.DOCX'] {
     display: block; 
 
     /* Responsive scale of image */
-    max-width: 100%;
-    width: auto;
+    width: 100%!important;
     height: auto!important;
 }
 .image_frame > a {
