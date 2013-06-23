@@ -65,13 +65,15 @@ class TaggedList(ListView):
         context['tag_name'] = self.tag_name
         map_objects = self.get_map_objects()
         if map_objects:
-            # Remove the PanZoomBar on normal page views.
+            # Remove the PanZoom on normal page views.
             olwidget_options = copy.deepcopy(getattr(settings,
                 'OLWIDGET_DEFAULT_OPTIONS', {}))
             map_opts = olwidget_options.get('map_options', {})
             map_controls = map_opts.get('controls', [])
             if 'PanZoomBar' in map_controls:
                 map_controls.remove('PanZoomBar')
+            if 'PanZoom' in map_controls:
+                map_controls.remove('PanZoom')
             if 'KeyboardDefaults' in map_controls:
                 map_controls.remove('KeyboardDefaults')
             olwidget_options['map_options'] = map_opts

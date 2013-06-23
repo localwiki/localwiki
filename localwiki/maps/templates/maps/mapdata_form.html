@@ -65,9 +65,9 @@
         <h3>{% trans "Please comment about this change:" %}</h3>
         {{ form.comment }}
         <div id="editor_actions">
-          <ul>
-            <li><input type="submit" value="{% trans 'Save changes' %}"/></li>
-            <li><a href="." class="button cancel">{% trans "Cancel" %}</a></li>
+          <ul class="save_area">
+            <li class="save"><input type="submit" value="{% trans 'Save changes' %}"/></li>
+            <li class="cancel"><a href="." class="button cancel">{% trans "Cancel" %}</a></li>
           </ul>
           <ul class="extra_actions">
           {% with form.instance as map %}

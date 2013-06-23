@@ -130,7 +130,7 @@ install_requires = [
     'setuptools',
     'django==1.4',
     'html5lib==0.95',
-    'sorl-thumbnail==11.12',
+    'sorl-thumbnail==11.12-custom4',
     'python-dateutil==1.5',
     'pysolr==2.1.0-beta',
     'django-haystack==1.2.7',
@@ -169,6 +169,7 @@ setup(
         'https://github.com/philipn/olwidget/tarball/custom_base_layers_fixed#egg=django-olwidget-0.46-custom2',
         'https://github.com/philipn/django-honeypot/tarball/b4991c140849901d2f8842df2c4672813e73381b#egg=django-honeypot-0.3.0-custom4',
         'https://github.com/philipn/django-tastypie/tarball/localwiki_master#egg=django-tastypie-0.9.12-custom5',
+        'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom4',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=localwiki.manage:main'],

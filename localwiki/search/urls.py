@@ -23,9 +23,11 @@ class CreatePageSearchView(SearchView):
             'OLWIDGET_DEFAULT_OPTIONS', {}))
         map_opts = widget_options.get('map_options', {})
         map_controls = map_opts.get('controls', [])
-        # Remove the PanZoomBar.
+        # Remove the PanZoom.
         if 'PanZoomBar' in map_controls:
             map_controls.remove('PanZoomBar')
+        if 'PanZoom' in map_controls:
+            map_controls.remove('PanZoom')
         # Remove the Keyboard scrolling behavior.
         if 'KeyboardDefaults' in map_controls:
             map_controls.remove('KeyboardDefaults')

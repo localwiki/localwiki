@@ -1,4 +1,4 @@
-function beforeUnload(e)
+function before_unload(e)
 {
     for (var i in CKEDITOR.instances) {
         if(CKEDITOR.instances[i].checkDirty())
@@ -8,19 +8,39 @@ function beforeUnload(e)
     }
 }
 
-function resetDirty() {
+function reset_dirty() {
     for (var i in CKEDITOR.instances) {
         CKEDITOR.instances[i].resetDirty();
     }
 }
 
+function make_editor_simple() {
+    CKEDITOR.instances['id_content'].destroy();
+    var config = CKEDITOR_config;
+    config['toolbar'] = 'simple';
+    CKEDITOR.replace('id_content', config);
+}
+
+function reset_editor() {
+    CKEDITOR.instances['id_content'].destroy();
+    var config = CKEDITOR_config;
+    config['toolbar'] = 'full';
+    CKEDITOR.replace('id_content', CKEDITOR_config);
+}
+
 $(document).ready(function() {
     if (window.addEventListener) {
-        window.addEventListener('beforeunload', beforeUnload, false);
+        window.addEventListener('beforeunload', before_unload, false);
     }
     else {
         window.attachEvent('onbeforeunload', beforeUnload);
     }
-    $('#content form').submit(resetDirty);
-    $('#editor_actions .cancel').click(resetDirty);
+    $('#content form').submit(reset_dirty);
+    $('#editor_actions .cancel').click(reset_dirty);
+
+    enquire.register("screen and (max-width:500px)", {
+        match: make_editor_simple,
+        unmatch: reset_editor,
+    });
+    enquire.listen();
 });

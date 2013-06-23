@@ -94,19 +94,36 @@ a[href$='.DOCX'] {
     margin-right: 4px;
     line-height: 1;
     width: auto;
+
+    /* Responsive scale of image frame */
+    max-width: 100%;
 }
+
 .image_frame img {
     display: block; 
+
+    /* Responsive scale of image */
+    max-width: 100%;
+    width: auto;
+    height: auto!important;
 }
 .image_frame > a {
     line-height: 0;
     display: block;
 }
+/* outline instead of border b/c we use width 100%
+   to deal with responsive resizing, and otherwise
+   the border width gets included in the width %
+   calculation, causing wonkiness */
 .image_frame_border, .image_frame_border img {
-    border: 1px solid #cccccc;
+    outline: 1px solid #cccccc;
 }
 .image_frame_border {
-    padding: 2px;
+    margin-left: 2px;
+    margin-top: 1px;
+}
+.image_frame_border {
+    padding: 3px;
 }
 .image_left {
     float: left;
@@ -125,8 +142,10 @@ a[href$='.DOCX'] {
     display: block;
     text-align: center;
     font-size: 80%;
-    margin-top: 0.3em;
-    margin-bottom: 0.4em;
+    margin-top: 0.4em;
+    margin-bottom: 0.3em;
+    /* For responsive scaling */
+    max-width: 100%;
 }
 .image_caption a {
     display: inline;

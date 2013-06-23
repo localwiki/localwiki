@@ -8,7 +8,6 @@
 {% load tags_tags %}
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.min.js"></script>
 {% endblock %}
 
 {% block title %}{% if not page.is_front_page %}{{ page.name }} - {% endif %}{{ block.super }}{% endblock %}

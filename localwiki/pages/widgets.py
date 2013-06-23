@@ -83,11 +83,18 @@ class WikiEditor(CKEditor):
             toolbar.append(['Source'])
         return toolbar
 
+    def get_simple_toolbar(self):
+        basic_styles = ['Bold', 'Italic']
+        links = ['PageLink']
+        media = ['InsertImage']
+        lists = ['NumberedList', 'BulletedList']
+
+        return [basic_styles, links, media, lists]
+
     class Media:
         js = (
               reverse_lazy('django.views.i18n.javascript_catalog',
                            args=['pages']),
-              static_url('js/jquery/jquery-1.7.min.js'),
               static_url('js/jquery/jquery-ui-1.8.16.custom.min.js'),
               static_url('js/ckeditor/sapling_utils.js'),
         )
