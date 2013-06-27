@@ -12,6 +12,16 @@
   {% if map %}{{ map.media }}{% endif %}
 {% endblock %}
 
-{% block content %}
-  {% include "tags/tagged_list_snippet.html" %}
+{% block content_wrapper %}
+<div id="content_wrapper">
+  {% if map %}
+    <div id="content" class="has_map">
+  {% else %}
+    <div id="content">
+  {% endif %}
+  {% block content %}
+    {% include "tags/tagged_list_snippet.html" %}
+  {% endblock %}
+    </div>
+</div>
 {% endblock %}

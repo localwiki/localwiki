@@ -59,11 +59,13 @@ class PageDetailView(Custom404Mixin, DetailView):
         context = super(PageDetailView, self).get_context_data(**kwargs)
         context['date'] = self.object.versions.most_recent().version_info.date
         if hasattr(self.object, 'mapdata'):
-            # Remove the PanZoomBar on normal page views.
+            # Remove the PanZoom on normal page views.
             olwidget_options = copy.deepcopy(getattr(settings,
                 'OLWIDGET_DEFAULT_OPTIONS', {}))
             map_opts = olwidget_options.get('map_options', {})
             map_controls = map_opts.get('controls', [])
+            if 'PanZoom' in map_controls:
+                map_controls.remove('PanZoom')
             if 'PanZoomBar' in map_controls:
                 map_controls.remove('PanZoomBar')
             if 'KeyboardDefaults' in map_controls:

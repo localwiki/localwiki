@@ -61,7 +61,9 @@ class CKEditor(forms.Textarea):
         if self.config:
             return self.config
         config = {}
-        config['toolbar'] = self.get_toolbar()
+        config['toolbar_full'] = self.get_toolbar()
+        config['toolbar_simple'] = self.get_simple_toolbar()
+        config['toolbar'] = 'full'
         config['plugins'] = self.get_plugins()
         config['extraPlugins'] = self.get_extra_plugins()
         config['language'] = translation.get_language()
@@ -84,6 +86,15 @@ class CKEditor(forms.Textarea):
         if toolbar:
             return [toolbar]
         return []
+
+    def get_simple_toolbar(self):
+        """A simpler toolbar definition, ideal for mobile devices.
+
+        Returns:
+            Array of toolbars, each toolbar being an array of button names.
+        """
+        # TODO: make this actually a subset of all buttons
+        return self.get_toolbar()
 
     def get_plugins(self):
         """Get the comma-separated list of plugins for CKEditor

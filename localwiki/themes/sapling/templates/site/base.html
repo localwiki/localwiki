@@ -5,6 +5,9 @@
 <head>
   <meta charset="utf-8" />
 
+  <!-- Force true viewport size, so mobile browsers won't try to be clever -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
        Remove this if you use the .htaccess -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -20,9 +23,13 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/enquire.min.js"></script>
+    <script type="text/javascript" src="{% static "theme/js/base.js" %}"></script>
     <link rel="stylesheet" href="{% static "theme/css/font_face.css" %}">
     <link rel="stylesheet" href="{% static "theme/css/reset.css" %}">
     <link rel="stylesheet" href="{% static "theme/css/site.css" %}">
+    <script type="text/javascript" src="{% static "js/srcset.min.js" %}"></script>
     {% include "site/extra_media.html" %}
   {% endblock %}
 
@@ -57,13 +64,20 @@
 
     <div id="header">
       <div id="login_info">{% include "site/login_info.html" %}</div>
-      <div class="site_search">{% include "site/search_form.html" %}</div>
       <div id="site_title">{% include "site/site_title.html" %}</div>
-      {% include "site/nav.html" %}
+      {% block nav %}
+        <div id="nav">
+          <ul>
+            {% include "site/nav.html" %}
+          </ul>
+          <a href="#" id="pull"></a>
+        </div>
+      {% endblock %}
+      <div class="site_search">{% include "site/search_form.html" %}</div>
       <div id="header_bar">
           <div class="inner">
-            <h1 id="object_title">{% block header_title %}{% endblock %}</h1>
             <div id="object_actions">{% block object_actions %}{% endblock %}</div>
+            <h1 id="object_title">{% block header_title %}{% endblock %}</h1>
             {% block header_subtitle %}{% endblock %}
           </div>
       </div>

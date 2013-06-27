@@ -2,8 +2,87 @@
 LocalWiki changelog
 =============================
 
+vX.X, XXXX-XX-XX
+----------------
 
-Version 0.2, 2011-11-28
------------------------------
+Upgrade notes:
+
+  * The site/nav.html template is now different.
+
+v0.4.4 - 2012-11-16
+-------------------
+
+    Minor fixes to editor behavior - fixes image dragging issues in Firefox.
+
+v0.4.3 - 2012-10-17
+-------------------
+
+    Update to CKEditor 3.6.4 - features limited iOS editing support
+    Fixes to editor behavior for selection, deleting with backspace.
+    Refactor of localsettings.py import behavior
+    Disable keyboard navigation on tiny map to avoid accidential scrolling.
+    Remove "Front Page" from title on Front Page.
+    Ordering by history_date in API.
+    Validate pagename in API.
+    robots.txt block /_edit
+    Allow non-ASCII usernames
+    Disable page rename in admin
+
+v0.4.0 - 2012-8-30
+------------------
+
+    API - first version of the RESTful LocalWiki API.
+    Performance improvements with "All Pages", page feeds.
+    Smarter crawling directions with improved robots.txt
+    Improved i18n support for editing, maps.
+    Fix for a revert-cascade issue.
+    An SMTP default port of 25 is now set.
+    Bug fix for image dragging in Chrome and Firefox.
+    A number of small bug fixes.
+
+v0.3.6 - 2012-6-16
+------------------
+
+    Upgrade virtualenv during package upgrades
+    Faster dashboard
+    Internationalization of settings strings
+    Fix issues with dragging floated images
+    Fix some changes lost in the previous release
+
+v0.3.5 - 2012-5-8
+-----------------
+
+    Internationalization (i18n)
+    Translations into Portuguese, German, and Russian
+    Fix issues with displaying maps in IE
+    Fix issue with in-page links (anchors)
+
+v0.3.3 - 2012-5-8
+-----------------
+
+    Support for Ubuntu 12.04
+    Turned on TransactionMiddleware to ensure data consistency
+    Support for caching middleware
+    Minor bug fixes
+
+v0.3.2 - 2012-4-12
+------------------
+
+    noindex for robots on /_tags/ page
+    Fix for #253
+    Fix encoding issue with page includes
+    DESCRIPTION file and wording for PyPI
+
+v0.3.1 - 2012-4-9
+-----------------
+
+    Fixes #261 File links don't render right
+    Selected text becomes default link destination
+    Pull request #254 from JayBazuzi: Insert Object:Include Page should Show Page Title by default
+    Added test for tags when renaming page, fix page renaming
+    Fix error on new install with dashboard
+
+v0.2, 2011-11-28
+----------------
 
 Initial public-facing release.

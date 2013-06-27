@@ -19,13 +19,23 @@
    {% page_tags_form_media %}
    {% if map %}
        {{ map.media }}
+       <script type="text/javascript" src="{% static "js/enquire.min.js" %}"></script>
        <script type="text/javascript" src="{% static "js/jquery/jquery-scrolltofixed-min.js" %}"></script>
        <script type="text/javascript">
+        function setup_map_scrolling() {
+            $('#map').scrollToFixed({
+                limit: (
+                    $('#search_results').height() - $('#search_results h3').height() - $('#create_page_dialog').height() - $('#search_results .simple_pagination').height())
+            });
+       }
        $(document).ready(function() {
-           $('#map').scrollToFixed({
-              limit: (
-                $('#search_results').height() - $('#search_results h3').height() - $('#create_page_dialog').height() - $('#search_results .simple_pagination').height())
-});
+            // Don't scroll map on small screens
+            enquire.register("screen and (min-width:700px)", {
+                match: setup_map_scrolling
+                // TODO:
+                //unmatch: something_here_please,
+            });
+            enquire.listen();
        });
        </script>
    {% endif %}
@@ -63,7 +73,7 @@
             {% endif %}
             </div>
         {% endif %}
-        <div id="results_list"{% if map %}class="with_map"{% endif %}>
+        <div id="results_list"{% if map %} class="with_map"{% endif %}>
         {% for result in page.object_list %}
             {% ifequal result.model_name "page" %}
             <h3>

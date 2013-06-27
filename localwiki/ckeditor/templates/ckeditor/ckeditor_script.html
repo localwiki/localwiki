@@ -1,6 +1,7 @@
 <script type="text/javascript">
 <!--
 CKEDITOR.basePath = '{{ STATIC_URL }}js/ckeditor/';
-CKEDITOR.replace('id_{{ name }}'{% if config %}, {{ config|safe }}{% endif %});
+CKEDITOR_config = {% if config %}{{ config|safe }}{% else %}null{% endif %}
+CKEDITOR.replace('id_{{ name }}', CKEDITOR_config);
 -->
 </script>

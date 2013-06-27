@@ -11,6 +11,10 @@ SaplingMap = {
             var opts = base_initOptions.call(this, options) 
             var border_height = 0;
             var map_height = $(window).height() - $('#header').outerHeight() - $('#main_header').outerHeight() - $('#content_header').outerHeight() - $('#content_footer').outerHeight() - ($('#content_wrapper').outerHeight() - $('#content').outerHeight() - border_height);
+            // Let's make sure it's not any smaller than 300px for mobile devices
+            if (map_height < 300) {
+                map_height = 300;
+            }
             opts['mapDivStyle']['height'] = map_height + 'px';
             opts['mapDivStyle']['width'] = '100%';
             // Remove the dummy CSS border we put in to get the map
@@ -131,39 +135,48 @@ SaplingMap = {
               displayRelated(map);
           }
         });
-        layer.events.register("featureselected", null, function(evt) {
-          var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
-          // Hack to maintain selected feature state throughout events.
-          // Not sure why this is required.
-          layer._selectedFeature = selectedFeature;
-          var feature = evt.feature;
-          var featureBounds = feature.geometry.bounds;
-          $('#results_pane').css('display', 'block');
-          $('.mapwidget').css('float', 'left');
-          size_map();
-          map.updateSize();
 
-          if(feature.geometry.CLASS_NAME != "OpenLayers.Geometry.Point")
-          {
-              map.zoomToExtent(featureBounds);
-          }
-          if (selectedFeature.cluster)
-            var feature_label = selectedFeature.cluster[0].attributes.html;
-          else
-            var feature_label = selectedFeature.attributes.html;
-          $('#header_title_detail').empty().append(gettext(' for ') + feature_label);
+        var register_feature_select = function() {
+            layer.events.register("featureselected", null, function(evt) {
+              var selectedFeature = layer.selectedFeatures && layer.selectedFeatures[0];
+              // Hack to maintain selected feature state throughout events.
+              // Not sure why this is required.
+              layer._selectedFeature = selectedFeature;
+              var feature = evt.feature;
+              var featureBounds = feature.geometry.bounds;
+              $('#results_pane').css('display', 'block');
+              $('.mapwidget').css('float', 'left');
+              size_map();
+              map.updateSize();
 
-          SaplingMap._set_selected_style(map, feature);
-          displayRelated(map);
+              if(feature.geometry.CLASS_NAME != "OpenLayers.Geometry.Point")
+              {
+                  map.zoomToExtent(featureBounds);
+              }
+              if (selectedFeature.cluster)
+                var feature_label = selectedFeature.cluster[0].attributes.html;
+              else
+                var feature_label = selectedFeature.attributes.html;
+              $('#header_title_detail').empty().append(gettext(' for ') + feature_label);
+
+              SaplingMap._set_selected_style(map, feature);
+              displayRelated(map);
+            });
+            layer.events.register("featureunselected", null, function(evt) {
+              // Hack to maintain selected feature state throughout events.
+              // Not sure why this is required.
+              layer._selectedFeature = null;
+              SaplingMap._set_feature_alpha(evt.feature, layer, map);
+              layer.drawFeature(evt.feature);
+              $('#header_title_detail').empty();
+            })
+        };
+
+        // Only do feature select / sidebar stuff on larger screens
+        enquire.register("screen and (min-width:700px)", {
+            match: register_feature_select,
         });
-        layer.events.register("featureunselected", null, function(evt) {
-          // Hack to maintain selected feature state throughout events.
-          // Not sure why this is required.
-          layer._selectedFeature = null;
-          SaplingMap._set_feature_alpha(evt.feature, layer, map);
-          layer.drawFeature(evt.feature);
-          $('#header_title_detail').empty();
-        })
+        enquire.listen(); 
     },
 
     setup_dynamic_map: function(map, layer) {

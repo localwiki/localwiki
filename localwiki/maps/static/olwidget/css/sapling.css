@@ -52,7 +52,7 @@
     margin-left: 0.2em;
 }
 
-.olControlLayerSwitcher * {
+.olControlLayerSwitcher .layersDiv {
     background-color: black!important;
 }
 .olControlLayerSwitcher .layersDiv {
