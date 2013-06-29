@@ -1295,6 +1295,11 @@ div.templates li {
     right: 8em;
 }
 
+/* Fix an issue with #map being floated + scrollToFixed */
+#search_results #map.scroll-to-fixed-fixed {
+    left: auto!important;
+}
+
 @media screen and (max-width: 500px) {
     #search_results #results_list.with_map {
         padding-top: 240px;
