@@ -14,6 +14,14 @@
    {% endif %}
 {% endblock %}
 
+{% block main_wrapper %}
+    <div id="main" class="search_results{% if map %} with_map{% endif %}{% if not page_exists_for_query %} allow_creation{% endif %}">
+        {% block main %}
+            {{ block.super }}
+        {% endblock %}
+    </div>
+{% endblock %}
+
 {% block media %}
    {{ block.super }}
    {% page_tags_form_media %}
@@ -73,7 +81,7 @@
             {% endif %}
             </div>
         {% endif %}
-        <div id="results_list"{% if map %} class="with_map"{% endif %}>
+        <div id="results_list">
         {% for result in page.object_list %}
             {% ifequal result.model_name "page" %}
             <h3>

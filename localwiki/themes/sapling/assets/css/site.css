@@ -1285,7 +1285,7 @@ div.templates li {
     margin-bottom: 0.5em;
 }
 
-#search_results #results_list.with_map {
+.with_map #search_results #results_list {
     margin-right: 480px;
 }
 
@@ -1301,15 +1301,20 @@ div.templates li {
 }
 
 @media screen and (max-width: 500px) {
-    #search_results #results_list.with_map {
-        padding-top: 240px;
+    .with_map #search_results #results_list {
+        padding-top: 250px;
     }
     #search_results #map {
-        margin-top: 0.3em;
+        margin-top: -1.2em;
+        position: absolute;
+    }
+    #main.allow_creation #search_results #map {
+        position: absolute;
+        margin-top: 0.5em;
     }
 }
 @media screen and (max-width: 700px) {
-    #search_results #results_list.with_map {
+    .with_map #search_results #results_list {
         margin-top: 1em;
         margin-right: 0;
     }
