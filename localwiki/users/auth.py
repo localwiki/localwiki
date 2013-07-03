@@ -21,7 +21,7 @@ class UnsaltedSHA1PasswordHasher(BasePasswordHasher):
     def encode(self, password, salt):
         assert salt == ''
         hash = hashlib.sha1(password).hexdigest()
-        return 'sha1$$%s' % hash
+        return 'unsalted_sha1$$%s' % hash
 
     def verify(self, password, encoded):
         encoded_2 = self.encode(password, '')
