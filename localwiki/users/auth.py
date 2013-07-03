@@ -20,7 +20,7 @@ class UnsaltedSHA1PasswordHasher(BasePasswordHasher):
 
     def encode(self, password, salt):
         assert salt == ''
-        hash = hashlib.sha1(force_bytes(password)).hexdigest()
+        hash = hashlib.sha1(password).hexdigest()
         return 'sha1$$%s' % hash
 
     def verify(self, password, encoded):
