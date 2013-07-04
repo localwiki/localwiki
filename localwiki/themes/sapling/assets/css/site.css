@@ -1304,13 +1304,16 @@ div.templates li {
     .with_map #search_results #results_list {
         padding-top: 250px;
     }
+    #main.allow_creation.with_map #search_results #results_list {
+        padding-top: 264px;
+    }
     #search_results #map {
         margin-top: -1.2em;
         position: absolute;
     }
     #main.allow_creation #search_results #map {
         position: absolute;
-        margin-top: 0.5em;
+        margin-top: 0em;
     }
 }
 @media screen and (max-width: 700px) {
