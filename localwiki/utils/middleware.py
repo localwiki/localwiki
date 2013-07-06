@@ -1,4 +1,5 @@
-from django.middleware.cache import UpdateCacheMiddleware
+from django.middleware.cache import (UpdateCacheMiddleware,
+    FetchFromCacheMiddleware)
 from django.core.exceptions import MiddlewareNotUsed
 from django.conf import settings
 from django.utils.importlib import import_module
@@ -64,6 +65,13 @@ class UpdateCacheMiddlewareNoEdit(UpdateCacheMiddleware):
 
 class UpdateCacheMiddleware(UpdateCacheMiddlewareNoEdit, UpdateCacheMiddlewareNoHeaders):
     pass
+
+
+class FetchFromCacheMiddleware(FetchFromCacheMiddleware):
+    def process_request(self, request):
+        if request.user.is_authenticated() or request.session.get('has_POSTed'):
+            return False  # Don't cache if they've posted or are authenticated
+        return super(FetchFromCacheMiddleware, self).process_request(request)
 
 
 class TrackPOSTMiddleware(object):

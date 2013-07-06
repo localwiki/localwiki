@@ -213,7 +213,7 @@ MIDDLEWARE_CLASSES = (
     'versionutils.versioning.middleware.AutoTrackUserInfoMiddleware',
     'redirects.middleware.RedirectFallbackMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    'utils.middleware.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
     'main.api.middleware.XsSharing',
 )
