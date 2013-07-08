@@ -117,6 +117,7 @@ textarea, input, select {
     /* For an included list of tagged pages */
     .included_page_wrapper #pagetagset.has_map {
         margin-top: 290px;
+        display: inline-block;
     }
 }
 
