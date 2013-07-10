@@ -44,6 +44,9 @@ case "$1" in
         virtualenv --quiet env
 
         . "$datadir/env/bin/activate"
+        # upgrade pip version
+        pip install --upgrade pip
+
         cd "$confdir"
         echo "Installing required python packages ..."
         yes w | pip install --upgrade -r requirements.txt
