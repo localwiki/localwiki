@@ -1,5 +1,5 @@
 #!/bin/bash
-UBUNTU_RELEASES="lucid natty oneiric precise quantal"
+UBUNTU_RELEASES="lucid precise quantal"
 
 if [[ "$1" = "" ]]
 then
