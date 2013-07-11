@@ -43,9 +43,15 @@ case "$1" in
         cd "$datadir"
         virtualenv --quiet env
 
-        . "$datadir/env/bin/activate"
+        source "$datadir/env/bin/activate"
         # upgrade pip version
+        echo "Upgrading pip version ..."
         pip install --upgrade pip
+        echo "Upgrading setuptools ..."
+        # We have to do this manually b/c of a distribute/setuptools issue that
+        # appeared after the two projects merged. TODO: see if this is fixed at
+        # a later date. 
+        pip install --upgrade setuptools
 
         cd "$confdir"
         echo "Installing required python packages ..."
