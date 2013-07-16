@@ -38,7 +38,7 @@ class Command(object):
 
     def handle(self, *args, **options):
         print 'Get a Cloudmade API Key.'
-        print '1. Go to http://cloudmade.com/register'
+        print '1. Go to http://cloudmade.com/ and sign up.'
         print ('2. After you\'ve signed in, click "Get an API Key". '
                'Fill out the form (details don\'t matter)')
         print '3. Paste the API key below:'
