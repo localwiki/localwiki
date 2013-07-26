@@ -30,13 +30,29 @@
           <tr>
               <td class="revision_details">
                   {% if old %}
-                    {% blocktrans with version_number=old.version_info.version_number date=old.version_info.date user_link=old.version_info.user_link|safe %}Revision {{ version_number }}
-                  ( {{ date }} by {{ user_link }}){% endblocktrans %}
+                    {% with version_number=old.version_info.version_number date=old.version_info.date user_link=old.version_info.user_link|safe comment=old.version_info.comment %}
+                    {% blocktrans %}
+                        Revision {{ version_number }} ( {{ date }} by {{ user_link }})
+                    {% endblocktrans %}
+                    {% if comment %}
+		                {% blocktrans %}
+                        , "{{comment}}"
+                        {% endblocktrans %}
+                    {% endif %}
+                    {% endwith %}
                   {% endif %}
               </td>
               <td class="revision_details">
-                  {% blocktrans with version_number=new.version_info.version_number date=new.version_info.date user_link=new.version_info.user_link|safe %}Revision {{ version_number }}
-                  ({{ date }} by {{ user_link }}){% endblocktrans %}
+                  {% with version_number=new.version_info.version_number date=new.version_info.date user_link=new.version_info.user_link|safe comment=new.version_info.comment %}
+                  {% blocktrans %}
+			        Revision {{ version_number }} ({{ date }} by {{ user_link }})
+		          {% endblocktrans %}
+                    {% if comment %}
+		                {% blocktrans %}
+                        , "{{comment}}"
+                        {% endblocktrans %}
+                    {% endif %}
+		          {% endwith %}
               </td>
           </tr>
           <tr>
