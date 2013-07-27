@@ -41,12 +41,13 @@
             <td class="revision_details">
                 {% if old %}
                   {% trans "Revision" %} {{ old.version_info.version_number }}
-                  ({{ old.version_info.date }} {% trans "by" %} {{ old.version_info.user_link|safe }})
+                  ({{ old.version_info.date }} {% trans "by" %} {{ old.version_info.user_link|safe }}) {% if old.version_info.comment %}, "{{old.version_info.comment}}" {% endif %}
                 {% endif %}
             </td>
             <td class="revision_details">
                 {% trans "Revision" %} {{ new.version_info.version_number }}
-                ({{ new.version_info.date }} {% trans "by" %} {{ new.version_info.user_link|safe }})
+                ({{ new.version_info.date }} {% trans "by" %} {{ new.version_info.user_link|safe }}) {% if new.version_info.comment %}, "{{new.version_info.comment}}" {% endif %}
+ 
             </td>
         </tr>
     </thead>
