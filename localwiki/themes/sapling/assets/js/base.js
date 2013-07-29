@@ -74,3 +74,16 @@ $(function() {
         }  
     });
 });
+
+/* For twitter typeahead */
+$(document).ready(function() {
+    $('#id_q').typeahead([
+        {
+          name: 'pages',
+          remote: '/_api/pages/suggest?term=%QUERY'
+        }
+    ])
+    .on('typeahead:selected', function(e, datum) {
+        document.location = '/' + encodeURIComponent(datum.value);
+    });
+});
