@@ -1332,23 +1332,24 @@ div.templates li {
 }
 
 .site_search .tt-dropdown-menu {
+    margin-top: 0.5em;
     background-color: white;
-    width: 210px;
+    min-width: 210px;
     border: 1px solid #BFBFBF;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
 }
 .site_search .twitter-typeahead {
     float: left;
 }
 .tt-suggestion {
-    background-color: white;
     padding-left: 30px;    
     padding-top: 0.5em;
     padding-bottom: 0.5em;
+    padding-right: 1em;
     margin: 0!important;
-    width: 180px;
 }
 .tt-suggestion p {
     margin: 0;
