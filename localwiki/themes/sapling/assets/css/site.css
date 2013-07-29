@@ -69,9 +69,7 @@ pre, code {
     background-color: #FFF8ED;
 }
 textarea, input, select {
-    font-family: 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 15px;
 }
 
 /*
