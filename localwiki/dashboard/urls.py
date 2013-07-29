@@ -4,9 +4,9 @@ from django.views.generic import TemplateView
 from views import DashboardView
 
 urlpatterns = patterns('',
-    url(r'^dashboard/render', DashboardView.as_view(),
+    url(r'^render', DashboardView.as_view(),
         name="render"),
-    url(r'^dashboard',
+    url(r'^$',
         TemplateView.as_view(template_name='dashboard/index.html'),
         name='main'),
 )
