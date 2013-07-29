@@ -142,6 +142,8 @@ urlpatterns = patterns('',
         kwargs={'slug': 'Front Page'}, name='frontpage'),
     url(r'^(?i)All_Pages/*$', ListView.as_view(**page_list_info),
         name='index'),
+    # Random page
+    url(r'^(?i)Random_Page/*$', PageRandomView.as_view(), name='random'),
     # Catch-all and route to a page.
     url(r'^(?P<slug>.+?)/*$', slugify(PageDetailView.as_view()),
         name='show'),
