@@ -69,9 +69,7 @@ pre, code {
     background-color: #FFF8ED;
 }
 textarea, input, select {
-    font-family: 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
-    font-size: 16px;
-    line-height: 20px;
+    font-size: 15px;
 }
 
 /*
@@ -1329,6 +1327,37 @@ div.templates li {
         margin-top: 1em;
         margin-right: 0;
     }
+}
+
+.site_search .tt-dropdown-menu {
+    margin-top: 0em;
+    background-color: white;
+    min-width: 210px;
+    border: 1px solid #BFBFBF;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
+}
+.site_search .twitter-typeahead {
+    float: left;
+    height: 100%;
+}
+.tt-suggestion {
+    padding-left: 30px;    
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-right: 1em;
+    margin: 0!important;
+}
+.tt-suggestion p {
+    margin: 0;
+}
+.tt-hint {
+    color: #999!important;
+}
+.tt-is-under-cursor {
+    background-color: #d7e7f9;
 }
 
 /*
