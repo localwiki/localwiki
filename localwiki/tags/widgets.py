@@ -17,8 +17,7 @@ class TagEdit(forms.TextInput):
                                          })
 
     class Media:
-        js = (static_url('js/jquery/jquery-1.7.min.js'),
-              static_url('tagedit/js/jquery.tagedit.js'),
+        js = (static_url('tagedit/js/jquery.tagedit.js'),
               static_url('tagedit/js/jquery.autoGrowInput.js'),
               static_url('js/jquery/jquery-ui-1.8.16.custom.min.js'),
         )
