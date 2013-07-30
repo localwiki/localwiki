@@ -415,11 +415,12 @@ def suggest(request):
     Simple page suggest.
     """
     # XXX TODO: Break this out when doing the API work.
+    from haystack.query import SearchQuerySet 
     import json
 
     term = request.GET.get('term', None)
     if not term:
         return HttpResponse('')
-    results = Page.objects.filter(name__istartswith=term)
+    results = SearchQuerySet().autocomplete(name_auto=term) 
     results = [p.name for p in results]
     return HttpResponse(json.dumps(results))
