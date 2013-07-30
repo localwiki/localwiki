@@ -11,6 +11,11 @@ class MapInfo(models.Model):
 
     objects = models.GeoManager()
 
+    class Meta:
+        # http://south.aeracode.org/ticket/520
+        app_label = 'utils'
+
+
 TEST_MODELS = [
     MapInfo,
 ]

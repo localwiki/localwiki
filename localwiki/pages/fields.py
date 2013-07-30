@@ -87,3 +87,10 @@ class PageChoiceField(forms.ModelChoiceField):
         if value:
             return Page.objects.get(pk=value).name
         return ''
+
+
+try:
+    from south.modelsinspector import add_introspection_rules
+    add_introspection_rules([], ["^pages\.fields"])
+except ImportError:
+    pass
