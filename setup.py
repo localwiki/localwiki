@@ -136,7 +136,7 @@ install_requires = [
     'django-haystack==1.2.7',
     'django-randomfilenamestorage==1.1',
     'django-guardian==1.0.4',
-    'South==0.7.6-custom1',
+    'South==0.8.1-custom1',
     'python-flot-utils==0.2.1',
     'django-staticfiles==1.2.1',
     'django-registration==0.8.0',
@@ -171,7 +171,7 @@ setup(
         'https://github.com/philipn/django-tastypie/tarball/localwiki_master#egg=django-tastypie-0.9.12-custom5',
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom5',
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom5',
-        'https://github.com/philipn/django-south/tarball/localwiki_master#egg=South-0.7.6-custom1',
+        'https://github.com/philipn/django-south/tarball/localwiki_master#egg=South-0.8.1-custom1',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=localwiki.manage:main'],
