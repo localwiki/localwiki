@@ -345,6 +345,10 @@ class TestModel(models.Model):
     save_time = models.DateTimeField(auto_now=True)
     contents = models.TextField()
 
+    class Meta:
+        # http://south.aeracode.org/ticket/520
+        app_label = 'utils'
+
 
 class TestForm(MergeMixin, forms.ModelForm):
     class Meta:

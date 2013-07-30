@@ -99,18 +99,21 @@ class CollectionFrom(models.GeometryCollectionField):
         # Back up the points, lines, polys attributes and then point them
         # to descriptors that, when set, clear out the
         # geometrycollection field.
-        setattr(cls, '_explicit_%s' % self.points_name,
-                getattr(cls, self.points_name))
-        setattr(cls, self.points_name,
-                ClearCollectionOnSet(self, self.points_name))
-        setattr(cls, '_explicit_%s' % self.lines_name,
-                getattr(cls, self.lines_name))
-        setattr(cls, self.lines_name,
-                ClearCollectionOnSet(self, self.lines_name))
-        setattr(cls, '_explicit_%s' % self.polys_name,
-                getattr(cls, self.polys_name))
-        setattr(cls, self.polys_name,
-                ClearCollectionOnSet(self, self.polys_name))
+        if self.points_name:
+            setattr(cls, '_explicit_%s' % self.points_name,
+                    getattr(cls, self.points_name))
+            setattr(cls, self.points_name,
+                    ClearCollectionOnSet(self, self.points_name))
+        if self.lines_name:
+            setattr(cls, '_explicit_%s' % self.lines_name,
+                    getattr(cls, self.lines_name))
+            setattr(cls, self.lines_name,
+                    ClearCollectionOnSet(self, self.lines_name))
+        if self.polys_name:
+            setattr(cls, '_explicit_%s' % self.polys_name,
+                    getattr(cls, self.polys_name))
+            setattr(cls, self.polys_name,
+                    ClearCollectionOnSet(self, self.polys_name))
 
         super(models.GeometryField, self).contribute_to_class(cls, name)
 
