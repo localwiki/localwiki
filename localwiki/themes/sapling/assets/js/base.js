@@ -84,6 +84,7 @@ $(document).ready(function() {
         }
     ])
     .on('typeahead:selected', function(e, datum) {
-        document.location = '/' + encodeURIComponent(datum.value);
+        var url = encodeURIComponent(datum.value.replace(' ', '_'));
+        document.location = '/' + url;
     });
 });
