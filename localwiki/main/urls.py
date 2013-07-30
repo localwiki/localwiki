@@ -26,7 +26,7 @@ urlpatterns = patterns('',
     (r'^(?i)Users/', include('users.urls')),
     (r'^search/', include('search.urls')),
     (r'^', include('recentchanges.urls')),
-    (r'^tools/', include(dashboard.site.urls)),
+    (r'^tools/dashboard/', include(dashboard.site.urls)),
 
     # JS i18n support.
     (r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
