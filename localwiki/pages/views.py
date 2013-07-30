@@ -405,6 +405,11 @@ class PageRenameView(FormView):
         return reverse('pages:show', args=[self.new_pagename])
 
 
+class PageRandomView(RedirectView):
+    permanent = False
+    def get_redirect_url(self):
+        return Page.objects.all().order_by('?')[0].get_absolute_url()
+
 def suggest(request):
     """
     Simple page suggest.
