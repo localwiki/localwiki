@@ -35,7 +35,7 @@
 {% endblock %}
 
 {% block title %}{% blocktrans with new_name=new.name new_slug=new.slug %}Differences for {{ new_name }} on {{ new_slug }}{% endblocktrans %}{% endblock %}
-{% block header_title %}{% url 'pages:show' slug=new.slug as url_pages_show %}{% blocktrans with new_name=new.name new_attached_to_page=new.attached_to_page %}Differences for {{ new_name }} on <a href="{{ url_pages_show }}">{{ new_attached_to_page }}</a>{% endblocktrans %}{% endblock %}
+{% block header_title %}{% url 'pages:show' slug=new.slug region=region.short_name as url_pages_show %}{% blocktrans with new_name=new.name new_attached_to_page=new.attached_to_page %}Differences for {{ new_name }} on <a href="{{ url_pages_show }}">{{ new_attached_to_page }}</a>{% endblocktrans %}{% endblock %}
 
 {% block content %}
   <table width="100%">
@@ -85,6 +85,6 @@
     </tbody>
   </table>
   <p>
-      <a href="{% url 'pages:file-info' slug=slug file=pagefile.name|urlencode %}">{% trans "File info" %}</a>
+      <a href="{% url 'pages:file-info' slug=slug file=pagefile.name region=region.short_name|urlencode %}">{% trans "File info" %}</a>
   </p>
 {% endblock %}

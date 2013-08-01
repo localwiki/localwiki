@@ -13,6 +13,6 @@ django-qsstats-magic==0.7
 -e git+git://github.com/philipn/django-honeypot.git@b4991c140849901d2f8842df2c4672813e73381b#egg=django-honeypot-0.3.0-custom4
 -e git+git://github.com/philipn/django-tastypie.git@localwiki_master#egg=django-tastypie-0.9.12-custom5
 -e git+git://github.com/philipn/sorl-thumbnail.git@localwiki#egg=sorl-thumbnail-11.12-custom5
--e git+git://github.com/philipn/django-south.git@localwiki_master#egg=South-0.8.1-custom1
+-e git+git://github.com/philipn/django-south.git@localwiki_master#egg=South-0.8.1-custom2
 django-picklefield==0.3.0
 django-constance==0.6

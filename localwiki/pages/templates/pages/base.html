@@ -5,7 +5,7 @@
 {% load i18n %}
 {% load static from staticfiles %}
 
-{% block head_extra %}{% if page %}<link rel="alternate" href="{% url 'pages:changes-feed' slug=page.pretty_slug %}" type="application/rss+xml" title="{% trans "Recent changes on this Page" %}"/>{% endif %}{% endblock %}
+{% block head_extra %}{% if page %}<link rel="alternate" href="{% url 'pages:changes-feed' slug=page.pretty_slug region=page.region.short_name %}" type="application/rss+xml" title="{% trans "Recent changes on this Page" %}"/>{% endif %}{% endblock %}
   
 {% block media %}
 {{ block.super }}
@@ -15,7 +15,7 @@
 
 {% block header_title %}
   {% if page %}
-    <a href="{% url 'pages:show' slug=page.pretty_slug %}">{{ page.name }}</a>
+    <a href="{% url 'pages:show' slug=page.pretty_slug region=page.region.short_name %}">{{ page.name }}</a>
   {% endif %}
 {% endblock %}
 
@@ -26,8 +26,8 @@
 {% block object_actions %}
   <ul>
     {% if page %}
-        <li><a href="{% url 'pages:edit' slug=page.pretty_slug %}" class="button">{% trans "Edit" %}</a></li>
-        <li><a href="{% url 'pages:history' slug=page.pretty_slug %}" class="button">{% trans "Info" %}</a></li>
+        <li><a href="{% url 'pages:edit' slug=page.pretty_slug region=page.region.short_name %}" class="button">{% trans "Edit" %}</a></li>
+        <li><a href="{% url 'pages:history' slug=page.pretty_slug region=page.region.short_name %}" class="button">{% trans "Info" %}</a></li>
     {% endif %}
   </ul>
 {% endblock %}

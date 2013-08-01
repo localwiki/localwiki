@@ -260,6 +260,7 @@ INSTALLED_APPS = (
     'versionutils.versioning',
     'versionutils.diff',
     'ckeditor',
+    'regions',
     'pages',
     'maps',
     'redirects',

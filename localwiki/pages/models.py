@@ -17,6 +17,7 @@ from django_randomfilenamestorage.storage import (
 
 from versionutils import diff
 from versionutils import versioning
+from regions.models import Region
 
 import exceptions
 from fields import WikiHTMLField
@@ -24,14 +25,21 @@ from fields import WikiHTMLField
 
 class Page(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, editable=False, unique=True)
+    slug = models.SlugField(max_length=255, editable=False)
     content = WikiHTMLField()
+    region = models.ForeignKey(Region, null=True)
+
+    class Meta:
+        unique_together = ('slug', 'region')
 
     def __unicode__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('pages:show', args=[self.pretty_slug])
+        return reverse('pages:show', kwargs={
+            'slug': self.pretty_slug,
+            'region': self.region_short_name
+        })
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -47,9 +55,7 @@ class Page(models.Model):
         Returns:
             True if the Page currently exists in the database.
         """
-        if Page.objects.filter(slug=self.slug):
-            return True
-        return False
+        return Page.objects.filter(slug=self.slug, region=self.region).exists()
 
     def is_front_page(self):
         return self.name.lower() == 'front page'
@@ -68,10 +74,11 @@ class Page(models.Model):
         # Right now this is simply hard-coded.
         # TODO: generalize this slug pattern, perhaps with some kind of
         # AttachedSlugField or something.
-        return [
-            {'objs': PageFile.objects.filter(slug=self.slug),
-             'unique_together': ('name', 'slug')},
-        ]
+        pagefiles = PageFile.objects.filter(slug=self.slug, region=self.region)
+        return [{
+            'objs': pagefiles,
+            'unique_together': ('name', 'slug', 'region')
+        }]
 
     def rename_to(self, pagename):
         """
@@ -88,7 +95,7 @@ class Page(models.Model):
         from redirects.models import Redirect
         from redirects.exceptions import RedirectToSelf
 
-        if Page.objects.filter(slug=slugify(pagename)):
+        if Page(slug=slugify(pagename), region=self.region).exists():
             if slugify(pagename) == self.slug:
                 # The slug is the same but we're changing the name.
                 old_name = self.name
@@ -197,6 +204,7 @@ class PageFile(models.Model):
                             storage=RandomFilenameFileSystemStorage())
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, editable=False)
+    region = models.ForeignKey(Region, null=True)
 
     _rough_type_map = [(r'^audio', 'audio'),
                        (r'^video', 'video'),
@@ -210,15 +218,19 @@ class PageFile(models.Model):
                       ]
 
     def get_absolute_url(self):
-        return reverse('pages:file',
-            kwargs={'slug': self.slug, 'file': self.name})
+        return reverse('pages:file', kwargs={
+            'slug': self.slug,
+            'file': self.name,
+            'region': self.region
+        })
 
     @property
     def attached_to_page(self):
         try:
-            p = Page.objects.get(slug=self.slug)
+            p = Page.objects.get(slug=self.slug, region=self.region)
         except Page.DoesNotExist:
-            p = Page(slug=self.slug, name=clean_name(self.slug))
+            p = Page(slug=self.slug,
+                     name=clean_name(self.slug), region=self.region)
         return p
 
     @property
@@ -238,7 +250,7 @@ class PageFile(models.Model):
         return self.rough_type == 'image'
 
     class Meta:
-        unique_together = ('slug', 'name')
+        unique_together = ('slug', 'region', 'name')
         ordering = ['-id']
 
 

@@ -1,6 +1,7 @@
 {% load url from future %}
 {% block site_title %}
 {% if current_site %}
-  <h1><a href="{% url 'pages:frontpage' %}">{{ current_site.name }}</a></h1>
+  {% comment %}<h1><a href="{% url 'pages:frontpage' %}">{{ current_site.name }}</a></h1>{% endcomment %}
+  <h1>add back front page link here</h1>
 {% endif %}
 {% endblock %}
