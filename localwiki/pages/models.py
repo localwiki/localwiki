@@ -38,7 +38,7 @@ class Page(models.Model):
     def get_absolute_url(self):
         return reverse('pages:show', kwargs={
             'slug': self.pretty_slug,
-            'region': self.region_short_name
+            'region': self.region.slug
         })
 
     def save(self, *args, **kwargs):

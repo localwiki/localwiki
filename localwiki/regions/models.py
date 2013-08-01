@@ -6,12 +6,12 @@ from django.db import models
 class Region(models.Model):
     full_name = models.CharField(max_length=255,
         help_text=ugettext_lazy("The full name of this region, e.g. 'San Francisco'"))
-    short_name = models.SlugField(max_length=255, unique=True,
+    slug = models.SlugField(max_length=255, unique=True,
         help_text=ugettext_lazy("A very short name for this region, e.g. 'sf'. "
             "Spaces okay, but keep it short!"))
 
     def save(self, *args, **kwargs):
-        self.short_name = slugify(self.short_name)
+        self.slug = slugify(self.slug)
         super(Region, self).save(*args, **kwargs)
 
 

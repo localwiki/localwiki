@@ -10,7 +10,7 @@ class RegionMixin(object):
         Returns the Region associated with this view.
         """
         return Region.objects.get(
-            short_name=slugify(self.kwargs.get('region')))
+            slug=slugify(self.kwargs.get('region')))
 
     def get_queryset(self):
         qs = super(RegionMixin, self).get_queryset()

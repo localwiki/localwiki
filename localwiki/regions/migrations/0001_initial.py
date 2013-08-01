@@ -12,7 +12,7 @@ class Migration(SchemaMigration):
         db.create_table('regions_region', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('full_name', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('short_name', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=255)),
+            ('slug', self.gf('django.db.models.fields.SlugField')(unique=True, max_length=255)),
         ))
         db.send_create_signal('regions', ['Region'])
 
@@ -27,7 +27,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Region'},
             'full_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'short_name': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'})
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'})
         }
     }
 

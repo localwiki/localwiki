@@ -8,6 +8,9 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Removing unique constraint on 'PageFile', fields ['slug', 'name']
+        db.delete_unique('pages_pagefile', ['slug', 'name'])
+
         # Removing unique constraint on 'Page', fields ['slug']
         db.delete_unique('pages_page', ['slug'])
 
@@ -29,6 +32,9 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.related.ForeignKey')(to=orm['regions.Region'], null=True),
                       keep_default=False)
 
+        # Adding unique constraint on 'PageFile', fields ['slug', 'region', 'name']
+        db.create_unique('pages_pagefile', ['slug', 'region_id', 'name'])
+
         # Adding field 'PageFile_hist.region'
         db.add_column('pages_pagefile_hist', 'region',
                       self.gf('django.db.models.fields.related.ForeignKey')(to=orm['regions.Region'], null=True),
@@ -36,6 +42,9 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
+        # Removing unique constraint on 'PageFile', fields ['slug', 'region', 'name']
+        db.delete_unique('pages_pagefile', ['slug', 'region_id', 'name'])
+
         # Removing unique constraint on 'Page', fields ['slug', 'region']
         db.delete_unique('pages_page', ['slug', 'region_id'])
 
@@ -50,6 +59,9 @@ class Migration(SchemaMigration):
 
         # Deleting field 'PageFile.region'
         db.delete_column('pages_pagefile', 'region_id')
+
+        # Adding unique constraint on 'PageFile', fields ['slug', 'name']
+        db.create_unique('pages_pagefile', ['slug', 'name'])
 
         # Deleting field 'PageFile_hist.region'
         db.delete_column('pages_pagefile_hist', 'region_id')
@@ -116,7 +128,7 @@ class Migration(SchemaMigration):
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '255'})
         },
         'pages.pagefile': {
-            'Meta': {'ordering': "['-id']", 'unique_together': "(('slug', 'name'),)", 'object_name': 'PageFile'},
+            'Meta': {'ordering': "['-id']", 'unique_together': "(('slug', 'region', 'name'),)", 'object_name': 'PageFile'},
             'file': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
@@ -142,7 +154,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Region'},
             'full_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'short_name': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'})
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'})
         }
     }
 

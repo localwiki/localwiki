@@ -212,8 +212,11 @@ def handle_image(elem, context=None):
 
     page = context['page']
     try:
-        file = PageFile.objects.get(slug__exact=page.slug,
-                                     name__exact=file_url_to_name(src))
+        file = PageFile.objects.get(
+            slug__exact=page.slug,
+            name__exact=file_url_to_name(src),
+            region=page.region
+            )
     except PageFile.DoesNotExist:
         return
 
@@ -237,7 +240,7 @@ def handle_image(elem, context=None):
     else:
         elem.attrib['src'] = file.file.url
     info_url = reverse('pages:file-info',
-                       args=[page.region.short_name, page.pretty_slug,
+                       args=[page.region.slug, page.pretty_slug,
                              file.name])
     link = etree.Element('a')
     link.attrib['href'] = info_url

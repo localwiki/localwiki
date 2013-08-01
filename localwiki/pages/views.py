@@ -49,10 +49,13 @@ class PageDetailView(Custom404Mixin, RegionMixin, DetailView):
 
     def handler404(self, request, *args, **kwargs):
         name = url_to_name(kwargs['original_slug'])
+        region = Region.objects.get(slug=kwargs['region'])
+        slug = kwargs['slug']
+
         page_templates = Page.objects.filter(
-                slug__startswith='templates/', region=self.get_region()
+                slug__startswith='templates/', region=region
             ).order_by('name')
-        page = Page(name=name, slug=kwargs['slug'], region=self.get_region())
+        page = Page(name=name, slug=slug, region=region)
         return HttpResponseNotFound(
             render(request, 'pages/page_new.html',
                    {'page': page, 'page_templates': page_templates})
@@ -357,7 +360,7 @@ def _find_available_filename(filename, slug, region):
 
 
 @permission_required('pages.change_page',
-    (Page, 'slug', 'slug', 'region__short_name', 'region'))
+    (Page, 'slug', 'slug', 'region__slug', 'region'))
 def upload(request, **kwargs):
     # For GET, just return blank response. See issue #327.
     if request.method != 'POST':
@@ -366,7 +369,7 @@ def upload(request, **kwargs):
     file_form = PageFileForm(request.POST, request.FILES)
 
     slug = kwargs['slug']
-    region = Region.objects.get(short_name=kwargs['region'])
+    region = Region.objects.get(slug=kwargs['region'])
 
     uploaded = request.FILES['file']
     if 'file' in kwargs:
@@ -429,7 +432,7 @@ class PageRenameView(RegionMixin, FormView):
         except PageExistsError, s:
             messages.add_message(self.request, messages.SUCCESS, s)
             return HttpResponseRedirect(
-                reverse('pages:show', args=[p.region.short_name, p.slug]))
+                reverse('pages:show', args=[p.region.slug, p.slug]))
 
         return HttpResponseRedirect(self.get_success_url())
 
