@@ -356,7 +356,8 @@ def _find_available_filename(filename, slug, region):
     return filename
 
 
-@permission_required('pages.change_page', (Page, 'slug', 'slug', 'region__short_name', 'region'))
+@permission_required('pages.change_page',
+    (Page, 'slug', 'slug', 'region__short_name', 'region'))
 def upload(request, **kwargs):
     # For GET, just return blank response. See issue #327.
     if request.method != 'POST':

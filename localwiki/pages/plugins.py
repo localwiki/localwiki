@@ -236,8 +236,9 @@ def handle_image(elem, context=None):
         elem.tail = after + (elem.tail or '')
     else:
         elem.attrib['src'] = file.file.url
-    info_url = reverse('pages:file-info', args=[page.pretty_slug,
-                                                    file.name])
+    info_url = reverse('pages:file-info',
+                       args=[page.region.short_name, page.pretty_slug,
+                             file.name])
     link = etree.Element('a')
     link.attrib['href'] = info_url
     elem.addprevious(link)
