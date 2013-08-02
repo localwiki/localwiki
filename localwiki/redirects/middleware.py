@@ -1,6 +1,9 @@
+import re
+
 from django.http import HttpResponseRedirect
 
 from pages.models import slugify
+from regions.models import Region
 
 from models import Redirect
 
@@ -13,6 +16,10 @@ def _force_show_page(response):
     return 'show' in response.GET
 
 
+page_routing_pattern = re.compile(
+    '^/(?P<region>[^/]+?)/(?P<slug>.+)/*'
+)
+
 class RedirectFallbackMiddleware(object):
     def process_response(self, request, response):
         if response.status_code != 404:
@@ -24,13 +31,14 @@ class RedirectFallbackMiddleware(object):
             return response
 
         r = None
-        # Skip leading slash.
-        slug = slugify(request.get_full_path()[1:])
-        # Skip trailing slash.
-        if slug.endswith('/'):
-            slug = slug[:-1]
+
+        re_match = page_routing_pattern.match(request.get_full_path())
+        slug = slugify(re_match.group('slug'))
+        region_slug = re_match.group('region')
+        region = Region.objects.get(slug=region_slug)
+
         try:
-            r = Redirect.objects.get(source=slug)
+            r = Redirect.objects.get(source=slug, region=region)
         except Redirect.DoesNotExist:
             pass
         if r is not None:

@@ -4,6 +4,7 @@ from django.db.models.signals import pre_save
 from django.core.urlresolvers import reverse
 
 from pages.models import Page
+from regions.models import Region
 from versionutils import versioning
 
 import exceptions
@@ -12,12 +13,13 @@ import exceptions
 class Redirect(models.Model):
     source = models.SlugField(max_length=255, unique=True, editable=False)
     destination = models.ForeignKey(Page)
+    region = models.ForeignKey(Region, null=True)
 
     def __unicode__(self):
         return "%s ---> %s" % (self.source, self.destination)
 
     def get_absolute_url(self):
-        return reverse('pages:show', args=[self.source])
+        return reverse('pages:show', args=[self.region.slug, self.source])
 
 
 versioning.register(Redirect)
