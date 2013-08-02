@@ -379,9 +379,9 @@ SaplingMap = {
     _format_bbox_data: function(data) {
         for (var i=0; i<data.length; i++) {
             var item = data[i];
-            var slug = encodeURIComponent(item[1].replace(' ', '_'));
-            var page_url = '/' + slug;
-            data[i][1] = '<a href="' + page_url + '">' + item[1] + '</a>';
+            var pagename = item[1];
+            var page_url = item[2];
+            data[i][1] = '<a href="' + page_url + '">' + pagename + '</a>';
         }
         return data;
     },

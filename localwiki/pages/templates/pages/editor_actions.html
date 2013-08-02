@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block editor_actions %}
     {% if page.exists %}
-      {% comment %}<li><a href="{% url 'maps:edit' slug=page.pretty_slug region=page.region.slug %}" class="little button map"><span class="text">{% trans "Edit map" %}</span></a></li>{% endcomment %}
+      <li><a href="{% url 'maps:edit' slug=page.pretty_slug region=page.region.slug %}" class="little button map"><span class="text">{% trans "Edit map" %}</span></a></li>
       <li><a href="{% url 'pages:delete' slug=page.pretty_slug region=page.region.slug %}" class="little button">{% trans "Delete page" %}</a></li>
       <li><a href="{% url 'pages:rename' slug=page.pretty_slug region=page.region.slug %}" class="little button">{% trans "Rename page" %}</a></li>
     {% endif %}

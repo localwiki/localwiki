@@ -19,7 +19,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^api$', RedirectView.as_view(url='/api/')),
     url(r'^api/(?P<rest>.*)', api_router.as_view(), name="api"),
-    (r'^map/', include(maps.site.urls)),
+    (r'^(?P<region>[^/]+?)/map/', include(maps.site.urls)),
     (r'^tags$', RedirectView.as_view(url='/tags/')),
     (r'^tags/', include('tags.urls', 'tags', 'tags')),
     (r'^_redirect/', include(redirects.site.urls)),

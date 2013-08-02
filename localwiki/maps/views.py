@@ -18,6 +18,8 @@ from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, VersionsList
 from pages.models import Page, slugify, name_to_url
 from pages.constants import page_base_path
+from regions.views import RegionMixin
+from regions.models import Region
 
 from widgets import InfoMap
 from models import MapData
@@ -25,16 +27,18 @@ from forms import MapForm
 from django.utils.html import escape
 
 
-class MapDetailView(Custom404Mixin, DetailView):
+class MapDetailView(Custom404Mixin, RegionMixin, DetailView):
     model = MapData
 
     def handler404(self, request, *args, **kwargs):
         page_slug = kwargs.get('slug')
+        region_slug = kwargs.get('region')
+        region = Region.objects.get(slug=region_slug)
         try:
-            page = Page.objects.get(slug=slugify(page_slug))
+            page = Page.objects.get(slug=slugify(page_slug), region=region)
         except Page.DoesNotExist:
-            page = Page(slug=slugify(page_slug))
-        mapdata = MapData(page=page)
+            page = Page(slug=slugify(page_slug), region=region)
+        mapdata = MapData(page=page, region=region)
         return HttpResponseNotFound(
             render(request, 'maps/mapdata_new.html',
                 {'page': page, 'mapdata': mapdata})
@@ -42,8 +46,9 @@ class MapDetailView(Custom404Mixin, DetailView):
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
-        page = get_object_or_404(Page, slug=slugify(page_slug))
-        mapdata = get_object_or_404(MapData, page=page)
+        region = self.get_region()
+        page = get_object_or_404(Page, slug=slugify(page_slug), region=region)
+        mapdata = get_object_or_404(MapData, page=page, region=region)
         return mapdata
 
     def get_object_date(self):
@@ -73,16 +78,24 @@ def filter_by_zoom(queryset, zoom):
     return queryset
 
 
+def _page_url(pagename, region):
+    """
+    Faster than reverse() for repeated page links.
+    TODO: put this somewhere else.
+    """
+    slug = name_to_url(pagename)
+    # Use page_base_path() to avoid reverse() overhead.
+    return urljoin(page_base_path(region), slug)
+    
+
 def popup_html(mapdata=None, pagename=None):
     if mapdata:
         pagename = mapdata.page.name
-    slug = name_to_url(pagename)
-    # Use page_base_path() to avoid reverse() overhead.
-    page_url = urljoin(page_base_path(), slug)
+    page_url = _page_url(pagename, mapdata.region)
     return mark_safe('<a href="%s">%s</a>' % (page_url, pagename))
 
 
-class MapGlobalView(ListView):
+class MapGlobalView(RegionMixin, ListView):
     model = MapData
     template_name = 'maps/mapdata_list.html'
     dynamic = True
@@ -145,7 +158,8 @@ class MapForTag(MapGlobalView):
         qs = super(MapGlobalView, self).get_queryset()
         self.tag = tags.Tag.objects.get(slug=tags.slugify(self.kwargs['tag']))
         tagsets = tags.PageTagSet.objects.filter(tags=self.tag)
-        pages = Page.objects.filter(pagetagset__in=tagsets)
+        pages = Page.objects.filter(
+            pagetagset__in=tagsets, region=self.get_region())
         return MapData.objects.filter(page__in=pages).order_by('-length')
 
     def get_map_title(self):
@@ -167,11 +181,11 @@ class MapForTag(MapGlobalView):
         return context
 
 
-class MapObjectsForBounds(JSONResponseMixin, BaseListView):
+class MapObjectsForBounds(JSONResponseMixin, RegionMixin, BaseListView):
     model = MapData
 
     def get_queryset(self):
-        queryset = MapData.objects.all()
+        queryset = MapData.objects.filter(region=self.get_region())
         bbox = self.request.GET.get('bbox', None)
         if bbox:
             bbox = Polygon.from_bbox([float(x) for x in bbox.split(',')])
@@ -186,7 +200,11 @@ class MapObjectsForBounds(JSONResponseMixin, BaseListView):
 
     def get_context_data(self, **kwargs):
         objs = self.object_list.values('geom', 'page__name')
-        map_objects = [(o['geom'].ewkt, o['page__name']) for o in objs]
+        region = self.get_region()
+        map_objects = [
+            (o['geom'].ewkt, o['page__name'], _page_url(o['page__name'], region))
+            for o in objs
+        ]
         return map_objects
 
 
@@ -195,14 +213,19 @@ class MapVersionDetailView(MapDetailView):
     context_object_name = 'mapdata'
 
     def get_object(self):
-        page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
+        region = self.get_region()
+        # A dummy page object.
+        page = Page(
+            slug=slugify(self.kwargs['slug']),
+            region=region
+        )
         latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
         self.page = page
 
-        mapdata = MapData(page=page)
+        mapdata = MapData(page=page, region=region)
         version = self.kwargs.get('version')
         date = self.kwargs.get('date')
         if version:
@@ -219,20 +242,22 @@ class MapVersionDetailView(MapDetailView):
         return context
 
 
-class MapUpdateView(CreateObjectMixin, UpdateView):
+class MapUpdateView(CreateObjectMixin, RegionMixin, UpdateView):
     model = MapData
     form_class = MapForm
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
-        page = Page.objects.get(slug=slugify(page_slug))
-        mapdatas = MapData.objects.filter(page=page)
+        region = self.get_region()
+        page = Page.objects.get(slug=slugify(page_slug), region=region)
+        mapdatas = MapData.objects.filter(page=page, region=region)
         if mapdatas:
             return mapdatas[0]
-        return MapData(page=page)
+        return MapData(page=page, region=region)
 
     def get_success_url(self):
-        return reverse('maps:show', args=[self.object.page.pretty_slug])
+        return reverse('maps:show',
+            args=[self.object.region.slug, self.object.page.pretty_slug])
 
 
 class MapDeleteView(MapDetailView, DeleteView):
@@ -241,7 +266,8 @@ class MapDeleteView(MapDetailView, DeleteView):
 
     def get_success_url(self):
         # Redirect back to the map.
-        return reverse('maps:show', args=[self.kwargs.get('slug')])
+        return reverse('maps:show',
+            args=[self.kwargs.get('region'), self.kwargs.get('slug')])
 
 
 class MapRevertView(MapVersionDetailView, RevertView):
@@ -251,7 +277,8 @@ class MapRevertView(MapVersionDetailView, RevertView):
 
     def get_success_url(self):
         # Redirect back to the map.
-        return reverse('maps:show', args=[self.kwargs.get('slug')])
+        return reverse('maps:show',
+            args=[self.kwargs.get('region'), self.kwargs.get('slug')])
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
@@ -262,15 +289,17 @@ class MapRevertView(MapVersionDetailView, RevertView):
         return context
 
 
-class MapVersionsList(VersionsList):
+class MapVersionsList(RegionMixin, VersionsList):
     def get_queryset(self):
-        page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
+        region = self.get_region()
+        # A dummy page object.
+        page = Page(slug=slugify(self.kwargs['slug']), region=region)
         latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
 
-        self.mapdata = MapData(page=page)
+        self.mapdata = MapData(page=page, region=region)
         return self.mapdata.versions.all()
 
     def get_context_data(self, **kwargs):
@@ -279,17 +308,19 @@ class MapVersionsList(VersionsList):
         return context
 
 
-class MapCompareView(diff.views.CompareView):
+class MapCompareView(RegionMixin, diff.views.CompareView):
     model = MapData
 
     def get_object(self):
-        page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
+        region = self.get_region()
+        # A dummy page object.
+        page = Page(slug=slugify(self.kwargs['slug']), region=region)
         latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
 
-        return MapData(page=page)
+        return MapData(page=page, region=region)
 
     def get_context_data(self, **kwargs):
         # Send this in directly because we've wrapped InfoMap.

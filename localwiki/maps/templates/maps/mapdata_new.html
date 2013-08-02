@@ -12,7 +12,7 @@
 
 {% block content %}
   <p>
-    <a href="{% url 'maps:edit' slug=mapdata.page.pretty_slug %}">{% trans "Create this map" %}</a>
+    <a href="{% url 'maps:edit' slug=mapdata.page.pretty_slug region=mapdata.region.slug %}">{% trans "Create this map" %}</a>
   </p>
 {% endblock %}
 
