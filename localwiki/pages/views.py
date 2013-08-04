@@ -63,6 +63,7 @@ class PageDetailView(Custom404Mixin, RegionMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(PageDetailView, self).get_context_data(**kwargs)
+        context['region'] = self.object.region
         context['date'] = self.object.versions.most_recent().version_info.date
         if hasattr(self.object, 'mapdata'):
             # Remove the PanZoom on normal page views.
@@ -131,7 +132,7 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin,
                 '<p class="create_map"><a href="%s" class="button little map">'
                 '<span class="text">Create a map</span></a> '
                 'for this page?</p>') %
-                reverse('maps:edit', args=[slug])
+                reverse('maps:edit', args=[self.object.region.slug, slug])
             )
         return '<div>%s</div>%s' % (message, map_create_link)
 

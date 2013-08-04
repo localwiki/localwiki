@@ -49,17 +49,19 @@ def do_include_page(parser, token):
 class IncludeTagNode(IncludeContentNode):
     def __init__(self, *args, **kwargs):
         super(IncludeTagNode, self).__init__(*args, **kwargs)
-        try:
-            self.tag = Tag.objects.get(slug=slugify(self.name))
-        except Tag.DoesNotExist:
-            self.tag = None
 
     def get_title(self, context):
         return 'Pages tagged &ldquo;%s&rdquo;' % self.name
 
     def get_content(self, context):
+        region = context['region']
+        try:
+            self.tag = Tag.objects.get(slug=slugify(self.name), region=region)
+        except Tag.DoesNotExist:
+            self.tag = None
+
         view = TaggedList()
-        view.kwargs = dict(slug=self.name)
+        view.kwargs = dict(slug=self.name, region=region.slug)
         view.object_list = view.get_queryset()
         data = view.get_context_data(object_list=view.object_list)
         return render_to_string('tags/tagged_list_snippet.html', data)
