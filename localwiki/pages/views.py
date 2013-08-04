@@ -38,6 +38,15 @@ from users.decorators import permission_required
 # Where possible, we subclass similar generic views here.
 
 
+class PageListView(RegionMixin, ListView):
+    model = Page
+    context_object_name = 'page_list'
+
+    def get_queryset(self):
+        qs = super(PageListView, self).get_queryset()
+        return qs.defer('content').order_by('name')
+
+
 class PageDetailView(Custom404Mixin, RegionMixin, DetailView):
     model = Page
     context_object_name = 'page'

@@ -10,11 +10,6 @@ from views import PageFilebrowserView
 from tags.views import PageTagSetUpdateView, suggest_tags, PageTagSetVersions,\
     PageTagSetVersionDetailView, PageTagSetCompareView, PageTagSetRevertView
 
-page_list_info = {
-    'model': Page,
-    'context_object_name': 'page_list',
-    'queryset': Page.objects.all().defer('content').order_by('name'),
-}
 
 
 def slugify(func):
@@ -140,7 +135,7 @@ urlpatterns = patterns('',
     ##########################################################
     url(r'^(?P<region>[^/]+?)/*$', slugify(PageDetailView.as_view()),
         kwargs={'slug': 'Front Page'}, name='frontpage'),
-    url(r'^(?P<region>[^/]+?)/(?i)All_Pages/*$', ListView.as_view(**page_list_info),
+    url(r'^(?P<region>[^/]+?)/(?i)All_Pages/*$', PageListView.as_view(),
         name='index'),
     # Random page
     url(r'^tools/(?i)Random_Page/*$', PageRandomView.as_view(), name='random'),
