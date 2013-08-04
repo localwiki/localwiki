@@ -33,6 +33,9 @@ class RedirectFallbackMiddleware(object):
         r = None
 
         re_match = page_routing_pattern.match(request.get_full_path())
+        if not re_match:
+            return response
+
         slug = slugify(re_match.group('slug'))
         region_slug = re_match.group('region')
         region = Region.objects.get(slug=region_slug)
