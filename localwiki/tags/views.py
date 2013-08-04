@@ -11,6 +11,8 @@ from django.views.generic.detail import DetailView
 
 from versionutils.versioning.views import VersionsList, RevertView, UpdateView
 from versionutils.diff.views import CompareView
+from regions.models import Region
+from regions.views import RegionMixin
 from models import PageTagSet, Tag, slugify
 from forms import PageTagSetForm
 from pages.models import Page
@@ -21,11 +23,12 @@ from utils.views import CreateObjectMixin, PermissionRequiredMixin,\
 
 class PageNotFoundMixin(Custom404Mixin):
     def handler404(self, request, *args, **kwargs):
-        return HttpResponseRedirect(reverse('pages:show',
-                                            kwargs={'slug': kwargs['slug']}))
+        return HttpResponseRedirect(
+            reverse('pages:show', kwargs={
+                'slug': kwargs['slug'], 'region': kwargs['region']}))
 
 
-class TagListView(ListView):
+class TagListView(RegionMixin, ListView):
     model = Tag
 
     def get_queryset(self):
@@ -33,13 +36,14 @@ class TagListView(ListView):
                     num_pages=Count('pagetagset')).filter(num_pages__gt=0)
 
 
-class TaggedList(ListView):
+class TaggedList(RegionMixin, ListView):
     model = PageTagSet
 
     def get_queryset(self):
         self.tag_name = slugify(self.kwargs['slug'])
         try:
-            self.tag = Tag.objects.get(slug=self.tag_name)
+            self.tag = Tag.objects.get(
+                slug=self.tag_name, region=self.get_region())
             self.tag_name = self.tag.name
             return PageTagSet.objects.filter(tags=self.tag)
         except Tag.DoesNotExist:
@@ -53,7 +57,7 @@ class TaggedList(ListView):
         # tags list page
         from maps.views import MapForTag
         map_view = MapForTag()
-        map_view.kwargs = dict(tag=self.tag.slug)
+        map_view.kwargs = dict(tag=self.tag.slug, region=self.get_region().slug)
         map_view.object_list = map_view.get_queryset()
         return map_view.get_map_objects()
 
@@ -85,34 +89,47 @@ class TaggedList(ListView):
 
 
 class PageTagSetUpdateView(PageNotFoundMixin, PermissionRequiredMixin,
-        CreateObjectMixin, UpdateView):
+        RegionMixin, CreateObjectMixin, UpdateView):
     model = PageTagSet
     form_class = PageTagSetForm
     permission = 'pages.change_page'
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
-        page = get_object_or_404(Page, slug=page_slug)
+        region = self.get_region()
+        page = get_object_or_404(Page, slug=page_slug, region=region)
         try:
-            return PageTagSet.objects.get(page=page)
+            return PageTagSet.objects.get(page=page, region=region)
         except PageTagSet.DoesNotExist:
-            return PageTagSet(page=page)
+            return PageTagSet(page=page, region=region)
 
     def get_success_url(self):
         next = self.request.POST.get('next', None)
         if next:
             return next
-        return reverse('pages:tags', args=[self.kwargs.get('slug')])
+        return reverse('pages:tags',
+            args=[self.kwargs.get('region'), self.kwargs.get('slug')])
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(PageTagSetUpdateView, self).get_context_data(*args, **kwargs)
+        context['region'] = self.get_region()
+
+    def get_form_kwargs(self):
+        kwargs = super(PageTagSetUpdateView, self).get_form_kwargs()
+        # We need to pass the `region` to the PageTagSetForm.
+        kwargs['region'] = self.get_region()
+        return kwargs
 
     def get_protected_object(self):
         return self.object.page
 
 
-class PageTagSetVersions(PageNotFoundMixin, VersionsList):
+class PageTagSetVersions(PageNotFoundMixin, RegionMixin, VersionsList):
     def get_queryset(self):
         page_slug = self.kwargs.get('slug')
         try:
-            self.page = get_object_or_404(Page, slug=page_slug)
+            self.page = get_object_or_404(Page,
+                slug=page_slug, region=self.get_region())
             return self.page.pagetagset.versions.all()
         except PageTagSet.DoesNotExist:
             return PageTagSet.versions.none()
@@ -123,14 +140,14 @@ class PageTagSetVersions(PageNotFoundMixin, VersionsList):
         return context
 
 
-class PageTagSetVersionDetailView(DetailView):
+class PageTagSetVersionDetailView(RegionMixin, DetailView):
     context_object_name = 'pagetagset'
     template_name = 'tags/pagetagset_version_detail.html'
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
         try:
-            page = Page.objects.get(slug=page_slug)
+            page = Page.objects.get(slug=page_slug, region=self.get_region())
             tags = page.pagetagset
             version = self.kwargs.get('version')
             date = self.kwargs.get('date')
@@ -142,19 +159,19 @@ class PageTagSetVersionDetailView(DetailView):
             return None
 
     def get_context_data(self, **kwargs):
-        context = super(PageTagSetVersionDetailView,
-                        self).get_context_data(**kwargs)
+        context = super(PageTagSetVersionDetailView, self).get_context_data(
+            **kwargs)
         context['date'] = self.object.version_info.date
         context['show_revision'] = True
         return context
 
 
-class PageTagSetCompareView(CompareView):
+class PageTagSetCompareView(RegionMixin, CompareView):
     model = PageTagSet
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
-        page = Page.objects.get(slug=page_slug)
+        page = Page.objects.get(slug=page_slug, region=self.get_region())
         return page.pagetagset
 
     def get_context_data(self, **kwargs):
@@ -163,23 +180,24 @@ class PageTagSetCompareView(CompareView):
         return context
 
 
-class PageTagSetRevertView(PermissionRequiredMixin, RevertView):
+class PageTagSetRevertView(PermissionRequiredMixin, RegionMixin, RevertView):
     model = PageTagSet
     context_object_name = 'pagetagset'
     permission = 'pages.change_page'
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
-        page = Page.objects.get(slug=page_slug)
-        return page.pagetagset.versions.as_of(
-            version=int(self.kwargs['version']))
+        page = Page.objects.get(slug=page_slug, region=self.get_region())
+        version_num = int(self.kwargs['version'])
+        return page.pagetagset.versions.as_of(version=version_num)
 
     def get_protected_object(self):
         return self.object.page
 
     def get_success_url(self):
         # Redirect back to the file info page.
-        return reverse('pages:tags-history', args=[self.kwargs['slug']])
+        return reverse('pages:tags-history',
+            args=[self.kwargs['region'], self.kwargs['slug']])
 
 
 def suggest_tags(request):
@@ -189,10 +207,12 @@ def suggest_tags(request):
     # XXX TODO: Break this out when doing the API work.
     import json
 
+    region_slug = request.kwargs['region']
     term = request.GET.get('term', None)
     if not term:
         return HttpResponse('')
-    results = Tag.objects.filter(name__istartswith=term).exclude(
-                                                            pagetagset=None)
+    results = Tag.objects.filter(
+        name__istartswith=term,
+        region__slug=region_slug).exclude(pagetagset=None)
     results = [t.name for t in results]
     return HttpResponse(json.dumps(results))

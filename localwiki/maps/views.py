@@ -156,18 +156,22 @@ class MapForTag(MapGlobalView):
         import tags.models as tags
 
         qs = super(MapGlobalView, self).get_queryset()
-        self.tag = tags.Tag.objects.get(slug=tags.slugify(self.kwargs['tag']))
-        tagsets = tags.PageTagSet.objects.filter(tags=self.tag)
-        pages = Page.objects.filter(
-            pagetagset__in=tagsets, region=self.get_region())
+        region = self.get_region()
+        self.tag = tags.Tag.objects.get(
+            slug=tags.slugify(self.kwargs['tag']),
+            region=region
+        )
+        tagsets = tags.PageTagSet.objects.filter(tags=self.tag, region=region)
+        pages = Page.objects.filter(pagetagset__in=tagsets, region=region)
         return MapData.objects.filter(page__in=pages).order_by('-length')
 
     def get_map_title(self):
         d = {
-            'map_url': reverse('maps:global'),
-            'tag_url': reverse('tags:list'),
+            'map_url': reverse('maps:global', args=[self.kwargs['region']]),
+            'tag_url': reverse('tags:list', args=[self.kwargs['region']]),
             'page_tag_url': reverse('tags:tagged',
-                kwargs={'slug': self.tag.slug}),
+                kwargs={'slug': self.tag.slug,
+                        'region': self.kwargs['region']}),
             'tag_name': escape(self.tag.name)
         }
         return (

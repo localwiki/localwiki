@@ -22,7 +22,13 @@ def tags_to_edit_string(tags):
 class TagSetField(forms.ModelMultipleChoiceField):
     widget = TagEdit()
 
-    def __init__(self, queryset, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        self.region = kwargs.pop('region', None)
+        self.widget.region = self.region
+        if self.region:
+            queryset = Tag.objects.filter(region=self.region)
+        else:
+            queryset = Tag.objects.all()
         super(TagSetField, self).__init__(queryset, *args, **kwargs)
 
     def clean(self, value):
@@ -35,8 +41,10 @@ class TagSetField(forms.ModelMultipleChoiceField):
         keys = []
         for word in parse_tags(value):
             try:
-                tag, created = Tag.objects.get_or_create(slug=slugify(word),
-                                                     defaults={'name': word})
+                tag, created = Tag.objects.get_or_create(
+                    slug=slugify(word), region=self.region,
+                    defaults={'name': word}
+                )
                 keys.append(tag.pk)
             except IntegrityError as e:
                 raise ValidationError(e)
@@ -55,7 +63,11 @@ class PageTagSetForm(MergeMixin, CommentMixin, forms.ModelForm):
         fields = ('tags',)
         exclude = ('comment',)  # we generate comment automatically
 
-    tags = TagSetField(queryset=Tag.objects.all(), required=False)
+    def __init__(self, *args, **kwargs):
+        region = kwargs.pop('region', None)
+        super(PageTagSetForm, self).__init__(*args, **kwargs)
+
+        self.fields['tags'] = TagSetField(region=region, required=False)
 
     def pluralize_tag(self, list):
         if len(list) > 1:

@@ -133,7 +133,7 @@ urlpatterns = patterns('',
     # API
     ##########################################################
     url(r'^_api/pages/suggest', suggest),
-    url(r'^_api/tags/suggest', suggest_tags),
+    url(r'^_api/tags/suggest/(?P<region>[^/]+?)', suggest_tags),
 
     ##########################################################
     # Basic page URLs.
