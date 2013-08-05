@@ -66,7 +66,9 @@ recentchanges.register(PageFileChanges)
 class PageChangesFeed(ChangesOnItemFeed):
     recentchanges_class = PageChanges
 
-    def get_object(self, request, slug):
+    def get_object(self, request, region='', slug=''):
+        self.setup_region(region)
+
         obj = Page(slug=slugify(slug), region=self.region)
         obj.title = obj.versions.most_recent().name
         obj.page = obj
@@ -76,7 +78,9 @@ class PageChangesFeed(ChangesOnItemFeed):
 class PageFileChangesFeed(ChangesOnItemFeed):
     recentchanges_class = PageFileChanges
 
-    def get_object(self, request, slug='', file=''):
+    def get_object(self, request, region='', slug='', file=''):
+        self.setup_region(region)
+
         obj = PageFile(slug=slugify(slug), region=self.region, name=file)
         page = Page(slug=slugify(slug), region=self.region)
         obj.page = page.versions.most_recent()

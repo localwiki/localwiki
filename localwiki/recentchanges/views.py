@@ -52,7 +52,7 @@ class RecentChangesView(RegionMixin, ListView):
         c = super(RecentChangesView, self).get_context_data(*args, **kwargs)
         c.update({
             'rc_url': reverse('recentchanges',
-                kwargs={'region': self.get_region()}),
+                kwargs={'region': self.get_region().slug}),
             'ignore_types': IGNORE_TYPES,
             'added_types': ADDED_TYPES,
             'deleted_types': DELETED_TYPES,

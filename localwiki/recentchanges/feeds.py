@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.syndication.views import Feed
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
@@ -11,11 +13,24 @@ from recentchanges import get_changes_classes
 
 MAX_CHANGES = 500
 
+region_routing_pattern = re.compile(
+    '^/(?P<region>[^/]+?)/.*'
+)
+
 
 class RecentChangesFeed(Feed):
     """
     Recent Changes feed for the whole site.
     """
+    def __call__(self, request, *args, **kwargs):
+        from regions.models import Region
+        re_match = region_routing_pattern.match(request.get_full_path())
+        if re_match:
+            region_slug = re_match.group('region')
+            self.region = Region.objects.get(slug=region_slug)
+
+        return super(RecentChangesFeed, self).__call__(request, *args, **kwargs)
+
     def site(self):
         if not hasattr(self, '_current_site'):
             self._current_site = get_current_site(self.request)
@@ -25,7 +40,7 @@ class RecentChangesFeed(Feed):
         return _("Recent Changes on %s") % self.site().name
 
     def link(self):
-        return reverse('recentchanges')
+        return reverse('recentchanges', kwargs={'region': self.region.slug})
 
     def description(self):
         return _("Recent changes on %s") % self.site().name
@@ -46,7 +61,7 @@ class RecentChangesFeed(Feed):
         change_sets = []
 
         for change_class in get_changes_classes():
-            change_obj = change_class()
+            change_obj = change_class(region=self.region)
             change_set = change_obj.queryset()[:MAX_CHANGES].iterator()
             change_sets.append(
                 self.format_change_set(change_obj, change_set))
@@ -120,6 +135,10 @@ class ChangesOnItemFeed(Feed):
         raise NotImplementedError(
             "You must subclass ItemChangesFeed and define get_object()")
 
+    def setup_region(self, region):
+        from regions.models import Region
+        self.region = Region.objects.get(slug=region)
+
     def site(self):
         if not hasattr(self, '_current_site'):
             self._current_site = get_current_site(self.request)
@@ -136,6 +155,7 @@ class ChangesOnItemFeed(Feed):
 
     def items(self, obj):
         changes_obj = self.recentchanges_class()
+        changes_obj.region = self.region
 
         objs = obj.versions.all()[:MAX_CHANGES]
         for o in objs:

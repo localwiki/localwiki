@@ -24,7 +24,9 @@ recentchanges.register(MapChanges)
 
 
 class MapChangesFeed(ChangesOnItemFeed):
-    def get_object(self, request, slug):
+    def get_object(self, request, region='', slug=''):
+        self.setup_region(region)
+
         # TODO: Break out this MapData-get-page pattern into a function.
         # Non-DRY.
         page = Page(slug=slugify(slug), region=self.region)
@@ -42,6 +44,7 @@ class MapChangesFeed(ChangesOnItemFeed):
     def items(self, obj):
         objs = obj.versions.all()[:MAX_CHANGES]
         change_obj = MapChanges()
+        change_obj.region = self.region
         for o in objs:
             o.title = obj.page.name
             o.diff_url = change_obj.diff_url(o)
