@@ -35,9 +35,10 @@ class RecentChangesView(RegionMixin, ListView):
     def get_queryset(self):
         change_sets = []
         start_at = self._get_start_date()
+        region = self.get_region()
 
         for change_class in get_changes_classes():
-            change_obj = change_class()
+            change_obj = change_class(region=region)
             change_set = change_obj.queryset(start_at)
             change_sets.append(
                 self.format_change_set(change_obj, change_set))
