@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 
 from versionutils.versioning.constants import *
 from pages.models import Page
+from regions.views import RegionMixin
 
 from utils import merge_changes
 from recentchanges import get_changes_classes
@@ -19,7 +20,7 @@ IGNORE_TYPES = [
 ]
 
 
-class RecentChangesView(ListView):
+class RecentChangesView(RegionMixin, ListView):
     template_name = "recentchanges/recentchanges.html"
     context_object_name = 'changes_grouped_by_day'
 
@@ -49,7 +50,8 @@ class RecentChangesView(ListView):
     def get_context_data(self, *args, **kwargs):
         c = super(RecentChangesView, self).get_context_data(*args, **kwargs)
         c.update({
-            'rc_url': reverse('recentchanges'),
+            'rc_url': reverse('recentchanges',
+                kwargs={'region': self.get_region()}),
             'ignore_types': IGNORE_TYPES,
             'added_types': ADDED_TYPES,
             'deleted_types': DELETED_TYPES,
@@ -115,9 +117,10 @@ class RecentChangesView(ListView):
         # many changes on the RC page as possible to encourage more wiki
         # activity.
         num_days_total = 1
+        region = self.get_region()
         try:
-            latest_changes = Page.versions.all()[0:300]
-            start_at = Page.versions.all()[0].version_info.date
+            latest_changes = Page.versions.filter(region=region)[0:300]
+            start_at = Page.versions.filter(region=region)[0].version_info.date
 
             for change in latest_changes:
                 if change.version_info.date.day != start_at.day:

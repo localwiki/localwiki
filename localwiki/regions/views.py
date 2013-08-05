@@ -1,5 +1,7 @@
 from models import Region, slugify
 
+from django.views.generic import TemplateView
+
 
 class RegionMixin(object):
     """
@@ -20,3 +22,7 @@ class RegionMixin(object):
         context = super(RegionMixin, self).get_context_data(*args, **kwargs)
         context['region'] = self.get_region()
         return context
+
+
+class TemplateView(RegionMixin, TemplateView):
+    pass

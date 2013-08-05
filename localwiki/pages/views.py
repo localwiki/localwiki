@@ -67,7 +67,8 @@ class PageDetailView(Custom404Mixin, RegionMixin, DetailView):
         page = Page(name=name, slug=slug, region=region)
         return HttpResponseNotFound(
             render(request, 'pages/page_new.html',
-                   {'page': page, 'page_templates': page_templates})
+                   {'page': page, 'page_templates': page_templates,
+                    'region': region})
         )
 
     def get_context_data(self, **kwargs):
