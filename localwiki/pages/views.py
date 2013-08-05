@@ -110,6 +110,7 @@ class PageVersionDetailView(PageDetailView):
     def get_context_data(self, **kwargs):
         # we don't want PageDetailView's context, skip to DetailView's
         context = super(DetailView, self).get_context_data(**kwargs)
+        context['region'] = self.get_region()
         context['date'] = self.object.version_info.date
         context['show_revision'] = True
         return context
