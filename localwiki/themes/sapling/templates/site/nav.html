@@ -1,14 +1,8 @@
 {% load url from future %}
 {% load i18n %}
 
-{% comment %}
-<li><a href="{% url 'pages:show' slug='Front_Page' %}">{% trans "Front Page" %}</a></li>
-<li><a href="{% url 'pages:show' slug='People' %}">{% trans "People" %}</a></li>
-<li><a href="{% url 'maps:global' %}">{% trans "Map" %}</a></li>
-<li><a href="{% url 'recentchanges' %}">{% trans "Recent Changes" %}</a></li>
-<li><a href="{% url 'pages:index' %}">{% trans "All Pages" %}</a></li>
-{% endcomment %}
-<li><a href="#">add nav</a></li>
-<li><a href="#">links</a></li>
-<li><a href="#">back</a></li>
-<li><a href="#">d00d</a></li>
+<li><a href="{% url 'pages:show' slug='Front_Page' region=region.slug %}">{% trans "Front Page" %}</a></li>
+<li><a href="{% url 'pages:show' slug='People' region=region.slug %}">{% trans "People" %}</a></li>
+<li><a href="{% url 'maps:global' region=region.slug %}">{% trans "Map" %}</a></li>
+<li><a href="{% url 'recentchanges' region=region.slug %}">{% trans "Recent Changes" %}</a></li>
+<li><a href="{% url 'pages:index' region=region.slug %}">{% trans "All Pages" %}</a></li>
