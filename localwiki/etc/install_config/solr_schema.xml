@@ -111,6 +111,8 @@
 
     <field name="tags" type="text" indexed="true" stored="true" multiValued="true" />
 
+    <field name="region_id" type="slong" indexed="true" stored="true" multiValued="false" />
+
   </fields>
 
   <!-- field to use to determine and enforce document uniqueness. -->

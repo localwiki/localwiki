@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     (r'^(?P<region>[^/]+?)/tags/', include('tags.urls', 'tags', 'tags')),
     (r'^_redirect/', include(redirects.site.urls)),
     (r'^(?i)Users/', include('users.urls')),
-    (r'^search/', include('search.urls')),
+    (r'^(?P<region>[^/]+?)/search/', include('search.urls')),
     (r'^', include('recentchanges.urls')),
     (r'^(?P<region>[^/]+?)/tools/dashboard/', include(dashboard.site.urls)),
 

@@ -13,10 +13,15 @@ from maps.widgets import InfoMap
 
 
 class CreatePageSearchView(SearchView):
+    def __call__(self, request, region=''):
+        from regions.models import Region
+        self.region = Region.objects.get(slug=region)
+        return super(CreatePageSearchView, self).__call__(request)
+
     def get_map(self):
         (paginator, page) = self.build_page()
         result_pks = [p.pk for p in page.object_list if p]
-        maps = MapData.objects.filter(page__pk__in=result_pks)
+        maps = MapData.objects.filter(region=self.region, page__pk__in=result_pks)
         if not maps:
             return None
         widget_options = copy.deepcopy(getattr(settings,
@@ -37,13 +42,19 @@ class CreatePageSearchView(SearchView):
             options=widget_options)
         return map
 
+    def build_form(self, *args, **kwargs):
+        form = super(CreatePageSearchView, self).build_form(*args, **kwargs)
+        form.region = self.region
+        return form
+
     def extra_context(self):
         context = super(CreatePageSearchView, self).extra_context()
         context['page_exists_for_query'] = Page.objects.filter(
-            slug=slugify(self.query))
+            slug=slugify(self.query), region=self.region)
         context['query_slug'] = Page(name=self.query).pretty_slug
         context['keywords'] = self.query.split()
         context['map'] = self.get_map()
+        context['region'] = self.region
         return context
 
 
@@ -61,7 +72,7 @@ class SearchForm(DefaultSearchForm):
         if not keywords:
             return sqs
         # we do __in because we want partial matches, not just exact ones
-        return sqs.filter_or(name__in=keywords).filter_or(tags__in=keywords)
+        return sqs.filter_or(name__in=keywords).filter_or(tags__in=keywords).filter_and(region_id=self.region.id)
 
 urlpatterns = patterns('',
     url(r'^$', CreatePageSearchView(form_class=SearchForm),

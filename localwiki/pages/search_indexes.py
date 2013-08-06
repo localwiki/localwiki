@@ -6,6 +6,7 @@ from models import Page
 
 class PageIndex(RealTimeSearchIndex):
     text = CharField(document=True, use_template=True)
+    region_id = IntegerField(model_attr='region__id', null=True)
     # TODO: We'll likely need to tweak this boost value.
     name = CharField(model_attr='name', boost=2)
     # We add this for autocomplete.
