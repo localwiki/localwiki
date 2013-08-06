@@ -11,7 +11,6 @@ from utils.static_helpers import static_url
 OUR_JS = [
     reverse_lazy('django.views.i18n.javascript_catalog',
                    args=['maps']),
-    static_url('js/jquery/jquery-1.7.min.js'),
     static_url('olwidget/js/sapling_utils.js'),
 ]
 OUR_CSS = {}
