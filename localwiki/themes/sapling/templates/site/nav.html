@@ -1,8 +1,15 @@
 {% load url from future %}
 {% load i18n %}
 
-<li><a href="{% url 'pages:show' slug='Front_Page' region=region.slug %}">{% trans "Front Page" %}</a></li>
-<li><a href="{% url 'pages:show' slug='People' region=region.slug %}">{% trans "People" %}</a></li>
-<li><a href="{% url 'maps:global' region=region.slug %}">{% trans "Map" %}</a></li>
-<li><a href="{% url 'recentchanges' region=region.slug %}">{% trans "Recent Changes" %}</a></li>
-<li><a href="{% url 'pages:index' region=region.slug %}">{% trans "All Pages" %}</a></li>
+{% if region %}
+    <li><a href="{% url 'pages:show' slug='Front_Page' region=region.slug %}">{% trans "Front Page" %}</a></li>
+    <li><a href="{% url 'pages:show' slug='People' region=region.slug %}">{% trans "People" %}</a></li>
+    <li><a href="{% url 'maps:global' region=region.slug %}">{% trans "Map" %}</a></li>
+    <li><a href="{% url 'recentchanges' region=region.slug %}">{% trans "Recent Changes" %}</a></li>
+    <li><a href="{% url 'pages:index' region=region.slug %}">{% trans "All Pages" %}</a></li>
+{% else %}
+    <li><a href="#">nav</a></li>
+    <li><a href="#">links</a></li>
+    <li><a href="#">go</a></li>
+    <li><a href="#">here</a></li>
+{% endif %}

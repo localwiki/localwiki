@@ -1,6 +1,9 @@
 {% load i18n %}
 {% load url from future %}
+
+{% if region %}
 <form method="GET" action="{% url 'haystack_search' region=region.slug %}">
 <input type="text" name="q" value="{% if query and form.q.value %}{{ form.q.value }}{% endif %}" id="id_q" />
 <input type="submit" value="{% trans 'Search or create page' %}" class="little">
 </form>
+{% endif %}
