@@ -484,8 +484,9 @@ def suggest(request):
     import json
 
     term = request.GET.get('term', None)
+    region_id = int(request.GET.get('region_id'))
     if not term:
         return HttpResponse('')
-    results = SearchQuerySet().autocomplete(name_auto=term) 
+    results = SearchQuerySet().autocomplete(name_auto=term).filter_and(region_id=region_id)
     results = [p.name for p in results]
     return HttpResponse(json.dumps(results))

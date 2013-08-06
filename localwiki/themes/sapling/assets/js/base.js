@@ -80,11 +80,11 @@ $(document).ready(function() {
     $('#id_q').typeahead([
         {
           name: 'pages',
-          remote: '/_api/pages/suggest?term=%QUERY'
+          remote: '/_api/pages/suggest?region_id=' + region_id + '&term=%QUERY'
         }
     ])
     .on('typeahead:selected', function(e, datum) {
         var url = encodeURIComponent(datum.value.replace(' ', '_'));
-        document.location = '/' + url;
+        document.location = '/' + region_slug + '/' + url;
     });
 });
