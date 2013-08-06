@@ -36,6 +36,7 @@ class TemplateView(RegionMixin, DjangoTemplateView):
 class MainPageView(ListView):
     model = Region
     context_object_name = 'regions'
+    queryset = Region.objects.all().order_by('full_name')
 
 
 class RegionCreateView(CreateView):
