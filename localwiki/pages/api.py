@@ -81,7 +81,6 @@ class PageValidation(Validation):
                     'underscores with spaces and remove spaces surrounding the'
                     ' / character.'
                 ]
-        print 'ERROS', errors
         return errors
 
 

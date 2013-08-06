@@ -1,0 +1,17 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block title %}{% trans "LocalWiki" %}{% endblock %}
+
+{% block header_title %}{% trans "LocalWiki" %}{% endblock %}
+
+{% block content %}
+  <h2>Regions</h2>
+  <ul>
+  {% for region in regions %}
+    <li><a href="{% url 'pages:frontpage' region=region.slug %}">{{ region.full_name }}</a></li>
+  {% endfor %}
+  </ul>
+{% endblock %}

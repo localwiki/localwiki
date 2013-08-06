@@ -21,3 +21,7 @@ def slugify(s):
     """
     from pages.models import slugify as page_slugify
     return page_slugify(s, keep=r"\.,'")
+
+
+# For registration calls
+import api

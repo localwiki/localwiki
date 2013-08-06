@@ -1,6 +1,7 @@
 from models import Region, slugify
 
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView as DjangoTemplateView
+from django.views.generic import ListView
 
 
 class RegionMixin(object):
@@ -24,5 +25,10 @@ class RegionMixin(object):
         return context
 
 
-class TemplateView(RegionMixin, TemplateView):
+class TemplateView(RegionMixin, DjangoTemplateView):
     pass
+
+
+class MainPageView(ListView):
+    model = Region
+    context_object_name = 'regions'
