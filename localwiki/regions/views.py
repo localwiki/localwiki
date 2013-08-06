@@ -1,7 +1,11 @@
-from models import Region, slugify
-
+from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView as DjangoTemplateView
 from django.views.generic import ListView
+from django.views.generic.edit import CreateView
+
+from utils.views import CreateObjectMixin
+
+from models import Region, slugify
 
 
 class RegionMixin(object):
@@ -32,3 +36,11 @@ class TemplateView(RegionMixin, DjangoTemplateView):
 class MainPageView(ListView):
     model = Region
     context_object_name = 'regions'
+
+
+class RegionCreateView(CreateView):
+    model = Region
+
+    def get_success_url(self):
+        return reverse('pages:frontpage', args=[self.object.slug])
+

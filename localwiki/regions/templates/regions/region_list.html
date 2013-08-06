@@ -14,4 +14,5 @@
     <li><a href="{% url 'pages:frontpage' region=region.slug %}">{{ region.full_name }}</a></li>
   {% endfor %}
   </ul>
+  <p><a href="{% url 'add-region' %}" class="button">Add region</a></p>
 {% endblock %}

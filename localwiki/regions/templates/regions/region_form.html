@@ -1,0 +1,15 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block title %}{% trans "LocalWiki" %}{% endblock %}
+
+{% block header_title %}{% trans "Add a region" %}{% endblock %}
+
+{% block content %}
+<form action="" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Add region" />
+</form>
+{% endblock %}
