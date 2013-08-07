@@ -1447,6 +1447,15 @@ form #content_footer {
     margin-top: 1em;
 }
 
+/* Inside page editor, indicate that clicking on page title 
+   allows for page rename */
+.in_edit #object_title a:hover {
+    background-color: #fafafa; 
+    outline: 1px solid gray;
+    color: #444;
+}
+
+
 @media screen and (max-width: 1075px) {
     #editor_actions .extra_actions {
         padding: 0;
