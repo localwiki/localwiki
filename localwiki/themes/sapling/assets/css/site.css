@@ -1450,7 +1450,7 @@ form #content_footer {
 /* Inside page editor, indicate that clicking on page title 
    allows for page rename */
 .in_edit #object_title a:hover {
-    background-color: #fafafa; 
+    background-color: white; 
     outline: 1px solid gray;
     color: #444;
 }
