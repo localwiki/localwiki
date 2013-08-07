@@ -8,7 +8,9 @@
 {% block dialog %}
 <div id="dialog">
   <form method="post" action="">{% csrf_token %}
+  <ul>
      {{ form.as_ul }}
+  </ul> 
      <input type="submit" value="{% trans "Submit" %}"/>
   </form>
 </div>

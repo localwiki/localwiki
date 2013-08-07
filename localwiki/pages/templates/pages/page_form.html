@@ -10,6 +10,36 @@
 <meta name="robots" content="noindex,nofollow">
 {% endblock %}
 
+{% block body %}
+<body>
+   <div class="in_edit">
+   {% block everything_wrapper %}
+        {{ block.super }}
+   {% endblock %}
+   </div>
+</body>
+{% endblock %}
+
+{% block media %}
+{{ block.super }}
+
+<script type="text/javascript">
+    $(function() {
+        $('#object_title a.not_created_yet').click(function() {
+            alert('You must create the page before renaming it.');
+        });
+    });
+</script>
+{% endblock %}
+
+{% block header_title %}
+{% if page.exists %}
+   <a href="{% url 'pages:rename' slug=page.pretty_slug %}">{{ page.name }}</a>
+{% else %}
+   <a href="#" class="not_created_yet">{{ page.name }}</a>
+{% endif %}
+{% endblock %}
+
 {% block main_wrapper %}
     <div id="main" class="page_form">
         {% block main %}
