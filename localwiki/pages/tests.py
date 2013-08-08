@@ -15,6 +15,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from versionutils.merging.forms import MergeMixin
 from forms import PageForm
 from redirects.models import Redirect
+from regions.models import Region
 from maps.models import MapData
 
 from pages.models import (Page, PageFile, slugify,
@@ -27,6 +28,10 @@ from tags.models import PageTagSet, Tag
 
 
 class PageTest(TestCase):
+    def setUp(self):
+        self.region = Region(full_name='Test region', slug='test_region')
+        self.region.save()
+
     def test_clean_name(self):
         self.assertEqual(clean_name(' Front Page '), 'Front Page')
         self.assertEqual(clean_name('_edit'), 'edit')
@@ -83,20 +88,20 @@ class PageTest(TestCase):
         self.assertEqual(slugify(a), slugify(slugify(a)))
 
     def test_pretty_slug(self):
-        a = Page(name='Front Page')
+        a = Page(name='Front Page', region=self.region)
         self.assertEqual(a.pretty_slug, 'Front_Page')
-        a = Page(name='Front Page/Talk')
+        a = Page(name='Front Page/Talk', region=self.region)
         self.assertEqual(a.pretty_slug, 'Front_Page/Talk')
-        a = Page(name="Ben & Jerry's")
+        a = Page(name="Ben & Jerry's", region=self.region)
         self.assertEqual(a.pretty_slug, "Ben_%26_Jerry%27s")
-        a = Page(name='Заглавная Страница')
+        a = Page(name='Заглавная Страница', region=self.region)
         slug = ("%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%B0%D1%8F"
                 "_%D0%A1%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0")
         assert slug == quote('Заглавная_Страница')
         self.assertEqual(a.pretty_slug, slug)
 
     def test_merge_conflict(self):
-        p = Page()
+        p = Page(region=self.region)
         p.content = '<p>old content</p>'
         p.name = 'Front Page'
         p.save()
@@ -125,7 +130,7 @@ class PageTest(TestCase):
         self.failUnless('Edit conflict!' in p.content)
 
     def test_page_rename(self):
-        p = Page()
+        p = Page(region=self.region)
         p.content = "<p>The page content.</p>"
         p.name = "Original page"
         p.save()
@@ -133,88 +138,88 @@ class PageTest(TestCase):
         p.rename_to("New page")
 
         # Renamed-to page should exist.
-        new_p = Page.objects.get(name="New page")
+        new_p = Page.objects.get(name="New page", region=self.region)
         # new_p should have the same content.
         self.assertEqual(new_p.content, p.content)
 
         # "Original page" should no longer exist.
-        pgs = Page.objects.filter(name="Original page")
+        pgs = Page.objects.filter(name="Original page", region=self.region)
         self.assertEqual(len(pgs), 0)
         # and a redirect from "original page" to "New page" should exist.
-        Redirect.objects.filter(source="original page", destination=new_p)
+        Redirect.objects.filter(source="original page", destination=new_p, region=self.region)
 
         ###########################################################
         # Renaming to a page that already exists should raise an
         # exception and not affect the original page.
         ###########################################################
-        p = Page()
+        p = Page(region=self.region)
         p.content = "<p>Hello, world.</p>"
         p.name = "Page A"
         p.save()
 
         self.assertRaises(exceptions.PageExistsError, p.rename_to, "New page")
         # p should be unaffected.  No redirect should be created.
-        p = Page.objects.get(name="Page A")
+        p = Page.objects.get(name="Page A", region=self.region)
         self.assertEqual(p.content, "<p>Hello, world.</p>")
-        self.assertEqual(len(Redirect.objects.filter(source="page a")), 0)
+        self.assertEqual(len(Redirect.objects.filter(source="page a", region=self.region)), 0)
 
         ###########################################################
         # Renaming should carry along files and FK'ed items that
         # point to it.
         ###########################################################
-        p = Page()
+        p = Page(region=self.region)
         p.content = "<p>A page with files and a map.</p>"
         p.name = "Page With FKs"
         p.save()
         # Create a file that points at the page.
-        pf = PageFile(file=ContentFile("foo"), name="file.txt", slug=p.slug)
+        pf = PageFile(file=ContentFile("foo"), name="file.txt", slug=p.slug, region=self.region)
         pf.save()
         # Create a redirect that points at the page.
-        redirect = Redirect(source="foobar", destination=p)
+        redirect = Redirect(source="foobar", destination=p, region=self.region)
         redirect.save()
         # Create a map that points at the page.
         points = GEOSGeometry("""MULTIPOINT (-122.4378964233400069 37.7971758820830033, -122.3929211425700032 37.7688207875790027, -122.3908612060599950 37.7883584775320003, -122.4056240844700056 37.8013807351830025, -122.4148937988299934 37.8002956347170027, -122.4183270263600036 37.8051784612779969)""")
-        map = MapData(points=points, page=p)
+        map = MapData(points=points, page=p, region=self.region)
         map.save()
         # Add tags to page
-        tagset = PageTagSet(page=p)
+        tagset = PageTagSet(page=p, region=self.region)
         tagset.save()
-        tag = Tag(name="tag1")
+        tag = Tag(name="tag1", region=self.region)
         tag.save()
         tagset.tags.add(tag)
 
         p.rename_to("New Page With FKs")
 
-        new_p = Page.objects.get(name="New Page With FKs")
+        new_p = Page.objects.get(name="New Page With FKs", region=self.region)
         self.assertEqual(len(MapData.objects.filter(page=new_p)), 1)
         self.assertEqual(len(new_p.pagetagset.tags.all()), 1)
         # Two redirects: one we created explicitly and one that was
         # created during rename_to()
-        self.assertEqual(len(Redirect.objects.filter(destination=new_p)), 2)
-        self.assertEqual(len(PageFile.objects.filter(slug=new_p.slug)), 1)
+        self.assertEqual(len(Redirect.objects.filter(destination=new_p, region=self.region)), 2)
+        self.assertEqual(len(PageFile.objects.filter(slug=new_p.slug, region=self.region)), 1)
 
         # Renaming should keep slugs pointed at old page /and/ copy
         # them to the new page.
-        self.assertEqual(len(PageFile.objects.filter(slug=p.slug)), 1)
+        self.assertEqual(len(PageFile.objects.filter(slug=p.slug, region=self.region)), 1)
 
         ###########################################################
         # Renaming with multiple files.
         ###########################################################
-        p = Page()
+        p = Page(region=self.region)
         p.content = "<p>A new page with multiple files.</p>"
         p.name = "Page with multiple files"
         p.save()
         # Create a file that points at the page.
-        pf = PageFile(file=ContentFile("foo"), name="file.txt", slug=p.slug)
+        pf = PageFile(file=ContentFile("foo"), name="file.txt", slug=p.slug, region=self.region)
         pf.save()
-        pf = PageFile(file=ContentFile("foo2"), name="file2.txt", slug=p.slug)
+        pf = PageFile(file=ContentFile("foo2"), name="file2.txt", slug=p.slug, region=self.region)
         pf.save()
-        pf = PageFile(file=ContentFile("foo3"), name="file3.txt", slug=p.slug)
+        pf = PageFile(file=ContentFile("foo3"), name="file3.txt", slug=p.slug, region=self.region)
         pf.save()
         p.rename_to("A page with multiple files 2")
 
-        p = Page.objects.get(name="A page with multiple files 2")
-        self.assertEqual(len(PageFile.objects.filter(slug=p.slug)), 3)
+        p = Page.objects.get(name="A page with multiple files 2", region=self.region)
+        self.assertEqual(len(PageFile.objects.filter(slug=p.slug, region=self.region)), 3)
 
         ###########################################################
         # Reverting a renamed page should be possible and should
@@ -223,71 +228,71 @@ class PageTest(TestCase):
         # after the revert and should still have its own files and
         # FK'ed items pointed at it.
         ###########################################################
-        p = Page(name="Page With FKs", slug="page with fks")
+        p = Page(name="Page With FKs", slug="page with fks", region=self.region)
         # get the version right before it was deleted
         v_before_deleted = len(p.versions.all()) - 1
         p_h = p.versions.as_of(version=v_before_deleted)
         p_h.revert_to()
-        p = Page.objects.get(name="Page With FKs")
-        self.assertEqual(len(MapData.objects.filter(page=p)), 1)
-        self.assertEqual(len(PageFile.objects.filter(slug=p.slug)), 1)
+        p = Page.objects.get(name="Page With FKs", region=self.region)
+        self.assertEqual(len(MapData.objects.filter(page=p, region=self.region)), 1)
+        self.assertEqual(len(PageFile.objects.filter(slug=p.slug, region=self.region)), 1)
 
         p2 = Page.objects.get(name="New Page With FKs")
-        self.assertEqual(len(MapData.objects.filter(page=p2)), 1)
-        self.assertEqual(len(PageFile.objects.filter(slug=p2.slug)), 1)
+        self.assertEqual(len(MapData.objects.filter(page=p2, region=self.region)), 1)
+        self.assertEqual(len(PageFile.objects.filter(slug=p2.slug, region=self.region)), 1)
 
-        self.assertEqual(len(Redirect.objects.filter(destination=p2)), 1)
+        self.assertEqual(len(Redirect.objects.filter(destination=p2, region=self.region)), 1)
 
         ###########################################################
         # Renaming a page and then renaming it back.
         ###########################################################
         # 1. Simple case
-        p = Page(name="Page X", content="<p>Foobar</p>")
+        p = Page(name="Page X", content="<p>Foobar</p>", region=self.region)
         p.save()
         p.rename_to("Page Y")
-        self.assertEqual(len(Page.objects.filter(name="Page X")), 0)
-        self.assertEqual(len(Page.objects.filter(name="Page Y")), 1)
+        self.assertEqual(len(Page.objects.filter(name="Page X", region=self.region)), 0)
+        self.assertEqual(len(Page.objects.filter(name="Page Y", region=self.region)), 1)
 
-        p_new = Page.objects.get(name="Page Y")
+        p_new = Page.objects.get(name="Page Y", region=self.region)
         p_new.rename_to("Page X")
-        self.assertEqual(len(Page.objects.filter(name="Page X")), 1)
-        self.assertEqual(len(Page.objects.filter(name="Page Y")), 0)
+        self.assertEqual(len(Page.objects.filter(name="Page X", region=self.region)), 1)
+        self.assertEqual(len(Page.objects.filter(name="Page Y", region=self.region)), 0)
 
         # 2. If we have FKs pointed at the page this shouldn't be
         # totally fucked.
-        p = Page(name="Page X2", content="<p>Foo X</p>")
+        p = Page(name="Page X2", content="<p>Foo X</p>", region=self.region)
         p.save()
         points = GEOSGeometry("""MULTIPOINT (-122.4378964233400069 37.7971758820830033, -122.3929211425700032 37.7688207875790027, -122.3908612060599950 37.7883584775320003, -122.4056240844700056 37.8013807351830025, -122.4148937988299934 37.8002956347170027, -122.4183270263600036 37.8051784612779969)""")
-        map = MapData(points=points, page=p)
+        map = MapData(points=points, page=p, region=self.region)
         map.save()
         # Create a file that points at the page.
-        pf = PageFile(file=ContentFile("foooo"), name="file_foo.txt", slug=p.slug)
+        pf = PageFile(file=ContentFile("foooo"), name="file_foo.txt", slug=p.slug, region=self.region)
         pf.save()
 
         p.rename_to("Page Y2")
-        p_new = Page.objects.get(name="Page Y2")
+        p_new = Page.objects.get(name="Page Y2", region=self.region)
         # FK points at the page we renamed to.
-        self.assertEqual(len(MapData.objects.filter(page=p_new)), 1)
-        self.assertEqual(len(PageFile.objects.filter(slug=p_new.slug)), 1)
+        self.assertEqual(len(MapData.objects.filter(page=p_new, region=self.region)), 1)
+        self.assertEqual(len(PageFile.objects.filter(slug=p_new.slug, region=self.region)), 1)
 
         # Now rename it back.
         p_new.rename_to("Page X2")
-        p = Page.objects.get(name="Page X2")
+        p = Page.objects.get(name="Page X2", region=self.region)
         # After rename-back-to, FK points to the renamed-back-to page.
-        self.assertEqual(len(MapData.objects.filter(page=p)), 1)
-        self.assertEqual(len(PageFile.objects.filter(slug=p.slug)), 1)
+        self.assertEqual(len(MapData.objects.filter(page=p, region=self.region)), 1)
+        self.assertEqual(len(PageFile.objects.filter(slug=p.slug, region=self.region)), 1)
 
         ###########################################################
         # Renaming a page but keeping the same slug
         ###########################################################
-        p = Page(name="Foo A", content="<p>Foo A</p>")
+        p = Page(name="Foo A", content="<p>Foo A</p>", region=self.region)
         p.save()
         p.rename_to("FOO A")
 
         # Name has changed.
-        self.assertEqual(len(Page.objects.filter(name="FOO A")), 1)
+        self.assertEqual(len(Page.objects.filter(name="FOO A", region=self.region)), 1)
         # Has the same history, with a new entry for the name change.
-        p = Page.objects.get(name="FOO A")
+        p = Page.objects.get(name="FOO A", region=self.region)
         p1, p0 = p.versions.all()
         self.assertEqual(p1.name, 'FOO A')
         self.assertEqual(p0.name, 'Foo A')
@@ -297,28 +302,28 @@ class PageTest(TestCase):
         # Renaming a page twice (A -> B -> C) and then revert A to
         # an existing state.
         ###########################################################
-        p = Page(name="Bar A", content="<p>Bar A</p>")
+        p = Page(name="Bar A", content="<p>Bar A</p>", region=self.region)
         p.save()
         p.rename_to("Bar B")
-        p = Page.objects.get(name="Bar B")
+        p = Page.objects.get(name="Bar B", region=self.region)
         p.rename_to("Bar C")
 
-        p = Page(name="Bar A", slug="bar a")
+        p = Page(name="Bar A", slug="bar a", region=self.region)
         p_h = p.versions.as_of(version=1)
         p_h.revert_to()
 
         ###########################################################
         # Renaming a page back and forth and reverting.
         ###########################################################
-        p = Page(name="Zoo A", content="<p>Zoo A</p>")
+        p = Page(name="Zoo A", content="<p>Zoo A</p>", region=self.region)
         p.save()
         p.rename_to("Zoo B")
-        p = Page.objects.get(name="Zoo B")
+        p = Page.objects.get(name="Zoo B", region=self.region)
         p.rename_to("Zoo A")
-        p = Page.objects.get(name="Zoo A")
+        p = Page.objects.get(name="Zoo A", region=self.region)
         p.rename_to("Zoo B")
 
-        p = Page(name="Zoo A", slug="zoo a")
+        p = Page(name="Zoo A", slug="zoo a", region=self.region)
         p_h = p.versions.as_of(version=1)
         p_h.revert_to()
 
@@ -326,17 +331,17 @@ class PageTest(TestCase):
         # page A, rename to B, then create new A, rename B to C,
         # rename C to B, then revert C to first version
         ###########################################################
-        p = Page(name="Mike A", content="<p>A</p>")
+        p = Page(name="Mike A", content="<p>A</p>", region=self.region)
         p.save()
         p.rename_to("Mike B")
-        new_a = Page(name="Mike A", content="<p>A new</p>")
+        new_a = Page(name="Mike A", content="<p>A new</p>", region=self.region)
         new_a.save()
-        p = Page.objects.get(name="Mike B")
+        p = Page.objects.get(name="Mike B", region=self.region)
         p.rename_to("Mike C")
-        p = Page.objects.get(name="Mike C")
+        p = Page.objects.get(name="Mike C", region=self.region)
         p.rename_to("Mike B")
 
-        p_c = Page(name="Mike C", slug="mike c")
+        p_c = Page(name="Mike C", slug="mike c", region=self.region)
         p_h = p_c.versions.as_of(version=1)
         p_h.revert_to()
 
@@ -456,6 +461,11 @@ class MergeModelFormTest(TestCase):
 
 
 class HTMLToTemplateTextTest(TestCase):
+    def setUp(self):
+        self.region = Region(full_name='Test region', slug='test_region')
+        self.region.save()
+        self.context = {'region': self.region}
+
     def test_plaintext(self):
         html = "No XHTML"
         imports = ''.join(tag_imports)
@@ -528,12 +538,16 @@ class HTMLToTemplateTextTest(TestCase):
     def test_empty_a_element(self):
         html = '<p><a name="blah"></a></p>'
         imports = ''.join(tag_imports)
-        template_text = html_to_template_text(html)
+        template_text = html_to_template_text(html, context=self.context)
         self.assertEqual(template_text, imports + '<p><a name="blah"></a></p>')
 
         
 class PluginTest(TestCase):
     def setUp(self):
+        self.region = Region(full_name='Test region', slug='test_region')
+        self.region.save()
+        self.context = {'region': self.region}
+
         self.old_allowed_src = getattr(settings, 'EMBED_ALLOWED_SRC', ['.*'])
         settings.EMBED_ALLOWED_SRC = ['http://www.youtube.com/embed/.*',
                                      'http://player.vimeo.com/video/.*']
@@ -543,7 +557,7 @@ class PluginTest(TestCase):
 
     def test_include_tag(self):
         html = '<a class="plugin includepage" href="Front_Page">Front Page</a>'
-        template_text = html_to_template_text(html)
+        template_text = html_to_template_text(html, context=self.context)
         imports = ''.join(tag_imports)
         self.assertEqual(template_text,
                          imports + ('<div class="included_page_wrapper">'
@@ -551,66 +565,66 @@ class PluginTest(TestCase):
                                     '</div>'))
 
     def test_include_plugin(self):
-        a = Page(name='Front Page')
+        a = Page(name='Front Page', region=self.region)
         a.content = '<a class="plugin includepage" href="Explore">dummy</a>'
         a.save()
 
-        b = Page(name='Explore')
+        b = Page(name='Explore', region=self.region)
         b.content = '<p>Some text</p>'
         b.save()
 
-        context = Context({'page': a})
+        context = Context({'page': a, 'region': self.region})
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
         self.assertEqual(html,
                     '<div class="included_page_wrapper"><p>Some text</p></div>')
 
     def test_include_plugin_utf8(self):
-        a = Page(name='Front Page')
+        a = Page(name='Front Page', region=self.region)
         a.content = (u'<a class="plugin includepage" '
                      u'href="青平台基金會">dummy</a>')
         a.save()
 
-        b = Page(name=u'青平台基金會')
+        b = Page(name=u'青平台基金會', region=self.region)
         b.content = u'<p>青平台基金會</p>'
         b.save()
 
-        context = Context({'page': a})
+        context = Context({'page': a, 'region': self.region})
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
         self.assertEqual(html, u'<div class="included_page_wrapper">'
                          u'<p>青平台基金會</p></div>')
 
     def test_include_showtitle(self):
-        a = Page(name='Front Page')
+        a = Page(name='Front Page', region=self.region)
         a.content = ('<a class="plugin includepage includepage_showtitle"'
                      ' href="Explore">dummy</a>')
         a.save()
 
-        b = Page(name='Explore')
+        b = Page(name='Explore', region=self.region)
         b.content = '<p>Some text</p>'
         b.save()
 
-        context = Context({'page': a})
+        context = Context({'page': a, 'region': self.region})
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
         self.assertEqual(html,
                     ('<div class="included_page_wrapper">'
-                     '<h2><a href="/Explore">Explore</a></h2>'
+                     '<h2><a href="/test_region/Explore">Explore</a></h2>'
                      '<p>Some text</p>'
                      '</div>'))
 
     def test_include_left(self):
-        a = Page(name='Front Page')
+        a = Page(name='Front Page', region=self.region)
         a.content = ('<a class="plugin includepage includepage_left"'
                      ' href="Explore">dummy</a>')
         a.save()
 
-        b = Page(name='Explore')
+        b = Page(name='Explore', region=self.region)
         b.content = '<p>Some text</p>'
         b.save()
 
-        context = Context({'page': a})
+        context = Context({'page': a, 'region': self.region})
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
         self.assertEqual(html,
@@ -618,16 +632,16 @@ class PluginTest(TestCase):
             '<p>Some text</p></div>')
 
     def test_include_width(self):
-        a = Page(name='Front Page')
+        a = Page(name='Front Page', region=self.region)
         a.content = ('<a class="plugin includepage" style="width: 100px"'
                      ' href="Explore">dummy</a>')
         a.save()
 
-        b = Page(name='Explore')
+        b = Page(name='Explore', region=self.region)
         b.content = '<p>Some text</p>'
         b.save()
 
-        context = Context({'page': a})
+        context = Context({'page': a, 'region': self.region})
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
         self.assertEqual(html,
@@ -637,40 +651,40 @@ class PluginTest(TestCase):
     def test_include_nonexistant(self):
         """ Should give an error message when including nonexistant page
         """
-        a = Page(name='Front Page')
+        a = Page(name='Front Page', region=self.region)
         a.content = '<a class="plugin includepage" href="New page">dummy</a>'
         a.save()
-        context = Context({'page': a})
+        context = Context({'page': a, 'region': self.region})
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
-        self.failUnless(('Unable to include <a href="/New_page"'
+        self.failUnless(('Unable to include <a href="/test_region/New_page"'
                          ' class="missing_link">New page</a>') in html)
 
     def test_endless_include(self):
         """ Should detect endless loops and give an error message
         """
-        a = Page(name='Front Page')
+        a = Page(name='Front Page', region=self.region)
         a.content = '<a class="plugin includepage" href="Front_Page">dummy</a>'
         a.save()
-        context = Context({'page': a})
+        context = Context({'page': a, 'region': self.region})
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
-        self.failUnless(('Unable to include <a href="/Front_Page">Front Page'
+        self.failUnless(('Unable to include <a href="/test_region/Front_Page">Front Page'
                          '</a>: endless include loop') in html)
 
     def test_double_include(self):
         """ Multiple includes are ok
         """
-        a = Page(name='Front Page')
+        a = Page(name='Front Page', region=self.region)
         a.content = ('<a class="plugin includepage" href="Explore">dummy</a>'
                      '<a class="plugin includepage" href="Explore">dummy</a>')
         a.save()
 
-        b = Page(name='Explore')
+        b = Page(name='Explore', region=self.region)
         b.content = '<p>Some text</p>'
         b.save()
 
-        context = Context({'page': a})
+        context = Context({'page': a, 'region': self.region})
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
         self.assertEqual(html,
@@ -705,7 +719,7 @@ class PluginTest(TestCase):
             in rendered)
 
     def test_amp_in_link_with_class(self):
-        page = Page(name='Explore')
+        page = Page(name='Explore', region=self.region)
         html = ('<p><a class="external something" '
                    'href="http://example.org/?t=1&amp;i=2">hi</a></p>')
         template = Template(html_to_template_text(html))
@@ -717,6 +731,10 @@ class XSSTest(TestCase):
     """ Test for tricky attempts to inject scripts into a page
     Exploits adapted from http://ha.ckers.org/xss.html
     """
+    def setUp(self):
+        self.region = Region(full_name='Test region', slug='test_region')
+        self.region.save()
+
     def encode_hex_entities(self, string):
         return''.join('&#x%02X;' % ord(c) for c in string)
 
@@ -744,9 +762,9 @@ class XSSTest(TestCase):
                 self.failIf(self.is_exploitable(dec), 'XSS exploit dec: ' + e)
 
     def is_exploitable(self, exploit):
-        p = Page(name='XSS Test', content=exploit)
+        p = Page(name='XSS Test', content=exploit, region=self.region)
         p.clean_fields()
-        t = Template(html_to_template_text(p.content))
+        t = Template(html_to_template_text(p.content, {'region': self.region}))
         html = t.render(Context())
         return self.contains_script(html)
 

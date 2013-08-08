@@ -66,7 +66,11 @@ class IncludeContentNode(BaseIncludeNode):
         """ Override this to return a title or None to omit it. """
         return self.name
 
+    def process_context(self, context):
+        self.region = context.get('region', None)
+
     def render(self, context):
+        self.process_context(context)
         try:
             template_text = ''
             if 'showtitle' in self.args:
@@ -83,10 +87,11 @@ class IncludeContentNode(BaseIncludeNode):
 
 
 class IncludePageNode(IncludeContentNode):
-    def __init__(self, *args, **kwargs):
-        super(IncludePageNode, self).__init__(*args, **kwargs)
+    def process_context(self, context):
+        super(IncludePageNode, self).process_context(context)
         try:
-            self.page = Page.objects.get(slug__exact=slugify(self.name))
+            self.page = Page.objects.get(
+                slug__exact=slugify(self.name), region=self.region)
         except Page.DoesNotExist:
             self.page = None
 
@@ -101,7 +106,7 @@ class IncludePageNode(IncludeContentNode):
             slug = self.page.pretty_slug
         else:
             slug = name_to_url(self.name)
-        return reverse('pages:show', args=[slug])
+        return reverse('pages:show', args=[self.region.slug, slug])
 
     def get_content(self, context):
         if not self.page:
