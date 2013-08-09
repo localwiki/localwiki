@@ -32,7 +32,7 @@ class XsSharing(object):
             return response
 
         # Only set the CORS headers for the API.
-        api_base = reverse('api', kwargs={'rest': ''})
+        api_base = reverse('api_v2_top_level', kwargs={'api_name': 'v2'})
         if request.path.startswith(api_base):
             response['Access-Control-Allow-Origin'] = XS_SHARING_ALLOWED_ORIGINS
             response['Access-Control-Allow-Methods'] = ",".join(XS_SHARING_ALLOWED_METHODS)

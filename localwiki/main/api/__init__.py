@@ -1,6 +1,5 @@
-from tastypie.api import Api, AcceptHeaderRouter
+from tastypie.api import Api
 
+api = Api(api_name='v2')
 
-api_router = AcceptHeaderRouter()
-api = Api(api_name='v1')
-api_router.register(api, default=True)
+api_v2 = api

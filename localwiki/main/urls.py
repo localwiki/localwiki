@@ -12,7 +12,7 @@ import dashboard
 from regions.views import MainPageView, RegionCreateView
 from users.admin import SubscribedList
 
-from api import api_router
+from api import api_v2
 
 admin.autodiscover()
 
@@ -20,8 +20,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^/*$', MainPageView.as_view()),
     url(r'^_region/_add', RegionCreateView.as_view(), name="add-region"),
-    (r'^api$', RedirectView.as_view(url='/api/')),
-    url(r'^api/(?P<rest>.*)', api_router.as_view(), name="api"),
+    (r'^api/?$', RedirectView.as_view(url='/api/v2/', query_string=True)),
+    url(r'^api/', include(api_v2.urls)),
     (r'^(?P<region>[^/]+?)/map/', include(maps.site.urls)),
     (r'^(?P<region>[^/]+?)/tags$', RedirectView.as_view(url='/tags/')),
     (r'^(?P<region>[^/]+?)/tags/', include('tags.urls', 'tags', 'tags')),
