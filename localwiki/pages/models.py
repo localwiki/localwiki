@@ -142,7 +142,7 @@ class Page(models.Model):
                     for f in rel_obj._meta.many_to_many)
 
         # Create a redirect from the starting pagename to the new pagename.
-        redirect = Redirect(source=self.slug, destination=new_p)
+        redirect = Redirect(source=self.slug, destination=new_p, region=self.region)
         # Creating the redirect causes the starting page to be deleted.
         redirect.save()
 

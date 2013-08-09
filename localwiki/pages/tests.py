@@ -191,7 +191,7 @@ class PageTest(TestCase):
         p.rename_to("New Page With FKs")
 
         new_p = Page.objects.get(name="New Page With FKs", region=self.region)
-        self.assertEqual(len(MapData.objects.filter(page=new_p)), 1)
+        self.assertEqual(len(MapData.objects.filter(page=new_p, region=self.region)), 1)
         self.assertEqual(len(new_p.pagetagset.tags.all()), 1)
         # Two redirects: one we created explicitly and one that was
         # created during rename_to()

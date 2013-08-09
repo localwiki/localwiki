@@ -11,9 +11,12 @@ import exceptions
 
 
 class Redirect(models.Model):
-    source = models.SlugField(max_length=255, unique=True, editable=False)
+    source = models.SlugField(max_length=255, editable=False)
     destination = models.ForeignKey(Page)
     region = models.ForeignKey(Region, null=True)
+
+    class Meta:
+        unique_together = ('source', 'region')
 
     def __unicode__(self):
         return "%s ---> %s" % (self.source, self.destination)

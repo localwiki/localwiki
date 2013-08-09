@@ -8,10 +8,16 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Removing unique constraint on 'Redirect', fields ['source']
+        db.delete_unique('redirects_redirect', ['source'])
+
         # Adding field 'Redirect.region'
         db.add_column('redirects_redirect', 'region',
                       self.gf('django.db.models.fields.related.ForeignKey')(to=orm['regions.Region'], null=True),
                       keep_default=False)
+
+        # Adding unique constraint on 'Redirect', fields ['source', 'region']
+        db.create_unique('redirects_redirect', ['source', 'region_id'])
 
         # Adding field 'Redirect_hist.region'
         db.add_column('redirects_redirect_hist', 'region',
@@ -20,8 +26,14 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
+        # Removing unique constraint on 'Redirect', fields ['source', 'region']
+        db.delete_unique('redirects_redirect', ['source', 'region_id'])
+
         # Deleting field 'Redirect.region'
         db.delete_column('redirects_redirect', 'region_id')
+
+        # Adding unique constraint on 'Redirect', fields ['source']
+        db.create_unique('redirects_redirect', ['source'])
 
         # Deleting field 'Redirect_hist.region'
         db.delete_column('redirects_redirect_hist', 'region_id')
@@ -88,11 +100,11 @@ class Migration(SchemaMigration):
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '255'})
         },
         'redirects.redirect': {
-            'Meta': {'object_name': 'Redirect'},
+            'Meta': {'unique_together': "(('source', 'region'),)", 'object_name': 'Redirect'},
             'destination': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['pages.Page']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'region': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['regions.Region']", 'null': 'True'}),
-            'source': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '255'})
+            'source': ('django.db.models.fields.SlugField', [], {'max_length': '255'})
         },
         'redirects.redirect_hist': {
             'Meta': {'ordering': "('-history_date',)", 'object_name': 'Redirect_hist'},
