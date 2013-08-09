@@ -15,7 +15,6 @@ class RedirectResource(ModelResource):
 
     class Meta:
         queryset = Redirect.objects.all()
-        detail_uri_name = 'source'
         filtering = {
             'destination': ALL_WITH_RELATIONS,
             'source': ALL,

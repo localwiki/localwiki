@@ -21,55 +21,6 @@ from main.api.authentication import ApiKeyWriteAuthentication
 from models import Page, PageFile, name_to_url, url_to_name, clean_name
 
 
-class PageURLMixin(object):
-    """
-    Makes our resource URIs have nice_underscores_in_them_etc!
-
-    Quotes our resource URIs using our `name_to_url` method, and looks them
-    up using `url_to_name`
-    """
-    def remove_api_resource_names(self, url_dict):
-        # Using this method to do processing of kwargs is a TOTAL HACK,
-        # but this is the only method that's called on every set of kwargs
-        # on every get/delete/update, etc.
-        url_dict = super(PageURLMixin, self).remove_api_resource_names(
-            url_dict)
-        uri_name_val = url_dict.get(self._meta.detail_uri_name)
-        if uri_name_val is not None:
-            url_dict[self._meta.detail_uri_name] = url_to_name(uri_name_val)
-
-        return url_dict
-
-    def detail_uri_kwargs(self, bundle_or_obj):
-        kwargs = super(PageURLMixin, self).detail_uri_kwargs(bundle_or_obj)
-        uri_name_val = kwargs[self._meta.detail_uri_name]
-        kwargs[self._meta.detail_uri_name] = name_to_url(uri_name_val)
-
-        return kwargs
-
-    def base_urls(self):
-        return [
-            url(r"^(?P<resource_name>%s)%s$" %
-                (self._meta.resource_name, trailing_slash()),
-                 self.wrap_view('dispatch_list'), name="api_dispatch_list"),
-            url(r"^(?P<resource_name>%s)/schema%s$" %
-                (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('get_schema'), name="api_get_schema"),
-            url(r"^(?P<resource_name>%s)/set/(?P<%s_list>\w[\w/;-]*)%s$" %
-                (self._meta.resource_name, self._meta.detail_uri_name,
-                 trailing_slash()), self.wrap_view('get_multiple'),
-                name="api_get_multiple"),
-            # Our lookup field.
-            # Slugs can't start with the _ character or contain a
-            # slash surrounded by the _ character. We do this so we can
-            # define URLs for sub-resources more easily.
-            url(r"^(?P<resource_name>%s)/(?P<%s>[^_]((?!(/_)|(_/)).)*?)%s$" %
-                (self._meta.resource_name, self._meta.detail_uri_name,
-                 trailing_slash()), self.wrap_view('dispatch_detail'),
-                name="api_dispatch_detail"),
-        ]
-
-
 class PageValidation(Validation):
     def is_valid(self, bundle, request=None):
         errors = {}
@@ -117,7 +68,7 @@ class FileHistoryResource(FileResource, ModelHistoryResource):
         ordering = ['history_date']
 
 
-class PageResource(PageURLMixin, ModelResource):
+class PageResource(ModelResource):
     region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
     map = fields.ToOneField('maps.api.MapResource', 'mapdata', null=True,
         readonly=True)
@@ -127,7 +78,6 @@ class PageResource(PageURLMixin, ModelResource):
     class Meta:
         queryset = Page.objects.all()
         resource_name = 'page'
-        detail_uri_name = 'name'
         filtering = {
             'name': ALL,
             'slug': ALL,
@@ -147,7 +97,7 @@ class PageResource(PageURLMixin, ModelResource):
                 (self._meta.resource_name, trailing_slash()),
                  self.wrap_view('get_search'), name="api_get_search"),
         ]
-        # and get the base class' URLs (our slug stuff)
+        # and get the base class' URLs
         l += super(PageResource, self).prepend_urls()
         return l
 
@@ -216,10 +166,6 @@ class PageResource(PageURLMixin, ModelResource):
         return bundle
 
 
-# We don't use the PageURLMixin approach here because it becomes
-# too complicated to generate pretty URLs with the historical version
-# identifiers. TODO: Fix this. Maybe easier now with
-# `detail_uri_name`
 class PageHistoryResource(ModelHistoryResource):
     region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
 

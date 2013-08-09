@@ -4,20 +4,18 @@ from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie.contrib.gis import resources as gis_resources
 
 from models import MapData
-import pages.api  # Scoped import to prevent ImportError.
 from main.api import api
 from main.api.resources import ModelHistoryResource
 from main.api.authentication import ApiKeyWriteAuthentication
 
 
-class MapResource(pages.api.PageURLMixin, gis_resources.ModelResource):
+class MapResource(gis_resources.ModelResource):
     region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
     page = fields.ToOneField('pages.api.PageResource', 'page', full=True)
 
     class Meta:
         queryset = MapData.objects.all()
         resource_name = 'map'
-        detail_uri_name = 'page__name'
         filtering = {
             'page': ALL_WITH_RELATIONS,
             'points': ALL,
@@ -31,10 +29,6 @@ class MapResource(pages.api.PageURLMixin, gis_resources.ModelResource):
         authorization = DjangoAuthorization()
 
 
-# We don't use detail_uri_name here because it becomes too complicated
-# to generate pretty URLs with the historical version identifers.
-# TODO: Fix this. Maybe easier now with `detail_uri_name` and the uri prep
-# method.
 class MapHistoryResource(gis_resources.ModelResource, ModelHistoryResource):
     region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
     page = fields.ToOneField('pages.api.PageHistoryResource', 'page')
