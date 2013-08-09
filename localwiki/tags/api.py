@@ -21,6 +21,8 @@ class ChangePageAuthorization(ExtendedDjangoAuthorization):
 
 
 class TagResource(ModelResource):
+    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
+
     class Meta:
         resource_name = 'tag'
         queryset = Tag.objects.all()
@@ -38,6 +40,7 @@ api.register(TagResource())
 
 
 class PageTagSetResource(PageURLMixin, ModelResource):
+    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
     page = fields.ToOneField('pages.api.PageResource', 'page')
     tags = fields.ToManyField(TagResource, 'tags')
 
@@ -60,6 +63,7 @@ class PageTagSetResource(PageURLMixin, ModelResource):
 # TODO: Fix this. Maybe easier now with `detail_uri_name` and the uri prep
 # method.
 class PageTagSetHistoryResource(ModelHistoryResource):
+    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
     page = fields.ToOneField('pages.api.PageHistoryResource', 'page')
     tags = fields.ToManyField(TagResource, 'tags')
 

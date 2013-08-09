@@ -10,7 +10,7 @@ import qsstats
 
 from pages.models import Page, PageFile
 from regions.models import Region
-from regions.views import RegionMixin
+from regions.views import RegionMixin, TemplateView
 from maps.models import MapData
 from redirects.models import Redirect
 from utils.views import JSONView
@@ -23,7 +23,11 @@ COMPLETE_CACHE_TIME = 60 * 60 * 5
 EASIER_CACHE_TIME = 60  # cache easier stuff for 60 seconds.
 
 
-class DashboardView(RegionMixin, JSONView):
+class DashboardView(TemplateView):
+    template_name = 'dashboard/index.html'
+
+
+class DashboardRenderView(RegionMixin, JSONView):
     def get_nums(self):
         region = self.get_region()
         nums = cache.get('region:%s:dashboard_nums' % region.slug)

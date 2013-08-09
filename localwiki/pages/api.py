@@ -14,10 +14,11 @@ from tastypie.authorization import DjangoAuthorization
 from tastypie.utils import trailing_slash
 
 from redirects.models import Redirect
-from models import Page, PageFile, name_to_url, url_to_name, clean_name
 from main.api import api
 from main.api.resources import ModelHistoryResource
 from main.api.authentication import ApiKeyWriteAuthentication
+
+from models import Page, PageFile, name_to_url, url_to_name, clean_name
 
 
 class PageURLMixin(object):
@@ -86,6 +87,8 @@ class PageValidation(Validation):
 
 # TODO: move this under /page/<slug>/_file/<filename>?
 class FileResource(ModelResource):
+    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
+
     class Meta:
         queryset = PageFile.objects.all()
         resource_name = 'file'
@@ -100,6 +103,8 @@ class FileResource(ModelResource):
 
 
 class FileHistoryResource(FileResource, ModelHistoryResource):
+    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
+
     class Meta:
         resource_name = 'file_version'
         queryset = PageFile.versions.all()
@@ -113,6 +118,7 @@ class FileHistoryResource(FileResource, ModelHistoryResource):
 
 
 class PageResource(PageURLMixin, ModelResource):
+    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
     map = fields.ToOneField('maps.api.MapResource', 'mapdata', null=True,
         readonly=True)
     page_tags = fields.ToOneField('tags.api.PageTagSetResource', 'pagetagset',
@@ -215,6 +221,8 @@ class PageResource(PageURLMixin, ModelResource):
 # identifiers. TODO: Fix this. Maybe easier now with
 # `detail_uri_name`
 class PageHistoryResource(ModelHistoryResource):
+    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
+
     class Meta:
         resource_name = 'page_version'
         queryset = Page.versions.all()

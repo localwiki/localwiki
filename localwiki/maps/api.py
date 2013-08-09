@@ -11,6 +11,7 @@ from main.api.authentication import ApiKeyWriteAuthentication
 
 
 class MapResource(pages.api.PageURLMixin, gis_resources.ModelResource):
+    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
     page = fields.ToOneField('pages.api.PageResource', 'page', full=True)
 
     class Meta:
@@ -35,6 +36,7 @@ class MapResource(pages.api.PageURLMixin, gis_resources.ModelResource):
 # TODO: Fix this. Maybe easier now with `detail_uri_name` and the uri prep
 # method.
 class MapHistoryResource(gis_resources.ModelResource, ModelHistoryResource):
+    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
     page = fields.ToOneField('pages.api.PageHistoryResource', 'page')
 
     class Meta:

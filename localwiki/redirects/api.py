@@ -10,6 +10,7 @@ from main.api.authentication import ApiKeyWriteAuthentication
 
 
 class RedirectResource(ModelResource):
+    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
     destination = fields.ForeignKey(PageResource, 'destination')
 
     class Meta:
@@ -27,6 +28,7 @@ class RedirectResource(ModelResource):
 # too complicated to generate pretty URLs with the historical version
 # identifiers.
 class RedirectHistoryResource(ModelHistoryResource):
+    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
     destination = fields.ForeignKey(PageHistoryResource, 'destination')
 
     class Meta:
