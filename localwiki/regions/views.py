@@ -45,3 +45,8 @@ class RegionCreateView(CreateView):
     def get_success_url(self):
         return reverse('pages:frontpage', args=[self.object.slug])
 
+    def form_valid(self, form):
+        response = super(RegionCreateView, self).form_valid(form)
+        # Create the initial pages, etc in the region
+        self.object.populate_region()
+        return response

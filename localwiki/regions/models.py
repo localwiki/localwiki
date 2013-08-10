@@ -3,6 +3,8 @@ import unicodedata
 from urllib import unquote_plus
 
 from django.utils.translation import ugettext_lazy
+from django.db import IntegrityError
+from django.utils.translation import ugettext as _
 from django.template.defaultfilters import stringfilter
 
 from django.db import models
@@ -18,6 +20,14 @@ class Region(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.slug)
         super(Region, self).save(*args, **kwargs)
+
+    def populate_region(self, *args, **kwargs):
+        from pages.models import Page
+        from initial_data import populate_region
+
+        if Page.objects.filter(region=self):
+            raise IntegrityError(_("Region already has pages in it"))
+        populate_region(self)
 
 
 SLUGIFY_KEEP = r"\.,_"
@@ -46,5 +56,4 @@ slugify = stringfilter(slugify)
 
 
 # For registration calls
-import signals
 import api
