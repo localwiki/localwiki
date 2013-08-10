@@ -47,8 +47,9 @@ class RegionCreateView(CreateView):
 
     def get_form_kwargs(self):
         kwargs = super(RegionCreateView, self).get_form_kwargs()
-        kwargs['data'] = kwargs['data'].copy()  # otherwise immutable
-        kwargs['data']['slug'] = slugify(kwargs['data']['slug'])
+        if kwargs.get('data'):
+            kwargs['data'] = kwargs['data'].copy()  # otherwise immutable
+            kwargs['data']['slug'] = slugify(kwargs['data']['slug'])
         return kwargs
 
     def form_valid(self, form):
