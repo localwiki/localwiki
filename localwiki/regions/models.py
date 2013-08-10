@@ -14,8 +14,8 @@ class Region(models.Model):
     full_name = models.CharField(max_length=255,
         help_text=ugettext_lazy("The full name of this region, e.g. 'San Francisco'"))
     slug = models.SlugField(max_length=255, unique=True,
-        help_text=ugettext_lazy("A very short name for this region, e.g. 'sf'. "
-            "Spaces okay, but keep it short!"))
+        help_text=ugettext_lazy("A very short name for this region that will appear in URLs, e.g. 'sf'. "
+            "Spaces okay, but keep it short and memorable!"))
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.slug)
@@ -30,7 +30,7 @@ class Region(models.Model):
         populate_region(self)
 
 
-SLUGIFY_KEEP = r"\.,_"
+SLUGIFY_KEEP = r"\.-"
 SLUGIFY_MISC_CHARS = re.compile(('[^\w\s%s]' % SLUGIFY_KEEP), re.UNICODE)
 def slugify(value):
     """
@@ -49,7 +49,7 @@ def slugify(value):
     # remove non-{word,space,keep} characters
     value = re.sub(SLUGIFY_MISC_CHARS, '', value)
     value = value.strip()
-    value = re.sub('[\s]+', '_', value)
+    value = re.sub('[\s_]+', '-', value)
 
     return value.lower()
 slugify = stringfilter(slugify)
