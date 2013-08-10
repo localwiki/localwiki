@@ -46,4 +46,5 @@ slugify = stringfilter(slugify)
 
 
 # For registration calls
+import signals
 import api
