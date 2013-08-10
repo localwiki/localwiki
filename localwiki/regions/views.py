@@ -3,9 +3,10 @@ from django.views.generic import TemplateView as DjangoTemplateView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 
-from utils.views import CreateObjectMixin
+from localwiki.utils.views import CreateObjectMixin
 
 from models import Region, slugify
+from forms import RegionForm
 
 
 class RegionMixin(object):
@@ -41,6 +42,7 @@ class MainPageView(ListView):
 
 class RegionCreateView(CreateView):
     model = Region
+    form_class = RegionForm
 
     def get_success_url(self):
         return reverse('pages:frontpage', args=[self.object.slug])

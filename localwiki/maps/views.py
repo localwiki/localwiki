@@ -21,7 +21,7 @@ from pages.constants import page_base_path
 from regions.views import RegionMixin
 from regions.models import Region
 
-from widgets import InfoMap
+from widgets import InfoMap, map_options_for_region
 from models import MapData
 from forms import MapForm
 from django.utils.html import escape
@@ -57,9 +57,11 @@ class MapDetailView(Custom404Mixin, RegionMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(MapDetailView, self).get_context_data(**kwargs)
 
+        options = map_options_for_region(self.get_region())
+        options['permalink'] = True
         context['date'] = self.get_object_date()
         context['map'] = InfoMap([(self.object.geom, self.object.page.name)],
-            options={'permalink': True})
+            options=options)
         return context
 
 
@@ -123,11 +125,15 @@ class MapGlobalView(RegionMixin, ListView):
 
     def get_map(self):
         map_objects = self.get_map_objects()
-        return InfoMap(map_objects, options={
+        options = map_options_for_region(self.get_region())
+        options.update({
             'dynamic': self.dynamic,
             'zoomToDataExtent': self.zoom_to_data,
             'permalink': self.permalink,
-            'cluster': True})
+            'cluster': True
+        })
+
+        return InfoMap(map_objects, options=options)
 
 
 class MapAllObjectsAsPointsView(MapGlobalView):
@@ -287,8 +293,9 @@ class MapRevertView(MapVersionDetailView, RevertView):
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
 
+        options = map_options_for_region(self.get_region())
         context['show_revision'] = True
-        context['map'] = InfoMap([(self.object.geom, self.object.page.name)])
+        context['map'] = InfoMap([(self.object.geom, self.object.page.name)], options=options)
         context['date'] = self.object.version_info.date
         return context
 

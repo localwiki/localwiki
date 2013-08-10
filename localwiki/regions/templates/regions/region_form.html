@@ -7,9 +7,37 @@
 
 {% block header_title %}{% trans "Add a region" %}{% endblock %}
 
+{% block messages %}
+  {% if form.errors %}
+    <ul class="messages">
+      {% for errors in form.errors.values %}
+        {% for msg in errors %}
+          <li>{{ msg }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}
+
 {% block content %}
 <form action="" method="post">{% csrf_token %}
-    {{ form.as_p }}
+    <p>
+    {{ form.full_name.errors }}
+    {{ form.full_name.label_tag }}: {{ form.full_name }}
+    {{ form.full_name.help_text }}
+    </p>
+    <p>
+    {{ form.slug.errors }}
+    {{ form.slug.label_tag }}: {{ form.slug }}
+    {{ form.slug.help_text }}
+    </p>
+    <p>
+    {{ form.geom.errors }}
+    <label for="id_geom">{% trans "Rough area the region will cover" %}</label>:
+    {{ form.geom }}
+    </p>
+
     <input type="submit" value="Add region" />
 </form>
 {% endblock %}

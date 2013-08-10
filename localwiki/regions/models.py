@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.utils.translation import ugettext as _
 from django.template.defaultfilters import stringfilter
 
-from django.db import models
+from django.contrib.gis.db import models
 
 
 class Region(models.Model):
@@ -16,6 +16,7 @@ class Region(models.Model):
     slug = models.SlugField(max_length=255, unique=True,
         help_text=ugettext_lazy("A very short name for this region that will appear in URLs, e.g. 'sf'. "
             "Spaces okay, but keep it short and memorable!"))
+    geom = models.MultiPolygonField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.slug)
@@ -28,6 +29,12 @@ class Region(models.Model):
         if Page.objects.filter(region=self):
             raise IntegrityError(_("Region already has pages in it"))
         populate_region(self)
+
+
+class RegionSettings(models.Model):
+    region = models.OneToOneField(Region)
+    region_center = models.PointField()
+    region_zoom_level = models.IntegerField()
 
 
 SLUGIFY_KEEP = r"\.-"
@@ -56,4 +63,5 @@ slugify = stringfilter(slugify)
 
 
 # For registration calls
+import signals
 import api

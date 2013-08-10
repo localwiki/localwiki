@@ -23,10 +23,13 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     
+    {% if region %}
     <script type="text/javascript">
         var region_id = {{ region.id }};
         var region_slug = '{{ region.slug }}';
     </script>
+    {% endif %}
+
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/enquire.min.js"></script>
     <script type="text/javascript" src="{% static "theme/js/typeahead.min.js" %}"></script>

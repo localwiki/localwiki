@@ -41,3 +41,11 @@ class InfoMap(MediaMixin, widgets.InfoMap):
         self.options['layers'] = self.options['layers'][:max_layers]
         return val
 
+
+def map_options_for_region(region):
+    region_center = region.regionsettings.region_center
+    return {
+        'default_lon': region_center.x,
+        'default_lat': region_center.y,
+        'default_zoom': region.regionsettings.region_zoom_level,
+    }
