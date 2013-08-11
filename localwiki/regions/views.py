@@ -2,6 +2,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView as DjangoTemplateView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
+from django.conf import settings
 
 from localwiki.utils.views import CreateObjectMixin
 
@@ -33,11 +34,12 @@ class RegionMixin(object):
 class TemplateView(RegionMixin, DjangoTemplateView):
     pass
 
-
 class MainPageView(ListView):
     model = Region
     context_object_name = 'regions'
-    queryset = Region.objects.all().order_by('full_name')
+
+    def get_queryset(self):
+        return Region.objects.all().exclude(slug=settings.MAIN_REGION).order_by('full_name')
 
 
 class RegionCreateView(CreateView):
