@@ -29,7 +29,7 @@ from tags.models import PageTagSet, Tag
 
 class PageTest(TestCase):
     def setUp(self):
-        self.region = Region(full_name='Test region', slug='test_region')
+        self.region = Region(full_name='Test region', slug='test-region')
         self.region.save()
 
     def test_clean_name(self):
@@ -462,7 +462,7 @@ class MergeModelFormTest(TestCase):
 
 class HTMLToTemplateTextTest(TestCase):
     def setUp(self):
-        self.region = Region(full_name='Test region', slug='test_region')
+        self.region = Region(full_name='Test region', slug='test-region')
         self.region.save()
         self.context = {'region': self.region}
 
@@ -544,7 +544,7 @@ class HTMLToTemplateTextTest(TestCase):
         
 class PluginTest(TestCase):
     def setUp(self):
-        self.region = Region(full_name='Test region', slug='test_region')
+        self.region = Region(full_name='Test region', slug='test-region')
         self.region.save()
         self.context = {'region': self.region}
 
@@ -610,7 +610,7 @@ class PluginTest(TestCase):
         html = template.render(context)
         self.assertEqual(html,
                     ('<div class="included_page_wrapper">'
-                     '<h2><a href="/test_region/Explore">Explore</a></h2>'
+                     '<h2><a href="/test-region/Explore">Explore</a></h2>'
                      '<p>Some text</p>'
                      '</div>'))
 
@@ -657,7 +657,7 @@ class PluginTest(TestCase):
         context = Context({'page': a, 'region': self.region})
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
-        self.failUnless(('Unable to include <a href="/test_region/New_page"'
+        self.failUnless(('Unable to include <a href="/test-region/New_page"'
                          ' class="missing_link">New page</a>') in html)
 
     def test_endless_include(self):
@@ -669,7 +669,7 @@ class PluginTest(TestCase):
         context = Context({'page': a, 'region': self.region})
         template = Template(html_to_template_text(a.content, context))
         html = template.render(context)
-        self.failUnless(('Unable to include <a href="/test_region/Front_Page">Front Page'
+        self.failUnless(('Unable to include <a href="/test-region/Front_Page">Front Page'
                          '</a>: endless include loop') in html)
 
     def test_double_include(self):
@@ -723,7 +723,7 @@ class PluginTest(TestCase):
         html = ('<p><a class="external something" '
                    'href="http://example.org/?t=1&amp;i=2">hi</a></p>')
         template = Template(html_to_template_text(html))
-        rendered = template.render(Context({'page': page}))
+        rendered = template.render(Context({'page': page, 'region': self.region}))
         self.failUnless('http://example.org/?t=1&amp;i=2' in rendered)
 
 
@@ -732,7 +732,7 @@ class XSSTest(TestCase):
     Exploits adapted from http://ha.ckers.org/xss.html
     """
     def setUp(self):
-        self.region = Region(full_name='Test region', slug='test_region')
+        self.region = Region(full_name='Test region', slug='test-region')
         self.region.save()
 
     def encode_hex_entities(self, string):
