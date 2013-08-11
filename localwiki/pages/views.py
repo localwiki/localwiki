@@ -425,7 +425,7 @@ def upload(request, **kwargs):
 
 
 class RenameForm(forms.Form):
-    pagename = forms.CharField(max_length=255, label=ugettext_lazy("Pagename"))
+    pagename = forms.CharField(max_length=255, label=ugettext_lazy("New page name"))
     comment = forms.CharField(max_length=150, required=False, label=ugettext_lazy("Comment"))
 
 
