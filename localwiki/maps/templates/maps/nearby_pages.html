@@ -1,0 +1,29 @@
+{% extends "pages/base.html" %}
+{% load i18n %}
+
+{% block media %}
+    {{ block.super }}
+   {# <script src="static/geoPosition.js"></script> #}
+    {% if not nearby_maps %}
+    <script type="text/javascript">
+        var nearbyView = function(position) {
+            document.location = '?lat=' + position.coords.latitude + '&lng=' + position.coords.longitude;
+        };
+        $(function() {
+            navigator.geolocation.getCurrentPosition(nearbyView);
+        });
+
+    </script>
+    {% endif %}
+{% endblock %}
+
+{% block title %}{% trans "Nearby pages" %} - {{ block.super }}{% endblock %}
+{% block header_title %}{% trans "Nearby pages" %}{% endblock %}
+
+{% block content %}
+  <ul>
+  {% for map in nearby_maps %}
+    <li>{{ map.page.name }}</li>
+  {% endfor %}
+  </ul>
+{% endblock %}

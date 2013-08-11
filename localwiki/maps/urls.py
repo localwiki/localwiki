@@ -1,4 +1,5 @@
 from django.conf.urls import *
+from django.views.generic import TemplateView
 
 from utils.constants import DATETIME_REGEXP
 from views import *
@@ -6,6 +7,7 @@ from feeds import MapChangesFeed
 
 urlpatterns = patterns('',
     url(r'^$', MapGlobalView.as_view(), name='global'),
+    url(r'^nearby/?', MapNearbyView.as_view(), name='nearby'),
     url(r'^tags/(?P<tag>.+)', MapForTag.as_view(), name='tagged'),
     url(r'^_objects/$', MapObjectsForBounds.as_view(), name='objects'),
     url(r'^(?P<slug>.+)/_edit$', MapUpdateView.as_view(),  name='edit'),

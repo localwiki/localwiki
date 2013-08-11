@@ -10,6 +10,8 @@ from django.db.models import Q
 from django.views.generic.list import BaseListView
 from olwidget.widgets import InfoMap as OLInfoMap
 from django.contrib.gis.geos.polygon import Polygon
+from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import D
 from django.utils.safestring import mark_safe
 
 from versionutils import diff
@@ -299,3 +301,20 @@ class MapCompareView(diff.views.CompareView):
         # correctly.
         context['map_diff_media'] = InfoMap([]).media + OLInfoMap([]).media
         return context
+
+
+
+class MapNearbyView(ListView):
+    model = MapData
+    template_name = 'maps/nearby_pages.html'
+    context_object_name = 'nearby_maps'
+
+    def get_queryset(self):
+        if not self.request.GET.get('lat'):
+            return []
+        nearby_meters = 1000
+        lat = float(self.request.GET.get('lat'))
+        lng = float(self.request.GET.get('lng'))
+        user_location = Point(lng, lat)
+        queryset = MapData.objects.filter(points__distance_lte=(user_location, D(m=nearby_meters)))
+        return queryset
