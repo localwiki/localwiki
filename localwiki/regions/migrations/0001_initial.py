@@ -21,8 +21,8 @@ class Migration(SchemaMigration):
         db.create_table('regions_regionsettings', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('region', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['regions.Region'], unique=True)),
-            ('region_center', self.gf('django.contrib.gis.db.models.fields.PointField')()),
-            ('region_zoom_level', self.gf('django.db.models.fields.IntegerField')()),
+            ('region_center', self.gf('django.contrib.gis.db.models.fields.PointField')(null=True)),
+            ('region_zoom_level', self.gf('django.db.models.fields.IntegerField')(null=True)),
         ))
         db.send_create_signal('regions', ['RegionSettings'])
 
@@ -47,8 +47,8 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'RegionSettings'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'region': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['regions.Region']", 'unique': 'True'}),
-            'region_center': ('django.contrib.gis.db.models.fields.PointField', [], {}),
-            'region_zoom_level': ('django.db.models.fields.IntegerField', [], {})
+            'region_center': ('django.contrib.gis.db.models.fields.PointField', [], {'null': 'True'}),
+            'region_zoom_level': ('django.db.models.fields.IntegerField', [], {'null': 'True'})
         }
     }
 

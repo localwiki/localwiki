@@ -33,8 +33,9 @@ class Region(models.Model):
 
 class RegionSettings(models.Model):
     region = models.OneToOneField(Region)
-    region_center = models.PointField()
-    region_zoom_level = models.IntegerField()
+    # Can be null for the 'main' region, which may not have a geometry.
+    region_center = models.PointField(null=True)
+    region_zoom_level = models.IntegerField(null=True)
 
 
 SLUGIFY_KEEP = r"\.-"
