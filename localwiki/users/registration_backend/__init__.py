@@ -49,7 +49,11 @@ region_routing_pattern = re.compile(
 def registration_complete_msg(sender, user, request, **kwargs):
     qs = parse_qs(urlparse(request.get_full_path()).query)
     re_match = region_routing_pattern.match(qs['next'][0])
-    region_slug = re_match.group('region')
+    if re_match:
+        region_slug = re_match.group('region')
+    else:
+        # Not in a particular region -- we're on the front page or something.
+        region_slug = settings.MAIN_REGION
 
     user_slug = 'Users/%s' % user.username
     users_edit_url = reverse('pages:edit', kwargs={'slug': user_slug, 'region': region_slug})

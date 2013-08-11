@@ -18,4 +18,4 @@ def setup_region_settings(sender, instance, created, raw, **kwargs):
     region_settings.save()
 
 
-post_save.connect(setup_region_settings, sender=Region)
+#post_save.connect(setup_region_settings, sender=Region)

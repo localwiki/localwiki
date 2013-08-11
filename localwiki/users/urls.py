@@ -3,6 +3,9 @@ from django.views.generic import TemplateView
 
 from registration.views import register
 
+from views import UserPageView
+
+
 urlpatterns = patterns('',
     url(r'^register/$', register,
         {'backend': 'users.registration_backend.SaplingBackend'},
@@ -11,4 +14,5 @@ urlpatterns = patterns('',
             template_name='registration/registration_closed.html'),
         name='registration_disallowed'),
     (r'', include('registration.auth_urls')),
+    (r'(?P<username>[^/]*)/*(?P<rest>.*)', UserPageView.as_view()),
 )
