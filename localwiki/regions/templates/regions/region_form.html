@@ -7,6 +7,16 @@
 
 {% block header_title %}{% trans "Add a region" %}{% endblock %}
 
+{% block body %}
+<body>
+   <div class="content_type region">
+   {% block everything_wrapper %}
+        {{ block.super }}
+   {% endblock %}
+   </div>
+</body>
+{% endblock %}
+
 {% block messages %}
   {% if form.errors %}
     <ul class="messages">
@@ -22,21 +32,21 @@
 
 {% block content %}
 <form action="" method="post">{% csrf_token %}
-    <div class="slug-choice">
-    {{ form.slug.errors }}
-    localwiki.org / {{ form.slug }}
-    {{ form.slug.help_text }}
+    <div class="item slug_choice">
+        {{ form.slug.errors }}
+        <div class="url_demo"><span class="hub_base_url">localwiki.net</span> <span class="slash">/</span> {{ form.slug }}</div>
+        <div class="help_text">{{ form.slug.help_text }}</div>
     </div>
-    <p>
-    {{ form.full_name.errors }}
-    {{ form.full_name.label_tag }}: {{ form.full_name }}
-    {{ form.full_name.help_text }}
-    </p>
-    <p>
-    {{ form.geom.errors }}
-    <label for="id_geom">{% trans "Rough area the region will cover" %}</label>:
-    {{ form.geom }}
-    </p>
+    <div class="item">
+        {{ form.full_name.errors }}
+        {{ form.full_name.label_tag }}: {{ form.full_name }}
+        <div class="help_text">{{ form.full_name.help_text }}</div>
+    </div>
+    <div class="item">
+        {{ form.geom.errors }}
+        <label for="id_geom">{% trans "Draw the rough area the region will cover" %}</label>:
+        {{ form.geom }}
+    </div>
 
     <input type="submit" value="Add region" />
 </form>

@@ -15,7 +15,7 @@ class Region(models.Model):
         help_text=ugettext_lazy("The full name of this region, e.g. 'San Francisco'"))
     slug = models.SlugField(max_length=255, unique=True,
         help_text=ugettext_lazy("A very short name for this region that will appear in URLs, e.g. 'sf'. "
-            "Spaces okay, but keep it short and memorable!"))
+            "Keep it short and memorable!"))
     geom = models.MultiPolygonField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
