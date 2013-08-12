@@ -42,9 +42,10 @@
         {{ form.full_name.label_tag }}: {{ form.full_name }}
         <div class="help_text">{{ form.full_name.help_text }}</div>
     </div>
-    <div class="item">
+    <div class="item geom">
         {{ form.geom.errors }}
         <label for="id_geom">{% trans "Draw the rough area the region will cover" %}</label>:
+        <div class="help_text">{% trans "Pick an area roughly the size of a city. Don't worry about being exact!" %}</div>
         {{ form.geom }}
     </div>
 

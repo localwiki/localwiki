@@ -1578,7 +1578,7 @@ form #content_footer {
 .region form .item {
     margin-top: 1em;
     margin-bottom: 1em; 
-    padding: 1.2em 1em 1em 1em;
+    padding: 1.1em 1em 1em 1em;
     background-color: #ededef;
     border-radius: 5px 5px 5px 5px;
     -moz-border-radius: 5px 5px 5px 5px;
@@ -1587,6 +1587,9 @@ form #content_footer {
 .region form .item {
     margin-top: 2em;
     margin-bottom: 2em;
+}
+.region .geom .help_text {
+    margin-top: 0.4em;
 }
 .region #id_geom {
     margin-top: 1em!important;
