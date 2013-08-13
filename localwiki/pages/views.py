@@ -153,7 +153,7 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin,
 
     def create_object(self):
         pagename = clean_name(self.kwargs['original_slug'])
-        content = _('<p>Describe %s here</p>') % pagename
+        content = _('<p>What do you know about %s?</p>') % pagename
         if 'template' in self.request.GET:
             try:
                 p = Page.objects.get(
