@@ -172,6 +172,7 @@ setup(
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom5',
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom5',
         'https://github.com/philipn/django-south/tarball/localwiki_master#egg=South-0.8.1-custom2',
+        'https://github.com/philipn/django-constance/tarball/zip_safe#egg=django-constance-0.6',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=localwiki.manage:main'],
