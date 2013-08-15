@@ -74,7 +74,7 @@ urlpatterns = patterns('',
     url(r'^(?P<region>[^/]+?)/(?P<slug>.+)/_tags/_history/(?P<date>%s)$'
         % DATETIME_REGEXP, slugify(PageTagSetVersionDetailView.as_view()),
         name='tags-as_of_date'),
-    url(r'^(?P<slug>.+)/_tags/_history/compare',
+    url(r'^(?P<region>[^/]+?)/(?P<slug>.+)/_tags/_history/compare',
         slugify(PageTagSetCompareView.as_view())),
     url((r'^(?P<region>[^/]+?)/(?P<slug>.+)/_tags/_history/'
             r'(?P<version1>[0-9]+)\.\.\.(?P<version2>[0-9]+)?$'),
