@@ -10,8 +10,11 @@ def setup_region_settings(sender, instance, created, raw, **kwargs):
         # being imported.
         return
     region_settings = RegionSettings.objects.filter(region=instance)
-    if not region_settings:
+    if region_settings:
+        region_settings = region_settings[0]
+    else:
         region_settings = RegionSettings(region=instance)
+    
     if instance.geom:
         region_settings.region_center = instance.geom.centroid
         region_settings.region_zoom_level = get_zoom_for_extent(instance.geom.envelope)
