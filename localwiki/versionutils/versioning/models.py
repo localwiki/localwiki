@@ -497,6 +497,10 @@ class ChangesTracker(object):
         """
         Initialize the ManyToMany sets on a historical instance.
         """
+        if not hasattr(instance, '_track_changes') or not instance._track_changes:
+            # Skip this when we have version tracking disabled.
+            return
+
         for field in instance._meta.many_to_many:
             parent_model = field.rel.to
             if is_versioned(parent_model):
@@ -515,7 +519,7 @@ class ChangesTracker(object):
         Args:
             attname: Attribute name of the m2m field on the base model.
         """
-        if not hasattr(instance, '_track_changes'):
+        if not hasattr(instance, '_track_changes') or not instance._track_changes:
             # Skip this signal when we have version tracking disabled.
             return
 
