@@ -8,14 +8,14 @@ from models import Page
 
 def _delete_page(sender, instance, raw, **kws):
     # Delete the source page if it exists.
-    if Page.objects.filter(slug=instance.source):
-        p = Page.objects.get(slug=instance.source)
+    if Page.objects.filter(slug=instance.source, region=instance.region):
+        p = Page.objects.get(slug=instance.source, region=instance.region)
         p.delete(comment=_("Redirect created"))
 
 
 def _delete_redirect(sender, instance, raw, **kws):
-    if Redirect.objects.filter(source=instance.slug):
-        r = Redirect.objects.get(source=instance.slug)
+    if Redirect.objects.filter(source=instance.slug, region=instance.region):
+        r = Redirect.objects.get(source=instance.slug, region=instance.region)
         r.delete(comment=_("Page created"))
 
 
