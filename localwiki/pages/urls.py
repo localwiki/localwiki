@@ -7,7 +7,7 @@ import models
 from localwiki.utils.constants import DATETIME_REGEXP
 from models import Page
 from views import PageFilebrowserView
-from tags.views import PageTagSetUpdateView, suggest_tags, PageTagSetVersions,\
+from tags.views import PageTagSetUpdateView, PageTagSetVersions,\
     PageTagSetVersionDetailView, PageTagSetCompareView, PageTagSetRevertView
 
 
@@ -122,13 +122,6 @@ urlpatterns = patterns('',
     url(r'^(?P<region>[^/]+?)/_create$', PageCreateView.as_view(), name='create'),
 
     url(r'^(?P<region>[^/]+?)/(?P<slug>.+)/_rename$', PageRenameView.as_view(), name='rename'),
-
-    # TODO: Break this out, use tastypie or something similar
-    ##########################################################
-    # API
-    ##########################################################
-    url(r'^_api/pages/suggest', suggest),
-    url(r'^_api/tags/suggest/(?P<region>[^/]+?)', suggest_tags),
 
     ##########################################################
     # Basic page URLs.

@@ -200,19 +200,18 @@ class PageTagSetRevertView(PermissionRequiredMixin, RegionMixin, RevertView):
             args=[self.kwargs['region'], self.kwargs['slug']])
 
 
-def suggest_tags(request):
+def suggest_tags(request, region=None):
     """
     Simple tag suggest.
     """
     # XXX TODO: Break this out when doing the API work.
     import json
 
-    region_slug = request.kwargs['region']
     term = request.GET.get('term', None)
     if not term:
         return HttpResponse('')
     results = Tag.objects.filter(
         name__istartswith=term,
-        region__slug=region_slug).exclude(pagetagset=None)
+        region__slug=region).exclude(pagetagset=None)
     results = [t.name for t in results]
     return HttpResponse(json.dumps(results))
