@@ -145,7 +145,7 @@ install_requires = [
     'django-tastypie==0.9.12-custom5',
     'django-qsstats-magic==0.7',
     'django-picklefield==0.3.0',
-    'django-constance==0.6.0',
+    'django-constance==0.6-custom1',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
@@ -172,7 +172,7 @@ setup(
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom5',
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom5',
         'https://github.com/philipn/django-south/tarball/localwiki_master#egg=South-0.8.1-custom2',
-        'https://github.com/philipn/django-constance/tarball/zip_safe#egg=django-constance-0.6',
+        'https://github.com/philipn/django-constance/tarball/localwiki#egg=django-constance-0.6-custom1',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=localwiki.manage:main'],

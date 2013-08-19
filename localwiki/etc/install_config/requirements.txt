@@ -15,4 +15,4 @@ django-qsstats-magic==0.7
 -e git+git://github.com/philipn/sorl-thumbnail.git@localwiki#egg=sorl-thumbnail-11.12-custom5
 -e git+git://github.com/philipn/django-south.git@localwiki_master#egg=South-0.8.1-custom2
 django-picklefield==0.3.0
-django-constance==0.6
+-e git+git://github.com/philipn/django-constance.git@localwiki#egg=django-constance-0.6-custom1
