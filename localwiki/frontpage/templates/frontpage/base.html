@@ -46,7 +46,12 @@
         				<br />
         				<br />
         				<h1>
-                        					{% blocktrans %}I want to make a page about <span class="searchbox"><input type="text" name="q" value=""><input type="submit" value="Search or create page"></span></h1>{% endblocktrans %}
+                            <form method="GET" action="{% url 'haystack_search' region=region.slug %}">
+                            {% blocktrans %}
+                                I want to make a page about <span class="searchbox"><input type="text" name="q" value=""><input type="submit" value="Search or create page"></span>
+                            {% endblocktrans %}
+                            </form>
+                        </h1>
         			</td>
         		</tr>
         	</tbody>
