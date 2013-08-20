@@ -270,6 +270,7 @@ INSTALLED_APPS = (
     'users',
     'recentchanges',
     'search',
+    'frontpage',
     'dashboard',
     'main.api',
     'utils',

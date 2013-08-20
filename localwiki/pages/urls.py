@@ -126,8 +126,8 @@ urlpatterns = patterns('',
     ##########################################################
     # Basic page URLs.
     ##########################################################
-    url(r'^(?P<region>[^/]+?)/*$', slugify(PageDetailView.as_view()),
-        kwargs={'slug': 'Front Page'}, name='frontpage'),
+    #url(r'^(?P<region>[^/]+?)/*$', slugify(PageDetailView.as_view()),
+    #    kwargs={'slug': 'Front Page'}, name='frontpage'),
     url(r'^(?P<region>[^/]+?)/(?i)All_Pages/*$', PageListView.as_view(),
         name='index'),
     # Random page

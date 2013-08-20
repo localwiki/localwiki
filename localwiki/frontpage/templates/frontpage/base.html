@@ -1,0 +1,88 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
+{% endblock %}
+
+{% block content_wrapper %}
+<div id="content_wrapper">
+  {% if map %}
+    <div id="content" class="has_map">
+  {% else %}
+    <div id="content">
+  {% endif %}
+  {% block content %}
+    {% if show_revision %}
+      <em class="revision_details">
+          {% blocktrans with version_number=page.version_info.version_number page=old.version_info.date user_link=page.version_info.user_link|safe %}Revision {{ version_number }}
+          ({{ date }} by {{ user_link }}){% endblocktrans %}
+      </em>
+    {% endif %}
+    
+    {% if map %}
+    <div id="map">
+      {{ map }}
+      <div class="info"><a class="view tiny button" href="{% url 'maps:show' slug=page.pretty_slug region=page.region.slug %}">{% trans "View" %}</a><a class="edit tiny button" href="{% url 'maps:edit' slug=page.pretty_slug region=page.region.slug %}">{% trans "Edit" %}</a></div>
+    </div>
+    {% endif %}
+
+    <div id="page">
+        
+        <table class="welcome">
+        	<tbody>
+        		<tr>
+        			<td style="text-align: right;">
+        				<h1>
+        					{% blocktrans with region_name=region.full_name %}Welcome to the {{ region_name }} LocalWiki!{% endblocktrans %}</h1>
+        				<h3>
+        					{% blocktrans with region_name=region.full_name %}A website about {{ region_name }} that <em>anyone</em> can edit{% endblocktrans %}</h3>
+        				<br />
+        				<br />
+        				<br />
+        				<br />
+        				<br />
+        				<br />
+        				<br />
+        				<h1>
+                        					{% blocktrans %}I want to make a page about <span class="searchbox"><input type="text" name="q" value=""><input type="submit" value="Search or create page"></span></h1>{% endblocktrans %}
+        			</td>
+        		</tr>
+        	</tbody>
+        </table>
+
+        <div id="random_pages">
+            <h2>{% trans "Random Pages" %}</h2>
+            <ul>
+            {% for page in random_pages %}
+                <li>{{ page }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <div id="recent_changes">
+            <h2>{% trans "Recent Changes" %}</h2>
+            <ul>
+            {% for page in random_pages %}
+                <li>{{ page }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <div id="tags">
+            <h2>{% trans "Popular Tags" %}</h2>
+            <ul>
+            {% for page in random_pages %}
+                <li>{{ page }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+
+        <div style="clear:both;"></div>
+        <div style="clear:both;"></div>
+    </div>
+  {% endblock %}
+  </div>
+</div>
+{% endblock %}
