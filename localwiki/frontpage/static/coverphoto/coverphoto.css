@@ -1,0 +1,102 @@
+.coverphoto-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-top: -380px;
+  font-size: 80%;
+}
+.coverphoto-container canvas {
+  position: absolute;
+  display: none;
+  z-index: 101;
+}
+.coverphoto-container .coverphoto-photo-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+.coverphoto-container .coverphoto-form {
+  display: none;
+}
+.coverphoto-container .actions {
+  position: absolute;
+  top: 165px;
+  right: 14px;
+  margin-top: -20px;
+  z-index: 4;
+}
+.coverphoto-container .actions .chooser {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 5;
+}
+.coverphoto-container .actions .chooser ul,
+.coverphoto-container .actions .chooser li {
+  margin: 0;
+  padding: 0;
+}
+.coverphoto-container .actions .chooser a {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  padding: 8px 15px 8px 15px;
+  text-align: center;
+  color: #666;
+  /* TODO: explore using purely CSS gradients */
+  background: #E8ECEF url(../img/gradient.png) repeat-x bottom left;
+  text-decoration: none;
+}
+.coverphoto-container .actions .chooser a:hover {
+  text-decoration: none!important;
+  background-color: #bebebe!important;
+}
+.coverphoto-container .actions .chooser .item {
+  display: block;
+}
+.coverphoto-container .actions .chooser .item:hover {
+}
+.coverphoto-container .actions .chooser .sub-menu {
+  display: none;
+}
+.coverphoto-container .actions .edit {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  z-index: 6;
+}
+.coverphoto-container .actions .edit ul,
+.coverphoto-container .actions .edit li {
+  margin: 0;
+  padding: 0;
+}
+.coverphoto-container .actions .edit .item {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  padding: 8px 15px 8px 15px;
+  text-align: center;
+  color: #666;
+  /* TODO: explore using purely CSS gradients */
+  background: #E8ECEF url(../img/gradient.png) repeat-x bottom left;
+  text-decoration: none;
+  float: left;
+}
+.coverphoto-container .actions .edit .item a {
+  display: block;
+  height: 100%;
+  text-decoration: none!important;
+  color: #666;
+}
+.coverphoto-container .actions .edit .item:hover {
+  text-decoration: none!important;
+  background-color: #bebebe!important;
+}
+.coverphoto-container .actions .edit .save {
+  margin-left: 20px;
+  width: 100px;
+}

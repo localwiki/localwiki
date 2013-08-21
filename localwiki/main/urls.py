@@ -11,7 +11,6 @@ import redirects
 import dashboard
 from regions.views import MainPageView, RegionCreateView
 from users.admin import SubscribedList
-from frontpage.views import FrontPageView
 
 from api import api_v2
 
@@ -24,7 +23,7 @@ urlpatterns = patterns('',
     (r'^api/?$', RedirectView.as_view(url='/api/v2/', query_string=True)),
     url(r'^api/', include(api_v2.urls)),
     (r'^_api/', include('main.api.internal_urls')),
-    url(r'^(?P<region>[^/]+?)/(((?i)Front[_ ]Page)/?)?$', FrontPageView.as_view(), name="frontpage"),
+    (r'^(?P<region>[^/]+?)/(((?i)Front[_ ]Page)/?)?', include('frontpage.urls')),
     (r'^(?P<region>[^/]+?)/map/', include(maps.site.urls)),
     (r'^(?P<region>[^/]+?)/tags$', RedirectView.as_view(url='/tags/')),
     (r'^(?P<region>[^/]+?)/tags/', include('tags.urls', 'tags', 'tags')),

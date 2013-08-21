@@ -1,9 +1,11 @@
 {% extends "pages/base.html" %}
 
 {% load url from future %}
+{% load static from staticfiles %}
 {% load i18n %}
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
+<link rel="stylesheet" href="{% static "css/frontpage.css" %}"/>
 {% endblock %}
 
 {% block content_wrapper %}
@@ -28,34 +30,45 @@
     </div>
     {% endif %}
 
-    <div id="page">
-        
-        <table class="welcome">
-        	<tbody>
-        		<tr>
-        			<td style="text-align: right;">
-        				<h1>
-        					{% blocktrans with region_name=region.full_name %}Welcome to the {{ region_name }} LocalWiki!{% endblocktrans %}</h1>
-        				<h3>
-        					{% blocktrans with region_name=region.full_name %}A website about {{ region_name }} that <em>anyone</em> can edit{% endblocktrans %}</h3>
-        				<br />
-        				<br />
-        				<br />
-        				<br />
-        				<br />
-        				<br />
-        				<br />
-        				<h1>
-                            <form method="GET" action="{% url 'haystack_search' region=region.slug %}">
-                            {% blocktrans %}
-                                I want to make a page about <span class="searchbox"><input type="text" name="q" value=""><input type="submit" value="Search or create page"></span>
-                            {% endblocktrans %}
-                            </form>
-                        </h1>
-        			</td>
-        		</tr>
-        	</tbody>
-        </table>
+    <div id="page" class="frontpage">
+
+        <script src="{% static "js/jquery/jquery-ui-1.8.16.custom.min.js" %}"></script>
+        <link rel="stylesheet" href="{% static "coverphoto/coverphoto.css" %}">
+        <script src="{% static "coverphoto/coverphoto.min.js" %}"></script>
+
+        <style type="text/css">
+        </style>
+
+        <script type="text/javascript">
+          $(function() {
+            $('#cover').on('coverPhotoUpdated', function() {
+              set_django_tokens($('.coverphoto-form')[0]);
+              $('.coverphoto-form').get(0).setAttribute('action', '{% url 'coverphoto_upload' region=region.slug %}');
+              $('.coverphoto-form').submit();
+            });
+
+            $("#cover").CoverPhoto({
+              editable: true,
+            });
+
+            $("#cover").bind('coverPhotoUpdated', function(evt, dataUrl) {
+              $(".output").empty();
+              $("<img>").attr("src", dataUrl).appendTo(".output");
+            });
+          });
+        </script>
+
+        <div id="cover" style="{% if frontpage.cover_photo %}background-image: url({{ frontpage.cover_photo.url }});{% endif %}">
+            <div class="contents">
+                <h1 class="primary_title">{% blocktrans with region_name=region.full_name %}Welcome to the {{ region_name }} LocalWiki!{% endblocktrans %}</h1>
+                <h3 class="subtitle">{% blocktrans with region_name=region.full_name %}A website about {{ region_name }} that <em>anyone</em> can edit{% endblocktrans %}</h3>
+                <form class="search_or_create" method="GET" action="{% url 'haystack_search' region=region.slug %}">
+                {% blocktrans %}
+                I want to make a page about <span class="searchbox"><input type="text" name="q" value=""><input type="submit" value="Search or create page"></span>
+                {% endblocktrans %}
+                </form>
+            </div>
+        </div>
 
         <div id="random_pages">
             <h2>{% trans "Random Pages" %}</h2>
