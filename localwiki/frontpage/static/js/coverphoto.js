@@ -1,5 +1,6 @@
 $(function() {
     var cover_form = new FormData(document.getElementById('cover_form'));
+    var cover_ratio = 3.68421;
     var cover_y_position = 0;
     var client_w = null;
     var client_h = null;
@@ -14,6 +15,14 @@ $(function() {
         $('#change_cover_button').hide();
     }
     );
+
+    // Adjust the height of the map cover underlay based on the client's
+    // cover width.  We need to do this in JS because of the way the
+    // OpenLayers JS works.
+    if ($('#cover .underlay.with_map').length > 0) {
+        fix_aspect_ratio();
+        $(window).resize(fix_aspect_ratio);
+    }
 
     $('#change_cover_button').click(function () {
         $('#cover').off('hover');
@@ -56,7 +65,7 @@ $(function() {
     function fix_aspect_ratio() {
         // Set the #cover to the correct aspect ratio
         var client_width = $('#cover').width();
-        $('#cover').height(client_width / 3.68421)
+        $('#cover').height(client_width / cover_ratio)
     }
 
     function handleFileSelect(evt) {
@@ -66,7 +75,14 @@ $(function() {
         // Closure to capture the file information.
         reader.onload = (function(theFile) {
           return function(e) {
-            $('#cover img').attr('src', e.target.result);
+            if ($('#cover .underlay.with_map').length > 0) {
+                // Doesn't have a photo, so let's replace
+                // the map div with an image tag.
+                $('#cover .underlay.with_map').replaceWith('<img src="' + e.target.result + '" class="photo underlay"/>')
+            }
+            else {
+                $('#cover img').attr('src', e.target.result);
+            }
             client_w = $('#cover').width();
             client_h = $('#cover').height();
             fix_aspect_ratio();

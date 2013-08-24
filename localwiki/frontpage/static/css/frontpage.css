@@ -5,15 +5,21 @@
     border-bottom: 3px solid #B5B5B5;
     line-height: 0;
 }
-#cover .photo {
+#cover .underlay {
     width: 100%;
     height: auto;
+}
+#cover .underlay.with_map {
+    height: 200px; 
+}
+#cover .underlay .mapwidget {
 }
 #cover .contents {
     text-align: right;
     position: absolute;
     width: 100%;
     right: 2em;
+    display: none;
 }
 
 #cover_form_selector {

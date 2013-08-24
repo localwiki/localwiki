@@ -27,7 +27,7 @@ class FrontPageView(TemplateView):
         olwidget_options = copy.deepcopy(getattr(settings,
             'OLWIDGET_DEFAULT_OPTIONS', {}))
         map_opts = olwidget_options.get('map_options', {})
-        map_opts.update(map_options_for_region(self.get_region()))
+        olwidget_options.update(map_options_for_region(self.get_region()))
         map_controls = map_opts.get('controls', [])
         if 'PanZoom' in map_controls:
             map_controls.remove('PanZoom')
@@ -37,10 +37,8 @@ class FrontPageView(TemplateView):
             map_controls.remove('KeyboardDefaults')
         if 'Navigation' in map_controls:
             map_controls.remove('Navigation')
-        map_opts['controls'] = map_controls
-        olwidget_options['map_div_class'] = 'mapwidget small'
-        if cover:
-            olwidget_options['map_div_class'] = 'underlay'
+        if not cover:
+            olwidget_options['map_div_class'] = 'mapwidget small'
         olwidget_options['map_options'] = map_opts
         return InfoMap([], options=olwidget_options)
 

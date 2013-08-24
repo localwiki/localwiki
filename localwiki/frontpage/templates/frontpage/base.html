@@ -27,7 +27,9 @@
     <img class="photo underlay" src="{{ frontpage.cover_photo.url }}"/>
 {% else %}
     {% if cover_map %}
+    <div class="underlay with_map">
         {{ cover_map }}
+    </div>
     {% else %}
         <img class="photo underlay" src="{% static 'img/front_page_cover_blank.png' %}"/>
     {% endif %}
