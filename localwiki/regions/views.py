@@ -47,7 +47,7 @@ class RegionCreateView(CreateView):
     form_class = RegionForm
 
     def get_success_url(self):
-        return reverse('pages:frontpage', args=[self.object.slug])
+        return reverse('frontpage', kwargs={'region': self.object.slug})
 
     def get_form_kwargs(self):
         kwargs = super(RegionCreateView, self).get_form_kwargs()

@@ -1,5 +1,7 @@
 from django.db.models.signals import post_save
 
+from frontpage.models import FrontPage
+
 from models import Region, RegionSettings
 from map_utils import get_zoom_for_extent
 
@@ -22,4 +24,17 @@ def setup_region_settings(sender, instance, created, raw, **kwargs):
     region_settings.save()
 
 
+def create_front_page(sender, instance, created, raw, **kwargs):
+    if raw:
+        # Don't create FrontPage when importing via loaddata - it's already
+        # being imported.
+        return
+    frontpage = FrontPage.objects.filter(region=instance)
+    if not frontpage:
+        frontpage = FrontPage(region=instance)
+        frontpage.save()
+
+
+
 post_save.connect(setup_region_settings, sender=Region)
+post_save.connect(create_front_page, sender=Region)

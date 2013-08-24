@@ -6,6 +6,48 @@
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
 <link rel="stylesheet" href="{% static "css/frontpage.css" %}"/>
+<script src="{% static "js/jquery/jquery-ui-1.8.16.custom.min.js" %}"></script>
+<script src="{% static "js/coverphoto.js" %}"></script>
+{% endblock %}
+
+{% block main_wrapper %}
+
+<div id="cover">
+    
+    <div class="contents">
+        <h1 class="primary_title">{% blocktrans with region_name=region.full_name %}Welcome to the {{ region_name }} LocalWiki!{% endblocktrans %}</h1>
+        <h3 class="subtitle">{% blocktrans with region_name=region.full_name %}A website about {{ region_name }} that <em>anyone</em> can edit{% endblocktrans %}</h3>
+        <form class="search_or_create" method="GET" action="{% url 'haystack_search' region=region.slug %}">
+        {% blocktrans %}
+        I want to make a page about <span class="searchbox"><input type="text" name="q" value=""><input type="submit" value="Search or create page"></span>
+        {% endblocktrans %}
+        </form>
+    </div>
+{% if frontpage.cover_photo %}
+    <img class="photo underlay" src="{{ frontpage.cover_photo.url }}"/>
+{% else %}
+    {% if cover_map %}
+        {{ cover_map }}
+    {% else %}
+        <img class="photo underlay" src="{% static 'img/front_page_cover_blank.png' %}"/>
+    {% endif %}
+{% endif %}
+</div>
+<div id="change_cover_button" class="button">{% trans "Change cover" %}</div>
+<form id="cover_form" action="{% url 'coverphoto_upload' region=region.slug %}" method="POST">{% csrf_token %}
+    <div id="save_cover" class="button">{% trans 'Save cover' %}</div>
+</form>
+{% comment %}
+We send the file via FormData + xhr, and we need this input element to select the file.  But having the file input in
+the form itself causes the form to send *two* files -- one via the append() to FormData, the other appears to be one
+the browser previously selected / POSTed, for some reason.  So we break this off and use it only to select the file,
+and submit using #cover_form.
+{% endcomment %}
+<form id="cover_form_selector" action="" method="POST">
+    <input type="file" name="cover_file" id="cover_file"/>
+</form>
+
+{{ block.super }}
 {% endblock %}
 
 {% block content_wrapper %}
@@ -23,79 +65,75 @@
       </em>
     {% endif %}
     
-    {% if map %}
-    <div id="map">
-      {{ map }}
-      <div class="info"><a class="view tiny button" href="{% url 'maps:show' slug=page.pretty_slug region=page.region.slug %}">{% trans "View" %}</a><a class="edit tiny button" href="{% url 'maps:edit' slug=page.pretty_slug region=page.region.slug %}">{% trans "Edit" %}</a></div>
-    </div>
-    {% endif %}
-
     <div id="page" class="frontpage">
 
-        <script src="{% static "js/jquery/jquery-ui-1.8.16.custom.min.js" %}"></script>
-        <link rel="stylesheet" href="{% static "coverphoto/coverphoto.css" %}">
-        <script src="{% static "coverphoto/coverphoto.min.js" %}"></script>
-
-        <style type="text/css">
-        </style>
-
-        <script type="text/javascript">
-          $(function() {
-            $('#cover').on('coverPhotoUpdated', function() {
-              set_django_tokens($('.coverphoto-form')[0]);
-              $('.coverphoto-form').get(0).setAttribute('action', '{% url 'coverphoto_upload' region=region.slug %}');
-              $('.coverphoto-form').submit();
-            });
-
-            $("#cover").CoverPhoto({
-              editable: true,
-            });
-
-            $("#cover").bind('coverPhotoUpdated', function(evt, dataUrl) {
-              $(".output").empty();
-              $("<img>").attr("src", dataUrl).appendTo(".output");
-            });
-          });
-        </script>
-
-        <div id="cover" style="{% if frontpage.cover_photo %}background-image: url({{ frontpage.cover_photo.url }});{% endif %}">
-            <div class="contents">
-                <h1 class="primary_title">{% blocktrans with region_name=region.full_name %}Welcome to the {{ region_name }} LocalWiki!{% endblocktrans %}</h1>
-                <h3 class="subtitle">{% blocktrans with region_name=region.full_name %}A website about {{ region_name }} that <em>anyone</em> can edit{% endblocktrans %}</h3>
-                <form class="search_or_create" method="GET" action="{% url 'haystack_search' region=region.slug %}">
-                {% blocktrans %}
-                I want to make a page about <span class="searchbox"><input type="text" name="q" value=""><input type="submit" value="Search or create page"></span>
-                {% endblocktrans %}
-                </form>
-            </div>
+        {% if map %}
+        <div id="map">
+          {{ map }}
+          <div class="info"><a class="view tiny button" href="{% url 'maps:show' slug=page.pretty_slug region=page.region.slug %}">{% trans "View" %}</a><a class="edit tiny button" href="{% url 'maps:edit' slug=page.pretty_slug region=page.region.slug %}">{% trans "Edit" %}</a></div>
         </div>
+        {% endif %}
 
-        <div id="random_pages">
-            <h2>{% trans "Random Pages" %}</h2>
-            <ul>
-            {% for page in random_pages %}
-                <li>{{ page }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-
-        <div id="recent_changes">
-            <h2>{% trans "Recent Changes" %}</h2>
-            <ul>
-            {% for page in random_pages %}
-                <li>{{ page }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-
-        <div id="tags">
-            <h2>{% trans "Popular Tags" %}</h2>
-            <ul>
-            {% for page in random_pages %}
-                <li>{{ page }}</li>
-            {% endfor %}
-            </ul>
-        </div>
+<p>
+	<strong>Welcome to the wiki for Santa Cruz, California, USA.</strong>  This community website gives everyone a place to share their knowledge, ideas, opinions, media, and any other information on anything and everything in Santa Cruz County.  This site is maintained by the entire community, therefore, <em>you are welcome to <a href="http://www.scruzwiki.org/Users/register/?">create an account</a> and contribute to it!</em></p>
+<p>
+	If you're new, check out our <a href="/Introduction">Introduction</a>.  Still don't know what to contribute?  Check out the <a href="/Ideas_for_Easy_Edits">Ideas for Easy Edits</a>.</p>
+<p>
+	<h2>
+	Explore</h2>
+<ul><li>
+		<p>
+			<strong><a href="/Santa_Cruz">Santa Cruz</a>:</strong> <a href="/Santa_Cruz_History">History</a>, <a href="/Santa_Cruz_Politics">Politics</a></p>
+	</li>
+	<li>
+		<strong><a href="/Art">Art</a>:</strong> <a href="/Galleries_and_Art_Venues">Galleries and Art Venues</a>, <a href="/Artists">Artists</a>, <a href="/Public_Art_Pieces">Public Art Pieces</a></li>
+	<li>
+		<strong>Businesses:</strong> <a href="/Retail">Shopping</a>, <a href="/Services">Services</a>, <a href="/Green_Businesses">Green Businesses</a>, <a href="/Departed_Businesses">Departed Businesses</a>, <a href="/Wireless_Internet">Wireless Internet</a></li>
+	<li>
+		<strong>Education:</strong> <a href="/Schools_%26_Educational_Programs">Schools &amp; Educational Programs</a>, <a href="/UC_Santa_Cruz">UC Santa Cruz</a>, <a href="/Cabrillo_Community_College">Cabrillo Community College</a>, <a href="/Santa_Cruz_Free_Skool">Santa Cruz Free Skool</a></li>
+	<li>
+		<strong>Entertainment:</strong> <a href="/Movie_Theaters">Movie Theaters</a>, <a href="/Music">Music</a>, <a href="/Live_Music_Venues">Music Venues</a>, <a href="/Local_Bands_and_Musicians">Bands &amp; Musicians</a>, <a href="/DJ_Artists_%26_Venues">DJ Artists &amp; Venues</a>, <a href="/Performing_Arts">Performing Arts</a>, <a href="/Theatre">Theatre</a>, <a href="/Dance">Dance</a>, <a href="/Street_Performers">Street Performers</a></li>
+	<li>
+		<strong>Food &amp; Drink:</strong> <a href="/Restaurants">Restaurants</a>, <a href="/Groceries_%26_Markets">Groceries &amp; Markets</a>, <a href="/Bars_%26_Nightclubs">Bars &amp; Nightclubs</a>, <a href="/Breweries_%26_Vintners">Breweries &amp; Vintners</a>, <a href="/Liquor_Stores">Liquor Stores</a></li>
+	<li>
+		<strong>Health:</strong> <a href="/Health_Services">Health Services</a>, <a href="/Wellness_and_Nutrition">Wellness and Nutrition</a>, <a href="/Yoga">Yoga</a></li>
+	<li>
+		<strong>Housing:</strong> <a href="/Finding_Housing">Finding Housing</a>, <a href="/Apartment_Complexes">Apartment Complexes</a>, <a href="/Housing_Co-ops">Housing Co-ops</a>, <a href="/UCSC_Housing">UCSC Housing</a></li>
+	<li>
+		<strong><a href="/Local_Media">Local Media</a>:</strong> <a href="/Film_and_Literature">Film and Literature</a>, <a href="/Writers">Writers</a>, <a href="/Local_Books">Local Books</a>, <a href="/Local_Filmmakers_%26_Broadcasters">Filmmakers &amp; Broadcasters</a>, <a href="/Movies_Filmed_Locally">Movies Filmed Locally</a>, <a href="/Community_Television">Community Television</a>, <a href="/Literary_Venues">Literary Venues</a>, <a href="/Online_Resources">Online Resources</a></li>
+	<li>
+		<strong>Organizations:</strong> <a href="/Spiritual_Organizations">Spiritual Organizations</a>, <a href="/Community_Organizations">Community Organizations</a>, <a href="/Clubs_%26_Interest_Groups">Clubs &amp; Interest Groups</a>, <a href="/Co-ops">Co-ops</a>, <a href="/Support_Groups">Support Groups</a>, <a href="/Community_Donations">Community Donations</a></li>
+	<li>
+		<strong>Outdoors:</strong> <a href="/Parks_%26_Open_Spaces">Parks &amp; Open Spaces</a>, <a href="/Beaches_%26_Surf_Spots">Beaches &amp; Surf Spots</a>, <a href="/Lakes_%26_Streams">Lakes &amp; Streams</a>, <a href="/Wildlife">Wildlife</a></li>
+	<li>
+		<strong><a href="/People_of_Santa_Cruz">People of Santa Cruz</a>:</strong> <a href="/Ohlone">Ohlone</a>, <a href="/Political_Figures_and_Activists">Political Figures and Activists</a>, <a href="/Heated_Issues_in_Santa_Cruz">Heated Issues in Santa Cruz</a>, <a href="/Famous_Residents">Famous Residents</a>, <a href="/GLBT_Community">GLBT Community</a>, <a href="/Seniors">Seniors</a></li>
+	<li>
+		<strong><a href="/Recreation">Recreation</a>:</strong> <a href="/Museums_%26_Attractions">Museums &amp; Attractions</a>, <a href="/Sports%2C_Exercise_%26_Fitness">Sports, Exercise &amp; Fitness</a>, <a href="/Surfing">Surfing</a></li>
+	<li>
+		<strong>Tourism:</strong> <a href="/Lodging">Lodging</a>, <a href="/Camping">Camping</a></li>
+	<li>
+		<strong><a href="/Transportation">Transportation</a></strong>: <a href="/Cycling">Cycling</a>, <a href="/Driving">Driving</a>, <a href="/Walking">Walking</a>, <a href="/Santa_Cruz_Metro">Public Transit</a>, <a href="/Transit_Outside_of_Santa_Cruz">Transit Outside of Santa Cruz</a>, <a href="/Airports">Airports</a>, <a href="/Other_Transportation_Services">Other Transportation Services</a></li>
+</ul><h3>
+	<strong><a href="/Santa_Cruz_City">Santa Cruz City</a></strong></h3>
+<ul><li>
+		<a href="/City_Ordinances">City Ordinances</a>, <a href="/Public_Works_and_Programs">Public Works and Programs</a></li>
+	<li>
+		<strong>Neighborhoods/Areas:</strong> <a href="/Beach_Flats">Beach Flats</a>, <a href="/Beach_Hill">Beach Hill</a>, <a href="/Downtown">Downtown</a>, <a href="/Eastside">Eastside</a>, <a href="/Midtown">Midtown</a>, <a href="/Seabright">Seabright</a>, <a href="/Westside">Westside</a>, <a href="/Santa_Cruz_Wharf">Santa Cruz Wharf</a>, <a href="/Yacht_Harbor">Yacht Harbor</a>, <a href="/Mission_Hill">Mission Hill</a>, <a href="/Pleasure_Point">Pleasure Point</a>, <a href="/Capitola_Village">Capitola Village</a></li>
+	<li>
+		<strong>Major <a href="/Streets">Streets</a>:</strong> <a href="/Bay_Street">Bay Street</a>, <a href="/East_Cliff_Drive">East Cliff Drive</a>, <a href="/High_Street">High Street</a>, <a href="/Front_Street">Front Street</a>, <a href="/River_Street">River Street</a>, <a href="/Highway_1">Highway 1</a>, <a href="/Highway_9">Highway 9</a>, <a href="/Highway_17">Highway 17</a>, <a href="/Mission_Street">Mission Street</a>, <a href="/Ocean_Street">Ocean Street</a>, <a href="/Laurel_Street">Laurel Street</a>, <a href="/Pacific_Avenue">Pacific Avenue</a>, <a href="/Seabright_Avenue">Seabright Avenue</a>, <a href="/Soquel_Avenue">Soquel Avenue</a>/<a href="/Soquel_Drive">Soquel Drive</a>, <a href="/Water_Street">Water Street</a>, <a href="/West_Cliff_Drive">West Cliff Drive</a></li>
+</ul><h3>
+	<strong><a href="/Santa_Cruz_County">Santa Cruz County</a></strong></h3>
+<ul><li>
+		<a href="/Emergency_Services_and_Information_for_Santa_Cruz_County">Emergency Services</a></li>
+	<li>
+		<a href="http://en.wikipedia.org/wiki/Incorporated_place">Incorporated Cities</a>: <a href="/Capitola">Capitola</a>, <a href="/Santa_Cruz_City">Santa Cruz</a>, <a href="/Scotts_Valley">Scotts Valley</a>, <a href="/Watsonville">Watsonville</a></li>
+	<li>
+		<a href="/Unincorporated_Areas">Unincorporated Areas</a></li>
+	<li>
+		Regions: <a href="/Pajaro_Valley">Pajaro Valley</a>, <a href="/San_Lorenzo_Valley">San Lorenzo Valley</a>, <a href="/Santa_Cruz_Mountains">Santa Cruz Mountains</a></li>
+	<li>
+		<a href="/Neighboring_Counties">Neighboring Counties</a>; <a href="/Aromas">Aromas</a>, <a href="/Pajaro">Pajaro</a>, <a href="/Royal_Oaks">Royal Oaks</a></li>
+</ul>
 
         <div style="clear:both;"></div>
         <div style="clear:both;"></div>
