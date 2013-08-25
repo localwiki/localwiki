@@ -24,8 +24,8 @@ from fields import WikiHTMLField
 
 
 class Page(models.Model):
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, editable=False)
+    name = models.CharField(max_length=255, blank=False)
+    slug = models.SlugField(max_length=255, editable=False, blank=False)
     content = WikiHTMLField()
     region = models.ForeignKey(Region, null=True)
 
@@ -202,8 +202,8 @@ versioning.register(Page)
 class PageFile(models.Model):
     file = models.FileField(ugettext_lazy("file"), upload_to='pages/files/',
                             storage=RandomFilenameFileSystemStorage())
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, editable=False)
+    name = models.CharField(max_length=255, blank=False)
+    slug = models.SlugField(max_length=255, editable=False, blank=False)
     region = models.ForeignKey(Region, null=True)
 
     _rough_type_map = [(r'^audio', 'audio'),
