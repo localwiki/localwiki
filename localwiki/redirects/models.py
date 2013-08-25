@@ -11,7 +11,7 @@ import exceptions
 
 
 class Redirect(models.Model):
-    source = models.SlugField(max_length=255, editable=False)
+    source = models.SlugField(max_length=255, editable=False, blank=False)
     destination = models.ForeignKey(Page)
     region = models.ForeignKey(Region, null=True)
 
