@@ -1,18 +1,61 @@
 {% extends "pages/base.html" %}
 
 {% load url from future %}
+{% load static from staticfiles %}
 {% load i18n %}
+{% load pages_tags %}
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
+<link rel="stylesheet" href="{% static "css/frontpage.css" %}"/>
+<script src="{% static "js/jquery/jquery-ui-1.8.16.custom.min.js" %}"></script>
+<script src="{% static "js/coverphoto.js" %}"></script>
+{% endblock %}
+
+{% block main_wrapper %}
+
+<div id="cover">
+    
+    <div class="contents">
+        <h1 class="primary_title">{% blocktrans with region_name=region.full_name %}Welcome to the {{ region_name }} LocalWiki!{% endblocktrans %}</h1>
+        <h3 class="subtitle">{% blocktrans with region_name=region.full_name %}A website about {{ region_name }} that <em>anyone</em> can edit{% endblocktrans %}</h3>
+        <form class="search_or_create" method="GET" action="{% url 'haystack_search' region=region.slug %}">
+        {% blocktrans %}
+        I want to make a page about <span class="searchbox"><input type="text" name="q" value=""><input type="submit" value="Search or create page"></span>
+        {% endblocktrans %}
+        </form>
+    </div>
+{% if frontpage.cover_photo %}
+    <img class="photo underlay" src="{{ frontpage.cover_photo.url }}"/>
+{% else %}
+    {% if cover_map %}
+    <div class="underlay with_map">
+        {{ cover_map }}
+    </div>
+    {% else %}
+        <img class="photo underlay" src="{% static 'img/front_page_cover_blank.png' %}"/>
+    {% endif %}
+{% endif %}
+</div>
+<div id="change_cover_button" class="button">{% trans "Change cover" %}</div>
+<form id="cover_form" action="{% url 'coverphoto_upload' region=region.slug %}" method="POST">{% csrf_token %}
+    <div id="save_cover" class="button">{% trans 'Save cover' %}</div>
+</form>
+{% comment %}
+We send the file via FormData + xhr, and we need this input element to select the file.  But having the file input in
+the form itself causes the form to send *two* files -- one via the append() to FormData, the other appears to be one
+the browser previously selected / POSTed, for some reason.  So we break this off and use it only to select the file,
+and submit using #cover_form.
+{% endcomment %}
+<form id="cover_form_selector" action="" method="POST">
+    <input type="file" name="cover_file" id="cover_file"/>
+</form>
+
+{{ block.super }}
 {% endblock %}
 
 {% block content_wrapper %}
 <div id="content_wrapper">
-  {% if map %}
-    <div id="content" class="has_map">
-  {% else %}
-    <div id="content">
-  {% endif %}
+  <div id="content">
   {% block content %}
     {% if show_revision %}
       <em class="revision_details">
@@ -21,68 +64,15 @@
       </em>
     {% endif %}
     
-    {% if map %}
-    <div id="map">
-      {{ map }}
-      <div class="info"><a class="view tiny button" href="{% url 'maps:show' slug=page.pretty_slug region=page.region.slug %}">{% trans "View" %}</a><a class="edit tiny button" href="{% url 'maps:edit' slug=page.pretty_slug region=page.region.slug %}">{% trans "Edit" %}</a></div>
-    </div>
-    {% endif %}
-
-    <div id="page">
-        
-        <table class="welcome">
-        	<tbody>
-        		<tr>
-        			<td style="text-align: right;">
-        				<h1>
-        					{% blocktrans with region_name=region.full_name %}Welcome to the {{ region_name }} LocalWiki!{% endblocktrans %}</h1>
-        				<h3>
-        					{% blocktrans with region_name=region.full_name %}A website about {{ region_name }} that <em>anyone</em> can edit{% endblocktrans %}</h3>
-        				<br />
-        				<br />
-        				<br />
-        				<br />
-        				<br />
-        				<br />
-        				<br />
-        				<h1>
-                            <form method="GET" action="{% url 'haystack_search' region=region.slug %}">
-                            {% blocktrans %}
-                                I want to make a page about <span class="searchbox"><input type="text" name="q" value=""><input type="submit" value="Search or create page"></span>
-                            {% endblocktrans %}
-                            </form>
-                        </h1>
-        			</td>
-        		</tr>
-        	</tbody>
-        </table>
-
-        <div id="random_pages">
-            <h2>{% trans "Random Pages" %}</h2>
-            <ul>
-            {% for page in random_pages %}
-                <li>{{ page }}</li>
-            {% endfor %}
-            </ul>
+    <div id="page" class="frontpage">
+        {% if map %}
+        <div id="map">
+          <a href="{% url 'maps:global' region=page.region.slug %}">{{ map }}</a>
+          <div class="info"><a class="view tiny button" href="{% url 'maps:global' region=page.region.slug %}">{% trans "View" %}</a></div>
         </div>
+        {% endif %}
 
-        <div id="recent_changes">
-            <h2>{% trans "Recent Changes" %}</h2>
-            <ul>
-            {% for page in random_pages %}
-                <li>{{ page }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-
-        <div id="tags">
-            <h2>{% trans "Popular Tags" %}</h2>
-            <ul>
-            {% for page in random_pages %}
-                <li>{{ page }}</li>
-            {% endfor %}
-            </ul>
-        </div>
+        {% render_plugins page.content %}
 
         <div style="clear:both;"></div>
         <div style="clear:both;"></div>
