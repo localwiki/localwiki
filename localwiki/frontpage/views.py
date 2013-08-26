@@ -17,7 +17,6 @@ from regions.views import RegionMixin
 from regions.views import TemplateView
 
 from models import FrontPage
-from forms import CoverPhotoForm
 
 
 class FrontPageView(TemplateView):
