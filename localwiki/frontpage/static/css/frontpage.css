@@ -14,14 +14,6 @@
 }
 #cover .underlay .mapwidget {
 }
-#cover .contents {
-    text-align: right;
-    position: absolute;
-    width: 100%;
-    right: 2em;
-    display: none;
-}
-
 #cover_form_selector {
     display: none;
 }
@@ -48,6 +40,12 @@
 }
 #cover a:hover {
     text-decoration: underline;
+}
+#cover .contents {
+    text-align: right;
+    position: absolute;
+    width: 100%;
+    right: 2em;
 }
 #cover .primary_title, #cover .subtitle, #cover .search_or_create {
     background-image: url(../theme/img/80_trans_white_bg.png);
@@ -78,12 +76,98 @@
 #cover .searchbox input {
     margin-top: 0.4em;
 }
+/* The absolute-positioning of the #cover .contents
+   means we've got to have a lot of breakpoints here
+   to get things right.
+*/
+@media screen and (max-width: 1100px) {
+    #cover .search_or_create {
+        margin-top: 50px;
+    }
+}
+@media screen and (max-width: 975px) {
+    #cover .search_or_create {
+        margin-top: 30px;
+    }
+}
+@media screen and (max-width: 919px) {
+    #cover .subtitle {
+        display: none;
+    }
+    #cover .search_or_create {
+        margin-top: 50px;
+    }
+}
+@media screen and (max-width: 830px) {
+    #cover .search_or_create {
+        display: none;
+    }
+}
+/* TODO: change to viewport width CSS attribute once it's supported on Android.
+   or swap out for JS-based resizing */
+@media screen and (max-width: 725px) {
+    #cover .primary_title {
+        font-size: 160%;
+    }
+}
+@media screen and (max-width: 660px) {
+    #cover .primary_title {
+        font-size: 150%;
+    }
+}
+@media screen and (max-width: 580px) {
+    #cover .primary_title {
+        font-size: 130%;
+    }
+}
+@media screen and (max-width: 545px) {
+    #cover .primary_title {
+        font-size: 120%;
+    }
+}
+@media screen and (max-width: 500px) {
+    #cover .contents {
+        right: 0;
+    }
+}
+@media screen and (max-width: 478px) {
+    #cover .primary_title {
+        font-size: 110%;
+    }
+}
+@media screen and (max-width: 432px) {
+    #cover .primary_title {
+        font-size: 100%;
+    }
+}
+@media screen and (max-width: 330px) {
+    #cover .primary_title {
+        margin-top: 20px; 
+    }
+}
+@media screen and (max-width: 283px) {
+    #cover .primary_title {
+        margin-top: 10px; 
+        font-size: 90%;
+    }
+}
 
 .frontpage {
     padding-top: 1em;
 }
 .frontpage #map {
     margin-left: 2.5em!important;
+}
+.frontpage #map .mapwidget {
+    cursor: pointer;
+}
+@media screen and (max-width: 700px) {
+    .frontpage #map {
+        display: none;
+    }
+    .frontpage {
+        padding-top: 0;
+    }
 }
 
 .frontpage #random_pages {

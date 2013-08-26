@@ -54,11 +54,7 @@ and submit using #cover_form.
 
 {% block content_wrapper %}
 <div id="content_wrapper">
-  {% if map %}
-    <div id="content" class="has_map">
-  {% else %}
-    <div id="content">
-  {% endif %}
+  <div id="content">
   {% block content %}
     {% if show_revision %}
       <em class="revision_details">
@@ -71,8 +67,8 @@ and submit using #cover_form.
 
         {% if map %}
         <div id="map">
-          {{ map }}
-          <div class="info"><a class="view tiny button" href="{% url 'maps:show' slug=page.pretty_slug region=page.region.slug %}">{% trans "View" %}</a><a class="edit tiny button" href="{% url 'maps:edit' slug=page.pretty_slug region=page.region.slug %}">{% trans "Edit" %}</a></div>
+          <a href="{% url 'maps:global' region=page.region.slug %}">{{ map }}</a>
+          <div class="info"><a class="view tiny button" href="{% url 'maps:global' region=page.region.slug %}">{% trans "View" %}</a></div>
         </div>
         {% endif %}
 
