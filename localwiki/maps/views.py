@@ -107,6 +107,9 @@ class MapGlobalView(RegionMixin, ListView):
 
     def get_queryset(self):
         queryset = super(MapGlobalView, self).get_queryset()
+        # XXX TODO TEMPORARY HACK
+        queryset = queryset.exclude(page__pagetagset__tags__slug='zipcode')
+        queryset = queryset.exclude(page__pagetagset__tags__slug='supervisorialdistrict')
         if not filter_by_zoom:
             return queryset
         # We order by -length so that the geometries are in that
@@ -196,6 +199,9 @@ class MapObjectsForBounds(JSONResponseMixin, RegionMixin, BaseListView):
 
     def get_queryset(self):
         queryset = MapData.objects.filter(region=self.get_region())
+        # XXX TODO TEMPORARY HACK
+        queryset = queryset.exclude(page__pagetagset__tags__slug='zipcode')
+        queryset = queryset.exclude(page__pagetagset__tags__slug='supervisorialdistrict')
         bbox = self.request.GET.get('bbox', None)
         if bbox:
             bbox = Polygon.from_bbox([float(x) for x in bbox.split(',')])
