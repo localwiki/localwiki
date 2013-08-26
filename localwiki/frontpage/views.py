@@ -50,7 +50,10 @@ class FrontPageView(TemplateView):
         context['map'] = self.get_map()
         context['cover_map'] = self.get_map(cover=True)
         context['random_pages'] = Page.objects.filter(region=self.get_region()).order_by('?')[:30]
-        context['page'] = Page(name="Front Page", region=self.get_region())
+        if Page.objects.filter(name="Front Page", region=self.get_region()).exists():
+            context['page'] = Page.objects.get(name="Front Page", region=self.get_region())
+        else:
+            context['page'] = Page(name="Front Page", region=self.get_region())
         return context
 
 
