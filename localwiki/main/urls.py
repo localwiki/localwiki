@@ -24,7 +24,6 @@ urlpatterns = patterns('',
     (r'^api/?$', RedirectView.as_view(url='/api/v2/', query_string=True)),
     url(r'^api/', include(api_v2.urls)),
     (r'^_api/', include('main.api.internal_urls')),
-    (r'^(?P<region>[^/]+?)/(((?i)Front[_ ]Page)/?)?', include('frontpage.urls')),
     (r'^(?P<region>[^/]+?)/map/', include(maps.site.urls)),
     (r'^(?P<region>[^/]+?)/tags$', RedirectView.as_view(url='/tags/')),
     (r'^(?P<region>[^/]+?)/tags/', include('tags.urls', 'tags', 'tags')),
@@ -40,6 +39,8 @@ urlpatterns = patterns('',
     (r'^admin$', RedirectView.as_view(url='/admin/')),
     (r'^admin/subscribers/$', staff_member_required(SubscribedList.as_view())),
     (r'^admin/', include(admin.site.urls)),
+
+    (r'^(?P<region>[^/]+?)/(((?i)Front[_ ]Page)/?)?', include('frontpage.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # This should only happen if you're using the local dev server with
