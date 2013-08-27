@@ -10,8 +10,8 @@ from django.utils.translation import ugettext as _
 from django.core.files.base import ContentFile
 from django.conf import settings
 
-from pages.views import PageDetailView
 from pages.models import Page
+from pages.views import PageDetailView
 from maps.widgets import InfoMap, map_options_for_region
 from regions.views import RegionMixin
 from regions.views import TemplateView
@@ -21,6 +21,15 @@ from models import FrontPage
 
 class FrontPageView(TemplateView):
     template_name = 'frontpage/base.html'
+
+    def get(self, *args, **kwargs):
+        # If there's no FrontPage defined, let's send the "Front Page" Page object.
+        if not FrontPage.objects.filter(region=self.get_region()).exists():
+            page_view = PageDetailView()
+            page_view.kwargs = {'slug': 'Front Page', 'region': self.get_region().slug}
+            page_view.request = self.request
+            return page_view.get(*args, **kwargs)
+        return super(FrontPageView, self).get(*args, **kwargs)
 
     def get_map(self, cover=False):
         olwidget_options = copy.deepcopy(getattr(settings,
@@ -43,8 +52,7 @@ class FrontPageView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(FrontPageView, self).get_context_data() 
-        # So that the Page can be edited if they want to replace
-        # the auto-generated Front Page.
+
         context['frontpage'] = FrontPage.objects.get(region=self.get_region())
         context['map'] = self.get_map()
         context['cover_map'] = self.get_map(cover=True)
