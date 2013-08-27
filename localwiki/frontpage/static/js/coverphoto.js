@@ -25,7 +25,7 @@ $(function() {
     // OpenLayers JS works.
     if ($('#cover .underlay.with_map').length > 0) {
         fix_aspect_ratio();
-        $(window).resize(fix_aspect_ratio);
+        $(window).resize(function() { fix_aspect_ratio(); });
     }
 
     $('#change_cover_button').click(function () {
@@ -119,7 +119,7 @@ $(function() {
             client_w = $('#cover').width();
             client_h = $('#cover').height();
             fix_aspect_ratio(e.target.result);
-            $(window).resize(fix_aspect_ratio);
+            $(window).resize(function() { fix_aspect_ratio(); });
           };
         })(f);
 
