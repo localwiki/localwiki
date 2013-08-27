@@ -4,17 +4,17 @@ $(function() {
     var cover_y_position = 0;
     var client_w = null;
     var client_h = null;
-    $('#change_cover_button').hover(function () {
-        $(this).show();
-    });
-    $('#cover').hover(
-    function () {
-        $('#change_cover_button').show();
-    },
-    function () {
-        $('#change_cover_button').hide();
-    }
-    );
+    //$('#change_cover_button').hover(function () {
+    //    $(this).show();
+    //});
+    //$('#cover').hover(
+    //function () {
+    //    $('#change_cover_button').show();
+    //},
+    //function () {
+    //    $('#change_cover_button').hide();
+    //}
+    //);
 
     // Adjust the height of the map cover underlay based on the client's
     // cover width.  We need to do this in JS because of the way the
