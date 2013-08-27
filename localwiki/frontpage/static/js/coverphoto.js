@@ -2,19 +2,21 @@ $(function() {
     var cover_form = new FormData(document.getElementById('cover_form'));
     var cover_ratio = 3.68421;
     var cover_y_position = 0;
+    var cover_x_position = 0;
+    var cover_position_axis = 'y';
     var client_w = null;
     var client_h = null;
-    //$('#change_cover_button').hover(function () {
-    //    $(this).show();
-    //});
-    //$('#cover').hover(
-    //function () {
-    //    $('#change_cover_button').show();
-    //},
-    //function () {
-    //    $('#change_cover_button').hide();
-    //}
-    //);
+    $('#change_cover_button').hover(function () {
+        $(this).show();
+    });
+    $('#cover').hover(
+    function () {
+        $('#change_cover_button').show();
+    },
+    function () {
+        $('#change_cover_button').hide();
+    }
+    );
 
     // Adjust the height of the map cover underlay based on the client's
     // cover width.  We need to do this in JS because of the way the
@@ -31,8 +33,10 @@ $(function() {
 
     $('#save_cover').click(function () {
         cover_form.append('position_y', cover_y_position);
+        cover_form.append('position_x', cover_x_position);
         cover_form.append('client_w', client_w);
         cover_form.append('client_h', client_h);
+        cover_form.append('cover_position_axis', cover_position_axis);
         var xhr = new XMLHttpRequest();
         xhr.onload = function () {
             $('.loading').hide();
@@ -62,10 +66,26 @@ $(function() {
         $('#change_cover_button').hide();
     }
 
-    function fix_aspect_ratio() {
-        // Set the #cover to the correct aspect ratio
+    function fix_aspect_ratio(img_src) {
+        // Set the #cover to the correct aspect ratio.
+
+        // Get the correct image height/width
+        $('body').append('<img src="' + img_src + '" id="calc_image"/>');
+        var img_w = $('#calc_image').width();
+        var img_h = $('#calc_image').height();
+        $('body').remove('#calc_image');
+
         var client_width = $('#cover').width();
         $('#cover').height(client_width / cover_ratio)
+        var client_height = $('#cover').height();
+        if ((img_w / img_h) > cover_ratio) {
+            $('#cover .underlay').css('width', 'auto');
+            $('#cover .underlay').css('height', client_height);
+            cover_position_axis = 'x';
+        }
+        else {
+            cover_position_axis = 'y';
+        }
     }
 
     function handleFileSelect(evt) {
@@ -85,7 +105,7 @@ $(function() {
             }
             client_w = $('#cover').width();
             client_h = $('#cover').height();
-            fix_aspect_ratio();
+            fix_aspect_ratio(e.target.result);
             $(window).resize(fix_aspect_ratio);
             positionCover();
           };
@@ -101,17 +121,18 @@ $(function() {
         $('#save_cover').show();
     }
 
-    function positionCover() {
+    function positionCover(axis) {
         $('#cover img').css('cursor', 'move');
 
         $(function() {
             $('#cover img').draggable({
-                axis: 'y',
+                axis: cover_position_axis,
                 containment: 'element',
                 stop: function(evt, ui) {
                     client_w = $('#cover').width();
                     client_h = $('#cover').height();
                     cover_y_position = ui.position.top;
+                    cover_x_position = ui.position.left;
                 }
                 });
         });

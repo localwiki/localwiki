@@ -71,22 +71,36 @@ class CoverUploadView(RegionMixin, View):
 
         client_cover_w = int(self.request.POST.get('client_w'))
         client_cover_h = int(self.request.POST.get('client_h'))
+        client_position_x = abs(int(self.request.POST.get('position_x')))
         client_position_y = abs(int(self.request.POST.get('position_y')))
+        axis = self.request.POST.get('cover_position_axis')
 
         if client_cover_w <= 0 or client_cover_h <= 0:
             raise Exception
 
         im = Image.open(photo)
         exact_w, exact_h = im.size
-        scale = (exact_w * 1.0)/ client_cover_w
-        position_y = scale * client_position_y
-        exact_cover_h = client_cover_h * scale
 
-        left = 0
-        upper = int(position_y)
-        right = int(exact_w)
-        lower = int(position_y + exact_cover_h)
-        bbox = (left, upper, right, lower)
+        if axis == 'y':
+            scale = (exact_w * 1.0)/ client_cover_w
+            position_y = scale * client_position_y
+            exact_cover_h = client_cover_h * scale
+
+            left = 0
+            upper = int(position_y)
+            right = int(exact_w)
+            lower = int(position_y + exact_cover_h)
+            bbox = (left, upper, right, lower)
+        else:
+            scale = (exact_h * 1.0)/ client_cover_h
+            position_x = scale * client_position_x
+            exact_cover_w = client_cover_w * scale
+
+            left = int(position_x)
+            upper = 0
+            right = int(position_x + exact_cover_w)
+            lower = exact_h
+            bbox = (left, upper, right, lower)
 
         cropped = im.crop(bbox)
         cropped_s = StringIO()

@@ -1,5 +1,6 @@
 #cover {
     max-height: 380px;
+    max-width: 1365px;
     background: #E8ECEF no-repeat center center; 
     overflow: hidden;
     border-bottom: 3px solid #B5B5B5;
