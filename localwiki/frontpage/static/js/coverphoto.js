@@ -6,6 +6,8 @@ $(function() {
     var cover_position_axis = 'y';
     var client_w = null;
     var client_h = null;
+    var img_w = null;
+    var img_h = null;
     $('#change_cover_button').hover(function () {
         $(this).show();
     });
@@ -68,23 +70,34 @@ $(function() {
 
     function fix_aspect_ratio(img_src) {
         // Set the #cover to the correct aspect ratio.
+        var _fix_ratio = function() {
+            var client_width = $('#cover').width();
+                $('#cover').height(client_width / cover_ratio)
+                var client_height = $('#cover').height();
+                if (img_w && ((img_w / img_h) > cover_ratio)) {
+                    $('#cover .underlay').css('width', 'auto');
+                    $('#cover .underlay').css('height', client_height);
+                    cover_position_axis = 'x';
+                }
+                else {
+                    cover_position_axis = 'y';
+                }
+        };
 
-        // Get the correct image height/width
-        $('body').append('<img src="' + img_src + '" id="calc_image"/>');
-        var img_w = $('#calc_image').width();
-        var img_h = $('#calc_image').height();
-        $('body').remove('#calc_image');
+        if (!img_w && img_src) {
+            // Get the correct image height/width
+            $('body').append('<img src="' + img_src + '" id="calc_image"/>');
+            $('#calc_image').ready(function() {
+                img_w = $('#calc_image').width();
+                img_h = $('#calc_image').height();
+                $('body').remove('#calc_image');
 
-        var client_width = $('#cover').width();
-        $('#cover').height(client_width / cover_ratio)
-        var client_height = $('#cover').height();
-        if ((img_w / img_h) > cover_ratio) {
-            $('#cover .underlay').css('width', 'auto');
-            $('#cover .underlay').css('height', client_height);
-            cover_position_axis = 'x';
+                _fix_ratio();
+                positionCover(); 
+            });
         }
         else {
-            cover_position_axis = 'y';
+            _fix_ratio();
         }
     }
 
@@ -107,7 +120,6 @@ $(function() {
             client_h = $('#cover').height();
             fix_aspect_ratio(e.target.result);
             $(window).resize(fix_aspect_ratio);
-            positionCover();
           };
         })(f);
 
