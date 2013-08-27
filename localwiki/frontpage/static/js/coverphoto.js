@@ -87,7 +87,7 @@ $(function() {
         if (!img_w && img_src) {
             // Get the correct image height/width
             $('body').append('<img src="' + img_src + '" id="calc_image"/>');
-            $('#calc_image').ready(function() {
+            $('#calc_image').load(function() {
                 img_w = $('#calc_image').width();
                 img_h = $('#calc_image').height();
                 $('body').remove('#calc_image');
