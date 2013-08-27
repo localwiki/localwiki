@@ -23,8 +23,6 @@ class MediaMixin(object):
 
 
 class InfoMap(MediaMixin, widgets.InfoMap):
-    pass
-
     def __init__(self, *args, **kwargs):
         val = super(InfoMap, self).__init__(*args, **kwargs)
         # Potentially limit # of layers on InfoMaps, for now. This helps

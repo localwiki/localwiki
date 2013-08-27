@@ -271,6 +271,13 @@ class MapUpdateView(CreateObjectMixin, RegionMixin, UpdateView):
             return mapdatas[0]
         return MapData(page=page, region=region)
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(MapUpdateView, self).get_context_data(*args, **kwargs)
+        # Default to the region's defined map settings.
+        # TODO: make this less hacky
+        context['form'].fields['geom'].widget.options.update(map_options_for_region(self.get_region()))
+        return context
+
     def get_success_url(self):
         return reverse('maps:show',
             args=[self.object.region.slug, self.object.page.pretty_slug])
