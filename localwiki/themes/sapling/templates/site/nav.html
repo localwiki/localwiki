@@ -8,8 +8,8 @@
     <li><a href="{% url 'recentchanges' region=region.slug %}">{% trans "Recent Changes" %}</a></li>
     <li><a href="{% url 'pages:index' region=region.slug %}">{% trans "All Pages" %}</a></li>
 {% else %}
-    <li><a href="#">nav</a></li>
-    <li><a href="#">links</a></li>
-    <li><a href="#">go</a></li>
-    <li><a href="#">here</a></li>
+    <li><a href="{% url 'pages:show' slug='Front Page' region='main' %}">Guide</a></li>
+    <li><a href="{% url 'pages:show' slug='Help' region='main' %}">Help</a></li>
+    <li><a href="{% url 'regions-list' %}">Communities</a></li>
+    <li><a href="{% url 'pages:show' slug='About' region='main' %}">About</a></li>
 {% endif %}

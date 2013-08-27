@@ -34,12 +34,17 @@ class RegionMixin(object):
 class TemplateView(RegionMixin, DjangoTemplateView):
     pass
 
-class MainPageView(ListView):
+
+class RegionListView(ListView):
     model = Region
     context_object_name = 'regions'
 
     def get_queryset(self):
         return Region.objects.all().exclude(slug=settings.MAIN_REGION).order_by('full_name')
+
+
+class MainPageView(RegionListView):
+    template_name = 'regions/main.html'
 
 
 class RegionCreateView(CreateView):
