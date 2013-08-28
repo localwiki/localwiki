@@ -56,7 +56,10 @@ class FrontPageView(TemplateView):
         olwidget_options['map_options'] = map_opts
         olwidget_options['zoomToDataExtent'] = False
         olwidget_options['cluster'] = True
-        return InfoMap(self.get_map_objects(), options=olwidget_options)
+        if cover:
+            return InfoMap([], options=olwidget_options)
+        else:
+            return InfoMap(self.get_map_objects(), options=olwidget_options)
 
     def get_context_data(self, *args, **kwargs):
         context = super(FrontPageView, self).get_context_data() 
