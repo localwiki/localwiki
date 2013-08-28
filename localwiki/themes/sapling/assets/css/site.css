@@ -195,11 +195,13 @@ textarea, input, select {
 }
 @media screen and (max-width: 500px) {
     #header {
-        border: 0;
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
     }
     #header_bar {
         margin-top: 8px;
-        padding: 0.5em 1em 1em 1em;
+        padding: 0.5em 1em 0.5em 1em;
     }
     #header_bar .inner {
         display: block;
@@ -295,6 +297,7 @@ textarea, input, select {
 @media screen and (max-width: 500px) {
     #object_actions {
         padding-left: 0.6em;
+        margin-top: -0.3em;
     }
 }
 
