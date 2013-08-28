@@ -12,6 +12,7 @@ from django.conf import settings
 
 from pages.models import Page
 from pages.views import PageDetailView
+from maps.models import MapData
 from maps.widgets import InfoMap, map_options_for_region
 from regions.views import RegionMixin
 from regions.views import TemplateView
@@ -31,6 +32,11 @@ class FrontPageView(TemplateView):
             return page_view.get(*args, **kwargs)
         return super(FrontPageView, self).get(*args, **kwargs)
 
+    def get_map_objects(self):
+        centroids = MapData.objects.filter(
+            region=self.get_region()).centroid().values('centroid')
+        return [(g['centroid'], '') for g in centroids]
+
     def get_map(self, cover=False):
         olwidget_options = copy.deepcopy(getattr(settings,
             'OLWIDGET_DEFAULT_OPTIONS', {}))
@@ -48,7 +54,9 @@ class FrontPageView(TemplateView):
         if not cover:
             olwidget_options['map_div_class'] = 'mapwidget small'
         olwidget_options['map_options'] = map_opts
-        return InfoMap([], options=olwidget_options)
+        olwidget_options['zoomToDataExtent'] = False
+        olwidget_options['cluster'] = True
+        return InfoMap(self.get_map_objects(), options=olwidget_options)
 
     def get_context_data(self, *args, **kwargs):
         context = super(FrontPageView, self).get_context_data() 
