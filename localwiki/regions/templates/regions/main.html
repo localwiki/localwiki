@@ -8,8 +8,15 @@
 {% block header_title %}{% trans "LocalWiki" %}{% endblock %}
 
 {% block content %}
-  <p>This is an <strong>insanely</strong> early preview of the <a href="http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/" target="_blank">new version of LocalWiki</a>. We're making everything open as we build, but there's not much to see here yet.</p>
-  <p>For now, please see the <strong><a href="{% url 'frontpage' region='main' %}">LocalWiki Guide</a></strong> for more information about the project and help documentation.</p>
+  <p>Welcome to the <strong>insanely</strong> early preview of the <a href="http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/" target="_blank">new version of LocalWiki</a>. We are experimenting with ways to make it easier for people to share knowledge about their community. Please check out the existing projects below, but be warned that all of these are in the very earliest stages of development!</p>
+
+<p>If you've come here to create a new LocalWiki, welcome! It only takes a few minutes to set one up. All you have to do is click the "Add a Region" button at the bottom of the screen.</p>
+
+  <p>Finally, check out the <strong><a href="{% url 'frontpage' region='main' %}">LocalWiki Guide</a></strong> for more information about the project and help using the site.</p>
+
+  
+<span style="" class="image_frame image_frame_border image_right"><img  src="http://localwiki.org/static/img/blog/2012-11-27/edit_your_city.jpg"><span style="width: 468px;" class="image_caption"><a href="https://trianglewiki.org" target="_blank">TriangleWiki</a> folks on the <a href="https://trianglewiki.org/R-Line" target="_blank">R-Line</a> spread the LocalWiki word. (This could be you! :))</span></span>
+
   <h2>Regions</h2>
   <ul>
   {% for region in regions %}
