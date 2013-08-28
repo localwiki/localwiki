@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.forms import ValidationError
 
 from olwidget import widgets
 from olwidget.forms import MapModelForm
@@ -30,3 +31,9 @@ class MediaMixin(object):
 class RegionForm(MediaMixin, MapModelForm):
     class Meta:
         model = Region
+
+    def clean_geom(self):
+        data = self.cleaned_data['geom']
+        if not data or not data[0]:
+            raise ValidationError("Please draw a region with the map drawing tool.")
+        return data
