@@ -1630,6 +1630,9 @@ form #content_footer {
 #create_page {
     min-height: 4em;
 }
+table.noborder, table.noborder td {
+    border: none;
+}
 
 
 /*
