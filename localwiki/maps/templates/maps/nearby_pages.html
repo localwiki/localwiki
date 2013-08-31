@@ -1,16 +1,20 @@
-{% extends "pages/base.html" %}
+{% extends "maps/base.html" %}
 {% load i18n %}
+{% load url from future %}
+{% load static from staticfiles %}
 
 {% block media %}
     {{ block.super }}
-   {# <script src="static/geoPosition.js"></script> #}
     {% if not nearby_maps %}
+    <script src="{% static "js/geoPosition.js" %}"></script>
     <script type="text/javascript">
         var nearbyView = function(position) {
             document.location = '?lat=' + position.coords.latitude + '&lng=' + position.coords.longitude;
         };
         $(function() {
-            navigator.geolocation.getCurrentPosition(nearbyView);
+            if (geoPosition.init()) {
+            geoPosition.getCurrentPosition(nearbyView);
+            }
         });
 
     </script>
@@ -20,10 +24,28 @@
 {% block title %}{% trans "Nearby pages" %} - {{ block.super }}{% endblock %}
 {% block header_title %}{% trans "Nearby pages" %}{% endblock %}
 
-{% block content %}
-  <ul>
-  {% for map in nearby_maps %}
-    <li>{{ map.page.name }}</li>
-  {% endfor %}
-  </ul>
+{% block content_wrapper %}
+<div id="content_wrapper">
+  {% if map %}
+    <div id="content" class="has_map">
+  {% else %}
+    <div id="content">
+  {% endif %}
+    {% block content %}
+      {{ map.media }}
+      <div id="map">
+        {{ map }}
+        <div class="info"><a id="view_map" class="view tiny button" href="{% url 'maps:global' %}#zoom=15&lat={{ request.GET.lat }}&amp;lon={{ request.GET.lng }}">{% trans "View" %}</a></div>
+      </div>
+      <div id="nearby_maps">
+        <ul>
+        {% for map in nearby_maps %}
+          <li><a href="{% url 'pages:show' slug=map.page.pretty_slug %}">{{ map.page.name }}</a></li>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endblock %}
+    </div>
+</div>
 {% endblock %}
+

@@ -108,8 +108,8 @@ textarea, input, select {
         border-top: 1px solid #fafafa;
         border-bottom: 1px solid #fafafa;
     }
-    /* For a tag page */
-    #content.has_map #page, #content.has_map #pagetagset {
+    /* Display content under map when page contains both */
+    #content.has_map #page, #content.has_map #pagetagset, #content.has_map #nearby_maps {
         margin-top: 250px;
     }
     /* For an included list of tagged pages */

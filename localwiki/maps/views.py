@@ -1,12 +1,14 @@
+import copy
 from dateutil.parser import parse as dateparser
 from urlparse import urljoin
+from operator import attrgetter
 
+from django.conf import settings
 from django.views.generic import DetailView, ListView
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-
 from django.views.generic.list import BaseListView
 from olwidget.widgets import InfoMap as OLInfoMap
 from django.contrib.gis.geos.polygon import Polygon
@@ -316,5 +318,31 @@ class MapNearbyView(ListView):
         lat = float(self.request.GET.get('lat'))
         lng = float(self.request.GET.get('lng'))
         user_location = Point(lng, lat)
-        queryset = MapData.objects.filter(points__distance_lte=(user_location, D(m=nearby_meters)))
+        points=MapData.objects.filter(points__distance_lte=(user_location, D(m=nearby_meters))).distance(user_location).order_by('distance')[:30]
+        polys=MapData.objects.filter(polys__distance_lte=(user_location, D(m=nearby_meters))).distance(user_location).order_by('distance')[:30]
+        lines=MapData.objects.filter(lines__distance_lte=(user_location, D(m=nearby_meters))).distance(user_location).order_by('distance')[:30]
+        queryset = sorted(list(points)+list(polys)+list(lines), key=attrgetter('distance'))[:30]
         return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        from maps.widgets import InfoMap
+        context = super(MapNearbyView, self).get_context_data(*args, **kwargs)
+        map_objects = [(obj.geom, popup_html(obj)) for obj in self.get_queryset()]
+        if map_objects:
+            # Remove the PanZoom on normal page views.
+            olwidget_options = copy.deepcopy(getattr(settings,
+                'OLWIDGET_DEFAULT_OPTIONS', {}))
+            map_opts = olwidget_options.get('map_options', {})
+            map_controls = map_opts.get('controls', [])
+            if 'PanZoomBar' in map_controls:
+                map_controls.remove('PanZoomBar')
+            if 'PanZoom' in map_controls:
+                map_controls.remove('PanZoom')
+            if 'KeyboardDefaults' in map_controls:
+                map_controls.remove('KeyboardDefaults')
+            olwidget_options['map_options'] = map_opts
+            olwidget_options['map_div_class'] = 'mapwidget small'
+            context['map'] = InfoMap(
+                map_objects,
+                options=olwidget_options)
+        return context
