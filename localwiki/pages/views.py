@@ -166,7 +166,7 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin,
                     content=content, region=self.get_region())
 
 
-class PageDeleteView(PermissionRequiredMixin, DeleteView):
+class PageDeleteView(PermissionRequiredMixin, RegionMixin, DeleteView):
     model = Page
     context_object_name = 'page'
     permission = 'pages.delete_page'
