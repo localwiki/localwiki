@@ -73,8 +73,10 @@ def filter_by_bounds(queryset, bbox):
 
 def filter_by_zoom(queryset, zoom):
     if zoom < 14:
-        # exclude points
-        queryset = queryset.exclude(Q(lines=None) & Q(polys=None))
+        # If two or more polygons, let's hide the points
+        if queryset.filter(polys__isnull=False).count() >= 2:
+            # exclude points
+            queryset = queryset.exclude(Q(lines=None) & Q(polys=None))
     min_length = 100 * pow(2, 0 - zoom)
     queryset = queryset.exclude(Q(points=None) & Q(length__lt=min_length))
     return queryset
