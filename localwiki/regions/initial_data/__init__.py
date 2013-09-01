@@ -279,6 +279,6 @@ def populate_region(region):
     	You can edit this and any other page by clicking the <strong>Edit</strong> button.</p>
     <p>
     	To create a new page, type a page name into the search box and press <strong>Search or create page</strong>.</p>
-    <p>Need <strong>help</strong>? Please see the <a href="https://guide.localwiki.org/Usage_Guide">Usage Guide</a>!</p>""" % {'region': region.full_name},
+    <p>Need <strong>help</strong>? Please see the <a href="http://localwiki.net/main/Help">help page</a> on the <a href="http://localwiki.net/main/">LocalWiki Guide</a>!</p>""" % {'region': region.full_name},
         region=region
     ).save()
