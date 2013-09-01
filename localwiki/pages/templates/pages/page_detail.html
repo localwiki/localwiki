@@ -12,6 +12,14 @@
 {% block title %}{% if not page.is_front_page %}{{ page.name }} - {% endif %}{{ block.super }}{% endblock %}
 {% block header_title %}<a href="{% url 'pages:show' slug=page.pretty_slug region=page.region.slug %}">{{ page.name }}</a>{% endblock %}
 
+{% block search_robots %}
+{% if page.is_template_page %}
+<meta name="robots" content="noindex,nofollow">
+{% else %}
+{{ block.super }}
+{% endif %}
+{% endblock %}
+
 {% block header_subtitle %}
   {% if request.GET.redirected_from %}
     <div id="object_subtitle">

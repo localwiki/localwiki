@@ -60,6 +60,9 @@ class Page(models.Model):
     def is_front_page(self):
         return self.name.lower() == 'front page'
 
+    def is_template_page(self):
+        return self.name.lower().startswith('templates/')
+
     def pretty_slug(self):
         if not self.name:
             return self.slug
