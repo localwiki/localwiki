@@ -90,6 +90,7 @@ $(function() {
             $('#calc_image').load(function() {
                 img_w = $('#calc_image').width();
                 img_h = $('#calc_image').height();
+                $('#calc_image').hide();
                 $('body').remove('#calc_image');
 
                 _fix_ratio();
