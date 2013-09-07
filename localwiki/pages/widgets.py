@@ -54,11 +54,12 @@ class WikiEditor(CKEditor):
                 'toolbar,undo,wysiwygarea,wsc,selection')
 
     def get_extra_plugins(self):
-        plugins = ['insertimage', 'simpleimage', 'domcleanup', 'seamless',
-                   'simpletable', 'simpletabletools', 'customenterkey',
-                   'pagelink', 'inheritcss', 'customstylescombo',
-                   'customsourcearea', 'ckfixes', 'wikiplugins', 'includepage',
-                   'includetag', 'embed', 'searchbox']
+        plugins = ['tableresize', 'insertimage', 'simpleimage', 'domcleanup',
+                   'seamless', 'simpletable', 'simpletabletools',
+                   'customenterkey', 'pagelink', 'inheritcss',
+                   'customstylescombo', 'customsourcearea', 'ckfixes',
+                   'wikiplugins', 'includepage', 'includetag', 'embed',
+                   'searchbox']
         return ','.join(plugins)
 
     def get_toolbar(self):
