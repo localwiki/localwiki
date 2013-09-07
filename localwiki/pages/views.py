@@ -274,7 +274,6 @@ class PageFileCompareView(RegionMixin, diff.views.CompareView):
     def get_context_data(self, **kwargs):
         context = super(PageFileCompareView, self).get_context_data(**kwargs)
         context['slug'] = self.kwargs['original_slug']
-        context['region'] = self.kwargs['region']
         return context
 
 
