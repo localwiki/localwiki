@@ -54,8 +54,8 @@ class WikiEditor(CKEditor):
                 'toolbar,undo,wysiwygarea,wsc,selection')
 
     def get_extra_plugins(self):
-        plugins = ['tableresize', 'insertimage', 'simpleimage', 'domcleanup',
-                   'seamless', 'simpletable', 'simpletabletools',
+        plugins = ['insertimage', 'simpleimage', 'domcleanup', 'seamless',
+                   'simpletableresize', 'simpletable', 'simpletabletools',
                    'customenterkey', 'pagelink', 'inheritcss',
                    'customstylescombo', 'customsourcearea', 'ckfixes',
                    'wikiplugins', 'includepage', 'includetag', 'embed',
