@@ -719,6 +719,12 @@ textarea, input, select {
     background-image: none;
 }
 
+#about {
+    margin: 1.5em 1em 0.5em 1em;
+    font-size: 80%;
+    text-align: center;
+}
+
 /*
 ====================================
  Lists
