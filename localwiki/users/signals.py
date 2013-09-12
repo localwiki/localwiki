@@ -17,7 +17,8 @@ post_save.connect(create_user_profile, sender=User)
 
 
 def delete_user_profile(sender, instance, **kwargs):
-    instance.userprofile.delete()
+    if hasattr(instance, 'userprofile'):
+        instance.userprofile.delete()
 
 # Delete UserProfile when User is deleted.  We need to do this explicitly
 # because we're monkeypatching the User model (for now).
