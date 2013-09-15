@@ -1,4 +1,4 @@
-django==1.4
+django==1.4.8
 html5lib==0.95
 python-dateutil==1.5
 pysolr==2.1.0-beta

@@ -128,7 +128,7 @@ def find_packages_in(dirs):
 
 install_requires = [
     'setuptools',
-    'django==1.4',
+    'django==1.4.8',
     'html5lib==0.95',
     'sorl-thumbnail==11.12-custom5',
     'python-dateutil==1.5',
