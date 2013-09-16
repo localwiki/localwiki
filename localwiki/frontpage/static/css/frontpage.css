@@ -13,6 +13,7 @@
     height: 200px; 
 }
 #cover .underlay .mapwidget {
+    max-height: 380px!important;
 }
 #cover_form_selector {
     display: none;
