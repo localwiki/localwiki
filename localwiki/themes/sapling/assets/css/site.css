@@ -427,7 +427,8 @@ textarea, input, select {
         -moz-box-shadow: none;
     }
     #header .site_search input[type="submit"] {
-        display: none;
+        visibility:hidden;
+        position:absolute;
     }
     #header .site_search input[type="text"], #header .site_search #id_q {
         width: 100%;
