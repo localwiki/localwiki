@@ -187,5 +187,5 @@
 }
 
 .frontpage h1, .frontpage h2, .frontpage h3, .frontpage h4, .frontpage h5 {
-    clear: none!important;
+    clear: left!important;
 }
