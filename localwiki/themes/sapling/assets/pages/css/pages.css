@@ -217,10 +217,14 @@ hr.selected {
 
 .includepage_left {
     float: left;
+    clear: left;
+    margin-bottom: 1em;
 }
 
 .includepage_right {
     float: right;
+    clear: right;
+    margin-bottom: 1em;
 }
 
 .plugin.searchbox{
