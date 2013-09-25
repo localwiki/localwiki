@@ -58,4 +58,3 @@ class UserProfile(models.Model):
 
 # For registration calls
 import signals
-import api

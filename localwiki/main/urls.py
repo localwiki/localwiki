@@ -12,6 +12,12 @@ import dashboard
 from regions.views import MainPageView, RegionCreateView, RegionListView
 from users.admin import SubscribedList
 
+from api import load_api_handlers
+# We load all of the api.py files right now.
+# TODO: Change this once Django (1.6?) supports the
+# apps_loaded signal.  Right now, we need to do this
+# to avoid nasty circular imports.
+load_api_handlers()
 from api import api_v2
 
 admin.autodiscover()

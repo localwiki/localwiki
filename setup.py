@@ -128,8 +128,9 @@ def find_packages_in(dirs):
 
 install_requires = [
     'setuptools',
-    'django==1.4.8',
+    'django==1.5.4',
     'html5lib==0.95',
+    'requests==2.0.0',
     'sorl-thumbnail==11.12-custom5',
     'python-dateutil==1.5',
     'pysolr==2.1.0-beta',
@@ -142,7 +143,8 @@ install_requires = [
     'django-registration==0.8.0',
     'django-olwidget==0.46-custom2',
     'django-honeypot==0.3.0-custom4',
-    'django-tastypie==0.9.12-custom5',
+    #'django-tastypie==0.9.12-custom5',
+    'django-tastypie',
     'django-qsstats-magic==0.7',
     'django-picklefield==0.3.0',
     'django-constance==0.6-custom1',
@@ -168,7 +170,7 @@ setup(
     dependency_links=[
         'https://github.com/philipn/olwidget/tarball/5c8eb75aaf0739b35fa06b0ba75f30bd32b89e77#egg=django-olwidget-0.46-custom2',
         'https://github.com/philipn/django-honeypot/tarball/b4991c140849901d2f8842df2c4672813e73381b#egg=django-honeypot-0.3.0-custom4',
-        'https://github.com/philipn/django-tastypie/tarball/localwiki_master#egg=django-tastypie-0.9.12-custom5',
+        #'https://github.com/philipn/django-tastypie/tarball/localwiki_master#egg=django-tastypie-0.9.12-custom5',
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom5',
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom5',
         'https://github.com/philipn/django-south/tarball/localwiki_master#egg=South-0.8.1-custom2',

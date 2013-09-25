@@ -11,7 +11,7 @@ from functools import partial
 from django.db import models
 from django.db.models import Max
 from django.utils.functional import SimpleLazyObject
-from django.db.models.sql.constants import LOOKUP_SEP
+from django.db.models.constants import LOOKUP_SEP
 from django.core.exceptions import ObjectDoesNotExist
 
 from constants import *

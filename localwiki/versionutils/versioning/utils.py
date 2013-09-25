@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from django.db.models.sql.constants import LOOKUP_SEP
+from django.db.models.constants import LOOKUP_SEP
 
 import exceptions
 

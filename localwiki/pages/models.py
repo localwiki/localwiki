@@ -325,5 +325,4 @@ url_to_name = stringfilter(url_to_name)
 
 # For registration calls
 import signals
-import api
 import feeds

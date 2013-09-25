@@ -40,27 +40,27 @@ class HistoricalMetaInfoQuerySet(QuerySet):
         kws_new = {}
         for k, v in kws.iteritems():
             k_new = k
-            parts = k.split(models.sql.constants.LOOKUP_SEP)
+            parts = k.split(models.constants.LOOKUP_SEP)
             # Replace all instances of version_info__whatever with
             # history_whatever.
             if len(parts) > 1 and parts[0] == 'version_info':
-                rest = models.sql.constants.LOOKUP_SEP.join(parts[2:])
+                rest = models.constants.LOOKUP_SEP.join(parts[2:])
                 if rest:
-                    rest = "%s%s" % (models.sql.constants.LOOKUP_SEP, rest)
+                    rest = "%s%s" % (models.constants.LOOKUP_SEP, rest)
                 k_new = 'history_%s%s' % (parts[1], rest)
             # Replace all instances of fk__whatever with
             # fk_hist__whatever if fk is a versioned model.
             if parts[0] in versioned_vars:
-                rest = models.sql.constants.LOOKUP_SEP.join(parts[2:])
+                rest = models.constants.LOOKUP_SEP.join(parts[2:])
                 if rest:
-                    rest = "%s%s" % (models.sql.constants.LOOKUP_SEP, rest)
+                    rest = "%s%s" % (models.constants.LOOKUP_SEP, rest)
                 k_new = '%s_hist%s' % (parts[0], rest)
             # Replace all instances of parent_ptr__whatever
             # with parent_hist_ptr__whatever if parent's versioned.
             if parts[0] in versioned_parents:
-                rest = models.sql.constants.LOOKUP_SEP.join(parts[2:])
+                rest = models.constants.LOOKUP_SEP.join(parts[2:])
                 if rest:
-                    rest = "%s%s" % (models.sql.constants.LOOKUP_SEP, rest)
+                    rest = "%s%s" % (models.constants.LOOKUP_SEP, rest)
                 # -4 will remove '_ptr' from the original string.
                 k_new = '%s_hist_ptr%s' % (parts[0][:-4], rest)
 
@@ -127,7 +127,7 @@ class HistoryManager(models.Manager):
                             # Use historical model's pk name of the form
                             # parentmodel_hist_ptr.
                             self.model._meta.pk.name,
-                            models.sql.constants.LOOKUP_SEP)
+                            models.constants.LOOKUP_SEP)
 
                 filter = {pk_name: self.instance.pk}
             else:

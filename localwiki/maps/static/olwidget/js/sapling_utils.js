@@ -513,11 +513,67 @@ SaplingMap = {
         }
     },
 
+    _setup_map_search: function(map, layer) {
+        $('.mapwidget').prepend(
+            '<form id="map_search" class="search" action="." onSubmit="return false;" method="POST"><input type="text" id="address" name="address" placeholder="Find via address.."/></form>');
+
+        var geoCodeURL = "http://nominatim.openstreetmap.org/search";
+        $('#address').typeahead([
+            {
+              name: 'address',
+              remote: {
+                url: geoCodeURL,
+                replace: function(url, uriEncodedQuery) {
+                    var q = decodeURIComponent(uriEncodedQuery);
+                    // Did they use a coma to specify the city, etc?
+                    var didnt_specify_region = q.indexOf(',') === -1;
+                    if (didnt_specify_region) {
+                        // Let's throw in the region name to improve geocoding.
+                        q += ', ' + region_name;
+                    }
+                    return (url + '?q=' + encodeURIComponent(q)) + '&format=json';
+                }
+              },
+              valueKey: 'display_name'
+            }
+        ])
+        .on('typeahead:selected', function(e, datum) {
+            if (!datum.osm_type) {
+                // Isn't a way, relation or node - just a point I think?
+                return;
+            }
+            var point = new OpenLayers.Geometry.Point(datum.lon, datum.lat);
+            point = point.transform(
+                    new OpenLayers.Projection("EPSG:4326"),
+                    map.getProjectionObject());
+            var pointFeature = new OpenLayers.Feature.Vector(point, null, null);
+            // clear the features out
+            layer.destroyFeatures();
+            layer.addFeatures([pointFeature]);
+
+            map.setCenter(
+                new OpenLayers.LonLat(datum.lon, datum.lat).transform(
+                    new OpenLayers.Projection("EPSG:4326"),
+                    map.getProjectionObject()
+                ), 18);
+
+            $.get('../_get_osm/', { 'osm_id': datum.osm_id, 'osm_type': datum.osm_type }, function(data){
+                var temp = new olwidget.InfoLayer([[data.geom, 'osm', 'osm']]);
+                temp.visibility = false;
+                map.addLayer(temp);
+                layer.removeAllFeatures();
+                layer.addFeatures(temp.features);
+                map.removeLayer(temp);
+            });
+        });
+    },
+
     _open_editing: function(map) {
         for (var i = 0; i < map.controls.length; i++) { 
             if (map.controls[i] && map.controls[i].CLASS_NAME == 
         "olwidget.EditableLayerSwitcher") { 
                 layer = map.vectorLayers[0];
+                this._setup_map_search(map, layer);
                 if (layer.controls) {
                     this._remove_unneeded_controls(layer);
                     map.controls[i].setEditing(layer);

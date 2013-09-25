@@ -13,7 +13,7 @@ from django.contrib.gis.geos.polygon import Polygon
 from django.utils.safestring import mark_safe
 
 from versionutils import diff
-from utils.views import Custom404Mixin, CreateObjectMixin, JSONResponseMixin
+from utils.views import Custom404Mixin, CreateObjectMixin, JSONResponseMixin, JSONView
 from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, VersionsList
 from pages.models import Page, slugify, name_to_url
@@ -24,6 +24,7 @@ from regions.models import Region
 from widgets import InfoMap, map_options_for_region
 from models import MapData
 from forms import MapForm
+from osm import get_osm_geom
 from django.utils.html import escape
 
 
@@ -224,6 +225,13 @@ class MapObjectsForBounds(JSONResponseMixin, RegionMixin, BaseListView):
             for o in objs
         ]
         return map_objects
+
+
+class OSMGeometryLookup(JSONView):
+    def get_context_data(self, **kwargs):
+        osm_id = int(self.request.GET.get('osm_id'))
+        osm_type = self.request.GET.get('osm_type')
+        return {'geom': get_osm_geom(osm_id, osm_type).ewkt}
 
 
 class MapVersionDetailView(MapDetailView):

@@ -27,6 +27,7 @@
     <script type="text/javascript">
         var region_id = {{ region.id }};
         var region_slug = '{{ region.slug }}';
+        var region_name = '{{ region.full_name }}';
     </script>
     {% endif %}
 
@@ -81,7 +82,7 @@
           <a href="#" id="pull"></a>
         </div>
       {% endblock %}
-      <div class="site_search">{% include "site/search_form.html" %}</div>
+      <div class="site_search search">{% include "site/search_form.html" %}</div>
       <div id="header_bar">
           <div class="inner">
             <div id="object_actions">{% block object_actions %}{% endblock %}</div>

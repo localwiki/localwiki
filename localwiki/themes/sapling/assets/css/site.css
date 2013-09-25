@@ -391,9 +391,13 @@ textarea, input, select {
     width: 180px;
     font-size: 15px;
     line-height: 30px;
-    background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 10px;
-    padding-left: 30px;
     margin-right: 0.5em;
+    padding-left: 30px;
+}
+
+.search input[type="text"] {
+    background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 60%;
+    padding-left: 30px;
 }
 
 @media screen and (max-width: 700px) {
@@ -1356,7 +1360,7 @@ input:focus {
     }
 }
 
-.site_search .tt-dropdown-menu {
+.search .tt-dropdown-menu {
     margin-top: 0em;
     background-color: white;
     min-width: 210px;
@@ -1366,7 +1370,7 @@ input:focus {
     -webkit-border-radius: 3px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
 }
-.site_search .twitter-typeahead {
+.search .twitter-typeahead {
     float: left;
     height: 100%;
 }

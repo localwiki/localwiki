@@ -37,4 +37,3 @@ pre_save.connect(_validate_redirect, sender=Redirect)
 
 # For registration calls
 import feeds
-import api

@@ -84,5 +84,4 @@ versioning.register(PageTagSet)
 
 # For registration calls
 import signals
-import api
 import feeds

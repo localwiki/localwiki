@@ -39,5 +39,4 @@ versioning.register(MapData)
 
 
 # For registration calls
-import api
 import feeds
