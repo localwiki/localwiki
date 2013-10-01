@@ -538,32 +538,33 @@ SaplingMap = {
             }
         ])
         .on('typeahead:selected', function(e, datum) {
+            console.log(datum.lon + ' ' + datum.lat);
             if (!datum.osm_type) {
                 // Isn't a way, relation or node - just a point I think?
-                return;
-            }
-            var point = new OpenLayers.Geometry.Point(datum.lon, datum.lat);
-            point = point.transform(
+                var point = new OpenLayers.Geometry.Point(datum.lon, datum.lat);
+                point = point.transform(
                     new OpenLayers.Projection("EPSG:4326"),
                     map.getProjectionObject());
-            var pointFeature = new OpenLayers.Feature.Vector(point, null, null);
-            // clear the features out
-            layer.destroyFeatures();
-            layer.addFeatures([pointFeature]);
+                var pointFeature = new OpenLayers.Feature.Vector(point, null, null);
+                // clear the features out
+                layer.destroyFeatures();
+                layer.addFeatures([pointFeature]);
+                map.zoomToExtent(layer.getDataExtent());
+                return;
+            }
 
-            map.setCenter(
-                new OpenLayers.LonLat(datum.lon, datum.lat).transform(
-                    new OpenLayers.Projection("EPSG:4326"),
-                    map.getProjectionObject()
-                ), 18);
+            $('.mapwidget').prepend('<div class="loading"></div>');
+            $('.mapwidget .loading').height($('.mapwidget').height());
 
-            $.get('../_get_osm/', { 'osm_id': datum.osm_id, 'osm_type': datum.osm_type }, function(data){
+            $.get('../_get_osm/', { 'display_name': datum.display_name, 'osm_id': datum.osm_id, 'osm_type': datum.osm_type }, function(data){
                 var temp = new olwidget.InfoLayer([[data.geom, 'osm', 'osm']]);
                 temp.visibility = false;
                 map.addLayer(temp);
                 layer.removeAllFeatures();
                 layer.addFeatures(temp.features);
                 map.removeLayer(temp);
+                map.zoomToExtent(layer.getDataExtent());
+                $('.mapwidget .loading').remove();
             });
         });
     },
@@ -573,8 +574,8 @@ SaplingMap = {
             if (map.controls[i] && map.controls[i].CLASS_NAME == 
         "olwidget.EditableLayerSwitcher") { 
                 layer = map.vectorLayers[0];
-                this._setup_map_search(map, layer);
                 if (layer.controls) {
+                    this._setup_map_search(map, layer);
                     this._remove_unneeded_controls(layer);
                     map.controls[i].setEditing(layer);
 
