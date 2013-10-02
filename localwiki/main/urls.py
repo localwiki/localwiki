@@ -10,6 +10,7 @@ import maps
 import redirects
 import dashboard
 from regions.views import MainPageView, RegionCreateView, RegionListView
+from utils.views import NamedRedirectView
 from users.admin import SubscribedList
 
 from api import load_api_handlers
@@ -30,8 +31,9 @@ urlpatterns = patterns('',
     (r'^api/?$', RedirectView.as_view(url='/api/v2/', query_string=True)),
     url(r'^api/', include(api_v2.urls)),
     (r'^_api/', include('main.api.internal_urls')),
+    (r'^(?P<region>[^/]+?)/map$', NamedRedirectView.as_view(name='maps:global')),
     (r'^(?P<region>[^/]+?)/map/', include(maps.site.urls)),
-    (r'^(?P<region>[^/]+?)/tags$', RedirectView.as_view(url='/tags/')),
+    (r'^(?P<region>[^/]+?)/tags$', NamedRedirectView.as_view(name='tags:list')),
     (r'^(?P<region>[^/]+?)/tags/', include('tags.urls', 'tags', 'tags')),
     (r'^_redirect/', include(redirects.site.urls)),
     (r'^(?i)Users/', include('users.urls')),
