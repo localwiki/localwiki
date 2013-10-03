@@ -19,6 +19,6 @@ before_script:
     - echo "standard_conforming_strings=off" | sudo tee -a /etc/postgresql/9.1/main/postgresql.conf
     - sudo /etc/init.d/postgresql restart
     - psql localwiki -c "alter role localwiki createdb;"
-script: coverage run --source=localwiki localwiki/manage.py test pages maps tags versioning diff ckeditor redirects users
+script: coverage run --source=localwiki localwiki/manage.py test regions pages maps tags versioning diff ckeditor redirects users
 after_success:
     - coveralls

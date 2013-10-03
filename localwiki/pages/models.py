@@ -73,6 +73,24 @@ class Page(models.Model):
         return self.name.split('/')
     name_parts = property(name_parts)
 
+    def _get_related_objs(self):
+        related_objs = []
+        for r in self._meta.get_all_related_objects():
+            try:
+                rel_obj = getattr(self, r.get_accessor_name())
+            except:
+                continue  # No object for this relation.
+
+            # Is this a related /set/, e.g. redirect_set?
+            if isinstance(rel_obj, models.Manager):
+                # list() freezes the QuerySet, which we don't want to be
+                # fetched /after/ we delete the page.
+                related_objs.append(
+                    (r.get_accessor_name(), list(rel_obj.all())))
+            else:
+                related_objs.append((r.get_accessor_name(), rel_obj))
+        return related_objs
+
     def _get_slug_related_objs(self):
         # Right now this is simply hard-coded.
         # TODO: generalize this slug pattern, perhaps with some kind of
@@ -118,21 +136,7 @@ class Page(models.Model):
         new_p.save(comment=_('Renamed from "%s"') % self.name)
 
         # Get all related objects before the original page is deleted.
-        related_objs = []
-        for r in self._meta.get_all_related_objects():
-            try:
-                rel_obj = getattr(self, r.get_accessor_name())
-            except:
-                continue  # No object for this relation.
-
-            # Is this a related /set/, e.g. redirect_set?
-            if isinstance(rel_obj, models.Manager):
-                # list() freezes the QuerySet, which we don't want to be
-                # fetched /after/ we delete the page.
-                related_objs.append(
-                    (r.get_accessor_name(), list(rel_obj.all())))
-            else:
-                related_objs.append((r.get_accessor_name(), rel_obj))
+        related_objs = self._get_related_objs()
 
         # Cache all ManyToMany values on related objects so we can restore them
         # later--otherwise they will be lost when page is deleted.
