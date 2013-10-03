@@ -86,3 +86,25 @@ class MoveRegionTests(TestCase):
 
         # ..and that the page is no longer in the SF region
         self.assertFalse(Page.objects.filter(region=self.sf, name="Page With FKs").exists())
+
+
+    def test_move_with_existing_file(self):
+        p = Page(region=self.sf)
+        p.content = "<p>A page w a file.</p>"
+        p.name = "Page With File"
+        p.save()
+        # Create a file that points at the page.
+        pf_sf = PageFile(name="file.txt", slug=p.slug, region=self.sf)
+        pf_sf.save()
+        pf_sf.file.save("file.txt", ContentFile("foo in sf"))
+
+        # Make the file already exist in oak
+        pf_oak = PageFile(name="file.txt", slug=p.slug, region=self.oak)
+        pf_oak.save()
+        pf_oak.file.save("file.txt", ContentFile("foo in oak"))
+
+        move_to_region(self.oak, pages=[p])
+
+        pf = PageFile.objects.get(name="file.txt", slug=p.slug, region=self.oak)
+        # File should be the same as it was before region-move.
+        self.assertEquals(pf.file.name, pf_oak.file.name)
