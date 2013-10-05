@@ -84,9 +84,16 @@ class MoveRegionTests(TestCase):
         self.assertEqual(len(Redirect.objects.filter(destination=p, region=self.oak)), 1)
         self.assertEqual(len(PageFile.objects.filter(slug=p.slug, region=self.oak)), 1)
 
+        # Check to see that version history was moved as well
+        self.assertEquals(p.versions.all().count(), 1)
+        self.assertEqual(len(MapData.versions.filter(page=p, region=self.oak)), 1)
+        for pts in p.pagetagset.tags.all():
+            self.assertEqual(pts.versions.all().count(), 1)
+        self.assertEqual(len(Redirect.versions.filter(destination=p, region=self.oak)), 1)
+        self.assertEqual(len(PageFile.versions.filter(slug=p.slug, region=self.oak)), 1)
+
         # ..and that the page is no longer in the SF region
         self.assertFalse(Page.objects.filter(region=self.sf, name="Page With FKs").exists())
-
 
     def test_move_with_existing_file(self):
         p = Page(region=self.sf)
@@ -95,16 +102,18 @@ class MoveRegionTests(TestCase):
         p.save()
         # Create a file that points at the page.
         pf_sf = PageFile(name="file.txt", slug=p.slug, region=self.sf)
+        pf_sf.file.save("file.txt", ContentFile("foo sf"))
         pf_sf.save()
-        pf_sf.file.save("file.txt", ContentFile("foo in sf"))
 
-        # Make the file already exist in oak
+        # Make the file already exist on oak
         pf_oak = PageFile(name="file.txt", slug=p.slug, region=self.oak)
+        pf_oak.file.save("file.txt", ContentFile("foo oak"))
         pf_oak.save()
-        pf_oak.file.save("file.txt", ContentFile("foo in oak"))
 
         move_to_region(self.oak, pages=[p])
 
-        pf = PageFile.objects.get(name="file.txt", slug=p.slug, region=self.oak)
-        # File should be the same as it was before region-move.
-        self.assertEquals(pf.file.name, pf_oak.file.name)
+        # The file shouldn't have been moved because it already exists at the
+        # destination.
+
+        pf = PageFile.objects.get(slug=p.slug, region=self.oak)
+        self.assertEqual(pf_oak.file.name, pf.file.name)
