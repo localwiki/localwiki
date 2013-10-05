@@ -22,12 +22,12 @@ def move_to_region(region, pages=None, redirects=None):
         if not hasattr(m, 'region'):
             # Doesn't have an explicit region attribute, so skip.
             return
-        m.region = region
         if is_versioned(m):
-            m.save(track_changes=False)
-            for m_h in p.versions.all():
+            for m_h in m.versions.all():
                 m_h.region = region
                 m_h.save()
+            m.region = region
+            m.save(track_changes=False)
         else:
             m.save()
 
