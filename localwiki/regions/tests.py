@@ -117,3 +117,40 @@ class MoveRegionTests(TestCase):
 
         pf = PageFile.objects.get(slug=p.slug, region=self.oak)
         self.assertEqual(pf_oak.file.name, pf.file.name)
+
+    def test_move_redirects(self):
+        p = Page(region=self.sf)
+        p.content = "<p>A page.</p>"
+        p.name = "Page content"
+        p.save()
+
+        redir = Redirect(
+            source="short name",
+            destination=p,
+            region=self.sf)
+        redir.save()
+
+        move_to_region(self.oak, pages=[p], redirects=[redir])
+
+        # Redirect should be in Oak
+        self.assertEqual(Redirect.objects.filter(region=self.oak).count(), 1)
+        
+    def test_move_redirect_destination(self):
+        # Destination page should be transparently moved if not specified
+        p = Page(region=self.sf)
+        p.content = "<p>A page.</p>"
+        p.name = "Page content not moved directly"
+        p.save()
+
+        redir = Redirect(
+            source="short name",
+            destination=p,
+            region=self.sf)
+        redir.save()
+
+        move_to_region(self.oak, redirects=[redir])
+
+        # Redirect should be in Oak
+        self.assertEqual(Redirect.objects.filter(region=self.oak).count(), 1)
+        # ..and page
+        self.assertTrue(Page.objects.filter(slug='page content not moved directly', region=self.oak).exists())
