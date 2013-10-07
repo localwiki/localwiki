@@ -158,6 +158,7 @@
 }
 .frontpage #map {
     margin-left: 2.5em!important;
+    margin-bottom: 1.5em!important;
 }
 .frontpage #map .mapwidget {
     cursor: pointer;
