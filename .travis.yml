@@ -7,6 +7,7 @@ before_install:
     - sudo pip install fabric
     - ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
     - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+    - pip install -r fabric/requirements.txt
 install:
     - cd fabric; fab provision -H localhost -i ~/.ssh/local_rsa
 script: coverage run --source=localwiki localwiki/manage.py test regions pages maps tags versioning diff ckeditor redirects users
