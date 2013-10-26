@@ -9,6 +9,7 @@ before_install:
     - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
     - pip install -r fabric/requirements.txt
     - cp fabric/config_secrets.py.template fabric/config_secrets.py
+    - pip install coveralls --use-mirrors
 install:
     - cd fabric; fab provision -H localhost -i ~/.ssh/id_rsa
 script: coverage run --source=localwiki localwiki/manage.py test regions pages maps tags versioning diff ckeditor redirects users
