@@ -5,7 +5,7 @@ before_install:
     - sudo apt-get update
     - sudo apt-get install python-pip
     - sudo pip install fabric
-    - ssh-keygen 
+    - ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
     - cat ~/.ssh/local_rsa.pub >> ~/.ssh/authorized_keys
 install:
     - cd fabric; fab provision -H localhost -i ~/.ssh/local_rsa
