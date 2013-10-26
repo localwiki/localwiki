@@ -67,6 +67,7 @@ def install_requirements():
         'python-lxml',
         'python-imaging',
         'python-psycopg2',
+        'python-pip',
         'git'
     ]
     solr_pkg = ['solr-jetty', 'default-jre-headless']
@@ -90,7 +91,7 @@ def init_postgres():
 
 def init_localwiki_install():
     # Update to latest virtualenv
-    sudo('easy_install --upgrade virtualenv')
+    sudo('pip install --upgrade virtualenv')
 
     # Create virtualenv
     run('virtualenv --system-site-packages %s' % env.virtualenv)
