@@ -85,6 +85,7 @@ def init_postgres():
     # Generate a random password, for now.
     env.postgres_db_pass = ''.join([random.choice(string.letters + string.digits) for i in range(40)])
     sudo("""psql -d template1 -c "CREATE USER localwiki WITH PASSWORD '%s'" """ % env.postgres_db_pass, user='postgres')
+    sudo("""psql -d template1 -c "ALTER USER localwiki CREATEDB'" """, user='postgres')
     sudo("createdb -E UTF8 -O localwiki localwiki", user='postgres')
     # Init PostGIS
     sudo('psql -d localwiki -c "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;"', user='postgres')
