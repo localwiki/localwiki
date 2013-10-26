@@ -4,7 +4,7 @@
 #############################################################
 # CHANGE THIS LINE to the absolute path of the virtualenv:
 #############################################################
-VIRTUAL_ENV_PATH = '/absolute/path/to/the/env'
+VIRTUAL_ENV_PATH = '{{ virtualenv }}'
 
 import os
 import sys

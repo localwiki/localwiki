@@ -1,3 +1,0 @@
- LocalWiki is a web application that includes collaborative editing and
- mapping and is designed for collecting and sharing information in local,
- geographic communities. Depends on python, apache2, postgis, and jetty.
