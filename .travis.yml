@@ -10,7 +10,7 @@ before_install:
     - pip install -r fabric/requirements.txt
     - cp fabric/config_secrets.py.template fabric/config_secrets.py
 install:
-    - cd fabric; fab provision -H localhost -i ~/.ssh/local_rsa
+    - cd fabric; fab provision -H localhost -i ~/.ssh/id_rsa
 script: coverage run --source=localwiki localwiki/manage.py test regions pages maps tags versioning diff ckeditor redirects users
 after_success:
     - coveralls
