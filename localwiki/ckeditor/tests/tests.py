@@ -126,19 +126,19 @@ class CKEditorWidgetTest(TestCase):
     def test_default_config(self):
         ck = CKEditor()
         rendered = ck.render("ck", "Test")
-        expected = ('<textarea rows="10" cols="40" name="ck">Test</textarea><script type="text/javascript">\n<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';\nCKEDITOR_config = {"language": "en-us", "toolbar": "full"}\nCKEDITOR.replace(\'id_ck\', CKEDITOR_config);\n-->\n</script>\n')
+        expected = ('<textarea cols="40" name="ck" rows="10">\r\nTest</textarea><script type="text/javascript">\n<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';\nCKEDITOR_config = {"language": "en-us", "toolbar": "full"}\nCKEDITOR.replace(\'id_ck\', CKEDITOR_config);\n-->\n</script>\n')
         self.assertEqual(rendered, expected)
 
     def test_config_based_on_allowed_tags(self):
         ck = CKEditor(allowed_tags=['a'])
         rendered = ck.render("ck", "Test")
-        expected = ('<textarea rows="10" cols="40" name="ck">Test</textarea><script type="text/javascript">\n<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';\nCKEDITOR_config = {"language": "en-us", "toolbar_full": [["Link", "Unlink", "Anchor"]], "toolbar_simple": [["Link", "Unlink", "Anchor"]], "toolbar": "full"}\nCKEDITOR.replace(\'id_ck\', CKEDITOR_config);\n-->\n</script>\n')
+        expected = ('<textarea cols="40" name="ck" rows="10">\r\nTest</textarea><script type="text/javascript">\n<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';\nCKEDITOR_config = {"language": "en-us", "toolbar_full": [["Link", "Unlink", "Anchor"]], "toolbar_simple": [["Link", "Unlink", "Anchor"]], "toolbar": "full"}\nCKEDITOR.replace(\'id_ck\', CKEDITOR_config);\n-->\n</script>\n')
         self.assertEqual(rendered, expected)
 
     def test_custom_config(self):
         ck = CKEditor(ck_config={'extraPlugins': 'myThing'})
         rendered = ck.render("ck", "Test")
-        expected = ('<textarea rows="10" cols="40" name="ck">Test</textarea><script type="text/javascript">\n<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';\nCKEDITOR_config = {"extraPlugins": "myThing"}\nCKEDITOR.replace(\'id_ck\', CKEDITOR_config);\n-->\n</script>\n')
+        expected = ('<textarea cols="40" name="ck" rows="10">\r\nTest</textarea><script type="text/javascript">\n<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';\nCKEDITOR_config = {"extraPlugins": "myThing"}\nCKEDITOR.replace(\'id_ck\', CKEDITOR_config);\n-->\n</script>\n')
         self.assertEqual(rendered, expected)
 
 
@@ -152,5 +152,5 @@ class CustomCKEditorTest(TestCase):
     def test_config(self):
         ck = CustomCKEditor()
         rendered = ck.render("ck", "Test")
-        expected = ('<textarea rows="10" cols="40" name="ck">Test</textarea><script type="text/javascript">\n<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';\nCKEDITOR_config = {"language": "en-us", "extraPlugins": "myPlugin1,myPlugin2", "toolbar": "full"}\nCKEDITOR.replace(\'id_ck\', CKEDITOR_config);\n-->\n</script>\n')
+        expected = ('<textarea cols="40" name="ck" rows="10">\r\nTest</textarea><script type="text/javascript">\n<!--\nCKEDITOR.basePath = \'/static/js/ckeditor/\';\nCKEDITOR_config = {"language": "en-us", "extraPlugins": "myPlugin1,myPlugin2", "toolbar": "full"}\nCKEDITOR.replace(\'id_ck\', CKEDITOR_config);\n-->\n</script>\n')
         self.assertEqual(rendered, expected)
