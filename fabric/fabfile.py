@@ -85,7 +85,7 @@ def init_postgres():
     # Generate a random password, for now.
     env.postgres_db_pass = ''.join([random.choice(string.letters + string.digits) for i in range(40)])
     sudo("""psql -d template1 -c "CREATE USER localwiki WITH PASSWORD '%s'" """ % env.postgres_db_pass, user='postgres')
-    sudo("""psql -d template1 -c "ALTER USER localwiki CREATEDB'" """, user='postgres')
+    sudo("""psql -d template1 -c "ALTER USER localwiki CREATEDB" """, user='postgres')
     sudo("createdb -E UTF8 -O localwiki localwiki", user='postgres')
     # Init PostGIS
     sudo('psql -d localwiki -c "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;"', user='postgres')
@@ -141,8 +141,8 @@ def setup_apache():
         upload_template('config/localwiki.wsgi', os.path.join(env.localwiki_root),
             context=env, use_jinja=True)
 
-        # Allow apache to save uploads
-        sudo('chown www-data:www-data %s' % os.path.join(env.data_root, 'media'))
+        # Allow apache to save uploads, etc
+        sudo('chown www-data:www-data %s' % os.path.join(env.localwiki_root))
 
         # Disable default apache site
         if exists('/etc/apache2/sites-enabled/000-default'):
@@ -156,15 +156,28 @@ def setup_apache():
         # Restart apache
         sudo('service apache2 restart')
 
+def setup_permissions():
+    # Add the user we run commands with to the apache user group
+    sudo('usermod -a -G www-data %s' % env.user)
+
 def provision():
     if env.host_type == 'vagrant':
         fix_locale()
 
     install_requirements()
+    setup_permissions() 
     setup_jetty()
     setup_repo()
     init_localwiki_install()
     setup_apache()
+
+def run_tests():
+    # Must be superuser to run tests b/c of PostGIS requirement? Ugh..
+    # XXX TODO: Fix this, somehow.  django-nose + pre-created test db?
+    sudo("""psql -d postgres -c "ALTER ROLE localwiki SUPERUSER" """, user='postgres')
+    with virtualenv():
+        run('localwiki-manage test regions pages maps tags versioning diff ckeditor redirects users')
+    sudo("""psql -d postgres -c "ALTER ROLE localwiki NOSUPERUSER" """, user='postgres')
 
 def fix_locale():
     sudo('update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8')
