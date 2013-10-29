@@ -1683,3 +1683,47 @@ table.noborder, table.noborder td {
         display: none;    
     }
 }
+
+/*
+====================================
+ Misc
+====================================
+*/
+
+#preview_banner {
+    padding: 0 2em 0 2em;
+    font-size: 80%;
+    background-color: #E8ECEF;
+}
+#preview_banner p {
+    margin-bottom: 0.2em;
+}
+#preview_banner #ask {
+    background-color: #feff97;
+    margin-bottom: 0;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-top: 0.7em;
+    padding-bottom: 0.7em;
+    margin-left: -2em;
+    margin-right: -2em;
+}
+#preview_banner .button {
+    display: inline-block!important;
+    float: none;
+    padding: 0.3em 0.7em 0.5em 0.7em;
+    margin-left: 0.5em;
+    margin-right: 0.3em;
+}
+#preview_banner a {
+   background: none;
+   padding: 0;
+   text-decoration: none;
+}
+
+.noexternalimg p {
+    line-height: 0.5;
+}
+.noexternalimg a {
+    background: none!important;
+}
