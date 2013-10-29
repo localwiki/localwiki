@@ -21,8 +21,11 @@ from ilogue import fexpect
 ####################################################################
 env.secrets_path = '/Users/philip/projects/localwiki/config_secrets/'
 
-sys.path.append(env.secrets_path)
-import secrets as config_secrets
+try:
+    sys.path.append(env.secrets_path)
+    import secrets as config_secrets
+except ImportError:
+    sys.path.append(os.path.abspath('config_secrets.example'))
 
 env.host_type = None
 
