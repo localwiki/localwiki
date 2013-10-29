@@ -25,7 +25,8 @@ try:
     sys.path.append(env.secrets_path)
     import secrets as config_secrets
 except ImportError:
-    sys.path.append(os.path.abspath('config_secrets.example'))
+    env.secrets_path = os.path.abspath('config_secrets.example')
+    sys.path.append(env.secrets_path)
     import secrets as config_secrets
 
 env.host_type = None
@@ -238,6 +239,8 @@ def run_tests():
     with virtualenv():
         run('localwiki-manage test regions pages maps tags versioning diff ckeditor redirects users')
     sudo("""psql -d postgres -c "ALTER ROLE localwiki NOSUPERUSER" """, user='postgres')
+
+
 
 def fix_locale():
     sudo('update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8')
