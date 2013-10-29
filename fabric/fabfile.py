@@ -44,6 +44,8 @@ env.apache_settings = {
     'server_admin': 'contact@localwiki.org',
 }
 env.sentry_key = config_secrets.sentry_key
+#env.branch = 'master'
+env.branch = 'hub_fabric_deploy_needed'
  
 def vagrant():
     env.host_type = 'vagrant'
@@ -240,7 +242,45 @@ def run_tests():
         run('localwiki-manage test regions pages maps tags versioning diff ckeditor redirects users')
     sudo("""psql -d postgres -c "ALTER ROLE localwiki NOSUPERUSER" """, user='postgres')
 
+def branch(name):
+    env.branch = name
 
+def update_code():
+    with cd(env.src_root):
+        run("git fetch origin")
+        stash_str = sudo("git stash")
+        run("git reset --hard origin/%s" % env.branch)
+        print 'stash_str', stash_str
+        if stash_str.strip() != 'No local changes to save':
+            run("git stash pop")
+
+def rebuild_virtualenv():
+    with cd(env.localwiki_root):
+        run("virtualenv --system-site-packages env")
+
+def touch_wsgi():
+    # Touching the deploy.wsgi file will cause apache's mod_wsgi to
+    # reload all python modules having to restart apache.  This is b/c
+    # we are running django.wsgi in daemon mode.
+    with cd(env.localwiki_root):
+        sudo("touch localwiki.wsgi")
+
+def update():
+    update_code()
+    rebuild_virtualenv()  # rebuild since it may be out of date and broken
+    with cd(env.src_root):
+        with virtualenv():
+            run("python setup.py clean --all")
+            run("rm -rf dist localwiki.egg-info")
+            run("python setup.py develop")
+            #sudo("python setup.py install")
+            setup_jetty()
+            run("localwiki-manage setup_all")
+    touch_wsgi()
+    sudo("service memcached restart", pty=False)
+
+def deploy():
+    update()
 
 def fix_locale():
     sudo('update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8')
