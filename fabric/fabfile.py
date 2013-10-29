@@ -26,6 +26,7 @@ try:
     import secrets as config_secrets
 except ImportError:
     sys.path.append(os.path.abspath('config_secrets.example'))
+    import secrets as config_secrets
 
 env.host_type = None
 
