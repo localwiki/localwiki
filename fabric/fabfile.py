@@ -1,4 +1,5 @@
 import os
+import sys
 import random
 import string
 from contextlib import contextmanager as _contextmanager
@@ -7,7 +8,21 @@ from fabric.contrib.files import upload_template, exists
 from fabric.network import disconnect_all
 from ilogue import fexpect
 
-import config_secrets
+####################################################################
+#  Ignore the `secrets_path` for development usage.
+#
+#  For production deployments, you'll want to set up the
+#  `secrets_path` as follows:
+#    1. Copy config_secrets.example/ (found in this dir) somewhere.
+#    2. Edit it with your secret values.
+#  
+#  You can provision without setting up these secrets, but this will
+#  allow you to e.g. have SSL, Sentry, and other stuff as we add it.
+####################################################################
+env.secrets_path = '/Users/philip/projects/localwiki/config_secrets/'
+
+sys.path.append(env.secrets_path)
+import secrets as config_secrets
 
 env.host_type = None
 
@@ -51,7 +66,7 @@ def setup_jetty():
     sudo("service jetty stop")
     sudo("service jetty start")
 
-def install_requirements():
+def install_system_requirements():
     # Update package list
     sudo('apt-get update')
     sudo('apt-get -y install python-software-properties')
@@ -73,11 +88,15 @@ def install_requirements():
     solr_pkg = ['solr-jetty', 'default-jre-headless']
     apache_pkg = ['apache2', 'libapache2-mod-wsgi']
     postgres_pkg = ['gdal-bin', 'proj', 'postgresql-9.1-postgis-2.0']
+    memcached_pkg = ['memcached']
+    varnish_pkg = ['varnish']
     packages = (
         system_python_pkg +
         solr_pkg +
         apache_pkg +
-        postgres_pkg
+        postgres_pkg +
+        memcached_pkg +
+        varnish_pkg
     )
     sudo('DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes install %s' % ' '.join(packages))
 
@@ -130,12 +149,22 @@ def switch_branch(branch):
     with cd(env.src_root):
         run('git checkout %s' % branch)
 
+def install_ssl_certs():
+    # Install our SSL certs for apache
+    sudo('mkdir -p /etc/apache2/ssl')
+    sudo('chown -R www-data:www-data /etc/apache2/ssl')
+    sudo('chmod 700 /etc/apache2/ssl')
+    with settings(warn_only=True):
+        put(os.path.join(env.secrets_path, 'ssl') + '/*', '/etc/apache2/ssl/', use_sudo=True)
+
 def setup_apache():
     with settings(hide('warnings', 'stdout', 'stderr')):
         # Enable mod_wsgi, mod_headers, mod_rewrite
         sudo('a2enmod wsgi')
         sudo('a2enmod headers')
         sudo('a2enmod rewrite')
+        sudo('a2enmod proxy')
+        sudo('a2enmod ssl')
 
         # Install localwiki.wsgi
         upload_template('config/localwiki.wsgi', os.path.join(env.localwiki_root),
@@ -153,6 +182,8 @@ def setup_apache():
             context=env, use_jinja=True, use_sudo=True)
         sudo('a2ensite localwiki')
 
+        install_ssl_certs()
+        
         # Restart apache
         sudo('service apache2 restart')
 
@@ -160,16 +191,41 @@ def setup_permissions():
     # Add the user we run commands with to the apache user group
     sudo('usermod -a -G www-data %s' % env.user)
 
+def setup_mapserver():
+    """
+    Enable map-a.localwiki.org, map-b.localwiki.org, map-c.localwiki.org as
+    cached proxies to cloudmade tiles.
+    """
+    setup_varnish()
+    put('config/apache/map', '/etc/apache2/sites-available/map', use_sudo=True)
+    sudo('a2ensite map')
+    sudo('service apache2 restart')
+
+def setup_varnish():
+    put('config/varnish/default.vcl', '/etc/varnish/default.vcl', use_sudo=True)
+    sudo('service varnish restart')
+
+def add_ssh_keys():
+    run('mkdir -p ~/.ssh && chmod 700 ~/.ssh')
+    run('touch ~/.ssh/authorized_keys')
+    run('mkdir ssh_to_add')
+    put(os.path.join(env.secrets_path, 'ssh') + '/*', 'ssh_to_add/')
+    run('cat ~/ssh_to_add/* >> ~/.ssh/authorized_keys')
+    run('rm -rf ~/ssh_to_add')
+
 def provision():
     if env.host_type == 'vagrant':
         fix_locale()
 
-    install_requirements()
+    add_ssh_keys()
+    install_system_requirements()
     setup_permissions() 
     setup_jetty()
     setup_repo()
     init_localwiki_install()
     setup_apache()
+
+    setup_mapserver()
 
 def run_tests():
     # Must be superuser to run tests b/c of PostGIS requirement? Ugh..
