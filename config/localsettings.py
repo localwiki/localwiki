@@ -4,6 +4,8 @@ DEBUG = False
 # Config values you *must* change
 #######################################################################
 
+ALLOWED_HOSTS = ['.localwiki.org', '.localwiki.net', '127.0.0.1', 'localhost']
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
