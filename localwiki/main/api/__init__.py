@@ -15,7 +15,7 @@ def autoload(submodules):
         mod = import_module(app)
         for submodule in submodules:
             try:
-                import_module("{}.{}".format(app, submodule))
+                import_module("%s.%s" % (app, submodule))
             except:
                 if module_has_submodule(mod, submodule):
                     raise
