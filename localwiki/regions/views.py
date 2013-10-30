@@ -40,7 +40,7 @@ class TemplateView(RegionMixin, DjangoTemplateView):
 class RegionListView(ListView):
     model = Region
     context_object_name = 'regions'
-    zoom_to_data_extent = True
+    zoom_to_data = True
 
     def get_queryset(self):
         return Region.objects.all().exclude(slug=settings.MAIN_REGION).order_by('full_name')
@@ -61,7 +61,7 @@ class RegionListView(ListView):
         # Center to show most of the US'ish
         olwidget_options['default_lat'] = 39.79
         olwidget_options['default_lon'] = -100.99
-        olwidget_options['zoomToDataExtent'] = self.zoom_to_data_extent
+        olwidget_options['zoomToDataExtent'] = self.zoom_to_data
 
         map_opts = olwidget_options.get('map_options', {})
         map_controls = map_opts.get('controls', [])
@@ -78,8 +78,7 @@ class RegionListView(ListView):
 
 class MainPageView(RegionListView):
     template_name = 'regions/main.html'
-
-    zoom_to_data_extent = False
+    zoom_to_data = False
 
 
 class RegionCreateView(CreateView):
