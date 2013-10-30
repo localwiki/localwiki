@@ -39,6 +39,9 @@ urlpatterns = patterns('',
     (r'^(?i)Users/', include('users.urls')),
     (r'^(?P<region>[^/]+?)/search/', include('search.urls')),
     (r'^', include('recentchanges.urls')),
+    # Historical URL for dashboard:
+    (r'^(?P<region>[^/]+?)/tools/dashboard/?$', NamedRedirectView.as_view(name='dashboard:main')),
+    (r'^_tools/dashboard/', include(dashboard.site.urls)),
     (r'^(?P<region>[^/]+?)/tools/dashboard/', include(dashboard.site.urls)),
 
     # JS i18n support.
