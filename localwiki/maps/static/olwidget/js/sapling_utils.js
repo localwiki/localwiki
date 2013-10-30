@@ -75,6 +75,7 @@ SaplingMap = {
         }
 
         this.setup_link_hover_activation(map);
+        this.disable_scroll_zoom(map);
     },
 
     setup_link_hover_activation: function(map) {
@@ -96,6 +97,12 @@ SaplingMap = {
                 SaplingMap._highlightResult(this, feature, map, true);
             });
         });
+    },
+
+    disable_scroll_zoom: function(map) {
+        var controls = map.getControlsByClass('OpenLayers.Control.Navigation');
+        for(var i = 0; i < controls.length; ++i)
+        controls[i].disableZoomWheel();
     },
 
     _set_selected_style: function(map, feature) {

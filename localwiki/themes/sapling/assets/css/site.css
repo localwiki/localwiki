@@ -109,7 +109,7 @@ textarea, input, select {
         border-bottom: 1px solid #fafafa;
     }
     /* For a tag page */
-    #content.has_map #page, #content.has_map #pagetagset {
+    #content.has_map #page, #content.has_map #pagetagset, #content.has_map #regions {
         margin-top: 250px;
     }
     /* For an included list of tagged pages */
@@ -205,6 +205,9 @@ textarea, input, select {
     }
     #header_bar .inner {
         display: block;
+    }
+    #map_header_bar {
+        margin-top: 7px;
     }
 }
 
@@ -612,6 +615,7 @@ textarea, input, select {
     #nav ul {
         font-size: 86%;
         margin: 0.5em;
+        margin-top: -0.8em;
         padding: 0;
         float: none;
         position: relative;
@@ -1374,6 +1378,11 @@ input:focus {
     float: left;
     height: 100%;
 }
+@media screen and (max-width: 500px) {
+    .search .twitter-typeahead {
+        width: 100%;
+    }
+}
 .tt-suggestion {
     padding-left: 30px;    
     padding-top: 0.5em;
@@ -1681,6 +1690,34 @@ table.noborder, table.noborder td {
 @media screen and (max-width: 500px) {
     .olControlLayerSwitcher {
         display: none;    
+    }
+}
+
+/*
+====================================
+ Main page
+====================================
+*/
+
+#map_header_bar #map {
+    float: none;
+    margin: 0;
+}
+#map_header_bar .mapwidget {
+    width: 100%!important;
+    float: none;
+    margin: 0;
+    height: 340px!important;
+    display: inline-block;
+}
+@media screen and (max-width: 700px) {
+    #map_header_bar .mapwidget {
+        height: 200px!important;
+    }
+}
+@media screen and (max-width: 500px) {
+    #map_header_bar #map {
+        padding-top: 0; 
     }
 }
 

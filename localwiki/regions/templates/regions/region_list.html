@@ -7,11 +7,24 @@
 
 {% block header_title %}{% trans "Regions" %}{% endblock %}
 
-{% block content %}
-  <ul>
-  {% for region in regions %}
-    <li><a href="{% url 'frontpage' region=region.slug %}">{{ region.full_name }}</a></li>
-  {% endfor %}
-  </ul>
-  <p><a href="{% url 'add-region' %}" class="button">Add region</a></p>
+{% block content_wrapper %}
+<div id="content_wrapper">
+    <div id="content" class="has_map">
+    {% block content %}
+      {{ map.media }}
+      <div id="map">
+        {{ map }}
+        <div class="info"><a class="edit tiny button" href="{% url 'add-region' %}">{% trans "Add region" %}</a></div>
+      </div>
+      <div id="regions">
+        <ul>
+        {% for region in regions %}
+          <li><a href="{% url 'frontpage' region=region.slug %}">{{ region.full_name }}</a></li>
+        {% endfor %}
+        </ul>
+        <p><a href="{% url 'add-region' %}" class="button">Add region</a></p>
+      </div>
+    {% endblock %}
+    </div>
+</div>
 {% endblock %}

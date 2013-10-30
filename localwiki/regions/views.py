@@ -1,3 +1,5 @@
+import copy
+
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView as DjangoTemplateView
 from django.views.generic import ListView
@@ -41,6 +43,30 @@ class RegionListView(ListView):
 
     def get_queryset(self):
         return Region.objects.all().exclude(slug=settings.MAIN_REGION).order_by('full_name')
+
+    def get_context_data(self, *args, **kwargs):
+        from maps.widgets import InfoMap
+
+        def popup_html(obj):
+            url = reverse('frontpage', kwargs={'region': obj.slug}) 
+            return '<a href="%s">%s</a>' % (url, obj.full_name)
+
+        context = super(RegionListView, self).get_context_data(*args, **kwargs)
+        map_objects = [(obj.geom.centroid, popup_html(obj)) for obj in self.get_queryset()]
+
+        olwidget_options = copy.deepcopy(getattr(settings,
+            'OLWIDGET_DEFAULT_OPTIONS', {}))
+        map_opts = olwidget_options.get('map_options', {})
+        map_controls = map_opts.get('controls', [])
+        if 'KeyboardDefaults' in map_controls:
+            map_controls.remove('KeyboardDefaults')
+        olwidget_options['map_options'] = map_opts
+        olwidget_options['map_div_class'] = 'mapwidget small'
+        context['map'] = InfoMap(
+            map_objects,
+            options=olwidget_options)
+
+        return context
 
 
 class MainPageView(RegionListView):

@@ -266,7 +266,7 @@ def touch_wsgi():
         sudo("touch localwiki.wsgi")
 
 def update():
-    update_code()
+    #update_code()
     rebuild_virtualenv()  # rebuild since it may be out of date and broken
     with cd(env.src_root):
         with virtualenv():

@@ -7,21 +7,38 @@
 
 {% block header_title %}{% trans "LocalWiki" %}{% endblock %}
 
-{% block content %}
-  <p>Welcome to the <strong>insanely</strong> early preview of the <a href="http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/" target="_blank">new version of LocalWiki</a>. We are experimenting with ways to make it easier for people to share knowledge about their community. Please check out the existing projects below, but be warned that all of these are in the very earliest stages of development!</p>
+{% block header_bar_wrapper %}
+{{ map.media }}
+<div id="map_header_bar">
+    <div id="map">
+    {{ map }}
+    <div class="info"><a class="edit tiny button" href="{% url 'add-region' %}">{% trans "Add region" %}</a></div>
+    </div>    
+</div>
+{% endblock %}
 
-<p>If you've come here to create a new LocalWiki, welcome! It only takes a few minutes to set one up. All you have to do is click the "Add a Region" button at the bottom of the screen.</p>
+{% block content_wrapper %}
+<div id="content_wrapper">
+  <div id="content" class="has_map">
+  {% block content %}
+  <div id="page">
+    <p>Welcome to the <strong>insanely</strong> early preview of the <a href="http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/" target="_blank">new version of LocalWiki</a>. We are experimenting with ways to make it easier for people to share knowledge about their community. Please check out the existing projects below, but be warned that all of these are in the very earliest stages of development!</p>
 
-  <p>Finally, check out the <strong><a href="{% url 'frontpage' region='main' %}">LocalWiki Guide</a></strong> for more information about the project and help using the site.</p>
+    <p>If you've come here to create a new LocalWiki, welcome! It only takes a few minutes to set one up. All you have to do is click the "Add a Region" button at the bottom of the screen.</p>
 
-  
-<span style="" class="image_frame image_frame_border image_right"><img  src="http://localwiki.org/static/img/jobs/edit_your_city_crowd.jpg"></span>
+    <p>Finally, check out the <strong><a href="{% url 'frontpage' region='main' %}">LocalWiki Guide</a></strong> for more information about the project and help using the site.</p>
 
-  <h2>Regions</h2>
-  <ul>
-  {% for region in regions %}
-    <li><a href="{% url 'frontpage' region=region.slug %}">{{ region.full_name }}</a></li>
-  {% endfor %}
-  </ul>
-  <p><a href="{% url 'add-region' %}" class="button">Add region</a></p>
+    <h2>Regions</h2>
+    <span style="" class="image_frame image_frame_border image_right"><img  src="http://localwiki.org/static/img/jobs/edit_your_city_crowd.jpg"></span>
+    <ul>
+    {% for region in regions %}
+      <li><a href="{% url 'frontpage' region=region.slug %}">{{ region.full_name }}</a></li>
+    {% endfor %}
+    </ul>
+    <p><a href="{% url 'add-region' %}" class="button">Add region</a></p>
+    {% endblock %}
+  </div>
+
+  </div>
+</div>
 {% endblock %}
