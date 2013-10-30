@@ -56,6 +56,11 @@ class RegionListView(ListView):
 
         olwidget_options = copy.deepcopy(getattr(settings,
             'OLWIDGET_DEFAULT_OPTIONS', {}))
+
+        # Center to show most of the US'ish
+        olwidget_options['default_lat'] = 30.18918
+        olwidget_options['default_lon'] = -53.36031
+
         map_opts = olwidget_options.get('map_options', {})
         map_controls = map_opts.get('controls', [])
         if 'KeyboardDefaults' in map_controls:
