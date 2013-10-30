@@ -60,6 +60,7 @@ class RegionListView(ListView):
         # Center to show most of the US'ish
         olwidget_options['default_lat'] = 30.18918
         olwidget_options['default_lon'] = -53.36031
+        olwidget_options['zoomToDataExtent'] = False
 
         map_opts = olwidget_options.get('map_options', {})
         map_controls = map_opts.get('controls', [])
