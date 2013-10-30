@@ -52,7 +52,7 @@ class RegionListView(ListView):
             return '<a href="%s">%s</a>' % (url, obj.full_name)
 
         context = super(RegionListView, self).get_context_data(*args, **kwargs)
-        map_objects = [(obj.geom.centroid, popup_html(obj)) for obj in self.get_queryset()]
+        map_objects = [(obj.geom.centroid, popup_html(obj)) for obj in self.get_queryset() if obj.geom]
 
         olwidget_options = copy.deepcopy(getattr(settings,
             'OLWIDGET_DEFAULT_OPTIONS', {}))
