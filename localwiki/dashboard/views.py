@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models import Max
 from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
+from django.contrib.humanize.templatetags.humanize import intcomma
 
 import pyflot
 import qsstats
@@ -33,6 +34,10 @@ class DashboardView(TemplateView):
         return context
 
 
+def humanize(i):
+    return intcomma(i)
+
+
 class DashboardRenderView(JSONView):
     def get_filters(self):
         if self.kwargs.get('region'):
@@ -50,11 +55,11 @@ class DashboardRenderView(JSONView):
         nums = cache.get('%s:dashboard_nums' % prefix)
         if nums is None:
             nums = {
-                'num_pages': Page.objects.filter(**filters).count(),
-                'num_files': PageFile.objects.filter(**filters).count(),
-                'num_maps': MapData.objects.filter(**filters).count(),
-                'num_redirects': Redirect.objects.filter(**filters).count(),
-                'num_users': User.objects.count()
+                'num_pages': humanize(Page.objects.filter(**filters).count()),
+                'num_files': humanize(PageFile.objects.filter(**filters).count()),
+                'num_maps': humanize(MapData.objects.filter(**filters).count()),
+                'num_redirects': humanize(Redirect.objects.filter(**filters).count()),
+                'num_users': humanize(User.objects.count())
             }
             cache.set('%s:dashboard_nums' % prefix, nums,
                 EASIER_CACHE_TIME)
