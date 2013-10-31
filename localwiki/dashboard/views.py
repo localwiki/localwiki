@@ -109,10 +109,7 @@ class DashboardRenderView(JSONView):
         context['_built'] = time.time()
         context['_duration'] = time.time() - start_at
         context['generated'] = True
-        if self.kwargs.get('region'):
-            cache.set('%s:dashboard_%s' % (prefix, self.kwargs.get('region')), context, COMPLETE_CACHE_TIME)
-        else:
-            cache.set('%s:dashboard' % prefix, context, COMPLETE_CACHE_TIME)
+        cache.set('%s:dashboard_%s' % (prefix, key), context, COMPLETE_CACHE_TIME)
         cache.set('%s:dashboard_generating_%s' % (prefix, key), False)
 
         context['_age'] = time.time() - context['_built']
