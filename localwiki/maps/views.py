@@ -157,6 +157,14 @@ class MapAllObjectsAsPointsView(MapGlobalView):
                ]
 
 
+class EverythingEverywhereAsPointsView(MapAllObjectsAsPointsView):
+    """
+    All objects across all regions as points.
+    """
+    def get_queryset(self):
+        return MapData.objects.all()
+
+
 class MapForTag(MapGlobalView):
     """
     All objects whose pages have a particular tag.

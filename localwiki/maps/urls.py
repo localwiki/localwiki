@@ -6,6 +6,7 @@ from feeds import MapChangesFeed
 
 urlpatterns = patterns('',
     url(r'^$', MapGlobalView.as_view(), name='global'),
+    url(r'^_everything_everywhere$', EverythingEverywhereAsPointsView.as_view(), name='everything-as-points'),
     url(r'^tags/(?P<tag>.+)', MapForTag.as_view(), name='tagged'),
     url(r'^_objects/$', MapObjectsForBounds.as_view(), name='objects'),
     url(r'^_get_osm/$', OSMGeometryLookup.as_view(), name='osm-geom-lookup'),
