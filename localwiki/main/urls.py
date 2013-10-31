@@ -42,7 +42,6 @@ urlpatterns = patterns('',
     # Historical URL for dashboard:
     (r'^(?P<region>[^/]+?)/tools/dashboard/?$', NamedRedirectView.as_view(name='dashboard:main')),
     (r'^_tools/dashboard/', include(dashboard.site.urls)),
-    (r'^(?P<region>[^/]+?)/tools/dashboard/', include(dashboard.site.urls)),
 
     # JS i18n support.
     (r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
