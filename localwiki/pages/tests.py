@@ -528,6 +528,16 @@ class HTMLToTemplateTextTest(TestCase):
             imports +
             '<div>{% link "http://example.org" %}hi!{% endlink %}</div>')
 
+    def test_link_to_tag(self):
+        a = Page(name='Front Page', region=self.region)
+        a.content = (u'<a href="tags/cats">dummy</a>')
+        a.save()
+
+        context = Context({'page': a, 'region': self.region})
+        template = Template(html_to_template_text(a.content, context))
+        html = template.render(context)
+        self.assertEqual(html, u'<a href="tags/cats" class="tag_link">dummy</a>')
+
     def test_nbsp_outside_of_element(self):
         html = u'a\xa0<strong>\xa0</strong>\n'
         imports = ''.join(tag_imports)

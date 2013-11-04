@@ -340,6 +340,7 @@ class LinkNode(Node):
                         cls = ' class="missing_link"'
                 elif unquote_plus(url).startswith('tags/'):
                     cls = ' class="tag_link"'
+                    url = unquote_plus(url)
                 else:
                     try:
                         page = Page.objects.get(slug__exact=slugify(url), region=region)
