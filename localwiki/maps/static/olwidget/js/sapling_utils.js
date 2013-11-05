@@ -582,7 +582,7 @@ SaplingMap = {
         "olwidget.EditableLayerSwitcher") { 
                 layer = map.vectorLayers[0];
                 if (layer.controls) {
-                    //this._setup_map_search(map, layer);
+                    this._setup_map_search(map, layer);
                     this._remove_unneeded_controls(layer);
                     map.controls[i].setEditing(layer);
 
