@@ -1,11 +1,38 @@
+"""
+This is the main management script for provisioning and managing the LocalWiki servers.
+
+==== Requirements ====
+
+$ virtualenv env
+$ source env/bin/activate
+$ pip install -r requirements.txt
+
+==== For development ====
+
+This script will help you get up and running with a development instance of the
+LocalWiki servers.
+
+$ fab vagrant provision
+
+==== EC2 ====
+
+To provision a new EC2 instance:
+
+$ fab create_ec2 provision
+
+"""
+
+
 import os
 import sys
 import random
+import time
 import string
 from contextlib import contextmanager as _contextmanager
 from fabric.api import *
 from fabric.contrib.files import upload_template, exists
 from fabric.network import disconnect_all
+import boto.ec2
 from ilogue import fexpect
 
 ####################################################################
@@ -20,6 +47,31 @@ from ilogue import fexpect
 #  allow you to e.g. have SSL, Sentry, and other stuff as we add it.
 ####################################################################
 env.secrets_path = '/Users/philip/projects/localwiki/config_secrets/'
+env.hostname = 'localwiki.net'
+env.hosts = ['localwiki.net']
+
+def get_ec2_ami(region):
+    # From http://cloud-images.ubuntu.com/releases/precise/release/
+
+    # These are 64-bit, EBS-root-volume instances running
+    # Ubuntu 12.04 LTS.
+    images = {
+        'us-west-1': 'ami-ecd8efa9',
+        'us-west-2': 'ami-30079e00',
+        'us-east-1': 'ami-69f5a900',
+        # ..add others here if you wish
+    }
+    return images[region]
+
+####################################################################
+# Notes to self:
+#
+# After creating an EC2 instance, may want to create an IP:
+#
+# ec2-allocate-address
+# ec2-associate-address -i <instance id> <ip address>
+#
+####################################################################
 
 try:
     sys.path.append(env.secrets_path)
@@ -59,6 +111,17 @@ def vagrant():
         # use vagrant ssh key
         result = local('vagrant ssh-config | grep IdentityFile', capture=True)
     env.key_filename = result.split()[1].strip('"')
+
+def ec2():
+    env.host_type = 'ec2'
+    env.user = 'ubuntu'
+
+    env.aws_access_key_id = config_secrets.aws_access_key_id
+    env.aws_secret_access_key = config_secrets.aws_secret_access_key
+    env.ec2_region = getattr(config_secrets, 'ec2_region', 'us-west-1')
+    env.ec2_security_group = getattr(config_secrets, 'ec2_security_group', 'default')
+    env.ec2_key_name = config_secrets.ec2_key_name
+    env.key_filename = config_secrets.ec2_key_filename
 
 @_contextmanager
 def virtualenv():
@@ -178,7 +241,7 @@ def setup_apache():
             context=env, use_jinja=True)
 
         # Allow apache to save uploads, etc
-        sudo('chown www-data:www-data %s' % os.path.join(env.localwiki_root))
+        sudo('chown -R www-data:www-data %s' % os.path.join(env.localwiki_root))
 
         # Disable default apache site
         if exists('/etc/apache2/sites-enabled/000-default'):
@@ -220,9 +283,82 @@ def add_ssh_keys():
     run('cat ~/ssh_to_add/* >> ~/.ssh/authorized_keys')
     run('rm -rf ~/ssh_to_add')
 
+def attach_ebs_volumes():
+    """
+    Attach EBS volumes.
+    """
+    print "Attaching EBS volume inside of instance.."
+    sudo('mkfs -t ext3 /dev/xvdh')
+    sudo('mkdir -p /srv/')
+    sudo('echo "/dev/xvdh       /srv    auto    defaults,nobootwait 0       2 " >> /etc/fstab')
+    sudo('mount -a')
+
+def create_ec2(ami_id=None, instance_type='m1.medium'):
+    ec2()
+
+    if not ami_id:
+        ami_id = get_ec2_ami(env.ec2_region)
+
+    conn = boto.ec2.connect_to_region(env.ec2_region,
+        aws_access_key_id=env.aws_access_key_id,
+        aws_secret_access_key=env.aws_secret_access_key
+    )
+    # Don't delete root EBS volume on termination
+    root_device = boto.ec2.blockdevicemapping.BlockDeviceType(
+        delete_on_termination=False,
+    )
+    block_device_map = boto.ec2.blockdevicemapping.BlockDeviceMapping()
+    block_device_map['/dev/sda1'] = root_device
+    res = conn.run_instances(ami_id,
+        key_name=env.ec2_key_name,
+        instance_type=instance_type,
+        block_device_map=block_device_map,
+        security_groups=[env.ec2_security_group]
+    )
+
+    instance = res.instances[0]
+    exact_region = instance.placement
+
+    # Create EBS volume for data storage
+    print "Waiting for EBS volume to be created.."
+    data_vol = conn.create_volume(300, exact_region)
+    cur_vol = conn.get_all_volumes([data_vol.id])[0]
+    while cur_vol.status != 'available':
+        time.sleep(1)
+        print ".",
+        sys.stdout.flush()
+        cur_vol = conn.get_all_volumes([data_vol.id])[0]
+
+    print "Spinning up instance. Waiting for it to start. "
+    while instance.state != 'running':
+        time.sleep(1)
+        instance.update()
+        print ".",
+        sys.stdout.flush()
+    print "Instance running."
+    print "Hostname: %s" % instance.public_dns_name
+
+    print "Attaching EBS volume to instance at AWS level.."
+    conn.attach_volume (data_vol.id, instance.id, "/dev/sdh")
+
+    print "Waiting for instance to finish booting up. "
+    time.sleep(20)
+    print "Instance ready to receive connections. "
+    env.hosts = [instance.public_dns_name]
+
+def setup_ec2():
+    """
+    Things we need to do to set up the EC2 instance /after/
+    we've created the instance and have its hostname.
+    """
+    attach_ebs_volumes()
+
 def provision():
     if env.host_type == 'vagrant':
         fix_locale()
+
+    if env.host_type == 'ec2':
+        setup_ec2()
 
     add_ssh_keys()
     install_system_requirements()
