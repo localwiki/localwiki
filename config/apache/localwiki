@@ -33,7 +33,7 @@
         Allow from all
     </Directory>
 
-    WSGIDaemonProcess localwiki processes=2 threads=15 maximum-requests=10000 display-name=%{GROUP}
+    WSGIDaemonProcess localwiki processes=2 threads=15 maximum-requests=10000 user=www-data group=www-data display-name=%{GROUP}
     WSGIProcessGroup localwiki
     # For API Authorization header support
     WSGIPassAuthorization On
