@@ -48,7 +48,8 @@ from ilogue import fexpect
 ####################################################################
 env.secrets_path = '/Users/philip/projects/localwiki/config_secrets/'
 env.hostname = 'localwiki.net'
-env.hosts = ['localwiki.net']
+if not env.hosts:
+   env.hosts = ['localwiki.net']
 env.user = 'ubuntu'
 
 def get_ec2_ami(region):
@@ -98,7 +99,7 @@ env.apache_settings = {
 }
 env.sentry_key = config_secrets.sentry_key
 #env.branch = 'master'
-env.branch = 'hub_fabric_deploy_needed'
+env.branch = 'hub'
  
 def vagrant():
     env.host_type = 'vagrant'
