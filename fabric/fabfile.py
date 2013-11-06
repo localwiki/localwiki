@@ -186,7 +186,7 @@ def init_localwiki_install():
     sudo('pip install --upgrade virtualenv')
 
     # Create virtualenv
-    sudo('virtualenv --system-site-packages %s' % env.virtualenv, user='www-data')
+    run('virtualenv --system-site-packages %s' % env.virtualenv)
 
     with virtualenv():
         with cd(env.src_root):
@@ -240,7 +240,7 @@ def setup_apache():
 
         # Install localwiki.wsgi
         upload_template('config/localwiki.wsgi', os.path.join(env.localwiki_root),
-            context=env, use_jinja=True)
+            context=env, use_jinja=True, use_sudo=True)
 
         # Allow apache to save uploads, etc
         sudo('chown -R www-data:www-data %s' % os.path.join(env.localwiki_root))
@@ -265,7 +265,7 @@ def setup_permissions():
     sudo('chmod g+s %s' % env.localwiki_root)
 
     # Allow apache to read all the files in the localwiki root
-    sudo('chown -R www-data:www-data' % env.localwiki_root)
+    sudo('chown -R www-data:www-data %s' % env.localwiki_root)
     # .. but don't let other users view env/, src/.
     # Apache needs 775 access to the localwiki.wsgi script, though.
     sudo('chmod 770 %s %s' % (env.virtualenv, env.src_root))
