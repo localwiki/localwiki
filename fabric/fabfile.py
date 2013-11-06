@@ -50,7 +50,7 @@ env.secrets_path = '/Users/philip/projects/localwiki/config_secrets/'
 env.hostname = 'localwiki.net'
 if not env.hosts:
    env.hosts = ['localwiki.net']
-env.user = 'ubuntu'
+   env.user = 'ubuntu'
 
 def get_ec2_ami(region):
     # From http://cloud-images.ubuntu.com/releases/precise/release/
