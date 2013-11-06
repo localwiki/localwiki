@@ -49,6 +49,7 @@ from ilogue import fexpect
 env.secrets_path = '/Users/philip/projects/localwiki/config_secrets/'
 env.hostname = 'localwiki.net'
 env.hosts = ['localwiki.net']
+env.user = 'ubuntu'
 
 def get_ec2_ami(region):
     # From http://cloud-images.ubuntu.com/releases/precise/release/
@@ -184,7 +185,7 @@ def init_localwiki_install():
     sudo('pip install --upgrade virtualenv')
 
     # Create virtualenv
-    run('virtualenv --system-site-packages %s' % env.virtualenv)
+    sudo('virtualenv --system-site-packages %s' % env.virtualenv, user='www-data')
 
     with virtualenv():
         with cd(env.src_root):
@@ -260,6 +261,13 @@ def setup_apache():
 def setup_permissions():
     # Add the user we run commands with to the apache user group
     sudo('usermod -a -G www-data %s' % env.user)
+    sudo('chmod g+s %s' % env.localwiki_root)
+
+    # Allow apache to read all the files in the localwiki root
+    sudo('chown -R www-data:www-data' % env.localwiki_root)
+    # .. but don't let other users view env/, src/.
+    # Apache needs 775 access to the localwiki.wsgi script, though.
+    sudo('chmod 770 %s %s' % (env.virtualenv, env.src_root))
 
 def setup_mapserver():
     """
@@ -392,7 +400,7 @@ def update_code():
 
 def rebuild_virtualenv():
     with cd(env.localwiki_root):
-        run("virtualenv --system-site-packages env")
+        sudo("virtualenv --system-site-packages env", user="www-data")
 
 def touch_wsgi():
     # Touching the deploy.wsgi file will cause apache's mod_wsgi to
@@ -402,13 +410,13 @@ def touch_wsgi():
         sudo("touch localwiki.wsgi")
 
 def update():
-    #update_code()
+    update_code()
     rebuild_virtualenv()  # rebuild since it may be out of date and broken
     with cd(env.src_root):
         with virtualenv():
-            run("python setup.py clean --all")
-            run("rm -rf dist localwiki.egg-info")
-            run("python setup.py develop")
+            sudo("python setup.py clean --all", user="www-data")
+            sudo("rm -rf dist localwiki.egg-info", user="www-data")
+            sudo("python setup.py develop", user="www-data")
             #sudo("python setup.py install")
             setup_jetty()
             run("localwiki-manage setup_all")
