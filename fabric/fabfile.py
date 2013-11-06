@@ -371,10 +371,10 @@ def provision():
 
     add_ssh_keys()
     install_system_requirements()
-    setup_permissions() 
     setup_jetty()
     setup_repo()
     init_localwiki_install()
+    setup_permissions() 
     setup_apache()
 
     setup_mapserver()
