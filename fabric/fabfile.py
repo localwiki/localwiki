@@ -3,25 +3,60 @@ This is the main management script for provisioning and managing the LocalWiki s
 
 ==== Requirements ====
 
+* Install vagrant >= 1.3.3
 $ virtualenv env
 $ source env/bin/activate
 $ pip install -r requirements.txt
 
 ==== For development ====
 
-This script will help you get up and running with a development instance of the
-LocalWiki servers.
+This script will get you up and running with a development instance of the
+LocalWiki servers.  Set up the requirements (above), then::
 
-$ fab vagrant provision
+    $ mkdir vagrant_localwiki
+    $ mv localwiki vagrant_localwiki  # Move repository inside
+    $ cd vagrant_localwiki
+    $ ln -s localwiki/vagrant/Vagrantfile .
+    $ vagrant up  # Create and run vagrant instance
+    $ cd localwiki/fabric/
+    $ fab vagrant setup_dev  # Provision and set up for vagrant:
+
+You now have a complete vagrant setup with the LocalWiki servers
+running inside it.  To do development, you'll want to do something
+like::
+
+    $ cd vagrant_localwiki
+    $ vagrant ssh
+
+Then, when ssh'ed into vagrant::
+
+    $ source /srv/localwiki/env/bin/activate
+    $ localwiki-manage runserver --settings=main.settings.debug 0.0.0.0:8000
+
+You can then access the development server at http://127.0.0.1:8082
+on your local machine.  Hack on the code that lives inside of
+vagrant_localwiki/localwiki.
+
+Apache, which runs the production-style setup, will be accessible at
+http://127.0.0.1:8081, but you should use :8082, the development server,
+for most active work as it will automatically refresh.
+
+To test a full production-style deploy in vagrant::
+
+    $ cd localwiki/fabric
+    $ fab vagrant deploy:local
+
+Then visit the production server, http://127.0.0.1:8081, on your
+local machine.  The 'deploy:local' flag tells us to use your local
+code rather than a fresh git checkout.
 
 ==== EC2 ====
 
-To provision a new EC2 instance:
+To provision a new EC2 instance::
 
-$ fab create_ec2 provision
+    $ fab create_ec2 provision
 
 """
-
 
 import os
 import sys
@@ -98,7 +133,6 @@ env.apache_settings = {
     'server_admin': 'contact@localwiki.org',
 }
 env.sentry_key = config_secrets.sentry_key
-#env.branch = 'master'
 env.branch = 'hub'
  
 def vagrant():
@@ -107,12 +141,17 @@ def vagrant():
     # connect to the port-forwarded ssh
     env.hosts = ['127.0.0.1:2222']
  
-    # We assume the vagrant vm is in the 'vagrant' directory
-    # inside of this directory. If not, symlink it here.
-    with lcd('vagrant'):
+    # We assume that this fabfile is inside of the vagrant
+    # directory, two subdirectories deep.  See dev HOWTO
+    # in main docstring.
+    with lcd('../../'):
         # use vagrant ssh key
         result = local('vagrant ssh-config | grep IdentityFile', capture=True)
     env.key_filename = result.split()[1].strip('"')
+
+    print "========================="
+    print "HOST TYPE: %s" % env.host_type
+    print "========================="
 
 def ec2():
     env.host_type = 'ec2'
@@ -125,10 +164,46 @@ def ec2():
     env.ec2_key_name = config_secrets.ec2_key_name
     env.key_filename = config_secrets.ec2_key_filename
 
+    print "========================="
+    print "HOST TYPE: %s" % env.host_type
+    print "========================="
+
+def setup_dev():
+    """
+    Provision and set up for development on vagrant.
+    """
+    provision()
+    # Use our vagrant shared directory instead of the
+    # git checkout.
+    sudo('rm -rf /srv/localwiki/src')
+    sudo('ln -s /vagrant/localwiki /srv/localwiki/src', user='www-data')
+
 @_contextmanager
 def virtualenv():
     with prefix('source %s/bin/activate' % env.virtualenv):
         yield
+
+def setup_postgres():
+    sudo('service postgresql stop')
+
+    # Move the data directory to /srv/
+    sudo('mkdir -p /srv/postgres')
+    if not exists('/srv/postgres/data'):
+        sudo('mv /var/lib/postgresql/9.1/main /srv/postgres/data')
+    sudo('chown -R postgres:postgres /srv/postgres')
+
+    # Add our custom configuration
+    put('config/postgresql/postgresql.conf', '/etc/postgresql/9.1/main/', use_sudo=True)
+
+    # Increase system shared memory limits
+    shmmax = 285646848
+    shmall = int(shmmax * 1.0 / 4096)
+    sudo('echo "%s" > /proc/sys/kernel/shmmax' % shmmax)
+    sudo('echo "%s" > /proc/sys/kernel/shmall' % shmall)
+    sudo('echo "\nkernel.shmmax = %s\nkernel.shmall = %s" > /etc/sysctl.conf' % (shmmax, shmall))
+    sudo('sysctl -p')
+
+    sudo('service postgresql start')
 
 def setup_jetty():
     sudo("sed -i 's/NO_START=1/NO_START=0/g' /etc/default/jetty")
@@ -172,7 +247,7 @@ def install_system_requirements():
     )
     sudo('DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes install %s' % ' '.join(packages))
 
-def init_postgres():
+def init_postgres_db():
     # Generate a random password, for now.
     env.postgres_db_pass = ''.join([random.choice(string.letters + string.digits) for i in range(40)])
     sudo("""psql -d template1 -c "CREATE USER localwiki WITH PASSWORD '%s'" """ % env.postgres_db_pass, user='postgres')
@@ -193,7 +268,7 @@ def init_localwiki_install():
             # Install core localwiki module as well as python dependencies
             run('python setup.py develop')
 
-            init_postgres()
+            init_postgres_db()
 
             # Set up the default media, static, conf, etc directories
             run('mkdir -p %s/share' % env.virtualenv)
@@ -371,6 +446,7 @@ def provision():
 
     add_ssh_keys()
     install_system_requirements()
+    setup_postgres()
     setup_jetty()
     setup_repo()
     init_localwiki_install()
@@ -384,7 +460,7 @@ def run_tests():
     # XXX TODO: Fix this, somehow.  django-nose + pre-created test db?
     sudo("""psql -d postgres -c "ALTER ROLE localwiki SUPERUSER" """, user='postgres')
     with virtualenv():
-        run('localwiki-manage test regions pages maps tags versioning diff ckeditor redirects users')
+        sudo('localwiki-manage test regions pages maps tags versioning diff ckeditor redirects users', user='www-data')
     sudo("""psql -d postgres -c "ALTER ROLE localwiki NOSUPERUSER" """, user='postgres')
 
 def branch(name):
@@ -392,12 +468,12 @@ def branch(name):
 
 def update_code():
     with cd(env.src_root):
-        run("git fetch origin")
-        stash_str = sudo("git stash")
-        run("git reset --hard origin/%s" % env.branch)
+        sudo("git fetch origin", user="www-data")
+        stash_str = sudo("git stash", user="www-data")
+        sudo("git reset --hard origin/%s" % env.branch, user="www-data")
         print 'stash_str', stash_str
         if stash_str.strip() != 'No local changes to save':
-            run("git stash pop")
+            sudo("git stash pop", user="www-data")
 
 def rebuild_virtualenv():
     with cd(env.localwiki_root):
@@ -410,8 +486,9 @@ def touch_wsgi():
     with cd(env.localwiki_root):
         sudo("touch localwiki.wsgi")
 
-def update():
-    update_code()
+def update(local=False):
+    if not local:
+        update_code()
     rebuild_virtualenv()  # rebuild since it may be out of date and broken
     with cd(env.src_root):
         with virtualenv():
@@ -420,12 +497,22 @@ def update():
             sudo("python setup.py develop", user="www-data")
             #sudo("python setup.py install")
             setup_jetty()
-            run("localwiki-manage setup_all")
+            sudo("localwiki-manage setup_all", user="www-data")
     touch_wsgi()
     sudo("service memcached restart", pty=False)
 
-def deploy():
-    update()
+def deploy(local=False):
+    """
+    Update the code (git pull) and restart / rebuild all needed services.
+
+    Args:
+        local: If True, don't update the repository on the server, but
+            otherwise deploy everything else.  This is useful if you're
+            doing local development via vagrant, where you don't want to
+            pull down from git -- and instead want to run using your
+            local changes.
+    """
+    update(local=local)
 
 def fix_locale():
     sudo('update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8')
