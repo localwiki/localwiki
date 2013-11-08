@@ -136,7 +136,7 @@ install_requires = [
     'pysolr==2.1.0-beta',
     'django-haystack==1.2.7',
     'django-randomfilenamestorage==1.1',
-    'django-guardian==1.0.4',
+    'django-guardian==1.1.1',
     'South==0.8.1-custom2',
     'python-flot-utils==0.2.1',
     'django-staticfiles==1.2.1',
