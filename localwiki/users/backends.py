@@ -25,7 +25,8 @@ class CaseInsensitiveModelBackend(object):
 
 
 class RestrictiveBackend(object):
-    """ Allows restricting permissions on per-object basis.
+    """
+    Allows restricting permissions on per-object basis.
 
     For objects, checks object permissions first. If none found checks model
     permissions.  Works pretty much as usual for model permissions.
@@ -63,6 +64,15 @@ class RestrictiveBackend(object):
         return (BANNED_GROUP and
                user_obj.groups.filter(name=BANNED_GROUP).exists())
 
+    def is_region_admin(self, user_obj, obj):
+        """
+        If the `user_obj` is an admin of the region that `obj` belongs to,
+        return True.
+        """
+        name = "%s.%s" % (obj.__module__, obj.__class__.__name__)
+        if name in settings.USER_REGION_ADMIN_CAN_MANAGE:
+            return obj.region.is_admin(user_obj)
+
     def has_perm(self, user_obj, perm, obj=None):
         default_has_perm = False
         if user_obj.is_authenticated():
@@ -75,6 +85,8 @@ class RestrictiveBackend(object):
             return True
         if self.is_banned(user_obj):
             return False
+        if self.is_region_admin(user_obj, obj):
+            return True
         if obj and self.object_has_perms(obj):
             return self._object_backend.has_perm(user_obj, perm, obj)
         has_model_perm = self._model_backend.has_perm(user_obj, perm)

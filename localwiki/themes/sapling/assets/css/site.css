@@ -1628,6 +1628,19 @@ form #content_footer {
     margin-top: 2em;
     margin-bottom: 2em;
 }
+.region form .item .button {
+    float: none;
+    width: auto;
+    display: inline;
+}
+.region form .item ul {
+    list-style: none;
+    margin-bottom: 0.8em;
+    margin-top: 0.5em;
+}
+.region form .item li {
+    margin-left: 0;
+}
 .region .geom .help_text {
     margin-top: 0.4em;
 }

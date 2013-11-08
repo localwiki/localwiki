@@ -3,13 +3,20 @@ import copy
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView as DjangoTemplateView
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, FormView
+from django.http import HttpResponseForbidden
+from django.contrib import messages
 from django.conf import settings
+from django.contrib.gis.geos import GEOSGeometry, MultiPolygon
+from django.template.loader import render_to_string
+from django.template.context import RequestContext
+from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy
 
 from localwiki.utils.views import CreateObjectMixin
 
 from models import Region, slugify
-from forms import RegionForm
+from forms import RegionForm, RegionSettingsForm
 
 
 class RegionMixin(object):
@@ -30,7 +37,28 @@ class RegionMixin(object):
     def get_context_data(self, *args, **kwargs):
         context = super(RegionMixin, self).get_context_data(*args, **kwargs)
         context['region'] = self.get_region()
+        context['is_region_admin'] = context['region'].is_admin(self.request.user)
         return context
+
+
+class RegionAdminRequired(object):
+    """
+    Mixin to make a view only usable to a region's admins.
+    """
+    forbidden_message = ugettext_lazy('Sorry, you are not allowed to perform this action.')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        self.args = args
+        self.kwargs = kwargs
+        region = self.get_region()
+
+        if region.is_admin(self.request.user):
+            return super(RegionAdminRequired, self).dispatch(request, *args, **kwargs)
+
+        msg = self.forbidden_message
+        html = render_to_string('403.html', {'message': msg}, RequestContext(request))
+        return HttpResponseForbidden(html)
 
 
 class TemplateView(RegionMixin, DjangoTemplateView):
@@ -97,6 +125,52 @@ class RegionCreateView(CreateView):
 
     def form_valid(self, form):
         response = super(RegionCreateView, self).form_valid(form)
-        # Create the initial pages, etc in the region
-        self.object.populate_region()
+        # Create the initial pages, etc in the region.
+        region = self.object
+        region.populate_region()
+        # Add the creator as the initial region admin.
+        if self.request.user.is_authenticated():
+            region.regionsettings.admins.add(self.request.user)
         return response
+
+
+class RegionSettingsView(RegionAdminRequired, RegionMixin, FormView):
+    template_name = 'regions/settings.html'
+    form_class = RegionSettingsForm
+
+    def get_initial(self):
+        region = self.get_region()
+        return {
+            'full_name': region.full_name,
+            'geom': region.geom,
+        }
+
+    def form_valid(self, form):
+        response = super(RegionSettingsView, self).form_valid(form)
+        region = self.get_region()
+        region.full_name = form.cleaned_data['full_name']
+        poly = GEOSGeometry(form.cleaned_data['geom'])
+        region.geom = MultiPolygon(poly)
+        region.save()
+        messages.add_message(self.request, messages.SUCCESS, _("Settings updated!"))
+        return response
+
+    def get_success_url(self):
+        return reverse('regions:settings', kwargs={'region': self.get_region().slug})
+
+    #def get_context_data(self, *args, **kwargs):
+    #    context = super(RegionSettingsView, self).get_context_data(*args, **kwargs)
+    #    context['admins'] = 
+
+
+#class RegionAdminsEdit(RegionAdminRequired, RegionMixin, FormView):
+#    template_name = 'regions/edit_admins.html'
+#    form_class = RegionsAdminsForm
+#
+#    def form_valid(self, form):
+#        response = super(RegionAdminsEdit, self).form_valid(form)
+#        messages.add_message(self.request, messages.SUCCESS, _("Admins updated!"))
+#        return response
+#
+#    def get_success_url(self):
+#        return reverse('regions:edit-admins', kwargs={'region': self.get_region().slug})

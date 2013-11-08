@@ -9,7 +9,8 @@ import pages
 import maps
 import redirects
 import dashboard
-from regions.views import MainPageView, RegionCreateView, RegionListView
+import regions
+from regions.views import MainPageView
 from utils.views import NamedRedirectView
 from users.admin import SubscribedList
 
@@ -26,8 +27,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^/*$', MainPageView.as_view()),
-    url(r'^regions/?', RegionListView.as_view(), name="regions-list"),
-    url(r'^_region/_add', RegionCreateView.as_view(), name="add-region"),
+    (r'^', include(regions.site.urls)),
     (r'^api/?$', RedirectView.as_view(url='/api/v2/', query_string=True)),
     url(r'^api/', include(api_v2.urls)),
     (r'^_api/', include('main.api.internal_urls')),

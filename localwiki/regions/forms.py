@@ -1,7 +1,8 @@
 from django.conf import settings
-from django.forms import ValidationError
+from django import forms
+from django.utils.translation import ugettext_lazy
 
-from olwidget import widgets
+from olwidget.widgets import EditableMap
 from olwidget.forms import MapModelForm
 
 from localwiki.utils import reverse_lazy
@@ -35,5 +36,17 @@ class RegionForm(MediaMixin, MapModelForm):
     def clean_geom(self):
         data = self.cleaned_data['geom']
         if not data or not data[0]:
-            raise ValidationError("Please draw a region with the map drawing tool.")
+            raise forms.ValidationError("Please draw a region with the map drawing tool.")
         return data
+
+
+class RegionSettingsForm(MediaMixin, forms.Form):
+    full_name = forms.CharField(max_length=255,
+        help_text=ugettext_lazy("The full name of this region, e.g. 'San Francisco'"))
+    geom = forms.CharField(widget=EditableMap({'geometry': 'polygon'}))
+
+
+#class RegionAdminsForm(MediaMixin, forms.Form):
+#    full_name = forms.CharField(max_length=255,
+#        help_text=ugettext_lazy("The full name of this region, e.g. 'San Francisco'"))
+#    geom = forms.CharField(widget=EditableMap({'geometry': 'polygon'}))

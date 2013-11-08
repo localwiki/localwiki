@@ -150,6 +150,12 @@ USERS_DEFAULT_PERMISSIONS = {'auth.group':
                                  },
                                 ]
                             }
+USER_REGION_ADMIN_CAN_MANAGE = [
+    'pages.models.Page',
+    'page.models.PageFile',
+    'maps.models.MapData',
+    'redirects.models.Redirect',
+]
 
 # django-guardian setting
 ANONYMOUS_USER_ID = -1

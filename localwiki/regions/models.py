@@ -5,6 +5,8 @@ from urllib import unquote_plus
 from django.utils.translation import ugettext_lazy
 from django.db import IntegrityError
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 from django.template.defaultfilters import stringfilter
 
 from django.contrib.gis.db import models
@@ -18,6 +20,9 @@ class Region(models.Model):
             "Keep it short and memorable!"))
     geom = models.MultiPolygonField(null=True, blank=True)
 
+    def __unicode__(self):
+        return self.slug
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.slug)
         super(Region, self).save(*args, **kwargs)
@@ -30,12 +35,25 @@ class Region(models.Model):
             raise IntegrityError(_("Region already has pages in it"))
         populate_region(self)
 
+    def is_admin(self, user):
+        """
+        Is the provided `user` an admin of the region?
+        """
+        return self.regionsettings.admins.filter(id=user.id)
+
+    def get_absolute_url(self):
+        return reverse('frontpage', kwargs={'region': self.slug})
+
 
 class RegionSettings(models.Model):
     region = models.OneToOneField(Region)
     # Can be null for the 'main' region, which may not have a geometry.
     region_center = models.PointField(null=True)
     region_zoom_level = models.IntegerField(null=True)
+    admins = models.ManyToManyField(User, null=True)
+
+    def __unicode__(self):
+        return 'settings: %s' % str(self.region)
 
 
 SLUGIFY_KEEP = r"\.-"
