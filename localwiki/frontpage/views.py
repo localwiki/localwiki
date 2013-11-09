@@ -14,8 +14,7 @@ from pages.models import Page
 from pages.views import PageDetailView
 from maps.models import MapData
 from maps.widgets import InfoMap, map_options_for_region
-from regions.views import RegionMixin
-from regions.views import TemplateView
+from regions.views import RegionMixin, RegionAdminRequired, TemplateView
 
 from models import FrontPage
 
@@ -75,7 +74,7 @@ class FrontPageView(TemplateView):
         return context
 
 
-class CoverUploadView(RegionMixin, View):
+class CoverUploadView(RegionMixin, RegionAdminRequired, View):
     def post(self, *args, **kwargs):
 
         photo = self.request.FILES.get('file')

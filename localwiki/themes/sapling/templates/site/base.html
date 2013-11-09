@@ -28,6 +28,11 @@
         var region_id = {{ region.id }};
         var region_slug = '{{ region.slug }}';
         var region_name = '{{ region.full_name }}';
+        {% if is_region_admin %}
+        var region_is_admin = true;
+        {% else %}
+        var region_is_admin = false;
+        {% endif %}
     </script>
     {% endif %}
 

@@ -8,17 +8,20 @@ $(function() {
     var client_h = null;
     var img_w = null;
     var img_h = null;
-    $('#change_cover_button').hover(function () {
-        $(this).show();
-    });
-    $('#cover').hover(
-    function () {
-        $('#change_cover_button').show();
-    },
-    function () {
-        $('#change_cover_button').hide();
+    // Only show 'change cover' button if they're an admin
+    if (region_is_admin) {
+        $('#change_cover_button').hover(function () {
+            $(this).show();
+        });
+        $('#cover').hover(
+        function () {
+            $('#change_cover_button').show();
+        },
+        function () {
+            $('#change_cover_button').hide();
+        }
+        );
     }
-    );
 
     // Adjust the height of the map cover underlay based on the client's
     // cover width.  We need to do this in JS because of the way the
