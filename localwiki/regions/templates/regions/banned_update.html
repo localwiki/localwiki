@@ -1,0 +1,27 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block title %}{% trans "LocalWiki - Settings" %}{% endblock %}
+
+{% block header_title %}
+    {% url 'regions:settings' region=region.slug as region_settings %}
+    {% blocktrans with url=region.get_absolute_url region_slug=region.slug %}
+        <a href="{{ region_settings }}">Settings</a> for <a href="{{ url }}">{{ region_slug }}</a>
+    {% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+<div id="object_tags">
+    <form action="{% url 'regions:edit-banned' region=form.instance.region.slug %}" method="POST">
+        {{ form.users.errors }}
+        {% csrf_token %}
+        <h2>{% trans "Banned users" %}:</h2>
+        {{ form.users }}
+        <input type="hidden" name="next" value="{{ request.path }}"/>
+        <br/>
+        <input type="submit" name="save" class="little" value="{% trans "Save" %}"/>
+    </form>
+</div>
+{% endblock %}

@@ -15,8 +15,8 @@ from django.utils.translation import ugettext_lazy
 
 from localwiki.utils.views import CreateObjectMixin
 
-from models import Region, RegionSettings, slugify
-from forms import RegionForm, RegionSettingsForm, AdminSetForm
+from models import Region, RegionSettings, BannedFromRegion, slugify
+from forms import RegionForm, RegionSettingsForm, AdminSetForm, BannedSetForm
 
 
 class RegionMixin(object):
@@ -158,9 +158,14 @@ class RegionSettingsView(RegionAdminRequired, RegionMixin, FormView):
     def get_success_url(self):
         return reverse('regions:settings', kwargs={'region': self.get_region().slug})
 
-    #def get_context_data(self, *args, **kwargs):
-    #    context = super(RegionSettingsView, self).get_context_data(*args, **kwargs)
-    #    context['admins'] = 
+    def get_context_data(self, *args, **kwargs):
+        context = super(RegionSettingsView, self).get_context_data(*args, **kwargs)
+        region = self.get_region()
+        if hasattr(region, 'bannedfromregion'):
+            context['banned_users'] = region.bannedfromregion.users.all()
+        else:
+            context['banned_users'] = []
+        return context
 
 
 class RegionAdminsUpdate(RegionAdminRequired, RegionMixin, UpdateView):
@@ -180,4 +185,24 @@ class RegionAdminsUpdate(RegionAdminRequired, RegionMixin, UpdateView):
         # We need to pass the `region` to the PageTagSetForm.
         kwargs['region'] = self.get_region()
         kwargs['this_user'] = self.request.user
+        return kwargs
+
+
+class RegionBannedUpdate(RegionAdminRequired, RegionMixin, UpdateView):
+    form_class = BannedSetForm
+    model = BannedFromRegion
+    template_name = 'regions/banned_update.html'
+
+    def get_object(self):
+        banned, created = BannedFromRegion.objects.get_or_create(region=self.get_region())
+        return banned
+
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, _("Banned users updated."))
+        return reverse('regions:settings', kwargs={'region': self.get_region().slug})
+
+    def get_form_kwargs(self):
+        kwargs = super(RegionBannedUpdate, self).get_form_kwargs()
+        # We need to pass the `region` to the PageTagSetForm.
+        kwargs['region'] = self.get_region()
         return kwargs

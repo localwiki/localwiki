@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from guardian.backends import ObjectPermissionBackend
 from django.contrib.auth.backends import ModelBackend
+from django.db.models.query import EmptyQuerySet
 from django.conf import settings
 from guardian.models import UserObjectPermission, GroupObjectPermission
 
@@ -60,7 +61,7 @@ class RestrictiveBackend(object):
     def authenticate(self, username=None, password=None):
         return None
 
-    def is_banned(self, user_obj):
+    def is_globally_banned(self, user_obj):
         return (BANNED_GROUP and
                user_obj.groups.filter(name=BANNED_GROUP).exists())
 
@@ -72,6 +73,15 @@ class RestrictiveBackend(object):
         name = "%s.%s" % (obj.__module__, obj.__class__.__name__)
         if name in settings.USER_REGION_ADMIN_CAN_MANAGE:
             return obj.region.is_admin(user_obj)
+        return False
+
+    def is_banned_on_region(self, user_obj, obj):
+        name = "%s.%s" % (obj.__module__, obj.__class__.__name__)
+        if name in settings.USER_REGION_ADMIN_CAN_MANAGE:
+            region = obj.region
+            if hasattr(region, 'bannedfromregion'):
+                return user_obj in region.bannedfromregion.users.all()
+        return False
 
     def has_perm(self, user_obj, perm, obj=None):
         default_has_perm = False
@@ -83,10 +93,12 @@ class RestrictiveBackend(object):
             return False
         if user_obj.is_superuser:
             return True
-        if self.is_banned(user_obj):
+        if self.is_globally_banned(user_obj):
             return False
         if self.is_region_admin(user_obj, obj):
             return True
+        if self.is_banned_on_region(user_obj, obj):
+            return False
         if obj and self.object_has_perms(obj):
             return self._object_backend.has_perm(user_obj, perm, obj)
         has_model_perm = self._model_backend.has_perm(user_obj, perm)

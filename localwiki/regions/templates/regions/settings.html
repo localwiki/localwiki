@@ -50,6 +50,19 @@
         </ul>
         <a href="{% url 'regions:edit-admins' region=region.slug %}" class="little button">Edit admins</a>
     </div>
+    <div class="item">
+        <label for="lol">{% trans "Banned users" %}</label>:
+        <ul>
+        {% if not banned_users %}
+            <li>{% trans "Nobody is banned. Hooray!" %}</li>
+        {% else %}
+            {% for user in banned_users %}
+                <li><a href="{{ user.get_absolute_url }}">{{ user }}</a></li>
+            {% endfor %}
+        {% endif %}
+        </ul>
+        <a href="{% url 'regions:edit-banned' region=region.slug %}" class="little button">Edit banned</a>
+    </div>
     <div class="item geom">
         {{ form.geom.errors }}
         <label for="id_geom">{% trans "The rough area the region covers" %}</label>:

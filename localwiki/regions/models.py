@@ -56,6 +56,14 @@ class RegionSettings(models.Model):
         return 'settings: %s' % str(self.region)
 
 
+class BannedFromRegion(models.Model):
+    region = models.OneToOneField(Region)
+    users = models.ManyToManyField(User, null=True)
+
+    def __unicode__(self):
+        return 'banned users on %s' % str(self.region)
+
+
 SLUGIFY_KEEP = r"\.-"
 SLUGIFY_MISC_CHARS = re.compile(('[^\w\s%s]' % SLUGIFY_KEEP), re.UNICODE)
 def slugify(value):

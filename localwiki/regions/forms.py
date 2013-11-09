@@ -10,7 +10,7 @@ from olwidget.forms import MapModelForm
 from localwiki.utils import reverse_lazy
 from localwiki.utils.static_helpers import static_url
 
-from models import Region, RegionSettings
+from models import Region, RegionSettings, BannedFromRegion
 
 
 OUR_JS = [
@@ -65,3 +65,16 @@ class AdminSetForm(forms.ModelForm):
         if not self.this_user.username in admins:
             raise forms.ValidationError(_('You cannot delete yourself as an admin'))
         return admins
+
+
+class BannedSetForm(forms.ModelForm):
+    model = BannedFromRegion
+    fields = ('users',)
+
+    def __init__(self, *args, **kwargs):
+        region = kwargs.pop('region', None)
+        self.this_user = kwargs.pop('this_user', None)
+        super(BannedSetForm, self).__init__(*args, **kwargs)
+
+        from fields import UserSetField
+        self.fields['users'] = UserSetField(region=region, required=False)
