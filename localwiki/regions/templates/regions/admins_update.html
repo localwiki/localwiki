@@ -14,8 +14,8 @@
 
 {% block content %}
 <div id="object_tags">
-    {{ form.errors }}
     <form action="{% url 'regions:edit-admins' region=form.instance.region.slug %}" method="POST">
+        {{ form.admins.errors }}
         {% csrf_token %}
         <h2>{{ form.admins.label }}:</h2>
         {{ form.admins }}

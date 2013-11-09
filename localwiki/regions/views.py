@@ -179,4 +179,5 @@ class RegionAdminsUpdate(RegionAdminRequired, RegionMixin, UpdateView):
         kwargs = super(RegionAdminsUpdate, self).get_form_kwargs()
         # We need to pass the `region` to the PageTagSetForm.
         kwargs['region'] = self.get_region()
+        kwargs['this_user'] = self.request.user
         return kwargs

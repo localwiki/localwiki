@@ -2,6 +2,7 @@ from django.conf import settings
 from django import forms
 from django.utils.translation import ugettext_lazy
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
 
 from olwidget.widgets import EditableMap
 from olwidget.forms import MapModelForm
@@ -53,7 +54,14 @@ class AdminSetForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         region = kwargs.pop('region', None)
+        self.this_user = kwargs.pop('this_user', None)
         super(AdminSetForm, self).__init__(*args, **kwargs)
 
         from fields import UserSetField
         self.fields['admins'] = UserSetField(region=region, required=False)
+
+    def clean_admins(self):
+        admins = self.cleaned_data['admins']
+        if not self.this_user.username in admins:
+            raise forms.ValidationError(_('You cannot delete yourself as an admin'))
+        return admins
