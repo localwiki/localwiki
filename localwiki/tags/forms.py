@@ -33,9 +33,9 @@ class TagSetField(forms.ModelMultipleChoiceField):
 
     def get_queryset(self):
         if self.region:
-            queryset = Tag.objects.filter(region=self.region)
+            return Tag.objects.filter(region=self.region)
         else:
-            queryset = Tag.objects.all()
+            return Tag.objects.all()
 
     def get_or_create_tag(self, word):
         tag, created = Tag.objects.get_or_create(
@@ -72,6 +72,12 @@ class PageTagSetForm(MergeMixin, CommentMixin, forms.ModelForm):
         model = PageTagSet
         fields = ('tags',)
         exclude = ('comment',)  # we generate comment automatically
+
+    def __init__(self, *args, **kwargs):
+        region = kwargs.pop('region', None)
+        super(PageTagSetForm, self).__init__(*args, **kwargs)
+
+        self.fields['tags'] = TagSetField(region=region, required=False)
 
     def pluralize_tag(self, list):
         if len(list) > 1:
