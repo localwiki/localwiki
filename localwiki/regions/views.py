@@ -1,12 +1,12 @@
 import copy
 
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView as DjangoTemplateView
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView, FormView
+from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.http import HttpResponseForbidden
 from django.contrib import messages
-from django.conf import settings
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon
 from django.template.loader import render_to_string
 from django.template.context import RequestContext
@@ -15,8 +15,8 @@ from django.utils.translation import ugettext_lazy
 
 from localwiki.utils.views import CreateObjectMixin
 
-from models import Region, slugify
-from forms import RegionForm, RegionSettingsForm
+from models import Region, RegionSettings, slugify
+from forms import RegionForm, RegionSettingsForm, AdminSetForm
 
 
 class RegionMixin(object):
@@ -163,14 +163,20 @@ class RegionSettingsView(RegionAdminRequired, RegionMixin, FormView):
     #    context['admins'] = 
 
 
-#class RegionAdminsEdit(RegionAdminRequired, RegionMixin, FormView):
-#    template_name = 'regions/edit_admins.html'
-#    form_class = RegionsAdminsForm
-#
-#    def form_valid(self, form):
-#        response = super(RegionAdminsEdit, self).form_valid(form)
-#        messages.add_message(self.request, messages.SUCCESS, _("Admins updated!"))
-#        return response
-#
-#    def get_success_url(self):
-#        return reverse('regions:edit-admins', kwargs={'region': self.get_region().slug})
+class RegionAdminsUpdate(RegionAdminRequired, RegionMixin, UpdateView):
+    form_class = AdminSetForm
+    model = RegionSettings
+    template_name = 'regions/admins_update.html'
+
+    def get_object(self):
+        return self.get_region().regionsettings
+
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, _("Region admins updated!"))
+        return reverse('regions:settings', kwargs={'region': self.get_region().slug})
+
+    def get_form_kwargs(self):
+        kwargs = super(RegionAdminsUpdate, self).get_form_kwargs()
+        # We need to pass the `region` to the PageTagSetForm.
+        kwargs['region'] = self.get_region()
+        return kwargs

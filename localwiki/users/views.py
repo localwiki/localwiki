@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.views.generic import RedirectView
 
 from regions.models import Region
@@ -27,3 +28,19 @@ class UserPageView(RedirectView):
             else:
                 user_page = Page(name=pagename, region=get_main_region())
         return user_page.get_absolute_url()
+
+
+def suggest_users(request, region=None):
+    """
+    Simple users suggest.
+    """
+    # XXX TODO: Break this out when doing more API work.
+    import json
+
+    term = request.GET.get('term', None)
+    if not term:
+        return HttpResponse('')
+    results = User.objects.filter(
+        username__istartswith=term)
+    results = [t.username for t in results]
+    return HttpResponse(json.dumps(results))
