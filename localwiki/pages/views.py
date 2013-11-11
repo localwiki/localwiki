@@ -29,6 +29,7 @@ from regions.views import RegionMixin
 from models import Page, PageFile, url_to_name
 from forms import PageForm, PageFileForm
 from maps.widgets import InfoMap
+from users.views import SetPermissionsView
 
 from models import slugify, clean_name
 from utils import is_user_page
@@ -464,6 +465,23 @@ class PageRenameView(RegionMixin, FormView):
         # Redirect back to the page.
         return reverse('pages:show',
             args=[self.kwargs['region'], self.new_pagename])
+
+
+class PagePermissionsView(SetPermissionsView):
+    template_name = 'pages/page_permissions.html'
+
+    def get_object(self):
+        return Page.objects.get(slug=self.kwargs.get('slug'), region=self.get_region())
+
+    def get_success_url(self):
+        return reverse('pages:show', kwargs={
+            'slug':self.get_object().slug, 'region': self.get_region().slug
+        })
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(PagePermissionsView, self).get_context_data(*args, **kwargs)
+        context['page'] = self.get_object()
+        return context
 
 
 class PageRandomView(RegionMixin, RedirectView):

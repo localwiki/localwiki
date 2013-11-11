@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from guardian.backends import ObjectPermissionBackend
 from django.contrib.auth.backends import ModelBackend
-from django.db.models.query import EmptyQuerySet
 from django.conf import settings
 from guardian.models import UserObjectPermission, GroupObjectPermission
 

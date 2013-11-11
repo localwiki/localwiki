@@ -124,6 +124,12 @@ urlpatterns = patterns('',
     url(r'^(?P<region>[^/]+?)/(?P<slug>.+)/_rename$', PageRenameView.as_view(), name='rename'),
 
     ##########################################################
+    # Permissions
+    ##########################################################
+    url(r'^(?P<region>[^/]+?)/(?P<slug>.+)/_permissions$', slugify(PagePermissionsView.as_view()),
+        name='permissions'),
+
+    ##########################################################
     # Basic page URLs.
     ##########################################################
     #url(r'^(?P<region>[^/]+?)/*$', slugify(PageDetailView.as_view()),

@@ -1086,6 +1086,10 @@ input:focus {
     background: url(../img/arrow-turn-left.png) 2px 2px no-repeat;
     padding-left: 20px;
 }
+.button.security .text {
+    background: url(../img/lock.png) 0 1px no-repeat;
+    padding-left: 20px;
+}
 
 /*
 ====================================

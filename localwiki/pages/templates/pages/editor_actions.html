@@ -7,6 +7,6 @@
     {% endif %}
     <li><a href="{% url 'redirects:edit' slug=page.pretty_slug region=page.region.slug %}" class="little button redirect"><span class="text">{% trans "Redirect" %}</span></a></li>
     {% if is_region_admin %}
-    {#<li><a href="{% url 'pages:security' slug=page.pretty_slug region=page.region.slug %}" class="little button security"><span class="text">{% trans "Security" %}</span></a></li>#} REGION ADMIN
+    <li><a href="{% url 'pages:permissions' slug=page.pretty_slug region=page.region.slug %}" class="little button security"><span class="text">{% trans "Security" %}</span></a></li>
     {% endif %}
     {% endblock %}
