@@ -62,7 +62,7 @@ class AdminSetForm(forms.ModelForm):
 
     def clean_admins(self):
         admins = self.cleaned_data['admins']
-        if not self.this_user.username in admins:
+        if not self.this_user in admins:
             raise forms.ValidationError(_('You cannot delete yourself as an admin'))
         return admins
 

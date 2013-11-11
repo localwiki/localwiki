@@ -7,6 +7,7 @@ from utils.views import CreateObjectMixin, PermissionRequiredMixin
 from pages.models import Page, slugify
 from regions.views import RegionMixin
 from regions.models import Region
+from users.views import SetPermissionsView
 
 from models import Redirect
 from forms import RedirectForm
@@ -35,6 +36,12 @@ class RedirectUpdateView(PermissionRequiredMixin, CreateObjectMixin,
         context['exists'] = Redirect.objects.filter(
             source=self.object.source, region=self.get_region()).exists()
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super(RedirectUpdateView, self).get_form_kwargs()
+        # We need to pass the `region` to the RedirectForm.
+        kwargs['region'] = self.get_region()
+        return kwargs
 
     def success_msg(self):
         # NOTE: This is eventually marked as safe when rendered in our
@@ -81,8 +88,9 @@ class RedirectUpdateView(PermissionRequiredMixin, CreateObjectMixin,
             return 'pages.change_page'
 
 
-class RedirectDeleteView(RegionMixin, DeleteView):
+class RedirectDeleteView(PermissionRequiredMixin, RegionMixin, DeleteView):
     model = Redirect
+    permission = 'redirects.delete_redirect'
 
     def get_object(self):
         source = slugify(self.kwargs.get('slug'))
@@ -130,4 +138,23 @@ class RedirectCompareView(RegionMixin, diff.views.CompareView):
             name=self.object.source,
             region=self.object.region
         )
+        return context
+
+
+class RedirectPermissionsView(SetPermissionsView):
+    template_name = 'redirects/redirect_permissions.html'
+
+    def get_object(self):
+        return Redirect.objects.get(source=self.kwargs.get('slug'), region=self.get_region())
+
+    def get_success_url(self):
+        return '%s?show=1' % (reverse('pages:show', kwargs={
+            'slug':self.get_object().source, 'region': self.get_region().slug
+        }))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(RedirectPermissionsView, self).get_context_data(*args, **kwargs)
+        redirect = self.get_object()
+        context['page'] = Page(name=redirect.source, region=redirect.region)
+        context['redirect'] = redirect
         return context

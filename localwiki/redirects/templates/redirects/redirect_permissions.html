@@ -1,0 +1,27 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+
+{% load i18n %}
+
+{% block title %}{% blocktrans with name=form.instance.slug super=block.super %}Permissions for redirect "{{ name }}" - {{ super }}{% endblocktrans %}{% endblock %}
+
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
+{% block content %}
+<div id="object_tags">
+    <h2>{% trans "Who can change this redirect?" %}</h2>
+    <form action="{% url 'redirects:permissions' slug=redirect.source region=redirect.region.slug %}" method="POST">
+        <p><input type="radio" name="who_can_change" value="everyone"{% if not form.users.value %} checked{% endif %}>{% trans "Everyone" %}</p>
+        <p><input type="radio" name="who_can_change" value="just_these_users"{% if form.users.value %} checked{% endif%}>{% trans "Only these users:" %}</p>
+        {{ form.users.errors }}
+        {% csrf_token %}
+        {{ form.users }}
+        <input type="hidden" name="next" value="{{ request.path }}"/>
+        <br/>
+        <input type="submit" name="save" class="little" value="{% trans "Save" %}"/>
+    </form>
+</div>
+{% endblock %}

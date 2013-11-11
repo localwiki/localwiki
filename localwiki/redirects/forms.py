@@ -10,7 +10,11 @@ from models import Redirect
 
 
 class RedirectForm(CommentMixin, forms.ModelForm):
-    destination = PageChoiceField(label=_("Destination"), queryset=Page.objects.all())
+    def __init__(self, *args, **kwargs):
+        region = kwargs.pop('region', None)
+        super(RedirectForm, self).__init__(*args, **kwargs)
+
+        self.fields['destination'] = PageChoiceField(region=region, label=_("Destination"))
 
     class Meta:
         model = Redirect

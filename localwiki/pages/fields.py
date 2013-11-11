@@ -61,7 +61,12 @@ class PageChoiceField(forms.ModelChoiceField):
     Use this in ModelForms when you've got a ForeignKey to a Page.
     """
     def __init__(self, *args, **kwargs):
+        from .models import Page
         kwargs['widget'] = kwargs.pop('widget', forms.widgets.TextInput)
+
+        # Limit to the specified region
+        region = kwargs.pop('region', None)
+        kwargs['queryset'] = Page.objects.filter(region=region)
         super(PageChoiceField, self).__init__(*args, **kwargs)
 
     def clean(self, value):

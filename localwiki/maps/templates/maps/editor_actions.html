@@ -4,4 +4,7 @@
     {% if map.exists %}
       <li><a href="{% url 'maps:delete' slug=map.page.pretty_slug region=map.region.slug %}" class="little button">{% trans "Delete map" %}</a></li>
     {% endif %}
+    {% if is_region_admin %}
+      <li><a href="{% url 'pages:permissions' slug=map.page.pretty_slug region=map.page.region.slug %}" class="little button security"><span class="text">{% trans "Security" %}</span></a></li>
+    {% endif %}
 {% endblock %}

@@ -180,6 +180,13 @@ class RegionAdminsUpdate(RegionAdminRequired, RegionMixin, UpdateView):
         messages.add_message(self.request, messages.SUCCESS, _("Region admins updated!"))
         return reverse('regions:settings', kwargs={'region': self.get_region().slug})
 
+    def get_form_kwargs(self):
+        kwargs = super(RegionAdminsUpdate, self).get_form_kwargs()
+        # We need to pass the `region` to the AdminSetForm
+        kwargs['region'] = self.get_region()
+        kwargs['this_user'] = self.request.user
+        return kwargs
+
 
 class RegionBannedUpdate(RegionAdminRequired, RegionMixin, UpdateView):
     form_class = BannedSetForm
@@ -196,6 +203,6 @@ class RegionBannedUpdate(RegionAdminRequired, RegionMixin, UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super(RegionBannedUpdate, self).get_form_kwargs()
-        # We need to pass the `region` to the PageTagSetForm.
+        # We need to pass the `region` to the BannedSetForm.
         kwargs['region'] = self.get_region()
         return kwargs

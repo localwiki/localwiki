@@ -118,7 +118,7 @@ class PermissionRequiredMixin(object):
         if hasattr(self, 'get_object'):
             self.object = self.get_object()
             self.patch_get_object()
-            protected_objects = self.get_protected_objects()
+        protected_objects = self.get_protected_objects()
         for obj in protected_objects:
             if not request.user.has_perm(self.permission_for_object(obj), obj):
                 if request.user.is_authenticated():

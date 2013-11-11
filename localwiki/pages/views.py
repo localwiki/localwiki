@@ -429,9 +429,10 @@ class RenameForm(forms.Form):
     comment = forms.CharField(max_length=150, required=False, label=ugettext_lazy("Comment"))
 
 
-class PageRenameView(RegionMixin, FormView):
+class PageRenameView(PermissionRequiredMixin, RegionMixin, FormView):
     form_class = RenameForm
     template_name = 'pages/page_rename.html'
+    permission = 'pages.change_page'
 
     def form_valid(self, form):
         try:
@@ -447,6 +448,9 @@ class PageRenameView(RegionMixin, FormView):
                 reverse('pages:show', args=[p.region.slug, p.slug]))
 
         return HttpResponseRedirect(self.get_success_url())
+
+    def get_protected_objects(self):
+        return [Page.objects.get(slug=slugify(self.kwargs['slug']), region=self.get_region())]
 
     def get_context_data(self, **kwargs):
         context = super(PageRenameView, self).get_context_data(**kwargs)
@@ -492,7 +496,7 @@ class PageRandomView(RegionMixin, RedirectView):
         return pgs_in_region.order_by('?')[0].get_absolute_url()
 
 
-def suggest(request):
+def suggest(request, *args, **kwargs):
     """
     Simple page suggest.
     """

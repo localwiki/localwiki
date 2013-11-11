@@ -13,7 +13,8 @@ from django.contrib.gis.geos.polygon import Polygon
 from django.utils.safestring import mark_safe
 
 from versionutils import diff
-from utils.views import Custom404Mixin, CreateObjectMixin, JSONResponseMixin, JSONView
+from utils.views import (Custom404Mixin, CreateObjectMixin, JSONResponseMixin,
+    JSONView, PermissionRequiredMixin)
 from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, VersionsList
 from pages.models import Page, slugify, name_to_url
@@ -277,9 +278,11 @@ class MapVersionDetailView(MapDetailView):
         return context
 
 
-class MapUpdateView(CreateObjectMixin, RegionMixin, UpdateView):
+class MapUpdateView(PermissionRequiredMixin, CreateObjectMixin, RegionMixin, UpdateView):
     model = MapData
     form_class = MapForm
+    # Tie map permissions to pages, for now.
+    permission = 'pages.change_page'
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
@@ -289,6 +292,9 @@ class MapUpdateView(CreateObjectMixin, RegionMixin, UpdateView):
         if mapdatas:
             return mapdatas[0]
         return MapData(page=page, region=region)
+
+    def get_protected_object(self):
+        return self.object.page
 
     def get_context_data(self, *args, **kwargs):
         context = super(MapUpdateView, self).get_context_data(*args, **kwargs)
@@ -302,20 +308,27 @@ class MapUpdateView(CreateObjectMixin, RegionMixin, UpdateView):
             args=[self.object.region.slug, self.object.page.pretty_slug])
 
 
-class MapDeleteView(MapDetailView, DeleteView):
+class MapDeleteView(PermissionRequiredMixin, MapDetailView, DeleteView):
     model = MapData
     context_object_name = 'mapdata'
+    # Tie map permissions to pages, for now.
+    permission = 'pages.delete_page'
 
     def get_success_url(self):
         # Redirect back to the map.
         return reverse('maps:show',
             args=[self.kwargs.get('region'), self.kwargs.get('slug')])
 
+    def get_protected_object(self):
+        return self.object.page
+
 
 class MapRevertView(MapVersionDetailView, RevertView):
     model = MapData
     context_object_name = 'mapdata'
     template_name = 'maps/mapdata_confirm_revert.html'
+    # Tie map permissions to pages, for now.
+    permission = 'pages.change_page'
 
     def get_success_url(self):
         # Redirect back to the map.
@@ -330,6 +343,9 @@ class MapRevertView(MapVersionDetailView, RevertView):
         context['map'] = InfoMap([(self.object.geom, self.object.page.name)], options=options)
         context['date'] = self.object.version_info.date
         return context
+
+    def get_protected_object(self):
+        return self.object.page
 
 
 class MapVersionsList(RegionMixin, VersionsList):
