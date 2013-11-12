@@ -35,3 +35,8 @@ class Migration(DataMigration):
     }
 
     complete_apps = ['contenttypes', 'versioning']
+
+    depends_on = (
+        ('guardian', '0005_auto__chg_field_groupobjectpermission_object_pk__chg_field_userobjectp'),
+    )
+    
