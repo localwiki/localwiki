@@ -93,18 +93,19 @@
 	
 </VirtualHost>
 
+{% if ssl_key %}
 <VirtualHost *:443>
     SSLEngine on
-	SSLCertificateFile /etc/apache2/ssl/localwiki.org/localwiki.org.crt
-	SSLCertificateKeyFile /etc/apache2/ssl/localwiki.org/localwiki.org.key
-	SSLCACertificateFile /etc/apache2/ssl/localwiki.org/intermediate.crt
+	SSLCertificateFile /etc/apache2/ssl/{{ ssl_name }}/{{ ssl_cert }}
+	SSLCertificateKeyFile /etc/apache2/ssl/{{ ssl_name }}/{{ ssl_key }}
+	SSLCACertificateFile /etc/apache2/ssl/{{ ssl_name }}/{{ ssl_intermediate }}
     Header set Strict-Transport-Security "max-age=1800"
 
-	ServerName map.localwiki.org
-    ServerAlias map-a.localwiki.org map.localwiki.org
-    ServerAlias map-b.localwiki.org map.localwiki.org
-    ServerAlias map-c.localwiki.org map.localwiki.org
-
+	ServerName map.{{ hostname }}
+    ServerAlias map-a.{{ hostname }} map.{{ hostname }}
+    ServerAlias map-b.{{ hostname }} map.{{ hostname }}
+    ServerAlias map-c.{{ hostname }} map.{{ hostname }}
+	
 	DocumentRoot /var/www/
 	<Directory />
 		Options FollowSymLinks
@@ -162,3 +163,4 @@
     #</Location>
 	
 </VirtualHost>
+{% endif %}

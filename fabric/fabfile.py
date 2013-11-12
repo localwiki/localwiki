@@ -307,6 +307,27 @@ def install_ssl_certs():
     with settings(warn_only=True):
         put(os.path.join(env.secrets_path, 'ssl') + '/*', '/etc/apache2/ssl/', use_sudo=True)
 
+def get_ssl_info():
+    """
+    Figure out what the SSL info is based on what's in the ssl/ dir.
+    """
+    ssl_name = os.path.split(sudo('ls -d /etc/apache2/ssl/*').strip())[1]
+    env.ssl_name = ssl_name
+    ssl_files = sudo('ls /etc/apache2/ssl/%s' % ssl_name).split()
+    crt = None
+    key = None
+    intermediate = None
+    for fname in ssl_files:
+        if fname.endswith('.crt') and fname != 'example.org.crt':
+            crt = fname
+        if fname.endswith('.key') and fname != 'example.org.key':
+            key = fname
+        if fname.endswith('intermediate.crt'):
+            intermediate = fname
+    env.ssl_key = key
+    env.ssl_cert = crt
+    env.ssl_intermediate = intermediate
+
 def setup_apache():
     with settings(hide('warnings', 'stdout', 'stderr')):
         # Enable mod_wsgi, mod_headers, mod_rewrite
@@ -327,13 +348,16 @@ def setup_apache():
         if exists('/etc/apache2/sites-enabled/000-default'):
            sudo('a2dissite default')
 
+        install_ssl_certs()
+
+        # Get SSL information
+        get_ssl_info()
+
         # Install apache config
         upload_template('config/apache/localwiki', '/etc/apache2/sites-available/localwiki',
             context=env, use_jinja=True, use_sudo=True)
         sudo('a2ensite localwiki')
 
-        install_ssl_certs()
-        
         # Restart apache
         sudo('service apache2 restart')
 
@@ -354,7 +378,8 @@ def setup_mapserver():
     cached proxies to cloudmade tiles.
     """
     setup_varnish()
-    put('config/apache/map', '/etc/apache2/sites-available/map', use_sudo=True)
+    upload_template('config/apache/map', '/etc/apache2/sites-available/map',
+            context=env, use_jinja=True, use_sudo=True)
     sudo('a2ensite map')
     sudo('service apache2 restart')
 
