@@ -8,8 +8,9 @@ Replace this with more appropriate tests for your application.
 from django.test import TestCase
 from django.core.files.base import ContentFile
 from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.auth.models import User
 
-from regions.models import Region
+from regions.models import Region, RegionSettings, BannedFromRegion
 from pages.models import Page, PageFile
 from maps.models import MapData
 from redirects.models import Redirect
@@ -154,3 +155,39 @@ class MoveRegionTests(TestCase):
         self.assertEqual(Redirect.objects.filter(region=self.oak).count(), 1)
         # ..and page
         self.assertTrue(Page.objects.filter(slug='page content not moved directly', region=self.oak).exists())
+
+
+class RegionPermissionTests(TestCase):
+    def setUp(self):
+        self.regions = []
+
+        self.sf = Region(full_name="San Francisco", slug="sf")
+        self.sf.save()
+        self.oak = Region(full_name="Oakland", slug="oak")
+        self.oak.save()
+
+        self.philip = User(username="Philip", email="philip@example.org")
+        self.philip.save()
+
+        self.marina = User(username="Marina", email="marina@example.org")
+        self.marina.save()
+
+        # Philip admin of SF
+        self.sf.regionsettings.admins.add(self.philip)
+
+        # Marina admin of Oakland
+        self.oak.regionsettings.admins.add(self.marina)
+
+    def test_banned_cant_edit(self):
+        # Add Marina to the SF banned list
+        banned_sf, created = BannedFromRegion.objects.get_or_create(region=self.sf)
+        banned_sf.users.add(self.marina)
+
+        p = Page(name="In sf", region=self.sf)
+        self.assertFalse(self.marina.has_perm('pages.change_page', p))
+
+        mapdata = MapData(page=p, region=self.sf)
+        self.assertFalse(self.marina.has_perm('maps.change_map', mapdata))
+
+        redirect = Redirect(source="testsource", destination=p, region=self.sf)
+        self.assertFalse(self.marina.has_perm('redirects.change_redirect', redirect))
