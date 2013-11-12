@@ -69,12 +69,16 @@ class RestrictiveBackend(object):
         If the `user_obj` is an admin of the region that `obj` belongs to,
         return True.
         """
+        if not obj:
+            return False
         name = "%s.%s" % (obj.__module__, obj.__class__.__name__)
         if name in settings.USER_REGION_ADMIN_CAN_MANAGE:
             return obj.region.is_admin(user_obj)
         return False
 
     def is_banned_on_region(self, user_obj, obj):
+        if not obj:
+            return False
         name = "%s.%s" % (obj.__module__, obj.__class__.__name__)
         if name in settings.USER_REGION_ADMIN_CAN_MANAGE:
             region = obj.region
