@@ -4,7 +4,7 @@ from django.conf import settings
 from utils import TestSettingsManager
 from models import *
 from django.contrib.auth.models import User, Permission, Group
-from guardian.shortcuts import assign
+from guardian.shortcuts import assign_perm
 
 mgr = TestSettingsManager()
 INSTALLED_APPS = list(settings.INSTALLED_APPS)
@@ -31,14 +31,14 @@ class RestrictiveBackendTest(TestCase):
         t.save()
         self.user.is_active = False
         self.user.save()
-        assign('change_thing', self.user, t)
+        assign_perm('change_thing', self.user, t)
         self.assertFalse(self.user.has_perm('tests.change_thing', t))
 
     def test_banned_user_blocked(self):
         banned = Group.objects.get(name=settings.USERS_BANNED_GROUP)
         t = Thing(name='Test thing')
         t.save()
-        assign('change_thing', self.user, t)
+        assign_perm('change_thing', self.user, t)
         self.assertTrue(self.user.has_perm('tests.change_thing', t))
         self.user.groups.add(banned)
         self.user.save()
@@ -49,7 +49,7 @@ class RestrictiveBackendTest(TestCase):
         t.save()
         self.user.is_superuser = True
         self.assertTrue(self.user.has_perm('tests.change_thing', t))
-        assign('change_thing', self.user, t)
+        assign_perm('change_thing', self.user, t)
         self.assertTrue(self.user.has_perm('tests.change_thing', t))
 
         # let's ban the admin, should still have access
@@ -79,7 +79,7 @@ class RestrictiveBackendTest(TestCase):
         self.assertTrue(self.user.has_perm('tests.add_thing', t))
         self.assertTrue(self.user.has_perm('tests.delete_thing', t))
 
-        assign('change_thing', self.user, t)  # per-object permission
+        assign_perm('change_thing', self.user, t)  # per-object permission
 
         self.assertTrue(self.user.has_perm('tests.change_thing', t))
         self.assertFalse(self.user.has_perm('tests.add_thing', t))
@@ -105,7 +105,7 @@ class RestrictiveBackendTest(TestCase):
         self.assertTrue(self.user.has_perm('tests.add_thing', t))
         self.assertTrue(self.user.has_perm('tests.delete_thing', t))
 
-        assign('change_thing', self.group, t)  # per-object permission
+        assign_perm('change_thing', self.group, t)  # per-object permission
 
         self.assertTrue(self.user.has_perm('tests.change_thing', t))
         self.assertFalse(self.user.has_perm('tests.add_thing', t))
