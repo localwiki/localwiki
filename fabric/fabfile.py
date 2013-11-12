@@ -183,7 +183,7 @@ def virtualenv():
     with prefix('source %s/bin/activate' % env.virtualenv):
         yield
 
-def setup_postgres():
+def setup_postgres(test_server=False):
     sudo('service postgresql stop')
 
     # Move the data directory to /srv/
@@ -193,7 +193,10 @@ def setup_postgres():
     sudo('chown -R postgres:postgres /srv/postgres')
 
     # Add our custom configuration
-    put('config/postgresql/postgresql.conf', '/etc/postgresql/9.1/main/', use_sudo=True)
+    if not test_server:
+        put('config/postgresql/postgresql.conf', '/etc/postgresql/9.1/main/', use_sudo=True)
+    else:
+        put('config/postgresql/postgresql_test.conf', '/etc/postgresql/9.1/main/', use_sudo=True)
 
     # Increase system shared memory limits
     shmmax = 288940032
@@ -437,7 +440,7 @@ def setup_ec2():
     """
     attach_ebs_volumes()
 
-def provision():
+def provision(test_server=False):
     if env.host_type == 'vagrant':
         fix_locale()
 
@@ -446,7 +449,7 @@ def provision():
 
     add_ssh_keys()
     install_system_requirements()
-    setup_postgres()
+    setup_postgres(test_server=test_server)
     setup_jetty()
     setup_repo()
     init_localwiki_install()

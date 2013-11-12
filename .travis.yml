@@ -10,7 +10,7 @@ before_install:
     - pip install -r fabric/requirements.txt
     - pip install coveralls --use-mirrors
 install:
-    - cd fabric; fab provision -H localhost -i ~/.ssh/id_rsa; cd ~/
+    - cd fabric; fab provision:test_server -H localhost -i ~/.ssh/id_rsa; cd ~/
 script: sudo -u postgres psql -d postgres -c "ALTER ROLE localwiki SUPERUSER;"; source /srv/localwiki/env/bin/activate; pip install coveralls --use-mirrors; coverage run --source=localwiki /srv/localwiki/src/localwiki/manage.py test regions pages maps tags versioning diff ckeditor redirects users
 after_success:
     - source /srv/localwiki/env/bin/activate; coveralls
