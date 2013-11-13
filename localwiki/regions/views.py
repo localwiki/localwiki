@@ -37,7 +37,8 @@ class RegionMixin(object):
     def get_context_data(self, *args, **kwargs):
         context = super(RegionMixin, self).get_context_data(*args, **kwargs)
         context['region'] = self.get_region()
-        context['is_region_admin'] = context['region'].is_admin(self.request.user)
+        if hasattr(self, 'request'):
+            context['is_region_admin'] = context['region'].is_admin(self.request.user)
         return context
 
 
