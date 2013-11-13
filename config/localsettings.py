@@ -63,7 +63,14 @@ DAISYDIFF_MERGE_URL = 'http://localhost:8080/daisydiff/merge'
 # list of regular expressions for white listing embedded URLs
 EMBED_ALLOWED_SRC = ['.*']
 
-HAYSTACK_SOLR_URL = 'http://localhost:8080/solr/'
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://localhost:8080/solr/',
+    }
+}
 
 LOCAL_INSTALLED_APPS = (
 )

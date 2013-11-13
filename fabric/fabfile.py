@@ -240,13 +240,15 @@ def install_system_requirements():
     postgres_pkg = ['gdal-bin', 'proj', 'postgresql-9.1-postgis-2.0']
     memcached_pkg = ['memcached']
     varnish_pkg = ['varnish']
+    redis_pkg = ['redis_server']
     packages = (
         system_python_pkg +
         solr_pkg +
         apache_pkg +
         postgres_pkg +
         memcached_pkg +
-        varnish_pkg
+        varnish_pkg +
+        redis_pkg
     )
     sudo('DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes install %s' % ' '.join(packages))
 

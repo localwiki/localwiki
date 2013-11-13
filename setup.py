@@ -134,7 +134,7 @@ install_requires = [
     'sorl-thumbnail==11.12-custom5',
     'python-dateutil==1.5',
     'pysolr==2.1.0-beta',
-    'django-haystack==1.2.7',
+    'django-haystack==2.1.0',
     'django-randomfilenamestorage==1.1',
     'django-guardian==1.1.1',
     'South==0.8.1-custom2',

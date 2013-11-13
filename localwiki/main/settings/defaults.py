@@ -169,9 +169,6 @@ SHOW_IP_ADDRESSES = True
 
 LOGIN_REDIRECT_URL = '/'
 
-HAYSTACK_SITECONF = 'main.search_sites'
-HAYSTACK_SEARCH_ENGINE = 'solr'
-
 THUMBNAIL_BACKEND = 'utils.sorl_backends.AutoFormatBackend'
 
 OL_API = STATIC_URL + 'openlayers/OpenLayers.js?tm=1348975452'
