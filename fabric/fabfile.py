@@ -240,7 +240,7 @@ def install_system_requirements():
     postgres_pkg = ['gdal-bin', 'proj', 'postgresql-9.1-postgis-2.0']
     memcached_pkg = ['memcached']
     varnish_pkg = ['varnish']
-    redis_pkg = ['redis_server']
+    redis_pkg = ['redis-server']
     packages = (
         system_python_pkg +
         solr_pkg +
