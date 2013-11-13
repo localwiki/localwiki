@@ -12,12 +12,17 @@ class CensoredUserAdmin(UserAdmin):
     list_display = ('username', 'first_name', 'last_name', 'is_staff')
     search_fields = ('username', 'first_name', 'last_name')
     fieldsets = (
-        (None, {'fields': ('username',)}),
+        (None, {'fields': ('username', 'password')}),
         (_('Personal info'), {'fields': ('first_name', 'last_name')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                       'user_permissions')}),
+                                       'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
-        (_('Groups'), {'fields': ('groups',)}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'password1', 'password2')}
+        ),
     )
 
     def get_readonly_fields(self, request, obj=None):
