@@ -467,6 +467,13 @@ def setup_ec2():
     """
     attach_ebs_volumes()
 
+def setup_celery():
+    put('config/init/celery.conf', '/etc/init/celery.conf', use_sudo=True)
+    sudo('touch /var/log/celery.log')
+    sudo('chown www-data:www-data /var/log/celery.log')
+    sudo('chmod 660 /var/log/celery.log')
+    sudo('service celery start')
+
 def provision(test_server=False):
     if env.host_type == 'vagrant':
         fix_locale()
@@ -481,6 +488,7 @@ def provision(test_server=False):
     setup_repo()
     init_localwiki_install()
     setup_permissions() 
+    setup_celery()
     setup_apache()
 
     setup_mapserver()

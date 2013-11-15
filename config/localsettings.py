@@ -63,7 +63,7 @@ DAISYDIFF_MERGE_URL = 'http://localhost:8080/daisydiff/merge'
 # list of regular expressions for white listing embedded URLs
 EMBED_ALLOWED_SRC = ['.*']
 
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 HAYSTACK_CONNECTIONS = {
     'default': {
@@ -71,6 +71,9 @@ HAYSTACK_CONNECTIONS = {
         'URL': 'http://localhost:8080/solr/',
     }
 }
+
+BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
 LOCAL_INSTALLED_APPS = (
 )

@@ -261,6 +261,7 @@ INSTALLED_APPS = (
 
     # Other third-party apps
     'haystack',
+    'celery_haystack',
     'olwidget',
     'registration',
     'sorl.thumbnail',
@@ -287,6 +288,7 @@ INSTALLED_APPS = (
     'frontpage',
     'dashboard',
     'main.api',
+    'main',
     'utils',
 )
 

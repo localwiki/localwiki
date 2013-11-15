@@ -1,9 +1,10 @@
 from haystack import indexes
+from celery_haystack.indexes import CelerySearchIndex
 
 from models import Page
 
 
-class PageIndex(indexes.SearchIndex, indexes.Indexable):
+class PageIndex(CelerySearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     region_id = indexes.IntegerField(model_attr='region__id', null=True)
     # TODO: We'll likely need to tweak this boost value.
