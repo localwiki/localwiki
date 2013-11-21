@@ -2,6 +2,8 @@ language: python
 python:
     - "2.7"
 before_install:
+    - sudo apt-add-repository -y --remove ppa:ubuntugis/ubuntugis-stable
+    - sudo rm /etc/apt/sources.list.d/pgdg-source.list
     - sudo apt-get update
     - sudo apt-get install python-pip
     - sudo pip install fabric
@@ -9,6 +11,13 @@ before_install:
     - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
     - pip install -r fabric/requirements.txt
     - pip install coveralls --use-mirrors
+    - sudo /etc/init.d/postgresql stop
+    - sudo apt-get -y --purge remove postgresql postgresql-9.1 libpq-dev libpq5 postgresql-client-common postgresql-common postgis postgresql-9.1-postgis
+    - sudo rm -rf /etc/postgresql
+    - sudo rm -rf /var/lib/postgresql
+    - sudo apt-get autoremove
+    - sudo apt-get -y install -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" postgresql postgresql-9.1
+    - sudo /etc/init.d/postgresql start
 install:
     - cd fabric; fab provision:test_server -H localhost -i ~/.ssh/id_rsa; cd ~/
 script: sudo -u postgres psql -d postgres -c "ALTER ROLE localwiki SUPERUSER;"; sudo chown -R travis /srv/localwiki/env /srv/localwiki/src; source /srv/localwiki/env/bin/activate; pip install coveralls --use-mirrors; coverage run --source=localwiki /srv/localwiki/src/localwiki/manage.py test regions pages maps tags versioning diff ckeditor redirects users
