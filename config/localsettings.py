@@ -31,25 +31,6 @@ DEFAULT_FROM_EMAIL = 'dontreply@localwiki.net'
 # Other config values.
 #######################################################################
 
-SITE_THEME = 'sapling'
-
-OLWIDGET_DEFAULT_OPTIONS = {
-    'default_lat': 37,
-    'default_lon': -99,
-    'default_zoom': 3,
-    'zoom_to_data_extent_min': 16,
-
-    'layers': ['cachedcloudmade', 've.aerial'],
-    'map_options': {
-        'controls': ['Navigation', 'PanZoom', 'KeyboardDefaults'],
-        'theme': '/static/openlayers/theme/sapling/style.css',
-    },
-    'overlay_style': {'fillColor': '#ffc868',
-                      'strokeColor': '#db9e33',
-                      'strokeDashstyle': 'solid'},
-    'map_div_class': 'mapwidget',
-}
-
 OLWIDGET_CUSTOM_LAYER_TYPES = {
     'cachedcloudmade': """OpenLayers.Layer.CachedCloudMade('CachedCloudMade',
             ['//map-a.localwiki.org/tile/ca694687020d468283a545db191bcb81/35165/256/',
@@ -62,8 +43,6 @@ DAISYDIFF_MERGE_URL = 'http://localhost:8080/daisydiff/merge'
 
 # list of regular expressions for white listing embedded URLs
 EMBED_ALLOWED_SRC = ['.*']
-
-HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 HAYSTACK_CONNECTIONS = {
     'default': {

@@ -304,17 +304,13 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
 
-#######################################################################
-# Other config values.
-#######################################################################
-
 OLWIDGET_DEFAULT_OPTIONS = {
-    'default_lat': 37.76,
-    'default_lon': -122.43,
-    'default_zoom': 12,
+    'default_lat': 37,
+    'default_lon': -99,
+    'default_zoom': 3,
     'zoom_to_data_extent_min': 16,
 
-    'layers': ['cloudmade.35165', 've.aerial'],
+    'layers': ['cachedcloudmade', 've.aerial'],
     'map_options': {
         'controls': ['Navigation', 'PanZoom', 'KeyboardDefaults'],
         'theme': '/static/openlayers/theme/sapling/style.css',
@@ -331,7 +327,7 @@ DAISYDIFF_MERGE_URL = 'http://localhost:8080/daisydiff/merge'
 # list of regular expressions for white listing embedded URLs
 EMBED_ALLOWED_SRC = ['.*']
 
-HAYSTACK_SOLR_URL = 'http://localhost:8080/solr'
+HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 CACHE_BACKEND = 'dummy:///'
 

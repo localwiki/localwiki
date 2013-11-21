@@ -1,7 +1,7 @@
 """
 This is the main management script for provisioning and managing the LocalWiki servers.
 
-==== Requirements ====
+==== Do this first ====
 
 * Install vagrant >= 1.3.3
 $ virtualenv env
@@ -44,7 +44,7 @@ for most active work as it will automatically refresh.
 To test a full production-style deploy in vagrant::
 
     $ cd localwiki/fabric
-    $ fab vagrant deploy:local
+    $ fab vagrant deploy:local=True
 
 Then visit the production server, http://127.0.0.1:8081, on your
 local machine.  The 'deploy:local' flag tells us to use your local
@@ -56,13 +56,23 @@ To provision a new EC2 instance::
 
     $ fab create_ec2 provision
 
+==== Deploying to production ====
+
+After provisioning, make sure you edit `roledefs` below to point
+to the correct hosts. Then::
+
+    $ fab production deploy
+
 """
 
 import os
 import sys
 import random
 import time
+import shutil
+import json
 import string
+from collections import defaultdict
 from contextlib import contextmanager as _contextmanager
 from fabric.api import *
 from fabric.contrib.files import upload_template, exists
@@ -71,21 +81,24 @@ import boto.ec2
 from ilogue import fexpect
 
 ####################################################################
-#  Ignore the `secrets_path` for development usage.
+#  Ignore `config_secrets` for development usage.
 #
-#  For production deployments, you'll want to set up the
-#  `secrets_path` as follows:
-#    1. Copy config_secrets.example/ (found in this dir) somewhere.
-#    2. Edit it with your secret values.
+#  For production deployments, you'll want to:
+#    1. cp config_secrets.example/ to config_secrets/
+#    2. Edit the secrets.json and other files accordingly.
 #  
 #  You can provision without setting up these secrets, but this will
 #  allow you to e.g. have SSL, Sentry, and other stuff as we add it.
 ####################################################################
-env.secrets_path = '/Users/philip/projects/localwiki/config_secrets/'
-env.hostname = 'localwiki.net'
-if not env.hosts:
-   env.hosts = ['localwiki.net']
-   env.user = 'ubuntu'
+
+####################################################################
+# You'll want to edit this after provisioning:
+####################################################################
+
+roledefs = {
+    'web': ['ubuntu@localwiki.net'],
+}
+
 
 def get_ec2_ami(region):
     # From http://cloud-images.ubuntu.com/releases/precise/release/
@@ -107,17 +120,27 @@ def get_ec2_ami(region):
 #
 # ec2-allocate-address
 # ec2-associate-address -i <instance id> <ip address>
+# 
+# and set up a reverse DNS:
+# https://portal.aws.amazon.com/gp/aws/html-forms-controller/contactus/ec2-email-limit-rdns-request
 #
 ####################################################################
 
-try:
-    sys.path.append(env.secrets_path)
-    import secrets as config_secrets
-except ImportError:
-    env.secrets_path = os.path.abspath('config_secrets.example')
-    sys.path.append(env.secrets_path)
-    import secrets as config_secrets
 
+def get_config_secrets():
+    # Set up config secrets
+    if not os.path.exists('config_secrets'):
+        shutil.copytree('config_secrets.example', 'config_secrets')    
+    d = defaultdict(lambda : None)
+    d.update(json.load(open('config_secrets/secrets.json')))
+    return d
+
+def save_config_secrets():
+    f = open('config_secrets/secrets.json', 'w')
+    json.dump(config_secrets, f, indent=4)
+    f.close()
+
+config_secrets = get_config_secrets()
 env.host_type = None
 
 ########################
@@ -132,15 +155,24 @@ env.apache_settings = {
     'server_name': 'localwiki.net',
     'server_admin': 'contact@localwiki.org',
 }
-env.sentry_key = config_secrets.sentry_key
+env.sentry_key = config_secrets['sentry_key']
 env.branch = 'hub'
+
+def production():
+    # Use the global roledefs
+    env.roledefs = roledefs
+    if not env.roles:
+        env.roles = ['web']
+    env.host_type = 'production'
  
 def vagrant():
-    env.host_type = 'vagrant'
-    env.user = 'vagrant'
     # connect to the port-forwarded ssh
-    env.hosts = ['127.0.0.1:2222']
- 
+    env.roledefs = {
+        'web': ['vagrant@127.0.0.1:2222']
+    }
+    if not env.roles:
+        env.roles = ['web']
+    env.host_type = 'vagrant'
     # We assume that this fabfile is inside of the vagrant
     # directory, two subdirectories deep.  See dev HOWTO
     # in main docstring.
@@ -149,24 +181,16 @@ def vagrant():
         result = local('vagrant ssh-config | grep IdentityFile', capture=True)
     env.key_filename = result.split()[1].strip('"')
 
-    print "========================="
-    print "HOST TYPE: %s" % env.host_type
-    print "========================="
-
 def ec2():
     env.host_type = 'ec2'
     env.user = 'ubuntu'
 
-    env.aws_access_key_id = config_secrets.aws_access_key_id
-    env.aws_secret_access_key = config_secrets.aws_secret_access_key
-    env.ec2_region = getattr(config_secrets, 'ec2_region', 'us-west-1')
-    env.ec2_security_group = getattr(config_secrets, 'ec2_security_group', 'default')
-    env.ec2_key_name = config_secrets.ec2_key_name
-    env.key_filename = config_secrets.ec2_key_filename
-
-    print "========================="
-    print "HOST TYPE: %s" % env.host_type
-    print "========================="
+    env.aws_access_key_id = config_secrets['aws_access_key_id']
+    env.aws_secret_access_key = config_secrets['aws_secret_access_key']
+    env.ec2_region = config_secrets['ec2_region']
+    env.ec2_security_group = config_secrets['ec2_security_group']
+    env.ec2_key_name = config_secrets['ec2_key_name']
+    env.key_filename = config_secrets['ec2_key_filename']
 
 def setup_dev():
     """
@@ -177,6 +201,12 @@ def setup_dev():
     # git checkout.
     sudo('rm -rf /srv/localwiki/src')
     sudo('ln -s /vagrant/localwiki /srv/localwiki/src', user='www-data')
+
+def get_context(env):
+    d = {}
+    d.update(config_secrets)
+    d.update(dict(env))
+    return d
 
 @_contextmanager
 def virtualenv():
@@ -241,6 +271,7 @@ def install_system_requirements():
     memcached_pkg = ['memcached']
     varnish_pkg = ['varnish']
     redis_pkg = ['redis-server']
+    mailserver_pkg = ['postfix']
     packages = (
         system_python_pkg +
         solr_pkg +
@@ -248,20 +279,29 @@ def install_system_requirements():
         postgres_pkg +
         memcached_pkg +
         varnish_pkg +
-        redis_pkg
+        redis_pkg + 
+        mailserver_pkg
     )
     sudo('DEBIAN_FRONTEND=noninteractive apt-get -y --force-yes install %s' % ' '.join(packages))
 
 def init_postgres_db():
     # Generate a random password, for now.
-    env.postgres_db_pass = ''.join([random.choice(string.letters + string.digits) for i in range(40)])
-    sudo("""psql -d template1 -c "CREATE USER localwiki WITH PASSWORD '%s'" """ % env.postgres_db_pass, user='postgres')
+    if not config_secrets['postgres_db_pass']:
+        config_secrets['postgres_db_pass'] = ''.join([random.choice(string.letters + string.digits) for i in range(40)])
+    sudo("""psql -d template1 -c "CREATE USER localwiki WITH PASSWORD '%s'" """ % config_secrets['postgres_db_pass'], user='postgres')
     sudo("""psql -d template1 -c "ALTER USER localwiki CREATEDB" """, user='postgres')
     sudo("createdb -E UTF8 -O localwiki localwiki", user='postgres')
     # Init PostGIS
     sudo('psql -d localwiki -c "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;"', user='postgres')
 
+def update_django_settings():
+    upload_template('config/localsettings.py',
+        os.path.join(env.virtualenv, 'share', 'localwiki', 'conf'),
+        context=get_context(env), use_jinja=True)
+
 def init_localwiki_install():
+    init_postgres_db()
+
     # Update to latest virtualenv
     sudo('pip install --upgrade virtualenv')
 
@@ -273,19 +313,17 @@ def init_localwiki_install():
             # Install core localwiki module as well as python dependencies
             run('python setup.py develop')
 
-            init_postgres_db()
-
             # Set up the default media, static, conf, etc directories
             run('mkdir -p %s/share' % env.virtualenv)
             put('config/defaults/localwiki', os.path.join(env.virtualenv, 'share'))
 
             # Install Django settings template
-            env.django_secret_key = ''.join([
-                random.choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)')
-                for i in range(50)
-            ])
-            upload_template('config/localsettings.py', os.path.join(env.virtualenv, 'share', 'localwiki', 'conf'),
-                context=env, use_jinja=True)
+            if not config_secrets['django_secret_key']:
+                config_secrets['django_secret_key'] = ''.join([
+                    random.choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)')
+                    for i in range(50)
+                ])
+            update_django_settings()
 
             run('localwiki-manage setup_all')
 
@@ -307,7 +345,7 @@ def install_ssl_certs():
     sudo('chown -R www-data:www-data /etc/apache2/ssl')
     sudo('chmod 700 /etc/apache2/ssl')
     with settings(warn_only=True):
-        put(os.path.join(env.secrets_path, 'ssl') + '/*', '/etc/apache2/ssl/', use_sudo=True)
+        put('config_secrets/ssl/*', '/etc/apache2/ssl/', use_sudo=True)
 
 def get_ssl_info():
     """
@@ -393,7 +431,7 @@ def add_ssh_keys():
     run('mkdir -p ~/.ssh && chmod 700 ~/.ssh')
     run('touch ~/.ssh/authorized_keys')
     run('mkdir ssh_to_add')
-    put(os.path.join(env.secrets_path, 'ssh') + '/*', 'ssh_to_add/')
+    put('config_secrets/ssh/*', 'ssh_to_add/')
     run('cat ~/ssh_to_add/* >> ~/.ssh/authorized_keys')
     run('rm -rf ~/ssh_to_add')
 
@@ -460,12 +498,17 @@ def create_ec2(ami_id=None, instance_type='m1.medium'):
     print "Instance ready to receive connections. "
     env.hosts = [instance.public_dns_name]
 
+def create_swap():
+    put('config/init/create_swap.conf', '/etc/init/create_swap.conf', use_sudo=True)
+    sudo('start create_swap')
+
 def setup_ec2():
     """
     Things we need to do to set up the EC2 instance /after/
     we've created the instance and have its hostname.
     """
     attach_ebs_volumes()
+    create_swap()
 
 def setup_celery():
     put('config/init/celery.conf', '/etc/init/celery.conf', use_sudo=True)
@@ -473,6 +516,15 @@ def setup_celery():
     sudo('chown www-data:www-data /var/log/celery.log')
     sudo('chmod 660 /var/log/celery.log')
     sudo('service celery start')
+
+def setup_mailserver():
+    upload_template('config/postfix/main.cf', '/etc/postfix/main.cf',
+        context=get_context(env), use_jinja=True, use_sudo=True)
+    upload_template('config/postfix/master.cf', '/etc/postfix/master.cf',
+        context=get_context(env), use_jinja=True, use_sudo=True)
+    upload_template('config/postfix/mailname', '/etc/mailname',
+        context=get_context(env), use_jinja=True, use_sudo=True)
+    sudo('service postfix restart')
 
 def provision(test_server=False):
     if env.host_type == 'vagrant':
@@ -483,6 +535,7 @@ def provision(test_server=False):
 
     add_ssh_keys()
     install_system_requirements()
+    setup_mailserver()
     setup_postgres(test_server=test_server)
     setup_jetty()
     setup_repo()
@@ -492,6 +545,7 @@ def provision(test_server=False):
     setup_apache()
 
     setup_mapserver()
+    save_config_secrets()
 
 def run_tests():
     # Must be superuser to run tests b/c of PostGIS requirement? Ugh..
@@ -525,6 +579,7 @@ def touch_wsgi():
         sudo("touch localwiki.wsgi")
 
 def update(local=False):
+    print 'LOCAL', local
     if not local:
         update_code()
     rebuild_virtualenv()  # rebuild since it may be out of date and broken
@@ -532,12 +587,10 @@ def update(local=False):
         with virtualenv():
             sudo("python setup.py clean --all", user="www-data")
             sudo("rm -rf dist localwiki.egg-info", user="www-data")
+            update_django_settings()
             sudo("python setup.py develop", user="www-data")
             #sudo("python setup.py install")
-            setup_jetty()
             sudo("localwiki-manage setup_all", user="www-data")
-    touch_wsgi()
-    sudo("service memcached restart", pty=False)
 
 def deploy(local=False):
     """
@@ -551,6 +604,9 @@ def deploy(local=False):
             local changes.
     """
     update(local=local)
+    setup_jetty()
+    touch_wsgi()
+    sudo("service memcached restart", pty=False)
 
 def fix_locale():
     sudo('update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8')
