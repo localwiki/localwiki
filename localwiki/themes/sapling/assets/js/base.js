@@ -85,6 +85,7 @@ $(document).ready(function() {
     ])
     .on('typeahead:selected', function(e, datum) {
         var url = encodeURIComponent(datum.value.replace(' ', '_'));
+        url = url.replace('%2F', '/');
         document.location = '/' + region_slug + '/' + url;
     });
 });
