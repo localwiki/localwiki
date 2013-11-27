@@ -10,7 +10,7 @@ from olwidget.forms import MapModelForm
 from localwiki.utils import reverse_lazy
 from localwiki.utils.static_helpers import static_url
 
-from models import Region, RegionSettings, BannedFromRegion
+from models import Region, RegionSettings, BannedFromRegion, LANGUAGES
 
 
 OUR_JS = [
@@ -46,6 +46,7 @@ class RegionSettingsForm(MediaMixin, forms.Form):
     full_name = forms.CharField(max_length=255,
         help_text=ugettext_lazy("The full name of this region, e.g. 'San Francisco'"))
     geom = forms.CharField(widget=EditableMap({'geometry': 'polygon'}))
+    default_language = forms.ChoiceField(choices=LANGUAGES, required=False)
 
 
 class AdminSetForm(forms.ModelForm):

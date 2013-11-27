@@ -212,6 +212,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'utils.middleware.SubdomainLanguageMiddleware',
+    'regions.middleware.RedirectToLanguageSubdomainMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'honeypot.middleware.HoneypotMiddleware',

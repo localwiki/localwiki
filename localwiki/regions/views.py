@@ -7,7 +7,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.http import HttpResponseForbidden
 from django.contrib import messages
-from django.contrib.gis.geos import GEOSGeometry, MultiPolygon
+from django.contrib.gis.geos import GEOSGeometry, Polygon, MultiPolygon
 from django.template.loader import render_to_string
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
@@ -144,14 +144,23 @@ class RegionSettingsView(RegionAdminRequired, RegionMixin, FormView):
         return {
             'full_name': region.full_name,
             'geom': region.geom,
+            'default_language': region.regionsettings.default_language,
         }
 
     def form_valid(self, form):
         response = super(RegionSettingsView, self).form_valid(form)
         region = self.get_region()
         region.full_name = form.cleaned_data['full_name']
+        if form.cleaned_data['default_language']:
+            region.regionsettings.default_language = form.cleaned_data['default_language']
+            region.regionsettings.save()
+
         poly = GEOSGeometry(form.cleaned_data['geom'])
-        region.geom = MultiPolygon(poly)
+        if isinstance(poly, Polygon):
+            region.geom = MultiPolygon(poly)
+        elif isinstance(poly, MultiPolygon):
+            region.geom = poly
+
         region.save()
         messages.add_message(self.request, messages.SUCCESS, _("Settings updated!"))
         return response

@@ -2,13 +2,13 @@ import re
 import unicodedata
 from urllib import unquote_plus
 
-from django.utils.translation import ugettext_lazy
 from django.db import IntegrityError
+from django.conf import settings
 from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.template.defaultfilters import stringfilter
-
 from django.contrib.gis.db import models
 
 
@@ -45,12 +45,15 @@ class Region(models.Model):
         return reverse('frontpage', kwargs={'region': self.slug})
 
 
+LANGUAGES = [(lang[0], ugettext_lazy(lang[1])) for lang in settings.LANGUAGES]
+
 class RegionSettings(models.Model):
     region = models.OneToOneField(Region)
     # Can be null for the 'main' region, which may not have a geometry.
     region_center = models.PointField(null=True)
     region_zoom_level = models.IntegerField(null=True)
     admins = models.ManyToManyField(User, null=True)
+    default_language = models.CharField(max_length=7, blank=True, null=True, choices=LANGUAGES)
 
     def __unicode__(self):
         return 'settings: %s' % str(self.region)
