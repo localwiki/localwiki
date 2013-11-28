@@ -246,7 +246,7 @@ def setup_postgres(test_server=False):
     sudo('chown -R postgres:postgres /srv/postgres')
 
     # Add our custom configuration
-    if env.host_type =! 'test_server':
+    if env.host_type != 'test_server':
         put('config/postgresql/postgresql.conf', '/etc/postgresql/9.1/main/postgresql.conf', use_sudo=True)
     else:
         put('config/postgresql/postgresql_test.conf', '/etc/postgresql/9.1/main/postgresql.conf', use_sudo=True)
