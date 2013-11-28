@@ -33,7 +33,7 @@ Then, when ssh'ed into vagrant::
     $ source /srv/localwiki/env/bin/activate
     $ localwiki-manage runserver --settings=main.settings.debug 0.0.0.0:8000
 
-You can then access the development server at http://127.0.0.1:8082
+You can then access the development server at http://localhost:8082
 on your local machine.  Hack on the code that lives inside of
 vagrant_localwiki/localwiki.
 
@@ -49,6 +49,14 @@ To test a full production-style deploy in vagrant::
 Then visit the production server, http://127.0.0.1:8081, on your
 local machine.  The 'deploy:local' flag tells us to use your local
 code rather than a fresh git checkout.
+
+==== Internationalization note ====
+
+Different languages are placed on subdomains, so if you're testing out
+language stuff then it's best to set up language-level subdomains on your
+`localhost` E.g. add `dev.localhost`, `ja.dev.localhost`, `de.dev.localhost`
+to `/etc/hosts` and set `dev.localhost` as your public_hostname in your
+`config_secrets/secrets.json`.
 
 ==== EC2 ====
 
@@ -126,21 +134,26 @@ def get_ec2_ami(region):
 #
 ####################################################################
 
+_config_path = 'config_secrets'
+def config_path(path):
+    global _config_path
+    _config_path = path
 
-def get_config_secrets():
-    # Set up config secrets
-    if not os.path.exists('config_secrets'):
-        shutil.copytree('config_secrets.example', 'config_secrets')    
-    d = defaultdict(lambda : None)
-    d.update(json.load(open('config_secrets/secrets.json')))
-    return d
+config_secrets = {}
+
+def setup_config_secrets():
+    global config_secrets
+
+    if not os.path.exists(_config_path):
+        shutil.copytree('config_secrets.example', _config_path)
+    config_secrets = defaultdict(lambda : None)
+    config_secrets.update(json.load(open(os.path.join(_config_path, 'secrets.json'))))
 
 def save_config_secrets():
-    f = open('config_secrets/secrets.json', 'w')
+    f = open(os.path.join(_config_path, 'secrets.json'), 'w')
     json.dump(config_secrets, f, indent=4)
     f.close()
 
-config_secrets = get_config_secrets()
 env.host_type = None
 
 ########################
@@ -155,10 +168,11 @@ env.apache_settings = {
     'server_name': 'localwiki.net',
     'server_admin': 'contact@localwiki.org',
 }
-env.sentry_key = config_secrets['sentry_key']
 env.branch = 'hub'
 
 def production():
+    setup_config_secrets()
+
     # Use the global roledefs
     env.roledefs = roledefs
     if not env.roles:
@@ -166,6 +180,8 @@ def production():
     env.host_type = 'production'
  
 def vagrant():
+    setup_config_secrets()
+
     # connect to the port-forwarded ssh
     env.roledefs = {
         'web': ['vagrant@127.0.0.1:2222']
@@ -182,6 +198,8 @@ def vagrant():
     env.key_filename = result.split()[1].strip('"')
 
 def ec2():
+    setup_config_secrets()
+
     env.host_type = 'ec2'
     env.user = 'ubuntu'
 
@@ -201,6 +219,7 @@ def setup_dev():
     # git checkout.
     sudo('rm -rf /srv/localwiki/src')
     sudo('ln -s /vagrant/localwiki /srv/localwiki/src', user='www-data')
+    update()
 
 def get_context(env):
     d = {}
@@ -257,13 +276,15 @@ def install_system_requirements():
     sudo('apt-get update')
 
     # Ubuntu system packages
+    base_system_pkg = [
+        'git'
+    ] 
     system_python_pkg = [
         'python-setuptools',
         'python-lxml',
         'python-imaging',
         'python-psycopg2',
         'python-pip',
-        'git'
     ]
     solr_pkg = ['solr-jetty', 'default-jre-headless']
     apache_pkg = ['apache2', 'libapache2-mod-wsgi']
@@ -273,6 +294,7 @@ def install_system_requirements():
     redis_pkg = ['redis-server']
     mailserver_pkg = ['postfix']
     packages = (
+        base_system_pkg + 
         system_python_pkg +
         solr_pkg +
         apache_pkg +
@@ -579,7 +601,6 @@ def touch_wsgi():
         sudo("touch localwiki.wsgi")
 
 def update(local=False):
-    print 'LOCAL', local
     if not local:
         update_code()
     rebuild_virtualenv()  # rebuild since it may be out of date and broken
