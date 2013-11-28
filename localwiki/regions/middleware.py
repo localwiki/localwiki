@@ -30,7 +30,10 @@ class RedirectToLanguageSubdomainMiddleware(object):
             return
         region = rs[0]
 
-        region_lang = region.regionsettings.default_language or settings.LANGUAGE_CODE
+        if not hasattr(region, 'regionsettings'):
+            region_lang = settings.LANGUAGE_CODE
+        else:
+            region_lang = region.regionsettings.default_language or settings.LANGUAGE_CODE
         request_lang = getattr(request, 'LANGUAGE_CODE', settings.LANGUAGE_CODE)
 
         # If the region has the same language as indicated by the subdomain (request lang),

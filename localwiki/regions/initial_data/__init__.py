@@ -6,13 +6,16 @@ We don't use a fixture here because:
     2. Translations are easier.
 """
 
-from pages.models import Page
+from django.utils.translation import ugettext as _
+
+from pages.models import Page, slugify
 
 def populate_region(region):
     Page(
         name="Templates",
         slug="templates",
-        content="""<p>
+        # Translators: Please fix the links here to point to "Place," "Business", "Disambiguation", "Restaurant" as translated in your language.
+        content=_("""<p>
     	Templates are special pages that serve as a starting point when creating a new page. &nbsp;Using a common template for related topics gives those pages a common structure. &nbsp;To use one of the templates, simply select the template when creating a new page. &nbsp;</p>
     <p>
     	Below is a list of the available templates. To add a new template, create a page whose title starts with &quot;Templates/&quot;, as in <a href="Templates%2FBusiness">Templates/Business</a>. &nbsp;When you create a new template, add it to this list so it&#39;s easier to find.</p>
@@ -27,14 +30,16 @@ def populate_region(region):
     		<a href="Templates%2FDisambiguation">Templates/Disambiguation</a></li>
     	<li>
     		<a href="Templates%2FRestaurant">Templates/Restaurant</a></li>
-    </ul>""",
+    </ul>"""),
         region=region
     ).save()
-    
+  
+    # Translators: This is for "Templates/Page" - a template page
+    template_type = _("Place")
     Page(
-        name="Templates/Place",
-        slug="templates/plage",
-        content="""<table>
+        name="Templates/%s" % template_type,
+        slug="templates/%s" % slugify(template_type),
+        content=_("""<table>
     	<tbody>
     		<tr>
     			<td style="background-color: rgb(232, 236, 239);">
@@ -67,14 +72,16 @@ def populate_region(region):
     <h2>
     	Section Title</h2>
     <p>
-    	Text goes here.</p>""",
+    	Text goes here.</p>"""),
         region=region
     ).save()
-    
+   
+    # Translators: This is for "Templates/Restaurant" - a template page
+    template_type = _("Restaurant")
     Page(
-        name="Templates/Restaurant",
-        slug="templates/restaurant",
-        content="""<table>
+        name="Templates/%s" % template_type,
+        slug="templates/%s" % slugify(template_type),
+        content=_("""<table>
     	<tbody>
     		<tr>
     			<td style="background-color: rgb(232, 236, 239);">
@@ -153,14 +160,16 @@ def populate_region(region):
     		<a href="Restaurants">Restaurants</a></li>
     </ul>
     <p>
-    	&nbsp;</p>""",
+    	&nbsp;</p>"""),
         region=region
     ).save()
     
+    # Translators: This is for "Templates/Business" - a template page
+    template_type = _("Business")
     Page(
-        name="Templates/Business",
-        slug="templates/business",
-        content="""
+        name="Templates/%s" % template_type,
+        slug="templates/%s" % slugify(template_type),
+        content=_("""
     <table>
     	<tbody>
     		<tr>
@@ -246,14 +255,16 @@ def populate_region(region):
     		<a href="Shopping">Shopping</a></li>
     </ul>
     <p>
-    	&nbsp;</p>""",
+    	&nbsp;</p>"""),
         region=region
     ).save()
     
+    # Translators: This is for "Templates/Disambiguation" - a template page
+    template_type = _("Disambiguation")
     Page(
-        name="Templates/Disambiguation",
-        slug="templates/disambiguation",
-        content="""<p>
+        name="Templates/%s" % template_type,
+        slug="templates/%s" % slugify(template_type),
+        content=_("""<p>
     	This has multiple meanings. You are probably looking for information on one of the following:</p>
     <ul>
     	<li>
@@ -264,14 +275,14 @@ def populate_region(region):
     <p>
     	&nbsp;</p>
     <p>
-    	This is a&nbsp;<em>disambiguation</em> page&nbsp;&mdash; a navigational aid which lists other pages that might otherwise share the same title. If an page link referred you here, you might want to go back and fix it to point directly to the intended page.</p>""",
+    	This is a&nbsp;<em>disambiguation</em> page&nbsp;&mdash; a navigational aid which lists other pages that might otherwise share the same title. If an page link referred you here, you might want to go back and fix it to point directly to the intended page.</p>"""),
         region=region
     ).save()
     
     Page(
         name="Front Page",
         slug="front page",
-        content="""<p>
+        content=(_("""<p>
     	Welcome to the new LocalWiki region for %(region)s! There are currently just a handful of pages in it, to get you started.
     <p>
     	Click on <strong>All Pages</strong> at the top to see what's here now.</p>
@@ -279,6 +290,6 @@ def populate_region(region):
     	You can edit this and any other page by clicking the <strong>Edit</strong> button.</p>
     <p>
     	To create a new page, type a page name into the search box and press <strong>Search or create page</strong>.</p>
-    <p>Need <strong>help</strong>? Please see the <a href="http://localwiki.net/main/Help">help page</a> on the <a href="http://localwiki.net/main/">LocalWiki Guide</a>!</p>""" % {'region': region.full_name},
+    <p>Need <strong>help</strong>? Please see the <a href="http://localwiki.net/main/Help">help page</a> on the <a href="http://localwiki.net/main/">LocalWiki Guide</a>!</p>""") % {'region': region.full_name}),
         region=region
     ).save()

@@ -56,7 +56,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 LOCALE_PATHS = (
     os.path.join(PROJECT_ROOT, 'locale'),
@@ -66,12 +66,12 @@ LOCALE_PATHS = (
 LANGUAGES = (
     ('en', _('English')),
     ('ja', _('Japanese')),
-    ('ru_RU', _('Russian')),
-    ('de_CH', _('German (Swiss)')),
-    ('es_AR', _('Spanish (Argentina)')),
-    ('da_DK', _('Danish')),
-    ('it_IT', _('Italian')),
-    ('pt_PT', _('Portuguese')),
+    ('es', _('Spanish')),
+    ('ru', _('Russian')),
+    ('de', _('German')),
+    ('da', _('Danish')),
+    ('it', _('Italian')),
+    ('pt', _('Portuguese')),
 )
 
 SITE_ID = 1

@@ -2,42 +2,44 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-04 13:37-0700\n"
+"POT-Creation-Date: 2013-11-27 19:41-0600\n"
 "PO-Revision-Date: 2012-06-13 02:37\n"
 "Last-Translator: Anonymous User <anonymous@user.tld>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Translated-Using: django-rosetta 0.6.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: maps/static/olwidget/js/sapling_utils.js:96
+#: maps/static/olwidget/js/sapling_utils.js:167
 msgid " for "
 msgstr "for"
 
-#: maps/static/olwidget/js/sapling_utils.js:116
+#: maps/static/olwidget/js/sapling_utils.js:212
 msgid ""
 "You've made changes but haven't saved.  Are you sure you want to leave this "
 "page?"
 msgstr ""
-"Du har lavet ændringer, men har ikke gemt. Er du sikker på at du vil forlade"
-" siden?"
+"Du har lavet ændringer, men har ikke gemt. Er du sikker på at du vil forlade "
+"siden?"
 
-#: maps/static/olwidget/js/sapling_utils.js:159
+#: maps/static/olwidget/js/sapling_utils.js:323
 msgid "Things on this map:"
 msgstr "Ting på dette kort:"
 
-#: maps/static/olwidget/js/sapling_utils.js:171
+#: maps/static/olwidget/js/sapling_utils.js:339
 msgid "Things inside "
 msgstr "Ting indenfor"
 
-#: maps/static/olwidget/js/sapling_utils.js:181
+#: maps/static/olwidget/js/sapling_utils.js:353
 msgid "Things near "
 msgstr "Ting i nærheden"
 
@@ -103,12 +105,13 @@ msgstr "Justér"
 msgid "None"
 msgstr "Ingen"
 
-#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:209
-#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:232
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:210
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:233
 #, c-format
 msgid "Include page %s"
 msgstr "Inkludér side %s"
 
+#: pages/static/js/ckeditor/_source/plugins/includetag/plugin.js:14
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:11
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:17
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:18
@@ -164,36 +167,36 @@ msgstr "Vedhæft fil"
 msgid "Insert Image"
 msgstr "Indsæt billede"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:228
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:232
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:249
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:253
 msgid "Choose a file from your computer"
 msgstr "Vælg en fil fra din computer"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:314
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:335
 msgid "Select a file"
 msgstr "Vælg en fil"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:314
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:335
 msgid "Select an image"
 msgstr "Vælg et billede"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:322
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:343
 msgid "or <a href=\"#\">use a file from the web</a>"
 msgstr "eller <a href=\"#\">brug en fil fra internettet</a>"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:322
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:343
 msgid "or <a href=\"#\">use an image from the web</a>"
 msgstr "eller <a href=\"#\">brug et billede fra internettet</a>"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:333
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:354
 msgid "File URL"
 msgstr "Fil URL"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:333
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:354
 msgid "Image URL"
 msgstr "Billede URL"
 
-#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:371
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:392
 msgid "No file selected"
 msgstr "Ingen valgt fil"
 

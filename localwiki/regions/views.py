@@ -119,6 +119,8 @@ class RegionCreateView(CreateView):
 
     def get_form_kwargs(self):
         kwargs = super(RegionCreateView, self).get_form_kwargs()
+        kwargs['initial']['default_language'] = getattr(self.request,
+            'LANGUAGE_CODE', settings.LANGUAGE_CODE)
         if kwargs.get('data'):
             kwargs['data'] = kwargs['data'].copy()  # otherwise immutable
             kwargs['data']['slug'] = slugify(kwargs['data']['slug'])
@@ -126,9 +128,15 @@ class RegionCreateView(CreateView):
 
     def form_valid(self, form):
         response = super(RegionCreateView, self).form_valid(form)
-        # Create the initial pages, etc in the region.
         region = self.object
+
+        # Set the language
+        region.regionsettings.default_language = form.cleaned_data['default_language']
+        region.regionsettings.save()
+
+        # Create the initial pages, etc in the region.
         region.populate_region()
+
         # Add the creator as the initial region admin.
         if self.request.user.is_authenticated():
             region.regionsettings.admins.add(self.request.user)

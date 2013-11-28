@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-11 14:27-0600\n"
+"POT-Creation-Date: 2013-11-27 19:30-0600\n"
 "PO-Revision-Date: 2012-06-13 04:48\n"
 "Last-Translator: Anonymous User <anonymous@user.tld>\n"
 "Language: pt-PT\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Translated-Using: django-rosetta 0.6.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ckeditor/models.py:30
 msgid "This field contains invalid data."
@@ -33,7 +34,7 @@ msgstr "XHTML tekst"
 msgid "HTML5 text"
 msgstr "HTML5 tekst"
 
-#: ckeditor/models.py:228
+#: ckeditor/models.py:229
 msgid "HTML5 fragment text"
 msgstr "HTML5 fragment tekst"
 
@@ -45,90 +46,249 @@ msgstr "Kan ikke overføre"
 msgid "Upload result"
 msgstr "Upload resultat"
 
-#: dashboard/views.py:159 dashboard/views.py:172
+#: dashboard/views.py:193 dashboard/views.py:206
 msgid "pages"
 msgstr "sider"
 
-#: dashboard/views.py:160 dashboard/views.py:175
+#: dashboard/views.py:194 dashboard/views.py:209
 msgid "maps"
 msgstr "kort"
 
-#: dashboard/views.py:161 dashboard/views.py:178
+#: dashboard/views.py:195 dashboard/views.py:212
 msgid "files"
 msgstr "filer"
 
-#: dashboard/views.py:163 dashboard/views.py:181
+#: dashboard/views.py:197 dashboard/views.py:215
 msgid "redirects"
 msgstr "omdirigeringer"
 
-#: dashboard/templates/dashboard/index.html:6
+#: dashboard/templates/dashboard/index.html:9
 msgid "Dashboard"
 msgstr "Kontrolpanel"
 
-#: dashboard/templates/dashboard/index.html:19
+#: dashboard/templates/dashboard/index.html:22
 msgid "Statistics loading.  This may take several minutes the first time."
 msgstr "Indlæser statistik. Dette kan tage op til flere minutter første gang."
 
-#: dashboard/templates/dashboard/index.html:24
+#: dashboard/templates/dashboard/index.html:27
 #: dashboard/templates/dashboard/render.html:4
 msgid "Pages"
 msgstr "Sider"
 
-#: dashboard/templates/dashboard/index.html:25
+#: dashboard/templates/dashboard/index.html:28
 #: dashboard/templates/dashboard/render.html:5
 #: pages/templates/pages/cke_filebrowser.html:7
-#: pages/templates/pages/page_files.html:4
+#: pages/templates/pages/page_files.html:7
 msgid "Files"
 msgstr "Filer"
 
-#: dashboard/templates/dashboard/index.html:26
+#: dashboard/templates/dashboard/index.html:29
 #: dashboard/templates/dashboard/render.html:6
 msgid "Maps"
 msgstr "Kort"
 
-#: dashboard/templates/dashboard/index.html:27
+#: dashboard/templates/dashboard/index.html:30
 #: dashboard/templates/dashboard/render.html:7
 msgid "Redirects"
 msgstr "Omdirigeringer"
 
-#: dashboard/templates/dashboard/index.html:28
+#: dashboard/templates/dashboard/index.html:31
 #: dashboard/templates/dashboard/render.html:8
 msgid "Users"
 msgstr "Brugere"
 
-#: dashboard/templates/dashboard/index.html:33
+#: dashboard/templates/dashboard/index.html:36
 #: dashboard/templates/dashboard/render.html:13
 msgid "Growth over time"
 msgstr "Vækst over tid"
 
-#: dashboard/templates/dashboard/index.html:35
-#: dashboard/templates/dashboard/index.html:45
-#: dashboard/templates/dashboard/index.html:55
-#: dashboard/templates/dashboard/index.html:65
+#: dashboard/templates/dashboard/index.html:38
+#: dashboard/templates/dashboard/index.html:48
+#: dashboard/templates/dashboard/index.html:58
+#: dashboard/templates/dashboard/index.html:68
 msgid "Generating graph..."
 msgstr ""
 
-#: dashboard/templates/dashboard/index.html:43
+#: dashboard/templates/dashboard/index.html:46
 #: dashboard/templates/dashboard/render.html:20
 msgid "Edits over time"
 msgstr "Redigeringer over tid"
 
-#: dashboard/templates/dashboard/index.html:53
+#: dashboard/templates/dashboard/index.html:56
 #: dashboard/templates/dashboard/render.html:27
 msgid "Page content growth over time"
 msgstr "Vækst i indhold over tid"
 
-#: dashboard/templates/dashboard/index.html:63
+#: dashboard/templates/dashboard/index.html:66
 #: dashboard/templates/dashboard/render.html:34
 msgid "Users registered over time"
 msgstr "Brugere registreret over tid"
 
-#: maps/feeds.py:21 maps/feeds.py:38
+#: frontpage/models.py:11
+msgid "cover_photo"
+msgstr ""
+
+#: frontpage/models.py:13
+msgid "cover_photo_full"
+msgstr ""
+
+#: frontpage/views.py:129
+msgid "Cover photo updated!"
+msgstr ""
+
+#: frontpage/templates/frontpage/base.html:19
+#, python-format
+msgid "Welcome to the %(region_name)s LocalWiki!"
+msgstr ""
+
+#: frontpage/templates/frontpage/base.html:20
+#, python-format
+msgid "A website about %(region_name)s that <em>anyone</em> can edit"
+msgstr ""
+
+#: frontpage/templates/frontpage/base.html:22
+msgid ""
+"\n"
+"        I want to make a page about <span class=\"searchbox\"><input type="
+"\"text\" name=\"q\" value=\"\"><input type=\"submit\" value=\"Search or "
+"create page\"></span>\n"
+"        "
+msgstr ""
+
+#: frontpage/templates/frontpage/base.html:39
+#, fuzzy
+msgid "Change cover"
+msgstr "Ændr mit password"
+
+#: frontpage/templates/frontpage/base.html:41
+#, fuzzy
+msgid "Save cover"
+msgstr "Gem ændringer"
+
+#: frontpage/templates/frontpage/base.html:62
+#: pages/templates/pages/page_detail.html:41
+#, fuzzy, python-format
+msgid ""
+"Revision %(version_number)s\n"
+"          (%(date)s by %(user_link)s)"
+msgstr ""
+"Revision %(version_number)s\n"
+"(%(date)s af %(user_link)s"
+
+#: frontpage/templates/frontpage/base.html:71
+#: pages/templates/pages/page_detail.html:49
+#: tags/templates/tags/tagged_list_snippet.html:8
+#, fuzzy
+msgid "View"
+msgstr "Se kort"
+
+#: links/templates/links/orphaned_pages.html:12
+msgid "Orphaned Pages"
+msgstr ""
+
+#: links/templates/links/orphaned_pages.html:16
+#, fuzzy, python-format
+msgid ""
+"\n"
+"<h3>Pages that link to <a href=\"%(page_url)s\">%(page_name)s</a>:</h3>\n"
+msgstr ""
+"Ikke i stand til inkludere <a href=\"%(page_url)s\">%(page_name)s</a>: "
+"uendeligt include loop."
+
+#: links/templates/links/orphaned_pages.html:25
+#, fuzzy, python-format
+msgid ""
+"\n"
+"<h3>Pages <a href=\"%(page_url)s\">%(page_name)s</a> links to:</h3>\n"
+msgstr ""
+"Ikke i stand til inkludere <a href=\"%(page_url)s\">%(page_name)s</a>: "
+"uendeligt include loop."
+
+#: main/settings/defaults.py:42
+#, fuzzy
+msgid ""
+"<p>Except where otherwise noted, this content is licensed under a <a rel="
+"\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\">Creative "
+"Commons Attribution License</a>. See <a href=\"/Copyrights\">Copyrights</a>."
+"</p>"
+msgstr ""
+"Med mindre andet er bemærket er dette indhold tilgængeligt under en <a rel="
+"\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\">Creative "
+"Commons Navngivelse Licens</a>. Se <a href=\"/Copyrights\">Copyrights</a>.</"
+"p>"
+
+#: main/settings/defaults.py:44
+#, fuzzy
+msgid ""
+"<p>By clicking \"Save Changes\" you are agreeing to release your "
+"contribution under the <a rel=\"license\" href=\"http://creativecommons.org/"
+"publicdomain/zero/1.0/\" target=\"_blank\">CC0 Public Domain license</a>, "
+"unless noted otherwise. See <a href=\"/Copyrights\" target=\"_blank"
+"\">Copyrights</a>.</p>"
+msgstr ""
+"<p>Ved at klikke \"Gem ændringer\" accepterer du, at dit bidrag frigives "
+"under en <a rel=\"license\" href=\"http://creativecommons.org/licenses/"
+"by/3.0/\" target=\"_blank\">Creative Commons-By licens</a>, medmindre andet "
+"er bemærket. Se mere under <a href=\"/Copyrights\" target=\"_blank"
+"\">Copyrights</a>."
+
+#: main/settings/defaults.py:46
+#, fuzzy
+msgid ""
+"I agree to release my contributions under the <a rel=\"license\" href="
+"\"http://creativecommons.org/publicdomain/zero/1.0/\" target=\"_blank\">CC0 "
+"Public Domain license</a>, unless noted otherwise. See <a href=\"/Copyrights"
+"\" target=\"_blank\">Copyrights</a>."
+msgstr ""
+"Jeg frigiver hermed mine bidrag under en <a rel=\"license\" href=\"http://"
+"creativecommons.org/licenses/by/3.0/\" target=\"_blank\">Creative Commons-By "
+"licens</a>, medmindre andet er bemærket. Se mere under <a href=\"/Copyrights"
+"\" target=\"_blank\">Copyrights</a>."
+
+#: main/settings/defaults.py:48
+msgid ""
+"I would like to receive occasional updates about this project via email."
+msgstr "Jeg vil gerne modtage updates om dette projekt på email."
+
+#: main/settings/defaults.py:67
+msgid "English"
+msgstr "Engelsk"
+
+#: main/settings/defaults.py:68
+msgid "Japanese"
+msgstr ""
+
+#: main/settings/defaults.py:69
+msgid "Spanish"
+msgstr ""
+
+#: main/settings/defaults.py:70
+msgid "Russian"
+msgstr ""
+
+#: main/settings/defaults.py:71
+#, fuzzy
+msgid "German"
+msgstr "Tysk (CH)"
+
+#: main/settings/defaults.py:72
+msgid "Danish"
+msgstr ""
+
+#: main/settings/defaults.py:73
+msgid "Italian"
+msgstr ""
+
+#: main/settings/defaults.py:74
+msgid "Portuguese"
+msgstr "Portugisisk"
+
+#: maps/feeds.py:21 maps/feeds.py:40
 #, python-format
 msgid "Map for \"%s\""
 msgstr "Kort for \"%s\""
 
-#: maps/fields.py:169
+#: maps/fields.py:172
 #, python-format
 msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
@@ -136,7 +296,7 @@ msgid ""
 msgstr ""
 "Attributten '%(fieldname)s' kan kun tilgås fra %(ownername)s instanser."
 
-#: maps/fields.py:214
+#: maps/fields.py:217
 #, python-format
 msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
 msgstr "kan ikke sætte %(cname)s CollectionFrom med værdien af type: %(vtype)s"
@@ -154,34 +314,42 @@ msgstr "Kort data:"
 msgid "Map tiles via"
 msgstr "Kort fliser via"
 
-#: maps/templates/maps/base.html:5
+#: maps/templates/maps/base.html:8
 msgid "Recent changes on this Map"
 msgstr "Seneste ændringer på dette kort"
 
-#: maps/templates/maps/base.html:14 maps/templates/maps/mapdata_list.html:22
+#: maps/templates/maps/base.html:17 maps/templates/maps/mapdata_list.html:22
 #: maps/templates/maps/mapdata_list.html:28
-#: themes/sapling/templates/site/nav.html:6
+#: themes/sapling/templates/site/nav.html:7
 msgid "Map"
 msgstr "Kort"
 
-#: maps/templates/maps/base.html:31 maps/templates/maps/mapdata_detail.html:50
-#: maps/templates/maps/mapdata_form.html:84
-#: maps/templates/maps/mapdata_versions.html:22
-#: pages/templates/pages/base.html:26 pages/templates/pages/page_form.html:60
-#: pages/templates/pages/page_versions.html:25
+#: maps/templates/maps/base.html:34 maps/templates/maps/mapdata_detail.html:53
+#: maps/templates/maps/mapdata_form.html:87
+#: maps/templates/maps/mapdata_versions.html:25
+#: pages/templates/pages/base.html:29
+#: pages/templates/pages/page_detail.html:49
+#: pages/templates/pages/page_form.html:93
+#: pages/templates/pages/page_versions.html:28
 msgid "Edit"
 msgstr "Redigér"
 
-#: maps/templates/maps/base.html:32 maps/templates/maps/mapdata_form.html:85
-#: maps/templates/maps/mapdata_versions.html:23
-#: pages/templates/pages/base.html:27 pages/templates/pages/page_form.html:61
-#: pages/templates/pages/page_versions.html:26
+#: maps/templates/maps/base.html:35 maps/templates/maps/mapdata_form.html:88
+#: maps/templates/maps/mapdata_versions.html:26
+#: pages/templates/pages/base.html:30 pages/templates/pages/page_form.html:94
+#: pages/templates/pages/page_versions.html:29
 msgid "Info"
 msgstr "Info"
 
-#: maps/templates/maps/editor_actions.html:4
+#: maps/templates/maps/editor_actions.html:5
 msgid "Delete map"
 msgstr "Slet kort"
+
+#: maps/templates/maps/editor_actions.html:8
+#: pages/templates/pages/editor_actions.html:11
+#: pages/templates/pages/editor_actions.html:13
+msgid "Security"
+msgstr ""
 
 #: maps/templates/maps/mapdata_confirm_delete.html:14
 #: pages/templates/pages/page_confirm_delete.html:14
@@ -196,109 +364,109 @@ msgstr "Slet"
 msgid "Revert"
 msgstr "Rul tilbage"
 
-#: maps/templates/maps/mapdata_detail.html:21
+#: maps/templates/maps/mapdata_detail.html:24
 msgid "Map for"
 msgstr "Kort for"
 
-#: maps/templates/maps/mapdata_detail.html:35
-#: maps/templates/maps/mapdata_diff.html:59
-#: maps/templates/maps/mapdata_diff.html:64
+#: maps/templates/maps/mapdata_detail.html:38
+#: maps/templates/maps/mapdata_diff.html:62
+#: maps/templates/maps/mapdata_diff.html:67
 #: redirects/templates/redirects/redirect_diff.html:43
 #: redirects/templates/redirects/redirect_diff.html:48
-#: tags/templates/tags/pagetagset_diff.html:37
-#: tags/templates/tags/pagetagset_diff.html:42
-#: tags/templates/tags/pagetagset_version_detail.html:17
+#: tags/templates/tags/pagetagset_diff.html:40
+#: tags/templates/tags/pagetagset_diff.html:45
+#: tags/templates/tags/pagetagset_version_detail.html:20
 msgid "Revision"
 msgstr "Ændring"
 
-#: maps/templates/maps/mapdata_detail.html:36
-#: maps/templates/maps/mapdata_diff.html:60
-#: maps/templates/maps/mapdata_diff.html:65
+#: maps/templates/maps/mapdata_detail.html:39
+#: maps/templates/maps/mapdata_diff.html:63
+#: maps/templates/maps/mapdata_diff.html:68
 #: redirects/templates/redirects/redirect_diff.html:44
 #: redirects/templates/redirects/redirect_diff.html:49
-#: tags/templates/tags/pagetagset_diff.html:38
-#: tags/templates/tags/pagetagset_diff.html:43
-#: tags/templates/tags/pagetagset_version_detail.html:18
+#: tags/templates/tags/pagetagset_diff.html:41
+#: tags/templates/tags/pagetagset_diff.html:46
+#: tags/templates/tags/pagetagset_version_detail.html:21
 #: versionutils/templates/versionutils/history/form.html:34
+#: versionutils/templates/versionutils/history/form_page.html:19
 msgid "by"
 msgstr "af"
 
-#: maps/templates/maps/mapdata_detail.html:50
+#: maps/templates/maps/mapdata_detail.html:53
 msgid "this map"
 msgstr "dette kort"
 
-#: maps/templates/maps/mapdata_detail.html:50
+#: maps/templates/maps/mapdata_detail.html:53
 #, python-format
 msgid "last modified %(tsince)s ago"
 msgstr "sidst ændret for %(tsince)s siden"
 
-#: maps/templates/maps/mapdata_diff.html:49
+#: maps/templates/maps/mapdata_diff.html:52
 msgid "Differences for map on"
 msgstr "Forskelle for kort på"
 
-#: maps/templates/maps/mapdata_diff.html:50
+#: maps/templates/maps/mapdata_diff.html:53
 #, python-format
 msgid "Differences for <a href=\"%(maps_global)s\">Map</a>"
 msgstr "Forskelle for <a href=\"%(maps_global)s\">Kort</a>"
 
-#: maps/templates/maps/mapdata_diff.html:70
-#: pages/templates/pages/page_diff.html:41
-#: tags/templates/tags/pagetagset_diff.html:48
+#: maps/templates/maps/mapdata_diff.html:73
+#: pages/templates/pages/page_diff.html:60
+#: tags/templates/tags/pagetagset_diff.html:51
 msgid "Deletions are marked like this"
 msgstr "Sletninger er markeret således"
 
-#: maps/templates/maps/mapdata_diff.html:73
-#: pages/templates/pages/page_diff.html:44
-#: tags/templates/tags/pagetagset_diff.html:51
+#: maps/templates/maps/mapdata_diff.html:76
+#: pages/templates/pages/page_diff.html:63
+#: tags/templates/tags/pagetagset_diff.html:54
 msgid "Additions are marked like this"
 msgstr "Tilføjelser er markeret således"
 
-#: maps/templates/maps/mapdata_form.html:32
+#: maps/templates/maps/mapdata_form.html:35
 msgid "Editing map for"
 msgstr "Redigerer kort for"
 
-#: maps/templates/maps/mapdata_form.html:62
-#: pages/templates/pages/page_form.html:38
+#: maps/templates/maps/mapdata_form.html:65
 msgid "Please comment about this change:"
 msgstr "Skriv gerne en kort bemærkning om denne ændring:"
 
-#: maps/templates/maps/mapdata_form.html:66
-#: pages/templates/pages/page_form.html:42
+#: maps/templates/maps/mapdata_form.html:69
+#: pages/templates/pages/page_form.html:75
 msgid "Save changes"
 msgstr "Gem ændringer"
 
-#: maps/templates/maps/mapdata_form.html:67
-#: pages/templates/pages/page_detail.html:63
-#: pages/templates/pages/page_form.html:43
+#: maps/templates/maps/mapdata_form.html:70
+#: pages/templates/pages/page_detail.html:72
+#: pages/templates/pages/page_form.html:76
 msgid "Cancel"
 msgstr "Annullér"
 
-#: maps/templates/maps/mapdata_new.html:3
+#: maps/templates/maps/mapdata_new.html:6
 msgid "Map for page not found"
 msgstr "Kunne ikke finde kort for denne side"
 
-#: maps/templates/maps/mapdata_new.html:4
+#: maps/templates/maps/mapdata_new.html:7
 msgid "Map for page"
 msgstr "Kort for denne side"
 
-#: maps/templates/maps/mapdata_new.html:4
+#: maps/templates/maps/mapdata_new.html:7
 msgid "does not exist (yet!)"
 msgstr "eksisterer ikke (endnu!)"
 
-#: maps/templates/maps/mapdata_new.html:12
+#: maps/templates/maps/mapdata_new.html:15
 msgid "Create this map"
 msgstr "Opret dette kort"
 
-#: maps/templates/maps/mapdata_versions.html:13
+#: maps/templates/maps/mapdata_versions.html:16
 msgid "Previous versions of map for"
 msgstr "Tidligere versioner af kortet for "
 
-#: pages/feeds.py:43 pages/feeds.py:81
+#: pages/feeds.py:43 pages/feeds.py:87
 #, python-format
 msgid "File %(filename)s on page \"%(pagename)s\""
 msgstr "Filen %(filename)s på side \"%(pagename)s\""
 
-#: pages/fields.py:22
+#: pages/fields.py:81
 #, python-format
 msgid "Page %s does not exist!  Please enter a valid page name."
 msgstr "Siden %s eksisterer ikke! Skriv et gyldigt sidenavn"
@@ -319,29 +487,29 @@ msgstr "Der eksisterer allerede en side med dette navn"
 msgid "The new file should be of the same type"
 msgstr "Den nye fil bør være af samme fil-type"
 
-#: pages/models.py:91
+#: pages/models.py:51
 msgid "Page name is invalid."
 msgstr "Sidenavnet er ugyldigt"
 
-#: pages/models.py:144 pages/models.py:156
+#: pages/models.py:124 pages/models.py:136
 #, python-format
 msgid "Renamed from \"%s\""
 msgstr "Omdøbt fra \"%s\""
 
-#: pages/models.py:148
+#: pages/models.py:128
 #, python-format
 msgid "The page '%s' already exists!"
 msgstr "Siden '%s' eksisterer allerede"
 
-#: pages/models.py:198 pages/models.py:211 pages/models.py:230
+#: pages/models.py:164 pages/models.py:177 pages/models.py:196
 msgid "Parent page renamed"
 msgstr "Forældre-side omdøbt"
 
-#: pages/models.py:244
+#: pages/models.py:210
 msgid "file"
 msgstr "fil"
 
-#: pages/plugins.py:398
+#: pages/plugins.py:414
 msgid ""
 "The embedded URL is not on the list of approved providers.  Contact the site "
 "administrator to add it."
@@ -349,12 +517,12 @@ msgstr ""
 "Den indlejrede URL er ikke på listen over godkendte udbydere. Kontakt "
 "administratoren for få den tilføjet til listen"
 
-#: pages/plugins.py:402
+#: pages/plugins.py:418
 msgid "Invalid embed code"
 msgstr "Ugyldig indlejringskode"
 
-#: pages/plugins.py:414 search/templates/search/search.html:13
-#: themes/sapling/templates/site/search_form.html:5
+#: pages/plugins.py:430 search/templates/search/search.html:13
+#: themes/sapling/templates/site/search_form.html:7
 msgid "Search or create page"
 msgstr "Søg eller opret ny side"
 
@@ -366,11 +534,11 @@ msgstr "Omdirigering oprettet"
 msgid "Page created"
 msgstr "Side oprettet"
 
-#: pages/views.py:106
+#: pages/views.py:129
 msgid "Thank you for your changes. Your attention to detail is appreciated."
 msgstr "Tak for dine rettelser. Dit bidrag er værdsat. "
 
-#: pages/views.py:109
+#: pages/views.py:132
 #, python-format
 msgid ""
 "Changes saved! To use your name when editing, please <a href=\"%(login_url)s?"
@@ -383,7 +551,7 @@ msgstr ""
 "ind</strong></a> eller <a href=\"%(register_url)s?next=%(current_path)s"
 "\"><strong>opret en brugerkonto</strong></a>."
 
-#: pages/views.py:121
+#: pages/views.py:144
 #, python-format
 msgid ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
@@ -392,185 +560,218 @@ msgstr ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
 "class=\"text\">Opret et kort</span></a> for denne side?</p>"
 
-#: pages/views.py:133
+#: pages/views.py:157
 #, python-format
-msgid "<p>Describe %s here</p>"
-msgstr "<p>Beskriv %s her</p>"
+msgid "<p>What do you know about %s?</p>"
+msgstr ""
 
-#: pages/views.py:359
+#: pages/views.py:350
+msgid "You must provide a page name when creating a page."
+msgstr ""
+
+#: pages/views.py:423
 msgid "A file with this name already exists"
 msgstr "En fil med dette navn eksisterer allerede"
 
-#: pages/views.py:364
-msgid "Pagename"
-msgstr "Sidenavn"
+#: pages/views.py:428
+#, fuzzy
+msgid "New page name"
+msgstr "Forældre-side omdøbt"
 
-#: pages/views.py:365 versionutils/versioning/forms.py:17
+#: pages/views.py:429 versionutils/versioning/forms.py:17
 msgid "Comment"
 msgstr "Kommentar"
 
-#: pages/views.py:391
+#: pages/views.py:464
 #, python-format
 msgid "Page renamed to \"%s\""
 msgstr "Side omdøbt til \"%s\""
 
-#: pages/widgets.py:27
+#: pages/widgets.py:29
 msgid "Normal"
 msgstr ""
 
-#: pages/widgets.py:28
+#: pages/widgets.py:30
 msgid "Heading 1"
 msgstr ""
 
-#: pages/widgets.py:29
+#: pages/widgets.py:31
 msgid "Heading 2"
 msgstr ""
 
-#: pages/widgets.py:30
+#: pages/widgets.py:32
 msgid "Heading 3"
 msgstr ""
 
-#: pages/widgets.py:31
+#: pages/widgets.py:33
 msgid "Formatted"
 msgstr ""
 
-#: pages/widgets.py:32
+#: pages/widgets.py:34
 msgid "Typewriter"
 msgstr ""
 
-#: pages/templates/pages/base.html:5
+#: pages/templates/pages/base.html:8
 msgid "Recent changes on this Page"
 msgstr "Seneste ændringer på denne side"
 
-#: pages/templates/pages/editor_actions.html:4
+#: pages/templates/pages/editor_actions.html:5
 msgid "Edit map"
 msgstr "Redigér kort"
 
-#: pages/templates/pages/editor_actions.html:5
+#: pages/templates/pages/editor_actions.html:6
 msgid "Delete page"
 msgstr "Slet side"
-
-#: pages/templates/pages/editor_actions.html:6
-msgid "Rename page"
-msgstr "Omdøb side"
 
 #: pages/templates/pages/editor_actions.html:8
 msgid "Redirect"
 msgstr "Omdirigér"
 
-#: pages/templates/pages/page_detail.html:17
+#: pages/templates/pages/page_detail.html:26
 msgid "Redirected from"
 msgstr "Omdirigeret fra"
 
-#: pages/templates/pages/page_detail.html:32
-#, python-format
-msgid ""
-"Revision %(page.version_info.version_number)s\n"
-"          (%(date)s by %(user_link)s)"
-msgstr ""
-"Revision %(page.version_info.version_number)s\n"
-"(%(date)s af %(user_link)s"
-
-#: pages/templates/pages/page_detail.html:40
-#: tags/templates/tags/tagged_list_snippet.html:7
-msgid "View map"
-msgstr "Se kort"
-
-#: pages/templates/pages/page_detail.html:57
+#: pages/templates/pages/page_detail.html:66
 msgid "Edit tags"
 msgstr "Redigér tags"
 
-#: pages/templates/pages/page_detail.html:57
+#: pages/templates/pages/page_detail.html:66
 msgid "Add tags"
 msgstr "Tilføj tags"
 
-#: pages/templates/pages/page_detail.html:73
+#: pages/templates/pages/page_detail.html:82
 #, python-format
 msgid "This page was last modified %(ago)s ago"
 msgstr "Denne side blev sidst ændret for %(ago)s siden"
 
-#: pages/templates/pages/page_diff.html:19
+#: pages/templates/pages/page_diff.html:22
 #, python-format
 msgid "Differences for %(name)s"
 msgstr "Forskelle for %(name)s"
 
-#: pages/templates/pages/page_diff.html:20
+#: pages/templates/pages/page_diff.html:23
 #, python-format
 msgid "Differences for <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
 msgstr "Forskelle for <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
 
-#: pages/templates/pages/page_diff.html:30
-#, python-format
+#: pages/templates/pages/page_diff.html:34
+#, fuzzy, python-format
 msgid ""
-"Revision %(version_number)s\n"
-"                  ( %(date)s by %(user_link)s)"
+"\n"
+"                        Revision %(version_number)s ( %(date)s by "
+"%(user_link)s)\n"
+"                    "
 msgstr ""
 "Revision %(version_number)s\n"
 "( %(date)s af %(user_link)s"
 
-#: pages/templates/pages/page_diff.html:35
-#: pages/templates/pages/pagefile_diff.html:43
+#: pages/templates/pages/page_diff.html:38
+#: pages/templates/pages/page_diff.html:51
 #, python-format
 msgid ""
-"Revision %(version_number)s\n"
-"                  (%(date)s by %(user_link)s)"
+"\n"
+"                        , \"%(comment)s\"\n"
+"                        "
+msgstr ""
+
+#: pages/templates/pages/page_diff.html:47
+#, fuzzy, python-format
+msgid ""
+"\n"
+"\t\t\t        Revision %(version_number)s (%(date)s by %(user_link)s)\n"
+"\t\t          "
 msgstr ""
 "Revision %(version_number)s\n"
-"(%(date)s af %(user_link)s)"
+"(%(date)s af %(user_link)s"
 
-#: pages/templates/pages/page_files.html:19
+#: pages/templates/pages/page_files.html:22
 msgid "Files attached to this page:"
 msgstr "Filer vedhæftet til denne side:"
 
-#: pages/templates/pages/page_files.html:34
+#: pages/templates/pages/page_files.html:37
 msgid "View page"
 msgstr "Se side"
 
-#: pages/templates/pages/page_form.html:4
+#: pages/templates/pages/page_form.html:7
 #, python-format
 msgid "Editing page \"%(name)s\" - %(super)s"
 msgstr "Redigerer side \"%(name)s\" - %(super)s"
 
-#: pages/templates/pages/page_list.html:4
-#: pages/templates/pages/page_list.html:6
-#: themes/sapling/templates/site/nav.html:8
+#: pages/templates/pages/page_form.html:71
+#, fuzzy
+msgid "Please describe this change:"
+msgstr "Skriv gerne en kort bemærkning om denne ændring:"
+
+#: pages/templates/pages/page_list.html:7
+#: pages/templates/pages/page_list.html:9
+#: themes/sapling/templates/site/nav.html:9
 msgid "All Pages"
 msgstr "Alle sider"
 
-#: pages/templates/pages/page_new.html:4
+#: pages/templates/pages/page_new.html:7
 msgid "Page not found"
 msgstr "Side ikke fundet"
 
-#: pages/templates/pages/page_new.html:5
+#: pages/templates/pages/page_new.html:8
 #, python-format
 msgid "Page \"%(name)s\" does not exist (yet!)"
 msgstr "Side \"%(name)s\" eksisterer ikke endnu"
 
-#: pages/templates/pages/page_new.html:14
-#: search/templates/search/search.html:48
-#: search/templates/search/search.html:102
+#: pages/templates/pages/page_new.html:17
+#: search/templates/search/search.html:66
+#: search/templates/search/search.html:120
 msgid "Create this page"
 msgstr "Opret denne side"
 
-#: pages/templates/pages/page_new.html:18
+#: pages/templates/pages/page_new.html:21
 msgid "Or use one of these templates:"
 msgstr "Eller brug en af disse skabeloner:"
 
-#: pages/templates/pages/page_new.html:21
+#: pages/templates/pages/page_new.html:24
 #, python-format
 msgid "Create with %(name)s template"
 msgstr "Opret med %(name)s skabelon"
 
-#: pages/templates/pages/page_rename.html:12
+#: pages/templates/pages/page_permissions.html:7
+#, fuzzy, python-format
+msgid "Permissions for page \"%(name)s\" - %(super)s"
+msgstr "Tidligere versioner af side \"%(name)s\" - %(super)s "
+
+#: pages/templates/pages/page_permissions.html:15
+#, fuzzy
+msgid "Who can change this page?"
+msgstr "Seneste ændringer på denne side"
+
+#: pages/templates/pages/page_permissions.html:17
+#: redirects/templates/redirects/redirect_permissions.html:17
+#: users/forms.py:10
+msgid "Everyone"
+msgstr ""
+
+#: pages/templates/pages/page_permissions.html:18
+#: redirects/templates/redirects/redirect_permissions.html:18
+msgid "Only these users:"
+msgstr ""
+
+#: pages/templates/pages/page_permissions.html:24
+#: redirects/templates/redirects/redirect_permissions.html:24
+#: regions/templates/regions/admins_update.html:24
+#: regions/templates/regions/banned_update.html:24
+#: regions/templates/regions/settings.html:78
+#: tags/templates/tags/pagetagset_form_snippet.html:9
+msgid "Save"
+msgstr "Gem"
+
+#: pages/templates/pages/page_rename.html:14
 msgid "Submit"
 msgstr "Indsend"
 
-#: pages/templates/pages/page_versions.html:13
+#: pages/templates/pages/page_versions.html:16
 #, python-format
 msgid "Previous versions of page \"%(name)s\" - %(super)s"
 msgstr "Tidligere versioner af side \"%(name)s\" - %(super)s "
 
-#: pages/templates/pages/page_versions.html:18
+#: pages/templates/pages/page_versions.html:21
 msgid ""
 " Looking for <a href=\"../_files/\">files</a> or <a href=\"../_tags/_history/"
 "\">tags</a>?"
@@ -578,12 +779,12 @@ msgstr ""
 "Leder du efter <a href=\"../_files/\">filer</a> eller <a href=\"../_tags/"
 "_history/\">tags</a>?"
 
-#: pages/templates/pages/pagefile_diff.html:34
+#: pages/templates/pages/pagefile_diff.html:37
 #, python-format
 msgid "Differences for %(new_name)s on %(new_slug)s"
 msgstr "Forskelle for %(new_name)s på %(new_slug)s"
 
-#: pages/templates/pages/pagefile_diff.html:35
+#: pages/templates/pages/pagefile_diff.html:38
 #, python-format
 msgid ""
 "Differences for %(new_name)s on <a href=\"%(url_pages_show)s\">"
@@ -592,29 +793,50 @@ msgstr ""
 "Forskelle for %(new_name)s på <a href=\"%(url_pages_show)s\">"
 "%(new_attached_to_page)s</a>"
 
-#: pages/templates/pages/pagefile_diff.html:48
+#: pages/templates/pages/pagefile_diff.html:47
+#, fuzzy, python-format
+msgid ""
+"\n"
+"                      Revision %(version_number)s ( %(date)s by "
+"%(user_link)s)\n"
+"                  "
+msgstr ""
+"Revision %(version_number)s\n"
+"( %(date)s af %(user_link)s"
+
+#: pages/templates/pages/pagefile_diff.html:51
+#: pages/templates/pages/pagefile_diff.html:64
 #, python-format
 msgid ""
-"Revision %(version_number)s\n"
-"                (%(date)s by %(user_link)s)"
+"\n"
+"                      , \"%(comment)s\"\n"
+"                      "
+msgstr ""
+
+#: pages/templates/pages/pagefile_diff.html:60
+#, fuzzy, python-format
+msgid ""
+"\n"
+"\t\t          Revision %(version_number)s (%(date)s by %(user_link)s)\n"
+"\t\t        "
 msgstr ""
 "Revision %(version_number)s\n"
 "(%(date)s af %(user_link)s"
 
-#: pages/templates/pages/pagefile_diff.html:59
+#: pages/templates/pages/pagefile_diff.html:88
 msgid "File info"
 msgstr "Fil info"
 
-#: pages/templates/pages/pagefile_info.html:4
+#: pages/templates/pages/pagefile_info.html:7
 msgid "Recent changes for this file"
 msgstr "Seneste ændringer for denne fil"
 
-#: pages/templates/pages/pagefile_info.html:11
+#: pages/templates/pages/pagefile_info.html:14
 #, python-format
 msgid "Information about \"%(name)s\" on %(slug)s - %(super)s"
 msgstr "Information om \"%(name)s\" på %(slug)s - %(super)s"
 
-#: pages/templates/pages/pagefile_info.html:12
+#: pages/templates/pages/pagefile_info.html:15
 #, python-format
 msgid ""
 "Information about \"%(name)s\" on <a href=\"%(pages_show_url)s\">"
@@ -623,25 +845,25 @@ msgstr ""
 "Information om \"%(name)s\" på <a href=\"%(pages_show_url)s\">"
 "%(attached_to_page)s</a>"
 
-#: pages/templates/pages/pagefile_info.html:36
+#: pages/templates/pages/pagefile_info.html:39
 #, python-format
 msgid "Download %(name)s"
 msgstr "Download %(name)s"
 
-#: pages/templates/pages/pagefile_info.html:41
+#: pages/templates/pages/pagefile_info.html:44
 msgid "Upload a new version"
 msgstr "Upload en ny version"
 
-#: pages/templates/pages/pagefile_info.html:48
+#: pages/templates/pages/pagefile_info.html:51
 msgid "Upload"
 msgstr "Upload"
 
-#: pages/templates/pages/pagefile_info.html:54
-#: tags/templates/tags/pagetagset_versions.html:25
+#: pages/templates/pages/pagefile_info.html:57
+#: tags/templates/tags/pagetagset_versions.html:28
 msgid "Previous versions:"
 msgstr "Tidligere versioner:"
 
-#: pages/templatetags/pages_tags.py:109
+#: pages/templatetags/pages_tags.py:113
 #, python-format
 msgid ""
 "Unable to include <a href=\"%(page_url)s\" class=\"missing_link\">"
@@ -650,7 +872,7 @@ msgstr ""
 "Ikke i stand til at inkludere <a href=\"%(page_url)s\" class=\"missing_link"
 "\">%(page_name)s</a>"
 
-#: pages/templatetags/pages_tags.py:117
+#: pages/templatetags/pages_tags.py:121
 #, python-format
 msgid ""
 "Unable to include <a href=\"%(page_url)s\">%(page_name)s</a>: endless "
@@ -659,32 +881,32 @@ msgstr ""
 "Ikke i stand til inkludere <a href=\"%(page_url)s\">%(page_name)s</a>: "
 "uendeligt include loop."
 
-#: recentchanges/feeds.py:25
+#: recentchanges/feeds.py:40
 #, python-format
 msgid "Recent Changes on %s"
 msgstr "Seneste ændringer på %s"
 
-#: recentchanges/feeds.py:31
+#: recentchanges/feeds.py:46
 #, python-format
 msgid "Recent changes on %s"
 msgstr "Seneste ændringer på %s"
 
-#: recentchanges/feeds.py:66 recentchanges/feeds.py:157
+#: recentchanges/feeds.py:81 recentchanges/feeds.py:177
 #, python-format
 msgid "to version %s"
 msgstr "til version %s"
 
-#: recentchanges/feeds.py:73 recentchanges/feeds.py:164
+#: recentchanges/feeds.py:88 recentchanges/feeds.py:184
 #, python-format
 msgid " with comment \"%s\""
 msgstr "med kommentaren \"%s\""
 
-#: recentchanges/feeds.py:74 recentchanges/feeds.py:165
+#: recentchanges/feeds.py:89 recentchanges/feeds.py:185
 #, python-format
 msgid "%(title)s was %(change_type)s by %(user)s%(comment)s."
 msgstr "%(title)s var %(change_type)s af %(user)s%(comment)s"
 
-#: recentchanges/feeds.py:129 recentchanges/feeds.py:135
+#: recentchanges/feeds.py:148 recentchanges/feeds.py:154
 #, python-format
 msgid "Changes for %(title)s on %(site_name)s"
 msgstr "Ændringer for %(title)s på %(site_name)s"
@@ -692,7 +914,7 @@ msgstr "Ændringer for %(title)s på %(site_name)s"
 #: recentchanges/templates/recentchanges/recentchanges.html:5
 #: recentchanges/templates/recentchanges/recentchanges.html:7
 #: recentchanges/templates/recentchanges/recentchanges.html:9
-#: themes/sapling/templates/site/nav.html:7
+#: themes/sapling/templates/site/nav.html:8
 msgid "Recent Changes"
 msgstr "Seneste ændringer"
 
@@ -745,25 +967,25 @@ msgstr ""
 msgid "Redirect %(objsrc)s --> %(objdest)s"
 msgstr "Omdirigering %(objsrc)s --> %(objdest)s"
 
-#: redirects/forms.py:13
+#: redirects/forms.py:17
 msgid "Destination"
 msgstr "Destination"
 
-#: redirects/models.py:29
+#: redirects/models.py:34
 msgid "You cannot redirect a page to itself"
 msgstr "Du kan ikke omdirigere en side til sig selv"
 
-#: redirects/views.py:41 redirects/views.py:101
+#: redirects/views.py:51 redirects/views.py:117
 #: versionutils/versioning/views.py:67
 msgid "Thank you for your changes. "
 msgstr "Tak for dine rettelser."
 
-#: redirects/views.py:42
+#: redirects/views.py:52
 #, python-format
 msgid "This page now redirects to <a href=\"%(url)s\">%(obj)s</a>."
 msgstr "Denne side er nu omdirigeret til <a href=\"%(url)s\">%(obj)s</a>."
 
-#: redirects/views.py:102
+#: redirects/views.py:118
 msgid "The redirect has been deleted"
 msgstr "Denne omdirigering er blevet slettet"
 
@@ -773,207 +995,565 @@ msgstr "Denne omdirigering er blevet slettet"
 msgid "Differences for %(new.source)s redirect"
 msgstr "Forskelle for %(new.source)s omdirigering"
 
-#: redirects/templates/redirects/redirect_form.html:24
+#: redirects/templates/redirects/redirect_form.html:27
 msgid "Update redirect"
 msgstr "Opdatér omdirigering"
 
-#: redirects/templates/redirects/redirect_form.html:25
+#: redirects/templates/redirects/redirect_form.html:28
 msgid "Delete redirect"
 msgstr "Slet omdirigering"
 
-#: redirects/templates/redirects/redirect_form.html:27
+#: redirects/templates/redirects/redirect_form.html:30
 msgid "Create redirect"
 msgstr "Opret omdirigering"
 
+#: redirects/templates/redirects/redirect_permissions.html:7
+#, fuzzy, python-format
+msgid "Permissions for redirect \"%(name)s\" - %(super)s"
+msgstr "Tidligere versioner af side \"%(name)s\" - %(super)s "
+
+#: redirects/templates/redirects/redirect_permissions.html:15
+msgid "Who can change this redirect?"
+msgstr ""
+
+#: regions/forms.py:36
+msgid "The language for the region"
+msgstr ""
+
+#: regions/forms.py:50 regions/models.py:17
+msgid "The full name of this region, e.g. 'San Francisco'"
+msgstr ""
+
+#: regions/forms.py:70
+msgid "You cannot delete yourself as an admin"
+msgstr ""
+
+#: regions/models.py:19
+msgid ""
+"A very short name for this region that will appear in URLs, e.g. 'sf'. Keep "
+"it short and memorable!"
+msgstr ""
+
+#: regions/models.py:35
+msgid "Region already has pages in it"
+msgstr ""
+
+#: regions/views.py:49 utils/views.py:83
+msgid "Sorry, you are not allowed to perform this action."
+msgstr ""
+"Du har desværre ikke de fornødne rettigheder til at foretage denne handling."
+
+#: regions/views.py:173
+msgid "Settings updated!"
+msgstr ""
+
+#: regions/views.py:198
+msgid "Region admins updated!"
+msgstr ""
+
+#: regions/views.py:219
+msgid "Banned users updated."
+msgstr ""
+
+#. Translators: Please fix the links here to point to "Place," "Business", "Disambiguation", "Restaurant" as translated in your language.
+#: regions/initial_data/__init__.py:18
+msgid ""
+"<p>\n"
+"    \tTemplates are special pages that serve as a starting point when "
+"creating a new page. &nbsp;Using a common template for related topics gives "
+"those pages a common structure. &nbsp;To use one of the templates, simply "
+"select the template when creating a new page. &nbsp;</p>\n"
+"    <p>\n"
+"    \tBelow is a list of the available templates. To add a new template, "
+"create a page whose title starts with &quot;Templates/&quot;, as in <a href="
+"\"Templates%2FBusiness\">Templates/Business</a>. &nbsp;When you create a new "
+"template, add it to this list so it&#39;s easier to find.</p>\n"
+"    <h3>\n"
+"    \t<span>List of templates</span></h3>\n"
+"    <ul>\n"
+"    \t<li>\n"
+"    \t\t<a href=\"Templates%2FPlace\">Templates/Place</a></li>\n"
+"    \t<li>\n"
+"    \t\t<a href=\"Templates%2FBusiness\">Templates/Business</a></li>\n"
+"    \t<li>\n"
+"    \t\t<a href=\"Templates%2FDisambiguation\">Templates/Disambiguation</a></"
+"li>\n"
+"    \t<li>\n"
+"    \t\t<a href=\"Templates%2FRestaurant\">Templates/Restaurant</a></li>\n"
+"    </ul>"
+msgstr ""
+
+#. Translators: This is for "Templates/Page" - a template page
+#: regions/initial_data/__init__.py:38
+msgid "Place"
+msgstr ""
+
+#: regions/initial_data/__init__.py:42
+msgid ""
+"<table>\n"
+"    \t<tbody>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Location</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\taddress</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Contact</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\t(555) 555 5555</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Website</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\tAdd link here</td>\n"
+"    \t\t</tr>\n"
+"    \t</tbody>\n"
+"    </table>\n"
+"    <p>\n"
+"    \tThe <strong>Thing I&#39;m Talking About</strong> should have a blurb "
+"here with links to relevant things, like the <a href=\"Front%20Page\">Front "
+"Page</a>.</p>\n"
+"    <h2>\n"
+"    \tSection Title</h2>\n"
+"    <p>\n"
+"    \tText goes here.</p>"
+msgstr ""
+
+#. Translators: This is for "Templates/Restaurant" - a template page
+#: regions/initial_data/__init__.py:80
+msgid "Restaurant"
+msgstr ""
+
+#: regions/initial_data/__init__.py:84
+msgid ""
+"<table>\n"
+"    \t<tbody>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Location</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\tPlease fill in address</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Hours</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\t(Please fill in hours)</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Phone</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\t(415) 555-5555</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Website</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\tAdd link here</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Established</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\t(Date, i.e. YYYY-MM-DD)</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Price range</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\t(Prices for &quot;average&quot; entrees)</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Payment Methods</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\t(Cash, check, credit cards, other?)</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Wheelchair accessibility</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\t(notes on stairs, bathroom access, handrails, aisle width)</td>\n"
+"    \t\t</tr>\n"
+"    \t</tbody>\n"
+"    </table>\n"
+"    <p>\n"
+"    \tThen, put&nbsp;<em>whatever</em>&nbsp;you want down here! Note "
+"that&nbsp;<a href=\"http://local.google.com\">http://local.google.com</"
+"a>&nbsp;is sometimes a good and easy place to find times/phone. Better yet, "
+"look them up in the phone book, and ask them.</p>\n"
+"    <p>\n"
+"    \tRemember to add this restaurant to the neighborhood&nbsp;<a href="
+"\"restaurants\">restaurants</a>&nbsp;page.</p>\n"
+"    <h3>\n"
+"    \tRelated Links</h3>\n"
+"    <ul>\n"
+"    \t<li>\n"
+"    \t\t<a href=\"Restaurants\">Restaurants</a></li>\n"
+"    </ul>\n"
+"    <p>\n"
+"    \t&nbsp;</p>"
+msgstr ""
+
+#. Translators: This is for "Templates/Business" - a template page
+#: regions/initial_data/__init__.py:168
+msgid "Business"
+msgstr ""
+
+#: regions/initial_data/__init__.py:172
+msgid ""
+"\n"
+"    <table>\n"
+"    \t<tbody>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Location</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\tPlease fill in address</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Hours</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\tPlease fill in hours</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Phone</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\t(415) 555-5555</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Website</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\tAdd link here</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>E-mail</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\tEmail address</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Owner(s)</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\tNames of owners/proprietors here</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Established</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\tDate, i.e. YYYY-MM-DD</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Payment Method</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\tType of payment</td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n"
+"    \t\t\t\t<strong>Wheelchair accessibility</strong></td>\n"
+"    \t\t</tr>\n"
+"    \t\t<tr>\n"
+"    \t\t\t<td>\n"
+"    \t\t\t\tstairs, bathrooms, handrails, aisle width?</td>\n"
+"    \t\t</tr>\n"
+"    \t</tbody>\n"
+"    </table>\n"
+"    <p>\n"
+"    \tThen, put&nbsp;<em>whatever</em>&nbsp;you want down here! Note "
+"that&nbsp;<a href=\"http://local.google.com\">http://local.google.com</"
+"a>&nbsp;is sometimes a good and easy place to find times/phone. Better yet, "
+"look them up in the phone book, and ask them. Remove the fields you don&#39;"
+"t fill out &mdash; or even better, look up or call them for the missing "
+"information!</p>\n"
+"    <h3>\n"
+"    \tRelated Links</h3>\n"
+"    <ul>\n"
+"    \t<li>\n"
+"    \t\t<a href=\"Shopping\">Shopping</a></li>\n"
+"    </ul>\n"
+"    <p>\n"
+"    \t&nbsp;</p>"
+msgstr ""
+
+#. Translators: This is for "Templates/Disambiguation" - a template page
+#: regions/initial_data/__init__.py:263
+#, fuzzy
+msgid "Disambiguation"
+msgstr "Destination"
+
+#: regions/initial_data/__init__.py:267
+msgid ""
+"<p>\n"
+"    \tThis has multiple meanings. You are probably looking for information "
+"on one of the following:</p>\n"
+"    <ul>\n"
+"    \t<li>\n"
+"    \t\t<a href=\"ItemOne\">ItemOne</a>&nbsp;- A brief summary of ItemOne</"
+"li>\n"
+"    \t<li>\n"
+"    \t\t<a href=\"ItemTwo\">ItemTwo</a>&nbsp;- A brief summary of ItemTwo</"
+"li>\n"
+"    </ul>\n"
+"    <p>\n"
+"    \t&nbsp;</p>\n"
+"    <p>\n"
+"    \tThis is a&nbsp;<em>disambiguation</em> page&nbsp;&mdash; a "
+"navigational aid which lists other pages that might otherwise share the same "
+"title. If an page link referred you here, you might want to go back and fix "
+"it to point directly to the intended page.</p>"
+msgstr ""
+
+#: regions/initial_data/__init__.py:285
+#, python-format
+msgid ""
+"<p>\n"
+"    \tWelcome to the new LocalWiki region for %(region)s! There are "
+"currently just a handful of pages in it, to get you started.\n"
+"    <p>\n"
+"    \tClick on <strong>All Pages</strong> at the top to see what's here now."
+"</p>\n"
+"    <p>\n"
+"    \tYou can edit this and any other page by clicking the <strong>Edit</"
+"strong> button.</p>\n"
+"    <p>\n"
+"    \tTo create a new page, type a page name into the search box and press "
+"<strong>Search or create page</strong>.</p>\n"
+"    <p>Need <strong>help</strong>? Please see the <a href=\"http://localwiki."
+"net/main/Help\">help page</a> on the <a href=\"http://localwiki.net/main/"
+"\">LocalWiki Guide</a>!</p>"
+msgstr ""
+
+#: regions/templates/regions/admins_update.html:6
+#: regions/templates/regions/banned_update.html:6
+#: regions/templates/regions/settings.html:6
+msgid "LocalWiki - Settings"
+msgstr ""
+
+#: regions/templates/regions/admins_update.html:10
+#: regions/templates/regions/banned_update.html:10
+#, python-format
+msgid ""
+"\n"
+"        <a href=\"%(region_settings)s\">Settings</a> for <a href=\"%(url)s\">"
+"%(region_slug)s</a>\n"
+"    "
+msgstr ""
+
+#: regions/templates/regions/banned_update.html:20
+#: regions/templates/regions/settings.html:54
+msgid "Banned users"
+msgstr ""
+
+#: regions/templates/regions/main.html:6 regions/templates/regions/main.html:8
+#: regions/templates/regions/region_form.html:6
+msgid "LocalWiki"
+msgstr ""
+
+#: regions/templates/regions/main.html:15
+#: regions/templates/regions/region_list.html:17
+msgid "Add region"
+msgstr ""
+
+#: regions/templates/regions/region_form.html:8
+#, fuzzy
+msgid "Add a region"
+msgstr "Tilføj tags"
+
+#: regions/templates/regions/region_form.html:47
+msgid "Draw the rough area the region will cover"
+msgstr ""
+
+#: regions/templates/regions/region_form.html:48
+#: regions/templates/regions/settings.html:69
+msgid "Pick an area roughly the size of a city. Don't worry about being exact!"
+msgstr ""
+
+#: regions/templates/regions/region_list.html:6
+msgid "Regions - LocalWiki"
+msgstr ""
+
+#: regions/templates/regions/region_list.html:8
+msgid "Regions"
+msgstr ""
+
+#: regions/templates/regions/settings.html:9
+#, fuzzy, python-format
+msgid ""
+"\n"
+"        Settings for <a href=\"%(url)s\">%(region_slug)s</a>\n"
+"    "
+msgstr ""
+"\n"
+"Denne side har ingen tags. <a href=\"%(page_url)s\">Tilføj nogle tags!</a>"
+
+#: regions/templates/regions/settings.html:45
+msgid "Admins"
+msgstr ""
+
+#: regions/templates/regions/settings.html:57
+msgid "Nobody is banned. Hooray!"
+msgstr ""
+
+#: regions/templates/regions/settings.html:68
+msgid "The rough area the region covers"
+msgstr ""
+
 #: search/templates/search/search.html:11
-#: search/templates/search/search.html:36
+#: search/templates/search/search.html:54
 msgid "Search results for"
 msgstr "Søgeresultater for"
 
-#: search/templates/search/search.html:38
+#: search/templates/search/search.html:56
 msgid "Search or create a new page"
 msgstr "Søg eller opret en ny side"
 
-#: search/templates/search/search.html:47
+#: search/templates/search/search.html:65
 #, python-format
 msgid "No page with the exact title \"%(query)s\" exists."
 msgstr "Der eksisterer ikke nogen side med den præcise titel \"%(query)s\"."
 
-#: search/templates/search/search.html:57
-#: search/templates/search/search.html:89
+#: search/templates/search/search.html:75
+#: search/templates/search/search.html:107
 msgid "Previous"
 msgstr "Tidligere"
 
-#: search/templates/search/search.html:60
-#: search/templates/search/search.html:92
+#: search/templates/search/search.html:78
+#: search/templates/search/search.html:110
 msgid "Next"
 msgstr "Næste"
 
-#: search/templates/search/search.html:82
+#: search/templates/search/search.html:100
 msgid "No results found."
 msgstr "Ingen resultater fundet."
 
-#: search/templates/search/search.html:99
+#: search/templates/search/search.html:117
 msgid "Create a new page:"
 msgstr "Opret en ny side:"
 
-#: search/templates/search/search.html:106
+#: search/templates/search/search.html:124
 msgid "Search for pages:"
 msgstr "Søg efter sider:"
 
-#: search/templates/search/search.html:109
+#: search/templates/search/search.html:127
 msgid "Search"
 msgstr "Søg"
 
-#: settings/defaults.py:37
-#, fuzzy
-msgid ""
-"<p>Except where otherwise noted, this content is licensed under a <a rel="
-"\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\">Creative "
-"Commons Attribution License</a>. See <a href=\"/Copyrights\">Copyrights</a>."
-"</p>"
-msgstr ""
-"Med mindre andet er bemærket er dette indhold tilgængeligt under en <a rel="
-"\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\">Creative "
-"Commons Navngivelse Licens</a>. Se <a href=\"/Copyrights\">Copyrights</a>.</p>"
-
-#: settings/defaults.py:39
-msgid ""
-"<p>By clicking \"Save Changes\" you are agreeing to release your "
-"contribution under the <a rel=\"license\" href=\"http://creativecommons.org/"
-"licenses/by/3.0/\" target=\"_blank\">Creative Commons-By license</a>, unless "
-"noted otherwise. See <a href=\"/Copyrights\" target=\"_blank\">Copyrights</"
-"a>.</p>"
-msgstr ""
-"<p>Ved at klikke \"Gem ændringer\" accepterer du, at dit bidrag frigives "
-"under en <a rel=\"license\" href=\"http://creativecommons.org/licenses/"
-"by/3.0/\" target=\"_blank\">Creative Commons-By licens</a>, medmindre andet "
-"er bemærket. Se mere under <a href=\"/Copyrights\" target=\"_blank"
-"\">Copyrights</a>."
-
-#: settings/defaults.py:41
-msgid ""
-"I agree to release my contributions under the <a rel=\"license\" href="
-"\"http://creativecommons.org/licenses/by/3.0/\" target=\"_blank\">Creative "
-"Commons-By license</a>, unless noted otherwise. See <a href=\"/Copyrights\" "
-"target=\"_blank\">Copyrights</a>."
-msgstr ""
-"Jeg frigiver hermed mine bidrag under en <a rel=\"license\" href=\"http://"
-"creativecommons.org/licenses/by/3.0/\" target=\"_blank\">Creative Commons-By "
-"licens</a>, medmindre andet er bemærket. Se mere under <a href=\"/Copyrights"
-"\" target=\"_blank\">Copyrights</a>."
-
-#: settings/defaults.py:43
-msgid ""
-"I would like to receive occasional updates about this project via email."
-msgstr "Jeg vil gerne modtage updates om dette projekt på email."
-
-#: settings/defaults.py:62
-msgid "English"
-msgstr "Engelsk"
-
-#: settings/defaults.py:63
-msgid "Japanese"
-msgstr ""
-
-#: settings/defaults.py:64
-msgid "Russian"
-msgstr ""
-
-#: settings/defaults.py:65
-#, fuzzy
-msgid "German (Swiss)"
-msgstr "Tysk (CH)"
-
-#: settings/defaults.py:66
-msgid "Spanish (Argentina)"
-msgstr ""
-
-#: settings/defaults.py:67
-msgid "Danish"
-msgstr ""
-
-#: settings/defaults.py:68
-msgid "Italian"
-msgstr ""
-
-#: settings/defaults.py:69
-msgid "Portuguese"
-msgstr "Portugisisk"
-
-#: tags/forms.py:76
+#: tags/forms.py:98
 #, python-format
 msgid "removed %(name)s %(deleted)s."
 msgid_plural "removed %(name)s %(deleted)s."
 msgstr[0] "fjernede %(name)s %(deleted)s."
 msgstr[1] "fjernede %(name)s %(deleted)s."
 
-#: tags/forms.py:85
+#: tags/forms.py:107
 #, python-format
 msgid "removed %(count)i %(name)s."
 msgid_plural "removed %(count)i %(name)s."
 msgstr[0] "fjernede %(count)i %(name)s."
 msgstr[1] "fjernede %(count)i %(name)s."
 
-#: tags/forms.py:96
+#: tags/forms.py:118
 #, python-format
 msgid "added %(name)s %(added)s."
 msgid_plural "added %(name)s %(added)s."
 msgstr[0] "tilføjede %(name)s %(added)s."
 msgstr[1] "tilføjede %(name)s %(added)s."
 
-#: tags/forms.py:105
+#: tags/forms.py:127
 #, python-format
 msgid "added %(count)i %(name)s."
 msgid_plural "added %(count)i %(name)s."
 msgstr[0] "tilføjede %(count)i %(name)s."
 msgstr[1] "tilføjede %(count)i %(name)s."
 
-#: tags/forms.py:114
+#: tags/forms.py:136
 msgid "no changes made"
 msgstr "ingen ændringer blev foretaget"
 
-#: tags/forms.py:115 tags/forms.py:118
+#: tags/forms.py:137 tags/forms.py:140
 msgid " and "
 msgstr "og"
 
-#: tags/models.py:32
+#: tags/models.py:35
 msgid "Tag"
 msgstr "Tag"
 
-#: tags/models.py:33 tags/templates/tags/pagetagset_list.html:4
-#: tags/templates/tags/pagetagset_list.html:5
+#: tags/models.py:36 tags/templates/tags/pagetagset_list.html:7
+#: tags/templates/tags/pagetagset_list.html:8
 #: tags/templates/tags/tag_list.html:4
 msgid "Tags"
 msgstr "Tags"
 
-#: tags/templates/tags/pagetagset_diff.html:28
-#: tags/templates/tags/pagetagset_diff.html:29
+#: tags/templates/tags/pagetagset_diff.html:31
+#: tags/templates/tags/pagetagset_diff.html:32
 #, python-format
 msgid "Differences for tag versions for %(new_name)s"
 msgstr "Forskelle for tag-versioner for %(new_name)s"
 
-#: tags/templates/tags/pagetagset_diff.html:61
+#: tags/templates/tags/pagetagset_diff.html:64
 msgid "Tags history"
 msgstr "Tags historik"
 
-#: tags/templates/tags/pagetagset_form.html:13
-#: tags/templates/tags/pagetagset_form.html:14
-#: tags/templates/tags/pagetagset_version_detail.html:12
-#: tags/templates/tags/pagetagset_versions.html:11
+#: tags/templates/tags/pagetagset_form.html:16
+#: tags/templates/tags/pagetagset_form.html:17
+#: tags/templates/tags/pagetagset_version_detail.html:15
+#: tags/templates/tags/pagetagset_versions.html:14
 msgid "Tags for"
 msgstr "Tags for"
 
-#: tags/templates/tags/pagetagset_form_snippet.html:8
-msgid "Save"
-msgstr "Gem"
-
-#: tags/templates/tags/pagetagset_version_detail.html:11
-#: tags/templates/tags/pagetagset_versions.html:10
+#: tags/templates/tags/pagetagset_version_detail.html:14
+#: tags/templates/tags/pagetagset_versions.html:13
 msgid "Tags for "
 msgstr "Tags for"
 
-#: tags/templates/tags/pagetagset_versions.html:19
+#: tags/templates/tags/pagetagset_versions.html:22
 #, python-format
 msgid ""
 "\n"
@@ -1003,7 +1583,7 @@ msgstr "Som en sky"
 msgid "There are no tags. Add some!"
 msgstr "Der er ingen tags. Tilføj nogle tags!"
 
-#: tags/templates/tags/tagged_list_snippet.html:17
+#: tags/templates/tags/tagged_list_snippet.html:19
 #, python-format
 msgid "There are no pages with the tag \"%(tag_name)s\"."
 msgstr "Der er ingen sider med tagget \"%(tag_name)s\"."
@@ -1143,6 +1723,15 @@ msgstr "Nulstil mit password"
 msgid "Create account"
 msgstr "Opret konto"
 
+#: themes/sapling/templates/site/base.html:154
+msgid ""
+"\n"
+"      LocalWiki is a grassroots effort to collect, share and open the "
+"world’s local knowledge.  We are a 501(c)3 non-profit organization. <a href="
+"\"http://localwiki.org/about/\" target=\"_blank\">Learn more</a>.</p>\n"
+"      "
+msgstr ""
+
 #: themes/sapling/templates/site/login_info.html:6
 msgid "Welcome"
 msgstr "Velkommen"
@@ -1163,13 +1752,17 @@ msgstr "eller"
 msgid "create account"
 msgstr "opret konto"
 
-#: themes/sapling/templates/site/nav.html:4
+#: themes/sapling/templates/site/nav.html:5
 msgid "Front Page"
 msgstr "Forside"
 
-#: themes/sapling/templates/site/nav.html:5
+#: themes/sapling/templates/site/nav.html:6
 msgid "People"
 msgstr "Personer"
+
+#: themes/sapling/templates/site/nav.html:11
+msgid "Settings"
+msgstr ""
 
 #: users/__init__.py:7
 msgid "You are now logged out."
@@ -1187,15 +1780,28 @@ msgstr "Rettigheder"
 msgid "Important dates"
 msgstr "Vigtige datoer"
 
-#: users/admin.py:20
-msgid "Groups"
-msgstr "Grupper"
+#: users/auth.py:34
+msgid "algorithm"
+msgstr ""
 
-#: users/registration_backend/__init__.py:46
+#: users/auth.py:35
+msgid "hash"
+msgstr ""
+
+#: users/forms.py:11
+msgid "Only these users"
+msgstr ""
+
+#: users/views.py:91
+#, fuzzy
+msgid "Permissions updated!"
+msgstr "Rettigheder"
+
+#: users/registration_backend/__init__.py:61
 msgid "You are signed up and logged in!"
 msgstr "Du er oprettet som bruger og logget ind!"
 
-#: users/registration_backend/__init__.py:48
+#: users/registration_backend/__init__.py:63
 #, python-format
 msgid "Tell us who you are by <a href=\"%s\">creating a page for yourself!</a>"
 msgstr ""
@@ -1246,12 +1852,7 @@ msgstr "Abonnent-liste"
 msgid "Subscriber emails:"
 msgstr "Abonnent-emails:"
 
-#: utils/views.py:82
-msgid "Sorry, you are not allowed to perform this action."
-msgstr ""
-"Du har desværre ikke de fornødne rettigheder til at foretage denne handling."
-
-#: utils/views.py:83
+#: utils/views.py:84
 msgid ""
 "Anonymous users may not perform this action. Please <a href=\"/Users/login/"
 "\">log in</a>."
@@ -1373,6 +1974,32 @@ msgstr "Slettet!"
 #, python-format
 msgid "Reverted to version %s."
 msgstr "Rullet tilbage til version %s ."
+
+#~ msgid "<p>Describe %s here</p>"
+#~ msgstr "<p>Beskriv %s her</p>"
+
+#~ msgid "Pagename"
+#~ msgstr "Sidenavn"
+
+#~ msgid "Rename page"
+#~ msgstr "Omdøb side"
+
+#~ msgid ""
+#~ "Revision %(page.version_info.version_number)s\n"
+#~ "          (%(date)s by %(user_link)s)"
+#~ msgstr ""
+#~ "Revision %(page.version_info.version_number)s\n"
+#~ "(%(date)s af %(user_link)s"
+
+#~ msgid ""
+#~ "Revision %(version_number)s\n"
+#~ "                  (%(date)s by %(user_link)s)"
+#~ msgstr ""
+#~ "Revision %(version_number)s\n"
+#~ "(%(date)s af %(user_link)s)"
+
+#~ msgid "Groups"
+#~ msgstr "Grupper"
 
 #~ msgid "File %(filename)=s on page \"%(pagename)s\""
 #~ msgstr "Filen %(filename)=s på side \"%(pagename)s\""

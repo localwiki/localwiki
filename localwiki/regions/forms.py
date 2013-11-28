@@ -32,6 +32,9 @@ class MediaMixin(object):
 ################################################
 
 class RegionForm(MediaMixin, MapModelForm):
+    default_language = forms.ChoiceField(choices=LANGUAGES, required=False,
+        help_text=ugettext_lazy("The language for the region"))
+
     class Meta:
         model = Region
 

@@ -2,40 +2,42 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-19 15:09-0700\n"
+"POT-Creation-Date: 2013-11-27 19:42-0600\n"
 "PO-Revision-Date: 2012-06-21 19:36\n"
 "Last-Translator: Anonymous User <anonymous@user.tld>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Translated-Using: django-rosetta 0.6.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: maps/static/olwidget/js/sapling_utils.js:96
+#: maps/static/olwidget/js/sapling_utils.js:167
 msgid " for "
 msgstr "for"
 
-#: maps/static/olwidget/js/sapling_utils.js:116
+#: maps/static/olwidget/js/sapling_utils.js:212
 msgid ""
 "You've made changes but haven't saved.  Are you sure you want to leave this "
 "page?"
 msgstr "変更が保存されていませんが、このままこのページを離れますか？"
 
-#: maps/static/olwidget/js/sapling_utils.js:159
+#: maps/static/olwidget/js/sapling_utils.js:323
 msgid "Things on this map:"
 msgstr "このマップに関連するもの："
 
-#: maps/static/olwidget/js/sapling_utils.js:171
+#: maps/static/olwidget/js/sapling_utils.js:339
 msgid "Things inside "
 msgstr "内部のもの"
 
-#: maps/static/olwidget/js/sapling_utils.js:181
+#: maps/static/olwidget/js/sapling_utils.js:353
 msgid "Things near "
 msgstr "近くのもの"
 
