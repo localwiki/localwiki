@@ -4,7 +4,9 @@ DEBUG = False
 # Config values you *must* change
 #######################################################################
 
-ALLOWED_HOSTS = ['.localwiki.org', '.localwiki.net', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['.{{ public_hostname }}', '127.0.0.1', 'localhost']
+
+SESSION_COOKIE_DOMAIN = '.{{ public_hostname }}'
 
 DATABASES = {
     'default': {
@@ -25,7 +27,7 @@ EMAIL_HOST = 'localhost'
 EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'dontreply@localwiki.net'
+DEFAULT_FROM_EMAIL = 'dontreply@{{ public_hostname }}'
 
 #######################################################################
 # Other config values.

@@ -210,6 +210,10 @@ def ec2():
     env.ec2_key_name = config_secrets['ec2_key_name']
     env.key_filename = config_secrets['ec2_key_filename']
 
+def test_server():
+    setup_config_secrets()
+    env.host_type = 'test_server'
+
 def setup_dev():
     """
     Provision and set up for development on vagrant.
@@ -242,7 +246,7 @@ def setup_postgres(test_server=False):
     sudo('chown -R postgres:postgres /srv/postgres')
 
     # Add our custom configuration
-    if not test_server:
+    if env.host_type =! 'test_server':
         put('config/postgresql/postgresql.conf', '/etc/postgresql/9.1/main/postgresql.conf', use_sudo=True)
     else:
         put('config/postgresql/postgresql_test.conf', '/etc/postgresql/9.1/main/postgresql.conf', use_sudo=True)
@@ -548,7 +552,7 @@ def setup_mailserver():
         context=get_context(env), use_jinja=True, use_sudo=True)
     sudo('service postfix restart')
 
-def provision(test_server=False):
+def provision():
     if env.host_type == 'vagrant':
         fix_locale()
 
@@ -558,7 +562,7 @@ def provision(test_server=False):
     add_ssh_keys()
     install_system_requirements()
     setup_mailserver()
-    setup_postgres(test_server=test_server)
+    setup_postgres()
     setup_jetty()
     setup_repo()
     init_localwiki_install()
