@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-30 05:29+0000\n"
+"POT-Creation-Date: 2013-11-30 08:45+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -231,30 +231,6 @@ msgstr ""
 
 #: main/settings/defaults.py:68
 msgid "Japanese"
-msgstr ""
-
-#: main/settings/defaults.py:69
-msgid "Spanish"
-msgstr ""
-
-#: main/settings/defaults.py:70
-msgid "Russian"
-msgstr ""
-
-#: main/settings/defaults.py:71
-msgid "German"
-msgstr ""
-
-#: main/settings/defaults.py:72
-msgid "Danish"
-msgstr ""
-
-#: main/settings/defaults.py:73
-msgid "Italian"
-msgstr ""
-
-#: main/settings/defaults.py:74
-msgid "Portuguese"
 msgstr ""
 
 #: maps/feeds.py:21 maps/feeds.py:40
@@ -956,15 +932,23 @@ msgstr ""
 msgid "Who can change this redirect?"
 msgstr ""
 
-#: regions/forms.py:36
+#: regions/forms.py:35 regions/forms.py:53
+msgid "Default language"
+msgstr ""
+
+#: regions/forms.py:37
 msgid "The language for the region"
 msgstr ""
 
-#: regions/forms.py:50 regions/models.py:17
+#: regions/forms.py:50
+msgid "Full name"
+msgstr ""
+
+#: regions/forms.py:51 regions/models.py:17
 msgid "The full name of this region, e.g. 'San Francisco'"
 msgstr ""
 
-#: regions/forms.py:70
+#: regions/forms.py:72
 msgid "You cannot delete yourself as an admin"
 msgstr ""
 
