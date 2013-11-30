@@ -32,7 +32,8 @@ class MediaMixin(object):
 ################################################
 
 class RegionForm(MediaMixin, MapModelForm):
-    default_language = forms.ChoiceField(choices=LANGUAGES, required=False,
+    default_language = forms.ChoiceField(label=ugettext_lazy("Default language"),
+        choices=LANGUAGES, required=False,
         help_text=ugettext_lazy("The language for the region"))
 
     class Meta:
@@ -46,10 +47,11 @@ class RegionForm(MediaMixin, MapModelForm):
 
 
 class RegionSettingsForm(MediaMixin, forms.Form):
-    full_name = forms.CharField(max_length=255,
+    full_name = forms.CharField(label=ugettext_lazy("Full name"), max_length=255,
         help_text=ugettext_lazy("The full name of this region, e.g. 'San Francisco'"))
     geom = forms.CharField(widget=EditableMap({'geometry': 'polygon'}))
-    default_language = forms.ChoiceField(choices=LANGUAGES, required=False)
+    default_language = forms.ChoiceField(label=ugettext_lazy("Default language"),
+        choices=LANGUAGES, required=False)
 
 
 class AdminSetForm(forms.ModelForm):
