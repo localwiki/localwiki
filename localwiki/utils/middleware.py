@@ -94,5 +94,8 @@ class SubdomainLanguageMiddleware(object):
         host = request.get_host().split('.')
         if host and host[0] in self.LANGUAGES:
             lang = host[0]
-            translation.activate(lang)
-            request.LANGUAGE_CODE = lang
+        else:
+            # Set to default language
+            lang = settings.LANGUAGE_CODE
+        translation.activate(lang)
+        request.LANGUAGE_CODE = lang
