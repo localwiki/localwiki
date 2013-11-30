@@ -62,7 +62,7 @@ class TaggedList(RegionMixin, ListView):
         return map_view.get_map_objects()
 
     def get_context_data(self, *args, **kwargs):
-        from maps.widgets import InfoMap
+        from maps.widgets import InfoMap, map_options_for_region
 
         context = super(TaggedList, self).get_context_data(*args, **kwargs)
         context['tag'] = self.tag
@@ -82,6 +82,7 @@ class TaggedList(RegionMixin, ListView):
                 map_controls.remove('KeyboardDefaults')
             olwidget_options['map_options'] = map_opts
             olwidget_options['map_div_class'] = 'mapwidget small'
+            olwidget_options.update(map_options_for_region(self.get_region()))
             context['map'] = InfoMap(
                 map_objects,
                 options=olwidget_options)

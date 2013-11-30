@@ -139,7 +139,6 @@ class MapGlobalView(RegionMixin, ListView):
             'permalink': self.permalink,
             'cluster': True
         })
-
         return InfoMap(map_objects, options=options)
 
 

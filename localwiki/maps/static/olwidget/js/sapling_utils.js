@@ -3,6 +3,7 @@ SaplingMap = {
     is_dirty: false,
 
     init_openlayers: function() {
+        OpenLayers.Control.Navigation.prototype.dragPanOptions = {enableKinetic: true};
         OpenLayers.Control.LayerSwitcher.prototype.roundedCorner = false;
         OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
         var base_initOptions = olwidget.Map.prototype.initOptions;

@@ -9,7 +9,7 @@ from haystack.forms import SearchForm as DefaultSearchForm
 
 from pages.models import Page, slugify
 from maps.models import MapData
-from maps.widgets import InfoMap
+from maps.widgets import InfoMap, map_options_for_region
 
 
 class CreatePageSearchView(SearchView):
@@ -38,6 +38,7 @@ class CreatePageSearchView(SearchView):
             map_controls.remove('KeyboardDefaults')
         widget_options['map_options'] = map_opts
         widget_options['map_div_class'] = 'mapwidget small'
+        widget_options.update(map_options_for_region(self.region))
         map = InfoMap([(obj.geom, popup_html(obj)) for obj in maps],
             options=widget_options)
         return map

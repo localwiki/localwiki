@@ -73,6 +73,8 @@ class PageDetailView(Custom404Mixin, RegionMixin, DetailView):
         )
 
     def get_context_data(self, **kwargs):
+        from maps.widgets import map_options_for_region
+
         context = super(PageDetailView, self).get_context_data(**kwargs)
         context['region'] = self.object.region
         context['date'] = self.object.versions.most_recent().version_info.date
@@ -90,6 +92,7 @@ class PageDetailView(Custom404Mixin, RegionMixin, DetailView):
                 map_controls.remove('KeyboardDefaults')
             olwidget_options['map_options'] = map_opts
             olwidget_options['map_div_class'] = 'mapwidget small'
+            olwidget_options.update(map_options_for_region(self.object.region))
             context['map'] = InfoMap(
                 [(self.object.mapdata.geom, self.object.name)],
                 options=olwidget_options)
