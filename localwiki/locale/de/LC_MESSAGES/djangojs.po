@@ -1,23 +1,23 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# 
+# Translators:
+# Daniel Kastl, 2013
+# hng <signin@henningschumann.org>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 19:41-0600\n"
-"PO-Revision-Date: 2012-02-23 18:16\n"
-"Last-Translator: Anonymous User <anonymous@user.tld>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2013-11-27 19:48-0600\n"
+"PO-Revision-Date: 2013-11-29 16:38+0000\n"
+"Last-Translator: Daniel Kastl\n"
+"Language-Team: German (http://www.transifex.com/projects/p/localwiki/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Translated-Using: django-rosetta 0.6.5\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: maps/static/olwidget/js/sapling_utils.js:167
 msgid " for "
@@ -27,9 +27,7 @@ msgstr "für"
 msgid ""
 "You've made changes but haven't saved.  Are you sure you want to leave this "
 "page?"
-msgstr ""
-"Du hast Änderungen gemacht, die nicht gespeichert wurden. Bist Du sicher, "
-"dass Du diese Seite verlassen möchtest?"
+msgstr "Du hast Änderungen gemacht, die nicht gespeichert wurden. Bist du sicher, dass du diese Seite verlassen möchtest?"
 
 #: maps/static/olwidget/js/sapling_utils.js:323
 msgid "Things on this map:"
@@ -41,7 +39,7 @@ msgstr "Dinge innerhalb von"
 
 #: maps/static/olwidget/js/sapling_utils.js:353
 msgid "Things near "
-msgstr "Dinge in der Nàhe von"
+msgstr "Dinge in der Nähe von"
 
 #: pages/static/js/ckeditor/_source/plugins/embed/plugin.js:14
 #: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:17
@@ -58,7 +56,6 @@ msgid "Please enter the embed code"
 msgstr "Bitte Einbettungs-Code eingeben"
 
 #: pages/static/js/ckeditor/_source/plugins/includepage/plugin.js:14
-#, fuzzy
 msgid "Include page"
 msgstr "Seite einfügen"
 
@@ -104,7 +101,7 @@ msgstr "Ausrichten"
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:131
 #: pages/static/js/ckeditor/_source/plugins/simpleimage/dialogs/simpleimage.js:822
 msgid "None"
-msgstr ""
+msgstr "Nichts"
 
 #: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:210
 #: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:233
@@ -117,26 +114,24 @@ msgstr "Seite %s einfügen"
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:17
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:18
 msgid "List of tagged pages"
-msgstr ""
+msgstr "Liste von Seiten mit Tag \"%s\""
 
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:24
 msgid "Tag"
-msgstr ""
+msgstr "Tag"
 
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:45
-#, fuzzy
 msgid "Please enter a tag"
-msgstr "Bitte einen Seitennamen eingeben"
+msgstr "Bitte gebe ein Tag ein"
 
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:64
-#, fuzzy
 msgid "Show title"
-msgstr "Seitentitel anzeigen"
+msgstr "Titel anzeigen"
 
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:212
 #, c-format
 msgid "List of pages tagged \"%s\""
-msgstr ""
+msgstr "Liste von Seiten mit Tag \"%s\""
 
 #: pages/static/js/ckeditor/_source/plugins/insertimage/plugin.js:34
 msgid "Attach file"
@@ -240,14 +235,12 @@ msgid "Insert Object"
 msgstr "Objekt einfügen"
 
 #: versionutils/diff/static/js/diff/htmldiff.js:24
-#, fuzzy
 msgid "Previous"
-msgstr "Vorherige"
+msgstr "Zurück"
 
 #: versionutils/diff/static/js/diff/htmldiff.js:26
-#, fuzzy
 msgid "Next"
-msgstr "Nächste"
+msgstr "Weiter"
 
 #: versionutils/diff/static/js/diff/htmldiff.js:54
 msgid "Review changes"
@@ -264,6 +257,3 @@ msgstr "Inhalt wurde gelöscht"
 #: versionutils/diff/static/js/diff/htmldiff.js:70
 msgid "Content was added"
 msgstr "Inhalt wurde hinzugefügt"
-
-#~ msgid "Include page %(page)s"
-#~ msgstr "Seite %(page)s einfügen"

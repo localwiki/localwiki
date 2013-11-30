@@ -66,12 +66,12 @@ LOCALE_PATHS = (
 LANGUAGES = (
     ('en', _('English')),
     ('ja', _('Japanese')),
-    ('es', _('Spanish')),
-    ('ru', _('Russian')),
-    ('de', _('German')),
-    ('da', _('Danish')),
-    ('it', _('Italian')),
-    ('pt', _('Portuguese')),
+    #('es', _('Spanish')),
+    #('ru', _('Russian')),
+    #('de', _('German')),
+    #('da', _('Danish')),
+    #('it', _('Italian')),
+    #('pt', _('Portuguese')),
 )
 
 SITE_ID = 1

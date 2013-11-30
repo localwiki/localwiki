@@ -11,8 +11,8 @@
     <li><a href="{% url 'regions:settings' region=region.slug %}">{% trans "Settings" %}</a></li>
     {% endif %}
 {% else %}
-    <li><a href="{% url 'pages:show' slug='Front Page' region='main' %}">Guide</a></li>
-    <li><a href="{% url 'pages:show' slug='Help' region='main' %}">Help</a></li>
-    <li><a href="{% url 'regions:list' %}">Communities</a></li>
-    <li><a href="{% url 'pages:show' slug='About' region='main' %}">About</a></li>
+    <li><a href="{% url 'pages:show' slug='Front Page' region='main' %}">{% trans "Guide" %}</a></li>
+    <li><a href="{% url 'pages:show' slug='Help' region='main' %}">{% trans "Help" %}</a></li>
+    <li><a href="{% url 'regions:list' %}">{% trans "Communities" %}</a></li>
+    <li><a href="{% url 'pages:show' slug='About' region='main' %}">{% trans "About" %}</a></li>
 {% endif %}

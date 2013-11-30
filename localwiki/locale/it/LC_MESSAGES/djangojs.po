@@ -1,23 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# 
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 19:42-0600\n"
-"PO-Revision-Date: 2012-07-23 07:53\n"
-"Last-Translator: Anonymous User <anonymous@user.tld>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2013-11-27 19:48-0600\n"
+"PO-Revision-Date: 2013-11-28 02:08+0000\n"
+"Last-Translator: philipn <philip@localwiki.org>\n"
+"Language-Team: Italian (http://www.transifex.com/projects/p/localwiki/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Translated-Using: django-rosetta 0.6.5\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: maps/static/olwidget/js/sapling_utils.js:167
 msgid " for "
@@ -27,9 +25,7 @@ msgstr "per"
 msgid ""
 "You've made changes but haven't saved.  Are you sure you want to leave this "
 "page?"
-msgstr ""
-"Hai fatto delle modifiche, ma non le hai salvate. Sei sicuro di voler "
-"lasciare questa pagina?"
+msgstr "Hai fatto delle modifiche, ma non le hai salvate. Sei sicuro di voler lasciare questa pagina?"
 
 #: maps/static/olwidget/js/sapling_utils.js:323
 msgid "Things on this map:"
@@ -259,6 +255,3 @@ msgstr "Il contenuto è stato cancellato"
 #: versionutils/diff/static/js/diff/htmldiff.js:70
 msgid "Content was added"
 msgstr "Il contenuto è stato aggiunto"
-
-#~ msgid "Include page %(page)s"
-#~ msgstr "Включить страницу %(page)s"

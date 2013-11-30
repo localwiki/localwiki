@@ -1,21 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# 
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 19:30-0600\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Nuno Maltez <nuno@cognitiva.com>\n"
-"Language: pt-PT\n"
+"POT-Creation-Date: 2013-11-27 19:47-0600\n"
+"PO-Revision-Date: 2013-11-28 02:07+0000\n"
+"Last-Translator: philipn <philip@localwiki.org>\n"
+"Language-Team: Portuguese (http://www.transifex.com/projects/p/localwiki/language/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: pt\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ckeditor/models.py:30
 msgid "This field contains invalid data."
@@ -67,8 +67,7 @@ msgstr "Painel de gestão"
 
 #: dashboard/templates/dashboard/index.html:22
 msgid "Statistics loading.  This may take several minutes the first time."
-msgstr ""
-"A carregar as estatísticas. Pode demorar vários minutos da primeira vez."
+msgstr "A carregar as estatísticas. Pode demorar vários minutos da primeira vez."
 
 #: dashboard/templates/dashboard/index.html:27
 #: dashboard/templates/dashboard/render.html:4
@@ -149,84 +148,73 @@ msgstr ""
 #: frontpage/templates/frontpage/base.html:22
 msgid ""
 "\n"
-"        I want to make a page about <span class=\"searchbox\"><input type="
-"\"text\" name=\"q\" value=\"\"><input type=\"submit\" value=\"Search or "
-"create page\"></span>\n"
+"        I want to make a page about <span class=\"searchbox\"><input type=\"text\" name=\"q\" value=\"\"><input type=\"submit\" value=\"Search or create page\"></span>\n"
 "        "
 msgstr ""
 
 #: frontpage/templates/frontpage/base.html:39
-#, fuzzy
 msgid "Change cover"
-msgstr "Alterar senha"
+msgstr ""
 
 #: frontpage/templates/frontpage/base.html:41
-#, fuzzy
 msgid "Save cover"
-msgstr "Gravar"
+msgstr ""
 
 #: frontpage/templates/frontpage/base.html:62
 #: pages/templates/pages/page_detail.html:41
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Revision %(version_number)s\n"
 "          (%(date)s by %(user_link)s)"
 msgstr ""
-"Revisão %(version_number)s\n"
-"                (%(date)s por %(user_link)s)"
 
 #: frontpage/templates/frontpage/base.html:71
 #: pages/templates/pages/page_detail.html:49
 #: tags/templates/tags/tagged_list_snippet.html:8
-#, fuzzy
 msgid "View"
-msgstr "Ver mapa"
+msgstr ""
 
 #: links/templates/links/orphaned_pages.html:12
 msgid "Orphaned Pages"
 msgstr ""
 
 #: links/templates/links/orphaned_pages.html:16
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<h3>Pages that link to <a href=\"%(page_url)s\">%(page_name)s</a>:</h3>\n"
 msgstr ""
-"Não foi possível incluir a página<a href=\"%(page_url)s\">%(page_name)s</a>: "
-"ciclo infinito .)"
 
 #: links/templates/links/orphaned_pages.html:25
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "<h3>Pages <a href=\"%(page_url)s\">%(page_name)s</a> links to:</h3>\n"
 msgstr ""
-"Não foi possível incluir a página<a href=\"%(page_url)s\">%(page_name)s</a>: "
-"ciclo infinito .)"
 
 #: main/settings/defaults.py:42
 msgid ""
-"<p>Except where otherwise noted, this content is licensed under a <a rel="
-"\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\">Creative "
-"Commons Attribution License</a>. See <a href=\"/Copyrights\">Copyrights</a>."
-"</p>"
+"<p>Except where otherwise noted, this content is licensed under a <a "
+"rel=\"license\" "
+"href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons "
+"Attribution License</a>. See <a href=\"/Copyrights\">Copyrights</a>.</p>"
 msgstr ""
 
 #: main/settings/defaults.py:44
 msgid ""
 "<p>By clicking \"Save Changes\" you are agreeing to release your "
-"contribution under the <a rel=\"license\" href=\"http://creativecommons.org/"
-"publicdomain/zero/1.0/\" target=\"_blank\">CC0 Public Domain license</a>, "
-"unless noted otherwise. See <a href=\"/Copyrights\" target=\"_blank"
-"\">Copyrights</a>.</p>"
+"contribution under the <a rel=\"license\" "
+"href=\"http://creativecommons.org/publicdomain/zero/1.0/\" "
+"target=\"_blank\">CC0 Public Domain license</a>, unless noted otherwise. See"
+" <a href=\"/Copyrights\" target=\"_blank\">Copyrights</a>.</p>"
 msgstr ""
 
 #: main/settings/defaults.py:46
 msgid ""
-"I agree to release my contributions under the <a rel=\"license\" href="
-"\"http://creativecommons.org/publicdomain/zero/1.0/\" target=\"_blank\">CC0 "
-"Public Domain license</a>, unless noted otherwise. See <a href=\"/Copyrights"
-"\" target=\"_blank\">Copyrights</a>."
+"I agree to release my contributions under the <a rel=\"license\" "
+"href=\"http://creativecommons.org/publicdomain/zero/1.0/\" "
+"target=\"_blank\">CC0 Public Domain license</a>, unless noted otherwise. See"
+" <a href=\"/Copyrights\" target=\"_blank\">Copyrights</a>."
 msgstr ""
 
 #: main/settings/defaults.py:48
@@ -276,16 +264,12 @@ msgstr "Mapa de \"%s\""
 msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
 "instances."
-msgstr ""
-"O atributo '%(fieldname)s' só pode ser acedido das instância de "
-"%(ownername)s."
+msgstr "O atributo '%(fieldname)s' só pode ser acedido das instância de %(ownername)s."
 
 #: maps/fields.py:217
 #, python-format
 msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
-msgstr ""
-"não é possível atribuir ao conjunto %(cname)s CollectionFrom um valor do "
-"tipo: %(vtype)s"
+msgstr "não é possível atribuir ao conjunto %(cname)s CollectionFrom um valor do tipo: %(vtype)s"
 
 #: maps/validators.py:14
 #, python-format
@@ -301,9 +285,8 @@ msgid "Map tiles via"
 msgstr "Blocos do mapa via"
 
 #: maps/templates/maps/base.html:8
-#, fuzzy
 msgid "Recent changes on this Map"
-msgstr "Alterações recentes neste mapa"
+msgstr ""
 
 #: maps/templates/maps/base.html:17 maps/templates/maps/mapdata_list.html:22
 #: maps/templates/maps/mapdata_list.html:28
@@ -462,9 +445,7 @@ msgstr "A página %s não existe! Por favor, introduza um nome de página válid
 msgid ""
 "Warning: someone else saved this page before you.  Please resolve edit "
 "conflicts and save again."
-msgstr ""
-"Aviso: outra pessou gravou esta página antes de si. Por favor, resolva os "
-"conflitos de edição e grave novamente."
+msgstr "Aviso: outra pessou gravou esta página antes de si. Por favor, resolva os conflitos de edição e grave novamente."
 
 #: pages/forms.py:46
 msgid "A page with this name already exists"
@@ -479,9 +460,9 @@ msgid "Page name is invalid."
 msgstr "Nome da página inválido"
 
 #: pages/models.py:124 pages/models.py:136
-#, fuzzy, python-format
+#, python-format
 msgid "Renamed from \"%s\""
-msgstr "Nome alterado de \"%s\""
+msgstr ""
 
 #: pages/models.py:128
 #, python-format
@@ -498,11 +479,9 @@ msgstr "ficheiro"
 
 #: pages/plugins.py:414
 msgid ""
-"The embedded URL is not on the list of approved providers.  Contact the site "
-"administrator to add it."
-msgstr ""
-"O URL (embedded) não está na lista dos fornecedores permitidos.  Contacte o "
-"administrador do site para o adicionar."
+"The embedded URL is not on the list of approved providers.  Contact the site"
+" administrator to add it."
+msgstr "O URL (embedded) não está na lista dos fornecedores permitidos.  Contacte o administrador do site para o adicionar."
 
 #: pages/plugins.py:418
 msgid "Invalid embed code"
@@ -514,14 +493,12 @@ msgid "Search or create page"
 msgstr "Pesquisar ou criar página"
 
 #: pages/signals.py:13
-#, fuzzy
 msgid "Redirect created"
-msgstr "Redirecionamento criado"
+msgstr ""
 
 #: pages/signals.py:19
-#, fuzzy
 msgid "Page created"
-msgstr "Página criada"
+msgstr ""
 
 #: pages/views.py:129
 msgid "Thank you for your changes. Your attention to detail is appreciated."
@@ -530,24 +507,18 @@ msgstr "Obrigado pelas alterações. Apreciamos a sua atenção ao detalhe."
 #: pages/views.py:132
 #, python-format
 msgid ""
-"Changes saved! To use your name when editing, please <a href=\"%(login_url)s?"
-"next=%(current_path)s\"><strong>log in</strong></a> or <a href="
-"\"%(register_url)s?next=%(current_path)s\"><strong>create an account</"
-"strong></a>."
-msgstr ""
-"Alterações gravadas! Para usar o seu nome na edição, por favor <a href="
-"\"%(login_url)s?next=%(current_path)s\"><strong>entre no site</strong></a> "
-"ou <a href=\"%(register_url)s?next=%(current_path)s\"><strong>crie uma "
-"conta</strong></a>."
+"Changes saved! To use your name when editing, please <a "
+"href=\"%(login_url)s?next=%(current_path)s\"><strong>log in</strong></a> or "
+"<a href=\"%(register_url)s?next=%(current_path)s\"><strong>create an "
+"account</strong></a>."
+msgstr "Alterações gravadas! Para usar o seu nome na edição, por favor <a href=\"%(login_url)s?next=%(current_path)s\"><strong>entre no site</strong></a> ou <a href=\"%(register_url)s?next=%(current_path)s\"><strong>crie uma conta</strong></a>."
 
 #: pages/views.py:144
 #, python-format
 msgid ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
 "class=\"text\">Create a map</span></a> for this page?</p>"
-msgstr ""
-"<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
-"class=\"text\">Criar um mapa</span></a> para esta página?</p>"
+msgstr "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span class=\"text\">Criar um mapa</span></a> para esta página?</p>"
 
 #: pages/views.py:157
 #, python-format
@@ -563,9 +534,8 @@ msgid "A file with this name already exists"
 msgstr "Já existe um ficheiro com este nome"
 
 #: pages/views.py:428
-#, fuzzy
 msgid "New page name"
-msgstr "Nome da página superior alterado"
+msgstr ""
 
 #: pages/views.py:429 versionutils/versioning/forms.py:17
 msgid "Comment"
@@ -609,9 +579,8 @@ msgid "Edit map"
 msgstr "Editar mapa"
 
 #: pages/templates/pages/editor_actions.html:6
-#, fuzzy
 msgid "Delete page"
-msgstr "Apagar página"
+msgstr ""
 
 #: pages/templates/pages/editor_actions.html:8
 msgid "Redirect"
@@ -645,15 +614,12 @@ msgid "Differences for <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
 msgstr "Diferenças para <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
 
 #: pages/templates/pages/page_diff.html:34
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
-"                        Revision %(version_number)s ( %(date)s by "
-"%(user_link)s)\n"
+"                        Revision %(version_number)s ( %(date)s by %(user_link)s)\n"
 "                    "
 msgstr ""
-"Revisão %(version_number)s\n"
-"                  ( %(date)s por %(user_link)s)"
 
 #: pages/templates/pages/page_diff.html:38
 #: pages/templates/pages/page_diff.html:51
@@ -665,14 +631,12 @@ msgid ""
 msgstr ""
 
 #: pages/templates/pages/page_diff.html:47
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "\t\t\t        Revision %(version_number)s (%(date)s by %(user_link)s)\n"
 "\t\t          "
 msgstr ""
-"Revisão %(version_number)s\n"
-"                (%(date)s por %(user_link)s)"
 
 #: pages/templates/pages/page_files.html:22
 msgid "Files attached to this page:"
@@ -688,9 +652,8 @@ msgid "Editing page \"%(name)s\" - %(super)s"
 msgstr "A editar a página \"%(name)s\" - %(super)s"
 
 #: pages/templates/pages/page_form.html:71
-#, fuzzy
 msgid "Please describe this change:"
-msgstr "Por favor coloque uma descrição da alteração:"
+msgstr ""
 
 #: pages/templates/pages/page_list.html:7
 #: pages/templates/pages/page_list.html:9
@@ -723,14 +686,13 @@ msgid "Create with %(name)s template"
 msgstr "Criar com o modelo %(name)s"
 
 #: pages/templates/pages/page_permissions.html:7
-#, fuzzy, python-format
+#, python-format
 msgid "Permissions for page \"%(name)s\" - %(super)s"
-msgstr "Versões anteriores da página \"%(name)s\" - %(super)s"
+msgstr ""
 
 #: pages/templates/pages/page_permissions.html:15
-#, fuzzy
 msgid "Who can change this page?"
-msgstr "Alterações recentes nesta Paǵina"
+msgstr ""
 
 #: pages/templates/pages/page_permissions.html:17
 #: redirects/templates/redirects/redirect_permissions.html:17
@@ -763,11 +725,9 @@ msgstr "Versões anteriores da página \"%(name)s\" - %(super)s"
 
 #: pages/templates/pages/page_versions.html:21
 msgid ""
-" Looking for <a href=\"../_files/\">files</a> or <a href=\"../_tags/_history/"
-"\">tags</a>?"
-msgstr ""
-" À procura de <a href=\"../_files/\">ficheiros</a> ou <a href=\"../_tags/"
-"_history/\">etiquetas</a>?"
+" Looking for <a href=\"../_files/\">files</a> or <a "
+"href=\"../_tags/_history/\">tags</a>?"
+msgstr " À procura de <a href=\"../_files/\">ficheiros</a> ou <a href=\"../_tags/_history/\">etiquetas</a>?"
 
 #: pages/templates/pages/pagefile_diff.html:37
 #, python-format
@@ -777,22 +737,17 @@ msgstr "Diferenças para %(new_name)s em %(new_slug)s"
 #: pages/templates/pages/pagefile_diff.html:38
 #, python-format
 msgid ""
-"Differences for %(new_name)s on <a href=\"%(url_pages_show)s\">"
-"%(new_attached_to_page)s</a>"
-msgstr ""
-"Diferenças para \"%(new_name)s\" em <a href=\"%(url_pages_show)s\">"
-"%(new_attached_to_page)s</a>"
+"Differences for %(new_name)s on <a "
+"href=\"%(url_pages_show)s\">%(new_attached_to_page)s</a>"
+msgstr "Diferenças para \"%(new_name)s\" em <a href=\"%(url_pages_show)s\">%(new_attached_to_page)s</a>"
 
 #: pages/templates/pages/pagefile_diff.html:47
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
-"                      Revision %(version_number)s ( %(date)s by "
-"%(user_link)s)\n"
+"                      Revision %(version_number)s ( %(date)s by %(user_link)s)\n"
 "                  "
 msgstr ""
-"Revisão %(version_number)s\n"
-"                  ( %(date)s por %(user_link)s)"
 
 #: pages/templates/pages/pagefile_diff.html:51
 #: pages/templates/pages/pagefile_diff.html:64
@@ -804,23 +759,20 @@ msgid ""
 msgstr ""
 
 #: pages/templates/pages/pagefile_diff.html:60
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "\t\t          Revision %(version_number)s (%(date)s by %(user_link)s)\n"
 "\t\t        "
 msgstr ""
-"Revisão %(version_number)s\n"
-"                (%(date)s por %(user_link)s)"
 
 #: pages/templates/pages/pagefile_diff.html:88
 msgid "File info"
 msgstr "Informações sobre o ficheiro"
 
 #: pages/templates/pages/pagefile_info.html:7
-#, fuzzy
 msgid "Recent changes for this file"
-msgstr "Alterações recentes para este ficheiro"
+msgstr ""
 
 #: pages/templates/pages/pagefile_info.html:14
 #, python-format
@@ -830,11 +782,9 @@ msgstr "Informações sobre \"%(name)s\" em %(slug)s - %(super)s"
 #: pages/templates/pages/pagefile_info.html:15
 #, python-format
 msgid ""
-"Information about \"%(name)s\" on <a href=\"%(pages_show_url)s\">"
-"%(attached_to_page)s</a>"
-msgstr ""
-"Informações sobre \"%(name)s\" em <a href=\"%(pages_show_url)s\">"
-"%(attached_to_page)s</a>"
+"Information about \"%(name)s\" on <a "
+"href=\"%(pages_show_url)s\">%(attached_to_page)s</a>"
+msgstr "Informações sobre \"%(name)s\" em <a href=\"%(pages_show_url)s\">%(attached_to_page)s</a>"
 
 #: pages/templates/pages/pagefile_info.html:39
 #, python-format
@@ -857,25 +807,21 @@ msgstr "Versões anteriores:"
 #: pages/templatetags/pages_tags.py:113
 #, python-format
 msgid ""
-"Unable to include <a href=\"%(page_url)s\" class=\"missing_link\">"
-"%(page_name)s</a>"
-msgstr ""
-"Não foi possível incluir a página <a href=\"%(page_url)s\" class="
-"\"missing_link\">%(page_name)s</a>"
+"Unable to include <a href=\"%(page_url)s\" "
+"class=\"missing_link\">%(page_name)s</a>"
+msgstr "Não foi possível incluir a página <a href=\"%(page_url)s\" class=\"missing_link\">%(page_name)s</a>"
 
 #: pages/templatetags/pages_tags.py:121
 #, python-format
 msgid ""
 "Unable to include <a href=\"%(page_url)s\">%(page_name)s</a>: endless "
 "include loop."
-msgstr ""
-"Não foi possível incluir a página<a href=\"%(page_url)s\">%(page_name)s</a>: "
-"ciclo infinito .)"
+msgstr "Não foi possível incluir a página<a href=\"%(page_url)s\">%(page_name)s</a>: ciclo infinito .)"
 
 #: recentchanges/feeds.py:40
-#, fuzzy, python-format
+#, python-format
 msgid "Recent Changes on %s"
-msgstr "Alterações Recentes"
+msgstr ""
 
 #: recentchanges/feeds.py:46
 #, python-format
@@ -947,11 +893,9 @@ msgstr "Redirecionado para <a href=\"%(url)s\">%(destination)s</a>"
 #: recentchanges/templates/recentchanges/recentchanges.html:88
 #, python-format
 msgid ""
-"For statistics about pages, maps, and more, check out the <a href="
-"\"%(dashboard_main_url)s\">dashboard</a>"
-msgstr ""
-"Para estatísticas sobre páginas, mapas e outras coisas, veja o <a href="
-"\"%(dashboard_main_url)s\">painel de gestão</a>"
+"For statistics about pages, maps, and more, check out the <a "
+"href=\"%(dashboard_main_url)s\">dashboard</a>"
+msgstr "Para estatísticas sobre páginas, mapas e outras coisas, veja o <a href=\"%(dashboard_main_url)s\">painel de gestão</a>"
 
 #: redirects/feeds.py:25
 #, python-format
@@ -999,9 +943,9 @@ msgid "Create redirect"
 msgstr "Criar redirecionamento"
 
 #: redirects/templates/redirects/redirect_permissions.html:7
-#, fuzzy, python-format
+#, python-format
 msgid "Permissions for redirect \"%(name)s\" - %(super)s"
-msgstr "Versões anteriores da página \"%(name)s\" - %(super)s"
+msgstr ""
 
 #: redirects/templates/redirects/redirect_permissions.html:15
 msgid "Who can change this redirect?"
@@ -1045,19 +989,14 @@ msgstr ""
 msgid "Banned users updated."
 msgstr ""
 
-#. Translators: Please fix the links here to point to "Place," "Business", "Disambiguation", "Restaurant" as translated in your language.
+#. Translators: Please fix the links here to point to "Place," "Business",
+#. "Disambiguation", "Restaurant" as translated in your language.
 #: regions/initial_data/__init__.py:18
 msgid ""
 "<p>\n"
-"    \tTemplates are special pages that serve as a starting point when "
-"creating a new page. &nbsp;Using a common template for related topics gives "
-"those pages a common structure. &nbsp;To use one of the templates, simply "
-"select the template when creating a new page. &nbsp;</p>\n"
+"    \tTemplates are special pages that serve as a starting point when creating a new page. &nbsp;Using a common template for related topics gives those pages a common structure. &nbsp;To use one of the templates, simply select the template when creating a new page. &nbsp;</p>\n"
 "    <p>\n"
-"    \tBelow is a list of the available templates. To add a new template, "
-"create a page whose title starts with &quot;Templates/&quot;, as in <a href="
-"\"Templates%2FBusiness\">Templates/Business</a>. &nbsp;When you create a new "
-"template, add it to this list so it&#39;s easier to find.</p>\n"
+"    \tBelow is a list of the available templates. To add a new template, create a page whose title starts with &quot;Templates/&quot;, as in <a href=\"Templates%2FBusiness\">Templates/Business</a>. &nbsp;When you create a new template, add it to this list so it&#39;s easier to find.</p>\n"
 "    <h3>\n"
 "    \t<span>List of templates</span></h3>\n"
 "    <ul>\n"
@@ -1066,8 +1005,7 @@ msgid ""
 "    \t<li>\n"
 "    \t\t<a href=\"Templates%2FBusiness\">Templates/Business</a></li>\n"
 "    \t<li>\n"
-"    \t\t<a href=\"Templates%2FDisambiguation\">Templates/Disambiguation</a></"
-"li>\n"
+"    \t\t<a href=\"Templates%2FDisambiguation\">Templates/Disambiguation</a></li>\n"
 "    \t<li>\n"
 "    \t\t<a href=\"Templates%2FRestaurant\">Templates/Restaurant</a></li>\n"
 "    </ul>"
@@ -1109,9 +1047,7 @@ msgid ""
 "    \t</tbody>\n"
 "    </table>\n"
 "    <p>\n"
-"    \tThe <strong>Thing I&#39;m Talking About</strong> should have a blurb "
-"here with links to relevant things, like the <a href=\"Front%20Page\">Front "
-"Page</a>.</p>\n"
+"    \tThe <strong>Thing I&#39;m Talking About</strong> should have a blurb here with links to relevant things, like the <a href=\"Front%20Page\">Front Page</a>.</p>\n"
 "    <h2>\n"
 "    \tSection Title</h2>\n"
 "    <p>\n"
@@ -1194,13 +1130,9 @@ msgid ""
 "    \t</tbody>\n"
 "    </table>\n"
 "    <p>\n"
-"    \tThen, put&nbsp;<em>whatever</em>&nbsp;you want down here! Note "
-"that&nbsp;<a href=\"http://local.google.com\">http://local.google.com</"
-"a>&nbsp;is sometimes a good and easy place to find times/phone. Better yet, "
-"look them up in the phone book, and ask them.</p>\n"
+"    \tThen, put&nbsp;<em>whatever</em>&nbsp;you want down here! Note that&nbsp;<a href=\"http://local.google.com\">http://local.google.com</a>&nbsp;is sometimes a good and easy place to find times/phone. Better yet, look them up in the phone book, and ask them.</p>\n"
 "    <p>\n"
-"    \tRemember to add this restaurant to the neighborhood&nbsp;<a href="
-"\"restaurants\">restaurants</a>&nbsp;page.</p>\n"
+"    \tRemember to add this restaurant to the neighborhood&nbsp;<a href=\"restaurants\">restaurants</a>&nbsp;page.</p>\n"
 "    <h3>\n"
 "    \tRelated Links</h3>\n"
 "    <ul>\n"
@@ -1296,12 +1228,7 @@ msgid ""
 "    \t</tbody>\n"
 "    </table>\n"
 "    <p>\n"
-"    \tThen, put&nbsp;<em>whatever</em>&nbsp;you want down here! Note "
-"that&nbsp;<a href=\"http://local.google.com\">http://local.google.com</"
-"a>&nbsp;is sometimes a good and easy place to find times/phone. Better yet, "
-"look them up in the phone book, and ask them. Remove the fields you don&#39;"
-"t fill out &mdash; or even better, look up or call them for the missing "
-"information!</p>\n"
+"    \tThen, put&nbsp;<em>whatever</em>&nbsp;you want down here! Note that&nbsp;<a href=\"http://local.google.com\">http://local.google.com</a>&nbsp;is sometimes a good and easy place to find times/phone. Better yet, look them up in the phone book, and ask them. Remove the fields you don&#39;t fill out &mdash; or even better, look up or call them for the missing information!</p>\n"
 "    <h3>\n"
 "    \tRelated Links</h3>\n"
 "    <ul>\n"
@@ -1314,50 +1241,37 @@ msgstr ""
 
 #. Translators: This is for "Templates/Disambiguation" - a template page
 #: regions/initial_data/__init__.py:263
-#, fuzzy
 msgid "Disambiguation"
-msgstr "Destino"
+msgstr ""
 
 #: regions/initial_data/__init__.py:267
 msgid ""
 "<p>\n"
-"    \tThis has multiple meanings. You are probably looking for information "
-"on one of the following:</p>\n"
+"    \tThis has multiple meanings. You are probably looking for information on one of the following:</p>\n"
 "    <ul>\n"
 "    \t<li>\n"
-"    \t\t<a href=\"ItemOne\">ItemOne</a>&nbsp;- A brief summary of ItemOne</"
-"li>\n"
+"    \t\t<a href=\"ItemOne\">ItemOne</a>&nbsp;- A brief summary of ItemOne</li>\n"
 "    \t<li>\n"
-"    \t\t<a href=\"ItemTwo\">ItemTwo</a>&nbsp;- A brief summary of ItemTwo</"
-"li>\n"
+"    \t\t<a href=\"ItemTwo\">ItemTwo</a>&nbsp;- A brief summary of ItemTwo</li>\n"
 "    </ul>\n"
 "    <p>\n"
 "    \t&nbsp;</p>\n"
 "    <p>\n"
-"    \tThis is a&nbsp;<em>disambiguation</em> page&nbsp;&mdash; a "
-"navigational aid which lists other pages that might otherwise share the same "
-"title. If an page link referred you here, you might want to go back and fix "
-"it to point directly to the intended page.</p>"
+"    \tThis is a&nbsp;<em>disambiguation</em> page&nbsp;&mdash; a navigational aid which lists other pages that might otherwise share the same title. If an page link referred you here, you might want to go back and fix it to point directly to the intended page.</p>"
 msgstr ""
 
 #: regions/initial_data/__init__.py:285
 #, python-format
 msgid ""
 "<p>\n"
-"    \tWelcome to the new LocalWiki region for %(region)s! There are "
-"currently just a handful of pages in it, to get you started.\n"
+"    \tWelcome to the new LocalWiki region for %(region)s! There are currently just a handful of pages in it, to get you started.\n"
 "    <p>\n"
-"    \tClick on <strong>All Pages</strong> at the top to see what's here now."
-"</p>\n"
+"    \tClick on <strong>All Pages</strong> at the top to see what's here now.</p>\n"
 "    <p>\n"
-"    \tYou can edit this and any other page by clicking the <strong>Edit</"
-"strong> button.</p>\n"
+"    \tYou can edit this and any other page by clicking the <strong>Edit</strong> button.</p>\n"
 "    <p>\n"
-"    \tTo create a new page, type a page name into the search box and press "
-"<strong>Search or create page</strong>.</p>\n"
-"    <p>Need <strong>help</strong>? Please see the <a href=\"http://localwiki."
-"net/main/Help\">help page</a> on the <a href=\"http://localwiki.net/main/"
-"\">LocalWiki Guide</a>!</p>"
+"    \tTo create a new page, type a page name into the search box and press <strong>Search or create page</strong>.</p>\n"
+"    <p>Need <strong>help</strong>? Please see the <a href=\"http://localwiki.net/main/Help\">help page</a> on the <a href=\"http://localwiki.net/main/\">LocalWiki Guide</a>!</p>"
 msgstr ""
 
 #: regions/templates/regions/admins_update.html:6
@@ -1371,8 +1285,7 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"        <a href=\"%(region_settings)s\">Settings</a> for <a href=\"%(url)s\">"
-"%(region_slug)s</a>\n"
+"        <a href=\"%(region_settings)s\">Settings</a> for <a href=\"%(url)s\">%(region_slug)s</a>\n"
 "    "
 msgstr ""
 
@@ -1392,9 +1305,8 @@ msgid "Add region"
 msgstr ""
 
 #: regions/templates/regions/region_form.html:8
-#, fuzzy
 msgid "Add a region"
-msgstr "Adicionar etiquetas"
+msgstr ""
 
 #: regions/templates/regions/region_form.html:47
 msgid "Draw the rough area the region will cover"
@@ -1402,7 +1314,8 @@ msgstr ""
 
 #: regions/templates/regions/region_form.html:48
 #: regions/templates/regions/settings.html:69
-msgid "Pick an area roughly the size of a city. Don't worry about being exact!"
+msgid ""
+"Pick an area roughly the size of a city. Don't worry about being exact!"
 msgstr ""
 
 #: regions/templates/regions/region_list.html:6
@@ -1414,16 +1327,12 @@ msgid "Regions"
 msgstr ""
 
 #: regions/templates/regions/settings.html:9
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "        Settings for <a href=\"%(url)s\">%(region_slug)s</a>\n"
 "    "
 msgstr ""
-"\n"
-"Esta página não tem etiquetas.  <a href=\"%(page_url)s\">Adicione algumas!</"
-"a>\n"
-"    "
 
 #: regions/templates/regions/settings.html:45
 msgid "Admins"
@@ -1551,16 +1460,11 @@ msgid ""
 "\n"
 "        This page has no tags.  <a href=\"%(page_url)s\">Add some!</a>\n"
 "    "
-msgstr ""
-"\n"
-"Esta página não tem etiquetas.  <a href=\"%(page_url)s\">Adicione algumas!</"
-"a>\n"
-"    "
+msgstr "\nEsta página não tem etiquetas.  <a href=\"%(page_url)s\">Adicione algumas!</a>\n    "
 
 #: tags/templates/tags/tag_list.html:5
-#, fuzzy
 msgid "All tags"
-msgstr "Todas as Etiquetas"
+msgstr ""
 
 #: tags/templates/tags/tag_list.html:17
 msgid "Alphabetical"
@@ -1652,9 +1556,7 @@ msgstr "Erro no processo de redefinir senha"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
-msgstr ""
-"O URL para redefinir a senha é inválido, possivelmente porque já foi usado. "
-"Por favor volte a pedir a redefinição da senha."
+msgstr "O URL para redefinir a senha é inválido, possivelmente porque já foi usado. Por favor volte a pedir a redefinição da senha."
 
 #: templates/registration/password_reset_done.html:4
 #: templates/registration/password_reset_done.html:5
@@ -1671,11 +1573,9 @@ msgstr "Vai receber um email com instruções para redefinir a senha."
 #: templates/registration/password_reset_email.html:2
 #, python-format
 msgid ""
-"You're receiving this e-mail because you requested a password reset for your "
-"user account at %(site_name)s."
-msgstr ""
-"Esta a receber este email porque pediu a redefinição da senha para a sua "
-"conta de utilizador no %(site_name)s."
+"You're receiving this e-mail because you requested a password reset for your"
+" user account at %(site_name)s."
+msgstr "Esta a receber este email porque pediu a redefinição da senha para a sua conta de utilizador no %(site_name)s."
 
 #: templates/registration/password_reset_email.html:4
 msgid "Please go to the following page and choose a new password:"
@@ -1698,9 +1598,7 @@ msgstr "A equipa %(site_name)s"
 msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll e-mail "
 "instructions for setting a new one."
-msgstr ""
-"Esqueceu a senha? Coloque o seu email e enviamos instruções para poder "
-"redefinir a senha."
+msgstr "Esqueceu a senha? Coloque o seu email e enviamos instruções para poder redefinir a senha."
 
 #: templates/registration/password_reset_form.html:14
 msgid "E-mail address:"
@@ -1717,9 +1615,7 @@ msgstr "Criar conta"
 #: themes/sapling/templates/site/base.html:154
 msgid ""
 "\n"
-"      LocalWiki is a grassroots effort to collect, share and open the "
-"world’s local knowledge.  We are a 501(c)3 non-profit organization. <a href="
-"\"http://localwiki.org/about/\" target=\"_blank\">Learn more</a>.</p>\n"
+"      LocalWiki is a grassroots effort to collect, share and open the world’s local knowledge.  We are a 501(c)3 non-profit organization. <a href=\"http://localwiki.org/about/\" target=\"_blank\">Learn more</a>.</p>\n"
 "      "
 msgstr ""
 
@@ -1784,9 +1680,8 @@ msgid "Only these users"
 msgstr ""
 
 #: users/views.py:91
-#, fuzzy
 msgid "Permissions updated!"
-msgstr "Permissões"
+msgstr ""
 
 #: users/registration_backend/__init__.py:61
 msgid "You are signed up and logged in!"
@@ -1829,9 +1724,7 @@ msgstr "Já existe um utilizador com esse nome."
 msgid ""
 "This email address is already in use. Please supply a different email "
 "address."
-msgstr ""
-"Já existe um utilizador com esse endereço de e-mail. Por favor, use um "
-"endereço de e-mail diferente."
+msgstr "Já existe um utilizador com esse endereço de e-mail. Por favor, use um endereço de e-mail diferente."
 
 #: users/templates/users/subscribed_list.html:4
 msgid "List of subscribers"
@@ -1843,8 +1736,8 @@ msgstr "Endereços de email de subscritores:"
 
 #: utils/views.py:84
 msgid ""
-"Anonymous users may not perform this action. Please <a href=\"/Users/login/"
-"\">log in</a>."
+"Anonymous users may not perform this action. Please <a "
+"href=\"/Users/login/\">log in</a>."
 msgstr ""
 
 #: utils/templates/utils/history/form.html:13
@@ -1884,17 +1777,13 @@ msgstr "Transferir versão adicionada"
 msgid ""
 "Warning: someone else made changes before you.  Please review the changes "
 "and save again."
-msgstr ""
-"Aviso: alguém gravou alterações antes de si. Por favor verifique as "
-"alterações e volte a gravar."
+msgstr "Aviso: alguém gravou alterações antes de si. Por favor verifique as alterações e volte a gravar."
 
 #: versionutils/merging/forms.py:55
 msgid ""
 "Someone else made changes before you but yourchanges were successfully "
 "merged."
-msgstr ""
-"Alguém gravou alterações antes de si mas as suas alterações foram "
-"introduzidas com sucesso."
+msgstr "Alguém gravou alterações antes de si mas as suas alterações foram introduzidas com sucesso."
 
 #: versionutils/templates/versionutils/history/form.html:8
 #: versionutils/templates/versionutils/history/form.html:15
@@ -1938,9 +1827,8 @@ msgid "Reverted/Deleted via cascade"
 msgstr "Revertido/Apagado por cascata"
 
 #: versionutils/versioning/constants.py:22
-#, fuzzy
 msgid "Reverted via cascade"
-msgstr "Apagado por cascata"
+msgstr ""
 
 #: versionutils/versioning/forms.py:47
 msgid "Reason for deletion"
@@ -1962,33 +1850,3 @@ msgstr "Removido com sucesso!"
 #, python-format
 msgid "Reverted to version %s."
 msgstr "Revertido para a versão %s."
-
-#~ msgid "<p>Describe %s here</p>"
-#~ msgstr "<p>Descreva %s aqui</p>"
-
-#~ msgid "Pagename"
-#~ msgstr "Nome da Página"
-
-#~ msgid "Rename page"
-#~ msgstr "Mudar o nome da página"
-
-#~ msgid ""
-#~ "Revision %(page.version_info.version_number)s\n"
-#~ "          (%(date)s by %(user_link)s)"
-#~ msgstr ""
-#~ "Revisão %(page.version_info.version_number)s\n"
-#~ "          (%(date)s por %(user_link)s)"
-
-#~ msgid ""
-#~ "Revision %(version_number)s\n"
-#~ "                  (%(date)s by %(user_link)s)"
-#~ msgstr ""
-#~ "Revisão %(version_number)s\n"
-#~ "                  ( %(date)s por %(user_link)s)"
-
-#~ msgid "Groups"
-#~ msgstr "Grupos"
-
-#, fuzzy
-#~ msgid "File %(filename)=s on page \"%(pagename)s\""
-#~ msgstr "Ficheiro %(filename)s na página \"%(pagename)s\""
