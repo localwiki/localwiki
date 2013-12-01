@@ -607,7 +607,7 @@ def touch_wsgi():
 def update(local=False):
     if not local:
         update_code()
-    rebuild_virtualenv()  # rebuild since it may be out of date and broken
+    # rebuild_virtualenv()  # rebuild since it may be out of date and broken
     with cd(env.src_root):
         with virtualenv():
             sudo("python setup.py clean --all", user="www-data")

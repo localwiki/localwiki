@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-30 08:45+0000\n"
+"POT-Creation-Date: 2013-12-01 22:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -124,14 +124,6 @@ msgstr ""
 msgid "Users registered over time"
 msgstr ""
 
-#: frontpage/models.py:11
-msgid "cover_photo"
-msgstr ""
-
-#: frontpage/models.py:13
-msgid "cover_photo_full"
-msgstr ""
-
 #: frontpage/views.py:129
 msgid "Cover photo updated!"
 msgstr ""
@@ -231,6 +223,10 @@ msgstr ""
 
 #: main/settings/defaults.py:68
 msgid "Japanese"
+msgstr ""
+
+#: main/settings/defaults.py:69
+msgid "German"
 msgstr ""
 
 #: maps/feeds.py:21 maps/feeds.py:40

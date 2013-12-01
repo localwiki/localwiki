@@ -8,9 +8,9 @@ from regions.models import Region
 
 
 class FrontPage(models.Model):
-    cover_photo = models.ImageField(ugettext_lazy("cover_photo"), upload_to="frontpage/files/",
+    cover_photo = models.ImageField("cover_photo", upload_to="frontpage/files/",
         storage=RandomFilenameFileSystemStorage(), null=True)
-    cover_photo_full = models.ImageField(ugettext_lazy("cover_photo_full"), upload_to="frontpage/files/",
+    cover_photo_full = models.ImageField("cover_photo_full", upload_to="frontpage/files/",
         storage=RandomFilenameFileSystemStorage(), null=True)
     cover_photo_crop_bbox_left = models.IntegerField(null=True)
     cover_photo_crop_bbox_upper = models.IntegerField(null=True)
