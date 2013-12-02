@@ -14,22 +14,12 @@ from regions.views import MainPageView
 from utils.views import NamedRedirectView
 from users.admin import SubscribedList
 
-from api import load_api_handlers
-# We load all of the api.py files right now.
-# TODO: Change this once Django (1.6?) supports the
-# apps_loaded signal.  Right now, we need to do this
-# to avoid nasty circular imports.
-load_api_handlers()
-from api import api_v2
-
 admin.autodiscover()
 
 
 urlpatterns = patterns('',
     (r'^/*$', MainPageView.as_view()),
     (r'^', include(regions.site.urls)),
-    (r'^api/?$', RedirectView.as_view(url='/api/v2/', query_string=True)),
-    url(r'^api/', include(api_v2.urls)),
     (r'^_api/', include('main.api.internal_urls')),
     (r'^(?P<region>[^/]+?)/map$', NamedRedirectView.as_view(name='maps:global')),
     (r'^(?P<region>[^/]+?)/map/', include(maps.site.urls)),

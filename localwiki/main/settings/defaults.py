@@ -222,7 +222,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.transaction.TransactionMiddleware',
     'utils.middleware.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
-    'main.api.middleware.XsSharing',
 )
 
 PASSWORD_HASHERS = (
@@ -289,7 +288,6 @@ INSTALLED_APPS = (
     'search',
     'frontpage',
     'dashboard',
-    'main.api',
     'main',
     'utils',
 )
