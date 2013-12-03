@@ -13,6 +13,15 @@ class PageViewSet(viewsets.ModelViewSet):
     queryset = Page.objects.all()
     serializer_class = PageSerializer
 
+    def post_save(self, page, *args, **kwargs):
+        if not hasattr(page, 'tags'):
+            # Not providing any tag detail, so let's skip altering the tags.
+            return
+
+        if type(page.tags) is list:
+            # If tags were provided in the request
+            import pdb;pdb.set_trace()
+
 
 class FileViewSet(viewsets.ModelViewSet):
     """
