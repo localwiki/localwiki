@@ -269,7 +269,7 @@ INSTALLED_APPS = (
     'staticfiles',
     'guardian',
     'south',
-    'tastypie',
+    'rest_framework',
     'honeypot',
     'constance.backends.database',
     'constance',
