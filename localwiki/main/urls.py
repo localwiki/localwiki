@@ -14,13 +14,27 @@ from regions.views import MainPageView
 from utils.views import NamedRedirectView
 from users.admin import SubscribedList
 
+from api import load_api_handlers
+# We load all of the api.py files right now.
+# TODO: Change this once Django (1.6?) supports the
+# apps_loaded signal.  Right now, we need to do this
+# to avoid nasty circular imports.
+load_api_handlers()
+from api import router
+
 admin.autodiscover()
 
 
 urlpatterns = patterns('',
     (r'^/*$', MainPageView.as_view()),
     (r'^', include(regions.site.urls)),
+    
+    # API URLs
+    url(r'^api/', include(router.urls)),
+
+    # Internal API URLs
     (r'^_api/', include('main.api.internal_urls')),
+
     (r'^(?P<region>[^/]+?)/map$', NamedRedirectView.as_view(name='maps:global')),
     (r'^(?P<region>[^/]+?)/map/', include(maps.site.urls)),
     (r'^(?P<region>[^/]+?)/tags$', NamedRedirectView.as_view(name='tags:list')),
@@ -29,6 +43,7 @@ urlpatterns = patterns('',
     (r'^(?i)Users/', include('users.urls')),
     (r'^(?P<region>[^/]+?)/search/', include('search.urls')),
     (r'^', include('recentchanges.urls')),
+
     # Historical URL for dashboard:
     (r'^(?P<region>[^/]+?)/tools/dashboard/?$', NamedRedirectView.as_view(name='dashboard:main')),
     (r'^_tools/dashboard/', include(dashboard.site.urls)),

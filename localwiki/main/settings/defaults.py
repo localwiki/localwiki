@@ -288,6 +288,7 @@ INSTALLED_APPS = (
     'search',
     'frontpage',
     'dashboard',
+    'main.api',
     'main',
     'utils',
 )
@@ -296,6 +297,19 @@ LOCAL_INSTALLED_APPS = ()
 TEMPLATE_DIRS = ()
 
 SITE_THEME = 'sapling'
+
+REST_FRAMEWORK = {
+    # Use hyperlinked styles by default.
+    # Only used if the `serializer_class` attribute is not set on a view.
+    'DEFAULT_MODEL_SERIALIZER_CLASS':
+        'rest_framework.serializers.HyperlinkedModelSerializer',
+
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 # For testing, you can start the python debugging smtp server like so:
 # sudo python -m smtpd -n -c DebuggingServer localhost:25
