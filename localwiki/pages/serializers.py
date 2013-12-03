@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import PageFile
+from .models import Page, PageFile
 
 
 class HyperlinkedFileField(serializers.FileField):
@@ -10,6 +10,12 @@ class HyperlinkedFileField(serializers.FileField):
     def to_native(self, value):
         request = self.context.get('request', None)
         return request.build_absolute_uri(value.url) 
+
+
+class PageSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Page
+        fields = ('url', 'name', 'slug', 'content', 'region')
 
 
 class FileSerializer(serializers.HyperlinkedModelSerializer):
