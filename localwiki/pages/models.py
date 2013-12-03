@@ -23,6 +23,13 @@ import exceptions
 from fields import WikiHTMLField
 
 
+def validate_page_slug(slug):
+    if slugify(slug) != slug:
+        raise ValidationError(_('Provided slug is invalid. Slugs must be lowercase, '
+            'contain no trailing or leading whitespace, and contain only alphanumber '
+            'characters along with %(KEEP_CHARACTERS)s') % {'KEEP_CHARACTERS': SLUGIFY_KEEP})
+
+
 class Page(models.Model):
     name = models.CharField(max_length=255, blank=False)
     slug = models.SlugField(max_length=255, editable=False, blank=False)
@@ -210,7 +217,8 @@ class PageFile(models.Model):
     file = models.FileField(ugettext_lazy("file"), upload_to='pages/files/',
                             storage=RandomFilenameFileSystemStorage())
     name = models.CharField(max_length=255, blank=False)
-    slug = models.SlugField(max_length=255, editable=False, blank=False)
+    slug = models.CharField(max_length=255, blank=False,
+        validators=[validate_page_slug])
     region = models.ForeignKey(Region, null=True)
 
     _rough_type_map = [(r'^audio', 'audio'),
@@ -273,7 +281,8 @@ def clean_name(name):
     return name
 
 
-def slugify(value, keep=r"\-\.,'\"/!@$%&*()"):
+SLUGIFY_KEEP = r"\-\.,'\"/!@$%&*()"
+def slugify(value, keep=SLUGIFY_KEEP):
     """
     Normalizes page name for db lookup
 
