@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from main.api import router
 
 from .models import Redirect
-from .serializers import RedirectSerializer
+from .serializers import RedirectSerializer, HistoricalRedirectSerializer
 
 
 class RedirectViewSet(viewsets.ModelViewSet):
@@ -14,4 +14,13 @@ class RedirectViewSet(viewsets.ModelViewSet):
     serializer_class = RedirectSerializer
 
 
+class HistoricalRedirectViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint that allows redirect history to be viewed.
+    """
+    queryset = Redirect.versions.all()
+    serializer_class = HistoricalRedirectSerializer
+
+
 router.register(u'redirects', RedirectViewSet)
+router.register(u'redirects_history', HistoricalRedirectViewSet)
