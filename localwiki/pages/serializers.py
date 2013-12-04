@@ -41,8 +41,14 @@ class PageSerializer(serializers.HyperlinkedModelSerializer):
         # temporarily remove it here.
         tags = attrs.pop('tags', None)
         obj = super(PageSerializer, self).restore_object(attrs, instance)
-        obj.tags = tags
+        obj._tags = tags
         return obj
+
+    def save(self, **kwargs):
+        if self.partial and self.init_data.keys() == ['tags']:
+            # Don't save the Page object if we're just saving tags.
+            return self.object
+        return super(PageSerializer, self).save(**kwargs)
 
 
 class FileSerializer(serializers.HyperlinkedModelSerializer):
