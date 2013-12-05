@@ -32,7 +32,8 @@ def validate_page_slug(slug):
 
 class Page(models.Model):
     name = models.CharField(max_length=255, blank=False)
-    slug = models.SlugField(max_length=255, editable=False, blank=False)
+    slug = models.CharField(max_length=255, editable=False, blank=False, db_index=True,
+        validators=[validate_page_slug])
     content = WikiHTMLField()
     region = models.ForeignKey(Region, null=True)
 
@@ -217,7 +218,8 @@ class PageFile(models.Model):
     file = models.FileField(ugettext_lazy("file"), upload_to='pages/files/',
                             storage=RandomFilenameFileSystemStorage())
     name = models.CharField(max_length=255, blank=False)
-    slug = models.CharField(max_length=255, blank=False,
+    # TODO: Create PageSlugField for this purpose
+    slug = models.CharField(max_length=255, blank=False, db_index=True,
         validators=[validate_page_slug])
     region = models.ForeignKey(Region, null=True)
 

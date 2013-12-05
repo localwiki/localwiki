@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.core.urlresolvers import reverse
 
-from pages.models import Page
+from pages.models import Page, validate_page_slug
 from regions.models import Region
 from versionutils import versioning
 
@@ -11,7 +11,8 @@ import exceptions
 
 
 class Redirect(models.Model):
-    source = models.SlugField(max_length=255, editable=False, blank=False)
+    source = models.CharField(max_length=255, editable=False, blank=False, db_index=True,
+        validators=[validate_page_slug])
     destination = models.ForeignKey(Page)
     region = models.ForeignKey(Region, null=True)
 
