@@ -150,6 +150,7 @@ install_requires = [
     'celery-haystack==0.7.2',
     'djangorestframework==2.3.9',
     'django-filter==0.7',
+    'djangorestframework-gis==0.1.0-beta',
     'markdown==2.3.1',
     'python-memcached',
 ]
@@ -177,6 +178,7 @@ setup(
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom5',
         'https://github.com/philipn/django-south/tarball/localwiki_master#egg=South-0.8.1-custom2',
         'https://github.com/philipn/django-constance/tarball/localwiki#egg=django-constance-0.6-custom1',
+        'https://github.com/philipn/django-rest-framework-gis/tarball/better_geometryfield_detection#egg=djangorestframework-gis-0.1.0-beta',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=localwiki.manage:main'],
