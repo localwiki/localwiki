@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 19:47-0600\n"
-"PO-Revision-Date: 2013-11-29 02:36+0000\n"
-"Last-Translator: nyampire <nyampire@gmail.com>\n"
+"POT-Creation-Date: 2013-12-08 09:19+0000\n"
+"PO-Revision-Date: 2013-12-08 09:27+0000\n"
+"Last-Translator: philipn <philip@localwiki.org>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/localwiki/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -124,14 +124,6 @@ msgstr "ページコンテンツの経時比較"
 msgid "Users registered over time"
 msgstr "ユーザ登録数の経時比較"
 
-#: frontpage/models.py:11
-msgid "cover_photo"
-msgstr "カバー写真"
-
-#: frontpage/models.py:13
-msgid "cover_photo_full"
-msgstr "カバー写真_全体図"
-
 #: frontpage/views.py:129
 msgid "Cover photo updated!"
 msgstr "カバー写真が更新されました！"
@@ -232,28 +224,8 @@ msgid "Japanese"
 msgstr "日本語"
 
 #: main/settings/defaults.py:69
-msgid "Spanish"
-msgstr "Spanish"
-
-#: main/settings/defaults.py:70
-msgid "Russian"
-msgstr "ロシア語"
-
-#: main/settings/defaults.py:71
 msgid "German"
-msgstr "German"
-
-#: main/settings/defaults.py:72
-msgid "Danish"
-msgstr "デンマーク語"
-
-#: main/settings/defaults.py:73
-msgid "Italian"
-msgstr "イタリア語"
-
-#: main/settings/defaults.py:74
-msgid "Portuguese"
-msgstr "ポルトガル語"
+msgstr ""
 
 #: maps/feeds.py:21 maps/feeds.py:40
 #, python-format
@@ -266,11 +238,6 @@ msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
 "instances."
 msgstr "\"%(fieldname)s\" 属性は %(ownername)s インスタンスからのみアクセスできます。"
-
-#: maps/fields.py:217
-#, python-format
-msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
-msgstr "種別: %(vtype)s の値を持つ CollectionFrom %(cname)s をセットできません。"
 
 #: maps/validators.py:14
 #, python-format
@@ -501,11 +468,11 @@ msgstr "リダイレクトが作成されました"
 msgid "Page created"
 msgstr "ページが作成されました"
 
-#: pages/views.py:129
+#: pages/views.py:132
 msgid "Thank you for your changes. Your attention to detail is appreciated."
 msgstr "変更ありがとうございます。詳細を確認して頂ければ幸いです。"
 
-#: pages/views.py:132
+#: pages/views.py:135
 #, python-format
 msgid ""
 "Changes saved! To use your name when editing, please <a "
@@ -514,35 +481,36 @@ msgid ""
 "account</strong></a>."
 msgstr "変更は保存されました！編集時にあなたの名前を使うには <a href=\"%(login_url)s?next=%(current_path)s\"><strong>ログイン</strong></a> するか、<a href=\"%(register_url)s?next=%(current_path)s\"><strong>アカウントを作成</strong></a>してください。"
 
-#: pages/views.py:144
+#: pages/views.py:147
 #, python-format
 msgid ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
 "class=\"text\">Create a map</span></a> for this page?</p>"
 msgstr "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span \"class=\"text\">マップを作成</span></a> しますか？</p>"
 
-#: pages/views.py:157
+#: pages/views.py:160
 #, python-format
 msgid "<p>What do you know about %s?</p>"
 msgstr "<p>%s について知っていることをぜひ教えてください</p>"
 
-#: pages/views.py:350
+#: pages/views.py:353
 msgid "You must provide a page name when creating a page."
 msgstr "ページを作成する際には、ページに名前を付ける必要があります。"
 
-#: pages/views.py:423
+#: pages/views.py:426
 msgid "A file with this name already exists"
 msgstr "この名前のファイルは既に存在しています"
 
-#: pages/views.py:428
+#. Translators: This is for the page rename form.
+#: pages/views.py:432
 msgid "New page name"
 msgstr "新規ページ名"
 
-#: pages/views.py:429 versionutils/versioning/forms.py:17
+#: pages/views.py:433 versionutils/versioning/forms.py:17
 msgid "Comment"
 msgstr "コメント"
 
-#: pages/views.py:464
+#: pages/views.py:468
 #, python-format
 msgid "Page renamed to \"%s\""
 msgstr "ページは \"%s\" にリネームされました"
@@ -952,15 +920,23 @@ msgstr "\"%(name)s\" のリダイレクト許可 \"%(name)s\" - %(super)s"
 msgid "Who can change this redirect?"
 msgstr "このリダイレクト設定を変更できるユーザ"
 
-#: regions/forms.py:36
+#: regions/forms.py:35 regions/forms.py:53
+msgid "Default language"
+msgstr ""
+
+#: regions/forms.py:37
 msgid "The language for the region"
 msgstr "この地域の言語"
 
-#: regions/forms.py:50 regions/models.py:17
+#: regions/forms.py:50
+msgid "Full name"
+msgstr ""
+
+#: regions/forms.py:51 regions/models.py:17
 msgid "The full name of this region, e.g. 'San Francisco'"
 msgstr "地域の正式名称, 例: 'サンフランシスコ'"
 
-#: regions/forms.py:70
+#: regions/forms.py:72
 msgid "You cannot delete yourself as an admin"
 msgstr "自分自身のアカウントを削除することはできません"
 
@@ -991,7 +967,9 @@ msgid "Banned users updated."
 msgstr "禁止ユーザが更新されました"
 
 #. Translators: Please fix the links here to point to "Place," "Business",
-#. "Disambiguation", "Restaurant" as translated in your language.
+#. "Disambiguation", "Restaurant" as translated in your language.  But leave
+#. the "Templates/" part of the page link.  "Templates/" in a URL is currently
+#. hard-coded and must remain in English for now.
 #: regions/initial_data/__init__.py:18
 msgid ""
 "<p>\n"
@@ -1301,9 +1279,27 @@ msgid "LocalWiki"
 msgstr "LocalWiki"
 
 #: regions/templates/regions/main.html:15
+#: regions/templates/regions/main.html:41
 #: regions/templates/regions/region_list.html:17
 msgid "Add region"
 msgstr "地域の追加"
+
+#: regions/templates/regions/main.html:26
+#, python-format
+msgid ""
+"\n"
+"    <p>Welcome to the <strong>insanely</strong> early preview of the <a href=\"http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/\" target=\"_blank\">new version of LocalWiki</a>. We are experimenting with ways to make it easier for people to share knowledge about their community. Please check out the existing projects below, but be warned that all of these are in the very earliest stages of development!</p>\n"
+"\n"
+"    <p>If you've come here to create a new LocalWiki, welcome! It only takes a few minutes to set one up. All you have to do is click the \"Add a Region\" button at the bottom of the screen.</p>\n"
+"\n"
+"    <p>Finally, check out the <strong><a href=\"%(guide_url)s\">LocalWiki Guide</a></strong> for more information about the project and help using the site.</p>\n"
+"    "
+msgstr ""
+
+#: regions/templates/regions/main.html:34
+#: regions/templates/regions/region_list.html:8
+msgid "Regions"
+msgstr "地域"
 
 #: regions/templates/regions/region_form.html:8
 msgid "Add a region"
@@ -1322,10 +1318,6 @@ msgstr "街の範囲を表現してください。細かい部分にこだわら
 #: regions/templates/regions/region_list.html:6
 msgid "Regions - LocalWiki"
 msgstr "地域 - LocalWiki"
-
-#: regions/templates/regions/region_list.html:8
-msgid "Regions"
-msgstr "地域"
 
 #: regions/templates/regions/settings.html:9
 #, python-format
@@ -1647,6 +1639,22 @@ msgstr "関係者"
 #: themes/sapling/templates/site/nav.html:11
 msgid "Settings"
 msgstr "設定"
+
+#: themes/sapling/templates/site/nav.html:14
+msgid "Guide"
+msgstr ""
+
+#: themes/sapling/templates/site/nav.html:15
+msgid "Help"
+msgstr ""
+
+#: themes/sapling/templates/site/nav.html:16
+msgid "Communities"
+msgstr ""
+
+#: themes/sapling/templates/site/nav.html:17
+msgid "About"
+msgstr ""
 
 #: users/__init__.py:7
 msgid "You are now logged out."

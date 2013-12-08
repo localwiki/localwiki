@@ -14,7 +14,7 @@ def populate_region(region):
     Page(
         name="Templates",
         slug="templates",
-        # Translators: Please fix the links here to point to "Place," "Business", "Disambiguation", "Restaurant" as translated in your language.
+        # Translators: Please fix the links here to point to "Place," "Business", "Disambiguation", "Restaurant" as translated in your language.  But leave the "Templates/" part of the page link.  "Templates/" in a URL is currently hard-coded and must remain in English for now.
         content=_("""<p>
     	Templates are special pages that serve as a starting point when creating a new page. &nbsp;Using a common template for related topics gives those pages a common structure. &nbsp;To use one of the templates, simply select the template when creating a new page. &nbsp;</p>
     <p>

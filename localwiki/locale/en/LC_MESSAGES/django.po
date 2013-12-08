@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-01 22:10+0000\n"
+"POT-Creation-Date: 2013-12-08 09:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -239,11 +239,6 @@ msgstr ""
 msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
 "instances."
-msgstr ""
-
-#: maps/fields.py:217
-#, python-format
-msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
 msgstr ""
 
 #: maps/validators.py:14
@@ -508,15 +503,16 @@ msgstr ""
 msgid "A file with this name already exists"
 msgstr ""
 
-#: pages/views.py:431
+#. Translators: This is for the page rename form.
+#: pages/views.py:432
 msgid "New page name"
 msgstr ""
 
-#: pages/views.py:432 versionutils/versioning/forms.py:17
+#: pages/views.py:433 versionutils/versioning/forms.py:17
 msgid "Comment"
 msgstr ""
 
-#: pages/views.py:467
+#: pages/views.py:468
 #, python-format
 msgid "Page renamed to \"%s\""
 msgstr ""
@@ -974,7 +970,7 @@ msgstr ""
 msgid "Banned users updated."
 msgstr ""
 
-#. Translators: Please fix the links here to point to "Place," "Business", "Disambiguation", "Restaurant" as translated in your language.
+#. Translators: Please fix the links here to point to "Place," "Business", "Disambiguation", "Restaurant" as translated in your language.  But leave the "Templates/" part of the page link.  "Templates/" in a URL is currently hard-coded and must remain in English for now.
 #: regions/initial_data/__init__.py:18
 msgid ""
 "<p>\n"

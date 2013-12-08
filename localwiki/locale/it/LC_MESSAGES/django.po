@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 19:47-0600\n"
-"PO-Revision-Date: 2013-11-28 02:08+0000\n"
+"POT-Creation-Date: 2013-12-08 09:19+0000\n"
+"PO-Revision-Date: 2013-12-08 09:27+0000\n"
 "Last-Translator: philipn <philip@localwiki.org>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/localwiki/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -123,14 +123,6 @@ msgstr "Andamento del contenuto della pagina nel tempo"
 msgid "Users registered over time"
 msgstr "Andamento degli utenti registrati"
 
-#: frontpage/models.py:11
-msgid "cover_photo"
-msgstr ""
-
-#: frontpage/models.py:13
-msgid "cover_photo_full"
-msgstr ""
-
 #: frontpage/views.py:129
 msgid "Cover photo updated!"
 msgstr ""
@@ -231,28 +223,8 @@ msgid "Japanese"
 msgstr ""
 
 #: main/settings/defaults.py:69
-msgid "Spanish"
-msgstr ""
-
-#: main/settings/defaults.py:70
-msgid "Russian"
-msgstr ""
-
-#: main/settings/defaults.py:71
 msgid "German"
 msgstr ""
-
-#: main/settings/defaults.py:72
-msgid "Danish"
-msgstr ""
-
-#: main/settings/defaults.py:73
-msgid "Italian"
-msgstr ""
-
-#: main/settings/defaults.py:74
-msgid "Portuguese"
-msgstr "Portoghese"
 
 #: maps/feeds.py:21 maps/feeds.py:40
 #, python-format
@@ -265,11 +237,6 @@ msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
 "instances."
 msgstr "L'attributo '%(fieldname)s' è accessibile solo dalle istanze di %(ownername)s "
-
-#: maps/fields.py:217
-#, python-format
-msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
-msgstr "non posso aggiornare la CollectionFrom %(cname)s con un valore di tipo: %(vtype)s"
 
 #: maps/validators.py:14
 #, python-format
@@ -500,11 +467,11 @@ msgstr "Creata redirezione"
 msgid "Page created"
 msgstr "Pagina creata"
 
-#: pages/views.py:129
+#: pages/views.py:132
 msgid "Thank you for your changes. Your attention to detail is appreciated."
 msgstr "Grazie per le tue modifiche. La tua attenzione ai dettagli è stata molto apprezzata."
 
-#: pages/views.py:132
+#: pages/views.py:135
 #, python-format
 msgid ""
 "Changes saved! To use your name when editing, please <a "
@@ -513,35 +480,36 @@ msgid ""
 "account</strong></a>."
 msgstr "Modifiche salvate! Per utilizzare il tuo nome quando effettui delle modifiche, per favore <a href=\"%(login_url)s?next=%(current_path)s\"><strong>accedi</strong></a> o <a href=\"%(register_url)s?next=%(current_path)s\"><strong>crea un account</strong></a>."
 
-#: pages/views.py:144
+#: pages/views.py:147
 #, python-format
 msgid ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
 "class=\"text\">Create a map</span></a> for this page?</p>"
 msgstr "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span class=\"text\">Vuoi creare una mappa</span></a> per questa pagina?</p>"
 
-#: pages/views.py:157
+#: pages/views.py:160
 #, python-format
 msgid "<p>What do you know about %s?</p>"
 msgstr ""
 
-#: pages/views.py:350
+#: pages/views.py:353
 msgid "You must provide a page name when creating a page."
 msgstr ""
 
-#: pages/views.py:423
+#: pages/views.py:426
 msgid "A file with this name already exists"
 msgstr "Un file con questo nome esiste già"
 
-#: pages/views.py:428
+#. Translators: This is for the page rename form.
+#: pages/views.py:432
 msgid "New page name"
 msgstr ""
 
-#: pages/views.py:429 versionutils/versioning/forms.py:17
+#: pages/views.py:433 versionutils/versioning/forms.py:17
 msgid "Comment"
 msgstr "Commento"
 
-#: pages/views.py:464
+#: pages/views.py:468
 #, python-format
 msgid "Page renamed to \"%s\""
 msgstr "Pagina rinominata come \"%s\""
@@ -951,15 +919,23 @@ msgstr ""
 msgid "Who can change this redirect?"
 msgstr ""
 
-#: regions/forms.py:36
+#: regions/forms.py:35 regions/forms.py:53
+msgid "Default language"
+msgstr ""
+
+#: regions/forms.py:37
 msgid "The language for the region"
 msgstr ""
 
-#: regions/forms.py:50 regions/models.py:17
+#: regions/forms.py:50
+msgid "Full name"
+msgstr ""
+
+#: regions/forms.py:51 regions/models.py:17
 msgid "The full name of this region, e.g. 'San Francisco'"
 msgstr ""
 
-#: regions/forms.py:70
+#: regions/forms.py:72
 msgid "You cannot delete yourself as an admin"
 msgstr ""
 
@@ -990,7 +966,9 @@ msgid "Banned users updated."
 msgstr ""
 
 #. Translators: Please fix the links here to point to "Place," "Business",
-#. "Disambiguation", "Restaurant" as translated in your language.
+#. "Disambiguation", "Restaurant" as translated in your language.  But leave
+#. the "Templates/" part of the page link.  "Templates/" in a URL is currently
+#. hard-coded and must remain in English for now.
 #: regions/initial_data/__init__.py:18
 msgid ""
 "<p>\n"
@@ -1300,8 +1278,26 @@ msgid "LocalWiki"
 msgstr ""
 
 #: regions/templates/regions/main.html:15
+#: regions/templates/regions/main.html:41
 #: regions/templates/regions/region_list.html:17
 msgid "Add region"
+msgstr ""
+
+#: regions/templates/regions/main.html:26
+#, python-format
+msgid ""
+"\n"
+"    <p>Welcome to the <strong>insanely</strong> early preview of the <a href=\"http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/\" target=\"_blank\">new version of LocalWiki</a>. We are experimenting with ways to make it easier for people to share knowledge about their community. Please check out the existing projects below, but be warned that all of these are in the very earliest stages of development!</p>\n"
+"\n"
+"    <p>If you've come here to create a new LocalWiki, welcome! It only takes a few minutes to set one up. All you have to do is click the \"Add a Region\" button at the bottom of the screen.</p>\n"
+"\n"
+"    <p>Finally, check out the <strong><a href=\"%(guide_url)s\">LocalWiki Guide</a></strong> for more information about the project and help using the site.</p>\n"
+"    "
+msgstr ""
+
+#: regions/templates/regions/main.html:34
+#: regions/templates/regions/region_list.html:8
+msgid "Regions"
 msgstr ""
 
 #: regions/templates/regions/region_form.html:8
@@ -1320,10 +1316,6 @@ msgstr ""
 
 #: regions/templates/regions/region_list.html:6
 msgid "Regions - LocalWiki"
-msgstr ""
-
-#: regions/templates/regions/region_list.html:8
-msgid "Regions"
 msgstr ""
 
 #: regions/templates/regions/settings.html:9
@@ -1649,6 +1641,22 @@ msgstr "Persone"
 
 #: themes/sapling/templates/site/nav.html:11
 msgid "Settings"
+msgstr ""
+
+#: themes/sapling/templates/site/nav.html:14
+msgid "Guide"
+msgstr ""
+
+#: themes/sapling/templates/site/nav.html:15
+msgid "Help"
+msgstr ""
+
+#: themes/sapling/templates/site/nav.html:16
+msgid "Communities"
+msgstr ""
+
+#: themes/sapling/templates/site/nav.html:17
+msgid "About"
 msgstr ""
 
 #: users/__init__.py:7

@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# philipn <philip@localwiki.org>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 19:48-0600\n"
-"PO-Revision-Date: 2013-11-28 02:08+0000\n"
+"POT-Creation-Date: 2013-12-08 09:12+0000\n"
+"PO-Revision-Date: 2013-12-08 09:23+0000\n"
 "Last-Translator: philipn <philip@localwiki.org>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/localwiki/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -17,25 +18,25 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: maps/static/olwidget/js/sapling_utils.js:167
+#: maps/static/olwidget/js/sapling_utils.js:168
 msgid " for "
 msgstr "para"
 
-#: maps/static/olwidget/js/sapling_utils.js:212
+#: maps/static/olwidget/js/sapling_utils.js:213
 msgid ""
 "You've made changes but haven't saved.  Are you sure you want to leave this "
 "page?"
 msgstr "Ha realizado cambios pero no los ha guardado. ¿Está seguro de que desea abandonar esta página?"
 
-#: maps/static/olwidget/js/sapling_utils.js:323
+#: maps/static/olwidget/js/sapling_utils.js:324
 msgid "Things on this map:"
 msgstr "Cosas en este mapa:"
 
-#: maps/static/olwidget/js/sapling_utils.js:339
+#: maps/static/olwidget/js/sapling_utils.js:340
 msgid "Things inside "
 msgstr "Cosas dentro"
 
-#: maps/static/olwidget/js/sapling_utils.js:353
+#: maps/static/olwidget/js/sapling_utils.js:354
 msgid "Things near "
 msgstr "Cosas cerca"
 
@@ -93,7 +94,7 @@ msgstr "porcentaje"
 #: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:126
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:126
 msgid "Align"
-msgstr "Alinear"
+msgstr "Alineación"
 
 #: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:131
 #: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:131
