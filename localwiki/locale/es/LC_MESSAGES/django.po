@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-12-08 09:19+0000\n"
-"PO-Revision-Date: 2013-12-08 09:34+0000\n"
-"Last-Translator: philipn <philip@localwiki.org>\n"
+"PO-Revision-Date: 2013-12-08 18:14+0000\n"
+"Last-Translator: julianrod <julianrod@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/localwiki/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -367,7 +367,7 @@ msgstr "Editando mapa de"
 
 #: maps/templates/maps/mapdata_form.html:65
 msgid "Please comment about this change:"
-msgstr "Por favor agregue un comentario sobre este cambio:"
+msgstr "Por favor agrega un comentario sobre este cambio:"
 
 #: maps/templates/maps/mapdata_form.html:69
 #: pages/templates/pages/page_form.html:75
@@ -390,7 +390,7 @@ msgstr "Mapa para página"
 
 #: maps/templates/maps/mapdata_new.html:7
 msgid "does not exist (yet!)"
-msgstr "(todavía) no existe"
+msgstr "no existe (¡todavía!)"
 
 #: maps/templates/maps/mapdata_new.html:15
 msgid "Create this map"
@@ -408,13 +408,13 @@ msgstr "El archivo %(filename)s en la página \"%(pagename)s\""
 #: pages/fields.py:81
 #, python-format
 msgid "Page %s does not exist!  Please enter a valid page name."
-msgstr "¡La página %s no existe! Por favor ingrese un nombre de página válido."
+msgstr "¡La página %s no existe! Por favor ingresa un nombre de página válido."
 
 #: pages/forms.py:15
 msgid ""
 "Warning: someone else saved this page before you.  Please resolve edit "
 "conflicts and save again."
-msgstr "Atención: Otra persona guardó esta página antes que usted. Por favor resuelva los conflictos de edición y guarde nuevamente."
+msgstr "Atención: Otra persona guardó esta página antes que tú. Por favor resuelve los conflictos de edición y guarda nuevamente."
 
 #: pages/forms.py:46
 msgid "A page with this name already exists"
@@ -450,7 +450,7 @@ msgstr "archivo"
 msgid ""
 "The embedded URL is not on the list of approved providers.  Contact the site"
 " administrator to add it."
-msgstr "La URL de inserción no está en la lista de proveedores aprobados. Contáctese con el administrador del sitio para agregarla."
+msgstr "La URL de inserción no está en la lista de proveedores aprobados. Ponte en contacto con el administrador del sitio para agregarla."
 
 #: pages/plugins.py:418
 msgid "Invalid embed code"
@@ -471,7 +471,7 @@ msgstr "Página creada"
 
 #: pages/views.py:132
 msgid "Thank you for your changes. Your attention to detail is appreciated."
-msgstr "Gracias por sus cambios. Apreciamos su atención a los detalles."
+msgstr "Gracias por tus cambios. Apreciamos tu atención a los detalles."
 
 #: pages/views.py:135
 #, python-format
@@ -480,14 +480,14 @@ msgid ""
 "href=\"%(login_url)s?next=%(current_path)s\"><strong>log in</strong></a> or "
 "<a href=\"%(register_url)s?next=%(current_path)s\"><strong>create an "
 "account</strong></a>."
-msgstr "¡Cambios guardados! Para usar su nombre cuando esté editando por favor <a href=\"%(login_url)s?next=%(current_path)s\"><strong>ingrese</strong></a> o <a href=\"%(register_url)s?next=%(current_path)s\"><strong>regístrese</strong></a>."
+msgstr "¡Cambios guardados! Para usar tu nombre cuando estés editando por favor <a href=\"%(login_url)s?next=%(current_path)s\"><strong>ingresa</strong></a> o <a href=\"%(register_url)s?next=%(current_path)s\"><strong>regístrate</strong></a>."
 
 #: pages/views.py:147
 #, python-format
 msgid ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
 "class=\"text\">Create a map</span></a> for this page?</p>"
-msgstr "<p class=\"create_map\">¿<a href=\"%s\" class=\"button little map\"><span class=\"text\">Crear un mapa</span></a> para esta página?</p>"
+msgstr "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span class=\"text\">¿Quieres crear un mapa</span></a> para esta página?</p>"
 
 #: pages/views.py:160
 #, python-format
@@ -697,7 +697,7 @@ msgstr "Versiones anteriores de \"%(name)s\" - %(super)s"
 msgid ""
 " Looking for <a href=\"../_files/\">files</a> or <a "
 "href=\"../_tags/_history/\">tags</a>?"
-msgstr "¿Buscando <a href=\"../_files/\">archivos</a> o <a href=\"../_tags/_history/\">etiquetas</a>?"
+msgstr "¿Estás buscando <a href=\"../_files/\">archivos</a> o <a href=\"../_tags/_history/\">etiquetas</a>?"
 
 #: pages/templates/pages/pagefile_diff.html:37
 #, python-format
@@ -786,7 +786,7 @@ msgstr "Imposible incluir <a href=\"%(page_url)s\" class=\"missing_link\">%(page
 msgid ""
 "Unable to include <a href=\"%(page_url)s\">%(page_name)s</a>: endless "
 "include loop."
-msgstr "Imposible incluir <a href=\"%(page_url)s\">%(page_name)s</a>! bucle infinito de inclusiones."
+msgstr "Imposible incluir <a href=\"%(page_url)s\">%(page_name)s</a>: bucle infinito de inclusiones."
 
 #: recentchanges/feeds.py:40
 #, python-format
@@ -858,14 +858,14 @@ msgstr "Revertido a la versión de hace %(version_date_timesince)s "
 #: recentchanges/templates/recentchanges/recentchanges.html:62
 #, python-format
 msgid "Redirected to <a href=\"%(url)s\">%(destination)s</a>"
-msgstr "Redireccionado hacia <a href=\"%(url)s\">%(destination)s</a>"
+msgstr "Redirigido hacia <a href=\"%(url)s\">%(destination)s</a>"
 
 #: recentchanges/templates/recentchanges/recentchanges.html:88
 #, python-format
 msgid ""
 "For statistics about pages, maps, and more, check out the <a "
 "href=\"%(dashboard_main_url)s\">dashboard</a>"
-msgstr "Para estadísticas sobre páginas, mapas, y más, entre al <a href=\"%(dashboard_main_url)s\">Panel</a>"
+msgstr "Para estadísticas sobre páginas, mapas, y más, entra al <a href=\"%(dashboard_main_url)s\">Panel</a>"
 
 #: redirects/feeds.py:25
 #, python-format
@@ -883,7 +883,7 @@ msgstr "No se puede redirigir una página a sí misma"
 #: redirects/views.py:51 redirects/views.py:117
 #: versionutils/versioning/views.py:67
 msgid "Thank you for your changes. "
-msgstr "Gracias por sus cambios. "
+msgstr "Gracias por tus cambios. "
 
 #: redirects/views.py:52
 #, python-format
@@ -953,7 +953,7 @@ msgstr "La región ya tiene páginas dentro"
 
 #: regions/views.py:49 utils/views.py:83
 msgid "Sorry, you are not allowed to perform this action."
-msgstr "Disculpe, no tiene permitido realizar esta acción."
+msgstr "Disculpa, no tienes permitido realizar esta acción."
 
 #: regions/views.py:173
 msgid "Settings updated!"
@@ -1454,7 +1454,7 @@ msgid ""
 "\n"
 "        This page has no tags.  <a href=\"%(page_url)s\">Add some!</a>\n"
 "    "
-msgstr "\nEsta página no tiene etiquetas. <a href=\"%(page_url)s\">¡Agregue algunas!</a>\n    "
+msgstr "\nEsta página no tiene etiquetas. <a href=\"%(page_url)s\">¡Agrega algunas!</a>\n    "
 
 #: tags/templates/tags/tag_list.html:5
 msgid "All tags"
@@ -1466,7 +1466,7 @@ msgstr "Alfabético"
 
 #: tags/templates/tags/tag_list.html:18
 msgid "Most popular"
-msgstr "Popularidad"
+msgstr "Las más populares"
 
 #: tags/templates/tags/tag_list.html:19
 msgid "As a cloud"
@@ -1487,11 +1487,11 @@ msgstr "Ingresar"
 
 #: templates/registration/login.html:9
 msgid "Your username and password didn't match. Please try again."
-msgstr "Su nombre de usuario y contraseña son incorrectos. Por favor intente nuevamente."
+msgstr "Tu nombre de usuario y contraseña no coinciden. Por favor intenta nuevamente."
 
 #: templates/registration/login.html:10 templates/registration/login.html:22
 msgid "Forgot your password?"
-msgstr "¿Olvidó su contraseña?"
+msgstr "¿Olvidaste tu contraseña?"
 
 #: templates/registration/login.html:18
 #: templates/registration/registration_form.html:34
@@ -1506,7 +1506,7 @@ msgstr "Restauración de contraseña completada"
 
 #: templates/registration/password_reset_complete.html:11
 msgid "Your password has been set.  You may go ahead and log in now."
-msgstr "Su contraseña ha sido guardada. Ya puede ingresar."
+msgstr "Tu contraseña ha sido guardada. Ya puedes ingresar."
 
 #: templates/registration/password_reset_complete.html:13
 msgid "Sign in"
@@ -1528,7 +1528,7 @@ msgstr "Ingresar nueva contraseña"
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
-msgstr "Por favor ingrese su nueva contraseña dos veces para que podamos verificar que fue escrita correctamente."
+msgstr "Por favor ingresa tu nueva contraseña dos veces para que podamos verificar que fue escrita correctamente."
 
 #: templates/registration/password_reset_confirm.html:17
 msgid "New password:"
@@ -1550,7 +1550,7 @@ msgstr "Restauración de contraseña no realizada"
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
-msgstr "El enlace de restauración de contraseña es inválido, posiblemente porque ya haya sido usado. Por favor solicite una nueva restauración de contraseña."
+msgstr "El enlace de restauración de contraseña es inválido, posiblemente porque ya haya sido usado. Por favor solicita una nueva restauración de contraseña."
 
 #: templates/registration/password_reset_done.html:4
 #: templates/registration/password_reset_done.html:5
@@ -1562,22 +1562,22 @@ msgstr "Restauración de contraseña satisfactoria"
 msgid ""
 "We've e-mailed you instructions for setting your password to the e-mail "
 "address you submitted. You should be receiving it shortly."
-msgstr "Le hemos enviado instrucciones para establecer su contraseña a la dirección de correo electrónico que usted ingresó. Debería recibir un mensaje pronto."
+msgstr "Te hemos enviado instrucciones para establecer tu contraseña a la dirección de correo electrónico que ingresaste. Deberías recibir un mensaje pronto."
 
 #: templates/registration/password_reset_email.html:2
 #, python-format
 msgid ""
 "You're receiving this e-mail because you requested a password reset for your"
 " user account at %(site_name)s."
-msgstr "Está recibiendo este mensaje porque solicitó una restauración de contraseña para su cuenta de usuario en %(site_name)s."
+msgstr "Estás recibiendo este mensaje porque solicitaste una restauración de contraseña para tu cuenta de usuario en %(site_name)s."
 
 #: templates/registration/password_reset_email.html:4
 msgid "Please go to the following page and choose a new password:"
-msgstr "Por favor diríjase a la siguiente página y elija una nueva contraseña:"
+msgstr "Por favor diríjete a la siguiente página y elige una nueva contraseña:"
 
 #: templates/registration/password_reset_email.html:8
 msgid "Your username, in case you've forgotten:"
-msgstr "Su nombre de usuario, en caso de que lo haya olvidado:"
+msgstr "Tu nombre de usuario, en caso de que lo haya olvidado:"
 
 #: templates/registration/password_reset_email.html:10
 msgid "Thanks for using our site!"
@@ -1592,7 +1592,7 @@ msgstr "El equipo de %(site_name)s"
 msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll e-mail "
 "instructions for setting a new one."
-msgstr "¿Olvidó su contraseña? Escriba su dirección de correo electrónico abajo y le enviaremos instrucciones para establecer una nueva."
+msgstr "¿Olvidaste tu contraseña? Escribe tu dirección de correo electrónico abajo y te enviaremos instrucciones para establecer una nueva."
 
 #: templates/registration/password_reset_form.html:14
 msgid "E-mail address:"
@@ -1663,7 +1663,7 @@ msgstr "Acerca de"
 
 #: users/__init__.py:7
 msgid "You are now logged out."
-msgstr "Usted ha salido."
+msgstr "Has salido."
 
 #: users/admin.py:16
 msgid "Personal info"
@@ -1700,7 +1700,7 @@ msgstr "¡Usted está registrado y ya ha ingresado!"
 #: users/registration_backend/__init__.py:63
 #, python-format
 msgid "Tell us who you are by <a href=\"%s\">creating a page for yourself!</a>"
-msgstr "¡Cuéntenos quién es <a href=\"%s\">creando una página sobre usted</a>!"
+msgstr "¡Cuéntanos quién eres <a href=\"%s\">creando una página sobre ti</a>!"
 
 #: users/registration_backend/forms.py:33
 msgid "Username"
@@ -1724,7 +1724,7 @@ msgstr "Su nombre"
 
 #: users/registration_backend/forms.py:49
 msgid "You must agree to the terms to register"
-msgstr "Debe aceptar los términos para registrarse"
+msgstr "Debes aceptar los términos para registrarte"
 
 #: users/registration_backend/forms.py:64
 msgid "A user with that username already exists."
@@ -1734,7 +1734,7 @@ msgstr "Un usuario con ese nombre ya existe."
 msgid ""
 "This email address is already in use. Please supply a different email "
 "address."
-msgstr "Esta dirección de correo electrónico ya está siendo usada. Por favor ingrese una dirección diferente."
+msgstr "Esta dirección de correo electrónico ya está siendo usada. Por favor ingresa una dirección diferente."
 
 #: users/templates/users/subscribed_list.html:4
 msgid "List of subscribers"
@@ -1748,7 +1748,7 @@ msgstr "Direcciones de correo electrónico de suscriptores:"
 msgid ""
 "Anonymous users may not perform this action. Please <a "
 "href=\"/Users/login/\">log in</a>."
-msgstr "Los usuarios anónimos no pueden realizar esta acción. Por favor <a href=\"/Users/login/\">ingrese</a>."
+msgstr "Los usuarios anónimos no pueden realizar esta acción. Por favor <a href=\"/Users/login/\">ingresa</a>."
 
 #: utils/templates/utils/history/form.html:13
 msgid "revert"
@@ -1787,13 +1787,13 @@ msgstr "Descargar versión añadida"
 msgid ""
 "Warning: someone else made changes before you.  Please review the changes "
 "and save again."
-msgstr "Atención: alguien más realizó cambios antes que usted. Por favor revise los cambios y guarde nuevamente."
+msgstr "Atención: alguien más realizó cambios antes de ti. Por favor revisa los cambios y guarda nuevamente."
 
 #: versionutils/merging/forms.py:55
 msgid ""
 "Someone else made changes before you but yourchanges were successfully "
 "merged."
-msgstr "Alguien más hizo cambios antes que usted pero sus cambios fueron combinados satisfactoriamente."
+msgstr "Alguien más hizo cambios antes de ti pero sus cambios fueron combinados satisfactoriamente."
 
 #: versionutils/templates/versionutils/history/form.html:8
 #: versionutils/templates/versionutils/history/form.html:15
@@ -1806,7 +1806,7 @@ msgstr "No hay historial de revisión."
 
 #: versionutils/templates/versionutils/history/media.html:47
 msgid "Please select two versions to compare"
-msgstr "Por favor seleccione dos versiones a comparar"
+msgstr "Por favor selecciona dos versiones a comparar"
 
 #: versionutils/versioning/constants.py:15
 msgid "Updated"
