@@ -275,6 +275,7 @@ INSTALLED_APPS = (
     'honeypot',
     'constance.backends.database',
     'constance',
+    'django_extensions',
 
     # Our apps
     'versionutils.versioning',

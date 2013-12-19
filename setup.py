@@ -149,6 +149,7 @@ install_requires = [
     'django-constance==0.6-custom1',
     'celery[redis]==3.1.3',
     'celery-haystack==0.7.2',
+    'django-extensions==1.2.5',
     'python-memcached',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
