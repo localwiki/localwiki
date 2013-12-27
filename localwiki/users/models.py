@@ -16,6 +16,7 @@ from django.contrib.sites.models import Site
 #######################################################################
 
 User._meta.get_field_by_name('email')[0]._unique = True
+User._meta.get_field_by_name('date_joined')[0].db_index = True
 
 
 def name_to_first_last(self, name):
@@ -53,7 +54,7 @@ User.get_absolute_url = get_absolute_url
 class UserProfile(models.Model):
     # this field is required
     user = models.OneToOneField(User)
-    subscribed = models.BooleanField(verbose_name=_(settings.SUBSCRIBE_MESSAGE))
+    subscribed = models.BooleanField(verbose_name=_(settings.SUBSCRIBE_MESSAGE), db_index=True)
 
 
 # For registration calls
