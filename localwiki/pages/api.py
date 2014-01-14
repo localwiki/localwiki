@@ -2,10 +2,10 @@ from django.contrib.auth.models import User
 from django import forms
 
 from rest_framework import viewsets
-from rest_framework_filters import FilterSet
-from rest_framework_filters import filters
+from rest_framework_filters import FilterSet, filters
 
 from main.api import router
+from main.api.filters import HistoricalFilter
 from tags.models import Tag, PageTagSet, slugify
 from versionutils.versioning.constants import TYPE_CHOICES
 
@@ -32,13 +32,6 @@ class TagFilter(filters.Filter):
         for v in value.split(','):
             qs = qs.filter(pagetagset__tags__slug=v)
         return qs
-
-
-class HistoricalFilter(FilterSet):
-    history_date = filters.AllLookupsFilter(name='history_date')
-    history_type = filters.AllLookupsFilter(name='history_type')
-    history_user = filters.RelatedFilter(UserFilter, name='history_user')
-    history_user_ip = filters.AllLookupsFilter(name='history_user_ip')
 
 
 class PageFilter(FilterSet):
