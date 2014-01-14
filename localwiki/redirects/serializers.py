@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from localwiki.utils.serializers import HISTORY_FIELDS
+from localwiki.main.api.fields import HISTORY_FIELDS
 
 from .models import Redirect
 

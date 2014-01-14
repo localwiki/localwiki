@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ParseError
 
-from localwiki.utils.serializers import HISTORY_FIELDS
+from localwiki.main.api.fields import HISTORY_FIELDS
 
 from .models import Tag, PageTagSet
 

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoModelSerializer
 
-from localwiki.utils.serializers import HISTORY_FIELDS
+from localwiki.main.api.fields import HISTORY_FIELDS
 
 from .models import MapData
 
