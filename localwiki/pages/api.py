@@ -10,6 +10,7 @@ from tags.models import Tag, PageTagSet, slugify
 from versionutils.versioning.constants import TYPE_CHOICES
 
 from regions.api import RegionFilter
+from users.api import UserFilter
 
 from .models import Page, PageFile
 from .serializers import (PageSerializer, HistoricalPageSerializer,
@@ -112,30 +113,16 @@ class FileFilter(FilterSet):
         fields = ('name', 'slug')
 
 
-class UserFilter(FilterSet):
-    min_date_joined = filters.DateTimeFilter(name='date_joined', lookup_type='gte')
-    max_date_joined = filters.DateTimeFilter(name='date_joined', lookup_type='lte')
-    username = filters.AllLookupsFilter(name='username')
-
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'date_joined')
-
-
 class HistoricalFilter(FilterSet):
-    history_comment = filters.AllLookupsFilter(name='history_comment')
     history_date = filters.AllLookupsFilter(name='history_date')
     history_type = filters.AllLookupsFilter(name='history_type')
     history_user = filters.RelatedFilter(UserFilter, name='history_user')
+    history_user_ip = filters.AllLookupsFilter(name='history_user_ip')
 
 
 class HistoricalFileFilter(FileFilter, HistoricalFilter):
-    #name = AllLookupsFilter(name='name')
-    #slug = AllLookupsFilter(name='slug')
-
     class Meta:
         model = PageFile.versions.model
-        #fields = ('name', 'slug', 'region_slug')
 
 
 class FileViewSet(viewsets.ModelViewSet):
@@ -171,12 +158,10 @@ class HistoricalFileViewSet(viewsets.ReadOnlyModelViewSet):
 
     And the usual set of historical filter fields:
 
-      * `history_user` - filter by the username of the editor, if user
-         was logged in.
-      * `min_history_date` - filter by minimum history date.
-      * `max_history_date` - filter by maximum history date.
-      * `history_comment` - filter by history comment, exact.
-      * `history_type` - filter by history type id, exact.
+      * `history_user` - filter by the `user` resource of the editor, if user was logged in.  Allows for chained filtering on all of the filters available on the [user resource](../users/), e.g. `history_user__username`.
+      * `history_user_ip` - filter by the IP address of the editor.
+      * `history_date` - filter by history date. Supports the [standard lookup types](../../api_docs/filters)
+      * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
     """
     queryset = PageFile.versions.all()
     serializer_class = HistoricalFileSerializer
