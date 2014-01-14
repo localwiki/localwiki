@@ -34,6 +34,13 @@ class TagFilter(filters.Filter):
         return qs
 
 
+class HistoricalFilter(FilterSet):
+    history_date = filters.AllLookupsFilter(name='history_date')
+    history_type = filters.AllLookupsFilter(name='history_type')
+    history_user = filters.RelatedFilter(UserFilter, name='history_user')
+    history_user_ip = filters.AllLookupsFilter(name='history_user_ip')
+
+
 class PageFilter(FilterSet):
     slug = filters.AllLookupsFilter(name='slug')
     region = filters.RelatedFilter(RegionFilter, name='region')
@@ -42,6 +49,11 @@ class PageFilter(FilterSet):
     class Meta:
         model = Page
         fields = ('name', 'slug')
+
+
+class HistoricalPageFilter(PageFilter, HistoricalFilter):
+    class Meta:
+        model = Page.versions.model
 
 
 class PageViewSet(viewsets.ModelViewSet):
@@ -99,9 +111,26 @@ class PageViewSet(viewsets.ModelViewSet):
 class HistoricalPageViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint for viewing page history.
+
+    Filter fields
+    -------------
+
+    You can filter the result set by providing the following query parameters:
+
+      * `name` -- Filter by name, exact.
+      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](../../api_docs/filters)
+      * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
+
+    And the usual set of historical filter fields:
+
+      * `history_user` - filter by the `user` resource of the editor, if user was logged in.  Allows for chained filtering on all of the filters available on the [user resource](../users/), e.g. `history_user__username`.
+      * `history_user_ip` - filter by the IP address of the editor.
+      * `history_date` - filter by history date. Supports the [standard lookup types](../../api_docs/filters)
+      * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
     """
     queryset = Page.versions.all()
     serializer_class = HistoricalPageSerializer
+    filter_class = HistoricalPageFilter
 
 
 class FileFilter(FilterSet):
@@ -111,13 +140,6 @@ class FileFilter(FilterSet):
     class Meta:
         model = PageFile
         fields = ('name', 'slug')
-
-
-class HistoricalFilter(FilterSet):
-    history_date = filters.AllLookupsFilter(name='history_date')
-    history_type = filters.AllLookupsFilter(name='history_type')
-    history_user = filters.RelatedFilter(UserFilter, name='history_user')
-    history_user_ip = filters.AllLookupsFilter(name='history_user_ip')
 
 
 class HistoricalFileFilter(FileFilter, HistoricalFilter):
@@ -134,7 +156,7 @@ class FileViewSet(viewsets.ModelViewSet):
 
     You can filter the result set by providing the following query parameters:
 
-      * `name` -- Filter by name, exact.
+      * `name` -- Filter by file name, exact.
       * `slug` -- Filter by page `slug`. Supports the [standard lookup types](../../api_docs/filters)
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
     """
