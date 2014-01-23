@@ -16,7 +16,6 @@ from django.contrib.sites.models import Site
 #######################################################################
 
 User._meta.get_field_by_name('email')[0]._unique = True
-User._meta.get_field_by_name('date_joined')[0].db_index = True
 
 
 def name_to_first_last(self, name):

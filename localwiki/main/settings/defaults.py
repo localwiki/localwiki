@@ -248,6 +248,8 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates'),
 )
 
+SOUTH_TESTS_MIGRATE = True
+
 INSTALLED_APPS = (
     # Django-provided apps
     'django.contrib.auth',
