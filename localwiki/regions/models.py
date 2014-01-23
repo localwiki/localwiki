@@ -19,6 +19,7 @@ class Region(models.Model):
         help_text=ugettext_lazy("A very short name for this region that will appear in URLs, e.g. 'sf'. "
             "Keep it short and memorable!"))
     geom = models.MultiPolygonField(null=True, blank=True)
+    objects = models.GeoManager()
 
     def __unicode__(self):
         return self.slug

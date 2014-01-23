@@ -1,9 +1,9 @@
 from rest_framework import viewsets
 from rest_framework_filters import filters, FilterSet
+from rest_framework_gis.filters import GeoFilterSet
 
 from main.api import router
 from main.api.filters import HistoricalFilter
-
 from regions.api import RegionFilter
 from pages.api import PageFilter
 
@@ -11,16 +11,21 @@ from .models import MapData
 from .serializers import MapDataSerializer, HistoricalMapDataSerializer
 
 
-class MapFilter(FilterSet):
-    length = filters.AllLookupsFilter(name='length')
+class MapFilter(GeoFilterSet, FilterSet):
+    points = filters.AllLookupsFilter(name='points')
+    lines = filters.AllLookupsFilter(name='lines')
+    polys = filters.AllLookupsFilter(name='polys')
     page = filters.RelatedFilter(PageFilter, name='page')
     region = filters.RelatedFilter(RegionFilter, name='region')
+    length = filters.AllLookupsFilter(name='length')
 
     class Meta:
         model = MapData
 
 
-class HistoricalMapFilter(MapFilter, HistoricalFilter):
+class HistoricalMapFilter(HistoricalFilter, MapFilter):
+    polys = filters.AllLookupsFilter(name='polys')
+
     class Meta:
         model = MapData.versions.model
 
@@ -34,9 +39,12 @@ class MapDataViewSet(viewsets.ModelViewSet):
 
     You can filter the result set by providing the following query parameters:
 
-      * `length` -- Filter by length. Supports the [standard lookup types](../../api_docs/filters)
+      * `points` -- Filter by the points, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
+      * `lines` -- Filter by the lines, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
+      * `polys` -- Filter by the polygons, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
       * `page` -- Filter by page.  Allows for chained filtering on all of the filters available on the [page resource](../pages/), e.g. `page__slug`.
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
+      * `length` -- Filter by length of the geography. Supports the [standard lookup types](../../api_docs/filters)
     """
     queryset = MapData.objects.all()
     serializer_class = MapDataSerializer
@@ -52,9 +60,12 @@ class HistoricalMapDataViewSet(viewsets.ReadOnlyModelViewSet):
 
     You can filter the result set by providing the following query parameters:
 
-      * `length` -- Filter by length. Supports the [standard lookup types](../../api_docs/filters)
+      * `points` -- Filter by the points, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
+      * `lines` -- Filter by the lines, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
+      * `polys` -- Filter by the polygons, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
       * `page` -- Filter by page.  Allows for chained filtering on all of the filters available on the [page resource](../pages/), e.g. `page__slug`.
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
+      * `length` -- Filter by length of the geography. Supports the [standard lookup types](../../api_docs/filters)
 
     And the usual set of historical filter fields:
 
