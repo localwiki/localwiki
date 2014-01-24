@@ -77,10 +77,20 @@ class PageViewSet(viewsets.ModelViewSet):
       * `slug` -- Filter by page `slug`. Supports the [standard lookup types](../../api_docs/filters)
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
       * `tags` -- Filter by tag.  E.g. `tags=park` for all pages tagged 'park', or `tags=park,wifi` for all pages tagged 'park' **and** also tagged 'wifi'.
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `slug`
+
+    You can reverse ordering by using the `-` sign, e.g. `-slug`.
     """
     queryset = Page.objects.all()
     serializer_class = PageSerializer
     filter_class = PageFilter
+    ordering_fields = ('slug',)
 
     def post_save(self, page, *args, **kwargs):
         if not hasattr(page, '_tags'):
@@ -120,10 +130,21 @@ class HistoricalPageViewSet(viewsets.ReadOnlyModelViewSet):
       * `history_user_ip` - filter by the IP address of the editor.
       * `history_date` - filter by history date. Supports the [standard lookup types](../../api_docs/filters)
       * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `slug`
+      * `history_date`
+
+    You can reverse ordering by using the `-` sign, e.g. `-slug`.
     """
     queryset = Page.versions.all()
     serializer_class = HistoricalPageSerializer
     filter_class = HistoricalPageFilter
+    ordering_fields = ('slug', 'history_date')
 
 
 class FileFilter(GeoFilterSet, FilterSet):
@@ -152,10 +173,20 @@ class FileViewSet(viewsets.ModelViewSet):
       * `name` -- Filter by file name, exact.
       * `slug` -- Filter by page `slug`. Supports the [standard lookup types](../../api_docs/filters)
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `slug`
+
+    You can reverse ordering by using the `-` sign, e.g. `-slug`.
     """
     queryset = PageFile.objects.all()
     serializer_class = FileSerializer
     filter_class = FileFilter
+    ordering_fields = ('slug',)
 
 
 class HistoricalFileViewSet(viewsets.ReadOnlyModelViewSet):
@@ -177,10 +208,21 @@ class HistoricalFileViewSet(viewsets.ReadOnlyModelViewSet):
       * `history_user_ip` - filter by the IP address of the editor.
       * `history_date` - filter by history date. Supports the [standard lookup types](../../api_docs/filters)
       * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `slug`
+      * `history_date`
+
+    You can reverse ordering by using the `-` sign, e.g. `-slug`.
     """
     queryset = PageFile.versions.all()
     serializer_class = HistoricalFileSerializer
     filter_class = HistoricalFileFilter
+    ordering_fields = ('slug', 'history_date')
 
 
 router.register(u'pages', PageViewSet)

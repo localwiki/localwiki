@@ -33,10 +33,21 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
       * `first_name` -- Filter by first name, exact match.
       * `last_name` -- Filter by last name, exact match.
       * `date_joined` -- Filter by date joined. Supports the [standard lookup types](../../api_docs/filters).
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `username`
+      * `date_joined`
+
+    You can reverse ordering by using the `-` sign, e.g. `-username`.
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_class = UserFilter
+    ordering_fields = ('username', 'date_joined')
 
 
 router.register(r'users', UserViewSet)

@@ -48,11 +48,21 @@ class RegionViewSet(viewsets.ReadOnlyModelViewSet):
       * `settings`
         * `settings__default_language` -- Filter by the region's default language.  Accepts one of %(allowed_languages)s.
         * `settings__region_center` -- Filter by the region's center geography.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `slug`
+
+    You can reverse ordering by using the `-` sign, e.g. `-slug`.
     """ % {'allowed_languages': allowed_languages}
 
     queryset = Region.objects.all()
     serializer_class = RegionSerializer
     filter_class = RegionFilter
+    ordering_fields = ('slug',)
 
 
 router.register(u'regions', RegionViewSet)

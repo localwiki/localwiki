@@ -45,10 +45,20 @@ class MapDataViewSet(viewsets.ModelViewSet):
       * `page` -- Filter by page.  Allows for chained filtering on all of the filters available on the [page resource](../pages/), e.g. `page__slug`.
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
       * `length` -- Filter by length of the geography. Supports the [standard lookup types](../../api_docs/filters)
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `length`
+
+    You can reverse ordering by using the `-` sign, e.g. `-length`.
     """
     queryset = MapData.objects.all()
     serializer_class = MapDataSerializer
     filter_class = MapFilter
+    ordering_fields = ('length',)
 
 
 class HistoricalMapDataViewSet(viewsets.ReadOnlyModelViewSet):
@@ -73,10 +83,21 @@ class HistoricalMapDataViewSet(viewsets.ReadOnlyModelViewSet):
       * `history_user_ip` - filter by the IP address of the editor.
       * `history_date` - filter by history date. Supports the [standard lookup types](../../api_docs/filters)
       * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `length`
+      * `history_date`
+
+    You can reverse ordering by using the `-` sign, e.g. `-length`.
     """
     queryset = MapData.versions.all()
     serializer_class = HistoricalMapDataSerializer
     filter_class = HistoricalMapFilter
+    ordering_fields = ('length', 'history_date')
 
 
 router.register(u'maps', MapDataViewSet)
