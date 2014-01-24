@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from rest_framework_filters import FilterSet, filters
+from rest_framework_gis.filters import GeoFilterSet
 
 from main.api import router
 from main.api.filters import HistoricalFilter
@@ -19,7 +20,7 @@ class TagFilter(filters.Filter):
         return qs
 
 
-class HistoricalTagFilter(HistoricalFilter):
+class HistoricalTagFilter(GeoFilterSet, HistoricalFilter):
     tags = TagFilter()
 
     class Meta:

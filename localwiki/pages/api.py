@@ -3,12 +3,12 @@ from django import forms
 
 from rest_framework import viewsets
 from rest_framework_filters import FilterSet, filters
+from rest_framework_gis.filters import GeoFilterSet
 
 from main.api import router
 from main.api.filters import HistoricalFilter
 from tags.models import Tag, PageTagSet, slugify
 from versionutils.versioning.constants import TYPE_CHOICES
-
 from regions.api import RegionFilter
 from users.api import UserFilter
 
@@ -34,7 +34,7 @@ class TagFilter(filters.Filter):
         return qs
 
 
-class PageFilter(FilterSet):
+class PageFilter(GeoFilterSet, FilterSet):
     slug = filters.AllLookupsFilter(name='slug')
     region = filters.RelatedFilter(RegionFilter, name='region')
     tags = TagFilter()
@@ -126,7 +126,7 @@ class HistoricalPageViewSet(viewsets.ReadOnlyModelViewSet):
     filter_class = HistoricalPageFilter
 
 
-class FileFilter(FilterSet):
+class FileFilter(GeoFilterSet, FilterSet):
     slug = filters.AllLookupsFilter(name='slug')
     region = filters.RelatedFilter(RegionFilter, name='region')
 
