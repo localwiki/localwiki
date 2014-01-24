@@ -148,7 +148,7 @@ install_requires = [
     'django-constance==0.6-custom1',
     'celery[redis]==3.1.3',
     'celery-haystack==0.7.2',
-    'djangorestframework==2.3.9',
+    'djangorestframework==2.3.12',
     'django-filter==0.7',
     'djangorestframework-filter==0.2.0',
     'djangorestframework-gis==0.1.0-custom2',
