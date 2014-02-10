@@ -4,6 +4,7 @@ from rest_framework_gis.filters import GeoFilterSet
 
 from main.api import router
 from main.api.filters import HistoricalFilter
+from main.api.views import AllowFieldLimitingMixin
 
 from .models import Tag, PageTagSet, slugify
 
@@ -27,7 +28,7 @@ class HistoricalTagFilter(GeoFilterSet, HistoricalFilter):
         model = PageTagSet.versions.model
 
 
-class HistoricalTagViewSet(viewsets.ReadOnlyModelViewSet):
+class HistoricalTagViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSet):
     """
     API endpoint for viewing tag history, grouped by tags on a particular page at a particular point in time.
 

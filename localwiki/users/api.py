@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from rest_framework_filters import filters, FilterSet
 
 from main.api import router
+from main.api.views import AllowFieldLimitingMixin
 
 from .serializers import UserSerializer
 
@@ -20,7 +21,7 @@ class UserFilter(FilterSet):
         fields = ('date_joined', 'username', 'first_name', 'last_name')
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows users to be viewed.
 

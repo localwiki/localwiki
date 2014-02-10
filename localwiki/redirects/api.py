@@ -4,6 +4,7 @@ from rest_framework_gis.filters import GeoFilterSet
 
 from main.api import router
 from main.api.filters import HistoricalFilter
+from main.api.views import AllowFieldLimitingMixin
 from pages.api import PageFilter
 from regions.api import RegionFilter
 
@@ -25,7 +26,7 @@ class HistoricalRedirectFilter(RedirectFilter, HistoricalFilter):
         model = Redirect.versions.model
 
 
-class RedirectViewSet(viewsets.ModelViewSet):
+class RedirectViewSet(AllowFieldLimitingMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows redirects to be viewed and edited.
 
@@ -53,7 +54,7 @@ class RedirectViewSet(viewsets.ModelViewSet):
     ordering_fields = ('source',)
 
 
-class HistoricalRedirectViewSet(viewsets.ReadOnlyModelViewSet):
+class HistoricalRedirectViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows redirect history to be viewed.
 

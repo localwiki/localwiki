@@ -5,6 +5,7 @@ from rest_framework_filters import filters, FilterSet
 from rest_framework_gis.filters import GeoFilterSet
 
 from main.api import router
+from main.api.views import AllowFieldLimitingMixin
 
 from .models import Region, RegionSettings
 from .serializers import RegionSerializer
@@ -34,7 +35,7 @@ for l in settings.LANGUAGES[:-1]:
 allowed_languages += '`%s`' % settings.LANGUAGES[-1][0]
 
 
-class RegionViewSet(viewsets.ReadOnlyModelViewSet):
+class RegionViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSet):
     __doc__ = """
     API endpoint that allows regions to be viewed.
 

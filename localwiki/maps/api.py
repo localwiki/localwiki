@@ -4,6 +4,7 @@ from rest_framework_gis.filters import GeoFilterSet
 
 from main.api import router
 from main.api.filters import HistoricalFilter
+from main.api.views import AllowFieldLimitingMixin
 from regions.api import RegionFilter
 from pages.api import PageFilter
 
@@ -30,7 +31,7 @@ class HistoricalMapFilter(HistoricalFilter, MapFilter):
         model = MapData.versions.model
 
 
-class MapDataViewSet(viewsets.ModelViewSet):
+class MapDataViewSet(AllowFieldLimitingMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows maps to be viewed and edited.
 
@@ -61,7 +62,7 @@ class MapDataViewSet(viewsets.ModelViewSet):
     ordering_fields = ('length',)
 
 
-class HistoricalMapDataViewSet(viewsets.ReadOnlyModelViewSet):
+class HistoricalMapDataViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows map history to be viewed.
 

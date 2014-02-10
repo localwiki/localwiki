@@ -7,6 +7,7 @@ from rest_framework_gis.filters import GeoFilterSet
 
 from main.api import router
 from main.api.filters import HistoricalFilter
+from main.api.views import AllowFieldLimitingMixin
 from tags.models import Tag, PageTagSet, slugify
 from versionutils.versioning.constants import TYPE_CHOICES
 from regions.api import RegionFilter
@@ -49,7 +50,7 @@ class HistoricalPageFilter(PageFilter, HistoricalFilter):
         model = Page.versions.model
 
 
-class PageViewSet(viewsets.ModelViewSet):
+class PageViewSet(AllowFieldLimitingMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows pages to be viewed and edited.
 
@@ -111,7 +112,7 @@ class PageViewSet(viewsets.ModelViewSet):
             pts.tags = tags
 
 
-class HistoricalPageViewSet(viewsets.ReadOnlyModelViewSet):
+class HistoricalPageViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSet):
     """
     API endpoint for viewing page history.
 
@@ -161,7 +162,7 @@ class HistoricalFileFilter(FileFilter, HistoricalFilter):
         model = PageFile.versions.model
 
 
-class FileViewSet(viewsets.ModelViewSet):
+class FileViewSet(AllowFieldLimitingMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows files to be viewed and edited.
 
@@ -189,7 +190,7 @@ class FileViewSet(viewsets.ModelViewSet):
     ordering_fields = ('slug',)
 
 
-class HistoricalFileViewSet(viewsets.ReadOnlyModelViewSet):
+class HistoricalFileViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSet):
     """
     API endpoint for viewing file history.
 
