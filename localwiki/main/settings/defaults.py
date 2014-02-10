@@ -302,9 +302,9 @@ SITE_THEME = 'sapling'
 
 REST_FRAMEWORK = {
     'PAGINATE_BY': 30,
-    # Allow client to override, using `?page_size=xxx`.
-    'PAGINATE_BY_PARAM': 'page_size',  
-    # Maximum limit allowed when using `?page_size=xxx`.
+    # Allow client to override, using `?limit=xxx`.
+    'PAGINATE_BY_PARAM': 'limit',  
+    # Maximum limit allowed when using `?limit=xxx`.
     'MAX_PAGINATE_BY': 100,
     # Use hyperlinked styles by default.
     # Only used if the `serializer_class` attribute is not set on a view.
