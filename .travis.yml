@@ -20,6 +20,6 @@ before_install:
     - sudo /etc/init.d/postgresql start
 install:
     - cd fabric; fab test_server provision -H localhost -i ~/.ssh/id_rsa; cd ~/
-script: sudo -u postgres psql -d postgres -c "ALTER ROLE localwiki SUPERUSER;"; sudo chown -R travis /srv/localwiki/env /srv/localwiki/src; source /srv/localwiki/env/bin/activate; pip install coveralls --use-mirrors; coverage run --source=localwiki /srv/localwiki/src/localwiki/manage.py test regions pages maps tags versioning diff ckeditor redirects users
+script: sudo -u postgres psql -d postgres -c "ALTER ROLE localwiki SUPERUSER;"; sudo chown -R travis /srv/localwiki/env /srv/localwiki/src; source /srv/localwiki/env/bin/activate; pip install coveralls --use-mirrors; coverage run --source=localwiki /srv/localwiki/src/localwiki/manage.py test regions pages maps tags versioning diff ckeditor redirects users api
 after_success:
     - source /srv/localwiki/env/bin/activate; coveralls

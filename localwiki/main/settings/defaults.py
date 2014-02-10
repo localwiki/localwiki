@@ -272,6 +272,7 @@ INSTALLED_APPS = (
     'guardian',
     'south',
     'rest_framework',
+    'rest_framework.authtoken',
     'honeypot',
     'constance.backends.database',
     'constance',
@@ -316,14 +317,14 @@ REST_FRAMEWORK = {
     ),
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        #'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ),
 
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        # Combined, these allow only authenticated users to 
+        # write via the API and non-authenticated users to read.
+        'main.api.permissions.DjangoObjectPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     ]
 }
 
