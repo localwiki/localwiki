@@ -8,18 +8,18 @@ from rest_framework_gis.filters import GeoFilterSet
 from main.api import router
 from main.api.filters import HistoricalFilter
 from main.api.views import AllowFieldLimitingMixin
-from tags.models import Tag, PageTagSet, slugify
+from tags.models import Tag, PageTagSet, slugify as tag_slugify
 from versionutils.versioning.constants import TYPE_CHOICES
 from regions.api import RegionFilter
 from users.api import UserFilter
 
-from .models import Page, PageFile
+from .models import Page, PageFile, slugify
 from .serializers import (PageSerializer, HistoricalPageSerializer,
     FileSerializer, HistoricalFileSerializer)
 
 def get_or_create_tag(word, region):
     tag, created = Tag.objects.get_or_create(
-        slug=slugify(word), region=region,
+        slug=tag_slugify(word), region=region,
         defaults={'name': word}
     )
     return tag

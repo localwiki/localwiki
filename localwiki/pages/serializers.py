@@ -49,6 +49,15 @@ class PageSerializer(serializers.HyperlinkedModelSerializer):
         if self.partial and self.init_data.keys() == ['tags']:
             # Don't save the Page object if we're just saving tags.
             return self.object
+
+        # Page renaming
+        page = self.object
+        old_page = None
+        if page.id:
+            old_page = Page.objects.get(id=page.id)
+        if old_page and (page.name != old_page.name):
+            return old_page.rename_to(page.name)
+
         return super(PageSerializer, self).save(**kwargs)
 
 

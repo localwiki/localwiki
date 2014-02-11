@@ -203,6 +203,8 @@ class Page(models.Model):
                 obj.pk = None  # Reset the primary key before saving.
                 obj.save(comment=_("Parent page renamed"))
 
+        return new_p
+
 
 class PageDiff(diff.BaseModelDiff):
     fields = ('name',
