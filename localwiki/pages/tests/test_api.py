@@ -29,6 +29,14 @@ class PageAPITests(APITestCase):
 
         self.sf_region = Region(full_name='San Francisco', slug='sf')
         self.sf_region.save()
+        self.oak_region = Region(full_name='Oakland', slug='oak')
+        self.oak_region.save()
+
+        p = Page(region=self.oak_region)
+        p.content = '<p>Lake Merritt here</p>'
+        p.name = 'Lake Merritt'
+        p.save()
+        self.lake_merritt = p
 
         p = Page(region=self.sf_region)
         p.content = '<p>Dolores Park here</p>'
@@ -53,7 +61,7 @@ class PageAPITests(APITestCase):
     def test_basic_page_list(self):
         response = self.client.get('/api/pages/')
         jresp = json.loads(response.content)
-        self.assertEqual(len(jresp['results']), 2)
+        self.assertEqual(len(jresp['results']), 3)
 
     def test_basic_page_detail(self):
         response = self.client.get('/api/pages/?slug=dolores%20park')
@@ -120,6 +128,16 @@ class PageAPITests(APITestCase):
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
         self.assertEqual(jresp['results'][0]['slug'], 'dolores park')
+
+    def test_chained_region_filter(self):
+        response = self.client.get('/api/pages/?region__slug__icontains=ak')
+        jresp = json.loads(response.content)
+        self.assertEqual(len(jresp['results']), 1)
+
+        response = self.client.get('/api/pages/?region__slug__istartswith=o')
+        jresp = json.loads(response.content)
+        self.assertEqual(len(jresp['results']), 1)
+        self.assertEqual(jresp['results'][0]['slug'], 'lake merritt')
 
     def test_basic_page_put(self):
         self.client.force_authenticate(user=self.edit_user)

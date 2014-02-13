@@ -3,8 +3,8 @@ from django.test import TestCase
 from pages.models import Page
 from regions.models import Region
 
-from models import Redirect
-import exceptions
+from .. models import Redirect
+from .. import exceptions
 
 
 class RedirectTest(TestCase):
