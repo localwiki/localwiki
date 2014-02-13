@@ -401,6 +401,7 @@ def setup_apache():
         sudo('a2enmod headers')
         sudo('a2enmod rewrite')
         sudo('a2enmod proxy')
+        sudo('a2enmod proxy_http')
         sudo('a2enmod ssl')
 
         # Install localwiki.wsgi
