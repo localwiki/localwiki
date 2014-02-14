@@ -4,6 +4,8 @@ from django.contrib.auth.models import User, Group
 from django.conf import settings
 from django.db import IntegrityError
 
+from guardian.shortcuts import assign_perm, remove_perm
+
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 
@@ -26,6 +28,13 @@ class PageAPITests(APITestCase):
         all_group, created = Group.objects.get_or_create(name=settings.USERS_DEFAULT_GROUP)
         self.edit_user.groups.add(all_group)
         self.edit_user.save()
+
+        self.edit_user_2 = User(
+            username="edituser2", email="edituser2@example.org", password="fakepassword")
+        self.edit_user_2.save()
+        all_group, created = Group.objects.get_or_create(name=settings.USERS_DEFAULT_GROUP)
+        self.edit_user_2.groups.add(all_group)
+        self.edit_user_2.save()
 
         self.sf_region = Region(full_name='San Francisco', slug='sf')
         self.sf_region.save()
@@ -177,3 +186,21 @@ class PageAPITests(APITestCase):
         self.assertTrue(Redirect.objects.filter(source='duboce park').exists())
         redirect = Redirect.objects.get(source='duboce park')
         self.assertEqual(redirect.destination, Page.objects.get(slug='duboce cat'))
+
+    def test_page_permissions(self):
+        self.client.force_authenticate(user=self.edit_user)
+
+        # Make it so only edit_user_2 can edit the Dolores Park page
+        assign_perm('change_page', self.edit_user_2, self.dolores_park)
+
+        # Now try and update it as edit_user
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
+        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
+
+        # Now remove the permission and it should work
+        remove_perm('change_page', self.edit_user_2, self.dolores_park)
+
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
+        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
