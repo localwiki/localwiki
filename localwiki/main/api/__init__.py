@@ -17,7 +17,8 @@ class APIRoot(rest_framework_views.APIView):
     associated documentation on its main page.
     
     For more information on interacting with the API, please see the
-    **[main API documentation page](http://localwiki.net/main/API_Documentation)**.
+    **[main API documentation page](http://localwiki.net/main/API_Documentation)**. You will need
+    [an API key](http://localwiki.net/main/API_Documentation#api_key) to write using the API.
     """
     _ignore_model_permissions = True
     api_root_dict = {}

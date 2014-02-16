@@ -1,13 +1,14 @@
 import json
 
 from rest_framework import status
+from guardian.shortcuts import assign_perm, remove_perm
 
 from django.contrib.auth.models import User, Group
 from django.conf import settings
 from django.contrib.gis.geos import GEOSGeometry
 
 from main.api.test import APITestCase
-from regions.models import Region
+from regions.models import Region, BannedFromRegion
 from pages.models import Page
 
 from .. models import MapData
@@ -24,6 +25,13 @@ class MapAPITests(APITestCase):
         all_group, created = Group.objects.get_or_create(name=settings.USERS_DEFAULT_GROUP)
         self.edit_user.groups.add(all_group)
         self.edit_user.save()
+
+        self.edit_user_2 = User(
+            username="edituser2", email="edituser2@example.org", password="fakepassword")
+        self.edit_user_2.save()
+        all_group, created = Group.objects.get_or_create(name=settings.USERS_DEFAULT_GROUP)
+        self.edit_user_2.groups.add(all_group)
+        self.edit_user_2.save()
 
         self.sf = Region(full_name="San Francisco", slug="sf")
         self.sf.save()
@@ -165,3 +173,202 @@ class MapAPITests(APITestCase):
         response = self.client.get('/api/maps/?polys__contains={ "type": "Point", "coordinates": [ -122.42724180221558, 37.75988395932576 ] }')
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
+
+    def test_map_permissions(self):
+        self.client.force_authenticate(user=self.edit_user)
+
+        # Make it so only edit_user_2 can edit the Dolores Park page
+        assign_perm('change_page', self.edit_user_2, self.dolores_park)
+
+        # Now try and update the "dolores park" map as edit_user
+        geojson = """
+        { "type": "GeometryCollection", "geometries": [
+            {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -122.42835760116576,
+                  37.76128348360843
+                ],
+                [
+                  -122.42799282073973,
+                  37.75812815505155
+                ],
+                [
+                  -122.42591142654419,
+                  37.758297799795336
+                ],
+                [
+                  -122.42627620697021,
+                  37.761402229904654
+                ],
+                [
+                  -122.42835760116576,
+                  37.76128348360843
+                ]
+              ]
+            ]
+          }]
+        }"""
+
+        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
+        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
+
+        # Now remove the permission and it should work
+        remove_perm('change_page', self.edit_user_2, self.dolores_park)
+
+        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
+        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        ##################################################################################
+        # Let's also test a normal POST to a protected page which doesn't yet have a map
+        ##################################################################################
+        new_park = Page(name="New Park", content="<p>Hi</p>", region=self.sf)
+        new_park.save()
+
+        # Make it so only edit_user_2 can edit the Dolores Park page
+        assign_perm('change_page', self.edit_user_2, new_park)
+
+        # Now try and create the "New Park" map as edit_user
+        geojson = """
+        { "type": "GeometryCollection", "geometries": [
+            {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -122.42835760116576,
+                  37.76128348360843
+                ],
+                [
+                  -122.42799282073973,
+                  37.75812815505155
+                ],
+                [
+                  -122.42591142654419,
+                  37.758297799795336
+                ],
+                [
+                  -122.42627620697021,
+                  37.761402229904654
+                ],
+                [
+                  -122.42835760116576,
+                  37.76128348360843
+                ]
+              ]
+            ]
+          }]
+        }"""
+
+        data = {'page': 'http://testserver/api/pages/%s/' % new_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
+        resp = self.client.post('/api/maps/', data, format='json')
+        self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
+
+        # Now remove the permission and it should work
+        remove_perm('change_page', self.edit_user_2, new_park)
+
+        data = {'page': 'http://testserver/api/pages/%s/' % new_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
+        resp = self.client.post('/api/maps/', data, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        ##################################################################################
+        # Let's also test to see that a general 'ban' of a user restricts map editing
+        ##################################################################################
+
+        # First, ban from the region
+        banned, created = BannedFromRegion.objects.get_or_create(region=self.sf)
+        banned.users.add(self.edit_user)
+
+        # Now try and update the "dolores park" map as edit_user
+        geojson = """
+        { "type": "GeometryCollection", "geometries": [
+            {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -122.42835760116576,
+                  37.76128348360843
+                ],
+                [
+                  -122.42799282073973,
+                  37.75812815505155
+                ],
+                [
+                  -122.42591142654419,
+                  37.758297799795336
+                ],
+                [
+                  -122.42627620697021,
+                  37.761402229904654
+                ],
+                [
+                  -122.42835760116576,
+                  37.76128348360843
+                ]
+              ]
+            ]
+          }]
+        }"""
+
+        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
+        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
+
+        # Now remove the ban and it should work
+        banned.users.remove(self.edit_user)
+
+        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
+        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        # Now, let's try a global ban using the banned group
+        banned = Group.objects.get(name=settings.USERS_BANNED_GROUP)
+        self.edit_user.groups.add(banned)
+
+        # Now try and update the "dolores park" map as edit_user
+        geojson = """
+        { "type": "GeometryCollection", "geometries": [
+            {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -122.42835760116576,
+                  37.76128348360843
+                ],
+                [
+                  -122.42799282073973,
+                  37.75812815505155
+                ],
+                [
+                  -122.42591142654419,
+                  37.758297799795336
+                ],
+                [
+                  -122.42627620697021,
+                  37.761402229904654
+                ],
+                [
+                  -122.42835760116576,
+                  37.76128348360843
+                ]
+              ]
+            ]
+          }]
+        }"""
+
+        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
+        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
+
+        # Now remove the ban and it should work
+        self.edit_user.groups.remove(banned)
+
+        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
+        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)

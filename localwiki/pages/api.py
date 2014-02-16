@@ -226,6 +226,53 @@ class HistoricalFileViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewS
     ordering_fields = ('slug', 'history_date')
 
 
+class PagePermissionsMixin(object):
+    """
+    This mixin will cause a view's edit permissions to depend on the Page
+    model rather than just on the view's `model` attribute.
+
+    By default, our API views will use the per-object permission for the 
+    model specified by the view's `model` attribute.  However, sometimes we
+    want to also depend on other permissions.
+    """
+    def get_perms_map(self):
+        return {
+            'GET': [],
+            'OPTIONS': [],
+            'HEAD': [],
+            'POST': ['pages.change_page'],
+            'PUT': ['pages.change_page'],
+            'PATCH': ['pages.change_page'],
+            'DELETE': ['pages.change_page'],
+        }
+
+    def get_protected_object(self, obj):
+        return obj.page
+
+    def get_protected_objects(self, obj):
+        return [self.get_protected_object(obj)]
+
+    def check_permissions(self, request):
+        super(PagePermissionsMixin, self).check_permissions(request)
+        perms_required = self.get_perms_map()[request.method]
+        if not request.user.has_perms(perms_required):
+            self.permission_denied(request)
+    
+    def check_object_permissions(self, request, obj):
+        super(PagePermissionsMixin, self).check_object_permissions(request, obj)
+        perms_required = self.get_perms_map()[request.method]
+        objs = self.get_protected_objects(obj)
+        for obj in objs:
+            if not request.user.has_perms(perms_required, obj):
+                self.permission_denied(request)
+
+    def pre_save(self, obj):
+        # We have to include a `pre_save` method here because
+        # otherwise there's no per-object check on POST, which
+        # never calls `check_object_permissions`.
+        self.check_object_permissions(self.request, obj)
+
+
 router.register(u'pages', PageViewSet)
 router.register(u'pages_history', HistoricalPageViewSet)
 router.register(u'files', FileViewSet)

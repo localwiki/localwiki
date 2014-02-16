@@ -6,7 +6,7 @@ from main.api import router
 from main.api.filters import HistoricalFilter
 from main.api.views import AllowFieldLimitingMixin
 from regions.api import RegionFilter
-from pages.api import PageFilter
+from pages.api import PageFilter, PagePermissionsMixin
 
 from .models import MapData
 from .serializers import MapDataSerializer, HistoricalMapDataSerializer
@@ -31,7 +31,7 @@ class HistoricalMapFilter(HistoricalFilter, MapFilter):
         model = MapData.versions.model
 
 
-class MapDataViewSet(AllowFieldLimitingMixin, viewsets.ModelViewSet):
+class MapDataViewSet(PagePermissionsMixin, AllowFieldLimitingMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows maps to be viewed and edited.
 

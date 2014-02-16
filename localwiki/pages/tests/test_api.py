@@ -13,6 +13,7 @@ from main.api.test import APITestCase
 from regions.models import Region
 from redirects.models import Redirect
 from tags.models import Tag, PageTagSet
+from regions.models import BannedFromRegion
 
 from .. models import Page
 
@@ -200,6 +201,42 @@ class PageAPITests(APITestCase):
 
         # Now remove the permission and it should work
         remove_perm('change_page', self.edit_user_2, self.dolores_park)
+
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
+        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        ##################################################################################
+        # Let's also test to see that a general 'ban' of a user restricts page editing
+        ##################################################################################
+
+        # First, ban from the region
+        banned, created = BannedFromRegion.objects.get_or_create(region=self.sf_region)
+        banned.users.add(self.edit_user)
+
+        # Now try and update a page as edit_user
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
+        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
+
+        # Now remove the ban and it should work
+        banned.users.remove(self.edit_user)
+
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
+        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        # Now, let's try a global ban using the banned group
+        banned = Group.objects.get(name=settings.USERS_BANNED_GROUP)
+        self.edit_user.groups.add(banned)
+
+        # Now try and update a page as edit_user
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
+        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
+
+        # Now remove the ban and it should work
+        self.edit_user.groups.remove(banned)
 
         data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
         resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
