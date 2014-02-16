@@ -76,7 +76,7 @@
 /* Adding a region only lets you draw a polygon, so let's move over the search
  * box */
 .region .mapwidget #map_search {
-    margin-left: 260px;
+    display: none;
 }
 .mapwidget #map_search input {
     width: 28em;
