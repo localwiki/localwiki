@@ -15,7 +15,7 @@ from redirects.models import Redirect
 from tags.models import Tag, PageTagSet
 from regions.models import BannedFromRegion
 
-from .. models import Page
+from .. models import Page, slugify
 
 
 class PageAPITests(APITestCase):
@@ -187,6 +187,41 @@ class PageAPITests(APITestCase):
         self.assertTrue(Redirect.objects.filter(source='duboce park').exists())
         redirect = Redirect.objects.get(source='duboce park')
         self.assertEqual(redirect.destination, Page.objects.get(slug='duboce cat'))
+
+    def test_page_validation(self):
+        self.client.force_authenticate(user=self.edit_user)
+
+        # PATCH existing
+        data = {'slug': 'Du~~!!! lolololol vv------_c0c$$/-_/-._<hi>',
+                'content': '<p>lol</p>', 'region': 'http://testserver/api/regions/%s/' % self.sf_region.id}
+        resp = self.client.patch('/api/pages/%s/' % self.duboce_park.id, data, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        jresp = json.loads(resp.content)
+        self.assertEqual(jresp['slug'], 'duboce park')
+
+        # POST new
+        data = {'name': 'Du~~!!! lolololol vv------_c0c$$/-_/-._<hi>',
+                'slug': 'Du~~!!! lolololol vv------_c0c$$/-_/-._<hi>',
+                'content': '<p>lol</p>', 'region': 'http://testserver/api/regions/%s/' % self.sf_region.id}
+        resp = self.client.post('/api/pages/', data, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        jresp = json.loads(resp.content)
+        self.assertEqual(jresp['slug'], slugify('Du~~!!! lolololol vv------ c0c$$/-/-. <hi>'))
+
+        # Empty slug
+        data = {'name': '',
+                'slug': '',
+                'content': '<p>lol empty</p>', 'region': 'http://testserver/api/regions/%s/' % self.sf_region.id}
+        resp = self.client.post('/api/pages/', data, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # Evil HTML
+        data = {'name': 'Evil',
+                'content': '<p>lol empty <script>alert("hi");</script></p>', 'region': 'http://testserver/api/regions/%s/' % self.sf_region.id}
+        resp = self.client.post('/api/pages/', data, format='json')
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        jresp = json.loads(resp.content)
+        self.assertEqual(jresp['content'], '<p>lol empty &lt;script&gt;alert("hi");&lt;/script&gt;</p>')
 
     def test_page_permissions(self):
         self.client.force_authenticate(user=self.edit_user)
