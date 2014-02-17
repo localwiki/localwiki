@@ -5,7 +5,8 @@ from rest_framework_gis.filters import GeoFilterSet
 from main.api import router
 from main.api.filters import HistoricalFilter
 from main.api.views import AllowFieldLimitingMixin
-from pages.api import PageFilter
+from pages.models import Page
+from pages.api import PageFilter, PagePermissionsMixin
 from regions.api import RegionFilter
 
 from .models import Redirect
@@ -26,7 +27,52 @@ class HistoricalRedirectFilter(RedirectFilter, HistoricalFilter):
         model = Redirect.versions.model
 
 
-class RedirectViewSet(AllowFieldLimitingMixin, viewsets.ModelViewSet):
+class RedirectPermissionsMixin(PagePermissionsMixin):
+    """
+    We want to tie the redirect permissions should be tied to the Redirect
+    object -and- the Page object that's associated with the redirect. This
+    is so that if, for instance, Page(name="Front Page") is only editable
+    by a certain group, creating a Redirect from "Front Page" to somewhere
+    is similarly protected.
+    """
+    def get_protected_objects(self, obj):
+        protected = []
+
+        page = Page.objects.filter(slug=obj.source, region=obj.region)
+        if page:
+            protected.append(page[0])
+        redirect = Redirect.objects.filter(source=obj.source, region=obj.region)
+        if redirect:
+            protected.append(redirect[0])
+
+        return protected
+
+    def get_perms_required(self, request_method, obj=None):
+        if isinstance(obj, Page):
+            perms_map = {
+                'GET': [],
+                'OPTIONS': [],
+                'HEAD': [],
+                'POST': ['pages.change_page'],
+                'PUT': ['pages.change_page'],
+                'PATCH': ['pages.change_page'],
+                'DELETE': ['redirects.delete_redirect'],
+            }
+        else:
+            perms_map = {
+                'GET': [],
+                'OPTIONS': [],
+                'HEAD': [],
+                'POST': ['redirects.change_redirect'],
+                'PUT': ['redirects.change_redirect'],
+                'PATCH': ['redirects.change_redirect'],
+                'DELETE': ['redirects.delete_redirect'],
+            }
+
+        return perms_map[request_method]
+
+
+class RedirectViewSet(RedirectPermissionsMixin, AllowFieldLimitingMixin, viewsets.ModelViewSet):
     """
     API endpoint that allows redirects to be viewed and edited.
 

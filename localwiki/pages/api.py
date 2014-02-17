@@ -235,8 +235,8 @@ class PagePermissionsMixin(object):
     model specified by the view's `model` attribute.  However, sometimes we
     want to also depend on other permissions.
     """
-    def get_perms_map(self):
-        return {
+    def get_perms_required(self, request_method, obj=None):
+        perms_map = {
             'GET': [],
             'OPTIONS': [],
             'HEAD': [],
@@ -245,6 +245,7 @@ class PagePermissionsMixin(object):
             'PATCH': ['pages.change_page'],
             'DELETE': ['pages.change_page'],
         }
+        return perms_map[request_method]
 
     def get_protected_object(self, obj):
         return obj.page
@@ -254,15 +255,15 @@ class PagePermissionsMixin(object):
 
     def check_permissions(self, request):
         super(PagePermissionsMixin, self).check_permissions(request)
-        perms_required = self.get_perms_map()[request.method]
+        perms_required = self.get_perms_required(request.method)
         if not request.user.has_perms(perms_required):
             self.permission_denied(request)
     
     def check_object_permissions(self, request, obj):
         super(PagePermissionsMixin, self).check_object_permissions(request, obj)
-        perms_required = self.get_perms_map()[request.method]
         objs = self.get_protected_objects(obj)
         for obj in objs:
+            perms_required = self.get_perms_required(request.method, obj=obj)
             if not request.user.has_perms(perms_required, obj):
                 self.permission_denied(request)
 
