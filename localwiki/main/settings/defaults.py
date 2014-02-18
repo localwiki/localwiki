@@ -219,6 +219,7 @@ MIDDLEWARE_CLASSES = (
     'honeypot.middleware.HoneypotMiddleware',
     'versionutils.versioning.middleware.AutoTrackUserInfoMiddleware',
     'redirects.middleware.RedirectFallbackMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
     'utils.middleware.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
@@ -276,6 +277,7 @@ INSTALLED_APPS = (
     'honeypot',
     'constance.backends.database',
     'constance',
+    'corsheaders',
 
     # Our apps
     'versionutils.versioning',
@@ -332,6 +334,10 @@ REST_FRAMEWORK = {
         'main.api.renderers.LocalWikiAPIRenderer',
     ),
 }
+
+# Allow Cross-Origin Resource Sharing headers on API urls
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/api/.*$'
 
 # For testing, you can start the python debugging smtp server like so:
 # sudo python -m smtpd -n -c DebuggingServer localhost:25
