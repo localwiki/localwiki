@@ -44,12 +44,23 @@
   </ul>
 {% endblock %}
 
+{% block body %}
+<body>
+   <div class="content_type api">
+   {% block everything_wrapper %}
+        {{ block.super }}
+   {% endblock %}
+   </div>
+</body>
+{% endblock %}
 
 {% block content %}
   <h1>{{ name }}</h1>
+  <div id="description">
   {% block description %}
     {{ description }}
   {% endblock %}
+  </div>
   {% block request_response_info %}
     <div class="request-info" style="clear: both" >
         <pre class="prettyprint"><b>{{ request.method }}</b> {{ request.get_full_path }}</pre>
