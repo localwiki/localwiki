@@ -325,7 +325,12 @@ REST_FRAMEWORK = {
         # write via the API and non-authenticated users to read.
         'main.api.permissions.DjangoObjectPermissionsOrAnonReadOnly',
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
-    ]
+    ],
+    # Base API policies
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'main.api.renderers.LocalWikiAPIRenderer',
+    ),
 }
 
 # For testing, you can start the python debugging smtp server like so:
