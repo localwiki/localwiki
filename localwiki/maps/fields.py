@@ -214,8 +214,8 @@ class CollectionDescriptor(object):
             value = GEOSGeometry(value, srid=self._field.srid)
         else:
             raise TypeError(
-                'cannot set %(cname)s CollectionFrom with value of type: %(vtype)s' %
-                {'cname':obj.__class__.__name__, vtype: type(value)})
+                _('cannot set %(cname)s CollectionFrom with value of type: %(vtype)s') %
+                {'cname':obj.__class__.__name__, 'vtype': type(value)})
 
         obj.__dict__['_explicit_set_%s' % self._field.attname] = value
         return value

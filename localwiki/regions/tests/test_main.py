@@ -1,10 +1,3 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
 from django.test import TestCase
 from django.core.files.base import ContentFile
 from django.contrib.gis.geos import GEOSGeometry
@@ -16,7 +9,7 @@ from maps.models import MapData
 from redirects.models import Redirect
 from tags.models import Tag, PageTagSet
 
-from utils import move_to_region
+from .. utils import move_to_region
 
 
 class MoveRegionTests(TestCase):

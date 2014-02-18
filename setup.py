@@ -143,14 +143,19 @@ install_requires = [
     'django-registration==0.8.0',
     'django-olwidget==0.46-custom2',
     'django-honeypot==0.3.0-custom4',
-    'django-tastypie==0.10.0-custom1',
     'django-qsstats-magic==0.7',
     'django-picklefield==0.3.0',
     'django-constance==0.6-custom1',
     'celery[redis]==3.1.3',
     'celery-haystack==0.7.2',
     'django-extensions==1.2.5',
+    'djangorestframework==2.3.12',
+    'django-filter==0.7',
+    'djangorestframework-filter==0.2.0',
+    'djangorestframework-gis==0.1.0-custom2',
+    'markdown==2.3.1',
     'python-memcached',
+    'django-cors-headers==0.12',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
@@ -173,11 +178,11 @@ setup(
     dependency_links=[
         'https://github.com/philipn/olwidget/tarball/5c8eb75aaf0739b35fa06b0ba75f30bd32b89e77#egg=django-olwidget-0.46-custom2',
         'https://github.com/philipn/django-honeypot/tarball/b4991c140849901d2f8842df2c4672813e73381b#egg=django-honeypot-0.3.0-custom4',
-        # Hardcode to git commit b/c tastypie 0.10 is broken via pypi
-        'https://github.com/philipn/django-tastypie/tarball/localwiki#egg=django-tastypie-0.10.0-custom1',
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom5',
         'https://github.com/philipn/django-south/tarball/localwiki_master#egg=South-0.8.1-custom2',
         'https://github.com/philipn/django-constance/tarball/localwiki#egg=django-constance-0.6-custom1',
+        'https://github.com/philipn/django-rest-framework-chain/tarball/django_rest_framework_filter#egg=djangorestframework-filter-0.2.0',
+        'https://github.com/philipn/django-rest-framework-gis/tarball/localwiki#egg=djangorestframework-gis-0.1.0-custom2',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=localwiki.manage:main'],

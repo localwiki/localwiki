@@ -13,18 +13,19 @@ from django.core.files.base import ContentFile
 from django.contrib.gis.geos import GEOSGeometry
 
 from versionutils.merging.forms import MergeMixin
-from forms import PageForm
 from redirects.models import Redirect
 from regions.models import Region
 from maps.models import MapData
-
-from pages.models import (Page, PageFile, slugify,
-    url_to_name, clean_name, name_to_url)
-from pages.plugins import html_to_template_text
-from pages.plugins import tag_imports
-from pages.xsstests import xss_exploits
-from pages import exceptions
 from tags.models import PageTagSet, Tag
+
+from .. forms import PageForm
+from ..models import (Page, PageFile, slugify,
+    url_to_name, clean_name, name_to_url)
+from ..plugins import html_to_template_text
+from ..plugins import tag_imports
+from .. import exceptions
+
+from .xsstests import xss_exploits
 
 
 class PageTest(TestCase):

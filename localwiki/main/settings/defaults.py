@@ -216,10 +216,10 @@ MIDDLEWARE_CLASSES = (
     'honeypot.middleware.HoneypotMiddleware',
     'versionutils.versioning.middleware.AutoTrackUserInfoMiddleware',
     'redirects.middleware.RedirectFallbackMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
     'utils.middleware.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
-    'main.api.middleware.XsSharing',
 )
 
 PASSWORD_HASHERS = (
@@ -246,6 +246,8 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates'),
 )
 
+SOUTH_TESTS_MIGRATE = True
+
 INSTALLED_APPS = (
     # Django-provided apps
     'django.contrib.auth',
@@ -267,11 +269,13 @@ INSTALLED_APPS = (
     'staticfiles',
     'guardian',
     'south',
-    'tastypie',
+    'rest_framework',
+    'rest_framework.authtoken',
     'honeypot',
     'constance.backends.database',
     'constance',
     'django_extensions',
+    'corsheaders',
 
     # Our apps
     'versionutils.versioning',
@@ -296,6 +300,42 @@ LOCAL_INSTALLED_APPS = ()
 TEMPLATE_DIRS = ()
 
 SITE_THEME = 'sapling'
+
+REST_FRAMEWORK = {
+    'PAGINATE_BY': 30,
+    # Allow client to override, using `?limit=xxx`.
+    'PAGINATE_BY_PARAM': 'limit',  
+    # Maximum limit allowed when using `?limit=xxx`.
+    'MAX_PAGINATE_BY': 100,
+    # Use hyperlinked styles by default.
+    # Only used if the `serializer_class` attribute is not set on a view.
+    'DEFAULT_MODEL_SERIALIZER_CLASS':
+        'rest_framework.serializers.HyperlinkedModelSerializer',
+
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.DjangoFilterBackend', 'rest_framework.filters.OrderingFilter',
+    ),
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        # Combined, these allow only authenticated users to 
+        # write via the API and non-authenticated users to read.
+        'main.api.permissions.DjangoObjectPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+    ],
+    # Base API policies
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'main.api.renderers.LocalWikiAPIRenderer',
+    ),
+}
+
+# Allow Cross-Origin Resource Sharing headers on API urls
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/api/.*$'
 
 # For testing, you can start the python debugging smtp server like so:
 # sudo python -m smtpd -n -c DebuggingServer localhost:25

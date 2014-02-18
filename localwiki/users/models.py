@@ -53,7 +53,7 @@ User.get_absolute_url = get_absolute_url
 class UserProfile(models.Model):
     # this field is required
     user = models.OneToOneField(User)
-    subscribed = models.BooleanField(verbose_name=_(settings.SUBSCRIBE_MESSAGE))
+    subscribed = models.BooleanField(verbose_name=_(settings.SUBSCRIBE_MESSAGE), db_index=True)
 
 
 # For registration calls

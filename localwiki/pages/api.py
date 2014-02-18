@@ -1,187 +1,289 @@
-from urllib import urlencode
+from django.contrib.auth.models import User
+from django import forms
 
-from django.conf.urls import url
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.paginator import Paginator, InvalidPage
-from django.http import Http404, HttpResponseRedirect
+from rest_framework import viewsets
+from rest_framework_filters import FilterSet, filters
+from rest_framework_gis.filters import GeoFilterSet
 
-from tastypie import http
-from tastypie import fields
-from tastypie.bundle import Bundle
-from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
-from tastypie.validation import Validation
-from tastypie.authorization import DjangoAuthorization
-from tastypie.utils import trailing_slash
+from main.api import router
+from main.api.filters import HistoricalFilter
+from main.api.views import AllowFieldLimitingMixin
+from tags.models import Tag, PageTagSet, slugify as tag_slugify
+from versionutils.versioning.constants import TYPE_CHOICES
+from regions.api import RegionFilter
+from users.api import UserFilter
 
-from redirects.models import Redirect
-from main.api import api
-from main.api.resources import ModelHistoryResource
-from main.api.authentication import ApiKeyWriteAuthentication
-
-from models import Page, PageFile, name_to_url, url_to_name, clean_name
+from .models import Page, PageFile, slugify
+from .serializers import (PageSerializer, HistoricalPageSerializer,
+    FileSerializer, HistoricalFileSerializer)
 
 
-class PageValidation(Validation):
-    def is_valid(self, bundle, request=None):
-        errors = {}
+class PagePermissionsMixin(object):
+    """
+    This mixin will cause a view's edit permissions to depend on the Page
+    model rather than just on the view's `model` attribute.
 
-        pagename = bundle.data.get('name')
-        if pagename:
-            if pagename != clean_name(pagename):
-                errors['name'] = ['Pagename cannot contain underscores or '
-                    'a / character surrounded by spaces. Please replace '
-                    'underscores with spaces and remove spaces surrounding the'
-                    ' / character.'
-                ]
-        return errors
+    By default, our API views will use the per-object permission for the 
+    model specified by the view's `model` attribute.  However, sometimes we
+    want to also depend on other permissions.
+    """
+    def get_perms_required(self, request_method, obj=None):
+        perms_map = {
+            'GET': [],
+            'OPTIONS': [],
+            'HEAD': [],
+            'POST': ['pages.change_page'],
+            'PUT': ['pages.change_page'],
+            'PATCH': ['pages.change_page'],
+            'DELETE': ['pages.change_page'],
+        }
+        return perms_map[request_method]
+
+    def get_protected_object(self, obj):
+        return obj.page
+
+    def get_protected_objects(self, obj):
+        return [self.get_protected_object(obj)]
+
+    def check_permissions(self, request):
+        super(PagePermissionsMixin, self).check_permissions(request)
+        perms_required = self.get_perms_required(request.method)
+        if not request.user.has_perms(perms_required):
+            self.permission_denied(request)
+    
+    def check_object_permissions(self, request, obj):
+        super(PagePermissionsMixin, self).check_object_permissions(request, obj)
+        objs = self.get_protected_objects(obj)
+        for obj in objs:
+            perms_required = self.get_perms_required(request.method, obj=obj)
+            if not request.user.has_perms(perms_required, obj):
+                self.permission_denied(request)
+
+    def pre_save(self, obj):
+        # We have to include a `pre_save` method here because
+        # otherwise there's no per-object check on POST, which
+        # never calls `check_object_permissions`.
+        self.check_object_permissions(self.request, obj)
 
 
-# TODO: move this under /page/<slug>/_file/<filename>?
-class FileResource(ModelResource):
-    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
+def get_or_create_tag(word, region):
+    tag, created = Tag.objects.get_or_create(
+        slug=tag_slugify(word), region=region,
+        defaults={'name': word}
+    )
+    return tag
+
+
+class TagFilter(filters.Filter):
+    def filter(self, qs, value):
+        value = value.strip()
+        if not value:
+            return qs
+        for v in value.split(','):
+            qs = qs.filter(pagetagset__tags__slug=v)
+        return qs
+
+
+class PageFilter(GeoFilterSet, FilterSet):
+    slug = filters.AllLookupsFilter(name='slug')
+    region = filters.RelatedFilter(RegionFilter, name='region')
+    tags = TagFilter()
 
     class Meta:
-        queryset = PageFile.objects.all()
-        resource_name = 'file'
-        filtering = {
-            'name': ALL,
-            'slug': ALL,
-        }
-        ordering = ['name', 'slug']
-        list_allowed_methods = ['get', 'post']
-        authentication = ApiKeyWriteAuthentication()
-        authorization = DjangoAuthorization()
+        model = Page
+        fields = ('name', 'slug')
 
 
-class FileHistoryResource(FileResource, ModelHistoryResource):
-    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
+class HistoricalPageFilter(PageFilter, HistoricalFilter):
+    class Meta:
+        model = Page.versions.model
+
+
+class PageViewSet(AllowFieldLimitingMixin, viewsets.ModelViewSet):
+    """
+    API endpoint that allows pages to be viewed and edited.
+
+    Tags
+    ---------------------
+
+    Tags can be found in the `tags` attribute.  You can update
+    *just* the tags by issuing a `PATCH` here with just the `tags`
+    attribute present, e.g.:
+
+        {"tags": ["park", "fun"]}
+
+    To update a page and not change the tags, simply exclude the
+    `tags` field from your update.
+
+    To delete all tags from the page, issue a request with  `tags`
+    set to `[]`.
+
+    Filter fields
+    -------------
+
+    You can filter the result set by providing the following query parameters:
+
+      * `name` -- Filter by name, exact.
+      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
+      * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
+      * `tags` -- Filter by tag.  E.g. `tags=park` for all pages tagged 'park', or `tags=park,wifi` for all pages tagged 'park' **and** also tagged 'wifi'.
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `slug`
+
+    You can reverse ordering by using the `-` sign, e.g. `-slug`.
+    """
+    queryset = Page.objects.all()
+    serializer_class = PageSerializer
+    filter_class = PageFilter
+    ordering_fields = ('slug',)
+
+    def post_save(self, page, *args, **kwargs):
+        if not hasattr(page, '_tags'):
+            # Not providing any tag detail, so let's skip altering the tags.
+            return
+
+        if type(page._tags) is list:
+            # If tags were provided in the request
+            try:
+                pts = PageTagSet.objects.get(page=page, region=page.region)
+            except PageTagSet.DoesNotExist:
+                pts = PageTagSet(page=page, region=page.region)
+            pts.save()
+
+            tags = []
+            for word in page._tags:
+                tags.append(get_or_create_tag(word, page.region))
+            pts.tags = tags
+
+
+class HistoricalPageViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint for viewing page history.
+
+    Filter fields
+    -------------
+
+    You can filter the result set by providing the following query parameters:
+
+      * `name` -- Filter by name, exact.
+      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
+      * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
+
+    And the usual set of historical filter fields:
+
+      * `history_user` - filter by the `user` resource of the editor, if user was logged in.  Allows for chained filtering on all of the filters available on the [user resource](../users/), e.g. `history_user__username`.
+      * `history_user_ip` - filter by the IP address of the editor.
+      * `history_date` - filter by history date. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
+      * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `slug`
+      * `history_date`
+
+    You can reverse ordering by using the `-` sign, e.g. `-slug`.
+    """
+    queryset = Page.versions.all()
+    serializer_class = HistoricalPageSerializer
+    filter_class = HistoricalPageFilter
+    ordering_fields = ('slug', 'history_date')
+
+
+class FileFilter(GeoFilterSet, FilterSet):
+    slug = filters.AllLookupsFilter(name='slug')
+    region = filters.RelatedFilter(RegionFilter, name='region')
 
     class Meta:
-        resource_name = 'file_version'
-        queryset = PageFile.versions.all()
-        filtering = {
-            'name': ALL,
-            'slug': ALL,
-            'history_date': ALL,
-            'history_type': ALL,
-        }
-        ordering = ['history_date']
+        model = PageFile
+        fields = ('name', 'slug')
 
 
-class PageResource(ModelResource):
-    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
-    map = fields.ToOneField('maps.api.MapResource', 'mapdata', null=True,
-        readonly=True)
-    page_tags = fields.ToOneField('tags.api.PageTagSetResource', 'pagetagset',
-        null=True, readonly=True)
-
+class HistoricalFileFilter(FileFilter, HistoricalFilter):
     class Meta:
-        queryset = Page.objects.all()
-        resource_name = 'page'
-        filtering = {
-            'name': ALL,
-            'slug': ALL,
-            'page_tags': ALL_WITH_RELATIONS,
-            'map': ALL_WITH_RELATIONS,
-        }
-        list_allowed_methods = ['get', 'post']
-        ordering = ['name', 'slug']
-        validation = PageValidation()
-        authentication = ApiKeyWriteAuthentication()
-        authorization = DjangoAuthorization()
-
-    def prepend_urls(self):
-        # For searching.
-        l = [
-            url(r"^(?P<resource_name>%s)/search%s$" %
-                (self._meta.resource_name, trailing_slash()),
-                 self.wrap_view('get_search'), name="api_get_search"),
-        ]
-        # and get the base class' URLs
-        l += super(PageResource, self).prepend_urls()
-        return l
-
-    def get_detail(self, request, **kwargs):
-        resp = super(PageResource, self).get_detail(request, **kwargs)
-        if not isinstance(resp, http.HttpNotFound):
-            return resp
-        # check if the page has been redirected
-        try:
-            obj = Redirect.objects.get(
-                source=self.remove_api_resource_names(kwargs)['name']
-            ).destination
-            redirect_url = (self.get_resource_uri(obj) + 
-                            '?' + urlencode(request.GET))
-            return HttpResponseRedirect(redirect_url)
-        except ObjectDoesNotExist:
-            return resp
-
-        bundle = self.build_bundle(obj=obj, request=request)
-        bundle = self.full_dehydrate(bundle)
-        bundle = self.alter_detail_data_to_serialize(request, bundle)
-        return self.create_response(request, bundle)
-
-    def get_search(self, request, **kwargs):
-        """
-        A simple search method, mostly from the tastypie examples.
-        """
-        from haystack.query import SearchQuerySet
-        # The search method isn't discoverable via the API.  TODO: Fix that.
-
-        self.method_check(request, allowed=['get'])
-        self.is_authenticated(request)
-        self.throttle_check(request)
-
-        # Do the query.
-        sqs = SearchQuerySet().models(Page).load_all().auto_query(
-            request.GET.get('q', ''))
-        paginator = Paginator(sqs, 20)
-
-        try:
-            page = paginator.page(int(request.GET.get('page', 1)))
-        except InvalidPage:
-            raise Http404("Sorry, no results on that page.")
-
-        objects = []
-
-        for result in page.object_list:
-            if not result:
-                continue
-            bundle = self.build_bundle(obj=result.object, request=request)
-            bundle = self.full_dehydrate(bundle)
-            objects.append(bundle)
-
-        object_list = {'objects': objects}
-
-        self.log_throttled_access(request)
-        return self.create_response(request, object_list)
-
-    def dehydrate(self, bundle):
-        in_page_api = False
-        for pattern in self.urls:
-            if pattern.resolve(bundle.request.path.replace('/api/', '')):
-                in_page_api = True
-        if (not in_page_api and not bundle.request.GET.get('full')):
-            bundle = bundle.data['resource_uri']
-        return bundle
+        model = PageFile.versions.model
 
 
-class PageHistoryResource(ModelHistoryResource):
-    region = fields.ForeignKey('regions.api.RegionResource', 'region', null=True, full=True)
+class FileViewSet(PagePermissionsMixin, AllowFieldLimitingMixin, viewsets.ModelViewSet):
+    """
+    API endpoint that allows files to be viewed and edited.  For information on
+    uploading files via the API, see [the documentation](http://localwiki.net/main/API_Documentation#uploading_files).
 
-    class Meta:
-        resource_name = 'page_version'
-        queryset = Page.versions.all()
-        filtering = {
-            'name': ALL,
-            'slug': ALL,
-            'history_date': ALL,
-            'history_type': ALL,
-        }
-        ordering = ['history_date']
+    Filter fields
+    -------------
+
+    You can filter the result set by providing the following query parameters:
+
+      * `name` -- Filter by file name, exact.
+      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
+      * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `slug`
+
+    You can reverse ordering by using the `-` sign, e.g. `-slug`.
+    """
+    queryset = PageFile.objects.all()
+    serializer_class = FileSerializer
+    filter_class = FileFilter
+    ordering_fields = ('slug',)
+
+    def get_protected_object(self, obj):
+        pgs = Page.objects.filter(slug=obj.slug, region=obj.region)
+        if pgs:
+            return pgs[0]
 
 
-api.register(PageResource())
-api.register(PageHistoryResource())
-api.register(FileResource())
-api.register(FileHistoryResource())
+class HistoricalFileViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSet):
+    """
+    API endpoint for viewing file history.
+
+    Filter fields
+    -------------
+
+    You can filter the result set by providing the following query parameters:
+
+      * `name` -- Filter by name, exact.
+      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
+      * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
+
+    And the usual set of historical filter fields:
+
+      * `history_user` - filter by the `user` resource of the editor, if user was logged in.  Allows for chained filtering on all of the filters available on the [user resource](../users/), e.g. `history_user__username`.
+      * `history_user_ip` - filter by the IP address of the editor.
+      * `history_date` - filter by history date. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
+      * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
+
+    Ordering
+    --------
+
+    You can order the result set by providing the `ordering` query parameter with the value of one of:
+
+      * `slug`
+      * `history_date`
+
+    You can reverse ordering by using the `-` sign, e.g. `-slug`.
+    """
+    queryset = PageFile.versions.all()
+    serializer_class = HistoricalFileSerializer
+    filter_class = HistoricalFileFilter
+    ordering_fields = ('slug', 'history_date')
+
+
+
+
+router.register(u'pages', PageViewSet)
+router.register(u'pages_history', HistoricalPageViewSet)
+router.register(u'files', FileViewSet)
+router.register(u'files_history', HistoricalFileViewSet)

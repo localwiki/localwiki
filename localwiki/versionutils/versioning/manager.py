@@ -19,7 +19,23 @@ class HistoryDescriptor(object):
         return instance._history_manager
 
 
-class HistoricalMetaInfoQuerySet(QuerySet):
+# We actually may have different types of QuerySets -- GeoQuerySet, etc.
+# So we need to do this trickery to allow the HistoricalMetaInfoQuerySet
+# to dynamically subclass whatever underlying QuerySet class we may
+# be using.
+
+_cached_classes = {}
+def HistoricalMetaInfoQuerySet(model=None):
+    _base = model._default_manager.get_query_set().__class__
+    if _base in _cached_classes:
+        return _cached_classes[_base](model=model)
+    class _HistoricalMetaInfoQuerySet(BaseHistoricalMetaInfoQuerySet, _base):
+        pass
+    _cached_classes[_base] = _HistoricalMetaInfoQuerySet
+    return _HistoricalMetaInfoQuerySet(model=model)
+
+
+class BaseHistoricalMetaInfoQuerySet(object):
     """
     Simple QuerySet to make filtering intuitive.
     """
@@ -66,7 +82,7 @@ class HistoricalMetaInfoQuerySet(QuerySet):
 
             kws_new[k_new] = v
 
-        return super(HistoricalMetaInfoQuerySet, self).filter(*args, **kws_new)
+        return super(BaseHistoricalMetaInfoQuerySet, self).filter(*args, **kws_new)
 
 
 class HistoryManager(models.Manager):

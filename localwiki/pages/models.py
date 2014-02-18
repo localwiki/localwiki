@@ -23,9 +23,17 @@ import exceptions
 from fields import WikiHTMLField
 
 
+def validate_page_slug(slug):
+    if slugify(slug) != slug:
+        raise ValidationError(_('Provided slug is invalid. Slugs must be lowercase, '
+            'contain no trailing or leading whitespace, and contain only alphanumber '
+            'characters along with %(KEEP_CHARACTERS)s') % {'KEEP_CHARACTERS': SLUGIFY_KEEP})
+
+
 class Page(models.Model):
     name = models.CharField(max_length=255, blank=False)
-    slug = models.SlugField(max_length=255, editable=False, blank=False)
+    slug = models.CharField(max_length=255, editable=False, blank=False, db_index=True,
+        validators=[validate_page_slug])
     content = WikiHTMLField()
     region = models.ForeignKey(Region, null=True)
 
@@ -195,6 +203,8 @@ class Page(models.Model):
                 obj.pk = None  # Reset the primary key before saving.
                 obj.save(comment=_("Parent page renamed"))
 
+        return new_p
+
 
 class PageDiff(diff.BaseModelDiff):
     fields = ('name',
@@ -210,7 +220,9 @@ class PageFile(models.Model):
     file = models.FileField(ugettext_lazy("file"), upload_to='pages/files/',
                             storage=RandomFilenameFileSystemStorage())
     name = models.CharField(max_length=255, blank=False)
-    slug = models.SlugField(max_length=255, editable=False, blank=False)
+    # TODO: Create PageSlugField for this purpose
+    slug = models.CharField(max_length=255, blank=False, db_index=True,
+        validators=[validate_page_slug])
     region = models.ForeignKey(Region, null=True)
 
     _rough_type_map = [(r'^audio', 'audio'),
@@ -273,7 +285,8 @@ def clean_name(name):
     return name
 
 
-def slugify(value, keep=r"\-\.,'\"/!@$%&*()"):
+SLUGIFY_KEEP = r"\-\.,'\"/!@$%&*()"
+def slugify(value, keep=SLUGIFY_KEEP):
     """
     Normalizes page name for db lookup
 

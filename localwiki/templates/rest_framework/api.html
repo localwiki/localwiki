@@ -1,0 +1,76 @@
+{% extends "site/base.html" %}
+
+{% load static from staticfiles %}
+{% load url from future %}
+{% load rest_framework %}
+
+{% block search_robots %}
+  <meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
+{% block title %}API - LocalWiki{% endblock %}
+
+{% block header_title %}
+{% for breadcrumb_name, breadcrumb_url in breadcrumblist %}
+  {% if forloop.first %}
+  <a href="{{ breadcrumb_url }}">api</a>
+  {% else %}
+  / <a href="{% if forloop.last %}#{% else %}{{ breadcrumb_url }}{% endif %}">{{ breadcrumb_name }}</a>
+  {% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block object_actions %}
+  <ul>
+    {% if 'GET' in allowed_methods %}
+      {% for format in available_formats %}
+      {% if not format == "api" %}
+      <li>
+      <a class="button" href='{% add_query_param request api_settings.URL_FORMAT_OVERRIDE format %}' rel="nofollow" title="Make a GET request on the {{ name }} resource with the format set to `{{ format }}`">{{ format|upper }}</a>
+      </li>
+      {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% if options_form %}
+      <li>
+      <form action="{{ request.get_full_path }}" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="{{ api_settings.FORM_METHOD_OVERRIDE }}" value="OPTIONS" />
+          <button class="button" title="Make an OPTIONS request on the {{ name }} resource">OPTIONS</button>
+      </form>
+     </li>
+     {% endif %}
+  </ul>
+{% endblock %}
+
+{% block body %}
+<body>
+   <div class="content_type api">
+   {% block everything_wrapper %}
+        {{ block.super }}
+   {% endblock %}
+   </div>
+</body>
+{% endblock %}
+
+{% block content %}
+  <h1>{{ name }}</h1>
+  <div id="description">
+  {% block description %}
+    {{ description }}
+  {% endblock %}
+  </div>
+  {% block request_response_info %}
+    <div class="request-info" style="clear: both" >
+        <pre class="prettyprint"><b>{{ request.method }}</b> {{ request.get_full_path }}</pre>
+    </div>
+    <div class="response-info">
+        <pre class="prettyprint"><div class="meta nocode"><b>HTTP {{ response.status_code }} {{ response.status_text }}</b>{% autoescape off %}
+{% for key, val in response.items %}<b>{{ key }}:</b> <span class="lit">{{ val|break_long_headers|urlize_quoted_links }}</span>
+{% endfor %}
+</div>{{ content|urlize_quoted_links }}</pre>{% endautoescape %}
+     </div>
+  {% endblock %}
+
+{% endblock %}

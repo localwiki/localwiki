@@ -18,7 +18,7 @@ class RedirectForm(CommentMixin, forms.ModelForm):
 
     class Meta:
         model = Redirect
-        exclude = ('region')
+        exclude = ('source', 'region')
 
     class Media:
         js = (

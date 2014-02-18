@@ -68,6 +68,26 @@ pre, code {
     border: 1px solid #CBCBCB;
     background-color: #FFF8ED;
 }
+/* API docs is class="content_type api" */
+.content_type.api .request-info, .content_type.api .response-info {
+    font-size: 80%;
+}
+.content_type.api p pre, .content_type.api p code,
+.content_type.api li pre, .content_type.api li code {
+    margin: 0;
+    padding: inherit;
+    overflow: inherit;;
+    font-family: 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+    line-height: inherit;
+    border: inherit;
+    background-color: inherit;
+}
+
+/* bug fix */
+pre code {
+    border: none;
+}
+
 textarea, input, select {
     font-size: 15px;
 }
@@ -173,6 +193,13 @@ textarea, input, select {
     height: 32px;
     margin-left: -2.75em;
 }
+/* No-icon content types */
+.content_type.region #header_bar .inner:before,
+.content_type.api #header_bar .inner:before {
+    width: 0;
+    height: 0;
+}
+
 .mapdata #header_bar .inner:before {
     background: url(../img/map-icon.png) 3px 0 no-repeat;
 }
