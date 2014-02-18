@@ -213,7 +213,8 @@ class HistoricalFileFilter(FileFilter, HistoricalFilter):
 
 class FileViewSet(PagePermissionsMixin, AllowFieldLimitingMixin, viewsets.ModelViewSet):
     """
-    API endpoint that allows files to be viewed and edited.
+    API endpoint that allows files to be viewed and edited.  For information on
+    uploading files via the API, see [the documentation](http://localwiki.net/main/API_Documentation#uploading_files).
 
     Filter fields
     -------------
