@@ -30,7 +30,8 @@ urlpatterns = patterns('',
     (r'^', include(regions.site.urls)),
     
     # API URLs
-    url(r'^api/', include(router.urls)),
+    url(r'^api/{0,1}$', RedirectView.as_view(url='/api/v4/', permanent=False)),
+    url(r'^api/v4/', include(router.urls)),
 
     # Internal API URLs
     (r'^_api/', include('main.api.internal_urls')),
