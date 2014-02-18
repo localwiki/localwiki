@@ -40,12 +40,12 @@ class MapDataViewSet(PagePermissionsMixin, AllowFieldLimitingMixin, viewsets.Mod
 
     You can filter the result set by providing the following query parameters:
 
-      * `points` -- Filter by the points, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
-      * `lines` -- Filter by the lines, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
-      * `polys` -- Filter by the polygons, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
+      * `points` -- Filter by the points, if present.  Supports the [standard geographic lookup types](http://localwiki.net/main/API_Documentation#geo_lookups)
+      * `lines` -- Filter by the lines, if present.  Supports the [standard geographic lookup types](http://localwiki.net/main/API_Documentation#geo_lookups)
+      * `polys` -- Filter by the polygons, if present.  Supports the [standard geographic lookup types](http://localwiki.net/main/API_Documentation#geo_lookups)
       * `page` -- Filter by page.  Allows for chained filtering on all of the filters available on the [page resource](../pages/), e.g. `page__slug`.
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
-      * `length` -- Filter by length of the geography. Supports the [standard lookup types](../../api_docs/filters)
+      * `length` -- Filter by length of the geography. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
 
     Ordering
     --------
@@ -71,18 +71,18 @@ class HistoricalMapDataViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelVi
 
     You can filter the result set by providing the following query parameters:
 
-      * `points` -- Filter by the points, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
-      * `lines` -- Filter by the lines, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
-      * `polys` -- Filter by the polygons, if present.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
+      * `points` -- Filter by the points, if present.  Supports the [standard geographic lookup types](http://localwiki.net/main/API_Documentation#geo_lookups)
+      * `lines` -- Filter by the lines, if present.  Supports the [standard geographic lookup types](http://localwiki.net/main/API_Documentation#geo_lookups)
+      * `polys` -- Filter by the polygons, if present.  Supports the [standard geographic lookup types](http://localwiki.net/main/API_Documentation#geo_lookups)
       * `page` -- Filter by page.  Allows for chained filtering on all of the filters available on the [page resource](../pages/), e.g. `page__slug`.
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
-      * `length` -- Filter by length of the geography. Supports the [standard lookup types](../../api_docs/filters)
+      * `length` -- Filter by length of the geography. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
 
     And the usual set of historical filter fields:
 
       * `history_user` - filter by the `user` resource of the editor, if user was logged in.  Allows for chained filtering on all of the filters available on the [user resource](../users/), e.g. `history_user__username`.
       * `history_user_ip` - filter by the IP address of the editor.
-      * `history_date` - filter by history date. Supports the [standard lookup types](../../api_docs/filters)
+      * `history_date` - filter by history date. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
 
     Ordering

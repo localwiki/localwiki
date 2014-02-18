@@ -45,7 +45,7 @@ class HistoricalTagViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSe
 
       * `history_user` - filter by the `user` resource of the editor, if user was logged in.  Allows for chained filtering on all of the filters available on the [user resource](../users/), e.g. `history_user__username`.
       * `history_user_ip` - filter by the IP address of the editor.
-      * `history_date` - filter by history date. Supports the [standard lookup types](../../api_docs/filters)
+      * `history_date` - filter by history date. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
 
     Ordering

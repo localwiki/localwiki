@@ -44,11 +44,11 @@ class RegionViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSet):
 
     You can filter the result set by providing the following query parameters:
 
-      * `slug` -- Filter by region slug. Supports the [standard lookup types](../../api_docs/filters)
-      * `geom` -- Filter by the region's geography.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
+      * `slug` -- Filter by region slug. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
+      * `geom` -- Filter by the region's geography.  Supports the [standard geographic lookup types](http://localwiki.net/main/API_Documentation#geo_lookups)
       * `settings`
         * `settings__default_language` -- Filter by the region's default language.  Accepts one of %(allowed_languages)s.
-        * `settings__region_center` -- Filter by the region's center geography.  Supports the [standard geographic lookup types](../../api_docs/geo_filters)
+        * `settings__region_center` -- Filter by the region's center geography.  Supports the [standard geographic lookup types](http://localwiki.net/main/API_Documentation#geo_lookups)
 
     Ordering
     --------

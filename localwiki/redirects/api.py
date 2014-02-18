@@ -81,7 +81,7 @@ class RedirectViewSet(RedirectPermissionsMixin, AllowFieldLimitingMixin, viewset
 
     You can filter the result set by providing the following query parameters:
 
-      * `source` -- Filter by source slug. Supports the [standard lookup types](../../api_docs/filters)
+      * `source` -- Filter by source slug. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `destination` -- Filter by destination page.  Allows for chained filtering on all of the filters available on the [page resource](../pages/), e.g. `destination__slug`.
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
 
@@ -109,7 +109,7 @@ class HistoricalRedirectViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelV
 
     You can filter the result set by providing the following query parameters:
 
-      * `source` -- Filter by source slug. Supports the [standard lookup types](../../api_docs/filters)
+      * `source` -- Filter by source slug. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `destination` -- Filter by destination page.  Allows for chained filtering on all of the filters available on the [page resource](../pages/), e.g. `destination__slug`.
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
 
@@ -117,7 +117,7 @@ class HistoricalRedirectViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelV
 
       * `history_user` - filter by the `user` resource of the editor, if user was logged in.  Allows for chained filtering on all of the filters available on the [user resource](../users/), e.g. `history_user__username`.
       * `history_user_ip` - filter by the IP address of the editor.
-      * `history_date` - filter by history date. Supports the [standard lookup types](../../api_docs/filters)
+      * `history_date` - filter by history date. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
 
     Ordering

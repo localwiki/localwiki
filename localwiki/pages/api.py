@@ -124,7 +124,7 @@ class PageViewSet(AllowFieldLimitingMixin, viewsets.ModelViewSet):
     You can filter the result set by providing the following query parameters:
 
       * `name` -- Filter by name, exact.
-      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](../../api_docs/filters)
+      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
       * `tags` -- Filter by tag.  E.g. `tags=park` for all pages tagged 'park', or `tags=park,wifi` for all pages tagged 'park' **and** also tagged 'wifi'.
 
@@ -171,14 +171,14 @@ class HistoricalPageViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewS
     You can filter the result set by providing the following query parameters:
 
       * `name` -- Filter by name, exact.
-      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](../../api_docs/filters)
+      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
 
     And the usual set of historical filter fields:
 
       * `history_user` - filter by the `user` resource of the editor, if user was logged in.  Allows for chained filtering on all of the filters available on the [user resource](../users/), e.g. `history_user__username`.
       * `history_user_ip` - filter by the IP address of the editor.
-      * `history_date` - filter by history date. Supports the [standard lookup types](../../api_docs/filters)
+      * `history_date` - filter by history date. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
 
     Ordering
@@ -222,7 +222,7 @@ class FileViewSet(PagePermissionsMixin, AllowFieldLimitingMixin, viewsets.ModelV
     You can filter the result set by providing the following query parameters:
 
       * `name` -- Filter by file name, exact.
-      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](../../api_docs/filters)
+      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
 
     Ordering
@@ -255,14 +255,14 @@ class HistoricalFileViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewS
     You can filter the result set by providing the following query parameters:
 
       * `name` -- Filter by name, exact.
-      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](../../api_docs/filters)
+      * `slug` -- Filter by page `slug`. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `region` -- Filter by region.  Allows for chained filtering on all of the filters available on the [region resource](../regions/), e.g. `region__slug`.
 
     And the usual set of historical filter fields:
 
       * `history_user` - filter by the `user` resource of the editor, if user was logged in.  Allows for chained filtering on all of the filters available on the [user resource](../users/), e.g. `history_user__username`.
       * `history_user_ip` - filter by the IP address of the editor.
-      * `history_date` - filter by history date. Supports the [standard lookup types](../../api_docs/filters)
+      * `history_date` - filter by history date. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `history_type` - filter by [history type id](../../api_docs/history_type), exact.
 
     Ordering

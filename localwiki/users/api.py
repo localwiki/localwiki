@@ -30,10 +30,10 @@ class UserViewSet(AllowFieldLimitingMixin, viewsets.ReadOnlyModelViewSet):
 
     You can filter the result set by providing the following query parameters:
 
-      * `username` -- Filter by username. Supports the [standard lookup types](../../api_docs/filters)
+      * `username` -- Filter by username. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups)
       * `first_name` -- Filter by first name, exact match.
       * `last_name` -- Filter by last name, exact match.
-      * `date_joined` -- Filter by date joined. Supports the [standard lookup types](../../api_docs/filters).
+      * `date_joined` -- Filter by date joined. Supports the [standard lookup types](http://localwiki.net/main/API_Documentation#lookups).
 
     Ordering
     --------
