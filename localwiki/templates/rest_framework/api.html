@@ -13,7 +13,7 @@
 {% block header_title %}
 {% for breadcrumb_name, breadcrumb_url in breadcrumblist %}
   {% if forloop.last %}
-  {{ breadcrumb_name }}
+  <a href="%">{{ breadcrumb_name }}</a>
   {% else %}
   <a href="{{ breadcrumb_url }}">{{ breadcrumb_name }}</a> /
   {% endif %}

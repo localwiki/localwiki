@@ -193,6 +193,13 @@ textarea, input, select {
     height: 32px;
     margin-left: -2.75em;
 }
+/* No-icon content types */
+.content_type.region #header_bar .inner:before,
+.content_type.api #header_bar .inner:before {
+    width: 0;
+    height: 0;
+}
+
 .mapdata #header_bar .inner:before {
     background: url(../img/map-icon.png) 3px 0 no-repeat;
 }
