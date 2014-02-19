@@ -5,6 +5,7 @@
     <li><a href="{% url 'pages:show' slug='Front_Page' region=region.slug %}">{% trans "Front Page" %}</a></li>
     <li><a href="{% url 'pages:show' slug='People' region=region.slug %}">{% trans "People" %}</a></li>
     <li><a href="{% url 'maps:global' region=region.slug %}">{% trans "Map" %}</a></li>
+    <li><a href="{% url 'maps:nearby' region=region.slug %}">{% trans "Nearby" %}</a></li>
     <li><a href="{% url 'recentchanges' region=region.slug %}">{% trans "Recent Changes" %}</a></li>
     <li><a href="{% url 'pages:index' region=region.slug %}">{% trans "All Pages" %}</a></li>
     {% if is_region_admin %}
