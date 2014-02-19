@@ -358,8 +358,6 @@ def setup_repo():
     sudo('chown -R %s.%s %s' % (env.user, env.user, env.localwiki_root))
     if not exists(env.src_root):
         run('git clone https://github.com/localwiki/localwiki.git %s' % env.src_root)
-    # XXX TODO temporary
-    switch_branch('hub_fabric_deploy_needed')
 
 def switch_branch(branch):
     with cd(env.src_root):
