@@ -34,6 +34,6 @@
   {% endfor %}
   </ul>
   <p>
-    <a href="{% url 'pages:show' slug=slug %}">{% trans "View page" %}</a>
+    <a href="{% url 'pages:show' slug=slug region=region.slug %}">{% trans "View page" %}</a>
   </p>
 {% endblock %}

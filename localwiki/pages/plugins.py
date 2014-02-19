@@ -212,8 +212,11 @@ def handle_image(elem, context=None):
 
     page = context['page']
     try:
-        file = PageFile.objects.get(slug__exact=page.slug,
-                                     name__exact=file_url_to_name(src))
+        file = PageFile.objects.get(
+            slug__exact=page.slug,
+            name__exact=file_url_to_name(src),
+            region=page.region
+            )
     except PageFile.DoesNotExist:
         return
 
@@ -236,8 +239,9 @@ def handle_image(elem, context=None):
         elem.tail = after + (elem.tail or '')
     else:
         elem.attrib['src'] = file.file.url
-    info_url = reverse('pages:file-info', args=[page.pretty_slug,
-                                                    file.name])
+    info_url = reverse('pages:file-info',
+                       args=[page.region.slug, page.pretty_slug,
+                             file.name])
     link = etree.Element('a')
     link.attrib['href'] = info_url
     elem.addprevious(link)
@@ -318,6 +322,7 @@ class LinkNode(Node):
         self.nodelist = nodelist
 
     def render(self, context):
+        region = context['region']
         try:
             cls = ''
             url = self.href
@@ -325,27 +330,28 @@ class LinkNode(Node):
             if self.is_relative_link(url):
                 if url.startswith('_files/'):
                     filename = file_url_to_name(url)
-                    url = reverse('pages:file-info', args=[page.pretty_slug,
-                                                       filename])
+                    url = reverse('pages:file-info',
+                            args=[region.slug, page.pretty_slug, filename])
                     try:
-                        file = PageFile.objects.get(slug__exact=page.slug,
-                                                    name__exact=filename)
+                        file = PageFile.objects.get(
+                            slug__exact=page.slug, region=region, name__exact=filename)
                         cls = ' class="file_%s"' % file.rough_type
                     except PageFile.DoesNotExist:
                         cls = ' class="missing_link"'
                 elif unquote_plus(url).startswith('tags/'):
                     cls = ' class="tag_link"'
+                    url = unquote_plus(url)
                 else:
                     try:
-                        page = Page.objects.get(slug__exact=slugify(url))
-                        url = reverse('pages:show', args=[page.pretty_slug])
+                        page = Page.objects.get(slug__exact=slugify(url), region=region)
+                        url = reverse('pages:show', args=[region.slug, page.pretty_slug])
                     except Page.DoesNotExist:
                         # Check if Redirect exists.
-                        if not Redirect.objects.filter(source=slugify(url)):
+                        if not Redirect.objects.filter(source=slugify(url), region=region):
                             cls = ' class="missing_link"'
                         # Convert to proper URL: My%20page -> My_page
                         url = name_to_url(url_to_name(url))
-                        url = reverse('pages:show', args=[url])
+                        url = reverse('pages:show', args=[region.slug, url])
             return '<a href="%s"%s>%s</a>' % (url, cls,
                                               self.nodelist.render(context))
         except:

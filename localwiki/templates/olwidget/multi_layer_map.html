@@ -3,6 +3,15 @@
 <div id="{{ id }}"></div>
 {{ layer_html|join:"" }}
 
+{% comment %}
+  We need to explicitly include this JS file because we're using a custom
+  base layer *and* we are using a custom class we defined, CachedCloudMade.
+
+  We can remove this line once we switch to a real TMS/XYZ server -- which
+  will probabl yhappen when we create our own custom tiles from OSM data.
+{% endcomment %}
+<script type="text/javascript" src="{{STATIC_URL}}olwidget/js/sapling_cloudmade.js"></script>
+
 <script type="text/javascript">
     SaplingMap.init_openlayers();
     OpenLayers.ImgPath = '{% static "img/openlayers/themes/dark/" %}';

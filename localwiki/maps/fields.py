@@ -215,7 +215,7 @@ class CollectionDescriptor(object):
         else:
             raise TypeError(
                 _('cannot set %(cname)s CollectionFrom with value of type: %(vtype)s') %
-                {'cname':obj.__class__.__name__, vtype: type(value)})
+                {'cname':obj.__class__.__name__, 'vtype': type(value)})
 
         obj.__dict__['_explicit_set_%s' % self._field.attname] = value
         return value

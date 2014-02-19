@@ -1,0 +1,59 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block title %}{% trans "LocalWiki" %}{% endblock %}
+
+{% block header_title %}{% trans "Add a region" %}{% endblock %}
+
+{% block body %}
+<body>
+   <div class="content_type region">
+   {% block everything_wrapper %}
+        {{ block.super }}
+   {% endblock %}
+   </div>
+</body>
+{% endblock %}
+
+{% block messages %}
+  {% if form.errors %}
+    <ul class="messages">
+      {% for errors in form.errors.values %}
+        {% for msg in errors %}
+          <li>{{ msg }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<form action="" method="post">{% csrf_token %}
+    <div class="item slug_choice">
+        {{ form.slug.errors }}
+        <div class="url_demo"><span class="hub_base_url">localwiki.net</span> <span class="slash">/</span> {{ form.slug }}</div>
+        <div class="help_text">{{ form.slug.help_text }}</div>
+    </div>
+    <div class="item">
+        {{ form.full_name.errors }}
+        {{ form.full_name.label_tag }}: {{ form.full_name }}
+        <div class="help_text">{{ form.full_name.help_text }}</div>
+    </div>
+    <div class="item geom">
+        {{ form.geom.errors }}
+        <label for="id_geom">{% trans "Draw the rough area the region will cover" %}</label>:
+        <div class="help_text">{% trans "Pick an area roughly the size of a city. Don't worry about being exact!" %}</div>
+        {{ form.geom }}
+    </div>
+    <div class="item">
+        {{ form.default_language.errors }}
+        {{ form.default_language.label_tag }}: {{ form.default_language }}
+        <div class="help_text">{{ form.default_language.help_text }}</div>
+    </div>
+
+    <input type="submit" value="Add region" />
+</form>
+{% endblock %}

@@ -13,9 +13,9 @@ class PageChanges(RecentChanges):
 
     def queryset(self, start_at=None):
         if start_at:
-            return Page.versions.filter(version_info__date__gte=start_at
+            return Page.versions.filter(region=self.region, version_info__date__gte=start_at
                 ).defer('content')
-        return Page.versions.all().defer('content')
+        return Page.versions.filter(region=self.region).defer('content')
 
     def page(self, obj):
         return obj
@@ -28,15 +28,15 @@ class PageFileChanges(RecentChanges):
 
     def queryset(self, start_at=None):
         if start_at:
-            return PageFile.versions.filter(version_info__date__gte=start_at)
+            return PageFile.versions.filter(region=self.region, version_info__date__gte=start_at)
         else:
-            return PageFile.versions.all()
+            return PageFile.versions.filter(region=self.region)
 
     def page(self, obj):
         try:
-            page = Page.objects.get(slug=obj.slug)
+            page = Page.objects.get(slug=obj.slug, region=self.region)
         except Page.DoesNotExist:
-            page = Page(slug=obj.slug, name=obj.slug.capitalize())
+            page = Page(slug=obj.slug, region=self.region, name=obj.slug.capitalize())
         return page
 
     def title(self, obj):
@@ -46,6 +46,7 @@ class PageFileChanges(RecentChanges):
     def diff_url(self, obj):
         return reverse('pages:file-compare-dates', kwargs={
             'slug': self.page(obj).pretty_slug,
+            'region': self.region.slug,
             'date1': obj.version_info.date,
             'file': obj.name,
         })
@@ -53,6 +54,7 @@ class PageFileChanges(RecentChanges):
     def as_of_url(self, obj):
         return reverse('pages:file-as_of_date', kwargs={
             'slug': self.page(obj).pretty_slug,
+            'region': self.region.slug,
             'date': obj.version_info.date,
             'file': obj.name,
         })
@@ -64,8 +66,10 @@ recentchanges.register(PageFileChanges)
 class PageChangesFeed(ChangesOnItemFeed):
     recentchanges_class = PageChanges
 
-    def get_object(self, request, slug):
-        obj = Page(slug=slugify(slug))
+    def get_object(self, request, region='', slug=''):
+        self.setup_region(region)
+
+        obj = Page(slug=slugify(slug), region=self.region)
         obj.title = obj.versions.most_recent().name
         obj.page = obj
         return obj
@@ -74,9 +78,11 @@ class PageChangesFeed(ChangesOnItemFeed):
 class PageFileChangesFeed(ChangesOnItemFeed):
     recentchanges_class = PageFileChanges
 
-    def get_object(self, request, slug='', file=''):
-        obj = PageFile(slug=slugify(slug), name=file)
-        page = Page(slug=slugify(slug))
+    def get_object(self, request, region='', slug='', file=''):
+        self.setup_region(region)
+
+        obj = PageFile(slug=slugify(slug), region=self.region, name=file)
+        page = Page(slug=slugify(slug), region=self.region)
         obj.page = page.versions.most_recent()
         obj.title = _('File %(filename)s on page "%(pagename)s"') % {
             'filename': obj.name, 'pagename': obj.page.name}

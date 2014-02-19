@@ -129,13 +129,13 @@ a[href$='.DOCX'] {
     float: left;
     clear: left;
     margin-right: 1.1em;
-    margin-bottom: 0.3em;
+    margin-bottom: 1em;
 }
 .image_right {
     float: right;
     clear: right;
     margin-left: 1.1em;
-    margin-bottom: 0.3em;
+    margin-bottom: 1em;
 }
 .image_caption {
     line-height: 1;
@@ -217,10 +217,16 @@ hr.selected {
 
 .includepage_left {
     float: left;
+    clear: left;
+    margin-bottom: 1em;
+    margin-left: 1em;
 }
 
 .includepage_right {
     float: right;
+    clear: right;
+    margin-bottom: 1em;
+    margin-left: 1em;
 }
 
 .plugin.searchbox{

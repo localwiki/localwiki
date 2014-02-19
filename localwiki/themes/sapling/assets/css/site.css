@@ -68,6 +68,26 @@ pre, code {
     border: 1px solid #CBCBCB;
     background-color: #FFF8ED;
 }
+/* API docs is class="content_type api" */
+.content_type.api .request-info, .content_type.api .response-info {
+    font-size: 80%;
+}
+.content_type.api p pre, .content_type.api p code,
+.content_type.api li pre, .content_type.api li code {
+    margin: 0;
+    padding: inherit;
+    overflow: inherit;;
+    font-family: 'bitstream vera sans mono', 'andale mono', 'lucida console', monospace;
+    line-height: inherit;
+    border: inherit;
+    background-color: inherit;
+}
+
+/* bug fix */
+pre code {
+    border: none;
+}
+
 textarea, input, select {
     font-size: 15px;
 }
@@ -109,7 +129,7 @@ textarea, input, select {
         border-bottom: 1px solid #fafafa;
     }
     /* Display content under map when page contains both */
-    #content.has_map #page, #content.has_map #pagetagset, #content.has_map #nearby_maps {
+    #content.has_map #page, #content.has_map #pagetagset, #content.has_map #regions, #content.has_map #nearby_maps {
         margin-top: 250px;
     }
     /* For an included list of tagged pages */
@@ -173,6 +193,13 @@ textarea, input, select {
     height: 32px;
     margin-left: -2.75em;
 }
+/* No-icon content types */
+.content_type.region #header_bar .inner:before,
+.content_type.api #header_bar .inner:before {
+    width: 0;
+    height: 0;
+}
+
 .mapdata #header_bar .inner:before {
     background: url(../img/map-icon.png) 3px 0 no-repeat;
 }
@@ -195,14 +222,19 @@ textarea, input, select {
 }
 @media screen and (max-width: 500px) {
     #header {
-        border: 0;
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
     }
     #header_bar {
         margin-top: 8px;
-        padding: 0.5em 1em 1em 1em;
+        padding: 0.5em 1em 0.5em 1em;
     }
     #header_bar .inner {
         display: block;
+    }
+    #map_header_bar {
+        margin-top: 7px;
     }
 }
 
@@ -295,6 +327,7 @@ textarea, input, select {
 @media screen and (max-width: 500px) {
     #object_actions {
         padding-left: 0.6em;
+        margin-top: -0.3em;
     }
 }
 
@@ -388,9 +421,13 @@ textarea, input, select {
     width: 180px;
     font-size: 15px;
     line-height: 30px;
-    background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 10px;
-    padding-left: 30px;
     margin-right: 0.5em;
+    padding-left: 30px;
+}
+
+.search input[type="text"] {
+    background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 60%;
+    padding-left: 30px;
 }
 
 @media screen and (max-width: 700px) {
@@ -424,7 +461,8 @@ textarea, input, select {
         -moz-box-shadow: none;
     }
     #header .site_search input[type="submit"] {
-        display: none;
+        visibility:hidden;
+        position:absolute;
     }
     #header .site_search input[type="text"], #header .site_search #id_q {
         width: 100%;
@@ -604,6 +642,7 @@ textarea, input, select {
     #nav ul {
         font-size: 86%;
         margin: 0.5em;
+        margin-top: -0.8em;
         padding: 0;
         float: none;
         position: relative;
@@ -714,6 +753,12 @@ textarea, input, select {
 }
 #powered_by a {
     background-image: none;
+}
+
+#about {
+    margin: 1.5em 1em 0.5em 1em;
+    font-size: 80%;
+    text-align: center;
 }
 
 /*
@@ -914,6 +959,23 @@ div.templates li {
     list-style: none;
     margin-left: 1em;
 }
+
+input {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+     -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
+       -o-transition: border linear 0.2s, box-shadow linear 0.2s;
+          transition: border linear 0.2s, box-shadow linear 0.2s;
+}
+input:focus {
+  border-color: rgba(82, 168, 236, 0.8);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+}
+
 /* textarea { background: #fff; width: 435px; height: 150px; } */
 
 /*
@@ -1049,6 +1111,10 @@ div.templates li {
 }
 .button.redirect .text {
     background: url(../img/arrow-turn-left.png) 2px 2px no-repeat;
+    padding-left: 20px;
+}
+.button.security .text {
+    background: url(../img/lock.png) 0 1px no-repeat;
     padding-left: 20px;
 }
 
@@ -1329,7 +1395,7 @@ div.templates li {
     }
 }
 
-.site_search .tt-dropdown-menu {
+.search .tt-dropdown-menu {
     margin-top: 0em;
     background-color: white;
     min-width: 210px;
@@ -1339,9 +1405,14 @@ div.templates li {
     -webkit-border-radius: 3px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
 }
-.site_search .twitter-typeahead {
+.search .twitter-typeahead {
     float: left;
     height: 100%;
+}
+@media screen and (max-width: 500px) {
+    .search .twitter-typeahead {
+        width: 100%;
+    }
 }
 .tt-suggestion {
     padding-left: 30px;    
@@ -1537,7 +1608,98 @@ form #content_footer {
     }
 }
 
+/*
+=======================================
+ Regions
+=======================================
+*/
 
+.region .slug_choice .url_demo * {
+    vertical-align: middle;
+}
+.region form .item input {
+    margin-top: 0.5em;
+}
+.region .slug_choice .hub_base_url {
+    font-size: 130%;
+}
+.region .slug_choice .slash {
+    font-size: 120%;
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+    color: #868686;
+}
+.region .slug_choice input {
+    display: inline;
+    width: 10em;
+    color: inherit;
+    vertical-align: middle;
+    margin: 0;
+    margin-top: 0!important;
+}
+.region .slug_choice .help_text {
+    margin-top: 0.3em;
+}
+
+.region .help_text {
+     color: #868686;
+     display: block;
+}
+
+.region form .item {
+    margin-top: 1em;
+    margin-bottom: 1em; 
+    padding: 1.1em 1em 1em 1em;
+    background-color: #ededef;
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+}
+.region form .item {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+.region form .item .button {
+    float: none;
+    width: auto;
+    display: inline;
+}
+.region form .item ul {
+    list-style: none;
+    margin-bottom: 0.8em;
+    margin-top: 0.5em;
+}
+.region form .item li {
+    margin-left: 0;
+}
+.region .geom .help_text {
+    margin-top: 0.4em;
+}
+.region #id_geom {
+    margin-top: 1em!important;
+    border: 1px solid #d5d5d5;
+}
+@media screen and (max-width: 700px) {
+    .region #id_geom {
+        padding: 0!important;
+    }
+}
+
+/*
+=======================================
+ Misc widgets
+=======================================
+*/
+.mapwidget .loading {
+    width: 100%;
+    z-index: 2000;
+    background-image: url(../img/loading_spinner.gif);
+    background-color: rgba(255, 255, 255, 0.5)!important;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+    font-style: italic;
+    position: absolute;
+}
 
 
 /*
@@ -1547,6 +1709,9 @@ form #content_footer {
 */
 #create_page {
     min-height: 4em;
+}
+table.noborder, table.noborder td {
+    border: none;
 }
 
 
@@ -1570,4 +1735,76 @@ form #content_footer {
     .olControlLayerSwitcher {
         display: none;    
     }
+}
+
+/*
+====================================
+ Main page
+====================================
+*/
+
+#map_header_bar #map {
+    float: none;
+    margin: 0;
+}
+#map_header_bar .mapwidget {
+    width: 100%!important;
+    float: none;
+    margin: 0;
+    height: 340px!important;
+    display: inline-block;
+}
+@media screen and (max-width: 700px) {
+    #map_header_bar .mapwidget {
+        height: 200px!important;
+    }
+}
+@media screen and (max-width: 500px) {
+    #map_header_bar #map {
+        padding-top: 0; 
+    }
+}
+
+/*
+====================================
+ Misc
+====================================
+*/
+
+#preview_banner {
+    padding: 0 2em 0 2em;
+    font-size: 80%;
+    background-color: #E8ECEF;
+}
+#preview_banner p {
+    margin-bottom: 0.2em;
+}
+#preview_banner #ask {
+    background-color: #feff97;
+    margin-bottom: 0;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-top: 0.7em;
+    padding-bottom: 0.7em;
+    margin-left: -2em;
+    margin-right: -2em;
+}
+#preview_banner .button {
+    display: inline-block!important;
+    float: none;
+    padding: 0.3em 0.7em 0.5em 0.7em;
+    margin-left: 0.5em;
+    margin-right: 0.3em;
+}
+#preview_banner a {
+   background: none;
+   padding: 0;
+   text-decoration: none;
+}
+
+.noexternalimg p {
+    line-height: 0.5;
+}
+.noexternalimg a {
+    background: none!important;
 }

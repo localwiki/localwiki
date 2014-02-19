@@ -7,12 +7,14 @@ from django.utils.html import strip_tags
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
+from regions.models import Region
 from versionutils import versioning, diff
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100)
-    slug = models.CharField(editable=False, unique=True, max_length=100)
+    name = models.CharField(max_length=100, blank=False)
+    slug = models.CharField(editable=False, max_length=100, blank=False)
+    region = models.ForeignKey(Region, null=True)
 
     def __unicode__(self):
         return self.name
@@ -25,9 +27,10 @@ class Tag(models.Model):
         super(Tag, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('tags:tagged', args=[self.slug])
+        return reverse('tags:tagged', args=[self.region.slug, self.slug])
 
     class Meta:
+        unique_together = ('slug', 'region')
         ordering = ('slug',)
         verbose_name = _(u'Tag')
         verbose_name_plural = _(u'Tags')
@@ -49,6 +52,7 @@ slugify = stringfilter(slugify)
 class PageTagSet(models.Model):
     page = models.OneToOneField('pages.Page')
     tags = models.ManyToManyField(Tag)
+    region = models.ForeignKey(Region, null=True)
 
     def __unicode__(self):
         return ', '.join(map(unicode, self.tags.all()))
@@ -80,5 +84,4 @@ versioning.register(PageTagSet)
 
 # For registration calls
 import signals
-import api
 import feeds

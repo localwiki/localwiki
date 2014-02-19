@@ -34,7 +34,7 @@ def add_anonymous_user_to_anonymous_group(sender, **kwargs):
     Adds AnonymousUser to group specified by the USERS_ANONYMOUS_GROUP setting.
     """
     anon_group, created = Group.objects.get_or_create(
-                                        name=settings.USERS_ANONYMOUS_GROUP)
+        name=settings.USERS_ANONYMOUS_GROUP)
     create_anonymous_user(sender, **kwargs)  # we need AnonymousUser to exist
     print 'Adding AnonymousUser to the group "%s"' % anon_group.name
     u = User.objects.get(pk=settings.ANONYMOUS_USER_ID)

@@ -8,12 +8,14 @@ from utils.static_helpers import static_url
 
 
 class TagEdit(forms.TextInput):
+    def autocomplete_url(self):
+        return ('/_api/tags/suggest/%s' % self.region.slug)
+
     def render(self, name, value, attrs=None):
         input = super(TagEdit, self).render(name, value, attrs)
-        autocomplete = '/_api/tags/suggest'
         return input + render_to_string('tags/tagedit.html',
                                         {'id': attrs['id'],
-                                         'autocomplete_url': autocomplete
+                                         'autocomplete_url': self.autocomplete_url()
                                          })
 
     class Media:

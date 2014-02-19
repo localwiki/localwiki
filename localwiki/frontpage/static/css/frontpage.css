@@ -1,0 +1,192 @@
+#cover {
+    max-height: 380px;
+    background: #E8ECEF no-repeat center center; 
+    overflow: hidden;
+    border-bottom: 3px solid #B5B5B5;
+    line-height: 0;
+}
+#cover .underlay {
+    width: 100%;
+    height: auto;
+}
+#cover .underlay.with_map {
+    height: 200px; 
+}
+#cover .underlay .mapwidget {
+    max-height: 380px!important;
+}
+#cover_form_selector {
+    display: none;
+}
+
+#change_cover_button, #save_cover {
+    margin-right: 30px;
+    margin-top: -60px;
+    right: 0;
+    position: absolute;
+    display: none;
+    cursor: pointer;
+}
+#cover_file {
+    display: none;
+}
+
+#cover .contents * {
+    position: relative;
+    z-index: 500;
+}
+
+#cover a {
+    text-decoration: none;
+}
+#cover a:hover {
+    text-decoration: underline;
+}
+#cover .contents {
+    text-align: right;
+    position: absolute;
+    width: 100%;
+    right: 2em;
+}
+#cover .primary_title, #cover .subtitle, #cover .search_or_create {
+    background-image: url(../theme/img/80_trans_white_bg.png);
+    background-repeat: repeat;
+    padding: 0 0.25em 0 0.25em;
+    display: table;
+    float: right;
+    clear: right;
+}
+#cover .primary_title {
+    padding: 0.1em 0.25em 0.1em 0.25em;
+    margin-top: 34px;
+}
+#cover .subtitle {
+    padding: 0.2em 0.3em 0.25em 0.3em;
+    margin-top: 0.4em;
+}
+#cover .search_or_create {
+    margin-top: 70px;
+    font-size: 175%;
+    font-weight: bold;
+    color: #222222;
+    padding: 0.1em 0.25em 0.1em 0.25em;
+}
+#cover .searchbox * {
+    vertical-align: middle;
+}
+#cover .searchbox input {
+    margin-top: 0.4em;
+}
+/* The absolute-positioning of the #cover .contents
+   means we've got to have a lot of breakpoints here
+   to get things right.
+*/
+@media screen and (max-width: 1100px) {
+    #cover .search_or_create {
+        margin-top: 50px;
+    }
+}
+@media screen and (max-width: 975px) {
+    #cover .search_or_create {
+        margin-top: 30px;
+    }
+}
+@media screen and (max-width: 919px) {
+    #cover .subtitle {
+        display: none;
+    }
+    #cover .search_or_create {
+        margin-top: 50px;
+    }
+}
+@media screen and (max-width: 830px) {
+    #cover .search_or_create {
+        display: none;
+    }
+}
+/* TODO: change to viewport width CSS attribute once it's supported on Android.
+   or swap out for JS-based resizing */
+@media screen and (max-width: 725px) {
+    #cover .primary_title {
+        font-size: 160%;
+    }
+}
+@media screen and (max-width: 660px) {
+    #cover .primary_title {
+        font-size: 150%;
+    }
+}
+@media screen and (max-width: 580px) {
+    #cover .primary_title {
+        font-size: 130%;
+    }
+}
+@media screen and (max-width: 545px) {
+    #cover .primary_title {
+        font-size: 120%;
+    }
+}
+@media screen and (max-width: 500px) {
+    #cover .contents {
+        right: 0;
+    }
+}
+@media screen and (max-width: 478px) {
+    #cover .primary_title {
+        font-size: 110%;
+    }
+}
+@media screen and (max-width: 432px) {
+    #cover .primary_title {
+        font-size: 100%;
+    }
+}
+@media screen and (max-width: 330px) {
+    #cover .primary_title {
+        margin-top: 20px; 
+    }
+}
+@media screen and (max-width: 283px) {
+    #cover .primary_title {
+        margin-top: 10px; 
+        font-size: 90%;
+    }
+}
+
+.frontpage {
+    padding-top: 1em;
+}
+.frontpage #map {
+    margin-left: 2.5em!important;
+    margin-bottom: 1.5em!important;
+}
+.frontpage #map .mapwidget {
+    cursor: pointer;
+}
+@media screen and (max-width: 700px) {
+    .frontpage #map {
+        display: none;
+    }
+    .frontpage {
+        padding-top: 0;
+    }
+}
+
+.frontpage #random_pages {
+    border: 1px solid red; 
+}
+.frontpage #recent_changes {
+}
+.frontpage #random_pages h2 {
+    clear: none!important;
+}
+.frontpage #recent_changes h2 {
+    clear: none!important;
+}
+.frontpage #tags {
+
+}
+
+.frontpage h1, .frontpage h2, .frontpage h3, .frontpage h4, .frontpage h5 {
+    clear: left!important;
+}

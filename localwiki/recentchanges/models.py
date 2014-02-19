@@ -10,6 +10,9 @@ class RecentChanges(object):
     """
     classname = None
 
+    def __init__(self, region=None):
+        self.region = region
+
     def queryset(self, start_at=None):
         """
         Returns:
@@ -55,6 +58,7 @@ class RecentChanges(object):
         """
         return reverse('%s:compare-dates' % obj._meta.app_label, kwargs={
             'slug': self.page(obj).pretty_slug,
+            'region': self.page(obj).region.slug,
             'date1': obj.version_info.date,
         })
 
@@ -69,5 +73,6 @@ class RecentChanges(object):
         """
         return reverse('%s:as_of_date' % obj._meta.app_label, kwargs={
             'slug': self.page(obj).pretty_slug,
+            'region': self.page(obj).region.slug,
             'date': obj.version_info.date,
         })

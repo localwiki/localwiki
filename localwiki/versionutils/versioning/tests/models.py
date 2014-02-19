@@ -69,7 +69,7 @@ versioning.register(M8Time)
 
 
 class M9URL(models.Model):
-    a = models.URLField(verify_exists=False)
+    a = models.URLField()
 
 versioning.register(M9URL)
 

@@ -80,11 +80,41 @@ $(document).ready(function() {
     $('#id_q').typeahead([
         {
           name: 'pages',
-          remote: '/_api/pages/suggest?term=%QUERY'
+          remote: '/_api/pages/suggest?region_id=' + region_id + '&term=%QUERY'
         }
     ])
     .on('typeahead:selected', function(e, datum) {
         var url = encodeURIComponent(datum.value.replace(' ', '_'));
-        document.location = '/' + url;
+        url = url.replace('%2F', '/');
+        document.location = '/' + region_slug + '/' + url;
     });
 });
+
+function getCookie(key) {
+    var result;
+    // adapted from the jQuery Cookie plugin
+    return (result = new RegExp('(?:^|; )' + encodeURIComponent(key) + '=([^;]*)').exec(document.cookie)) ? decodeURIComponent(result[1]) : null;
+}
+
+function set_django_tokens(form) {
+    // Patch the form -- add the CSRF token and honeypot fields
+
+    var csrf_cookie = getCookie('csrftoken');
+    if (!csrf_cookie) return;
+    
+    csrf = form.ownerDocument.createElement('input');
+    csrf.setAttribute('name', 'csrfmiddlewaretoken');
+    csrf.setAttribute('type', 'hidden');
+    csrf.setAttribute('value', csrf_cookie);
+    form.appendChild(csrf);
+    
+    /* TODO: make this automatic, this is hardcoded to the django-honeypot settings */
+    honeypot = form.ownerDocument.createElement('input');
+    honeypot.setAttribute('name', 'content2');
+    honeypot.setAttribute('type', 'hidden');
+    form.appendChild(honeypot);
+    honeypot_js = form.ownerDocument.createElement('input');
+    honeypot_js.setAttribute('name', 'content2_js');
+    honeypot_js.setAttribute('type', 'hidden');
+    form.appendChild(honeypot_js);
+}

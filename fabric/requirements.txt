@@ -1,0 +1,6 @@
+Fabric==1.4.0
+boto==2.3.0
+shortuuid==0.2
+pexpect==2.4
+jinja2
+-e git+git://github.com/mivanov/fexpect.git#egg=ilogue-mivanov

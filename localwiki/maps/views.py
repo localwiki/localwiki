@@ -17,28 +17,34 @@ from django.contrib.gis.measure import D
 from django.utils.safestring import mark_safe
 
 from versionutils import diff
-from utils.views import Custom404Mixin, CreateObjectMixin, JSONResponseMixin
+from utils.views import (Custom404Mixin, CreateObjectMixin, JSONResponseMixin,
+    JSONView, PermissionRequiredMixin)
 from versionutils.versioning.views import DeleteView, UpdateView
 from versionutils.versioning.views import RevertView, VersionsList
 from pages.models import Page, slugify, name_to_url
 from pages.constants import page_base_path
+from regions.views import RegionMixin
+from regions.models import Region
 
-from widgets import InfoMap
+from widgets import InfoMap, map_options_for_region
 from models import MapData
 from forms import MapForm
+from osm import get_osm_geom
 from django.utils.html import escape
 
 
-class MapDetailView(Custom404Mixin, DetailView):
+class MapDetailView(Custom404Mixin, RegionMixin, DetailView):
     model = MapData
 
     def handler404(self, request, *args, **kwargs):
         page_slug = kwargs.get('slug')
+        region_slug = kwargs.get('region')
+        region = Region.objects.get(slug=region_slug)
         try:
-            page = Page.objects.get(slug=slugify(page_slug))
+            page = Page.objects.get(slug=slugify(page_slug), region=region)
         except Page.DoesNotExist:
-            page = Page(slug=slugify(page_slug))
-        mapdata = MapData(page=page)
+            page = Page(slug=slugify(page_slug), region=region)
+        mapdata = MapData(page=page, region=region)
         return HttpResponseNotFound(
             render(request, 'maps/mapdata_new.html',
                 {'page': page, 'mapdata': mapdata})
@@ -46,8 +52,9 @@ class MapDetailView(Custom404Mixin, DetailView):
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
-        page = get_object_or_404(Page, slug=slugify(page_slug))
-        mapdata = get_object_or_404(MapData, page=page)
+        region = self.get_region()
+        page = get_object_or_404(Page, slug=slugify(page_slug), region=region)
+        mapdata = get_object_or_404(MapData, page=page, region=region)
         return mapdata
 
     def get_object_date(self):
@@ -56,9 +63,11 @@ class MapDetailView(Custom404Mixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(MapDetailView, self).get_context_data(**kwargs)
 
+        options = map_options_for_region(self.get_region())
+        options['permalink'] = True
         context['date'] = self.get_object_date()
         context['map'] = InfoMap([(self.object.geom, self.object.page.name)],
-            options={'permalink': True})
+            options=options)
         return context
 
 
@@ -70,23 +79,33 @@ def filter_by_bounds(queryset, bbox):
 
 def filter_by_zoom(queryset, zoom):
     if zoom < 14:
-        # exclude points
-        queryset = queryset.exclude(Q(lines=None) & Q(polys=None))
+        # If 5 or more polygons, let's hide the points
+        if queryset.filter(polys__isnull=False).count() >= 5:
+            # exclude points
+            queryset = queryset.exclude(Q(lines=None) & Q(polys=None))
     min_length = 100 * pow(2, 0 - zoom)
     queryset = queryset.exclude(Q(points=None) & Q(length__lt=min_length))
     return queryset
 
 
+def _page_url(pagename, region):
+    """
+    Faster than reverse() for repeated page links.
+    TODO: put this somewhere else.
+    """
+    slug = name_to_url(pagename)
+    # Use page_base_path() to avoid reverse() overhead.
+    return urljoin(page_base_path(region), slug)
+    
+
 def popup_html(mapdata=None, pagename=None):
     if mapdata:
         pagename = mapdata.page.name
-    slug = name_to_url(pagename)
-    # Use page_base_path() to avoid reverse() overhead.
-    page_url = urljoin(page_base_path(), slug)
+    page_url = _page_url(pagename, mapdata.region)
     return mark_safe('<a href="%s">%s</a>' % (page_url, pagename))
 
 
-class MapGlobalView(ListView):
+class MapGlobalView(RegionMixin, ListView):
     model = MapData
     template_name = 'maps/mapdata_list.html'
     dynamic = True
@@ -96,6 +115,9 @@ class MapGlobalView(ListView):
 
     def get_queryset(self):
         queryset = super(MapGlobalView, self).get_queryset()
+        # XXX TODO TEMPORARY HACK
+        queryset = queryset.exclude(page__pagetagset__tags__slug='zipcode')
+        queryset = queryset.exclude(page__pagetagset__tags__slug='supervisorialdistrict')
         if not filter_by_zoom:
             return queryset
         # We order by -length so that the geometries are in that
@@ -114,11 +136,14 @@ class MapGlobalView(ListView):
 
     def get_map(self):
         map_objects = self.get_map_objects()
-        return InfoMap(map_objects, options={
+        options = map_options_for_region(self.get_region())
+        options.update({
             'dynamic': self.dynamic,
             'zoomToDataExtent': self.zoom_to_data,
             'permalink': self.permalink,
-            'cluster': True})
+            'cluster': True
+        })
+        return InfoMap(map_objects, options=options)
 
 
 class MapAllObjectsAsPointsView(MapGlobalView):
@@ -136,6 +161,14 @@ class MapAllObjectsAsPointsView(MapGlobalView):
                ]
 
 
+class EverythingEverywhereAsPointsView(MapAllObjectsAsPointsView):
+    """
+    All objects across all regions as points.
+    """
+    def get_queryset(self):
+        return MapData.objects.all()
+
+
 class MapForTag(MapGlobalView):
     """
     All objects whose pages have a particular tag.
@@ -147,17 +180,22 @@ class MapForTag(MapGlobalView):
         import tags.models as tags
 
         qs = super(MapGlobalView, self).get_queryset()
-        self.tag = tags.Tag.objects.get(slug=tags.slugify(self.kwargs['tag']))
-        tagsets = tags.PageTagSet.objects.filter(tags=self.tag)
-        pages = Page.objects.filter(pagetagset__in=tagsets)
+        region = self.get_region()
+        self.tag = tags.Tag.objects.get(
+            slug=tags.slugify(self.kwargs['tag']),
+            region=region
+        )
+        tagsets = tags.PageTagSet.objects.filter(tags=self.tag, region=region)
+        pages = Page.objects.filter(pagetagset__in=tagsets, region=region)
         return MapData.objects.filter(page__in=pages).order_by('-length')
 
     def get_map_title(self):
         d = {
-            'map_url': reverse('maps:global'),
-            'tag_url': reverse('tags:list'),
+            'map_url': reverse('maps:global', args=[self.kwargs['region']]),
+            'tag_url': reverse('tags:list', args=[self.kwargs['region']]),
             'page_tag_url': reverse('tags:tagged',
-                kwargs={'slug': self.tag.slug}),
+                kwargs={'slug': self.tag.slug,
+                        'region': self.kwargs['region']}),
             'tag_name': escape(self.tag.name)
         }
         return (
@@ -171,11 +209,14 @@ class MapForTag(MapGlobalView):
         return context
 
 
-class MapObjectsForBounds(JSONResponseMixin, BaseListView):
+class MapObjectsForBounds(JSONResponseMixin, RegionMixin, BaseListView):
     model = MapData
 
     def get_queryset(self):
-        queryset = MapData.objects.all()
+        queryset = MapData.objects.filter(region=self.get_region())
+        # XXX TODO TEMPORARY HACK
+        queryset = queryset.exclude(page__pagetagset__tags__slug='zipcode')
+        queryset = queryset.exclude(page__pagetagset__tags__slug='supervisorialdistrict')
         bbox = self.request.GET.get('bbox', None)
         if bbox:
             bbox = Polygon.from_bbox([float(x) for x in bbox.split(',')])
@@ -190,8 +231,20 @@ class MapObjectsForBounds(JSONResponseMixin, BaseListView):
 
     def get_context_data(self, **kwargs):
         objs = self.object_list.values('geom', 'page__name')
-        map_objects = [(o['geom'].ewkt, o['page__name']) for o in objs]
+        region = self.get_region()
+        map_objects = [
+            (o['geom'].ewkt, o['page__name'], _page_url(o['page__name'], region))
+            for o in objs
+        ]
         return map_objects
+
+
+class OSMGeometryLookup(RegionMixin, JSONView):
+    def get_context_data(self, **kwargs):
+        display_name = self.request.GET.get('display_name')
+        osm_id = int(self.request.GET.get('osm_id'))
+        osm_type = self.request.GET.get('osm_type')
+        return {'geom': get_osm_geom(osm_id, osm_type, display_name, self.get_region()).ewkt}
 
 
 class MapVersionDetailView(MapDetailView):
@@ -199,14 +252,19 @@ class MapVersionDetailView(MapDetailView):
     context_object_name = 'mapdata'
 
     def get_object(self):
-        page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
+        region = self.get_region()
+        # A dummy page object.
+        page = Page(
+            slug=slugify(self.kwargs['slug']),
+            region=region
+        )
         latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
         self.page = page
 
-        mapdata = MapData(page=page)
+        mapdata = MapData(page=page, region=region)
         version = self.kwargs.get('version')
         date = self.kwargs.get('date')
         if version:
@@ -223,58 +281,87 @@ class MapVersionDetailView(MapDetailView):
         return context
 
 
-class MapUpdateView(CreateObjectMixin, UpdateView):
+class MapUpdateView(PermissionRequiredMixin, CreateObjectMixin, RegionMixin, UpdateView):
     model = MapData
     form_class = MapForm
+    # Tie map permissions to pages, for now.
+    permission = 'pages.change_page'
 
     def get_object(self):
         page_slug = self.kwargs.get('slug')
-        page = Page.objects.get(slug=slugify(page_slug))
-        mapdatas = MapData.objects.filter(page=page)
+        region = self.get_region()
+        page = Page.objects.get(slug=slugify(page_slug), region=region)
+        mapdatas = MapData.objects.filter(page=page, region=region)
         if mapdatas:
             return mapdatas[0]
-        return MapData(page=page)
+        return MapData(page=page, region=region)
+
+    def get_protected_object(self):
+        return self.object.page
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(MapUpdateView, self).get_context_data(*args, **kwargs)
+        # Default to the region's defined map settings.
+        # TODO: make this less hacky
+        context['form'].fields['geom'].widget.options.update(map_options_for_region(self.get_region()))
+        return context
 
     def get_success_url(self):
-        return reverse('maps:show', args=[self.object.page.pretty_slug])
+        return reverse('maps:show',
+            args=[self.object.region.slug, self.object.page.pretty_slug])
 
 
-class MapDeleteView(MapDetailView, DeleteView):
+class MapDeleteView(PermissionRequiredMixin, MapDetailView, DeleteView):
     model = MapData
     context_object_name = 'mapdata'
+    # Tie map permissions to pages, for now.
+    permission = 'pages.delete_page'
 
     def get_success_url(self):
         # Redirect back to the map.
-        return reverse('maps:show', args=[self.kwargs.get('slug')])
+        return reverse('maps:show',
+            args=[self.kwargs.get('region'), self.kwargs.get('slug')])
+
+    def get_protected_object(self):
+        return self.object.page
 
 
 class MapRevertView(MapVersionDetailView, RevertView):
     model = MapData
     context_object_name = 'mapdata'
     template_name = 'maps/mapdata_confirm_revert.html'
+    # Tie map permissions to pages, for now.
+    permission = 'pages.change_page'
 
     def get_success_url(self):
         # Redirect back to the map.
-        return reverse('maps:show', args=[self.kwargs.get('slug')])
+        return reverse('maps:show',
+            args=[self.kwargs.get('region'), self.kwargs.get('slug')])
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)
 
+        options = map_options_for_region(self.get_region())
         context['show_revision'] = True
-        context['map'] = InfoMap([(self.object.geom, self.object.page.name)])
+        context['map'] = InfoMap([(self.object.geom, self.object.page.name)], options=options)
         context['date'] = self.object.version_info.date
         return context
 
+    def get_protected_object(self):
+        return self.object.page
 
-class MapVersionsList(VersionsList):
+
+class MapVersionsList(RegionMixin, VersionsList):
     def get_queryset(self):
-        page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
+        region = self.get_region()
+        # A dummy page object.
+        page = Page(slug=slugify(self.kwargs['slug']), region=region)
         latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
 
-        self.mapdata = MapData(page=page)
+        self.mapdata = MapData(page=page, region=region)
         return self.mapdata.versions.all()
 
     def get_context_data(self, **kwargs):
@@ -283,17 +370,19 @@ class MapVersionsList(VersionsList):
         return context
 
 
-class MapCompareView(diff.views.CompareView):
+class MapCompareView(RegionMixin, diff.views.CompareView):
     model = MapData
 
     def get_object(self):
-        page = Page(slug=slugify(self.kwargs['slug']))  # A dummy page object.
+        region = self.get_region()
+        # A dummy page object.
+        page = Page(slug=slugify(self.kwargs['slug']), region=region)
         latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
 
-        return MapData(page=page)
+        return MapData(page=page, region=region)
 
     def get_context_data(self, **kwargs):
         # Send this in directly because we've wrapped InfoMap.

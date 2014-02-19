@@ -1,8 +1,9 @@
 from django.utils.decorators import classonlymethod
 from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.utils import simplejson as json
-from django.views.generic import View
+from django.views.generic import View, RedirectView
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.template.context import RequestContext
 
@@ -117,7 +118,7 @@ class PermissionRequiredMixin(object):
         if hasattr(self, 'get_object'):
             self.object = self.get_object()
             self.patch_get_object()
-            protected_objects = self.get_protected_objects()
+        protected_objects = self.get_protected_objects()
         for obj in protected_objects:
             if not request.user.has_perm(self.permission_for_object(obj), obj):
                 if request.user.is_authenticated():
@@ -129,3 +130,9 @@ class PermissionRequiredMixin(object):
                 return HttpResponseForbidden(html)
         return super(PermissionRequiredMixin, self).dispatch(request, *args,
                                                         **kwargs)
+
+class NamedRedirectView(RedirectView):
+    name = None
+
+    def get_redirect_url(self, **kwargs):
+        return reverse(self.name, kwargs=kwargs)

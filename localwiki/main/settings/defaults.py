@@ -41,9 +41,9 @@ SOUTH_MIGRATION_MODULES = {
 
 GLOBAL_LICENSE_NOTE = _("""<p>Except where otherwise noted, this content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights</a>.</p>""")
 
-EDIT_LICENSE_NOTE = _("""<p>By clicking "Save Changes" you are agreeing to release your contribution under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>""")
+EDIT_LICENSE_NOTE = _("""<p>By clicking "Save Changes" you are agreeing to release your contribution under the <a rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank">CC0 Public Domain license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.</p>""")
 
-SIGNUP_TOS = _("""I agree to release my contributions under the <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons-By license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.""")
+SIGNUP_TOS = _("""I agree to release my contributions under the <a rel="license" href="http://creativecommons.org/publicdomain/zero/1.0/" target="_blank">CC0 Public Domain license</a>, unless noted otherwise. See <a href="/Copyrights" target="_blank">Copyrights</a>.""")
 
 SUBSCRIBE_MESSAGE = _("""I would like to receive occasional updates about this project via email.""")
 
@@ -56,7 +56,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 LOCALE_PATHS = (
     os.path.join(PROJECT_ROOT, 'locale'),
@@ -65,16 +65,15 @@ LOCALE_PATHS = (
 # Languages LocalWiki has been translated into.
 LANGUAGES = (
     ('en', _('English')),
+    ('es', _('Spanish')),
     ('ja', _('Japanese')),
-    ('ru_RU', _('Russian')),
-    ('de_CH', _('German (Swiss)')),
-    ('es_AR', _('Spanish (Argentina)')),
-    ('da_DK', _('Danish')),
-    ('it_IT', _('Italian')),
-    ('pt_PT', _('Portuguese')),
+    ('de', _('German')),
+    ('uk', _('Ukrainian')),
 )
 
 SITE_ID = 1
+
+MAIN_REGION = 'main'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -148,6 +147,12 @@ USERS_DEFAULT_PERMISSIONS = {'auth.group':
                                  },
                                 ]
                             }
+USER_REGION_ADMIN_CAN_MANAGE = [
+    'pages.models.Page',
+    'page.models.PageFile',
+    'maps.models.MapData',
+    'redirects.models.Redirect',
+]
 
 # django-guardian setting
 ANONYMOUS_USER_ID = -1
@@ -160,9 +165,6 @@ OLWIDGET_INFOMAP_MAX_LAYERS = 1
 SHOW_IP_ADDRESSES = True
 
 LOGIN_REDIRECT_URL = '/'
-
-HAYSTACK_SITECONF = 'main.search_sites'
-HAYSTACK_SEARCH_ENGINE = 'solr'
 
 THUMBNAIL_BACKEND = 'utils.sorl_backends.AutoFormatBackend'
 
@@ -207,15 +209,27 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'utils.middleware.SubdomainLanguageMiddleware',
+    'regions.middleware.RedirectToLanguageSubdomainMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'honeypot.middleware.HoneypotMiddleware',
     'versionutils.versioning.middleware.AutoTrackUserInfoMiddleware',
     'redirects.middleware.RedirectFallbackMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
     'utils.middleware.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
-    'main.api.middleware.XsSharing',
+)
+
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.CryptPasswordHasher',
+    'users.auth.UnsaltedSHA1PasswordHasher',  # For legacy imports
 )
 
 # Dummy cache - TODO: switch to memcached by default
@@ -232,6 +246,8 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates'),
 )
 
+SOUTH_TESTS_MIGRATE = True
+
 INSTALLED_APPS = (
     # Django-provided apps
     'django.contrib.auth',
@@ -241,25 +257,31 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.sites',
+    'django.contrib.humanize',
     #'django.contrib.staticfiles',
 
     # Other third-party apps
     'haystack',
+    'celery_haystack',
     'olwidget',
     'registration',
     'sorl.thumbnail',
     'staticfiles',
     'guardian',
     'south',
-    'tastypie',
+    'rest_framework',
+    'rest_framework.authtoken',
     'honeypot',
     'constance.backends.database',
     'constance',
+    'django_extensions',
+    'corsheaders',
 
     # Our apps
     'versionutils.versioning',
     'versionutils.diff',
     'ckeditor',
+    'regions',
     'pages',
     'maps',
     'redirects',
@@ -267,8 +289,10 @@ INSTALLED_APPS = (
     'users',
     'recentchanges',
     'search',
+    'frontpage',
     'dashboard',
     'main.api',
+    'main',
     'utils',
 )
 
@@ -277,6 +301,42 @@ TEMPLATE_DIRS = ()
 
 SITE_THEME = 'sapling'
 
+REST_FRAMEWORK = {
+    'PAGINATE_BY': 30,
+    # Allow client to override, using `?limit=xxx`.
+    'PAGINATE_BY_PARAM': 'limit',  
+    # Maximum limit allowed when using `?limit=xxx`.
+    'MAX_PAGINATE_BY': 100,
+    # Use hyperlinked styles by default.
+    # Only used if the `serializer_class` attribute is not set on a view.
+    'DEFAULT_MODEL_SERIALIZER_CLASS':
+        'rest_framework.serializers.HyperlinkedModelSerializer',
+
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.DjangoFilterBackend', 'rest_framework.filters.OrderingFilter',
+    ),
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        # Combined, these allow only authenticated users to 
+        # write via the API and non-authenticated users to read.
+        'main.api.permissions.DjangoObjectPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+    ],
+    # Base API policies
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'main.api.renderers.LocalWikiAPIRenderer',
+    ),
+}
+
+# Allow Cross-Origin Resource Sharing headers on API urls
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/api/.*$'
+
 # For testing, you can start the python debugging smtp server like so:
 # sudo python -m smtpd -n -c DebuggingServer localhost:25
 EMAIL_HOST = 'localhost'
@@ -284,17 +344,13 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
 
-#######################################################################
-# Other config values.
-#######################################################################
-
 OLWIDGET_DEFAULT_OPTIONS = {
-    'default_lat': 37.76,
-    'default_lon': -122.43,
-    'default_zoom': 12,
+    'default_lat': 37,
+    'default_lon': -99,
+    'default_zoom': 3,
     'zoom_to_data_extent_min': 16,
 
-    'layers': ['cloudmade.35165', 've.aerial'],
+    'layers': ['cachedcloudmade', 've.aerial'],
     'map_options': {
         'controls': ['Navigation', 'PanZoom', 'KeyboardDefaults'],
         'theme': '/static/openlayers/theme/sapling/style.css',
@@ -311,7 +367,7 @@ DAISYDIFF_MERGE_URL = 'http://localhost:8080/daisydiff/merge'
 # list of regular expressions for white listing embedded URLs
 EMBED_ALLOWED_SRC = ['.*']
 
-HAYSTACK_SOLR_URL = 'http://localhost:8080/solr'
+HAYSTACK_SIGNAL_PROCESSOR = 'celery_haystack.signals.CelerySignalProcessor'
 
 CACHE_BACKEND = 'dummy:///'
 

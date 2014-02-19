@@ -1,8 +1,11 @@
 from django import template
+from django.template.loader import render_to_string
+
+from pages.templatetags.pages_tags import IncludeContentNode
+from regions.models import Region
+
 from tags.models import PageTagSet, slugify, Tag
 from tags.forms import PageTagSetForm
-from django.template.loader import render_to_string
-from pages.templatetags.pages_tags import IncludeContentNode
 from tags.views import TaggedList
 
 
@@ -24,9 +27,9 @@ def page_tags_form(context, page):
     try:
         tags = page.pagetagset
     except PageTagSet.DoesNotExist:
-        tags = PageTagSet(page=page)
+        tags = PageTagSet(page=page, region=page.region)
     context.push()
-    context['form'] = PageTagSetForm(instance=tags)
+    context['form'] = PageTagSetForm(instance=tags, region=page.region)
     rendered = render_to_string('tags/pagetagset_form_snippet.html', context)
     context.pop()
     return rendered
@@ -46,17 +49,19 @@ def do_include_page(parser, token):
 class IncludeTagNode(IncludeContentNode):
     def __init__(self, *args, **kwargs):
         super(IncludeTagNode, self).__init__(*args, **kwargs)
-        try:
-            self.tag = Tag.objects.get(slug=slugify(self.name))
-        except Tag.DoesNotExist:
-            self.tag = None
 
     def get_title(self, context):
         return 'Pages tagged &ldquo;%s&rdquo;' % self.name
 
     def get_content(self, context):
+        region = context['region']
+        try:
+            self.tag = Tag.objects.get(slug=slugify(self.name), region=region)
+        except Tag.DoesNotExist:
+            self.tag = None
+
         view = TaggedList()
-        view.kwargs = dict(slug=self.name)
+        view.kwargs = dict(slug=self.name, region=region.slug)
         view.object_list = view.get_queryset()
         data = view.get_context_data(object_list=view.object_list)
         return render_to_string('tags/tagged_list_snippet.html', data)

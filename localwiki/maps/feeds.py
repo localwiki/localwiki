@@ -14,8 +14,8 @@ class MapChanges(RecentChanges):
 
     def queryset(self, start_at=None):
         if start_at:
-            return MapData.versions.filter(version_info__date__gte=start_at)
-        return MapData.versions.all()
+            return MapData.versions.filter(region=self.region, version_info__date__gte=start_at)
+        return MapData.versions.filter(region=self.region)
 
     def title(self, obj):
         return _('Map for "%s"') % obj.page.name
@@ -24,16 +24,18 @@ recentchanges.register(MapChanges)
 
 
 class MapChangesFeed(ChangesOnItemFeed):
-    def get_object(self, request, slug):
+    def get_object(self, request, region='', slug=''):
+        self.setup_region(region)
+
         # TODO: Break out this MapData-get-page pattern into a function.
         # Non-DRY.
-        page = Page(slug=slugify(slug))
+        page = Page(slug=slugify(slug), region=self.region)
         latest_page = page.versions.most_recent()
         # Need to set the pk on the dummy page for correct MapData lookup.
         page.pk = latest_page.id
         page.name = latest_page.name
 
-        obj = MapData(page=page)
+        obj = MapData(page=page, region=self.regin)
         obj.page = page
         obj.title = _('Map for "%s"') % obj.page.name
         obj.slug = page.slug
@@ -42,6 +44,7 @@ class MapChangesFeed(ChangesOnItemFeed):
     def items(self, obj):
         objs = obj.versions.all()[:MAX_CHANGES]
         change_obj = MapChanges()
+        change_obj.region = self.region
         for o in objs:
             o.title = obj.page.name
             o.diff_url = change_obj.diff_url(o)

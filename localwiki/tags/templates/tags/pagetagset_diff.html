@@ -61,6 +61,6 @@
     </tbody>
   </table>
   <p>
-      <a href="{% url 'pages:tags-history' slug=pagetagset.page.slug %}">{% trans "Tags history" %}</a>
+      <a href="{% url 'pages:tags-history' slug=pagetagset.page.slug region=pagetagset.region.slug %}">{% trans "Tags history" %}</a>
   </p>
 {% endblock %}

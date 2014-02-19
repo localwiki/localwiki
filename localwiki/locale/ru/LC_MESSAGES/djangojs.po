@@ -1,0 +1,258 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# mk30 <marina@localwiki.org>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: localwiki\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-11-27 19:48-0600\n"
+"PO-Revision-Date: 2013-11-28 02:59+0000\n"
+"Last-Translator: mk30 <marina@localwiki.org>\n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/localwiki/language/ru/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: maps/static/olwidget/js/sapling_utils.js:167
+msgid " for "
+msgstr "страницы"
+
+#: maps/static/olwidget/js/sapling_utils.js:212
+msgid ""
+"You've made changes but haven't saved.  Are you sure you want to leave this "
+"page?"
+msgstr "Вы внесли изменения, но они сохранены. Вы уверены, что хотите покинуть страницу без сохранения?"
+
+#: maps/static/olwidget/js/sapling_utils.js:323
+msgid "Things on this map:"
+msgstr "На этой карте:"
+
+#: maps/static/olwidget/js/sapling_utils.js:339
+msgid "Things inside "
+msgstr "Внутри "
+
+#: maps/static/olwidget/js/sapling_utils.js:353
+msgid "Things near "
+msgstr "Рядом с"
+
+#: pages/static/js/ckeditor/_source/plugins/embed/plugin.js:14
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:17
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:18
+msgid "Embed media"
+msgstr "Вставить мультимедиа"
+
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:24
+msgid "Paste the embed code below:"
+msgstr "Вставьте HTML-код ниже:"
+
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:29
+msgid "Please enter the embed code"
+msgstr "Введите код вставления."
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/plugin.js:14
+msgid "Include page"
+msgstr "Включить страницу"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:11
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:17
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:18
+msgid "Include Page"
+msgstr "Включить страницу"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:24
+msgid "Page name"
+msgstr "Название страницы"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:45
+msgid "Please enter a page name"
+msgstr "Введите название страницы"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:64
+msgid "Show page title"
+msgstr "Показывать заголовок"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:84
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:84
+msgid "Width"
+msgstr "Ширина"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:110
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:110
+msgid "pixels"
+msgstr "пикселей"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:111
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:111
+msgid "percent"
+msgstr "процентов"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:126
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:126
+msgid "Align"
+msgstr "Выравнивание"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:131
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:131
+#: pages/static/js/ckeditor/_source/plugins/simpleimage/dialogs/simpleimage.js:822
+msgid "None"
+msgstr ""
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:210
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:233
+#, c-format
+msgid "Include page %s"
+msgstr "Включить страницу %s"
+
+#: pages/static/js/ckeditor/_source/plugins/includetag/plugin.js:14
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:11
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:17
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:18
+msgid "List of tagged pages"
+msgstr ""
+
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:24
+msgid "Tag"
+msgstr ""
+
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:45
+msgid "Please enter a tag"
+msgstr ""
+
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:64
+msgid "Show title"
+msgstr ""
+
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:212
+#, c-format
+msgid "List of pages tagged \"%s\""
+msgstr ""
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/plugin.js:34
+msgid "Attach file"
+msgstr "Прикрепить файл"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:93
+msgid "Uploading your file..."
+msgstr "Ваш файл загружается..."
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:110
+msgid "Loading files..."
+msgstr "Загрузка файлов..."
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:111
+msgid "No files attached to this page"
+msgstr "Нет файлов на этой странице"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:114
+msgid "Loading images..."
+msgstr "Загрузка картинок..."
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:115
+msgid "No images attached to this page"
+msgstr "Нет картинок на этой странице"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:170
+msgid "Attach File"
+msgstr "Прикрепить файл"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:170
+msgid "Insert Image"
+msgstr "Вставить картинку"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:249
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:253
+msgid "Choose a file from your computer"
+msgstr "Выберите файл с вашего компьютера"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:335
+msgid "Select a file"
+msgstr "Выбрать файл"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:335
+msgid "Select an image"
+msgstr "Выбрать картинку"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:343
+msgid "or <a href=\"#\">use a file from the web</a>"
+msgstr "или <a href=\"#\">используйте файл из интернета</a>"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:343
+msgid "or <a href=\"#\">use an image from the web</a>"
+msgstr "или <a href=\"#\">используйте картинку из интернета</a>"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:354
+msgid "File URL"
+msgstr "URL-адрес файла"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:354
+msgid "Image URL"
+msgstr "URL-адрес картинки"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:392
+msgid "No file selected"
+msgstr "Файл не выбран"
+
+#: pages/static/js/ckeditor/_source/plugins/pagelink/dialogs/pageanchor.js:60
+msgid "Anchor name"
+msgstr "Имя якоря"
+
+#: pages/static/js/ckeditor/_source/plugins/pagelink/dialogs/pagelink.js:143
+msgid "Page name or URL"
+msgstr "Название страницы или URL-адрес"
+
+#: pages/static/js/ckeditor/_source/plugins/searchbox/plugin.js:14
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:10
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:16
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:17
+msgid "Search Box"
+msgstr "Форма поиска"
+
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:23
+msgid "Search query"
+msgstr "Поисковый запрос"
+
+#: pages/static/js/ckeditor/_source/plugins/simpleimage/plugin.js:83
+msgid "Add a caption"
+msgstr "Добавить подпись"
+
+#: pages/static/js/ckeditor/_source/plugins/simpletable/dialogs/simpletable.js:469
+msgid "Advanced settings..."
+msgstr "Дополнительные настройки ..."
+
+#: pages/static/js/ckeditor/_source/plugins/simpletable/dialogs/simpletable.js:478
+msgid "CSS classes"
+msgstr "CSS классы"
+
+#: pages/static/js/ckeditor/_source/plugins/wikiplugins/plugin.js:23
+#: pages/static/js/ckeditor/_source/plugins/wikiplugins/plugin.js:24
+msgid "Insert Object"
+msgstr "Вставить объект"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:24
+msgid "Previous"
+msgstr "Предыдущая"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:26
+msgid "Next"
+msgstr "Следующая"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:54
+msgid "Review changes"
+msgstr "Просмотреть правки"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:59
+msgid "You can use the &larr; and &rarr; keys, too."
+msgstr "Так же можно пользоваться клавишами &larr; и &rarr;."
+
+#: versionutils/diff/static/js/diff/htmldiff.js:69
+msgid "Content was deleted"
+msgstr "Удалено"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:70
+msgid "Content was added"
+msgstr "Добавлено"

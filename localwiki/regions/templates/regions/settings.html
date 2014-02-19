@@ -1,0 +1,80 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block title %}{% trans "LocalWiki - Settings" %}{% endblock %}
+
+{% block header_title %}
+    {% blocktrans with url=region.get_absolute_url region_slug=region.slug %}
+        Settings for <a href="{{ url }}">{{ region_slug }}</a>
+    {% endblocktrans %}
+{% endblock %}
+
+{% block body %}
+<body>
+   <div class="content_type region">
+   {% block everything_wrapper %}
+        {{ block.super }}
+   {% endblock %}
+   </div>
+</body>
+{% endblock %}
+
+{% block messages %}
+  {% if form.errors %}
+    <ul class="messages">
+      {% for errors in form.errors.values %}
+        {% for msg in errors %}
+          <li>{{ msg }}</li>
+        {% endfor %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<form action="" method="post">{% csrf_token %}
+    <div class="item">
+        {{ form.full_name.errors }}
+        {{ form.full_name.label_tag }}: {{ form.full_name }}
+        <div class="help_text">{{ form.full_name.help_text }}</div>
+    </div>
+    <div class="item">
+        <label for="lol">{% trans "Admins" %}</label>:
+        <ul>
+        {% for user in region.regionsettings.admins.all %}
+            <li><a href="{{ user.get_absolute_url }}">{{ user }}</a></li>
+        {% endfor %}
+        </ul>
+        <a href="{% url 'regions:edit-admins' region=region.slug %}" class="little button">Edit admins</a>
+    </div>
+    <div class="item">
+        <label for="lol">{% trans "Banned users" %}</label>:
+        <ul>
+        {% if not banned_users %}
+            <li>{% trans "Nobody is banned. Hooray!" %}</li>
+        {% else %}
+            {% for user in banned_users %}
+                <li><a href="{{ user.get_absolute_url }}">{{ user }}</a></li>
+            {% endfor %}
+        {% endif %}
+        </ul>
+        <a href="{% url 'regions:edit-banned' region=region.slug %}" class="little button">Edit banned</a>
+    </div>
+    <div class="item geom">
+        {{ form.geom.errors }}
+        <label for="id_geom">{% trans "The rough area the region covers" %}</label>:
+        <div class="help_text">{% trans "Pick an area roughly the size of a city. Don't worry about being exact!" %}</div>
+        {{ form.geom }}
+    </div>
+    <div class="item">
+        {{ form.default_language.errors }}
+        {{ form.default_language.label_tag }}: {{ form.default_language }}
+        <div class="help_text">{{ form.default_language.help_text }}</div>
+    </div>
+
+    <input type="submit" value="{% trans 'Save' %}" />
+</form>
+{% endblock %}

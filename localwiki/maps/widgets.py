@@ -2,6 +2,8 @@
 # This is a thin wrapper over olwidget.
 # We provide our own media.
 ################################################
+from copy import copy
+
 from django.conf import settings
 
 from olwidget import widgets
@@ -23,8 +25,6 @@ class MediaMixin(object):
 
 
 class InfoMap(MediaMixin, widgets.InfoMap):
-    pass
-
     def __init__(self, *args, **kwargs):
         val = super(InfoMap, self).__init__(*args, **kwargs)
         # Potentially limit # of layers on InfoMaps, for now. This helps
@@ -41,3 +41,17 @@ class InfoMap(MediaMixin, widgets.InfoMap):
         self.options['layers'] = self.options['layers'][:max_layers]
         return val
 
+
+def map_options_for_region(region):
+    region_center = region.regionsettings.region_center
+    opts = {
+        'default_lon': region_center.x,
+        'default_lat': region_center.y,
+        'default_zoom': region.regionsettings.region_zoom_level,
+    }
+    layers = copy(getattr(settings, 'OLWIDGET_DEFAULT_OPTIONS')['layers'])
+    if region.regionsettings.default_language == 'ja':
+        # Japan needs OSM Mapnik for now - faster OSM updates
+        layers[0] = 'osm.mapnik'
+    opts['layers'] = layers
+    return opts

@@ -17,21 +17,37 @@ from django_randomfilenamestorage.storage import (
 
 from versionutils import diff
 from versionutils import versioning
+from regions.models import Region
 
 import exceptions
 from fields import WikiHTMLField
 
 
+def validate_page_slug(slug):
+    if slugify(slug) != slug:
+        raise ValidationError(_('Provided slug is invalid. Slugs must be lowercase, '
+            'contain no trailing or leading whitespace, and contain only alphanumber '
+            'characters along with %(KEEP_CHARACTERS)s') % {'KEEP_CHARACTERS': SLUGIFY_KEEP})
+
+
 class Page(models.Model):
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, editable=False, unique=True)
+    name = models.CharField(max_length=255, blank=False)
+    slug = models.CharField(max_length=255, editable=False, blank=False, db_index=True,
+        validators=[validate_page_slug])
     content = WikiHTMLField()
+    region = models.ForeignKey(Region, null=True)
+
+    class Meta:
+        unique_together = ('slug', 'region')
 
     def __unicode__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('pages:show', args=[self.pretty_slug])
+        return reverse('pages:show', kwargs={
+            'slug': self.pretty_slug,
+            'region': self.region.slug
+        })
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -47,12 +63,13 @@ class Page(models.Model):
         Returns:
             True if the Page currently exists in the database.
         """
-        if Page.objects.filter(slug=self.slug):
-            return True
-        return False
+        return Page.objects.filter(slug=self.slug, region=self.region).exists()
 
     def is_front_page(self):
         return self.name.lower() == 'front page'
+
+    def is_template_page(self):
+        return self.name.lower().startswith('templates/')
 
     def pretty_slug(self):
         if not self.name:
@@ -64,14 +81,33 @@ class Page(models.Model):
         return self.name.split('/')
     name_parts = property(name_parts)
 
+    def _get_related_objs(self):
+        related_objs = []
+        for r in self._meta.get_all_related_objects():
+            try:
+                rel_obj = getattr(self, r.get_accessor_name())
+            except:
+                continue  # No object for this relation.
+
+            # Is this a related /set/, e.g. redirect_set?
+            if isinstance(rel_obj, models.Manager):
+                # list() freezes the QuerySet, which we don't want to be
+                # fetched /after/ we delete the page.
+                related_objs.append(
+                    (r.get_accessor_name(), list(rel_obj.all())))
+            else:
+                related_objs.append((r.get_accessor_name(), rel_obj))
+        return related_objs
+
     def _get_slug_related_objs(self):
         # Right now this is simply hard-coded.
         # TODO: generalize this slug pattern, perhaps with some kind of
         # AttachedSlugField or something.
-        return [
-            {'objs': PageFile.objects.filter(slug=self.slug),
-             'unique_together': ('name', 'slug')},
-        ]
+        pagefiles = PageFile.objects.filter(slug=self.slug, region=self.region)
+        return [{
+            'objs': pagefiles,
+            'unique_together': ('name', 'slug', 'region')
+        }]
 
     def rename_to(self, pagename):
         """
@@ -88,7 +124,7 @@ class Page(models.Model):
         from redirects.models import Redirect
         from redirects.exceptions import RedirectToSelf
 
-        if Page.objects.filter(slug=slugify(pagename)):
+        if Page(slug=slugify(pagename), region=self.region).exists():
             if slugify(pagename) == self.slug:
                 # The slug is the same but we're changing the name.
                 old_name = self.name
@@ -108,21 +144,7 @@ class Page(models.Model):
         new_p.save(comment=_('Renamed from "%s"') % self.name)
 
         # Get all related objects before the original page is deleted.
-        related_objs = []
-        for r in self._meta.get_all_related_objects():
-            try:
-                rel_obj = getattr(self, r.get_accessor_name())
-            except:
-                continue  # No object for this relation.
-
-            # Is this a related /set/, e.g. redirect_set?
-            if isinstance(rel_obj, models.Manager):
-                # list() freezes the QuerySet, which we don't want to be
-                # fetched /after/ we delete the page.
-                related_objs.append(
-                    (r.get_accessor_name(), list(rel_obj.all())))
-            else:
-                related_objs.append((r.get_accessor_name(), rel_obj))
+        related_objs = self._get_related_objs()
 
         # Cache all ManyToMany values on related objects so we can restore them
         # later--otherwise they will be lost when page is deleted.
@@ -135,7 +157,7 @@ class Page(models.Model):
                     for f in rel_obj._meta.many_to_many)
 
         # Create a redirect from the starting pagename to the new pagename.
-        redirect = Redirect(source=self.slug, destination=new_p)
+        redirect = Redirect(source=self.slug, destination=new_p, region=self.region)
         # Creating the redirect causes the starting page to be deleted.
         redirect.save()
 
@@ -181,6 +203,8 @@ class Page(models.Model):
                 obj.pk = None  # Reset the primary key before saving.
                 obj.save(comment=_("Parent page renamed"))
 
+        return new_p
+
 
 class PageDiff(diff.BaseModelDiff):
     fields = ('name',
@@ -195,8 +219,11 @@ versioning.register(Page)
 class PageFile(models.Model):
     file = models.FileField(ugettext_lazy("file"), upload_to='pages/files/',
                             storage=RandomFilenameFileSystemStorage())
-    name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, editable=False)
+    name = models.CharField(max_length=255, blank=False)
+    # TODO: Create PageSlugField for this purpose
+    slug = models.CharField(max_length=255, blank=False, db_index=True,
+        validators=[validate_page_slug])
+    region = models.ForeignKey(Region, null=True)
 
     _rough_type_map = [(r'^audio', 'audio'),
                        (r'^video', 'video'),
@@ -210,15 +237,19 @@ class PageFile(models.Model):
                       ]
 
     def get_absolute_url(self):
-        return reverse('pages:file',
-            kwargs={'slug': self.slug, 'file': self.name})
+        return reverse('pages:file', kwargs={
+            'slug': self.slug,
+            'file': self.name,
+            'region': self.region
+        })
 
     @property
     def attached_to_page(self):
         try:
-            p = Page.objects.get(slug=self.slug)
+            p = Page.objects.get(slug=self.slug, region=self.region)
         except Page.DoesNotExist:
-            p = Page(slug=self.slug, name=clean_name(self.slug))
+            p = Page(slug=self.slug,
+                     name=clean_name(self.slug), region=self.region)
         return p
 
     @property
@@ -238,7 +269,7 @@ class PageFile(models.Model):
         return self.rough_type == 'image'
 
     class Meta:
-        unique_together = ('slug', 'name')
+        unique_together = ('slug', 'region', 'name')
         ordering = ['-id']
 
 
@@ -254,7 +285,8 @@ def clean_name(name):
     return name
 
 
-def slugify(value, keep=r"\-\.,'\"/!@$%&*()"):
+SLUGIFY_KEEP = r"\-\.,'\"/!@$%&*()"
+def slugify(value, keep=SLUGIFY_KEEP):
     """
     Normalizes page name for db lookup
 
@@ -310,5 +342,4 @@ url_to_name = stringfilter(url_to_name)
 
 # For registration calls
 import signals
-import api
 import feeds

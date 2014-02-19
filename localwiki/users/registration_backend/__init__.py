@@ -1,6 +1,9 @@
 """
 A simple registration backend for django-registration.
 """
+import re
+from urlparse import urlparse, parse_qs
+
 from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.core.urlresolvers import reverse
@@ -38,10 +41,22 @@ class SaplingBackend(SimpleBackend):
         profile.save()
         return user
 
+region_routing_pattern = re.compile(
+    '^/(?P<region>[^/]+?)/.*'
+)
+
 
 def registration_complete_msg(sender, user, request, **kwargs):
+    qs = parse_qs(urlparse(request.get_full_path()).query)
+    re_match = region_routing_pattern.match(qs['next'][0])
+    if re_match:
+        region_slug = re_match.group('region')
+    else:
+        # Not in a particular region -- we're on the front page or something.
+        region_slug = settings.MAIN_REGION
+
     user_slug = 'Users/%s' % user.username
-    users_edit_url = reverse('pages:edit', args=[user_slug])
+    users_edit_url = reverse('pages:edit', kwargs={'slug': user_slug, 'region': region_slug})
     messages.add_message(request, messages.SUCCESS,
         _('You are signed up and logged in!'))
     messages.add_message(request, messages.SUCCESS,

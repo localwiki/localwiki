@@ -19,7 +19,23 @@ class HistoryDescriptor(object):
         return instance._history_manager
 
 
-class HistoricalMetaInfoQuerySet(QuerySet):
+# We actually may have different types of QuerySets -- GeoQuerySet, etc.
+# So we need to do this trickery to allow the HistoricalMetaInfoQuerySet
+# to dynamically subclass whatever underlying QuerySet class we may
+# be using.
+
+_cached_classes = {}
+def HistoricalMetaInfoQuerySet(model=None):
+    _base = model._default_manager.get_query_set().__class__
+    if _base in _cached_classes:
+        return _cached_classes[_base](model=model)
+    class _HistoricalMetaInfoQuerySet(BaseHistoricalMetaInfoQuerySet, _base):
+        pass
+    _cached_classes[_base] = _HistoricalMetaInfoQuerySet
+    return _HistoricalMetaInfoQuerySet(model=model)
+
+
+class BaseHistoricalMetaInfoQuerySet(object):
     """
     Simple QuerySet to make filtering intuitive.
     """
@@ -40,33 +56,33 @@ class HistoricalMetaInfoQuerySet(QuerySet):
         kws_new = {}
         for k, v in kws.iteritems():
             k_new = k
-            parts = k.split(models.sql.constants.LOOKUP_SEP)
+            parts = k.split(models.constants.LOOKUP_SEP)
             # Replace all instances of version_info__whatever with
             # history_whatever.
             if len(parts) > 1 and parts[0] == 'version_info':
-                rest = models.sql.constants.LOOKUP_SEP.join(parts[2:])
+                rest = models.constants.LOOKUP_SEP.join(parts[2:])
                 if rest:
-                    rest = "%s%s" % (models.sql.constants.LOOKUP_SEP, rest)
+                    rest = "%s%s" % (models.constants.LOOKUP_SEP, rest)
                 k_new = 'history_%s%s' % (parts[1], rest)
             # Replace all instances of fk__whatever with
             # fk_hist__whatever if fk is a versioned model.
             if parts[0] in versioned_vars:
-                rest = models.sql.constants.LOOKUP_SEP.join(parts[2:])
+                rest = models.constants.LOOKUP_SEP.join(parts[2:])
                 if rest:
-                    rest = "%s%s" % (models.sql.constants.LOOKUP_SEP, rest)
+                    rest = "%s%s" % (models.constants.LOOKUP_SEP, rest)
                 k_new = '%s_hist%s' % (parts[0], rest)
             # Replace all instances of parent_ptr__whatever
             # with parent_hist_ptr__whatever if parent's versioned.
             if parts[0] in versioned_parents:
-                rest = models.sql.constants.LOOKUP_SEP.join(parts[2:])
+                rest = models.constants.LOOKUP_SEP.join(parts[2:])
                 if rest:
-                    rest = "%s%s" % (models.sql.constants.LOOKUP_SEP, rest)
+                    rest = "%s%s" % (models.constants.LOOKUP_SEP, rest)
                 # -4 will remove '_ptr' from the original string.
                 k_new = '%s_hist_ptr%s' % (parts[0][:-4], rest)
 
             kws_new[k_new] = v
 
-        return super(HistoricalMetaInfoQuerySet, self).filter(*args, **kws_new)
+        return super(BaseHistoricalMetaInfoQuerySet, self).filter(*args, **kws_new)
 
 
 class HistoryManager(models.Manager):
@@ -127,7 +143,7 @@ class HistoryManager(models.Manager):
                             # Use historical model's pk name of the form
                             # parentmodel_hist_ptr.
                             self.model._meta.pk.name,
-                            models.sql.constants.LOOKUP_SEP)
+                            models.constants.LOOKUP_SEP)
 
                 filter = {pk_name: self.instance.pk}
             else:

@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 register = template.Library()
 
 @register.simple_tag
-def filtered_tags(list, keywords):
+def filtered_tags(region_slug, list, keywords):
     list = list or []
     keywords = keywords or []
     unused = set(list)
@@ -18,5 +18,5 @@ def filtered_tags(list, keywords):
                 break
     if not filtered:
         return ''
-    tags = [{'name': t, 'slug': slugify(t)} for t in filtered]
+    tags = [{'name': t, 'slug': slugify(t), 'region': {'slug': region_slug}} for t in filtered]
     return render_to_string('tags/tag_list_snippet.html', {'tag_list': tags})

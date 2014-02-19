@@ -8,7 +8,7 @@
 {{ block.super }}
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#id_destination').autocomplete({source: '/api/pages/suggest'});
+        $('#id_destination').autocomplete({source: '/_api/pages/suggest/?region_id=' + region_id });
     });
 </script>
 {% endblock %}
@@ -25,7 +25,7 @@
     </ul>
     {% if exists %}
       <input type="submit" value="{% trans 'Update redirect' %}"/> 
-      <a class="button" href="{% url 'redirects:delete' slug=page.slug %}">{% trans "Delete redirect" %}</a>
+      <a class="button" href="{% url 'redirects:delete' region=page.region slug=page.slug %}">{% trans "Delete redirect" %}</a>
     {% else %}
       <input type="submit" value="{% trans 'Create redirect' %}"/> 
     {% endif %}

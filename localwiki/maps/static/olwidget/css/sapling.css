@@ -60,6 +60,43 @@
     font-size: 1.2em;
 }
 
+/* Map search in map editing area */
+
+.mapwidget #map_search {
+    position: absolute;
+    z-index: 750;
+    background: url("../img/1px_trans.png") repeat scroll 0 0 transparent;
+    margin-top: 22px;
+    margin-left: 330px;
+    padding: 5px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+/* Adding a region only lets you draw a polygon, so let's move over the search
+ * box */
+.region .mapwidget #map_search {
+    display: none;
+}
+.mapwidget #map_search input {
+    width: 28em;
+    height: 22px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    margin: 0;
+    opacity: 0.8;
+    font-size: 11px;
+}
+#map_search .tt-suggestion {
+    font-size: 11px;
+    padding: 0.5em 0.5em 0.5em 1em;
+}
+#map_search .tt-dropdown-menu {
+    margin-top: 10px;
+    min-width: 100%;
+}
+
 /* Our editing toolbar instead of olwidget default */
 .olControlEditingToolbar .olControlModifyFeatureItemInactive {
     background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -48px 0px;

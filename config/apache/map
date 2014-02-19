@@ -1,0 +1,166 @@
+<VirtualHost *:80>
+	ServerName map.localwiki.org
+    ServerAlias map-a.localwiki.org map.localwiki.org
+    ServerAlias map-b.localwiki.org map.localwiki.org
+    ServerAlias map-c.localwiki.org map.localwiki.org
+
+	DocumentRoot /var/www/
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options -Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+
+	<Proxy *>
+        Order deny,allow
+        Allow from all
+    </Proxy>
+    ProxyRequests off
+
+    #####################################
+	# Route /tile/ to cloudmade cache.
+    #####################################
+    # :6081 is our varnish instance that's caching cloudmade tiles
+    <Location "/tile/">
+        SetEnv proxy-nokeepalive 1
+        SetEnv force-proxy-request-1.0
+
+        ProxyPass http://127.0.0.1:6081/
+        ProxyPassReverse http://127.0.0.1:6081/
+    </Location>
+
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName map-wms.localwiki.org
+
+	DocumentRoot /var/www/
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options -Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+
+	<Proxy *>
+            Order deny,allow
+            Allow from all
+        </Proxy>
+        ProxyRequests off
+
+	####################################################
+	# Route to varnish
+        # Note: we only want /gwc/service/wms, not /.
+        # / would potentially allow user login, etc :0
+	####################################################
+	<Location "/">
+            SetEnv proxy-nokeepalive 1
+            SetEnv force-proxy-request-1.0
+
+            ProxyPass http://127.0.0.1:6081/geoserver/gwc/service/wms
+            ProxyPassReverse http://127.0.0.1:6081/geoserver/gwc/service/wms
+
+            ## :8085 is our geoserver instance that's serving WMS requests
+            ## ..proxy to philip's personal server temporarily
+            #ProxyPass http://i-am-cc.org:8080/geoserver/gwc/service/wms
+            #ProxyPassReverse http://i-am-cc.org:8080/geoserver/gwc/service/wms
+        </Location>
+	
+</VirtualHost>
+
+{% if ssl_key %}
+<VirtualHost *:443>
+    SSLEngine on
+	SSLCertificateFile /etc/apache2/ssl/{{ ssl_name }}/{{ ssl_cert }}
+	SSLCertificateKeyFile /etc/apache2/ssl/{{ ssl_name }}/{{ ssl_key }}
+	SSLCACertificateFile /etc/apache2/ssl/{{ ssl_name }}/{{ ssl_intermediate }}
+    Header set Strict-Transport-Security "max-age=1800"
+
+	ServerName map.{{ hostname }}
+    ServerAlias map-a.{{ hostname }} map.{{ hostname }}
+    ServerAlias map-b.{{ hostname }} map.{{ hostname }}
+    ServerAlias map-c.{{ hostname }} map.{{ hostname }}
+	
+	DocumentRoot /var/www/
+	<Directory />
+		Options FollowSymLinks
+		AllowOverride None
+	</Directory>
+	<Directory /var/www/>
+		Options -Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	ErrorLog /var/log/apache2/error.log
+
+	# Possible values include: debug, info, notice, warn, error, crit,
+	# alert, emerg.
+	LogLevel warn
+
+	CustomLog /var/log/apache2/access.log combined
+
+	<Proxy *>
+        Order deny,allow
+        Allow from all
+    </Proxy>
+    ProxyRequests off
+
+    #####################################
+	# Route /tile/ to cloudmade cache.
+    #####################################
+    # :6081 is our varnish instance that's caching cloudmade tiles
+    <Location "/tile/">
+        SetEnv proxy-nokeepalive 1
+        SetEnv force-proxy-request-1.0
+
+        ProxyPass http://127.0.0.1:6081/
+        ProxyPassReverse http://127.0.0.1:6081/
+    </Location>
+
+	#####################################################
+	## Route requests to /gwc/service/wms to Geosever.
+    ## Note: we only want /gwc/service/wms, not /.
+    ##       / would potentially allow user login, etc :0
+	#####################################################
+	#<Location "/geoserver/gwc/service/wms">
+    #    SetEnv proxy-nokeepalive 1
+    #    SetEnv force-proxy-request-1.0
+
+	#    ProxyPass http://127.0.0.1:6081/
+    #    ProxyPassReverse http://127.0.0.1:6081/
+
+    #    ## :8085 is our geoserver instance that's serving WMS requests
+    #    ## ..proxy to philip's personal server temporarily
+    #    #ProxyPass http://i-am-cc.org:8080/geoserver/gwc/service/wms
+    #    #ProxyPassReverse http://i-am-cc.org:8080/geoserver/gwc/service/wms
+    #</Location>
+	
+</VirtualHost>
+{% endif %}

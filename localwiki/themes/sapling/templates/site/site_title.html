@@ -1,6 +1,8 @@
 {% load url from future %}
 {% block site_title %}
-{% if current_site %}
-  <h1><a href="{% url 'pages:frontpage' %}">{{ current_site.name }}</a></h1>
+{% if region %}
+  <h1><a href="/">localwiki</a>/<a href="{% url 'frontpage' region=region.slug %}">{{ region.slug }}</a></h1>
+{% else %}
+  <h1><a href="/">localwiki</a></h1>
 {% endif %}
 {% endblock %}

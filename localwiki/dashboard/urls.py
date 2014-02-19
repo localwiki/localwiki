@@ -1,12 +1,9 @@
 from django.conf.urls import *
-from django.views.generic import TemplateView
 
-from views import DashboardView
+from views import DashboardRenderView, DashboardView
 
 urlpatterns = patterns('',
-    url(r'^render', DashboardView.as_view(),
+    url(r'^(?P<region>([^_][^/]*)?)/?_render', DashboardRenderView.as_view(),
         name="render"),
-    url(r'^$',
-        TemplateView.as_view(template_name='dashboard/index.html'),
-        name='main'),
+    url(r'^(?P<region>([^_][^/]*)?)/?$', DashboardView.as_view(), name='main'),
 )

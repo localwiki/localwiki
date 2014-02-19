@@ -1,10 +1,7 @@
 from django.core.urlresolvers import reverse
 
-_base_path = None
 
-
-def page_base_path():
-    global _base_path
-    if not _base_path:
-        _base_path = reverse('pages:show', args=['foobar'])[:-6]
-    return _base_path
+def page_base_path(region):
+    # Django caches repeated resolver lookups, so this should be
+    # pretty fast.
+    return reverse('pages:show', args=[region.slug, 'foobar'])[:-6]

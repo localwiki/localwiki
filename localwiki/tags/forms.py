@@ -1,12 +1,13 @@
 from django import forms
-
-from versionutils.merging.forms import MergeMixin
-from tags.models import Tag, PageTagSet, slugify, TagsFieldDiff
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from django.utils.translation import ugettext as _, ungettext
-from tags.widgets import TagEdit
+
+from versionutils.merging.forms import MergeMixin
 from versionutils.versioning.forms import CommentMixin
+
+from tags.models import Tag, PageTagSet, slugify, TagsFieldDiff
+from tags.widgets import TagEdit
 
 
 def parse_tags(tagstring):
@@ -21,9 +22,27 @@ def tags_to_edit_string(tags):
 
 class TagSetField(forms.ModelMultipleChoiceField):
     widget = TagEdit()
+    model = Tag
+    name_attribute = 'name'
 
-    def __init__(self, queryset, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        self.region = kwargs.pop('region', None)
+        self.widget.region = self.region
+        queryset = self.get_queryset()
         super(TagSetField, self).__init__(queryset, *args, **kwargs)
+
+    def get_queryset(self):
+        if self.region:
+            return Tag.objects.filter(region=self.region)
+        else:
+            return Tag.objects.all()
+
+    def get_or_create_tag(self, word):
+        tag, created = Tag.objects.get_or_create(
+            slug=slugify(word), region=self.region,
+            defaults={'name': word}
+        )
+        return tag
 
     def clean(self, value):
         if not value:
@@ -35,17 +54,16 @@ class TagSetField(forms.ModelMultipleChoiceField):
         keys = []
         for word in parse_tags(value):
             try:
-                tag, created = Tag.objects.get_or_create(slug=slugify(word),
-                                                     defaults={'name': word})
+                tag = self.get_or_create_tag(word)
                 keys.append(tag.pk)
             except IntegrityError as e:
                 raise ValidationError(e)
-        return Tag.objects.filter(pk__in=keys)
+        return self.model.objects.filter(pk__in=keys)
 
     def prepare_value(self, value):
         if not hasattr(value, '__iter__'):
             return value
-        tags = [t.name for t in self.queryset.filter(**{'pk__in': value})]
+        tags = [getattr(t, self.name_attribute) for t in self.queryset.filter(**{'pk__in': value})]
         return tags_to_edit_string(tags)
 
 
@@ -55,7 +73,11 @@ class PageTagSetForm(MergeMixin, CommentMixin, forms.ModelForm):
         fields = ('tags',)
         exclude = ('comment',)  # we generate comment automatically
 
-    tags = TagSetField(queryset=Tag.objects.all(), required=False)
+    def __init__(self, *args, **kwargs):
+        region = kwargs.pop('region', None)
+        super(PageTagSetForm, self).__init__(*args, **kwargs)
+
+        self.fields['tags'] = TagSetField(region=region, required=False)
 
     def pluralize_tag(self, list):
         if len(list) > 1:

@@ -155,7 +155,7 @@ function getData(graph, qs, timeout) {
     if (qs) qs = qs + '&graph=' + graph;
     if (!qs) qs = '?graph=' + graph;
     $.ajax({
-        url: '{% url 'dashboard:render' %}' + qs,
+        url: '{% url 'dashboard:render' region=region.slug %}' + qs,
         dataType: 'json',
         success: function(data) {
             if (!data.generated) {
@@ -169,7 +169,7 @@ function getData(graph, qs, timeout) {
 
 $(function() {
     $.ajax({
-        url: '{% url 'dashboard:render' %}',
+        url: '{% url 'dashboard:render' region=region.slug %}',
         dataType: 'json',
         success: function(data) {
             populateData(data);

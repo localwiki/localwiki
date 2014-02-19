@@ -25,7 +25,8 @@ class CaseInsensitiveModelBackend(object):
 
 
 class RestrictiveBackend(object):
-    """ Allows restricting permissions on per-object basis.
+    """
+    Allows restricting permissions on per-object basis.
 
     For objects, checks object permissions first. If none found checks model
     permissions.  Works pretty much as usual for model permissions.
@@ -59,9 +60,31 @@ class RestrictiveBackend(object):
     def authenticate(self, username=None, password=None):
         return None
 
-    def is_banned(self, user_obj):
+    def is_globally_banned(self, user_obj):
         return (BANNED_GROUP and
                user_obj.groups.filter(name=BANNED_GROUP).exists())
+
+    def is_region_admin(self, user_obj, obj):
+        """
+        If the `user_obj` is an admin of the region that `obj` belongs to,
+        return True.
+        """
+        if not obj:
+            return False
+        name = "%s.%s" % (obj.__module__, obj.__class__.__name__)
+        if name in settings.USER_REGION_ADMIN_CAN_MANAGE:
+            return obj.region.is_admin(user_obj)
+        return False
+
+    def is_banned_on_region(self, user_obj, obj):
+        if not obj:
+            return False
+        name = "%s.%s" % (obj.__module__, obj.__class__.__name__)
+        if name in settings.USER_REGION_ADMIN_CAN_MANAGE:
+            region = obj.region
+            if hasattr(region, 'bannedfromregion'):
+                return user_obj in region.bannedfromregion.users.all()
+        return False
 
     def has_perm(self, user_obj, perm, obj=None):
         default_has_perm = False
@@ -73,7 +96,11 @@ class RestrictiveBackend(object):
             return False
         if user_obj.is_superuser:
             return True
-        if self.is_banned(user_obj):
+        if self.is_globally_banned(user_obj):
+            return False
+        if self.is_region_admin(user_obj, obj):
+            return True
+        if self.is_banned_on_region(user_obj, obj):
             return False
         if obj and self.object_has_perms(obj):
             return self._object_backend.has_perm(user_obj, perm, obj)

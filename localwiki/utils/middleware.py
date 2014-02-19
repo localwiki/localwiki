@@ -3,6 +3,7 @@ from django.middleware.cache import (UpdateCacheMiddleware,
 from django.core.exceptions import MiddlewareNotUsed
 from django.conf import settings
 from django.utils.importlib import import_module
+from django.utils import translation
 from django.utils.cache import learn_cache_key, get_max_age
 
 
@@ -78,3 +79,23 @@ class TrackPOSTMiddleware(object):
     def process_request(self, request):
         if request.method == 'POST' and 'has_POSTed' not in request.session:
             request.session['has_POSTed'] = True
+
+
+
+class SubdomainLanguageMiddleware(object):
+    """
+    Set the language for the site based on the subdomain the request
+    is being served on. For example, serving on 'fr.domain.com' would
+    make the language French (fr).
+    """
+    LANGUAGES = [i[0] for i in settings.LANGUAGES]
+
+    def process_request(self, request):
+        host = request.get_host().split('.')
+        if host and host[0] in self.LANGUAGES:
+            lang = host[0]
+        else:
+            # Set to default language
+            lang = settings.LANGUAGE_CODE
+        translation.activate(lang)
+        request.LANGUAGE_CODE = lang

@@ -17,7 +17,7 @@ if hasattr(settings, 'OLWIDGET_DEFAULT_OPTIONS'):
 class MapForm(MergeMixin, CommentMixin, MediaMixin, MapModelForm):
     class Meta:
         model = MapData
-        exclude = ('page', 'points', 'lines', 'polys')
+        exclude = ('page', 'region', 'points', 'lines', 'polys')
         options = OLWIDGET_OPTIONS
 
     def merge(self, yours, theirs, ancestor):

@@ -5,7 +5,7 @@
 {% load i18n %}
 
 {% block title %}{% trans "Tags" %} / {{ tag_name }} - {{ block.super }}{% endblock %}
-{% block header_title %}<a href="{% url 'tags:list' %}">{% trans "Tags" %}</a> / {{ tag_name }}{% endblock %}
+{% block header_title %}<a href="{% url 'tags:list' region=tag.region.slug %}">{% trans "Tags" %}</a> / {{ tag_name }}{% endblock %}
 
 {% block media %}
   {{ block.super }}

@@ -3,6 +3,7 @@ SaplingMap = {
     is_dirty: false,
 
     init_openlayers: function() {
+        OpenLayers.Control.Navigation.prototype.dragPanOptions = {enableKinetic: true};
         OpenLayers.Control.LayerSwitcher.prototype.roundedCorner = false;
         OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
         var base_initOptions = olwidget.Map.prototype.initOptions;
@@ -75,6 +76,7 @@ SaplingMap = {
         }
 
         this.setup_link_hover_activation(map);
+        this.disable_scroll_zoom(map);
     },
 
     setup_link_hover_activation: function(map) {
@@ -96,6 +98,12 @@ SaplingMap = {
                 SaplingMap._highlightResult(this, feature, map, true);
             });
         });
+    },
+
+    disable_scroll_zoom: function(map) {
+        var controls = map.getControlsByClass('OpenLayers.Control.Navigation');
+        for(var i = 0; i < controls.length; ++i)
+        controls[i].disableZoomWheel();
     },
 
     _set_selected_style: function(map, feature) {
@@ -379,9 +387,9 @@ SaplingMap = {
     _format_bbox_data: function(data) {
         for (var i=0; i<data.length; i++) {
             var item = data[i];
-            var slug = encodeURIComponent(item[1].replace(' ', '_'));
-            var page_url = '/' + slug;
-            data[i][1] = '<a href="' + page_url + '">' + item[1] + '</a>';
+            var pagename = item[1];
+            var page_url = item[2];
+            data[i][1] = '<a href="' + page_url + '">' + pagename + '</a>';
         }
         return data;
     },
@@ -513,12 +521,69 @@ SaplingMap = {
         }
     },
 
+    _setup_map_search: function(map, layer) {
+        $('.mapwidget').prepend(
+            '<form id="map_search" class="search" action="." onSubmit="return false;" method="POST"><input type="text" id="address" name="address" placeholder="Find via address.."/></form>');
+
+        var geoCodeURL = "http://nominatim.openstreetmap.org/search";
+        $('#address').typeahead([
+            {
+              name: 'address',
+              remote: {
+                url: geoCodeURL,
+                replace: function(url, uriEncodedQuery) {
+                    var q = decodeURIComponent(uriEncodedQuery);
+                    // Did they use a coma to specify the city, etc?
+                    var didnt_specify_region = q.indexOf(',') === -1;
+                    if (didnt_specify_region) {
+                        // Let's throw in the region name to improve geocoding.
+                        q += ', ' + region_name;
+                    }
+                    return (url + '?q=' + encodeURIComponent(q)) + '&format=json';
+                }
+              },
+              valueKey: 'display_name'
+            }
+        ])
+        .on('typeahead:selected', function(e, datum) {
+            console.log(datum.lon + ' ' + datum.lat);
+            if (!datum.osm_type) {
+                // Isn't a way, relation or node - just a point I think?
+                var point = new OpenLayers.Geometry.Point(datum.lon, datum.lat);
+                point = point.transform(
+                    new OpenLayers.Projection("EPSG:4326"),
+                    map.getProjectionObject());
+                var pointFeature = new OpenLayers.Feature.Vector(point, null, null);
+                // clear the features out
+                layer.destroyFeatures();
+                layer.addFeatures([pointFeature]);
+                map.zoomToExtent(layer.getDataExtent());
+                return;
+            }
+
+            $('.mapwidget').prepend('<div class="loading"></div>');
+            $('.mapwidget .loading').height($('.mapwidget').height());
+
+            $.get('../_get_osm/', { 'display_name': datum.display_name, 'osm_id': datum.osm_id, 'osm_type': datum.osm_type }, function(data){
+                var temp = new olwidget.InfoLayer([[data.geom, 'osm', 'osm']]);
+                temp.visibility = false;
+                map.addLayer(temp);
+                layer.removeAllFeatures();
+                layer.addFeatures(temp.features);
+                map.removeLayer(temp);
+                map.zoomToExtent(layer.getDataExtent());
+                $('.mapwidget .loading').remove();
+            });
+        });
+    },
+
     _open_editing: function(map) {
         for (var i = 0; i < map.controls.length; i++) { 
             if (map.controls[i] && map.controls[i].CLASS_NAME == 
         "olwidget.EditableLayerSwitcher") { 
                 layer = map.vectorLayers[0];
                 if (layer.controls) {
+                    this._setup_map_search(map, layer);
                     this._remove_unneeded_controls(layer);
                     map.controls[i].setEditing(layer);
 
