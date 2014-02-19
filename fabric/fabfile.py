@@ -4,6 +4,8 @@ This is the main management script for provisioning and managing the LocalWiki s
 ==== Do this first ====
 
 * Install vagrant >= 1.3.3
+* Make sure you're in the 'fabric' directory (where this fabfile.py lives), then:
+
 $ virtualenv env
 $ source env/bin/activate
 $ pip install -r requirements.txt
