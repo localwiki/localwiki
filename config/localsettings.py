@@ -4,7 +4,7 @@ DEBUG = False
 # Config values you *must* change
 #######################################################################
 
-ALLOWED_HOSTS = ['.{{ public_hostname }}', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['.{{ public_hostname }}', '127.0.0.1', '.localhost']
 
 SESSION_COOKIE_DOMAIN = '.{{ public_hostname }}'
 
