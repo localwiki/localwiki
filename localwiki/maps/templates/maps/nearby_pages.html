@@ -5,7 +5,7 @@
 
 {% block media %}
     {{ block.super }}
-    {% if not nearby_maps %}
+    {% if no_location %}
     <script src="{% static "js/geoPosition.js" %}"></script>
     <script type="text/javascript">
         var nearbyView = function(position) {
@@ -16,7 +16,6 @@
             geoPosition.getCurrentPosition(nearbyView);
             }
         });
-
     </script>
     {% endif %}
 {% endblock %}
@@ -26,24 +25,29 @@
 
 {% block content_wrapper %}
 <div id="content_wrapper">
-  {% if map %}
-    <div id="content" class="has_map">
-  {% else %}
+  {% if not nearby_maps %}
     <div id="content">
+  {% else %}
+    <div id="content" class="has_map">
   {% endif %}
+
     {% block content %}
-      {{ map.media }}
-      <div id="map">
-        {{ map }}
-        <div class="info"><a id="view_map" class="view tiny button" href="{% url 'maps:global' %}#zoom=15&lat={{ request.GET.lat }}&amp;lon={{ request.GET.lng }}">{% trans "View" %}</a></div>
-      </div>
-      <div id="nearby_maps">
-        <ul>
-        {% for map in nearby_maps %}
-          <li><a href="{% url 'pages:show' slug=map.page.pretty_slug %}">{{ map.page.name }}</a></li>
-        {% endfor %}
-        </ul>
-      </div>
+      {% if not nearby_maps %}
+        <p>{% trans "No nearby pages. Make some!" %}</p>
+      {% else %}
+          {{ map.media }}
+          <div id="map">
+            {{ map }}
+            <div class="info"><a id="view_map" class="view tiny button" href="{% url 'maps:global' region=region.slug %}#zoom=15&lat={{ request.GET.lat }}&amp;lon={{ request.GET.lng }}">{% trans "View" %}</a></div>
+          </div>
+          <div id="nearby_maps">
+            <ul>
+            {% for map in nearby_maps %}
+              <li><a href="{% url 'pages:show' slug=map.page.pretty_slug region=map.region.slug %}">{{ map.page.name }}</a></li>
+            {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
     {% endblock %}
     </div>
 </div>

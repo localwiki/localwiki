@@ -7,8 +7,7 @@ from feeds import MapChangesFeed
 
 urlpatterns = patterns('',
     url(r'^$', MapGlobalView.as_view(), name='global'),
-    url(r'^nearby/?', MapNearbyView.as_view(), name='nearby'),
-    url(r'^nearby/map/?', MapGlobalView.as_view(), name='nearby_map'),
+    url(r'^_nearby/?', MapNearbyView.as_view(), name='nearby'),
     url(r'^_everything_everywhere$', EverythingEverywhereAsPointsView.as_view(), name='everything-as-points'),
     url(r'^tags/(?P<tag>.+)', MapForTag.as_view(), name='tagged'),
     url(r'^_objects/$', MapObjectsForBounds.as_view(), name='objects'),
