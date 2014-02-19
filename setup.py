@@ -131,6 +131,7 @@ install_requires = [
     'django==1.5.4',
     'html5lib==0.95',
     'requests==2.0.0',
+    'python-memcached==1.53',
     'sorl-thumbnail==11.12-custom5',
     'python-dateutil==1.5',
     'pysolr==2.1.0-beta',
@@ -154,7 +155,6 @@ install_requires = [
     'djangorestframework-filter==0.2.0',
     'djangorestframework-gis==0.1.0-custom2',
     'markdown==2.3.1',
-    'python-memcached',
     'django-cors-headers==0.12',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
