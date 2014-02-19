@@ -319,6 +319,7 @@ def init_postgres_db():
     sudo("createdb -E UTF8 -O localwiki localwiki", user='postgres')
     # Init PostGIS
     sudo('psql -d localwiki -c "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;"', user='postgres')
+    sudo('psql -d localwiki -c "GRANT SELECT ON geometry_columns TO localwiki; GRANT SELECT ON geography_columns TO localwiki; GRANT SELECT ON spatial_ref_sys TO localwiki;"', user='postgres')
 
 def update_django_settings():
     upload_template('config/localsettings.py',
