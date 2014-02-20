@@ -71,12 +71,12 @@ class PageAPITests(APITestCase):
         pts.tags = [t1, t2]
         
     def test_basic_page_list(self):
-        response = self.client.get('/api/pages/')
+        response = self.client.get('%s/pages/' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 3)
 
     def test_basic_page_detail(self):
-        response = self.client.get('/api/pages/?slug=dolores%20park')
+        response = self.client.get('%s/pages/?slug=dolores%%20park' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
         self.assertEqual(jresp['results'][0]['name'], 'Dolores Park')
@@ -84,8 +84,8 @@ class PageAPITests(APITestCase):
     def test_basic_page_post(self):
         self.client.force_authenticate(user=self.edit_user)
 
-        data = {'name': 'Test Page', 'content': '<p>hi</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
-        resp = self.client.post('/api/pages/', data, format='json')
+        data = {'name': 'Test Page', 'content': '<p>hi</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.post('%s/pages/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
     def test_page_post_with_tags(self):
@@ -93,8 +93,8 @@ class PageAPITests(APITestCase):
 
         data = {'name': 'Test Page with tags', 'content': '<p>hi with tags</p>',
                 'tags': ['park', 'fun'],
-                'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
-        resp = self.client.post('/api/pages/', data, format='json')
+                'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.post('%s/pages/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         jresp = json.loads(resp.content)
         self.assertEqual(set(jresp['tags']), set(['park', 'fun']))
@@ -103,50 +103,50 @@ class PageAPITests(APITestCase):
         self.client.force_authenticate(user=self.edit_user)
 
         data = {'name': 'Test Page no region', 'content': '<p>hi with tags</p>'}
-        resp = self.client.post('/api/pages/', data, format='json')
+        resp = self.client.post('%s/pages/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_filter_tags(self):
-        response = self.client.get('/api/pages/?tags=lake')
+        response = self.client.get('%s/pages/?tags=lake' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
         self.assertEqual(jresp['results'][0]['slug'], 'duboce park')
 
-        response = self.client.get('/api/pages/?tags=lake,wifi')
+        response = self.client.get('%s/pages/?tags=lake,wifi' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 0)
 
-        response = self.client.get('/api/pages/?tags=water,lake')
+        response = self.client.get('%s/pages/?tags=water,lake' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
 
     def test_post_page_already_exists(self):
         self.client.force_authenticate(user=self.edit_user)
 
-        data = {'slug': 'dolores park', 'name': 'Dolores Park', 'content': '<p>hi exists</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
+        data = {'slug': 'dolores park', 'name': 'Dolores Park', 'content': '<p>hi exists</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
         try:
-            resp = self.client.post('/api/pages/', data, format='json')
+            resp = self.client.post('%s/pages/' % self.API_ROOT, data, format='json')
         except IntegrityError:
             pass
         else:
             self.assertTrue(False)
 
     def test_filter_slug(self):
-        response = self.client.get('/api/pages/?slug__icontains=PaRk')
+        response = self.client.get('%s/pages/?slug__icontains=PaRk' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 2)
 
-        response = self.client.get('/api/pages/?slug__istartswith=DOLO')
+        response = self.client.get('%s/pages/?slug__istartswith=DOLO' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
         self.assertEqual(jresp['results'][0]['slug'], 'dolores park')
 
     def test_chained_region_filter(self):
-        response = self.client.get('/api/pages/?region__slug__icontains=ak')
+        response = self.client.get('%s/pages/?region__slug__icontains=ak' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
 
-        response = self.client.get('/api/pages/?region__slug__istartswith=o')
+        response = self.client.get('%s/pages/?region__slug__istartswith=o' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
         self.assertEqual(jresp['results'][0]['slug'], 'lake merritt')
@@ -154,8 +154,8 @@ class PageAPITests(APITestCase):
     def test_basic_page_put(self):
         self.client.force_authenticate(user=self.edit_user)
 
-        data = {'name': 'Duboce Park', 'content': '<p>hi new content</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
-        resp = self.client.put('/api/pages/%s/' % self.duboce_park.id, data, format='json')
+        data = {'name': 'Duboce Park', 'content': '<p>hi new content</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.put('%s/pages/%s/' % (self.API_ROOT, self.duboce_park.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         jresp = json.loads(resp.content)
 
@@ -167,7 +167,7 @@ class PageAPITests(APITestCase):
         self.client.force_authenticate(user=self.edit_user)
 
         data = {'name': 'Duboce PARK'}
-        resp = self.client.patch('/api/pages/%s/' % self.duboce_park.id, data, format='json')
+        resp = self.client.patch('%s/pages/%s/' % (self.API_ROOT, self.duboce_park.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         jresp = json.loads(resp.content)
 
@@ -178,7 +178,7 @@ class PageAPITests(APITestCase):
         self.client.force_authenticate(user=self.edit_user)
 
         data = {'name': 'Duboce Cat'}
-        resp = self.client.patch('/api/pages/%s/' % self.duboce_park.id, data, format='json')
+        resp = self.client.patch('%s/pages/%s/' % (self.API_ROOT, self.duboce_park.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         jresp = json.loads(resp.content)
 
@@ -195,8 +195,8 @@ class PageAPITests(APITestCase):
 
         # PATCH existing
         data = {'slug': 'Du~~!!! lolololol vv------_c0c$$/-_/-._<hi>',
-                'content': '<p>lol</p>', 'region': 'http://testserver/api/regions/%s/' % self.sf_region.id}
-        resp = self.client.patch('/api/pages/%s/' % self.duboce_park.id, data, format='json')
+                'content': '<p>lol</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.patch('%s/pages/%s/' % (self.API_ROOT, self.duboce_park.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         jresp = json.loads(resp.content)
         self.assertEqual(jresp['slug'], 'duboce park')
@@ -204,8 +204,8 @@ class PageAPITests(APITestCase):
         # POST new
         data = {'name': 'Du~~!!! lolololol vv------_c0c$$/-_/-._<hi>',
                 'slug': 'Du~~!!! lolololol vv------_c0c$$/-_/-._<hi>',
-                'content': '<p>lol</p>', 'region': 'http://testserver/api/regions/%s/' % self.sf_region.id}
-        resp = self.client.post('/api/pages/', data, format='json')
+                'content': '<p>lol</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.post('%s/pages/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         jresp = json.loads(resp.content)
         self.assertEqual(jresp['slug'], slugify('Du~~!!! lolololol vv------ c0c$$/-/-. <hi>'))
@@ -213,14 +213,14 @@ class PageAPITests(APITestCase):
         # Empty slug
         data = {'name': '',
                 'slug': '',
-                'content': '<p>lol empty</p>', 'region': 'http://testserver/api/regions/%s/' % self.sf_region.id}
-        resp = self.client.post('/api/pages/', data, format='json')
+                'content': '<p>lol empty</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.post('%s/pages/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
 
         # Evil HTML
         data = {'name': 'Evil',
-                'content': '<p>lol empty <script>alert("hi");</script></p>', 'region': 'http://testserver/api/regions/%s/' % self.sf_region.id}
-        resp = self.client.post('/api/pages/', data, format='json')
+                'content': '<p>lol empty <script>alert("hi");</script></p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.post('%s/pages/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         jresp = json.loads(resp.content)
         self.assertEqual(jresp['content'], '<p>lol empty &lt;script&gt;alert("hi");&lt;/script&gt;</p>')
@@ -232,15 +232,15 @@ class PageAPITests(APITestCase):
         assign_perm('change_page', self.edit_user_2, self.dolores_park)
 
         # Now try and update it as edit_user
-        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
-        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.put('%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), data, format='json')
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the permission and it should work
         remove_perm('change_page', self.edit_user_2, self.dolores_park)
 
-        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
-        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.put('%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
         ##################################################################################
@@ -252,15 +252,15 @@ class PageAPITests(APITestCase):
         banned.users.add(self.edit_user)
 
         # Now try and update a page as edit_user
-        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
-        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.put('%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), data, format='json')
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the ban and it should work
         banned.users.remove(self.edit_user)
 
-        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
-        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.put('%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
         # Now, let's try a global ban using the banned group
@@ -268,15 +268,15 @@ class PageAPITests(APITestCase):
         self.edit_user.groups.add(banned)
 
         # Now try and update a page as edit_user
-        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
-        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.put('%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), data, format='json')
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the ban and it should work
         self.edit_user.groups.remove(banned)
 
-        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
-        resp = self.client.put('/api/pages/%s/' % self.dolores_park.id, data, format='json')
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.put('%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
 
@@ -332,12 +332,12 @@ class FileAPITests(APITestCase):
 
 
     def test_basic_file_list(self):
-        response = self.client.get('/api/files/')
+        response = self.client.get('%s/files/' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 2)
 
     def test_basic_file_detail(self):
-        response = self.client.get('/api/files/?slug=duboce%20park&name=file.txt')
+        response = self.client.get('%s/files/?slug=duboce%%20park&name=file.txt' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
         self.assertEqual(jresp['results'][0]['name'], 'file.txt')
@@ -350,12 +350,12 @@ class FileAPITests(APITestCase):
         file.name = "test_new_hi.txt"
 
         data = {
-            'region': 'http://testserver/api/regions/%s/' % self.sf_region.id,
+            'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id),
             'name': 'test_new_hi.txt',
             'slug': 'duboce park',
             'file': file,
         }
-        resp = self.client.post('/api/files/', data)
+        resp = self.client.post('%s/files/' % self.API_ROOT, data)
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         jresp = json.loads(resp.content)
         self.assertEqual(jresp['name'], 'test_new_hi.txt')
@@ -371,12 +371,12 @@ class FileAPITests(APITestCase):
         file.name = "test_new_hi3.txt"
 
         data = {
-            'region': 'http://testserver/api/regions/%s/' % self.sf_region.id,
+            'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id),
             'name': 'test_new_hi3.txt',
             'slug': 'dolores park',
             'file': file,
         }
-        resp = self.client.post('/api/files/', data)
+        resp = self.client.post('%s/files/' % self.API_ROOT, data)
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the permission and it should work
@@ -386,13 +386,13 @@ class FileAPITests(APITestCase):
         file.name = "test_new_hi3.txt"
 
         data = {
-            'region': 'http://testserver/api/regions/%s/' % self.sf_region.id,
+            'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id),
             'name': 'test_new_hi3.txt',
             'slug': 'dolores park',
             'file': file,
         }
 
-        resp = self.client.post('/api/files/', data)
+        resp = self.client.post('%s/files/' % self.API_ROOT, data)
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
         ##################################################################################
@@ -408,13 +408,13 @@ class FileAPITests(APITestCase):
         file.name = "test_new_hi4.txt"
 
         data = {
-            'region': 'http://testserver/api/regions/%s/' % self.sf_region.id,
+            'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id),
             'name': 'test_new_hi4.txt',
             'slug': 'dolores park',
             'file': file,
         }
 
-        resp = self.client.post('/api/files/', data)
+        resp = self.client.post('%s/files/' % self.API_ROOT, data)
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the ban and it should work
@@ -424,14 +424,14 @@ class FileAPITests(APITestCase):
         file.name = "test_new_hi4.txt"
 
         data = {
-            'region': 'http://testserver/api/regions/%s/' % self.sf_region.id,
+            'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id),
             'name': 'test_new_hi4.txt',
             'slug': 'dolores park',
             'file': file,
         }
 
-        resp = self.client.post('/api/files/', data)
-        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
+        resp = self.client.post('%s/files/' % self.API_ROOT, data)
+        data = {'name': 'Dolores Park', 'content': '<p>hi new content by edituser</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
         # Now, let's try a global ban using the banned group
@@ -443,13 +443,13 @@ class FileAPITests(APITestCase):
         file.name = "test_new_hi5.txt"
 
         data = {
-            'region': 'http://testserver/api/regions/%s/' % self.sf_region.id,
+            'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id),
             'name': 'test_new_hi5.txt',
             'slug': 'dolores park',
             'file': file,
         }
 
-        resp = self.client.post('/api/files/', data)
+        resp = self.client.post('%s/files/' % self.API_ROOT, data)
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the ban and it should work
@@ -459,11 +459,11 @@ class FileAPITests(APITestCase):
         file.name = "test_new_hi5.txt"
 
         data = {
-            'region': 'http://testserver/api/regions/%s/' % self.sf_region.id,
+            'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id),
             'name': 'test_new_hi5.txt',
             'slug': 'dolores park',
             'file': file,
         }
 
-        resp = self.client.post('/api/files/', data)
+        resp = self.client.post('%s/files/' % self.API_ROOT, data)
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)

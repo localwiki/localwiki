@@ -122,7 +122,7 @@ class MapAPITests(APITestCase):
         self.duboce_park_map.save()
 
     def test_map_list(self):
-        response = self.client.get('/api/maps/')
+        response = self.client.get('%s/maps/' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 2)
 
@@ -160,17 +160,17 @@ class MapAPITests(APITestCase):
           }]
         }"""
 
-        data = {'page': 'http://testserver/api/pages/%s/' % self.golden_gate_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.post('/api/maps/', data, format='json')
+        data = {'page': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.golden_gate_park.id), 'geom': geojson, 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.post('%s/maps/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
     def test_page_chained_filter(self):
-        response = self.client.get('/api/maps/?page__slug__icontains=dolores')
+        response = self.client.get('%s/maps/?page__slug__icontains=dolores' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
 
     def test_geo_filter(self):
-        response = self.client.get('/api/maps/?polys__contains={ "type": "Point", "coordinates": [ -122.42724180221558, 37.75988395932576 ] }')
+        response = self.client.get('%s/maps/?polys__contains={ "type": "Point", "coordinates": [ -122.42724180221558, 37.75988395932576 ] }' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
 
@@ -212,15 +212,15 @@ class MapAPITests(APITestCase):
           }]
         }"""
 
-        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        data = {'page': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), 'geom': geojson, 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/maps/%s/' % (self.API_ROOT, self.dolores_park_map.id), data, format='json')
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the permission and it should work
         remove_perm('change_page', self.edit_user_2, self.dolores_park)
 
-        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        data = {'page': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), 'geom': geojson, 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/maps/%s/' % (self.API_ROOT, self.dolores_park_map.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
         ##################################################################################
@@ -264,15 +264,15 @@ class MapAPITests(APITestCase):
           }]
         }"""
 
-        data = {'page': 'http://testserver/api/pages/%s/' % new_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.post('/api/maps/', data, format='json')
+        data = {'page': 'http://testserver%s/pages/%s/' % (self.API_ROOT, new_park.id), 'geom': geojson, 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.post('%s/maps/' % self.API_ROOT, data, format='json')
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the permission and it should work
         remove_perm('change_page', self.edit_user_2, new_park)
 
-        data = {'page': 'http://testserver/api/pages/%s/' % new_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.post('/api/maps/', data, format='json')
+        data = {'page': 'http://testserver%s/pages/%s/' % (self.API_ROOT, new_park.id), 'geom': geojson, 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.post('%s/maps/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
         ##################################################################################
@@ -315,15 +315,15 @@ class MapAPITests(APITestCase):
           }]
         }"""
 
-        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        data = {'page': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), 'geom': geojson, 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/maps/%s/' % (self.API_ROOT, self.dolores_park_map.id), data, format='json')
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the ban and it should work
         banned.users.remove(self.edit_user)
 
-        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        data = {'page': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), 'geom': geojson, 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/maps/%s/' % (self.API_ROOT, self.dolores_park_map.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
         # Now, let's try a global ban using the banned group
@@ -362,13 +362,13 @@ class MapAPITests(APITestCase):
           }]
         }"""
 
-        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        data = {'page': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), 'geom': geojson, 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/maps/%s/' % (self.API_ROOT, self.dolores_park_map.id), data, format='json')
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the ban and it should work
         self.edit_user.groups.remove(banned)
 
-        data = {'page': 'http://testserver/api/pages/%s/' % self.dolores_park.id, 'geom': geojson, 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/maps/%s/' % self.dolores_park_map.id, data, format='json')
+        data = {'page': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), 'geom': geojson, 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/maps/%s/' % (self.API_ROOT, self.dolores_park_map.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)

@@ -4,6 +4,8 @@ from rest_framework import test
 
 
 class APITestCase(test.APITestCase):
+    API_ROOT = '/api/v4'
+
     def setup_auth_and_perms(self):
         call_command('reset_permissions', verbosity=0)
 

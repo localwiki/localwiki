@@ -44,13 +44,13 @@ class AuthenticationAPITests(APITestCase):
 
     def test_basic_page_post(self):
         # Without authentication, a POST should fail
-        data = {'name': 'Test Page', 'content': '<p>hi</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
-        resp = self.client.post('/api/pages/', data, format='json')
+        data = {'name': 'Test Page', 'content': '<p>hi</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.post('%s/pages/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_401_UNAUTHORIZED)
 
         # Now try with an API token, which should work
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-        data = {'name': 'Test Page', 'content': '<p>hi</p>', 'region': 'http://testserver/api/regions/%s/' % (self.sf_region.id)}
-        resp = self.client.post('/api/pages/', data, format='json')
+        data = {'name': 'Test Page', 'content': '<p>hi</p>', 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf_region.id)}
+        resp = self.client.post('%s/pages/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 

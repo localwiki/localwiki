@@ -16,12 +16,12 @@ class RegionAPITests(APITestCase):
         self.oak.save()
 
     def test_region_list(self):
-        response = self.client.get('/api/regions/')
+        response = self.client.get('%s/regions/' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 2)
 
     def test_region_detail(self):
-        response = self.client.get('/api/regions/?slug=sf')
+        response = self.client.get('%s/regions/?slug=sf' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
         self.assertEqual(jresp['results'][0]['full_name'], 'San Francisco')

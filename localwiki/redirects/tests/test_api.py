@@ -58,15 +58,15 @@ class RedirectAPITests(APITestCase):
         self.dog_park.save()
 
     def test_redirect_list(self):
-        response = self.client.get('/api/redirects/')
+        response = self.client.get('%s/redirects/' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 2)
 
     def test_redirect_simple_post(self):
         self.client.force_authenticate(user=self.edit_user)
 
-        data = {'source': 'redirect from pg', 'destination': 'http://testserver/api/pages/%s/' % (self.dolores_park.id), 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.post('/api/redirects/', data, format='json')
+        data = {'source': 'redirect from pg', 'destination': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.post('%s/redirects/' % self.API_ROOT, data, format='json')
         jresp = json.loads(resp.content)
 
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
@@ -75,13 +75,13 @@ class RedirectAPITests(APITestCase):
     def test_redirect_destination_noexist(self):
         self.client.force_authenticate(user=self.edit_user)
 
-        data = {'source': 'redirect from pg', 'destination': 'http://testserver/api/pages/3585484585/', 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.post('/api/redirects/', data, format='json')
+        data = {'source': 'redirect from pg', 'destination': 'http://testserver%s/pages/3585484585/' % self.API_ROOT, 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.post('%s/redirects/' % self.API_ROOT, data, format='json')
 
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_destination_chained_filter(self):
-        response = self.client.get('/api/redirects/?destination__slug__icontains=dolores')
+        response = self.client.get('%s/redirects/?destination__slug__icontains=dolores' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
 
@@ -104,15 +104,15 @@ class RedirectAPITests(APITestCase):
 
         # Now try and update the "Mission Dolores Park" redirect as edit_user
 
-        data = {'source': 'mission dolores park', 'destination': 'http://testserver/api/pages/%s/' % (self.duboce_park.id), 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/redirects/%s/' % self.mission_dolores_park.id, data, format='json')
+        data = {'source': 'mission dolores park', 'destination': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.duboce_park.id), 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/redirects/%s/' % (self.API_ROOT, self.mission_dolores_park.id), data, format='json')
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the permission and it should work
         remove_perm('change_redirect', self.edit_user_2, self.mission_dolores_park)
 
-        data = {'source': 'mission dolores park', 'destination': 'http://testserver/api/pages/%s/' % (self.duboce_park.id), 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/redirects/%s/' % self.mission_dolores_park.id, data, format='json')
+        data = {'source': 'mission dolores park', 'destination': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.duboce_park.id), 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/redirects/%s/' % (self.API_ROOT, self.mission_dolores_park.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
         #####################################################################################
@@ -133,15 +133,15 @@ class RedirectAPITests(APITestCase):
 
         # now let's try and create a redirect from "oasis" to "duboce park" as `edit_user`:
 
-        data = {'source': 'oasis', 'destination': 'http://testserver/api/pages/%s/' % (self.duboce_park.id), 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.post('/api/redirects/', data, format='json')
+        data = {'source': 'oasis', 'destination': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.duboce_park.id), 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.post('%s/redirects/' % self.API_ROOT, data, format='json')
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the permission and it should work
         remove_perm('change_page', self.edit_user_2, p)
 
-        data = {'source': 'oasis', 'destination': 'http://testserver/api/pages/%s/' % (self.duboce_park.id), 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.post('/api/redirects/', data, format='json')
+        data = {'source': 'oasis', 'destination': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.duboce_park.id), 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.post('%s/redirects/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
         #####################################################################################
@@ -152,28 +152,28 @@ class RedirectAPITests(APITestCase):
         banned, created = BannedFromRegion.objects.get_or_create(region=self.sf)
         banned.users.add(self.edit_user)
 
-        data = {'source': 'mission dolores park', 'destination': 'http://testserver/api/pages/%s/' % (self.dolores_park.id), 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/redirects/%s/' % self.mission_dolores_park.id, data, format='json')
+        data = {'source': 'mission dolores park', 'destination': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/redirects/%s/' % (self.API_ROOT, self.mission_dolores_park.id), data, format='json')
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         # Now remove the ban and it should work
         banned.users.remove(self.edit_user)
 
-        data = {'source': 'mission dolores park', 'destination': 'http://testserver/api/pages/%s/' % (self.dolores_park.id), 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/redirects/%s/' % self.mission_dolores_park.id, data, format='json')
+        data = {'source': 'mission dolores park', 'destination': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.dolores_park.id), 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/redirects/%s/' % (self.API_ROOT, self.mission_dolores_park.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
         # Now, let's try a global ban using the banned group
         banned = Group.objects.get(name=settings.USERS_BANNED_GROUP)
         self.edit_user.groups.add(banned)
 
-        data = {'source': 'mission dolores park', 'destination': 'http://testserver/api/pages/%s/' % (self.duboce_park.id), 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/redirects/%s/' % self.mission_dolores_park.id, data, format='json')
+        data = {'source': 'mission dolores park', 'destination': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.duboce_park.id), 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/redirects/%s/' % (self.API_ROOT, self.mission_dolores_park.id), data, format='json')
         self.assertIn(resp.status_code, [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN])
 
         ## Now remove the ban and it should work
         self.edit_user.groups.remove(banned)
 
-        data = {'source': 'mission dolores park', 'destination': 'http://testserver/api/pages/%s/' % (self.duboce_park.id), 'region': 'http://testserver/api/regions/%s/' % (self.sf.id)}
-        resp = self.client.put('/api/redirects/%s/' % self.mission_dolores_park.id, data, format='json')
+        data = {'source': 'mission dolores park', 'destination': 'http://testserver%s/pages/%s/' % (self.API_ROOT, self.duboce_park.id), 'region': 'http://testserver%s/regions/%s/' % (self.API_ROOT, self.sf.id)}
+        resp = self.client.put('%s/redirects/%s/' % (self.API_ROOT, self.mission_dolores_park.id), data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_200_OK)

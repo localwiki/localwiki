@@ -2,7 +2,7 @@ import json
 
 from django.contrib.auth.models import User
 
-from rest_framework.test import APITestCase
+from main.api.test import APITestCase
 from rest_framework import status
 
 
@@ -16,12 +16,12 @@ class UserAPITests(APITestCase):
         self.marina.save()
 
     def test_user_list(self):
-        response = self.client.get('/api/users/')
+        response = self.client.get('%s/users/' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 3)
 
     def test_user_detail(self):
-        response = self.client.get('/api/users/?username=philipn')
+        response = self.client.get('%s/users/?username=philipn' % self.API_ROOT)
         jresp = json.loads(response.content)
         self.assertEqual(len(jresp['results']), 1)
         self.assertEqual(jresp['results'][0]['username'], 'philipn')
