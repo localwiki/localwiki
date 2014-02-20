@@ -2,13 +2,15 @@
 LocalWiki
 =========
 
-LocalWiki is tool for collaborating in local, geographic communities.
+LocalWiki is a grassroots effort to collect, share and open the world's local knowledge.
 
-We're *really* just getting started here.
+This repository contains the backend server software used to run the LocalWiki project.
 
-General install instructions here:
+To edit LocalWiki or to bring LocalWiki to your community, please visit http://localwiki.net.
 
-  http://localwiki.org/install/
+For information on the LocalWiki API, please see http://localwiki.net/api.
+
+For information on running this backend code as a local development environment, see `INSTALL`.
 
 Development
 ===========
@@ -28,9 +30,9 @@ Development
 
 Legal Stuff
 ===========
-Copyright (c) 2010-2012 by Philip Neustrom <philip@localwiki.org>
+Copyright (c) 2010-2014 by Philip Neustrom <philip@localwiki.org>
 
-Copyright (c) 2010-2012 by Mike Ivanov <mike@localwiki.org>
+Copyright (c) 2010-2013 by Mike Ivanov <mike@localwiki.org>
 
 All rights reserved, see COPYING for details.
 
