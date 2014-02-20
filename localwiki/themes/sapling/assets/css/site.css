@@ -617,13 +617,14 @@ textarea, input, select {
 }
 #nav li a {
     text-align: center;
-    font-size: 90%;
-    display: block;
+    font-size: 83%;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    float: left;
-    padding: 0.1em 0.5em 0.3em 0.5em;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 0.5em 0 0.5em;
+    height: 1.6em;
     line-height: 100%;
     margin: 0;
     border: 1px solid #e1e1e1;
@@ -640,20 +641,19 @@ textarea, input, select {
 }
 @media screen and (max-width: 700px) {
     #nav ul {
-        font-size: 86%;
+        font-size: 90%;
         margin: 0.5em;
         margin-top: -0.8em;
         padding: 0;
         float: none;
         position: relative;
-        top: -3em;
+        top: -2.7em;
     }
     #nav li {
         margin: 0.2em;
     }
     
     #nav li a {
-        padding: 0.5em 0.3em 0.5em 0.3em;
     }
 }
 @media screen and (max-width: 500px) {
@@ -675,6 +675,7 @@ textarea, input, select {
         border: none;
     }
     #nav li, #nav li a {
+        height: inherit;
         width: 100%;
         padding: 0;
         margin: 0;
