@@ -149,7 +149,12 @@ def setup_config_secrets():
     if not os.path.exists(_config_path):
         shutil.copytree('config_secrets.example', _config_path)
     config_secrets = defaultdict(lambda : None)
-    config_secrets.update(json.load(open(os.path.join(_config_path, 'secrets.json'))))
+    jsecrets = json.load(open(os.path.join(_config_path, 'secrets.json')))
+    if env.host_type in jsecrets:
+        secrets = jsecrets[env.host_type]
+    else:
+        secrets = jsecrets['*']
+    config_secrets.update(secrets)
 
 def save_config_secrets():
     f = open(os.path.join(_config_path, 'secrets.json'), 'w')
@@ -173,17 +178,15 @@ env.apache_settings = {
 env.branch = 'hub'
 
 def production():
-    setup_config_secrets()
-
     # Use the global roledefs
     env.roledefs = roledefs
     if not env.roles:
         env.roles = ['web']
     env.host_type = 'production'
+
+    setup_config_secrets()
  
 def vagrant():
-    setup_config_secrets()
-
     # connect to the port-forwarded ssh
     env.roledefs = {
         'web': ['vagrant@127.0.0.1:2222']
@@ -191,6 +194,8 @@ def vagrant():
     if not env.roles:
         env.roles = ['web']
     env.host_type = 'vagrant'
+
+    setup_config_secrets()
     # We assume that this fabfile is inside of the vagrant
     # directory, two subdirectories deep.  See dev HOWTO
     # in main docstring.
@@ -200,10 +205,10 @@ def vagrant():
     env.key_filename = result.split()[1].strip('"')
 
 def ec2():
-    setup_config_secrets()
-
     env.host_type = 'ec2'
     env.user = 'ubuntu'
+
+    setup_config_secrets()
 
     env.aws_access_key_id = config_secrets['aws_access_key_id']
     env.aws_secret_access_key = config_secrets['aws_secret_access_key']
@@ -213,8 +218,8 @@ def ec2():
     env.key_filename = config_secrets['ec2_key_filename']
 
 def test_server():
-    setup_config_secrets()
     env.host_type = 'test_server'
+    setup_config_secrets()
 
 def setup_dev():
     """
@@ -349,7 +354,7 @@ def init_localwiki_install():
             # Install Django settings template
             if not config_secrets['django_secret_key']:
                 config_secrets['django_secret_key'] = ''.join([
-                    random.choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)')
+                    random.choice('abcdefghijklmnopqrstuvwxyz0123456789!@$%^&*(-_=+)')
                     for i in range(50)
                 ])
             update_django_settings()
@@ -439,7 +444,7 @@ def setup_permissions():
     sudo('chown -R www-data:www-data %s' % env.localwiki_root)
     # .. but don't let other users view env/, src/.
     # Apache needs 775 access to the localwiki.wsgi script, though.
-    sudo('chmod 770 %s %s' % (env.virtualenv, env.src_root))
+    sudo('chmod -R 770 %s %s' % (env.virtualenv, env.src_root))
 
 def setup_mapserver():
     """
@@ -631,6 +636,9 @@ def deploy(local=False):
             pull down from git -- and instead want to run using your
             local changes.
     """
+    if env.host_type == 'vagrant':
+        # Annoying vagrant virtualbox permission issues
+        sudo('chmod -R 770 %s' % env.virtualenv)
     update(local=local)
     setup_jetty()
     touch_wsgi()
