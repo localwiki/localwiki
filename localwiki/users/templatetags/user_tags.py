@@ -1,4 +1,5 @@
 from django import template
+from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 
 from django_gravatar.helpers import get_gravatar_url, has_gravatar
@@ -23,4 +24,6 @@ def user_link(user, size=20, region=None, show_username=True, ip=None):
         }
     elif ip:
         link = ip
+    else:
+        link = _("Unknown")
     return link
