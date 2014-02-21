@@ -13,7 +13,7 @@ def user_link(user, size=20, region=None):
         if region:
             user_path= '/%s%s' % (region.slug, user.get_absolute_url())
         else:
-            region_path = user.get_absolute_url()
+            user_path = user.get_absolute_url()
         link = """<a href="%(user_path)s" class="user_link"><img class="gravatar" src="%(gravatar_url)s" width="%(width)s" height="%(height)s" /> %(username)s</a>""" % {
             'user_path': user_path,
             'gravatar_url': gravatar_url,

@@ -1349,16 +1349,27 @@ input:focus {
 ====================================
 */
 
-.user_link {
-    display: inline-block;
-}
-.user_link img {
+.gravatar {
     border: 1px solid #bbbbbb;
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
+}
+
+.user_link {
+    display: inline-block;
+}
+.user_link img {
     float: left;
     margin: 2px 4px 0 0;
+}
+
+.user_settings .gravatar {
+    float: left;
+    margin: -1px 8px 0 0;
+}
+.user_settings input[type="submit"] {
+    margin-top: 1.5em;
 }
 
 /*

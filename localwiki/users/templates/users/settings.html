@@ -1,5 +1,6 @@
 {% extends "site/base.html" %}
 {% load url from future %}
+{% load gravatar %}
 {% load i18n %}
 
 {% block search_robots %}
@@ -9,7 +10,7 @@
 {% block header_title %}{% trans "User settings" %}{% endblock %}
 
 {% block content %}
-<form method="post" action="">{% csrf_token %}
+<form method="post" action="" class="user_settings">{% csrf_token %}
 
 <p>{{ form.name.errors }}
 {{ form.name.label_tag }}: {{ form.name }}</p>
@@ -23,6 +24,8 @@
 <p>{{ form.gravatar_email.errors }}
 {{ form.gravatar_email.label_tag }}: {{ form.gravatar_email }}</p>
 
-<input type="submit" value="{% trans 'Save' %}" />
+<p><img src="{% gravatar_url request.user.userprofile.gravatar_email 60 %}" width="30" height="30" class="gravatar"/> <a href="http://gravatar.com" target="_blank">{% trans "Change your user icon at Gravatar.com" %}</a></p>
+
+<p><input type="submit" value="{% trans 'Save' %}" /></p>
 </form>
 {% endblock %}
