@@ -5,6 +5,8 @@ from django.views.generic.edit import UpdateView, FormView
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.views.generic import RedirectView
+from django.db.models import Count
+from django.contrib.auth.models import User
 
 from guardian.shortcuts import get_users_with_perms, assign_perm, remove_perm
 
@@ -13,6 +15,7 @@ from regions import get_main_region
 from regions.views import RegionMixin, RegionAdminRequired
 from pages.models import Page
 
+from .templatetags.user_tags import user_link
 from .models import UserProfile
 from .forms import UserSetForm, UserSettingsForm
 
@@ -128,6 +131,31 @@ class UserSettingsView(UpdateView):
 
     def get_success_url(self):
         return self.request.user.get_absolute_url()
+
+
+
+class AddContributorsMixin(object):
+    """
+    Add the editors of this object to the view's context as
+    `contributors_html` and `contributors_number`.
+    """
+    def get_context_data(self, **kwargs):
+        context = super(AddContributorsMixin, self).get_context_data(**kwargs)
+        obj = self.get_object()
+
+        users_by_edit_count = obj.versions.exclude(history_user__isnull=True).order_by('history_user').values('history_user').annotate(nedits=Count('history_user')).order_by('-nedits')
+        top_3 = users_by_edit_count[:3]
+        num_rest = len(users_by_edit_count[3:])
+
+        top_3_html = ''
+        for u_info in top_3:
+            user = User.objects.get(pk=u_info['history_user'])
+            top_3_html += user_link(user, region=self.get_region(), show_username=False, size=24)
+
+        context['contributors_html'] = top_3_html
+        context['contributors_number'] = num_rest
+    
+        return context
 
 
 def suggest_users(request, region=None):

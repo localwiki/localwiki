@@ -15,6 +15,7 @@ from django.contrib.gis.geos.polygon import Polygon
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 from django.utils.safestring import mark_safe
+from django.utils.html import escape
 
 from versionutils import diff
 from utils.views import (Custom404Mixin, CreateObjectMixin, JSONResponseMixin,
@@ -25,15 +26,15 @@ from pages.models import Page, slugify, name_to_url
 from pages.constants import page_base_path
 from regions.views import RegionMixin
 from regions.models import Region
+from users.views import AddContributorsMixin
 
-from widgets import InfoMap, map_options_for_region
-from models import MapData
-from forms import MapForm
-from osm import get_osm_geom
-from django.utils.html import escape
+from .widgets import InfoMap, map_options_for_region
+from .models import MapData
+from .forms import MapForm
+from .osm import get_osm_geom
 
 
-class MapDetailView(Custom404Mixin, RegionMixin, DetailView):
+class MapDetailView(Custom404Mixin, AddContributorsMixin, RegionMixin, DetailView):
     model = MapData
 
     def handler404(self, request, *args, **kwargs):

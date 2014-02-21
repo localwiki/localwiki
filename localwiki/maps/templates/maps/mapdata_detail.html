@@ -49,7 +49,15 @@
 
 {% block footer %}
   {{ block.super }}
-  <p>
-    <a href="{% url 'maps:edit' slug=mapdata.page.pretty_slug region=mapdata.region.slug %}">{% trans "Edit" %}</a> {% trans "this map" %} ({% blocktrans with tsince=date|timesince %}last modified {{ tsince }} ago{% endblocktrans %})
+  <p class="contributors">
+    {% if contributors_number %}
+        {% blocktrans with ago=date|timesince contributors_html=contributors_html|safe contributors_number=contributors_number|safe request_path=request.path %}
+        Contributed by <span class="contributor_list">{{ contributors_html }}</span> and <a href="{{ request_path }}/_history/">{{ contributors_number }}</a> others.
+        {% endblocktrans %}
+    {% else %}
+        {% blocktrans with ago=date|timesince contributors_html=contributors_html|safe contributors_number=contributors_number|safe request_path=request.path %}
+        Contributed by <span class="contributor_list">{{ contributors_html }}</span>
+        {% endblocktrans %}
+    {% endif %}
   </p>
 {% endblock %}  

@@ -35,8 +35,7 @@ from models import slugify, clean_name
 from utils import is_user_page
 from exceptions import PageExistsError
 from users.decorators import permission_required
-
-# Where possible, we subclass similar generic views here.
+from users.views import AddContributorsMixin
 
 
 class PageListView(RegionMixin, ListView):
@@ -48,7 +47,7 @@ class PageListView(RegionMixin, ListView):
         return qs.defer('content').order_by('name')
 
 
-class PageDetailView(Custom404Mixin, RegionMixin, DetailView):
+class PageDetailView(Custom404Mixin, AddContributorsMixin, RegionMixin, DetailView):
     model = Page
     context_object_name = 'page'
 

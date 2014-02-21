@@ -758,11 +758,15 @@ textarea, input, select {
 
 #footer {
     background: #e1e1e1 url(../img/footer-bg.png) top left repeat;
-    padding: 1.5em;
+    padding: 1.2em;
     clear: both;
     min-height: 30px;
 }
 #footer p { margin: 0; padding: 0; color: #999;}
+#footer a {
+    /* Make the link color lighter in the footer */
+    color: #7279bc;
+}
 
 #powered_by {
     width: 100%;
@@ -1370,6 +1374,18 @@ input:focus {
 }
 .user_settings input[type="submit"] {
     margin-top: 1.5em;
+}
+
+.contributor_list {
+    margin-left: 5px;
+}
+.contributors .user_link {
+    display: inline;
+}
+.contributors .user_link img {
+    float: none;
+    vertical-align: middle;
+    margin-bottom: 6px;
 }
 
 /*
