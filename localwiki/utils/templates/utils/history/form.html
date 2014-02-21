@@ -1,6 +1,11 @@
 {% extends "versionutils/history/form.html" %}
 {% load i18n %}
 {% load url from future %}
+{% load user_tags %}
+
+{% block type_and_by %}
+    <span class="type_and_by">{% with version_info.type_verbose as type %}{% trans type %}{% endwith %} {% trans "by" %} {% user_link version_info.user region=region %}</span>
+{% endblock %}
 
 {% block version_info_extras %}
   {{ version_info.comment|default:'' }}

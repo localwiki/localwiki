@@ -1,6 +1,7 @@
 {% extends "site/base.html" %}
 {% load url from future %}
 {% load i18n %}
+{% load user_tags %}
 
 {% block title %}{% trans "Recent Changes" %} - {{ block.super }}{% endblock %}
 
@@ -67,7 +68,7 @@
                     </span>
                 {% endif %}
 
-                <span class="user">{{ change.version_info.user_link|safe }}</span>
+                <span class="user">{% user_link change.version_info.user region=region ip=change.version_info.user_ip %}</span>
               </li>
             {% endif %}
 
