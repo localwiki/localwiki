@@ -1,9 +1,11 @@
 {% load i18n %}
 {% load url from future %}
+{% load user_tags %}
+
 <div>
 {% if request.user.is_authenticated %}
     <span class="welcome">
-        {% trans "Welcome" %}, <a href="{% if region %}/{{region.slug}}{% endif %}{{ request.user.get_absolute_url }}">{{ request.user }}!</a>
+        {% trans "Welcome" %}, {% user_link request.user region=region %}
     </span>
     <span class="actions">
         <a href="{% url 'user-settings' %}">{% trans "settings" %}</a>

@@ -276,6 +276,7 @@ INSTALLED_APPS = (
     'constance',
     'django_extensions',
     'corsheaders',
+    'django_gravatar',
 
     # Our apps
     'versionutils.versioning',

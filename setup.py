@@ -156,6 +156,7 @@ install_requires = [
     'djangorestframework-gis==0.1.0-custom2',
     'markdown==2.3.1',
     'django-cors-headers==0.12',
+    'django-gravatar2==1.1.3',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
