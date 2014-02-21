@@ -1343,6 +1343,23 @@ input:focus {
     clear: both;
 }
 
+/*
+====================================
+ User info
+====================================
+*/
+
+.user_link {
+    display: inline-block;
+}
+.user_link img {
+    border: 1px solid #bbbbbb;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    float: left;
+    margin: 2px 4px 0 0;
+}
 
 /*
 ====================================
