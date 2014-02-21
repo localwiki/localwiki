@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from regions.fields import UserSetField
+from .models import UserProfile
 
 
 class UserSetForm(forms.Form):
@@ -18,3 +18,13 @@ class UserSetForm(forms.Form):
         super(UserSetForm, self).__init__(*args, **kwargs)
 
         self.fields['users'] = UserSetField(region=region, required=False)
+
+
+class UserSettingsForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        exclude = ('user', '_gravatar_email')
+
+    name = forms.CharField(label=_("Your name"), required=False)
+    email = forms.EmailField(label=_("Email address"))
+    gravatar_email = forms.EmailField(label=_("Gravatar email (private)"))

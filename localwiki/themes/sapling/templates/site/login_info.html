@@ -6,6 +6,7 @@
         {% trans "Welcome" %}, <a href="{% if region %}/{{region.slug}}{% endif %}{{ request.user.get_absolute_url }}">{{ request.user }}!</a>
     </span>
     <span class="actions">
+        <a href="{% url 'user-settings' %}">{% trans "settings" %}</a>
         <a href="{% url 'django.contrib.auth.views.logout' %}?next={{ request.path }}">{% trans "log out" %}</a>
     </span>
 {% else %}

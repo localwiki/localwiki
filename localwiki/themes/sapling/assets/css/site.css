@@ -387,6 +387,27 @@ textarea, input, select {
     float: left;
     margin-right: 0.8em;
 }
+#login_info .actions a {
+    text-align: center;
+    font-size: 90%;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0.3em 0.6em 0.3em 0.6em;
+    line-height: 100%;
+    margin: 0;
+    border: 1px solid #e1e1e1;
+    background-color: #e1e1e1;
+    text-decoration: none;
+    color: inherit;
+}
+#login_info .actions a:hover {
+    background-color: #bfbfbf;
+    border: 1px solid #bfbfbf;
+    color: #111;
+}
 @media screen and (max-width: 700px){
     #login_info {
         display: block;
@@ -624,7 +645,7 @@ textarea, input, select {
     display: table-cell;
     vertical-align: middle;
     padding: 0 0.5em 0 0.5em;
-    height: 1.6em;
+    height: 1.7em;
     line-height: 100%;
     margin: 0;
     border: 1px solid #e1e1e1;

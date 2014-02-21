@@ -54,6 +54,11 @@ class UserProfile(models.Model):
     # this field is required
     user = models.OneToOneField(User)
     subscribed = models.BooleanField(verbose_name=_(settings.SUBSCRIBE_MESSAGE), db_index=True)
+    _gravatar_email = models.EmailField(verbose_name=_("Gravatar Email (Private)"), max_length=254, blank=True, null=True)
+
+    @property
+    def gravatar_email(self):
+        return self._gravatar_email or self.user.email
 
 
 # For registration calls

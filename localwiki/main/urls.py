@@ -27,6 +27,11 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^/*$', MainPageView.as_view()),
+
+    # Users / registration URLs
+    (r'^(?i)Users/', include('users.urls')),
+
+    # Region routing URLs
     (r'^', include(regions.site.urls)),
     
     # API URLs
@@ -41,7 +46,6 @@ urlpatterns = patterns('',
     (r'^(?P<region>[^/]+?)/tags$', NamedRedirectView.as_view(name='tags:list')),
     (r'^(?P<region>[^/]+?)/tags/', include('tags.urls', 'tags', 'tags')),
     (r'^_redirect/', include(redirects.site.urls)),
-    (r'^(?i)Users/', include('users.urls')),
     (r'^(?P<region>[^/]+?)/search/', include('search.urls')),
     (r'^', include('recentchanges.urls')),
 

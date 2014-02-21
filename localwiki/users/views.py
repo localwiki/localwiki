@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.views.generic.edit import FormView
+from django.core.exceptions import PermissionDenied
+from django.views.generic.edit import UpdateView, FormView
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from django.views.generic import RedirectView
@@ -12,7 +13,8 @@ from regions import get_main_region
 from regions.views import RegionMixin, RegionAdminRequired
 from pages.models import Page
 
-from forms import UserSetForm
+from .models import UserProfile
+from .forms import UserSetForm, UserSettingsForm
 
 
 class UserPageView(RedirectView):
@@ -90,6 +92,42 @@ class SetPermissionsView(RegionAdminRequired, RegionMixin, FormView):
 
         messages.add_message(self.request, messages.SUCCESS, _("Permissions updated!"))
         return response
+
+
+class UserSettingsView(UpdateView):
+    template_name = 'users/settings.html'
+    model = UserProfile
+    form_class = UserSettingsForm
+
+    def get_object(self):
+        if not self.request.user.is_authenticated():
+            raise PermissionDenied(_("You must be logged in to change user settings."))
+        return UserProfile.objects.get(user=self.request.user)
+
+    def form_valid(self, form):
+        response = super(UserSettingsView, self).form_valid(form)
+
+        userprofile = self.get_object()
+        userprofile.user.email = form.cleaned_data['email']
+        userprofile.user.name = form.cleaned_data['name']
+        if form.cleaned_data['gravatar_email'] != userprofile.user.email:
+            userprofile._gravatar_email = form.cleaned_data['gravatar_email']
+        userprofile.user.save()
+        userprofile.save()
+
+        messages.add_message(self.request, messages.SUCCESS, _("User settings updated!"))
+        return response
+
+    def get_initial(self):
+        initial = super(UserSettingsView, self).get_initial()
+
+        initial['name'] = self.object.user.name
+        initial['email'] = self.object.user.email
+        initial['gravatar_email'] = self.object.gravatar_email
+        return initial
+
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()
 
 
 def suggest_users(request, region=None):
