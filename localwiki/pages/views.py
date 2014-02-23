@@ -26,16 +26,14 @@ from localwiki.utils.views import (Custom404Mixin, CreateObjectMixin,
     PermissionRequiredMixin)
 from regions.models import Region
 from regions.views import RegionMixin
-from models import Page, PageFile, url_to_name
-from forms import PageForm, PageFileForm
 from maps.widgets import InfoMap
-from users.views import SetPermissionsView
-
-from models import slugify, clean_name
-from utils import is_user_page
-from exceptions import PageExistsError
+from users.views import SetPermissionsView, AddContributorsMixin
 from users.decorators import permission_required
-from users.views import AddContributorsMixin
+
+from .models import slugify, clean_name, Page, PageFile, url_to_name
+from .forms import PageForm, PageFileForm
+from .utils import is_user_page
+from .exceptions import PageExistsError
 
 
 class PageListView(RegionMixin, ListView):

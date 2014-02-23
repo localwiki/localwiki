@@ -395,7 +395,7 @@ textarea, input, select {
     -webkit-border-radius: 3px;
     display: inline-block;
     vertical-align: middle;
-    padding: 0.3em 0.6em 0.3em 0.6em;
+    padding: 0.32em 0.6em 0.32em 0.6em;
     line-height: 100%;
     margin: 0;
     border: 1px solid #e1e1e1;
@@ -1387,6 +1387,44 @@ input:focus {
     vertical-align: middle;
     margin-bottom: 6px;
 }
+
+#user_page_info {
+    display: table;
+    float: right;
+    margin-right: 3em;
+    margin-bottom: 3em;
+    width: 250px;
+    /*background-color: #F2F2F2; */
+}
+#user_page_info .profile_picture img {
+}
+#user_page_info .profile_table {
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+    padding: 0.7em 0.5em 0.7em 0.5em;
+    margin-top: 0.8em;
+    margin-bottom: 0.5em;
+}
+
+#user_page_info .stats_list {
+    padding: 0.2em 0.5em 0.7em 0.5em;
+    border-bottom: 1px solid #dddddd;
+}
+#user_page_info .stat_number {
+    font-size: 140%;
+    font-weight: bold;
+    display: inline-block;
+    width: 70px;
+    margin-right: 5px;
+    text-align: center;
+}
+#user_page_info .stat_number .type {
+    font-size: 60%;
+    font-weight: normal;
+    color: #858585;
+    line-height: 1.2;
+}
+
 
 /*
 ====================================

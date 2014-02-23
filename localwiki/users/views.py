@@ -1,10 +1,13 @@
+from urlparse import urlparse
+
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.views.generic.edit import UpdateView, FormView
+from django.views.generic import RedirectView, TemplateView
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from django.views.generic import RedirectView
 from django.db.models import Count
 from django.contrib.auth.models import User
 
@@ -13,34 +16,114 @@ from guardian.shortcuts import get_users_with_perms, assign_perm, remove_perm
 from regions.models import Region
 from regions import get_main_region
 from regions.views import RegionMixin, RegionAdminRequired
-from pages.models import Page
 
 from .templatetags.user_tags import user_link
 from .models import UserProfile
 from .forms import UserSetForm, UserSettingsForm
 
 
-class UserPageView(RedirectView):
-    permanent = False
-    query_string = True
+def humanize_int(n):
+    mag = 0
+    while n>= 1000:
+        mag += 1
+        n /= 1000.0
+    if n < 100:
+        return str(n)
+    return '%.1f%s' % (n, ['', 'k', 'M', 'B', 'T', 'P'][mag])
 
-    def get_redirect_url(self, **kwargs):
+
+def pretty_url(url):
+    if urlparse(url).path == '/':
+        # Strip trailing slash
+        url = url[:-1]
+    if url.startswith('http://'):
+        url = url[7:]
+    elif url.startswith('https://'):
+        url = url[8:]
+    return url
+
+
+class UserPageView(TemplateView):
+    template_name = 'users/user_page.html'
+
+    def get_context_data(self, **kwargs):
+        from pages.models import Page, PageFile
+        from maps.models import MapData
+        from tags.models import PageTagSet
+
+        context = super(UserPageView, self).get_context_data(**kwargs)
+
         username = self.kwargs.get('username')
         user = User.objects.get(username=username)
-        pagename = "Users/%s" % username
+        
+        #########################
+        # Calculate user stats
+        #########################
+        page_edits = Page.versions.filter(version_info__user=user).count()
+        map_edits = MapData.versions.filter(version_info__user=user).count()
+        tag_edits = PageTagSet.versions.filter(version_info__user=user).count()
+        file_edits = PageFile.versions.filter(version_info__user=user).count()
+
+        # Total contributions across data types
+        num_contributions = page_edits + map_edits + tag_edits + file_edits
+
+        # Total 'pages touched'
+        num_pages_edited = Page.versions.filter(version_info__user=user).values('slug').distinct().count()
+
+        # Total 'maps touched'
+        num_maps_edited = MapData.versions.filter(version_info__user=user).values('page__slug').distinct().count()
+
+        context['user_for_page'] = user
+        context['pretty_personal_url'] = pretty_url(user.userprofile.personal_url) if user.userprofile.personal_url else None
+        context['page'] = self.get_user_page(user)
+        context['num_contributions'] = humanize_int(num_contributions)
+        context['num_pages_edited'] = humanize_int(num_pages_edited)
+        context['num_maps_edited'] = humanize_int(num_maps_edited)
+
+        return context
+
+    def get_user_page(self, user):
+        """
+        Hacky heuristics for picking the underlying Page that holds the userpage content.
+
+        TODO: Make this all belong the a single administrative region, 'users', once we 
+              have a notifications framework in place.
+        """
+        from pages.models import Page
+
+        pagename = "Users/%s" % user.username
         user_pages = Page.objects.filter(name=pagename)
         if user_pages:
-            # Has a userpage in a region
-            user_page = user_pages[0]
+            # Just pick the first one
+            return user_pages[0]
         else:
             # Check to see if they've edited a region recently
             edited_pages = Page.versions.filter(version_info__user=user)
+            referer = self.request.META.get('HTTP_REFERER')
             if edited_pages:
                 region = edited_pages[0].region
-                user_page = Page(name=pagename, region=region)
-            else:
-                user_page = Page(name=pagename, region=get_main_region())
-        return user_page.get_absolute_url()
+                return Page(name=pagename, region=region)
+            # Let's try and guess by the previous URL. Ugh!
+            if referer:
+                urlparts = urlparse(referer)
+                # Is this host us?
+                for host in settings.ALLOWED_HOSTS:
+                    if urlparts.netloc.endswith(host):
+                        pathparts = parts.path.split('/')
+                        # Is the path in a region?
+                        if len(pathparts) > 1 and Region.objects.filter(slug=pathparts[1]).exists():
+                            return Page(name=pagename, region=Region.objects.get(slug=pathparts[1]))
+
+            # Put it in the main region for now :/
+            return Page(name=pagename, region=get_main_region())
+
+
+class GlobalUserpageRedirectView(RedirectView):
+    permanent = True
+
+    def get_redirect_url(self, **kwargs):
+        username = kwargs.get('username')
+        return '/Users/%s' % username
 
 
 class SetPermissionsView(RegionAdminRequired, RegionMixin, FormView):

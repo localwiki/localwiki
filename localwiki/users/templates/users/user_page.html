@@ -1,0 +1,71 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+{% load pages_tags %}
+{% load tags_tags %}
+{% load gravatar %}
+
+{% block title %}{% if not page.is_front_page %}{{ page.name }} - {% endif %}{{ block.super }}{% endblock %}
+{% block header_title %}<a href="#">{{ user_for_page.name }}</a>{% endblock %}
+
+{% block header_subtitle %}
+    <div id="object_subtitle">
+    {{ user_for_page.username }}
+    </div>
+{% endblock %}
+
+{% block content_wrapper %}
+<div id="content_wrapper">
+  <div id="content">
+  {% block content %}
+    {% if show_revision %}
+      <em class="revision_details">
+          {% blocktrans with version_number=page.version_info.version_number page=old.version_info.date user_link=page.version_info.user_link|safe %}Revision {{ version_number }}
+          ({{ date }} by {{ user_link }}){% endblocktrans %}
+      </em>
+    {% endif %}
+    
+    <div id="page">
+      <div id="user_page_info" {% if not page.content %}style="float: left;"{% endif %}>
+        <div class="profile_picture"><img src="{% gravatar_url user_for_page.userprofile.gravatar_email 500 %}" class="gravatar" width="250" height="250" /></div>
+        <div class="profile_table">
+            {% if user_for_page.userprofile.show_email %}
+            <div><a href="mailto:{{ user_for_page.email }}">{{ user_for_page.email }}</a></div>
+            {% endif %}
+            {% if user_for_page.userprofile.personal_url %}
+            <div><a href="{{ user_for_page.userprofile.personal_url }}">{{ pretty_personal_url }}</a></div>
+            {% endif %}
+            <div>{% blocktrans with date_joined=user_for_page.date_joined|date:"M j, Y" %}Joined on {{ date_joined }}{% endblocktrans %}</div>
+        </div>
+        <div class="stats_list">
+            <div class="stat_number">{{ num_contributions }} <div class="type">total contributions</div></div>
+            <div class="stat_number">{{ num_pages_edited }} <div class="type">pages edited</div></div>
+            <div class="stat_number">{{ num_maps_edited }} <div class="type">maps edited</div></div>
+        </div>
+      </div>
+
+      {% render_plugins page.content %}
+      <div style="clear:both;"></div>
+      
+    <div style="clear:both;"></div>
+    </div>
+  {% endblock %}
+  </div>
+  <div id="object_tags">
+  {% if not page.version_info %}
+    <div class="tags_show">
+      {% page_tags page %}
+      <a class="tiny button edit_tags" href="{% url 'pages:tags' slug=page.pretty_slug region=page.region.slug %}" onclick="$(this).closest('div').hide().next().show().find('#tagedit-input').focus(); return false;">
+        <span>{% if page.pagetagset.tags.count %}{% trans "Edit tags" %}{% else %}{% trans "Add tags" %}{% endif %}</span>
+      </a>
+    </div>
+    <div class="tags edit" style="display: none">
+      {% page_tags_form_media %}
+      {% page_tags_form page %}
+      <a class="edit_tags_cancel" href="{% url 'pages:show' slug=page.pretty_slug region=page.region.slug %}">{% trans "Cancel" %}</a>
+    </div>
+  {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -11,6 +11,7 @@ import redirects
 import dashboard
 import regions
 from regions.views import MainPageView
+from users.views import GlobalUserpageRedirectView
 from utils.views import NamedRedirectView
 from users.admin import SubscribedList
 
@@ -48,6 +49,8 @@ urlpatterns = patterns('',
     (r'^_redirect/', include(redirects.site.urls)),
     (r'^(?P<region>[^/]+?)/search/', include('search.urls')),
     (r'^', include('recentchanges.urls')),
+    # Region userpage -> global userpage redirect
+    (r'^(?P<region>[^/]+?)/Users/(?P<username>[^/]+?)$', GlobalUserpageRedirectView.as_view()),
 
     # Historical URL for dashboard:
     (r'^(?P<region>[^/]+?)/tools/dashboard/?$', NamedRedirectView.as_view(name='dashboard:main')),

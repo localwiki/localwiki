@@ -55,6 +55,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
     subscribed = models.BooleanField(verbose_name=_(settings.SUBSCRIBE_MESSAGE), db_index=True)
     _gravatar_email = models.EmailField(verbose_name=_("Gravatar Email (Private)"), max_length=254, blank=True, null=True)
+    show_email = models.BooleanField(verbose_name=_("Show email publicly (Helps with communication)"), default=False)
+    personal_url = models.URLField(verbose_name=_("Personal website"), blank=True, null=True)
 
     @property
     def gravatar_email(self):
