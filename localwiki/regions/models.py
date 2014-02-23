@@ -40,6 +40,8 @@ class Region(models.Model):
         """
         Is the provided `user` an admin of the region?
         """
+        if not hasattr(self, 'regionsettings'):
+            return False
         return self.regionsettings.admins.filter(id=user.id)
 
     def get_absolute_url(self):
