@@ -24,11 +24,11 @@ from .forms import UserSetForm, UserSettingsForm
 
 def humanize_int(n):
     mag = 0
+    if n < 1000:
+        return str(n)
     while n>= 1000:
         mag += 1
         n /= 1000.0
-    if n < 100:
-        return str(n)
     return '%.1f%s' % (n, ['', 'k', 'M', 'B', 'T', 'P'][mag])
 
 
