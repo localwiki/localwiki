@@ -48,7 +48,10 @@
         {% endif %}
       </div>
 
-      {% render_plugins page.content %}
+      {% with region=page.region %}
+        {% render_plugins page.content %}
+      {% endwith %}
+
       <div style="clear:both;"></div>
       
     <div style="clear:both;"></div>
