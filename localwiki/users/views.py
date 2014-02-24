@@ -76,6 +76,7 @@ class UserPageView(TemplateView):
         context['user_for_page'] = user
         context['pretty_personal_url'] = pretty_url(user.userprofile.personal_url) if user.userprofile.personal_url else None
         context['page'] = self.get_user_page(user)
+        context['region'] = self.get_user_page(user).region
         context['num_contributions'] = humanize_int(num_contributions)
         context['num_pages_edited'] = humanize_int(num_pages_edited)
         context['num_maps_edited'] = humanize_int(num_maps_edited)
