@@ -254,6 +254,10 @@ textarea, input, select {
     font-size: 80%;
     color: #747474;
 }
+#object_subtitle.prominent {
+    margin-bottom: 0;
+    font-size: 110%;
+}
 @media screen and (max-width: 700px) {
     #object_title {
       font-size: 150%;
@@ -1394,7 +1398,7 @@ input:focus {
     margin-right: 3em;
     margin-bottom: 3em;
     width: 250px;
-    /*background-color: #F2F2F2; */
+
 }
 #user_page_info .profile_picture img {
 }
@@ -1423,6 +1427,9 @@ input:focus {
     font-weight: normal;
     color: #858585;
     line-height: 1.2;
+}
+#user_page_info .edit_settings {
+    margin-top: 1em;
 }
 
 
