@@ -54,7 +54,7 @@ class UserPageView(TemplateView):
         context = super(UserPageView, self).get_context_data(**kwargs)
 
         username = self.kwargs.get('username')
-        user = User.objects.get(username=username)
+        user = User.objects.get(username__iexact=username)
         
         #########################
         # Calculate user stats
