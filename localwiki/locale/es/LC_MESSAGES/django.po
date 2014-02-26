@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-08 09:19+0000\n"
-"PO-Revision-Date: 2013-12-08 18:14+0000\n"
-"Last-Translator: julianrod <julianrod@gmail.com>\n"
+"POT-Creation-Date: 2014-02-25 23:18-0600\n"
+"PO-Revision-Date: 2014-02-26 05:21+0000\n"
+"Last-Translator: philipn <philip@localwiki.org>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/localwiki/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -156,6 +156,7 @@ msgstr "Guardar portada"
 
 #: frontpage/templates/frontpage/base.html:62
 #: pages/templates/pages/page_detail.html:41
+#: users/templates/users/user_page.html:24
 #, python-format
 msgid ""
 "Revision %(version_number)s\n"
@@ -163,6 +164,7 @@ msgid ""
 msgstr "Revisión %(version_number)s\n          (%(date)s por %(user_link)s)"
 
 #: frontpage/templates/frontpage/base.html:71
+#: maps/templates/maps/nearby_pages.html:45
 #: pages/templates/pages/page_detail.html:49
 #: tags/templates/tags/tagged_list_snippet.html:8
 msgid "View"
@@ -221,12 +223,20 @@ msgid "English"
 msgstr "Inglés"
 
 #: main/settings/defaults.py:68
+msgid "Spanish"
+msgstr "Español"
+
+#: main/settings/defaults.py:69
 msgid "Japanese"
 msgstr "Japonés"
 
-#: main/settings/defaults.py:69
+#: main/settings/defaults.py:70
 msgid "German"
 msgstr "Alemán"
+
+#: main/settings/defaults.py:71
+msgid "Ukrainian"
+msgstr ""
 
 #: maps/feeds.py:21 maps/feeds.py:40
 #, python-format
@@ -239,6 +249,11 @@ msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
 "instances."
 msgstr "El atributo \"%(fieldname)s\" sólo puede ser accedido desde instancias %(ownername)s."
+
+#: maps/fields.py:217
+#, python-format
+msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
+msgstr ""
 
 #: maps/validators.py:14
 #, python-format
@@ -263,8 +278,7 @@ msgstr "Cambios recientes en este Mapa"
 msgid "Map"
 msgstr "Mapa"
 
-#: maps/templates/maps/base.html:34 maps/templates/maps/mapdata_detail.html:53
-#: maps/templates/maps/mapdata_form.html:87
+#: maps/templates/maps/base.html:34 maps/templates/maps/mapdata_form.html:87
 #: maps/templates/maps/mapdata_versions.html:25
 #: pages/templates/pages/base.html:29
 #: pages/templates/pages/page_detail.html:49
@@ -326,19 +340,29 @@ msgstr "Revisión"
 #: tags/templates/tags/pagetagset_diff.html:41
 #: tags/templates/tags/pagetagset_diff.html:46
 #: tags/templates/tags/pagetagset_version_detail.html:21
-#: versionutils/templates/versionutils/history/form.html:34
+#: utils/templates/utils/history/form.html:7
+#: versionutils/templates/versionutils/history/form.html:35
 #: versionutils/templates/versionutils/history/form_page.html:19
 msgid "by"
 msgstr "por"
 
-#: maps/templates/maps/mapdata_detail.html:53
-msgid "this map"
-msgstr "este mapa"
-
-#: maps/templates/maps/mapdata_detail.html:53
+#: maps/templates/maps/mapdata_detail.html:54
+#: pages/templates/pages/page_detail.html:83
 #, python-format
-msgid "last modified %(tsince)s ago"
-msgstr "última modificación hace %(tsince)s"
+msgid ""
+"\n"
+"        Contributed by <span class=\"contributor_list\">%(contributors_html)s</span> and <a href=\"%(request_path)s/_history/\">%(contributors_number)s</a> others.\n"
+"        "
+msgstr ""
+
+#: maps/templates/maps/mapdata_detail.html:58
+#: pages/templates/pages/page_detail.html:87
+#, python-format
+msgid ""
+"\n"
+"        Contributed by <span class=\"contributor_list\">%(contributors_html)s</span>\n"
+"        "
+msgstr ""
 
 #: maps/templates/maps/mapdata_diff.html:52
 msgid "Differences for map on"
@@ -377,6 +401,7 @@ msgstr "Guardar cambios"
 #: maps/templates/maps/mapdata_form.html:70
 #: pages/templates/pages/page_detail.html:72
 #: pages/templates/pages/page_form.html:76
+#: users/templates/users/user_page.html:72
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -399,6 +424,15 @@ msgstr "Crear este mapa"
 #: maps/templates/maps/mapdata_versions.html:16
 msgid "Previous versions of map for"
 msgstr "Versiones anteriores del mapa de"
+
+#: maps/templates/maps/nearby_pages.html:27
+#: maps/templates/maps/nearby_pages.html:28
+msgid "Nearby pages"
+msgstr ""
+
+#: maps/templates/maps/nearby_pages.html:40
+msgid "No nearby pages. Make some!"
+msgstr ""
 
 #: pages/feeds.py:43 pages/feeds.py:87
 #, python-format
@@ -424,25 +458,33 @@ msgstr "Ya existe una página con este nombre."
 msgid "The new file should be of the same type"
 msgstr "El nuevo archivo debería ser del mismo tipo"
 
-#: pages/models.py:51
+#: pages/models.py:28
+#, python-format
+msgid ""
+"Provided slug is invalid. Slugs must be lowercase, contain no trailing or "
+"leading whitespace, and contain only alphanumber characters along with "
+"%(KEEP_CHARACTERS)s"
+msgstr ""
+
+#: pages/models.py:59
 msgid "Page name is invalid."
 msgstr "El nombre de la página es inválido."
 
-#: pages/models.py:124 pages/models.py:136
+#: pages/models.py:132 pages/models.py:144
 #, python-format
 msgid "Renamed from \"%s\""
 msgstr "Renombrado desde \"%s\""
 
-#: pages/models.py:128
+#: pages/models.py:136
 #, python-format
 msgid "The page '%s' already exists!"
 msgstr "¡La página '%s' ya existe!"
 
-#: pages/models.py:164 pages/models.py:177 pages/models.py:196
+#: pages/models.py:172 pages/models.py:185 pages/models.py:204
 msgid "Parent page renamed"
 msgstr "Página padre renombrada"
 
-#: pages/models.py:210
+#: pages/models.py:220
 msgid "file"
 msgstr "archivo"
 
@@ -469,11 +511,11 @@ msgstr "Redirección creada"
 msgid "Page created"
 msgstr "Página creada"
 
-#: pages/views.py:132
+#: pages/views.py:129
 msgid "Thank you for your changes. Your attention to detail is appreciated."
 msgstr "Gracias por tus cambios. Apreciamos tu atención a los detalles."
 
-#: pages/views.py:135
+#: pages/views.py:132
 #, python-format
 msgid ""
 "Changes saved! To use your name when editing, please <a "
@@ -482,36 +524,36 @@ msgid ""
 "account</strong></a>."
 msgstr "¡Cambios guardados! Para usar tu nombre cuando estés editando por favor <a href=\"%(login_url)s?next=%(current_path)s\"><strong>ingresa</strong></a> o <a href=\"%(register_url)s?next=%(current_path)s\"><strong>regístrate</strong></a>."
 
-#: pages/views.py:147
+#: pages/views.py:144
 #, python-format
 msgid ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
 "class=\"text\">Create a map</span></a> for this page?</p>"
 msgstr "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span class=\"text\">¿Quieres crear un mapa</span></a> para esta página?</p>"
 
-#: pages/views.py:160
+#: pages/views.py:157
 #, python-format
 msgid "<p>What do you know about %s?</p>"
 msgstr "<p>¿Qué sabes acerca de %s?</p>"
 
-#: pages/views.py:353
+#: pages/views.py:350
 msgid "You must provide a page name when creating a page."
 msgstr "Debes proveer un nombre de página al crear una."
 
-#: pages/views.py:426
+#: pages/views.py:423
 msgid "A file with this name already exists"
 msgstr "Ya existe un archivo con este nombre "
 
 #. Translators: This is for the page rename form.
-#: pages/views.py:432
+#: pages/views.py:429
 msgid "New page name"
 msgstr "Nuevo nombre de página"
 
-#: pages/views.py:433 versionutils/versioning/forms.py:17
+#: pages/views.py:430 versionutils/versioning/forms.py:17
 msgid "Comment"
 msgstr "Comentario"
 
-#: pages/views.py:468
+#: pages/views.py:465
 #, python-format
 msgid "Page renamed to \"%s\""
 msgstr "Página renombrada a \"%s\""
@@ -561,17 +603,14 @@ msgid "Redirected from"
 msgstr "Redirigido desde"
 
 #: pages/templates/pages/page_detail.html:66
+#: users/templates/users/user_page.html:66
 msgid "Edit tags"
 msgstr "Editar etiquetas"
 
 #: pages/templates/pages/page_detail.html:66
+#: users/templates/users/user_page.html:66
 msgid "Add tags"
 msgstr "Agregar etiquetas"
-
-#: pages/templates/pages/page_detail.html:82
-#, python-format
-msgid "This page was last modified %(ago)s ago"
-msgstr "Esta página fue modificada por última vez hace %(ago)s"
 
 #: pages/templates/pages/page_diff.html:22
 #, python-format
@@ -627,7 +666,7 @@ msgstr "Por favor describe este cambio:"
 
 #: pages/templates/pages/page_list.html:7
 #: pages/templates/pages/page_list.html:9
-#: themes/sapling/templates/site/nav.html:9
+#: themes/sapling/templates/site/nav.html:10
 msgid "All Pages"
 msgstr "Todas las páginas"
 
@@ -681,6 +720,7 @@ msgstr "Solamente estos usuarios:"
 #: regions/templates/regions/banned_update.html:24
 #: regions/templates/regions/settings.html:78
 #: tags/templates/tags/pagetagset_form_snippet.html:9
+#: users/templates/users/settings.html:35
 msgid "Save"
 msgstr "Guardar"
 
@@ -818,49 +858,49 @@ msgstr "%(title)s fue %(change_type)s por %(user)s%(comment)s."
 msgid "Changes for %(title)s on %(site_name)s"
 msgstr "Cambios para %(title)s en %(site_name)s"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:5
-#: recentchanges/templates/recentchanges/recentchanges.html:7
-#: recentchanges/templates/recentchanges/recentchanges.html:9
-#: themes/sapling/templates/site/nav.html:8
+#: recentchanges/templates/recentchanges/recentchanges.html:6
+#: recentchanges/templates/recentchanges/recentchanges.html:8
+#: recentchanges/templates/recentchanges/recentchanges.html:10
+#: themes/sapling/templates/site/nav.html:9
 msgid "Recent Changes"
 msgstr "Cambios recientes"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:15
+#: recentchanges/templates/recentchanges/recentchanges.html:16
 msgid "Show all changes in the last"
 msgstr "Mostrar todos los cambios de los últimos"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:22
+#: recentchanges/templates/recentchanges/recentchanges.html:23
 msgid "days."
 msgstr "días."
 
-#: recentchanges/templates/recentchanges/recentchanges.html:40
+#: recentchanges/templates/recentchanges/recentchanges.html:41
 #, python-format
 msgid "last modified %(version_date)s ago"
 msgstr "modificado por última vez hace %(version_date)s"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:48
+#: recentchanges/templates/recentchanges/recentchanges.html:49
 msgid "new"
 msgstr "nuevo"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:50
+#: recentchanges/templates/recentchanges/recentchanges.html:51
 msgid "deleted"
 msgstr "eliminado"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:52
+#: recentchanges/templates/recentchanges/recentchanges.html:53
 msgid "changes"
 msgstr "cambios"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:56
+#: recentchanges/templates/recentchanges/recentchanges.html:57
 #, python-format
 msgid "Reverted to version from %(version_date_timesince)s ago"
 msgstr "Revertido a la versión de hace %(version_date_timesince)s "
 
-#: recentchanges/templates/recentchanges/recentchanges.html:62
+#: recentchanges/templates/recentchanges/recentchanges.html:63
 #, python-format
 msgid "Redirected to <a href=\"%(url)s\">%(destination)s</a>"
 msgstr "Redirigido hacia <a href=\"%(url)s\">%(destination)s</a>"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:88
+#: recentchanges/templates/recentchanges/recentchanges.html:89
 #, python-format
 msgid ""
 "For statistics about pages, maps, and more, check out the <a "
@@ -876,7 +916,7 @@ msgstr "Redirección %(objsrc)s --> %(objdest)s"
 msgid "Destination"
 msgstr "Destino"
 
-#: redirects/models.py:34
+#: redirects/models.py:35
 msgid "You cannot redirect a page to itself"
 msgstr "No se puede redirigir una página a sí misma"
 
@@ -947,7 +987,7 @@ msgid ""
 "it short and memorable!"
 msgstr "Un nombre muy corto para esta región que aparecerá en las URLs, ej. 'ba'. ¡Manténlo corto y recordable!"
 
-#: regions/models.py:35
+#: regions/models.py:36
 msgid "Region already has pages in it"
 msgstr "La región ya tiene páginas dentro"
 
@@ -1606,6 +1646,16 @@ msgstr "Restablecer mi contraseña"
 msgid "Create account"
 msgstr "Crear cuenta"
 
+#: themes/sapling/templates/site/base.html:80
+msgid ""
+"This is an <strong>insanely</strong> early preview of the <a "
+"href=\"http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/\" "
+"target=\"_blank\">new version of LocalWiki</a>.  We're making everything "
+"open as we build, but there's not much to see here yet.<br/>Feel free to "
+"share with your friends, but not too widely &mdash; we are a long way away "
+"from launching!"
+msgstr "Esta es una <strong>muy</strong> temprana previsualización de la <a href=\"http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/\" target=\"_blank\">nueva versión de LocalWiki</a>.  Estamos haciendo que todo sea abierto a medida que lo construimos, pero no hay mucho para ver aquí todavía.<br/>Siéntete libre de compartir con tu amigos, pero no demasiado &mdash; ¡Estamos bastante lejos del lanzamiento!"
+
 #: themes/sapling/templates/site/base.html:154
 msgid ""
 "\n"
@@ -1613,23 +1663,27 @@ msgid ""
 "      "
 msgstr "\n      LocalWiki es un esfuerzo de voluntarios para recolectar, compartir y abrir el conocimiento local del mundo.  Somos una organización sin fines de lucro 501(c)3. <a href=\"http://localwiki.org/about/\" target=\"_blank\">Aprende más</a>.</p>\n      "
 
-#: themes/sapling/templates/site/login_info.html:6
+#: themes/sapling/templates/site/login_info.html:8
 msgid "Welcome"
-msgstr "Bienvenido"
+msgstr "¡Bienvenido"
 
-#: themes/sapling/templates/site/login_info.html:9
+#: themes/sapling/templates/site/login_info.html:11
+msgid "settings"
+msgstr ""
+
+#: themes/sapling/templates/site/login_info.html:12
 msgid "log out"
 msgstr "salir"
 
-#: themes/sapling/templates/site/login_info.html:13
+#: themes/sapling/templates/site/login_info.html:16
 msgid "log in"
 msgstr "ingresar"
 
-#: themes/sapling/templates/site/login_info.html:13
+#: themes/sapling/templates/site/login_info.html:16
 msgid "or"
 msgstr "o"
 
-#: themes/sapling/templates/site/login_info.html:13
+#: themes/sapling/templates/site/login_info.html:16
 msgid "create account"
 msgstr "crear cuenta"
 
@@ -1641,23 +1695,31 @@ msgstr "Portada"
 msgid "People"
 msgstr "Personas"
 
-#: themes/sapling/templates/site/nav.html:11
+#: themes/sapling/templates/site/nav.html:8
+msgid "Nearby"
+msgstr ""
+
+#: themes/sapling/templates/site/nav.html:12
 msgid "Settings"
 msgstr "Configuración"
 
-#: themes/sapling/templates/site/nav.html:14
+#: themes/sapling/templates/site/nav.html:15
 msgid "Guide"
 msgstr "Guía"
 
-#: themes/sapling/templates/site/nav.html:15
+#: themes/sapling/templates/site/nav.html:16
 msgid "Help"
 msgstr "Ayuda"
 
-#: themes/sapling/templates/site/nav.html:16
+#: themes/sapling/templates/site/nav.html:17
 msgid "Communities"
 msgstr "Comunidades"
 
-#: themes/sapling/templates/site/nav.html:17
+#: themes/sapling/templates/site/nav.html:18
+msgid "API"
+msgstr ""
+
+#: themes/sapling/templates/site/nav.html:19
 msgid "About"
 msgstr "Acerca de"
 
@@ -1689,9 +1751,41 @@ msgstr "hash"
 msgid "Only these users"
 msgstr "Solamente estos usuarios"
 
-#: users/views.py:91
+#: users/forms.py:28 users/registration_backend/forms.py:44
+msgid "Your name"
+msgstr "Su nombre"
+
+#: users/forms.py:29
+msgid "Email address"
+msgstr ""
+
+#: users/forms.py:30
+msgid "Gravatar email (private)"
+msgstr ""
+
+#: users/models.py:57
+msgid "Gravatar Email (Private)"
+msgstr ""
+
+#: users/models.py:58
+msgid "Show email publicly (Helps with communication)"
+msgstr ""
+
+#: users/models.py:59
+msgid "Personal website"
+msgstr ""
+
+#: users/views.py:179
 msgid "Permissions updated!"
 msgstr "¡Permisos actualizados!"
+
+#: users/views.py:190
+msgid "You must be logged in to change user settings."
+msgstr ""
+
+#: users/views.py:204
+msgid "User settings updated!"
+msgstr ""
 
 #: users/registration_backend/__init__.py:61
 msgid "You are signed up and logged in!"
@@ -1718,10 +1812,6 @@ msgstr "Correo electrónico"
 msgid "Password"
 msgstr "Contraseña"
 
-#: users/registration_backend/forms.py:44
-msgid "Your name"
-msgstr "Su nombre"
-
 #: users/registration_backend/forms.py:49
 msgid "You must agree to the terms to register"
 msgstr "Debes aceptar los términos para registrarte"
@@ -1736,6 +1826,14 @@ msgid ""
 "address."
 msgstr "Esta dirección de correo electrónico ya está siendo usada. Por favor ingresa una dirección diferente."
 
+#: users/templates/users/settings.html:10
+msgid "User settings"
+msgstr ""
+
+#: users/templates/users/settings.html:33
+msgid "Change your user icon at Gravatar.com"
+msgstr ""
+
 #: users/templates/users/subscribed_list.html:4
 msgid "List of subscribers"
 msgstr "Lista de suscriptores"
@@ -1744,13 +1842,22 @@ msgstr "Lista de suscriptores"
 msgid "Subscriber emails:"
 msgstr "Direcciones de correo electrónico de suscriptores:"
 
+#: users/templates/users/user_page.html:39
+#, python-format
+msgid "Joined on %(date_joined)s"
+msgstr ""
+
+#: users/templatetags/user_tags.py:25
+msgid "Unknown"
+msgstr ""
+
 #: utils/views.py:84
 msgid ""
 "Anonymous users may not perform this action. Please <a "
 "href=\"/Users/login/\">log in</a>."
 msgstr "Los usuarios anónimos no pueden realizar esta acción. Por favor <a href=\"/Users/login/\">ingresa</a>."
 
-#: utils/templates/utils/history/form.html:13
+#: utils/templates/utils/history/form.html:18
 msgid "revert"
 msgstr "revertir"
 
@@ -1800,7 +1907,7 @@ msgstr "Alguien más hizo cambios antes de ti pero sus cambios fueron combinados
 msgid "Compare"
 msgstr "Comparar"
 
-#: versionutils/templates/versionutils/history/form.html:45
+#: versionutils/templates/versionutils/history/form.html:47
 msgid "There is no revision history."
 msgstr "No hay historial de revisión."
 

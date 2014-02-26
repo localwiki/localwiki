@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# nyampire <nyampire@gmail.com>, 2013
+# nyampire <nyampire@gmail.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-08 09:19+0000\n"
-"PO-Revision-Date: 2013-12-08 09:27+0000\n"
+"POT-Creation-Date: 2014-02-25 23:18-0600\n"
+"PO-Revision-Date: 2014-02-26 05:21+0000\n"
 "Last-Translator: philipn <philip@localwiki.org>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/localwiki/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -155,6 +155,7 @@ msgstr "カバー写真の保存"
 
 #: frontpage/templates/frontpage/base.html:62
 #: pages/templates/pages/page_detail.html:41
+#: users/templates/users/user_page.html:24
 #, python-format
 msgid ""
 "Revision %(version_number)s\n"
@@ -162,6 +163,7 @@ msgid ""
 msgstr "リビジョン %(version_number)s\n          (%(date)s 作成者 %(user_link)s)"
 
 #: frontpage/templates/frontpage/base.html:71
+#: maps/templates/maps/nearby_pages.html:45
 #: pages/templates/pages/page_detail.html:49
 #: tags/templates/tags/tagged_list_snippet.html:8
 msgid "View"
@@ -220,11 +222,19 @@ msgid "English"
 msgstr "英語"
 
 #: main/settings/defaults.py:68
+msgid "Spanish"
+msgstr "Spanish"
+
+#: main/settings/defaults.py:69
 msgid "Japanese"
 msgstr "日本語"
 
-#: main/settings/defaults.py:69
+#: main/settings/defaults.py:70
 msgid "German"
+msgstr "German"
+
+#: main/settings/defaults.py:71
+msgid "Ukrainian"
 msgstr ""
 
 #: maps/feeds.py:21 maps/feeds.py:40
@@ -238,6 +248,11 @@ msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
 "instances."
 msgstr "\"%(fieldname)s\" 属性は %(ownername)s インスタンスからのみアクセスできます。"
+
+#: maps/fields.py:217
+#, python-format
+msgid "cannot set %(cname)s CollectionFrom with value of type: %(vtype)s"
+msgstr ""
 
 #: maps/validators.py:14
 #, python-format
@@ -262,8 +277,7 @@ msgstr "このマップの最近の変更"
 msgid "Map"
 msgstr "マップ"
 
-#: maps/templates/maps/base.html:34 maps/templates/maps/mapdata_detail.html:53
-#: maps/templates/maps/mapdata_form.html:87
+#: maps/templates/maps/base.html:34 maps/templates/maps/mapdata_form.html:87
 #: maps/templates/maps/mapdata_versions.html:25
 #: pages/templates/pages/base.html:29
 #: pages/templates/pages/page_detail.html:49
@@ -325,19 +339,29 @@ msgstr "リビジョン"
 #: tags/templates/tags/pagetagset_diff.html:41
 #: tags/templates/tags/pagetagset_diff.html:46
 #: tags/templates/tags/pagetagset_version_detail.html:21
-#: versionutils/templates/versionutils/history/form.html:34
+#: utils/templates/utils/history/form.html:7
+#: versionutils/templates/versionutils/history/form.html:35
 #: versionutils/templates/versionutils/history/form_page.html:19
 msgid "by"
 msgstr "作成者"
 
-#: maps/templates/maps/mapdata_detail.html:53
-msgid "this map"
-msgstr "このマップ"
-
-#: maps/templates/maps/mapdata_detail.html:53
+#: maps/templates/maps/mapdata_detail.html:54
+#: pages/templates/pages/page_detail.html:83
 #, python-format
-msgid "last modified %(tsince)s ago"
-msgstr "%(tsince)s 前に更新"
+msgid ""
+"\n"
+"        Contributed by <span class=\"contributor_list\">%(contributors_html)s</span> and <a href=\"%(request_path)s/_history/\">%(contributors_number)s</a> others.\n"
+"        "
+msgstr ""
+
+#: maps/templates/maps/mapdata_detail.html:58
+#: pages/templates/pages/page_detail.html:87
+#, python-format
+msgid ""
+"\n"
+"        Contributed by <span class=\"contributor_list\">%(contributors_html)s</span>\n"
+"        "
+msgstr ""
 
 #: maps/templates/maps/mapdata_diff.html:52
 msgid "Differences for map on"
@@ -376,6 +400,7 @@ msgstr "変更を保存"
 #: maps/templates/maps/mapdata_form.html:70
 #: pages/templates/pages/page_detail.html:72
 #: pages/templates/pages/page_form.html:76
+#: users/templates/users/user_page.html:72
 msgid "Cancel"
 msgstr "キャンセル"
 
@@ -398,6 +423,15 @@ msgstr "このマップを作成"
 #: maps/templates/maps/mapdata_versions.html:16
 msgid "Previous versions of map for"
 msgstr "マップのひとつ前のバージョン"
+
+#: maps/templates/maps/nearby_pages.html:27
+#: maps/templates/maps/nearby_pages.html:28
+msgid "Nearby pages"
+msgstr ""
+
+#: maps/templates/maps/nearby_pages.html:40
+msgid "No nearby pages. Make some!"
+msgstr ""
 
 #: pages/feeds.py:43 pages/feeds.py:87
 #, python-format
@@ -423,25 +457,33 @@ msgstr "この名前のページは既に存在します"
 msgid "The new file should be of the same type"
 msgstr "新しいファイルは同じ種別でなければなりません"
 
-#: pages/models.py:51
+#: pages/models.py:28
+#, python-format
+msgid ""
+"Provided slug is invalid. Slugs must be lowercase, contain no trailing or "
+"leading whitespace, and contain only alphanumber characters along with "
+"%(KEEP_CHARACTERS)s"
+msgstr ""
+
+#: pages/models.py:59
 msgid "Page name is invalid."
 msgstr "ページの名前が正しくありません。"
 
-#: pages/models.py:124 pages/models.py:136
+#: pages/models.py:132 pages/models.py:144
 #, python-format
 msgid "Renamed from \"%s\""
 msgstr "\"%s\" にリネームされました"
 
-#: pages/models.py:128
+#: pages/models.py:136
 #, python-format
 msgid "The page '%s' already exists!"
 msgstr "ページ '%s' は既に存在しています！"
 
-#: pages/models.py:164 pages/models.py:177 pages/models.py:196
+#: pages/models.py:172 pages/models.py:185 pages/models.py:204
 msgid "Parent page renamed"
 msgstr "親ページがリネームされました"
 
-#: pages/models.py:210
+#: pages/models.py:220
 msgid "file"
 msgstr "ファイル"
 
@@ -468,11 +510,11 @@ msgstr "リダイレクトが作成されました"
 msgid "Page created"
 msgstr "ページが作成されました"
 
-#: pages/views.py:132
+#: pages/views.py:129
 msgid "Thank you for your changes. Your attention to detail is appreciated."
 msgstr "変更ありがとうございます。詳細を確認して頂ければ幸いです。"
 
-#: pages/views.py:135
+#: pages/views.py:132
 #, python-format
 msgid ""
 "Changes saved! To use your name when editing, please <a "
@@ -481,36 +523,36 @@ msgid ""
 "account</strong></a>."
 msgstr "変更は保存されました！編集時にあなたの名前を使うには <a href=\"%(login_url)s?next=%(current_path)s\"><strong>ログイン</strong></a> するか、<a href=\"%(register_url)s?next=%(current_path)s\"><strong>アカウントを作成</strong></a>してください。"
 
-#: pages/views.py:147
+#: pages/views.py:144
 #, python-format
 msgid ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
 "class=\"text\">Create a map</span></a> for this page?</p>"
 msgstr "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span \"class=\"text\">マップを作成</span></a> しますか？</p>"
 
-#: pages/views.py:160
+#: pages/views.py:157
 #, python-format
 msgid "<p>What do you know about %s?</p>"
 msgstr "<p>%s について知っていることをぜひ教えてください</p>"
 
-#: pages/views.py:353
+#: pages/views.py:350
 msgid "You must provide a page name when creating a page."
 msgstr "ページを作成する際には、ページに名前を付ける必要があります。"
 
-#: pages/views.py:426
+#: pages/views.py:423
 msgid "A file with this name already exists"
 msgstr "この名前のファイルは既に存在しています"
 
 #. Translators: This is for the page rename form.
-#: pages/views.py:432
+#: pages/views.py:429
 msgid "New page name"
 msgstr "新規ページ名"
 
-#: pages/views.py:433 versionutils/versioning/forms.py:17
+#: pages/views.py:430 versionutils/versioning/forms.py:17
 msgid "Comment"
 msgstr "コメント"
 
-#: pages/views.py:468
+#: pages/views.py:465
 #, python-format
 msgid "Page renamed to \"%s\""
 msgstr "ページは \"%s\" にリネームされました"
@@ -560,17 +602,14 @@ msgid "Redirected from"
 msgstr "リダイレクト元"
 
 #: pages/templates/pages/page_detail.html:66
+#: users/templates/users/user_page.html:66
 msgid "Edit tags"
 msgstr "タグを編集"
 
 #: pages/templates/pages/page_detail.html:66
+#: users/templates/users/user_page.html:66
 msgid "Add tags"
 msgstr "タグを追加"
-
-#: pages/templates/pages/page_detail.html:82
-#, python-format
-msgid "This page was last modified %(ago)s ago"
-msgstr "このページは %(ago)s 前に更新されました"
 
 #: pages/templates/pages/page_diff.html:22
 #, python-format
@@ -626,7 +665,7 @@ msgstr "編集内容についてのメモ:"
 
 #: pages/templates/pages/page_list.html:7
 #: pages/templates/pages/page_list.html:9
-#: themes/sapling/templates/site/nav.html:9
+#: themes/sapling/templates/site/nav.html:10
 msgid "All Pages"
 msgstr "全てのページ"
 
@@ -680,6 +719,7 @@ msgstr "以下のユーザのみ:"
 #: regions/templates/regions/banned_update.html:24
 #: regions/templates/regions/settings.html:78
 #: tags/templates/tags/pagetagset_form_snippet.html:9
+#: users/templates/users/settings.html:35
 msgid "Save"
 msgstr "保存"
 
@@ -817,49 +857,49 @@ msgstr "%(title)s は %(change_type)s されました。作成者 %(user)s%(comm
 msgid "Changes for %(title)s on %(site_name)s"
 msgstr "%(site_name)s 上の %(title)s への変更 "
 
-#: recentchanges/templates/recentchanges/recentchanges.html:5
-#: recentchanges/templates/recentchanges/recentchanges.html:7
-#: recentchanges/templates/recentchanges/recentchanges.html:9
-#: themes/sapling/templates/site/nav.html:8
+#: recentchanges/templates/recentchanges/recentchanges.html:6
+#: recentchanges/templates/recentchanges/recentchanges.html:8
+#: recentchanges/templates/recentchanges/recentchanges.html:10
+#: themes/sapling/templates/site/nav.html:9
 msgid "Recent Changes"
 msgstr "最近の変更"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:15
+#: recentchanges/templates/recentchanges/recentchanges.html:16
 msgid "Show all changes in the last"
 msgstr "過去"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:22
+#: recentchanges/templates/recentchanges/recentchanges.html:23
 msgid "days."
 msgstr "日間の変更を全て表示。"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:40
+#: recentchanges/templates/recentchanges/recentchanges.html:41
 #, python-format
 msgid "last modified %(version_date)s ago"
 msgstr "最終更新は %(version_date)s 前"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:48
+#: recentchanges/templates/recentchanges/recentchanges.html:49
 msgid "new"
 msgstr "新着"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:50
+#: recentchanges/templates/recentchanges/recentchanges.html:51
 msgid "deleted"
 msgstr "削除済み"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:52
+#: recentchanges/templates/recentchanges/recentchanges.html:53
 msgid "changes"
 msgstr "変更"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:56
+#: recentchanges/templates/recentchanges/recentchanges.html:57
 #, python-format
 msgid "Reverted to version from %(version_date_timesince)s ago"
 msgstr "バージョンを %(version_date_timesince)s 前に戻しました"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:62
+#: recentchanges/templates/recentchanges/recentchanges.html:63
 #, python-format
 msgid "Redirected to <a href=\"%(url)s\">%(destination)s</a>"
 msgstr "<a href=\"%(url)s\">%(destination)s</a>へのリダイレクト"
 
-#: recentchanges/templates/recentchanges/recentchanges.html:88
+#: recentchanges/templates/recentchanges/recentchanges.html:89
 #, python-format
 msgid ""
 "For statistics about pages, maps, and more, check out the <a "
@@ -875,7 +915,7 @@ msgstr "リダイレクト %(objsrc)s --> %(objdest)s"
 msgid "Destination"
 msgstr "リダイレクト先"
 
-#: redirects/models.py:34
+#: redirects/models.py:35
 msgid "You cannot redirect a page to itself"
 msgstr "ページを自分自身にはリダイレクトできません"
 
@@ -922,7 +962,7 @@ msgstr "このリダイレクト設定を変更できるユーザ"
 
 #: regions/forms.py:35 regions/forms.py:53
 msgid "Default language"
-msgstr ""
+msgstr "既定の言語"
 
 #: regions/forms.py:37
 msgid "The language for the region"
@@ -930,7 +970,7 @@ msgstr "この地域の言語"
 
 #: regions/forms.py:50
 msgid "Full name"
-msgstr ""
+msgstr "氏名"
 
 #: regions/forms.py:51 regions/models.py:17
 msgid "The full name of this region, e.g. 'San Francisco'"
@@ -946,7 +986,7 @@ msgid ""
 "it short and memorable!"
 msgstr "この地域の略称。URL部分で利用されます。短くてわかりやすい略称をつけてください 例: 'sf'"
 
-#: regions/models.py:35
+#: regions/models.py:36
 msgid "Region already has pages in it"
 msgstr "その地域のページが既に存在します"
 
@@ -988,7 +1028,7 @@ msgid ""
 "    \t<li>\n"
 "    \t\t<a href=\"Templates%2FRestaurant\">Templates/Restaurant</a></li>\n"
 "    </ul>"
-msgstr ""
+msgstr "<p>\n    \tテンプレートは特殊なページで、なにかページを新規作成する場合のスタート地点となる情報を提示します。 &nbsp; テンプレートを使うことで、よく使われるトピックに同じような構成を使って編集を行えるようになります。 &nbsp; 新しくページを作成する際にそのテンプレートを選択するだけで、テンプレートを利用したページ作成が可能です。 &nbsp;</p>\n    <p>\n    \t以下は現在利用可能なテンプレートです。新しくテンプレートを追加するには、例えば <a href=\"Templates%2FBusiness\">Templates/Business</a> のように &quot;Templates/&quot; ではじまるページを新しく作成してください。 &nbsp; テンプレートを新しく作成した場合、以下のリストに追加を行うことで、そのページを探しやすくなります。</p>\n    <h3>\n    \t<span>テンプレート一覧</span></h3>\n    <ul>\n    \t<li>\n    \t\t<a href=\"Templates%2FPlace\">Templates/Place</a></li>\n    \t<li>\n    \t\t<a href=\"Templates%2FBusiness\">Templates/Business</a></li>\n    \t<li>\n    \t\t<a href=\"Templates%2FDisambiguation\">Templates/Disambiguation</a></li>\n    \t<li>\n    \t\t<a href=\"Templates%2FRestaurant\">Templates/Restaurant</a></li>\n    </ul>"
 
 #. Translators: This is for "Templates/Page" - a template page
 #: regions/initial_data/__init__.py:38
@@ -1031,7 +1071,7 @@ msgid ""
 "    \tSection Title</h2>\n"
 "    <p>\n"
 "    \tText goes here.</p>"
-msgstr ""
+msgstr "<table>\n    \t<tbody>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ロケーション</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t住所</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>連絡先</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(555) 555 5555</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ウェブサイト</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tURLリンク先</td>\n    \t\t</tr>\n    \t</tbody>\n    </table>\n    <p>\n    \tThe <strong>Thing I&#39;m Talking About</strong> should have a blurb here with links to relevant things, like the <a href=\"Front%20Page\">Front Page</a>.</p>\n    <h2>\n    \t題名</h2>\n    <p>\n    \tここに本文を記述</p>"
 
 #. Translators: This is for "Templates/Restaurant" - a template page
 #: regions/initial_data/__init__.py:80
@@ -1120,7 +1160,7 @@ msgid ""
 "    </ul>\n"
 "    <p>\n"
 "    \t&nbsp;</p>"
-msgstr ""
+msgstr "<table>\n    \t<tbody>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ロケーション</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t住所を入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>営業時間</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(営業時間を入力)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>電話番号</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(415) 555-5555</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ウェブサイト</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tウェブサイトのURLを入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>設立</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(設立年月日, 例. YYYY-MM-DD)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>平均的な料金</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(&quot; 一般的な &quot; 料金を入力)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>支払い方法</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(現金、カード、プリペイド、など)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>車椅子</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(階段やお手洗いの有無、通路幅や手すりの状況など)</td>\n    \t\t</tr>\n    \t</tbody>\n    </table>\n    <p>\n    \t必要と思うことを &nbsp;<em>なんでも</em>&nbsp; ここに書き加えてください。米国の場合、電話番号や営業時間を &nbsp;<a href=\"http://local.google.com\">http://local.google.com</a>&nbsp; から調べるのが簡単です。もちろん、可能であれば直接問い合わせたり、チラシなどから調べるほうがよいでしょう。</p>\n    <p>\n    \tこのレストラン情報を、その地域の &nbsp;<a href=\"restaurants\">restaurants</a>&nbsp; ページに追加するのを忘れないようにしてください。</p>\n    <h3>\n    \t関連リンク</h3>\n    <ul>\n    \t<li>\n    \t\t<a href=\"Restaurants\">Restaurants</a></li>\n    </ul>\n    <p>\n    \t&nbsp;</p>"
 
 #. Translators: This is for "Templates/Business" - a template page
 #: regions/initial_data/__init__.py:168
@@ -1216,12 +1256,12 @@ msgid ""
 "    </ul>\n"
 "    <p>\n"
 "    \t&nbsp;</p>"
-msgstr ""
+msgstr "\n    <table>\n    \t<tbody>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ロケーション</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t住所を入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>営業時間</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t営業時間を入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>電話番号</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(415) 555-5555</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ウェブサイト</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tリンクURLを入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>メールアドレス</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tメールアドレスを入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>オーナー</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tオーナーや企業の名前を入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>設立年月日</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t日時形式, 例. YYYY-MM-DD</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>支払い方法</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t支払いで利用できる方法</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>車椅子アクセス情報</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t階段、お手洗い、手すり、通路幅など</td>\n    \t\t</tr>\n    \t</tbody>\n    </table>\n    <p>追加で残しておきたい情報を&nbsp;<em>なんでも</em>&nbsp;書いてください。米国では、開店時間や電話番号を調べるには&nbsp;<a href=\"http://local.google.com\">http://local.google.com</a>&nbsp;が役に立つでしょう。また、直接問い合わせを行ったり、調べたりするほうが推奨です。内容がわからない項目はそのままにしておいてもかまいませんし、項目ごと削除してしまっても構いません。もし可能ならば、現地で調べるか、先方へ問い合わせを行ってみましょう！</p>\n    <h3>\n    \t関連リンク</h3>\n    <ul>\n    \t<li>\n    \t\t<a href=\"Shopping\">Shopping</a></li>\n    </ul>\n    <p>\n    \t&nbsp;</p>"
 
 #. Translators: This is for "Templates/Disambiguation" - a template page
 #: regions/initial_data/__init__.py:263
 msgid "Disambiguation"
-msgstr ""
+msgstr "あいまいさの排除"
 
 #: regions/initial_data/__init__.py:267
 msgid ""
@@ -1237,7 +1277,7 @@ msgid ""
 "    \t&nbsp;</p>\n"
 "    <p>\n"
 "    \tThis is a&nbsp;<em>disambiguation</em> page&nbsp;&mdash; a navigational aid which lists other pages that might otherwise share the same title. If an page link referred you here, you might want to go back and fix it to point directly to the intended page.</p>"
-msgstr ""
+msgstr "<p>\n    \tこの単語は複数の意味を持っています。お探しの情報は、以下の項目のどちらでしょうか:</p>\n    <ul>\n    \t<li>\n    \t\t<a href=\"ItemOne\">項目1</a>&nbsp;- 項目1の簡単なサマリ</li>\n    \t<li>\n    \t\t<a href=\"ItemTwo\">項目2</a>&nbsp;- 項目2の簡単なサマリ</li>\n    </ul>\n    <p>\n    \t&nbsp;</p>\n    <p>\n    \tこれは &nbsp;<em>あいまいさ排除</em>のためのページ&nbsp;&mdash; です。同じ題名をもつ複数のページが存在する場合に、それらのページを適切に案内するために作成されています。もしあなたが別のページを作成し、そのページからのリンクがこのページを示している場合、あなたのページを編集しなおし、より正しい情報を示すリンク先へ文章を修正することをお薦めします。</p>"
 
 #: regions/initial_data/__init__.py:285
 #, python-format
@@ -1251,7 +1291,7 @@ msgid ""
 "    <p>\n"
 "    \tTo create a new page, type a page name into the search box and press <strong>Search or create page</strong>.</p>\n"
 "    <p>Need <strong>help</strong>? Please see the <a href=\"http://localwiki.net/main/Help\">help page</a> on the <a href=\"http://localwiki.net/main/\">LocalWiki Guide</a>!</p>"
-msgstr ""
+msgstr "<p>\n    \t%(region)s のLocalwikiへようこそ！ このサイトには、すでにいくつかのページが作成されています。\n    <p>\n    \tトップページの <strong>All Pages</strong> をクリックすると、いまあるページが一覧で表示されます。</p>\n    <p>\n    \tこのページも、他のページも、<strong>Edit</strong> ボタンをクリックすることで編集することが可能です。</p>\n    <p>\n    \t新しくページを作成するには、作成したいページの名前を検索ボックスに入力して、<strong>Search or create page</strong>をクリックしてください。</p>\n    <p>もしわからないことがあったら、<a href=\"http://localwiki.net/main/\">LocalWikiガイド</a>の<a href=\"http://localwiki.net/main/Help\">ヘルプページ</a>をのぞいてみてください。</p>"
 
 #: regions/templates/regions/admins_update.html:6
 #: regions/templates/regions/banned_update.html:6
@@ -1266,7 +1306,7 @@ msgid ""
 "\n"
 "        <a href=\"%(region_settings)s\">Settings</a> for <a href=\"%(url)s\">%(region_slug)s</a>\n"
 "    "
-msgstr ""
+msgstr "\n        <a href=\"%(url)s\">%(region_slug)s</a> の <a href=\"%(region_settings)s\">設定</a>\n    "
 
 #: regions/templates/regions/banned_update.html:20
 #: regions/templates/regions/settings.html:54
@@ -1294,7 +1334,7 @@ msgid ""
 "\n"
 "    <p>Finally, check out the <strong><a href=\"%(guide_url)s\">LocalWiki Guide</a></strong> for more information about the project and help using the site.</p>\n"
 "    "
-msgstr ""
+msgstr "\n    <p><a href=\"http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/\" target=\"_blank\">新バージョンのLocalWiki</a> の <strong>非常に初期の<strong> プレビューへようこそ。私たちは、さまざまな地域で暮らす人々がお互いに地域の情報を簡単に交換できるようになる方法を模索しています。これまでのプロジェクトは以下から参照できますが、その多くはまだ開発の初期段階です！</p>\n\n    <p>新しくLocalwikiをたちあげるあなたを歓迎します！ セットアップはとても簡単で、数分で終わります。画面に表示されている \"Add a Region\" ボタンをクリックするだけです。</p>\n\n    <p>それから <strong><a href=\"%(guide_url)s\">LocalWiki Guide</a></strong>には、このサイトの使い方やプロジェクト自体のより詳しい情報が記載されています。作業が終わったらチェックしてみてください。</p>\n    "
 
 #: regions/templates/regions/main.html:34
 #: regions/templates/regions/region_list.html:8
@@ -1601,30 +1641,44 @@ msgstr "パスワードをリセット"
 msgid "Create account"
 msgstr "アカウントを作成"
 
+#: themes/sapling/templates/site/base.html:80
+msgid ""
+"This is an <strong>insanely</strong> early preview of the <a "
+"href=\"http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/\" "
+"target=\"_blank\">new version of LocalWiki</a>.  We're making everything "
+"open as we build, but there's not much to see here yet.<br/>Feel free to "
+"share with your friends, but not too widely &mdash; we are a long way away "
+"from launching!"
+msgstr "これは<a href=\"http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/\" target=\"_blank\">新バージョンのLocalWiki</a> の <strong>非常に初期の<strong> プレビュー画面です。構築はこれまでもオープンに行われてきましたが、その多くの機能はまだ実装されていません。<br/>この情報はあなたの友人に広めてもよいものですが、あまりに広く喧伝するのは避けてください &mdash; 実際に公開するまで、これからもまだまだやるべきことがたくさん残っているのですから！"
+
 #: themes/sapling/templates/site/base.html:154
 msgid ""
 "\n"
 "      LocalWiki is a grassroots effort to collect, share and open the world’s local knowledge.  We are a 501(c)3 non-profit organization. <a href=\"http://localwiki.org/about/\" target=\"_blank\">Learn more</a>.</p>\n"
 "      "
-msgstr ""
+msgstr "\n      LocalWikiは草の根の活動で、世界各地の地元情報を集めています。私たちは501(c)3認定非営利法人です。 <a href=\"http://localwiki.org/about/\" target=\"_blank\">詳細はこちら</a>。</p>\n      "
 
-#: themes/sapling/templates/site/login_info.html:6
+#: themes/sapling/templates/site/login_info.html:8
 msgid "Welcome"
 msgstr "ようこそ"
 
-#: themes/sapling/templates/site/login_info.html:9
+#: themes/sapling/templates/site/login_info.html:11
+msgid "settings"
+msgstr ""
+
+#: themes/sapling/templates/site/login_info.html:12
 msgid "log out"
 msgstr "ログアウト"
 
-#: themes/sapling/templates/site/login_info.html:13
+#: themes/sapling/templates/site/login_info.html:16
 msgid "log in"
 msgstr "ログイン"
 
-#: themes/sapling/templates/site/login_info.html:13
+#: themes/sapling/templates/site/login_info.html:16
 msgid "or"
 msgstr "または"
 
-#: themes/sapling/templates/site/login_info.html:13
+#: themes/sapling/templates/site/login_info.html:16
 msgid "create account"
 msgstr "アカウントを作成"
 
@@ -1636,25 +1690,33 @@ msgstr "フロントページ"
 msgid "People"
 msgstr "関係者"
 
-#: themes/sapling/templates/site/nav.html:11
+#: themes/sapling/templates/site/nav.html:8
+msgid "Nearby"
+msgstr ""
+
+#: themes/sapling/templates/site/nav.html:12
 msgid "Settings"
 msgstr "設定"
 
-#: themes/sapling/templates/site/nav.html:14
-msgid "Guide"
-msgstr ""
-
 #: themes/sapling/templates/site/nav.html:15
-msgid "Help"
-msgstr ""
+msgid "Guide"
+msgstr "ガイド"
 
 #: themes/sapling/templates/site/nav.html:16
-msgid "Communities"
-msgstr ""
+msgid "Help"
+msgstr "ヘルプ"
 
 #: themes/sapling/templates/site/nav.html:17
-msgid "About"
+msgid "Communities"
+msgstr "コミュニティ"
+
+#: themes/sapling/templates/site/nav.html:18
+msgid "API"
 msgstr ""
+
+#: themes/sapling/templates/site/nav.html:19
+msgid "About"
+msgstr "概要"
 
 #: users/__init__.py:7
 msgid "You are now logged out."
@@ -1684,9 +1746,41 @@ msgstr "ハッシュ"
 msgid "Only these users"
 msgstr "以下のユーザのみ"
 
-#: users/views.py:91
+#: users/forms.py:28 users/registration_backend/forms.py:44
+msgid "Your name"
+msgstr "あなたの名前"
+
+#: users/forms.py:29
+msgid "Email address"
+msgstr ""
+
+#: users/forms.py:30
+msgid "Gravatar email (private)"
+msgstr ""
+
+#: users/models.py:57
+msgid "Gravatar Email (Private)"
+msgstr ""
+
+#: users/models.py:58
+msgid "Show email publicly (Helps with communication)"
+msgstr ""
+
+#: users/models.py:59
+msgid "Personal website"
+msgstr ""
+
+#: users/views.py:179
 msgid "Permissions updated!"
 msgstr "パーミッション更新完了！"
+
+#: users/views.py:190
+msgid "You must be logged in to change user settings."
+msgstr ""
+
+#: users/views.py:204
+msgid "User settings updated!"
+msgstr ""
 
 #: users/registration_backend/__init__.py:61
 msgid "You are signed up and logged in!"
@@ -1713,10 +1807,6 @@ msgstr "メールアドレス"
 msgid "Password"
 msgstr "パスワード"
 
-#: users/registration_backend/forms.py:44
-msgid "Your name"
-msgstr "あなたの名前"
-
 #: users/registration_backend/forms.py:49
 msgid "You must agree to the terms to register"
 msgstr "登録するには規約に同意する必要があります"
@@ -1731,6 +1821,14 @@ msgid ""
 "address."
 msgstr "メールアドレスは既に使用されています。別のメールアドレスをお使いください。"
 
+#: users/templates/users/settings.html:10
+msgid "User settings"
+msgstr ""
+
+#: users/templates/users/settings.html:33
+msgid "Change your user icon at Gravatar.com"
+msgstr ""
+
 #: users/templates/users/subscribed_list.html:4
 msgid "List of subscribers"
 msgstr "購読者の一覧"
@@ -1739,13 +1837,22 @@ msgstr "購読者の一覧"
 msgid "Subscriber emails:"
 msgstr "購読者のメールアドレス："
 
+#: users/templates/users/user_page.html:39
+#, python-format
+msgid "Joined on %(date_joined)s"
+msgstr ""
+
+#: users/templatetags/user_tags.py:25
+msgid "Unknown"
+msgstr ""
+
 #: utils/views.py:84
 msgid ""
 "Anonymous users may not perform this action. Please <a "
 "href=\"/Users/login/\">log in</a>."
 msgstr "匿名ユーザはこの操作を実行できません。<a href=\"/Users/login/\">ログイン</a>してください。"
 
-#: utils/templates/utils/history/form.html:13
+#: utils/templates/utils/history/form.html:18
 msgid "revert"
 msgstr "戻す"
 
@@ -1795,7 +1902,7 @@ msgstr "あなたの前に別の人が変更しましたが、あなたの変更
 msgid "Compare"
 msgstr "比較"
 
-#: versionutils/templates/versionutils/history/form.html:45
+#: versionutils/templates/versionutils/history/form.html:47
 msgid "There is no revision history."
 msgstr "リビジョン履歴はありません。"
 

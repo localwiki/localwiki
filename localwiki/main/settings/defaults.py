@@ -65,8 +65,9 @@ LOCALE_PATHS = (
 # Languages LocalWiki has been translated into.
 LANGUAGES = (
     ('en', _('English')),
-    ('es', _('Spanish')),
     ('ja', _('Japanese')),
+    ('fr', _('French')),
+    ('es', _('Spanish')),
     ('de', _('German')),
     ('uk', _('Ukrainian')),
 )
