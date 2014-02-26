@@ -89,10 +89,10 @@ class UserPageView(TemplateView):
         TODO: Make this all belong the a single administrative region, 'users', once we 
               have a notifications framework in place.
         """
-        from pages.models import Page
+        from pages.models import Page, slugify
 
         pagename = "Users/%s" % user.username
-        user_pages = Page.objects.filter(name=pagename)
+        user_pages = Page.objects.filter(name=slugify(pagename))
         if user_pages:
             # Just pick the first one
             return user_pages[0]
