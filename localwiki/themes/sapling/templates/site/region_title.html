@@ -1,0 +1,7 @@
+{% load url from future %}
+{% block region_title %}
+{% if region %}
+  <h1><a href="{% url 'frontpage' region=region.slug %}">{{ region.full_name }}</a></h1>
+{% else %}
+{% endif %}
+{% endblock %}

@@ -264,35 +264,104 @@ textarea, input, select {
     }
 }
 
-#site_title {
-    background: #fafafa url(../img/body-bg.png) top left repeat;
-    min-height: 3.95em;
+#common_header {
+    background-color: #f4f4f4;
+    border-bottom: 2px solid #efefef;
+
+    display: table;
+    width: 100%;
+}
+/* When not in a region, we want the common header to
+ * look a bit different */
+#common_header.no_region {
+    margin-bottom: 1.5em;
+}
+#common_title {
+    display: table-cell;
+    vertical-align: middle;
+
+    width: 1px; /* Decreases the size to 1px if possible */
+    white-space: nowrap; /* Forces the cell to only decrease to the contents */
+}
+#common_title img {
+    margin-top: 11px;
+    margin-bottom: 5px;
+
     padding-left: 1.5em;
-    font-size: 130%;
-    padding-top: 1em;
-    margin: 0;
+    width: 140px;
+}
+
+#region_header #new_page_button {
+    float: right;
+    display: inline-block;
+    margin-right: 2em;
+    background-image: url(../img/edit_icon.png);
+
+    padding-left: 25px;
+    font-size: 90%;
+    background-repeat: no-repeat;
+    background-position: 9px 50%;
+    display: block;
+    padding-right: 0.8em;
+    font-weight: normal;
+}
+#region_header #new_page_form {
+    display: none;
+    float: right;
+    margin-right: 2em;
+}
+/* Hide this but allow Enter-to-submit */
+#region_header #new_page_form input[type="submit"] {
+    position: absolute;
+    z-index: -1000;
+    left: -1000px;
+}
+
+#region_header {
     border-bottom: 1px solid #E8ECEF; /* Check before removing this border -
         it's needed for the correct CSS margin/padding behavior.
         TODO: fix this. */
+    padding: 1em 0 1em 0;
 }
-#site_title h1 {
+#region_title {
+    background: #fafafa url(../img/body-bg.png) top left repeat;
+    padding: 0 1em 0 1.5em;
+    border-right: 3px solid #dddddd;
+    font-size: 90%;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+#region_title h1 {
     margin-bottom: 0;
 }
-#site_title img {
+/* Make it slightly lighter so attention is drawn to page title first */
+#region_title h1, #region_title h1 a:link, #region_title h1 a {
+    color: #5f5f5f;
+}
+#region_title h1 a:hover {
+    color: #111;
+}
+#region_title img {
     margin-top: -0.4em;
     padding-bottom: 1.6em; /* make sure there's room for #nav */
-    display: block; /* site_title contains either an h1 (block) or an img,
+    display: block; /* region_title contains either an h1 (block) or an img,
                        so let's make this more consistent */
 }
-#site_title a, #site_title a:link {
+#region_title a, #region_title a:link {
     text-decoration: none;
     color: #444
 }
-#site_title a:hover {
+#region_title a:hover {
     color: #111;
 }
+/* When we're not in a region, we don't have a #region_title so we will
+ * need to increase the nav padding */
+#region_header.not_in_region #nav {
+    padding-left: 1.5em;
+}
 @media screen and (max-width: 700px) {
-    #site_title {
+    #region_title {
         margin: 0;
         padding: 0;
         border: none;
@@ -301,12 +370,12 @@ textarea, input, select {
         position: relative;
         top: -2em;
     }
-    #site_title h1 {
+    #region_title h1 {
         margin: 0.3em;
     }
 }
 @media screen and (max-width: 500px) {
-    #site_title {
+    #region_title {
         display: none;
     }
 }
@@ -381,11 +450,12 @@ textarea, input, select {
 }
 
 #login_info {
+    padding-right: 2em;
+    display: table-cell;
+    vertical-align: middle;
+}
+#login_info > div {
     float: right;
-    clear: right;
-    text-align: right;
-    margin-right: 2em;
-    margin-top: 0.4em;
 }
 #login_info .welcome {
     float: left;
@@ -432,10 +502,9 @@ textarea, input, select {
 }
 
 #header .site_search {
-    float: right;
-    clear: right;
-    margin-top: -3.5em;
-    margin-right: 2em;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 30px;
 }
 #header .site_search input {
     float: left;
@@ -448,6 +517,13 @@ textarea, input, select {
     line-height: 30px;
     margin-right: 0.5em;
     padding-left: 30px;
+    background-color: #fafafa;
+}
+/* Hide this but allow Enter-to-submit */
+#header .site_search input[type="submit"] {
+    position: absolute;
+    z-index: -1000;
+    left: -1000px;
 }
 
 .search input[type="text"] {
@@ -498,139 +574,18 @@ textarea, input, select {
 
 /*
 ====================================
- Map widget on a page
+ Nav
 ====================================
 */
-
-/* The entire-map div */
-#map {
-    background: #E8ECEF url(../img/header-bg.png) top left repeat;
-    padding: 10px;
-    border-bottom: 1px solid #DAE1E5;
-    border-left: 1px solid #DAE1E5;
-    border-right: 1px solid #DAE1E5;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    float: right;
-    margin-top: -1.2em;
-    margin-left: 1em;
-    margin-bottom: 0.8em;
+#nav {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 1em;
 }
-#map a, #map a:link {
-    color: #444;
-}
-#map a:hover {
-    color: #111;
-}
-/* Just the widget. Contained in #map. */
-.mapwidget.small {
-  border: 1px solid #b5b5b5;
-  width: 400px!important;
-  height: 300px!important;
-}
-#map .info {
-  display: table-cell;
-  padding-top: 10px;
-}
-#map .info a {
-  padding-left: 25px;
-  font-size: 90%;
-  background-repeat: no-repeat;
-  background-position: 9px 50%;
-}
-#map .info a {
-  display: block;
-  padding-top: 12px;
-  padding-bottom: 13px;
-  padding-right: 0.8em;
-  font-weight: normal;
-  margin-right: 0.5em;
-}
-#map .info a.view {
-  background-image: url(../img/magnifying_glass.png);
-}
-#map .info a.edit {
-  background-image: url(../img/edit_icon.png);
-}
-#map .simple_pagination {
-  padding-top: 0.4em;
-  height: 1.5em!important;
-}
-#map .simple_pagination a {
-  margin-right: 0.5em;
-}
-
-/* Map widget, when it's part of page content */
-#page #map {
-    margin: 0.5em;
-    margin-left: 0;
-}
-@media screen and (max-width: 700px) {
-    #map {
-        float: none;
-        margin-left: 0;
-        margin-right: 0;
-    }
-    .mapwidget.small {
-        width: 100%!important;
-        height: 200px!important;
-    }
-}
-@media screen and (max-width: 500px) {
-    #map {
-        width: 100%;
-        position: absolute;
-        left: 0;
-        padding-left: 0;
-        padding-right: 0;
-    }
-    .mapwidget.small {
-        border-left: none;
-        border-right: none;
-    }
-    #map .info {
-        padding-left: 1em;
-    }
-}
-
-/* Overview map */
-.mapdata #results_pane {
-  background: #E8ECEF url(../img/header-bg.png) top left repeat;
-  padding-top: 1em;
-  padding-left: 2em;
-  padding-right: 2em;
-  width: 15em;
-  margin-top: -2px;
-  border-right: 1px solid #DAE1E5;
-}
-
-/* Border added to make JS height calculation work immediately for
-* maps */
-.mapdata #content_wrapper {
-   /* Don't remove the border w/o checking that maps still occupy the full window */
-   border: 1px solid #fafafa;
-}
-
-/*
-====================================
- Files
-====================================
-*/
-.pagefile form table td, .pagefile form table, .pagefile form th {
-    border: none;
-}
-
-/*
-====================================
- Nav 
-====================================
-*/
 #nav ul {
     list-style-type: none;
-    position: absolute;
-    margin-left: 2em;
-    margin-top: -2em;
+    display: table-cell;
+    margin: 0;
 }
 #nav a, #nav a:link {
     color: #444;
@@ -752,6 +707,131 @@ textarea, input, select {
         text-transform: capitalize;
     }
 }
+
+
+/*
+====================================
+ Map widget on a page
+====================================
+*/
+
+/* The entire-map div */
+#map {
+    background: #E8ECEF url(../img/header-bg.png) top left repeat;
+    padding: 10px;
+    border-bottom: 1px solid #DAE1E5;
+    border-left: 1px solid #DAE1E5;
+    border-right: 1px solid #DAE1E5;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    float: right;
+    margin-top: -1.2em;
+    margin-left: 1em;
+    margin-bottom: 0.8em;
+}
+#map a, #map a:link {
+    color: #444;
+}
+#map a:hover {
+    color: #111;
+}
+/* Just the widget. Contained in #map. */
+.mapwidget.small {
+  border: 1px solid #b5b5b5;
+  width: 400px!important;
+  height: 300px!important;
+}
+#map .info {
+  display: table-cell;
+  padding-top: 10px;
+}
+#map .info a {
+  padding-left: 25px;
+  font-size: 90%;
+  background-repeat: no-repeat;
+  background-position: 9px 50%;
+  display: block;
+  padding-top: 12px;
+  padding-bottom: 13px;
+  padding-right: 0.8em;
+  font-weight: normal;
+  margin-right: 0.5em;
+}
+#map .info a.view {
+  background-image: url(../img/magnifying_glass.png);
+}
+#map .info a.edit {
+  background-image: url(../img/edit_icon.png);
+}
+#map .simple_pagination {
+  padding-top: 0.4em;
+  height: 1.5em!important;
+}
+#map .simple_pagination a {
+  margin-right: 0.5em;
+}
+
+/* Map widget, when it's part of page content */
+#page #map {
+    margin: 0.5em;
+    margin-left: 0;
+}
+@media screen and (max-width: 700px) {
+    #map {
+        float: none;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    .mapwidget.small {
+        width: 100%!important;
+        height: 200px!important;
+    }
+}
+@media screen and (max-width: 500px) {
+    #map {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .mapwidget.small {
+        border-left: none;
+        border-right: none;
+    }
+    #map .info {
+        padding-left: 1em;
+    }
+}
+
+/* Overview map */
+.mapdata #results_pane {
+  background: #E8ECEF url(../img/header-bg.png) top left repeat;
+  padding-top: 1em;
+  padding-left: 2em;
+  padding-right: 2em;
+  width: 15em;
+  margin-top: -2px;
+  border-right: 1px solid #DAE1E5;
+}
+
+/* Border added to make JS height calculation work immediately for
+* maps */
+.mapdata #content_wrapper {
+   /* Don't remove the border w/o checking that maps still occupy the full window */
+   border: 1px solid #fafafa;
+}
+
+/*
+====================================
+ Files
+====================================
+*/
+.pagefile form table td, .pagefile form table, .pagefile form th {
+    border: none;
+}
+
 
 /*
 ====================================
