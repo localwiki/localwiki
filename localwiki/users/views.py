@@ -92,7 +92,7 @@ class UserPageView(TemplateView):
         from pages.models import Page, slugify
 
         pagename = "Users/%s" % user.username
-        user_pages = Page.objects.filter(name=slugify(pagename))
+        user_pages = Page.objects.filter(slug=slugify(pagename))
         if user_pages:
             # Just pick the first one
             return user_pages[0]

@@ -50,7 +50,7 @@ urlpatterns = patterns('',
     (r'^(?P<region>[^/]+?)/search/', include('search.urls')),
     (r'^', include('recentchanges.urls')),
     # Region userpage -> global userpage redirect
-    (r'^(?P<region>[^/]+?)/Users/(?P<username>[^/]+?)$', GlobalUserpageRedirectView.as_view()),
+    (r'^(?P<region>[^/]+?)/((?i)Users)/(?P<username>[^/]+?)$', GlobalUserpageRedirectView.as_view()),
 
     # Historical URL for dashboard:
     (r'^(?P<region>[^/]+?)/tools/dashboard/?$', NamedRedirectView.as_view(name='dashboard:main')),
