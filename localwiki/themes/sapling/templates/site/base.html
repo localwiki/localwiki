@@ -92,10 +92,10 @@
       <div id="region_header" {% if not region %}class="not_in_region" {% endif %}>
         {% if region %}<div id="region_title">{% include "site/region_title.html" %}</div>{% endif %}
           <div id="nav">
+            <a href="#" id="pull"></a>
             <ul>
               {% include "site/nav.html" %}
             </ul>
-            <a href="#" id="pull"></a>
           </div>
         {% if region %}
           {% include "site/add_page_area.html" %}

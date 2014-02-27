@@ -208,7 +208,7 @@ textarea, input, select {
 }
 @media screen and (max-width: 700px) {
     #header_bar {
-        margin-top: 3.5em;
+        /* margin-top: 3.5em; */
         padding: 1.13em 1em 1.13em 1em;
     }
     #header_bar > div {
@@ -227,7 +227,7 @@ textarea, input, select {
         border-right: 0;
     }
     #header_bar {
-        margin-top: 8px;
+        margin-top: 0;
         padding: 0.5em 1em 0.5em 1em;
     }
     #header_bar .inner {
@@ -276,19 +276,21 @@ textarea, input, select {
 #common_header.no_region {
     margin-bottom: 1.5em;
 }
+#common_header input {
+    margin-bottom: 0;
+}
 #common_title {
     display: table-cell;
     vertical-align: middle;
+    padding: 12px 0 12px 0;
 
     width: 1px; /* Decreases the size to 1px if possible */
     white-space: nowrap; /* Forces the cell to only decrease to the contents */
 }
 #common_title img {
-    margin-top: 11px;
-    margin-bottom: 5px;
-
+    display: block;
     padding-left: 1.5em;
-    width: 140px;
+    width: 130px;
 }
 
 #region_header #new_page_button {
@@ -316,7 +318,6 @@ textarea, input, select {
     z-index: -1000;
     left: -1000px;
 }
-
 #region_header {
     border-bottom: 1px solid #E8ECEF; /* Check before removing this border -
         it's needed for the correct CSS margin/padding behavior.
@@ -360,8 +361,13 @@ textarea, input, select {
 #region_header.not_in_region #nav {
     padding-left: 1.5em;
 }
+
 @media screen and (max-width: 700px) {
     #region_title {
+        font-size: 75%;
+        border-right: none;
+        padding-right: 0;
+        /*
         margin: 0;
         padding: 0;
         border: none;
@@ -369,12 +375,37 @@ textarea, input, select {
         min-height: 0;
         position: relative;
         top: -2em;
+        */
     }
     #region_title h1 {
-        margin: 0.3em;
+        /* margin: 0.3em; */
+    }
+    #region_header #new_page_button {
+        font-size: 70%;
+        padding-left: 0.8em;
+        background-image: none;
+        line-height: 1.7;
+        padding-left: 0.6em;
+        padding-right: 0.6em;
     }
 }
 @media screen and (max-width: 500px) {
+    #region_header {
+        padding: 0;
+    }
+    #common_header #common_title {
+        display: none;
+    }
+    #common_header { 
+        position: absolute;
+        margin-top: 0px;
+        display: block;
+        background: none;
+        border: 0;
+    }
+    #region_header #new_page_button {
+        display: none;
+    }
     #region_title {
         display: none;
     }
@@ -543,14 +574,13 @@ textarea, input, select {
     #header .site_search {
         float: none;
         margin: 0;
-        margin-top: -44px;
         margin-right: 80px;
         padding: 0;
         /*padding-left: 65px;*/
         padding-left: 5px;
         padding-top: 5px;
-        position: relative;
         height: 27px;
+        display: block;
     }
     .site_search form {
         height: 100%;
@@ -561,13 +591,9 @@ textarea, input, select {
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
     }
-    #header .site_search input[type="submit"] {
-        visibility:hidden;
-        position:absolute;
-    }
     #header .site_search input[type="text"], #header .site_search #id_q {
-        width: 100%;
         height: 100%;
+        width: 100%;
         background-position: 10px 8px;
     }
 }
@@ -617,13 +643,15 @@ textarea, input, select {
     color: #111;
 }
 #nav #pull {
-    display: none;  
+    display: static;  
 }
 @media screen and (max-width: 700px) {
+    #nav {
+        padding-left: 0.2em;
+    }
     #nav ul {
         font-size: 90%;
-        margin: 0.5em;
-        margin-top: -0.8em;
+        margin: -0.8em 0.5em 0.5em 0.5em;
         padding: 0;
         float: none;
         position: relative;
@@ -641,11 +669,13 @@ textarea, input, select {
         color: #666!important;
         font-weight: bold;
         border: none;
-        margin-bottom: 4px;
+        margin-bottom: 0;
         /* TODO: explore using purely CSS gradients */
         background: #e6e6e6 url(../img/gradient.png) repeat-x bottom left;
         border-bottom: 1px solid #bfbfbf;
         text-decoration: none;
+        display: block;
+        padding-left: 0;
     }
     #nav ul {
         margin: 0;
