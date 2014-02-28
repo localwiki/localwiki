@@ -12,10 +12,11 @@ def user_link(user, size=20, region=None, show_username=True, ip=None):
         # Get twice as big for high-DPI / retina
         gravatar_url = get_gravatar_url(user.userprofile.gravatar_email, size=(size*2))
         user_path = user.get_absolute_url()
-        link = """<a href="%(user_path)s" class="user_link"><img class="gravatar" src="%(gravatar_url)s" width="%(width)s" height="%(height)s" />%(username)s</a>""" % {
+        link = """<a href="%(user_path)s" class="user_link" title="%(username)s"><img class="gravatar" src="%(gravatar_url)s" width="%(width)s" height="%(height)s" />%(name)s</a>""" % {
             'user_path': user_path,
             'gravatar_url': gravatar_url,
-            'username': (" %s" % user.username) if show_username else "",
+            'name': (" %s" % user.username) if show_username else "",
+            'username': user.username,
             'width': size,
             'height': size,
         }
