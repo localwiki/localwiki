@@ -90,6 +90,15 @@ $(document).ready(function() {
     });
 });
 
+/* Add page button */
+$(document).ready(function() {
+    $('#new_page_button').click(function() {
+       $(this).hide()
+       $('#new_page_form').show();
+       $('#new_page_form #pagename').focus();
+    });
+});
+
 function getCookie(key) {
     var result;
     // adapted from the jQuery Cookie plugin

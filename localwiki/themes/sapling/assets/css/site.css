@@ -208,7 +208,7 @@ textarea, input, select {
 }
 @media screen and (max-width: 700px) {
     #header_bar {
-        margin-top: 3.5em;
+        /* margin-top: 3.5em; */
         padding: 1.13em 1em 1.13em 1em;
     }
     #header_bar > div {
@@ -227,14 +227,14 @@ textarea, input, select {
         border-right: 0;
     }
     #header_bar {
-        margin-top: 8px;
+        margin-top: 0;
         padding: 0.5em 1em 0.5em 1em;
     }
     #header_bar .inner {
         display: block;
     }
     #map_header_bar {
-        margin-top: 7px;
+        margin-top: -2px;
     }
 }
 
@@ -264,49 +264,137 @@ textarea, input, select {
     }
 }
 
-#site_title {
-    background: #fafafa url(../img/body-bg.png) top left repeat;
-    min-height: 3.95em;
+#common_header {
+    background-color: #f4f4f4;
+    border-bottom: 2px solid #efefef;
+
+    display: table;
+    width: 100%;
+}
+/* When not in a region, we want the common header to
+ * look a bit different */
+#common_header.no_region {
+    margin-bottom: 1.5em;
+}
+#common_header input {
+    margin-bottom: 0;
+}
+#common_title {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 12px 0 12px 0;
+
+    width: 1px; /* Decreases the size to 1px if possible */
+    white-space: nowrap; /* Forces the cell to only decrease to the contents */
+}
+#common_title img {
+    display: block;
     padding-left: 1.5em;
-    font-size: 130%;
-    padding-top: 1em;
-    margin: 0;
+    width: 130px;
+}
+
+#region_header #new_page_button {
+    float: right;
+    display: inline-block;
+    margin-right: 2em;
+    background-image: url(../img/edit_icon.png);
+
+    padding-left: 25px;
+    font-size: 90%;
+    background-repeat: no-repeat;
+    background-position: 9px 50%;
+    display: block;
+    padding-right: 0.8em;
+    font-weight: normal;
+}
+#region_header #new_page_form {
+    display: none;
+    float: right;
+    margin-right: 2em;
+}
+/* Hide this but allow Enter-to-submit */
+#region_header #new_page_form input[type="submit"] {
+    position: absolute;
+    z-index: -1000;
+    left: -1000px;
+}
+#region_header {
     border-bottom: 1px solid #E8ECEF; /* Check before removing this border -
         it's needed for the correct CSS margin/padding behavior.
         TODO: fix this. */
+    padding: 1em 0 1em 0;
 }
-#site_title h1 {
+#region_title {
+    background: #fafafa url(../img/body-bg.png) top left repeat;
+    padding: 0 1em 0 1.5em;
+    border-right: 3px solid #dddddd;
+    font-size: 90%;
+    margin: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+#region_title h1 {
     margin-bottom: 0;
 }
-#site_title img {
+/* Make it slightly lighter so attention is drawn to page title first */
+#region_title h1, #region_title h1 a:link, #region_title h1 a {
+    color: #5f5f5f;
+}
+#region_title h1 a:hover {
+    color: #111;
+}
+#region_title img {
     margin-top: -0.4em;
     padding-bottom: 1.6em; /* make sure there's room for #nav */
-    display: block; /* site_title contains either an h1 (block) or an img,
+    display: block; /* region_title contains either an h1 (block) or an img,
                        so let's make this more consistent */
 }
-#site_title a, #site_title a:link {
+#region_title a, #region_title a:link {
     text-decoration: none;
     color: #444
 }
-#site_title a:hover {
+#region_title a:hover {
     color: #111;
 }
+/* When we're not in a region, we don't have a #region_title so we will
+ * need to increase the nav padding */
+#region_header.not_in_region #nav {
+    padding-left: 1.5em;
+}
+
 @media screen and (max-width: 700px) {
-    #site_title {
-        margin: 0;
-        padding: 0;
-        border: none;
-        clear: both;
-        min-height: 0;
-        position: relative;
-        top: -2em;
+    #region_title {
+        font-size: 75%;
+        border-right: none;
+        padding-right: 0;
     }
-    #site_title h1 {
-        margin: 0.3em;
+    #region_header #new_page_button {
+        font-size: 70%;
+        padding-left: 0.8em;
+        background-image: none;
+        line-height: 1.7;
+        padding-left: 0.6em;
+        padding-right: 0.6em;
     }
 }
 @media screen and (max-width: 500px) {
-    #site_title {
+    #region_header {
+        padding: 0;
+    }
+    #common_header #common_title {
+        display: none;
+    }
+    #common_header { 
+        position: absolute;
+        margin-top: 0px;
+        display: block;
+        background: none;
+        border: 0;
+    }
+    #region_header #new_page_button {
+        display: none;
+    }
+    #region_title {
         display: none;
     }
 }
@@ -381,11 +469,12 @@ textarea, input, select {
 }
 
 #login_info {
+    padding-right: 2em;
+    display: table-cell;
+    vertical-align: middle;
+}
+#login_info > div {
     float: right;
-    clear: right;
-    text-align: right;
-    margin-right: 2em;
-    margin-top: 0.4em;
 }
 #login_info .welcome {
     float: left;
@@ -432,10 +521,9 @@ textarea, input, select {
 }
 
 #header .site_search {
-    float: right;
-    clear: right;
-    margin-top: -3.5em;
-    margin-right: 2em;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 30px;
 }
 #header .site_search input {
     float: left;
@@ -448,6 +536,13 @@ textarea, input, select {
     line-height: 30px;
     margin-right: 0.5em;
     padding-left: 30px;
+    background-color: #fafafa;
+}
+/* Hide this but allow Enter-to-submit */
+#header .site_search input[type="submit"] {
+    position: absolute;
+    z-index: -1000;
+    left: -1000px;
 }
 
 .search input[type="text"] {
@@ -467,14 +562,13 @@ textarea, input, select {
     #header .site_search {
         float: none;
         margin: 0;
-        margin-top: -44px;
         margin-right: 80px;
         padding: 0;
         /*padding-left: 65px;*/
         padding-left: 5px;
         padding-top: 5px;
-        position: relative;
         height: 27px;
+        display: block;
     }
     .site_search form {
         height: 100%;
@@ -485,16 +579,150 @@ textarea, input, select {
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
     }
-    #header .site_search input[type="submit"] {
-        visibility:hidden;
-        position:absolute;
-    }
     #header .site_search input[type="text"], #header .site_search #id_q {
-        width: 100%;
         height: 100%;
+        width: 100%;
         background-position: 10px 8px;
     }
 }
+
+/*
+====================================
+ Nav
+====================================
+*/
+#nav {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 1em;
+}
+#nav ul {
+    list-style-type: none;
+    display: table-cell;
+    margin: 0;
+}
+#nav a, #nav a:link {
+    color: #444;
+}
+#nav li {
+    margin: 0;
+    margin-right: 0.4em;
+    float: left;
+}
+#nav li a {
+    text-align: center;
+    font-size: 83%;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 0.5em 0 0.5em;
+    height: 1.7em;
+    line-height: 100%;
+    margin: 0;
+    border: 1px solid #e1e1e1;
+    background-color: #e1e1e1;
+    text-decoration: none;
+}
+#nav li a:hover {
+    background-color: #bfbfbf;
+    border: 1px solid #bfbfbf;
+    color: #111;
+}
+#nav #pull {
+    display: static;  
+}
+@media screen and (max-width: 700px) {
+    #nav {
+        padding-left: 0.2em;
+    }
+    #nav ul {
+        font-size: 90%;
+        margin: -0.8em 0.5em 0.5em 0.5em;
+        padding: 0;
+    }
+    #nav li {
+        margin: 0.2em;
+    }
+    
+    #nav li a {
+    }
+}
+@media screen and (max-width: 500px) {
+    #nav {
+        color: #666!important;
+        font-weight: bold;
+        border: none;
+        margin-bottom: 0;
+        /* TODO: explore using purely CSS gradients */
+        background: #e6e6e6 url(../img/gradient.png) repeat-x bottom left;
+        border-bottom: 1px solid #bfbfbf;
+        text-decoration: none;
+        display: block;
+        padding-left: 0;
+    }
+    #nav ul {
+        margin: 0;
+        padding: 0;
+        top: 0;
+        display: none;
+        border: none;
+    }
+    #nav li, #nav li a {
+        height: inherit;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        float: none;
+        font-size: 110%;
+        background-color: #455868;
+        color: #f4f4f4!important;
+	    display: block;
+	    text-align: center;
+	    text-decoration: none;
+	    line-height: 40px;
+    }
+    #nav li a {
+        border: none;
+        border-bottom: 2px solid #576979;
+        border-radius: 0;
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+    }
+    #nav li:last-child a {
+        border-bottom: none;
+    }
+    #nav li a:hover, #nav li a:active {
+        background-color: #8c99a4;
+        border: none;
+        border-bottom: 2px solid #576979;
+    }
+    #nav li:last-child a:hover, #nav li:last-child a:active {
+        border-bottom: none;
+    }
+    #nav #pull {  
+        display: block;  
+        height: 40px;
+    }  
+    #nav #pull .button {
+        float: none;
+    }
+    #nav #pull:after {  
+        content:"";  
+        background: url('../img/nav-icon.png') no-repeat;  
+        width: 30px;  
+        height: 30px;  
+        display: block;  
+        position: absolute;
+        margin-top: 11px;  
+        right: 5px;  
+    }
+    #nav li {
+        text-transform: capitalize;
+    }
+}
+
 
 /*
 ====================================
@@ -538,8 +766,6 @@ textarea, input, select {
   font-size: 90%;
   background-repeat: no-repeat;
   background-position: 9px 50%;
-}
-#map .info a {
   display: block;
   padding-top: 12px;
   padding-bottom: 13px;
@@ -621,137 +847,6 @@ textarea, input, select {
     border: none;
 }
 
-/*
-====================================
- Nav 
-====================================
-*/
-#nav ul {
-    list-style-type: none;
-    position: absolute;
-    margin-left: 2em;
-    margin-top: -2em;
-}
-#nav a, #nav a:link {
-    color: #444;
-}
-#nav li {
-    margin: 0;
-    margin-right: 0.4em;
-    float: left;
-}
-#nav li a {
-    text-align: center;
-    font-size: 83%;
-    border-radius: 3px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    display: table-cell;
-    vertical-align: middle;
-    padding: 0 0.5em 0 0.5em;
-    height: 1.7em;
-    line-height: 100%;
-    margin: 0;
-    border: 1px solid #e1e1e1;
-    background-color: #e1e1e1;
-    text-decoration: none;
-}
-#nav li a:hover {
-    background-color: #bfbfbf;
-    border: 1px solid #bfbfbf;
-    color: #111;
-}
-#nav #pull {
-    display: none;  
-}
-@media screen and (max-width: 700px) {
-    #nav ul {
-        font-size: 90%;
-        margin: 0.5em;
-        margin-top: -0.8em;
-        padding: 0;
-        float: none;
-        position: relative;
-        top: -2.7em;
-    }
-    #nav li {
-        margin: 0.2em;
-    }
-    
-    #nav li a {
-    }
-}
-@media screen and (max-width: 500px) {
-    #nav {
-        color: #666!important;
-        font-weight: bold;
-        border: none;
-        margin-bottom: 4px;
-        /* TODO: explore using purely CSS gradients */
-        background: #e6e6e6 url(../img/gradient.png) repeat-x bottom left;
-        border-bottom: 1px solid #bfbfbf;
-        text-decoration: none;
-    }
-    #nav ul {
-        margin: 0;
-        padding: 0;
-        top: 0;
-        display: none;
-        border: none;
-    }
-    #nav li, #nav li a {
-        height: inherit;
-        width: 100%;
-        padding: 0;
-        margin: 0;
-        float: none;
-        font-size: 110%;
-        background-color: #455868;
-        color: #f4f4f4!important;
-	    display: block;
-	    text-align: center;
-	    text-decoration: none;
-	    line-height: 40px;
-    }
-    #nav li a {
-        border: none;
-        border-bottom: 2px solid #576979;
-        border-radius: 0;
-        -moz-border-radius: 0;
-        -webkit-border-radius: 0;
-    }
-    #nav li:last-child a {
-        border-bottom: none;
-    }
-    #nav li a:hover, #nav li a:active {
-        background-color: #8c99a4;
-        border: none;
-        border-bottom: 2px solid #576979;
-    }
-    #nav li:last-child a:hover, #nav li:last-child a:active {
-        border-bottom: none;
-    }
-    #nav #pull {  
-        display: block;  
-        height: 40px;
-    }  
-    #nav #pull .button {
-        float: none;
-    }
-    #nav #pull:after {  
-        content:"";  
-        background: url('../img/nav-icon.png') no-repeat;  
-        width: 30px;  
-        height: 30px;  
-        display: block;  
-        position: absolute;
-        margin-top: 11px;  
-        right: 5px;  
-    }
-    #nav li {
-        text-transform: capitalize;
-    }
-}
 
 /*
 ====================================

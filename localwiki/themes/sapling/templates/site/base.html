@@ -84,17 +84,23 @@
   {% block everything_wrapper %}
 
     <div id="header">
-      <div id="login_info">{% include "site/login_info.html" %}</div>
-      <div id="site_title">{% include "site/site_title.html" %}</div>
-      {% block nav %}
-        <div id="nav">
-          <ul>
-            {% include "site/nav.html" %}
-          </ul>
-          <a href="#" id="pull"></a>
-        </div>
-      {% endblock %}
-      <div class="site_search search">{% include "site/search_form.html" %}</div>
+      <div id="common_header">
+        <div id="common_title">{% include "site/common_title.html" %}</div>
+        <div class="site_search search">{% include "site/search_form.html" %}</div>
+        <div id="login_info">{% include "site/login_info.html" %}</div>
+      </div>
+      <div id="region_header" {% if not region %}class="not_in_region" {% endif %}>
+        {% if region %}<div id="region_title">{% include "site/region_title.html" %}</div>{% endif %}
+          <div id="nav">
+            <a href="#" id="pull"></a>
+            <ul>
+              {% include "site/nav.html" %}
+            </ul>
+          </div>
+        {% if region %}
+          {% include "site/add_page_area.html" %}
+        {% endif %}
+      </div>
       {% block header_bar_wrapper %}
       <div id="header_bar">
           <div class="inner">

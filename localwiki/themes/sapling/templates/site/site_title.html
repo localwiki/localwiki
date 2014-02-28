@@ -1,8 +1,0 @@
-{% load url from future %}
-{% block site_title %}
-{% if region %}
-  <h1><a href="/">localwiki</a>/<a href="{% url 'frontpage' region=region.slug %}">{{ region.slug }}</a></h1>
-{% else %}
-  <h1><a href="/">localwiki</a></h1>
-{% endif %}
-{% endblock %}
