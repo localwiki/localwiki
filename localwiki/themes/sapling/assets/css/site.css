@@ -234,7 +234,7 @@ textarea, input, select {
         display: block;
     }
     #map_header_bar {
-        margin-top: 7px;
+        margin-top: -2px;
     }
 }
 
@@ -367,18 +367,6 @@ textarea, input, select {
         font-size: 75%;
         border-right: none;
         padding-right: 0;
-        /*
-        margin: 0;
-        padding: 0;
-        border: none;
-        clear: both;
-        min-height: 0;
-        position: relative;
-        top: -2em;
-        */
-    }
-    #region_title h1 {
-        /* margin: 0.3em; */
     }
     #region_header #new_page_button {
         font-size: 70%;
@@ -653,9 +641,6 @@ textarea, input, select {
         font-size: 90%;
         margin: -0.8em 0.5em 0.5em 0.5em;
         padding: 0;
-        float: none;
-        position: relative;
-        top: -2.7em;
     }
     #nav li {
         margin: 0.2em;

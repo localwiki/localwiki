@@ -77,7 +77,6 @@ $(function() {
 
 /* For twitter typeahead */
 $(document).ready(function() {
-    return;
     $('#id_q').typeahead([
         {
           name: 'pages',
