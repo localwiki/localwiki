@@ -74,6 +74,18 @@ and submit using #cover_form.
 
         {% render_plugins page.content %}
 
+        {% if nearby_regions %}
+        <div id="nearby_regions">
+            <h2>{% trans "Explore nearby regions" %}</h2>
+            <ul>
+                {% for region in nearby_regions %}
+                    <li><a href="{% url 'frontpage' region=region.slug %}">{{ region.full_name }}</a></li>
+                {% endfor %}
+            </ul>
+            <p>Or maybe you want to <a href="{% url 'regions:list' %}">see all LocalWiki regions</a>?</p>
+        </div>
+        {% endif %}
+
         <div style="clear:both;"></div>
         <div style="clear:both;"></div>
     </div>

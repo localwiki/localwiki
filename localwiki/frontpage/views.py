@@ -15,6 +15,7 @@ from pages.views import PageDetailView
 from maps.models import MapData
 from maps.widgets import InfoMap, map_options_for_region
 from regions.views import RegionMixin, RegionAdminRequired, TemplateView
+from regions.models import Region
 
 from models import FrontPage
 
@@ -35,6 +36,12 @@ class FrontPageView(TemplateView):
         centroids = MapData.objects.filter(
             region=self.get_region()).centroid().values('centroid')
         return [(g['centroid'], '') for g in centroids]
+
+    def get_nearby_regions(self):
+        center = self.get_region().geom.centroid
+        rgs = Region.objects.exclude(geom__isnull=True).distance(center)
+        # Return 6 nearest now. TODO: Rank by page count?
+        return rgs[:6]
 
     def get_map(self, cover=False):
         olwidget_options = copy.deepcopy(getattr(settings,
@@ -65,6 +72,7 @@ class FrontPageView(TemplateView):
 
         context['frontpage'] = FrontPage.objects.get(region=self.get_region())
         context['map'] = self.get_map()
+        context['nearby_regions'] = self.get_nearby_regions()
         context['cover_map'] = self.get_map(cover=True)
         context['random_pages'] = Page.objects.filter(region=self.get_region()).order_by('?')[:30]
         if Page.objects.filter(name="Front Page", region=self.get_region()).exists():
