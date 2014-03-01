@@ -38,8 +38,9 @@ class FrontPageView(TemplateView):
         return [(g['centroid'], '') for g in centroids]
 
     def get_nearby_regions(self):
-        center = self.get_region().geom.centroid
-        rgs = Region.objects.exclude(geom__isnull=True).distance(center)
+        region = self.get_region()
+        center = region.geom.centroid
+        rgs = Region.objects.exclude(geom__isnull=True).exclude(id=region.id).distance(center)
         # Return 6 nearest now. TODO: Rank by page count?
         return rgs[:6]
 
