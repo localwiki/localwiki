@@ -288,8 +288,6 @@ def populate_region(region):
     	Click on <strong>All Pages</strong> at the top to see what's here now.</p>
     <p>
     	You can edit this and any other page by clicking the <strong>Edit</strong> button.</p>
-    <p>
-    	To create a new page, type a page name into the search box and press <strong>Search or create page</strong>.</p>
     <p>Need <strong>help</strong>? Please see the <a href="http://localwiki.net/main/Help">help page</a> on the <a href="http://localwiki.net/main/">LocalWiki Guide</a>!</p>""") % {'region': region.full_name}),
         region=region
     ).save()
