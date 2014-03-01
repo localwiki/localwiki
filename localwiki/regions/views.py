@@ -13,7 +13,7 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
 
-from localwiki.utils.views import CreateObjectMixin
+from localwiki.utils.views import CreateObjectMixin, AuthenticationRequired
 
 from models import Region, RegionSettings, BannedFromRegion, slugify
 from forms import RegionForm, RegionSettingsForm, AdminSetForm, BannedSetForm
@@ -110,9 +110,19 @@ class MainPageView(RegionListView):
     zoom_to_data = False
 
 
-class RegionCreateView(CreateView):
+class RegionCreateView(AuthenticationRequired, CreateView):
     model = Region
     form_class = RegionForm
+
+    def get_forbidden_message(self):
+        forbidden_message = _(
+            ('To create a region you must first <strong><a href="%(login_url)s?next=%(current_path)s">log in</a></strong> or '
+            '<strong><a href="%(register_url)s?next=%(current_path)s">create an account</a></strong>.') % {
+                'login_url': reverse('django.contrib.auth.views.login'),
+                 'current_path': reverse('regions:add'),
+                 'register_url': reverse('registration_register'),
+        })
+        return forbidden_message
 
     def get_success_url(self):
         return reverse('frontpage', kwargs={'region': self.object.slug})

@@ -2,8 +2,9 @@ from urlparse import urlparse
 
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
+from django.template.loader import render_to_string
 from django.views.generic.edit import UpdateView, FormView
 from django.views.generic import RedirectView, TemplateView
 from django.contrib import messages

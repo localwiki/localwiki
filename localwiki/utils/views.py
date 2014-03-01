@@ -136,3 +136,25 @@ class NamedRedirectView(RedirectView):
 
     def get_redirect_url(self, **kwargs):
         return reverse(self.name, kwargs=kwargs)
+
+
+class AuthenticationRequired(object):
+    """
+    Mixin to make a view only usable to authenticated users.
+    """
+    forbidden_message = _('Sorry, you are not allowed to perform this action.')
+
+    def get_forbidden_message(self):
+        return self.forbidden_message
+
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        self.args = args
+        self.kwargs = kwargs
+
+        if self.request.user.is_authenticated():
+            return super(AuthenticationRequired, self).dispatch(request, *args, **kwargs)
+
+        msg = self.get_forbidden_message()
+        html = render_to_string('403.html', {'message': msg}, RequestContext(request))
+        return HttpResponseForbidden(html)
