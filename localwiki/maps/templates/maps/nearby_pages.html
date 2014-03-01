@@ -24,8 +24,8 @@
     {% endif %}
 {% endblock %}
 
-{% block title %}{% trans "Nearby pages" %} - {{ block.super }}{% endblock %}
-{% block header_title %}{% trans "Nearby pages" %}{% endblock %}
+{% block title %}{% trans "Pages near you" %} - {{ block.super }}{% endblock %}
+{% block header_title %}{% trans "Pages near you" %}{% endblock %}
 
 {% block content_wrapper %}
 <div id="content_wrapper">
@@ -37,7 +37,7 @@
 
     {% block content %}
       {% if not nearby_maps %}
-        <p>{% trans "No nearby pages. Make some!" %}</p>
+        <p>{% trans "No pages near you. Make some!" %}</p>
       {% else %}
           {{ map.media }}
           <div id="map">
