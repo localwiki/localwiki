@@ -24,6 +24,11 @@ class RecentChangesView(RegionMixin, ListView):
     template_name = "recentchanges/recentchanges.html"
     context_object_name = 'changes'
 
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ['recentchanges/index_page.html']
+        return ['recentchanges/index.html']
+
     def format_change_set(self, change_obj, change_set):
         for obj in change_set:
             obj.classname = change_obj.classname
@@ -38,7 +43,7 @@ class RecentChangesView(RegionMixin, ListView):
 
         for change_class in get_changes_classes():
             change_obj = change_class(region=region)
-            change_set = change_obj.queryset()[:MAX_CHANGES]
+            change_set = change_obj.queryset()
             change_sets.append(
                 self.format_change_set(change_obj, change_set))
 
