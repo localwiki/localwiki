@@ -1460,8 +1460,9 @@ input:focus {
     }
 }
 
-
-.see_also {
+#recentchanges .see_also {
+    border-top: 4px solid #dddddd;
+    padding-top: 1em;
     margin-top: 2em;
     clear: both;
 }

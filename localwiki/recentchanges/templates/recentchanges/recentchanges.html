@@ -11,81 +11,59 @@
 
 {% block content %}
   <div id="recentchanges">
-      {% with request.GET.days_back as days_back %}
-      <div id="limit_to">
-        <span>{% trans "Show all changes in the last" %}</span>
-        <span class="pagination">
-            <a href="{{ rc_url }}?days_back=1"{% ifequal days_back '1' %} class="current"{% endifequal %}>1</a>
-            <a href="{{ rc_url }}?days_back=2"{% ifequal days_back '2' %} class="current"{% else %}{% if not days_back %} class="current"{% endif %}{% endifequal %}>2</a>
-            <a href="{{ rc_url }}?days_back=3"{% ifequal days_back '3' %} class="current"{% endifequal %}>3</a>
-            <a href="{{ rc_url }}?days_back=7"{% ifequal days_back '7' %} class="current"{% endifequal %}>7</a>
-        </span>
-        <span>{% trans "days." %}</span>
-      </div>
-      {% endwith %}
+      {% for changes_on_item in changes %}
 
-      {% for changes_for_day in changes_grouped_by_day %}
+        {% for change in changes_on_item %}
+          {% if forloop.first %}
+            <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a>
+                {% blocktrans with version_date=change.version_info.date|timesince %}last modified {{ version_date }} ago{% endblocktrans %}</h3>
+            <ul>
+          {% endif %}
 
-        {% comment %}<h2>{{ changes_for_day.day|date:"l, F j, Y"
-        }}</h3>{% endcomment %}
-        {% if not forloop.first %}
-        <hr/>
-        {% endif %}
+          {% if change.version_info.type not in ignore_types %}
+            <li class="{{ change.classname }}">
+              {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
+              {% if change.version_info.type in added_types %}
+                  <span class="changelabel added"><span>{% trans "new"%}</span></span>
+              {% else %}{% if change.version_info.type in deleted_types %}
+                  <span class="changelabel deleted"><span>{% trans "deleted"%}</span></span>
+              {% else %}
+                  <a class="changelabel updated" href="{{ change.diff_url }}"><span>{% trans "changes" %}</span></a></span>
+              {% endif %}{% endif %}
 
-        {% for changes_on_item in changes_for_day.changes %}
+              {% if change.version_info.type in reverted_types %}
+                  <span class="revert">{% blocktrans with version_date_timesince=change.version_info.reverted_to_version.version_info.date|timesince %}Reverted to version from {{ version_date_timesince }} ago{% endblocktrans %}</span>
+              {% endif %}
 
-          {% for change in changes_on_item %}
-            {% if forloop.first %}
-              <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a>
-                  {% blocktrans with version_date=change.version_info.date|timesince %}last modified {{ version_date }} ago{% endblocktrans %}</h3>
-              <ul>
-            {% endif %}
+              <span class="type"></span>
 
-            {% if change.version_info.type not in ignore_types %}
-              <li class="{{ change.classname }}">
-                {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
-                {% if change.version_info.type in added_types %}
-                    <span class="changelabel added"><span>{% trans "new"%}</span></span>
-                {% else %}{% if change.version_info.type in deleted_types %}
-                    <span class="changelabel deleted"><span>{% trans "deleted"%}</span></span>
-                {% else %}
-                    <a class="changelabel updated" href="{{ change.diff_url }}"><span>{% trans "changes" %}</span></a></span>
-                {% endif %}{% endif %}
+              {% if change.classname == 'redirect' %}
+                  <span class="revert">{% blocktrans with url=change.destination.get_absolute_url destination=change.destination.name %}Redirected to <a href="{{ url }}">{{ destination }}</a>{% endblocktrans %}</span>
+              {% endif %}
 
-                {% if change.version_info.type in reverted_types %}
-                    <span class="revert">{% blocktrans with version_date_timesince=change.version_info.reverted_to_version.version_info.date|timesince %}Reverted to version from {{ version_date_timesince }} ago{% endblocktrans %}</span>
-                {% endif %}
+              {% if change.version_info.comment %}
+                  <span class="comment">
+                    {{ change.version_info.comment }}
+                  </span>
+              {% endif %}
 
-                <span class="type"></span>
+              <span class="user">{% user_link change.version_info.user region=region ip=change.version_info.user_ip %}</span>
+            </li>
+          {% endif %}
 
-                {% if change.classname == 'redirect' %}
-                    <span class="revert">{% blocktrans with url=change.destination.get_absolute_url destination=change.destination.name %}Redirected to <a href="{{ url }}">{{ destination }}</a>{% endblocktrans %}</span>
-                {% endif %}
-
-                {% if change.version_info.comment %}
-                    <span class="comment">
-                      {{ change.version_info.comment }}
-                    </span>
-                {% endif %}
-
-                <span class="user">{% user_link change.version_info.user region=region ip=change.version_info.user_ip %}</span>
-              </li>
-            {% endif %}
-
-            {% if forloop.last %}
-              </ul>
-            {% endif %}
-
-          {% endfor %}
+          {% if forloop.last %}
+            </ul>
+          {% endif %}
 
         {% endfor %}
 
-    {% endfor %}
-  </div>
-  <div class="see_also">
-    <hr/>
-    <p>{% url 'dashboard:main' region=region.slug as dashboard_main_url %}
-      {% blocktrans %}For statistics about pages, maps, and more, check out the <a href="{{ dashboard_main_url }}">dashboard</a>{% endblocktrans %}
-    </p>
+      {% endfor %}
+
+    <div class="see_also">
+      <p>{% url 'dashboard:main' region=region.slug as dashboard_main_url %}
+        {% blocktrans %}For statistics about pages, maps, and more, check out the <a href="{{ dashboard_main_url }}">dashboard</a>{% endblocktrans %}
+      </p>
+    </div>
+
   </div>
 {% endblock %}
