@@ -870,7 +870,6 @@ textarea, input, select {
 #powered_by {
     width: 100%;
     text-align: center;
-    margin-top: 1em;
     margin-bottom: 0.5em;
 }
 #powered_by a img {
@@ -881,9 +880,30 @@ textarea, input, select {
 }
 
 #about {
-    margin: 1.5em 1em 0.5em 1em;
+    margin: 1em auto 0 auto;
+    max-width: 60em;
     font-size: 80%;
     text-align: center;
+    border-bottom: 2px solid #dddddd;
+}
+
+#nearby_regions_bar {
+    margin: 1.5em auto 0.5em auto;
+    max-width: 60em;
+    font-size: 80%;
+    text-align: center;
+    padding-bottom: 1em;
+    border-bottom: 2px solid #dddddd;
+}
+#nearby_regions_bar a {
+    border-left: 2px solid #dddddd; 
+    line-height: 1.3;
+    display: inline-block;
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+}
+#nearby_regions_bar a:first-child {
+    border-left: none;
 }
 
 /*
@@ -1650,9 +1670,10 @@ input:focus {
 */
 
 #attributions {
-    margin: 1.5em 1em 0.5em 1em;
+    margin: 1em auto 0 auto;
     font-size: 80%;
     text-align: center;
+    padding-bottom: 1em;
 }
 
 /*

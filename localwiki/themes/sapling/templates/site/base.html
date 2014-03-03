@@ -1,5 +1,6 @@
 {% load static from staticfiles %}
 {% load i18n %}
+{% load cache %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -149,11 +150,18 @@
      {% endblock %}
     </div>
 
-    <div id="attributions">
-     {% block attributions %}
-       {% trans GLOBAL_LICENSE_NOTE|safe %}
-     {% endblock %}
-    </div>
+    {% if region %}
+      {% cache 3600 nearby_regions region %}
+        {% if region.get_nearby_regions %}
+        <div id="nearby_regions_bar">
+          Nearby LocalWiki regions:
+          {% for region in region.get_nearby_regions %}
+              <a href="{% url 'frontpage' region=region.slug %}">{{ region.full_name }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endcache %}
+    {% endif %}
 
     <div id="about">
       <p>
@@ -161,6 +169,12 @@
       LocalWiki is a grassroots effort to collect, share and open the world’s local knowledge.  We are a 501(c)3 non-profit organization. <a href="http://localwiki.org/about/" target="_blank">Learn more</a>.</p>
       {% endblocktrans %} 
       </p>
+    </div>
+
+    <div id="attributions">
+     {% block attributions %}
+       {% trans GLOBAL_LICENSE_NOTE|safe %}
+     {% endblock %}
     </div>
 
     <div id="powered_by">

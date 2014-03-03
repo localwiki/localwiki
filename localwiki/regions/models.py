@@ -36,6 +36,15 @@ class Region(models.Model):
             raise IntegrityError(_("Region already has pages in it"))
         populate_region(self)
 
+    def get_nearby_regions(self):
+        # XXX CACHE
+        if not self.geom:
+            return
+        center = self.geom.centroid
+        rgs = Region.objects.exclude(geom__isnull=True).exclude(id=self.id).distance(center)
+        # Return 6 nearest now. TODO: Rank by page count?
+        return rgs[:6]
+
     def is_admin(self, user):
         """
         Is the provided `user` an admin of the region?

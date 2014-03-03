@@ -37,13 +37,6 @@ class FrontPageView(TemplateView):
             region=self.get_region()).centroid().values('centroid')
         return [(g['centroid'], '') for g in centroids]
 
-    def get_nearby_regions(self):
-        region = self.get_region()
-        center = region.geom.centroid
-        rgs = Region.objects.exclude(geom__isnull=True).exclude(id=region.id).distance(center)
-        # Return 6 nearest now. TODO: Rank by page count?
-        return rgs[:6]
-
     def get_map(self, cover=False):
         olwidget_options = copy.deepcopy(getattr(settings,
             'OLWIDGET_DEFAULT_OPTIONS', {}))
@@ -73,7 +66,6 @@ class FrontPageView(TemplateView):
 
         context['frontpage'] = FrontPage.objects.get(region=self.get_region())
         context['map'] = self.get_map()
-        context['nearby_regions'] = self.get_nearby_regions()
         context['cover_map'] = self.get_map(cover=True)
         context['random_pages'] = Page.objects.filter(region=self.get_region()).order_by('?')[:30]
         if Page.objects.filter(name="Front Page", region=self.get_region()).exists():

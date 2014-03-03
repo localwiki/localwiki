@@ -74,11 +74,11 @@ and submit using #cover_form.
 
         {% render_plugins page.content %}
 
-        {% if nearby_regions %}
-        <div id="nearby_regions">
+        {% if region.get_nearby_regions %}
+        <div class="nearby_regions">
             <h2>{% trans "Explore nearby regions" %}</h2>
             <ul>
-                {% for region in nearby_regions %}
+                {% for region in region.get_nearby_regions %}
                     <li><a href="{% url 'frontpage' region=region.slug %}">{{ region.full_name }}</a></li>
                 {% endfor %}
             </ul>
