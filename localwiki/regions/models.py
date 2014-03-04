@@ -41,7 +41,7 @@ class Region(models.Model):
         if not self.geom:
             return
         center = self.geom.centroid
-        rgs = Region.objects.exclude(geom__isnull=True).exclude(id=self.id).distance(center)
+        rgs = Region.objects.exclude(geom__isnull=True).exclude(id=self.id).distance(center).order_by('distance')
         # Return 6 nearest now. TODO: Rank by page count?
         return rgs[:6]
 
