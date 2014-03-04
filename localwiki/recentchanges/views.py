@@ -29,14 +29,6 @@ class RecentChangesView(RegionMixin, ListView):
             return ['recentchanges/index_page.html']
         return ['recentchanges/index.html']
 
-    def format_change_set(self, change_obj, change_set):
-        for obj in change_set:
-            obj.classname = change_obj.classname
-            obj.page = change_obj.page(obj)
-            obj.slug = obj.page.slug
-            obj.diff_url = change_obj.diff_url(obj)
-        return change_set
-
     def get_queryset(self):
         change_sets = []
         region = self.get_region()
@@ -44,8 +36,7 @@ class RecentChangesView(RegionMixin, ListView):
         for change_class in get_changes_classes():
             change_obj = change_class(region=region)
             change_set = change_obj.queryset()
-            change_sets.append(
-                self.format_change_set(change_obj, change_set))
+            change_sets.append(change_set)
 
         # Merge the sorted-by-date querysets.
         return merge_changes(change_sets)

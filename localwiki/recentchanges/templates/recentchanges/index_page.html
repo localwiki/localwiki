@@ -4,9 +4,10 @@
 {% load changes_tags %}
 {% load endless %}
 
-{% paginate changes %}
-
+{% lazy_paginate changes %}
+{% format_change_set changes region=region as changes %}
 {% group_changes_by_slug changes as changes_by_slug %}
+
 {% for changes_on_item in changes_by_slug %}
 
   {% for change in changes_on_item %}
