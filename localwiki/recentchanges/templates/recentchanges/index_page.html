@@ -1,10 +1,13 @@
 {% load url from future %}
 {% load i18n %}
 {% load user_tags %}
+{% load changes_tags %}
 {% load endless %}
 
 {% paginate changes %}
-{% for changes_on_item in changes %}
+
+{% group_changes_by_slug changes as changes_by_slug %}
+{% for changes_on_item in changes_by_slug %}
 
   {% for change in changes_on_item %}
     {% if forloop.first %}

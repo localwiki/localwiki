@@ -48,9 +48,7 @@ class RecentChangesView(RegionMixin, ListView):
                 self.format_change_set(change_obj, change_set))
 
         # Merge the sorted-by-date querysets.
-        objs = merge_changes(change_sets)
-
-        return self._changes_grouped_by_slug(objs)
+        return merge_changes(change_sets)
 
     def get_context_data(self, *args, **kwargs):
         c = super(RecentChangesView, self).get_context_data(*args, **kwargs)
@@ -63,31 +61,3 @@ class RecentChangesView(RegionMixin, ListView):
             'reverted_types': REVERTED_TYPES,
         })
         return c
-
-    def _changes_grouped_by_slug(self, objs):
-        """
-        Returns:
-            A list of the form:
-            [
-               [ changes, changes, ... ],
-               [ changes, changes, ... ],
-               ...
-            ]
-
-            where each group of [ changes, ..] is grouped by slug.
-            The list is ordered by the most recent edit in each
-            [changes, ..] list.
-        """
-        slug_dict = {}
-        # group changes by slug.
-        for change in objs:
-            changes_for_slug = slug_dict.get(change.slug, [])
-            changes_for_slug.append(change)
-            slug_dict[change.slug] = changes_for_slug
-
-        # Sort the slug_dict by the most recent edit date of each
-        # slug's set of changes.
-        by_most_recent_edit = sorted(slug_dict.values(),
-            key=lambda x: x[0].version_info.date, reverse=True)
-
-        return by_most_recent_edit
