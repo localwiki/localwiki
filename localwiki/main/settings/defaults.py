@@ -341,6 +341,8 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r'^/api/.*$'
 
+ENDLESS_PAGINATION_PER_PAGE = 50
+
 # For testing, you can start the python debugging smtp server like so:
 # sudo python -m smtpd -n -c DebuggingServer localhost:25
 EMAIL_HOST = 'localhost'
