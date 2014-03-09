@@ -1,18 +1,16 @@
 import datetime
 from itertools import groupby
+from collections import defaultdict
 
-from django.views.generic import ListView
 from django.http import Http404
 from django.core.urlresolvers import reverse
 
 from versionutils.versioning.constants import *
-from pages.models import Page
 from regions.views import RegionMixin
+from localwiki.utils.views import MultipleTypesPaginatedView
 
-from utils import merge_changes
-from recentchanges import get_changes_classes
+from . import get_changes_classes
 
-MAX_CHANGES = 500
 IGNORE_TYPES = [
     TYPE_DELETED_CASCADE,
     TYPE_REVERTED_DELETED_CASCADE,
@@ -20,7 +18,7 @@ IGNORE_TYPES = [
 ]
 
 
-class RecentChangesView(RegionMixin, ListView):
+class RecentChangesView(RegionMixin, MultipleTypesPaginatedView):
     template_name = "recentchanges/recentchanges.html"
     context_object_name = 'changes'
 
@@ -29,17 +27,24 @@ class RecentChangesView(RegionMixin, ListView):
             return ['recentchanges/index_page.html']
         return ['recentchanges/index.html']
 
-    def get_queryset(self):
+    def get_object_lists(self):
         change_sets = []
         region = self.get_region()
 
         for change_class in get_changes_classes():
             change_obj = change_class(region=region)
-            change_set = change_obj.queryset()
+            change_set = change_obj.queryset().filter(region=region)
             change_sets.append(change_set)
 
-        # Merge the sorted-by-date querysets.
-        return merge_changes(change_sets)
+        return change_sets
+
+    def get_pagination_merge_key(self):
+        """
+        Returns:
+            A callable that, when called, returns the value to use for the merge +
+            sort.  Default: the value inside the list itself.
+        """
+        return (lambda x: x.version_info.date)
 
     def get_context_data(self, *args, **kwargs):
         c = super(RecentChangesView, self).get_context_data(*args, **kwargs)

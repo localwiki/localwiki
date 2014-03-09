@@ -2,9 +2,7 @@
 {% load i18n %}
 {% load user_tags %}
 {% load changes_tags %}
-{% load endless %}
 
-{% lazy_paginate changes %}
 {% format_change_set changes region=region as changes %}
 {% group_changes_by_slug changes as changes_by_slug %}
 
@@ -55,4 +53,11 @@
   {% endfor %}
 
 {% endfor %}
-{% show_more %}
+
+{% if pagination_has_more_left %}
+    <div class="endless_container">
+        <a class="endless_more button" href="{{ pagination_next }}"
+            rel="nofollow">{% trans "More" %}</a>
+        <div class="endless_loading loading" style="display: none;"></div>
+    </div>
+{% endif %}

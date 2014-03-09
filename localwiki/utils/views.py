@@ -1,11 +1,13 @@
 from django.utils.decorators import classonlymethod
 from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.utils import simplejson as json
-from django.views.generic import View, RedirectView
+from django.views.generic import View, RedirectView, TemplateView
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.template.context import RequestContext
+
+from . import take_n_from
 
 
 class ForbiddenException:
@@ -158,3 +160,67 @@ class AuthenticationRequired(object):
         msg = self.get_forbidden_message()
         html = render_to_string('403.html', {'message': msg}, RequestContext(request))
         return HttpResponseForbidden(html)
+
+
+
+
+class MultipleTypesPaginatedView(TemplateView):
+    items_per_page = 50
+    context_object_name = 'objects'
+
+    def get_object_lists(self):
+        raise NotImplementedError
+
+    def get_pagination_key(self, qs):
+        """
+        Args:
+            qs: The queryset or iterable we want to get the querystring lookup key for.
+
+        Returns:
+            The querystring lookup.  By default, this is `qs.model.__name__.lower()`
+        """
+        return qs.model.__name__.lower()
+
+    def get_pagination_merge_key(self):
+        """
+        Returns:
+            A callable that, when called, returns the value to use for the merge +
+            sort.  Default: the value inside the list itself.
+        """
+        return None
+
+    def get_pagination_objects(self):
+        items_with_indexes = []
+        id_to_page_key = {}
+        for (_id, qs) in enumerate(self.get_object_lists()):
+            pagination_key = self.get_pagination_key(qs)
+            page = int(self.request.GET.get(pagination_key, 0))
+            items_with_indexes.append((qs, page))
+            id_to_page_key[_id] = pagination_key
+
+        items, indexes, has_more_left = take_n_from(
+            items_with_indexes,
+            self.items_per_page,
+            merge_key=self.get_pagination_merge_key()
+        )
+        self.has_more_left = has_more_left
+
+        self.current_indexes = {}
+        for (num, index) in enumerate(indexes):
+            self.current_indexes[id_to_page_key[num]] = index
+
+        return items
+
+    def get_context_data(self, *args, **kwargs):
+        c = super(MultipleTypesPaginatedView, self).get_context_data(*args, **kwargs)
+
+        c[self.context_object_name] = self.get_pagination_objects()
+        c['pagination_has_more_left'] = self.has_more_left
+        if self.has_more_left:
+            qitems = []
+            for pagelabel, index in self.current_indexes.items():
+                qitems.append('%s=%s' % (pagelabel, index))
+            c['pagination_next'] = '?' + '&'.join(qitems)
+
+        return c
+
