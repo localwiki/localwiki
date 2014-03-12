@@ -54,3 +54,6 @@ class AuthenticationAPITests(APITestCase):
         resp = self.client.post('%s/pages/' % self.API_ROOT, data, format='json')
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
+        # Now check to make sure the page version was edited by the user associated with the API token
+        p = Page.objects.get(region=self.sf_region, name="Test Page")
+        self.assertEqual(p.versions.most_recent().version_info.user, self.edit_user)
