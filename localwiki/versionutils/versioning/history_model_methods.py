@@ -268,14 +268,17 @@ def historical_record_getattribute(model, m, name):
     return model.__getattribute__(m, name)
 
 
-def _cascade_revert(current_hm, m, **kws):
+def _cascade_revert(reverting_to_version, m, **kws):
     """
     Iterates through (reverse) related objects and calls revert_to() on
     them if they were deleted via a cascaded delete.
     """
-    version_before_delete = current_hm.version_info.version_number() - 1
-
-    hm = get_versions(m).as_of(version=version_before_delete)
+    closest_deleted = m.versions.filter(
+        history_type__in=DELETED_TYPES,
+        history_date__gte=reverting_to_version.version_info.date
+    ).order_by('history_date')[0]
+    version_before_delete = closest_deleted.version_info.version_number() - 1
+    hm = m.versions.as_of(version=version_before_delete)
 
     related_objs_versioned = [
         o for o in m._meta.get_all_related_objects() if is_versioned(o.model)
@@ -415,11 +418,11 @@ def revert_to(hm, delete_newer_versions=False, **kws):
                 # non-historical instance.
                 manager.add(obj)
 
-        # If we are reverting from a deleted state to a restored state
+        # If we are reverting from a *currently* deleted state to a restored state
         # then we should cascade the revert to children that were
         # deleted during the initial delete().
         if current_hm.version_info.type in DELETED_TYPES:
-            _cascade_revert(current_hm, m, **kws)
+            _cascade_revert(hm, m, **kws)
 
     return m
 
