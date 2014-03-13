@@ -3,12 +3,12 @@
 
 {% if region %}
 <form method="GET" action="{% url 'haystack_search' region=region.slug %}">
-<input type="text" name="q" value="{% if query and form.q.value %}{{ form.q.value }}{% endif %}" id="id_q" />
+<input type="text" name="q" placeholder="{% blocktrans with region_name=region.full_name %}Search {{ region_name }}{% endblocktrans %}" value="{% if query and form.q.value %}{{ form.q.value }}{% endif %}" id="id_q" />
 <input type="submit" value="{% trans 'Search or create page' %}" class="little">
 </form>
 {% else %}
 <form method="GET" action="{% url 'global_search' %}">
-<input type="text" name="q" value="{% if query and form.q.value %}{{ form.q.value }}{% endif %}" id="id_q" />
+<input type="text" name="q" placeholder="{% trans 'Search LocalWiki '%}" value="{% if query and form.q.value %}{{ form.q.value }}{% endif %}" id="id_q" />
 <input type="submit" value="{% trans 'Search or create page' %}" class="little">
 </form>
 {% endif %}

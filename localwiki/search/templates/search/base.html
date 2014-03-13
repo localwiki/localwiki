@@ -5,6 +5,10 @@
 {% load tags_tags %}
 {% load static from staticfiles %}
 
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
 {% block title %}
    {% if query %}
       {% trans "Search results for" %} "{{ query }}" - {{ block.super }}
