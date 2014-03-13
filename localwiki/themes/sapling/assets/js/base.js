@@ -77,10 +77,14 @@ $(function() {
 
 /* For twitter typeahead */
 $(document).ready(function() {
+    var remote_url = '/_api/pages/suggest?term=%QUERY';
+    if (region_id) {
+        remote_url += '&region_id=' + region_id;
+    }
     $('#id_q').typeahead([
         {
           name: 'pages',
-          remote: '/_api/pages/suggest?region_id=' + region_id + '&term=%QUERY'
+          remote: remote_url,
         }
     ])
     .on('typeahead:selected', function(e, datum) {

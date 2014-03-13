@@ -6,4 +6,9 @@
 <input type="text" name="q" value="{% if query and form.q.value %}{{ form.q.value }}{% endif %}" id="id_q" />
 <input type="submit" value="{% trans 'Search or create page' %}" class="little">
 </form>
+{% else %}
+<form method="GET" action="{% url 'global_search' %}">
+<input type="text" name="q" value="{% if query and form.q.value %}{{ form.q.value }}{% endif %}" id="id_q" />
+<input type="submit" value="{% trans 'Search or create page' %}" class="little">
+</form>
 {% endif %}

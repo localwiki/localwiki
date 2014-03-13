@@ -24,18 +24,20 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     
-    {% if region %}
     <script type="text/javascript">
-        var region_id = {{ region.id }};
-        var region_slug = '{{ region.slug }}';
-        var region_name = '{{ region.full_name }}';
-        {% if is_region_admin %}
-        var region_is_admin = true;
+        {% if region %}
+            var region_id = {{ region.id }};
+            var region_slug = '{{ region.slug }}';
+            var region_name = '{{ region.full_name }}';
+            {% if is_region_admin %}
+            var region_is_admin = true;
+            {% else %}
+            var region_is_admin = false;
+            {% endif %}
         {% else %}
-        var region_is_admin = false;
+            var region_id = null;
         {% endif %}
     </script>
-    {% endif %}
 
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/enquire.min.js"></script>
