@@ -53,6 +53,15 @@ def take_n_from(lists_with_indexes, n, merge_key=None):
             has_more_left = True
         max_lists.append(l_max)
 
+    # Check to see if the sum total of each slice is more than
+    # the amount we're asking for.
+    if not has_more_left:
+        total = 0
+        for l in max_lists:
+            total += len(l)
+        if total > n:
+            has_more_left = True
+
     # Merge together the lists
     merged_with_list_nums = _merge(max_lists, merge_key=merge_key)
     items_with_list_nums = merged_with_list_nums[:n]
