@@ -528,15 +528,27 @@ textarea, input, select {
 #header .site_search input {
     float: left;
 }
+
+#header .site_search input::-webkit-input-placeholder {
+    color: #868686;
+}
+#header .site_search input::-moz-placeholder {
+    color: #868686;
+}
+#header .site_search input::-ms-input-placeholder{ 
+    color: #868686;
+}
+
 #header .site_search input[type="text"], #header .site_search #id_q {
     padding: 0;
     height: 2em;
-    width: 180px;
+    width: 200px;
     font-size: 15px;
     line-height: 30px;
     margin-right: 0.5em;
     padding-left: 30px;
     background-color: #fafafa;
+    border: 1px solid #cccccc;
 }
 /* Hide this but allow Enter-to-submit */
 #header .site_search input[type="submit"] {
@@ -546,20 +558,22 @@ textarea, input, select {
 }
 
 .search input[type="text"] {
-    background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 60%;
+    background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 56%;
     padding-left: 30px;
 }
 
+/* Hacky - needs fix but this..kind of worked: */
 @media screen and (max-width: 700px) {
     #header .site_search {
-        float: left;
-        margin-top: -2em;
-        padding-left: 0.5em;
-        padding-right: 0.5em;
+        width: 34%;
+    }
+    #header .site_search input[type="text"], #header .site_search #id_q {
+        width: 85%;
     }
 }
 @media screen and (max-width: 500px) {
     #header .site_search {
+        width: auto;
         float: none;
         margin: 0;
         margin-right: 80px;
@@ -1641,7 +1655,7 @@ input:focus {
 .search .tt-dropdown-menu {
     margin-top: 0em;
     background-color: white;
-    min-width: 210px;
+    min-width: 230px;
     border: 1px solid #BFBFBF;
     border-radius: 3px;
     -moz-border-radius: 3px;
