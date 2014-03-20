@@ -157,8 +157,15 @@ def setup_config_secrets():
     config_secrets.update(secrets)
 
 def save_config_secrets():
+    global config_secrets
+
+    jsecrets = json.load(open(os.path.join(_config_path, 'secrets.json')))
+    if env.host_type in jsecrets:
+        jsecrets[env.host_type] = config_secrets
+    else:
+        jsecrets['*'] = config_secrets
     f = open(os.path.join(_config_path, 'secrets.json'), 'w')
-    json.dump(config_secrets, f, indent=4)
+    json.dump(jsecrets, f, indent=4)
     f.close()
 
 env.host_type = None
@@ -230,7 +237,7 @@ def setup_dev():
     # git checkout.
     sudo('rm -rf /srv/localwiki/src')
     sudo('ln -s /vagrant/localwiki /srv/localwiki/src', user='www-data')
-    update()
+    update(local=True)
 
 def get_context(env):
     d = {}
@@ -331,7 +338,7 @@ def init_postgres_db():
 def update_django_settings():
     upload_template('config/localsettings.py',
         os.path.join(env.virtualenv, 'share', 'localwiki', 'conf'),
-        context=get_context(env), use_jinja=True)
+        context=get_context(env), use_jinja=True, use_sudo=True)
 
 def init_localwiki_install():
     init_postgres_db()

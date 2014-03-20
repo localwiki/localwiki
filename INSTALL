@@ -1,3 +1,5 @@
 We use a combination of vagrant (http://www.vagrantup.com/) and fabric (http://docs.fabfile.org/en/1.8/) to provision production and development environments.
 
-See the comment at the top of fabric/fabfile.py for instructions on installation.
+1. Clone the repository.
+2. Optional: check out the relevant branch you want to work on
+3. See the comment at the top of fabric/fabfile.py for instructions on installation.
