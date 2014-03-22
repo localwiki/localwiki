@@ -276,10 +276,15 @@ def setup_jetty():
     sudo("service jetty stop")
     sudo("service jetty start")
 
+def install_solr_requirements():
+    sudo("apt-add-repository -y ppa:webops/solr-3.5")
+
 def install_system_requirements():
     # Update package list
     sudo('apt-get update')
     sudo('apt-get -y install python-software-properties')
+
+    install_solr_requirements()
 
     # Need GDAL >= 1.10 and PostGIS 2, so we use this
     # PPA.
