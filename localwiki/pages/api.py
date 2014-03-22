@@ -80,7 +80,11 @@ class TagFilter(filters.Filter):
         if not value:
             return qs
         for v in value.split(','):
-            qs = qs.filter(pagetagset__tags__slug=v)
+            join_on = ''
+            if getattr(self, 'parent_relation', None):
+                join_on = '%s__' % self.parent_relation
+            kws = {'%spagetagset__tags__slug' % join_on: v}
+            qs = qs.filter(**kws)
         return qs
 
 
