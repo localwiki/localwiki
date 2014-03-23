@@ -14,8 +14,6 @@ from models import Region, RegionSettings, BannedFromRegion, LANGUAGES
 
 
 OUR_JS = [
-    reverse_lazy('django.views.i18n.javascript_catalog',
-                   args=['maps']),
     static_url('olwidget/js/sapling_utils.js'),
 ]
 OUR_CSS = {}

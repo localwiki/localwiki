@@ -1,0 +1,65 @@
+{% extends "search/base.html" %}
+
+{% load i18n %}
+{% load highlight %}
+{% load url from future %}
+{% load tags_tags %}
+{% load search_tags %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <div id="search_results">
+      {% if map %}
+        <div id="map">
+          {{ map }}
+          {% if page.has_previous or page.has_next %}
+          <div class="simple_pagination">
+              {% if page.has_previous %}
+              <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}" class="tiny button">&laquo; {% trans "Previous" %}</a>
+              {% endif %}
+              {% if page.has_next %}
+              <a href="?q={{ query }}&amp;page={{ page.next_page_number }}" class="tiny button">{% trans "Next" %} &raquo;</a>
+              {% endif %}
+          </div>
+          {% endif %}
+          </div>
+      {% endif %}
+      <div id="results_list">
+      {% for result in page.object_list %}
+          {% ifequal result.model_name "page" %}
+          <h3>
+              <a href="{{ result.object.get_absolute_url }}">{{ result.name }}</a> (<a href="{{ result.object.region.get_absolute_url }}">{{ result.object.region.slug }}</a>)
+          </h3>
+          <div id="object_tags">
+              {% filtered_tags result.object.region.slug result.tags keywords %}
+          </div>
+          <p>
+              {% with result.text as content %}
+                 {% highlight content with query %}
+              {% endwith %}
+          </p>
+          {% endifequal %}
+          {% ifequal result.model_name "region" %}
+          <div class="region_result">
+          <h3>
+              <a href="{{ result.object.get_absolute_url }}">{{ result.full_name }}</a> (<a href="{{ result.object.get_absolute_url }}">{{ result.object.slug }}</a>)
+          </h3>
+          </div>
+          {% endifequal %}
+      {% empty %}
+          <p>{% trans "No results found." %}</p>
+      {% endfor %}
+      </div>
+
+      {% if page.has_previous or page.has_next %}
+          <div class="simple_pagination">
+              {% if page.has_previous %}
+              <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}" class="button">&laquo; {% trans "Previous" %}</a>
+              {% endif %}
+              {% if page.has_next %}
+              <a href="?q={{ query }}&amp;page={{ page.next_page_number }}" class="button">{% trans "Next" %} &raquo;</a>
+              {% endif %}
+          </div>
+      {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "site/base.html" %}
+
+{% load i18n %}
+{% load search_tags %}
+{% load tags_tags %}
+{% load static from staticfiles %}
+
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
+{% block title %}
+   {% if query %}
+      {% trans "Search results for" %} "{{ query }}" - {{ block.super }}
+   {% else %}
+      {% if allow_page_creation %}
+        {% trans "Search or create page" %}
+      {% else %}
+        {% trans "Search" %}
+      {% endif %}
+   {% endif %}
+{% endblock %}
+
+{% block main_wrapper %}
+    <div id="main" class="search_results{% if map %} with_map{% endif %}{% if allow_page_creation %} allow_creation{% endif %}">
+        {% block main %}
+            {{ block.super }}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block media %}
+   {{ block.super }}
+   {% page_tags_form_media %}
+   {% if map %}
+       {{ map.media }}
+       <script type="text/javascript" src="{% static "js/enquire.min.js" %}"></script>
+       <script type="text/javascript" src="{% static "js/jquery/jquery-scrolltofixed-min.js" %}"></script>
+       <script type="text/javascript">
+        function setup_map_scrolling() {
+            $('#map').scrollToFixed({
+                limit: (
+                    $('#search_results').height() - $('#search_results h3').height() - $('#create_page_dialog').height() - $('#search_results .simple_pagination').height())
+            });
+       }
+       $(document).ready(function() {
+            // Don't scroll map on small screens
+            enquire.register("screen and (min-width:700px)", {
+                match: setup_map_scrolling
+                // TODO:
+                //unmatch: something_here_please,
+            });
+            enquire.listen();
+       });
+       </script>
+   {% endif %}
+{% endblock %}
+
+{% block header_title %}
+   {% if query %}
+     {% trans "Search results for" %} "{{ query }}"
+   {% else %}
+     {% if allow_page_creation %}
+       {% trans "Search or create page" %}
+     {% else %}
+       {% trans "Search" %}
+     {% endif %}
+   {% endif %}
+{% endblock %}

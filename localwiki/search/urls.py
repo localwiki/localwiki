@@ -2,6 +2,7 @@ import copy
 
 from django.conf.urls import *
 from django.conf import settings
+from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
 
 from haystack.views import SearchView
@@ -12,16 +13,11 @@ from maps.models import MapData
 from maps.widgets import InfoMap, map_options_for_region
 
 
-class CreatePageSearchView(SearchView):
-    def __call__(self, request, region=''):
-        from regions.models import Region
-        self.region = Region.objects.get(slug=region)
-        return super(CreatePageSearchView, self).__call__(request)
-
+class WithMapSearchView(SearchView):
     def get_map(self):
         (paginator, page) = self.build_page()
         result_pks = [p.pk for p in page.object_list if p]
-        maps = MapData.objects.filter(region=self.region, page__pk__in=result_pks)
+        maps = MapData.objects.filter(page__pk__in=result_pks)
         if not maps:
             return None
         widget_options = copy.deepcopy(getattr(settings,
@@ -38,10 +34,27 @@ class CreatePageSearchView(SearchView):
             map_controls.remove('KeyboardDefaults')
         widget_options['map_options'] = map_opts
         widget_options['map_div_class'] = 'mapwidget small'
-        widget_options.update(map_options_for_region(self.region))
         map = InfoMap([(obj.geom, popup_html(obj)) for obj in maps],
             options=widget_options)
         return map
+
+    def extra_context(self):
+        context = super(WithMapSearchView, self).extra_context()
+        context['query_slug'] = Page(name=self.query).pretty_slug
+        context['keywords'] = self.query.split()
+        context['map'] = self.get_map()
+        return context
+
+
+class GlobalSearchView(WithMapSearchView):
+    template = 'search/global_search.html'
+
+
+class CreatePageSearchView(WithMapSearchView):
+    def __call__(self, request, region=''):
+        from regions.models import Region
+        self.region = Region.objects.get(slug=region)
+        return super(CreatePageSearchView, self).__call__(request)
 
     def build_form(self, *args, **kwargs):
         form = super(CreatePageSearchView, self).build_form(*args, **kwargs)
@@ -50,11 +63,8 @@ class CreatePageSearchView(SearchView):
 
     def extra_context(self):
         context = super(CreatePageSearchView, self).extra_context()
-        context['page_exists_for_query'] = Page.objects.filter(
-            slug=slugify(self.query), region=self.region)
-        context['query_slug'] = Page(name=self.query).pretty_slug
-        context['keywords'] = self.query.split()
-        context['map'] = self.get_map()
+        context['allow_page_creation'] = not Page.objects.filter(
+            slug=slugify(self.query), region=self.region).exists()
         context['region'] = self.region
         return context
 
@@ -72,10 +82,22 @@ class SearchForm(DefaultSearchForm):
         keywords = cleaned_data.get('q', '').split()
         if not keywords:
             return sqs
-        # we do __in because we want partial matches, not just exact ones
-        return sqs.filter_or(name__in=keywords).filter_or(tags__in=keywords).filter_and(region_id=self.region.id)
+        # we do __in because we want partial matches, not just exact ones.
+        # And by default, Haystack only searches the `document` field, so
+        # we need this to activate the boosts.
+        return sqs.filter_or(full_name__in=keywords).\
+            filter_or(slug__in=keywords).filter_or(name__in=keywords).\
+            filter_or(tags__in=keywords)
+
+
+class InRegionSearchForm(DefaultSearchForm):
+    def search(self):
+        sqs = super(InRegionSearchForm, self).search()
+        return sqs.filter_and(region_id=self.region.id)
+
 
 urlpatterns = patterns('',
-    url(r'^$', CreatePageSearchView(form_class=SearchForm),
+    url(r'^(?P<region>[^/]+?)/$', CreatePageSearchView(form_class=InRegionSearchForm),
         name='haystack_search'),
+    url(r'^$', GlobalSearchView(form_class=SearchForm), name='global_search'),
 )

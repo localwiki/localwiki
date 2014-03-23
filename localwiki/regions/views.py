@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView as DjangoTemplateView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, FormView, UpdateView
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 from django.contrib import messages
 from django.contrib.gis.geos import GEOSGeometry, Polygon, MultiPolygon
 from django.template.loader import render_to_string
@@ -234,3 +234,19 @@ class RegionBannedUpdate(RegionAdminRequired, RegionMixin, UpdateView):
         # We need to pass the `region` to the BannedSetForm.
         kwargs['region'] = self.get_region()
         return kwargs
+
+
+def suggest(request, *args, **kwargs):
+    """
+    Simple region suggest.
+    """
+    # XXX TODO: Break this out when doing the API work.
+    from haystack.query import SearchQuerySet 
+    import json
+
+    term = request.GET.get('term', None)
+    if not term:
+        return HttpResponse('')
+    results = SearchQuerySet().models(Region).filter(name_auto=term).filter_or(slug_auto=term)
+    results = [{'value': p.full_name, 'url': p.object.get_absolute_url(), 'slug': p.object.slug} for p in results]
+    return HttpResponse(json.dumps(results))

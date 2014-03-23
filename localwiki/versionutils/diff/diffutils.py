@@ -324,9 +324,7 @@ class HtmlFieldDiff(BaseFieldDiff):
         return {'deleted': self.field1, 'inserted': self.field2}
 
     class Media:
-        js = (reverse_lazy('django.views.i18n.javascript_catalog',
-                           args=['versionutils.diff']),
-              static_url('js/diff/htmldiff.js'),
+        js = (static_url('js/diff/htmldiff.js'),
               static_url('js/jquery.qtip.min.js'))
         css = {'all': (static_url('css/jquery.qtip.min.css'),)}
 

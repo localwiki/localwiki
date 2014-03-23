@@ -528,15 +528,27 @@ textarea, input, select {
 #header .site_search input {
     float: left;
 }
+
+#header .site_search input::-webkit-input-placeholder {
+    color: #868686;
+}
+#header .site_search input::-moz-placeholder {
+    color: #868686;
+}
+#header .site_search input::-ms-input-placeholder{ 
+    color: #868686;
+}
+
 #header .site_search input[type="text"], #header .site_search #id_q {
     padding: 0;
     height: 2em;
-    width: 180px;
+    width: 200px;
     font-size: 15px;
     line-height: 30px;
     margin-right: 0.5em;
     padding-left: 30px;
     background-color: #fafafa;
+    border: 1px solid #cccccc;
 }
 /* Hide this but allow Enter-to-submit */
 #header .site_search input[type="submit"] {
@@ -546,20 +558,22 @@ textarea, input, select {
 }
 
 .search input[type="text"] {
-    background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 60%;
+    background: #ffffff url(../img/magnifying_glass.png) no-repeat 10px 56%;
     padding-left: 30px;
 }
 
+/* Hacky - needs fix but this..kind of worked: */
 @media screen and (max-width: 700px) {
     #header .site_search {
-        float: left;
-        margin-top: -2em;
-        padding-left: 0.5em;
-        padding-right: 0.5em;
+        width: 34%;
+    }
+    #header .site_search input[type="text"], #header .site_search #id_q {
+        width: 85%;
     }
 }
 @media screen and (max-width: 500px) {
     #header .site_search {
+        width: auto;
         float: none;
         margin: 0;
         margin-right: 80px;
@@ -784,6 +798,12 @@ textarea, input, select {
   height: 1.5em!important;
 }
 #map .simple_pagination a {
+  margin-right: 0.5em;
+  font-size: 90%;
+  padding-top: 12px;
+  padding-bottom: 13px;
+  padding-right: 0.8em;
+  font-weight: normal;
   margin-right: 0.5em;
 }
 
@@ -1115,7 +1135,7 @@ input {
           transition: border linear 0.2s, box-shadow linear 0.2s;
 }
 input:focus {
-  border-color: rgba(82, 168, 236, 0.8);
+  border-color: rgba(82, 168, 236, 0.7)!important;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
      -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
@@ -1610,6 +1630,28 @@ input:focus {
     right: 8em;
 }
 
+#search_results #other_regions {
+    background: #E8ECEF url(../img/header-bg.png) top left repeat;
+    padding: 1em;
+    border-bottom: 1px solid #DAE1E5;
+    border-left: 1px solid #DAE1E5;
+    border-right: 1px solid #DAE1E5;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    margin-bottom: 0.8em;
+    margin-top: 1em;
+}
+.with_map #search_results #other_regions {
+    margin-right: 480px;
+}
+
+#search_results .region_result {
+    background-color: #E8ECEF;
+    padding: 0.8em 0.5em 0.5em 1em;
+    margin-bottom: 1em;
+}
+
 /* Fix an issue with #map being floated + scrollToFixed */
 #search_results #map.scroll-to-fixed-fixed {
     left: auto!important;
@@ -1636,12 +1678,15 @@ input:focus {
         margin-top: 1em;
         margin-right: 0;
     }
+    .with_map #search_results #other_regions {
+        margin-right: 0;
+    }
 }
 
 .search .tt-dropdown-menu {
     margin-top: 0em;
     background-color: white;
-    min-width: 210px;
+    min-width: 230px;
     border: 1px solid #BFBFBF;
     border-radius: 3px;
     -moz-border-radius: 3px;
@@ -1670,8 +1715,13 @@ input:focus {
 .tt-hint {
     color: #999!important;
 }
-.tt-is-under-cursor {
+.tt-cursor {
     background-color: #d7e7f9;
+}
+.autocomplete_divider {
+    padding: 0 1em 0 30px;
+    margin: -1px!important;
+    border-bottom: 1px solid #dedede;
 }
 
 /*
