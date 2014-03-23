@@ -201,7 +201,7 @@ class PageTagSetRevertView(PermissionRequiredMixin, RegionMixin, RevertView):
             args=[self.kwargs['region'], self.kwargs['slug']])
 
 
-def suggest_tags(request, region=None):
+def suggest_tags(request):
     """
     Simple tag suggest.
     """
@@ -211,8 +211,13 @@ def suggest_tags(request, region=None):
     term = request.GET.get('term', None)
     if not term:
         return HttpResponse('')
-    results = Tag.objects.filter(
-        name__istartswith=term,
-        region__slug=region).exclude(pagetagset=None)
+    region_id = request.GET.get('region_id', None)
+    if region_id is not None:
+        results = Tag.objects.filter(
+            name__istartswith=term,
+            region__id=int(region_id)).exclude(pagetagset=None)
+    else:
+        results = Tag.objects.filter(
+            name__istartswith=term).exclude(pagetagset=None)
     results = [t.name for t in results]
     return HttpResponse(json.dumps(results))

@@ -57,7 +57,7 @@ urlpatterns = patterns('',
     (r'^_tools/dashboard/', include(dashboard.site.urls)),
 
     # JS i18n support.
-    (r'^jsi18n/(?P<packages>\S+?)/$', 'django.views.i18n.javascript_catalog'),
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog'),
 
     (r'^admin$', RedirectView.as_view(url='/admin/')),
     (r'^admin/subscribers/$', staff_member_required(SubscribedList.as_view())),

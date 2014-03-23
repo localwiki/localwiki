@@ -1,0 +1,2 @@
+{{ object.full_name }}
+{{ object.slug }}

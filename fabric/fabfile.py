@@ -550,7 +550,10 @@ def setup_ec2():
     create_swap()
 
 def setup_celery():
-    put('config/init/celery.conf', '/etc/init/celery.conf', use_sudo=True)
+    if env.host_type == 'vagrant':   
+        put('config/init/celery_vagrant.conf', '/etc/init/celery.conf', use_sudo=True)
+    else:
+        put('config/init/celery.conf', '/etc/init/celery.conf', use_sudo=True)
     sudo('touch /var/log/celery.log')
     sudo('chown www-data:www-data /var/log/celery.log')
     sudo('chmod 660 /var/log/celery.log')

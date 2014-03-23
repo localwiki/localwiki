@@ -511,9 +511,17 @@ def suggest(request, *args, **kwargs):
     import json
 
     term = request.GET.get('term', None)
-    region_id = int(request.GET.get('region_id'))
+    if 'region_id' in request.GET:
+        region_id = int(request.GET.get('region_id'))
+    else:
+        region_id = None
     if not term:
         return HttpResponse('')
-    results = SearchQuerySet().autocomplete(name_auto=term).filter_and(region_id=region_id)
-    results = [p.name for p in results]
+
+    if region_id is not None:
+        results = SearchQuerySet().models(Page).autocomplete(name_auto=term).filter_and(region_id=region_id)
+    else:
+        results = SearchQuerySet().models(Page).autocomplete(name_auto=term)
+
+    results = [{'value': p.name, 'region': p.object.region.slug, 'url': p.object.get_absolute_url()} for p in results]
     return HttpResponse(json.dumps(results))

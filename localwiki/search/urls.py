@@ -82,8 +82,12 @@ class SearchForm(DefaultSearchForm):
         keywords = cleaned_data.get('q', '').split()
         if not keywords:
             return sqs
-        # we do __in because we want partial matches, not just exact ones
-        return sqs.filter_or(name__in=keywords).filter_or(tags__in=keywords)
+        # we do __in because we want partial matches, not just exact ones.
+        # And by default, Haystack only searches the `document` field, so
+        # we need this to activate the boosts.
+        return sqs.filter_or(full_name__in=keywords).\
+            filter_or(slug__in=keywords).filter_or(name__in=keywords).\
+            filter_or(tags__in=keywords)
 
 
 class InRegionSearchForm(DefaultSearchForm):

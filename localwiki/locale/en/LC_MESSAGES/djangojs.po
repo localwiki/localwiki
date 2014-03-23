@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-25 23:19-0600\n"
+"POT-Creation-Date: 2014-03-23 05:41-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,7 +127,7 @@ msgstr ""
 msgid "Show title"
 msgstr ""
 
-#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:212
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:213
 #, c-format
 msgid "List of pages tagged \"%s\""
 msgstr ""
@@ -231,6 +231,14 @@ msgstr ""
 #: pages/static/js/ckeditor/_source/plugins/wikiplugins/plugin.js:23
 #: pages/static/js/ckeditor/_source/plugins/wikiplugins/plugin.js:24
 msgid "Insert Object"
+msgstr ""
+
+#: themes/sapling/assets/js/base.js:112
+msgid "Search for \"{{ value }}\""
+msgstr ""
+
+#: themes/sapling/assets/js/base.js:148
+msgid "Search all of LocalWiki"
 msgstr ""
 
 #: versionutils/diff/static/js/diff/htmldiff.js:24

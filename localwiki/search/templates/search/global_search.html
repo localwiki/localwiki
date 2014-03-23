@@ -39,6 +39,13 @@
               {% endwith %}
           </p>
           {% endifequal %}
+          {% ifequal result.model_name "region" %}
+          <div class="region_result">
+          <h3>
+              <a href="{{ result.object.get_absolute_url }}">{{ result.full_name }}</a> (<a href="{{ result.object.get_absolute_url }}">{{ result.object.slug }}</a>)
+          </h3>
+          </div>
+          {% endifequal %}
       {% empty %}
           <p>{% trans "No results found." %}</p>
       {% endfor %}

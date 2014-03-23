@@ -77,21 +77,85 @@ $(function() {
 
 /* For twitter typeahead */
 $(document).ready(function() {
-    var remote_url = '/_api/pages/suggest?term=%QUERY';
     if (region_id) {
-        remote_url += '&region_id=' + region_id;
+        var pages_remote_url = '/_api/pages/suggest?term=%QUERY&region_id=' + region_id;
     }
-    $('#id_q').typeahead([
-        {
-          name: 'pages',
-          remote: remote_url,
-        }
-    ])
-    .on('typeahead:selected', function(e, datum) {
-        var url = encodeURIComponent(datum.value.replace(' ', '_'));
-        url = url.replace('%2F', '/');
-        document.location = '/' + region_slug + '/' + url;
+    else {
+        var pages_remote_url = '/_api/pages/suggest?term=%QUERY';
+    }
+    var autoRegions = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: '/_api/regions/suggest?term=%QUERY'
     });
+    var autoPages = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: pages_remote_url
+    });
+    autoRegions.initialize();
+    autoPages.initialize();
+
+    if (region_id) {
+        $('#id_q').typeahead(null,
+            {
+              name: 'pages',
+              source: autoPages.ttAdapter(),
+            },
+            {
+                // footer
+                source: function(q, cb) {
+                    return cb([{'value': q, 'url': '/_search/?q=' + q}]);
+                },
+                templates: {
+                    suggestion: Handlebars.compile("<p>" +
+                        gettext('Search for "{{ value }}"') +
+                        "</p>"
+                    )
+                }
+            }
+        )
+        .on('typeahead:selected', function(e, datum) {
+            document.location = datum.url;
+        });
+    }
+    else {
+        
+        $('#id_q').typeahead(null,
+            {
+              name: 'regions',
+              source: autoRegions.ttAdapter(),
+              templates: {
+                suggestion: Handlebars.compile("<p><strong>{{ value }}</strong> &mdash; {{ slug }}</p>"),
+              }
+            },
+            {
+              name: 'pages',
+              source: autoPages.ttAdapter(),
+              templates: {
+                header: Handlebars.compile('<div class="autocomplete_divider"></div>'),
+                suggestion: Handlebars.compile("<p><strong>{{ value }}</strong> &mdash; {{ region }}</p>")
+              }
+            },
+            {
+                // footer
+                source: function(q, cb) {
+                    return cb([{'value': q, 'url': '/_search/?q=' + q}]);
+                },
+                templates: {
+                    suggestion: Handlebars.compile(
+                        "<p>" +
+                        gettext("Search all of LocalWiki") +
+                        "</p>"
+                    )
+                }
+            }
+        )
+        .on('typeahead:selected', function(e, datum) {
+            document.location = datum.url;
+        });
+    }
+    
 });
 
 /* Add page button */
