@@ -276,6 +276,7 @@ def setup_postgres(test_server=False):
     sudo('service postgresql start')
 
 def setup_jetty():
+    put("config/default/jetty", "/etc/default/", use_sudo=True)
     sudo("sed -i 's/NO_START=1/NO_START=0/g' /etc/default/jetty")
     sudo("cp /etc/solr/conf/schema.xml /etc/solr/conf/schema.xml.orig")
     put("config/solr_schema.xml", "/etc/solr/conf/schema.xml", use_sudo=True)
@@ -283,15 +284,13 @@ def setup_jetty():
     sudo("service jetty stop")
     sudo("service jetty start")
 
-def install_solr_requirements():
-    sudo("apt-add-repository -y ppa:webops/solr-3.5")
-
 def install_system_requirements():
     # Update package list
     sudo('apt-get update')
     sudo('apt-get -y install python-software-properties')
 
-    install_solr_requirements()
+    # Custom PPA for Solr 3.5
+    sudo("apt-add-repository -y ppa:webops/solr-3.5")
 
     # Need GDAL >= 1.10 and PostGIS 2, so we use this
     # PPA.
