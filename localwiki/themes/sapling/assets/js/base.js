@@ -103,13 +103,28 @@ $(document).ready(function() {
               source: autoPages.ttAdapter(),
             },
             {
-                // footer
+                // Footer: search within this region
+                source: function(q, cb) {
+                    return cb([{'value': q, 'url': '/_search/' + region_slug + '/?q=' + q}]);
+                },
+                templates: {
+                    header: Handlebars.compile('<div class="autocomplete_divider"></div>'),
+                    suggestion: Handlebars.compile("<p>" +
+                        gettext('Search for "{{ value }}"') +
+                        "</p>"
+                    )
+                }
+            },
+            {
+                // Footer: search all of LocalWiki
                 source: function(q, cb) {
                     return cb([{'value': q, 'url': '/_search/?q=' + q}]);
                 },
                 templates: {
-                    suggestion: Handlebars.compile("<p>" +
-                        gettext('Search for "{{ value }}"') +
+                    header: Handlebars.compile('<div class="autocomplete_divider"></div>'),
+                    suggestion: Handlebars.compile(
+                        "<p>" +
+                        gettext("Search all of LocalWiki") +
                         "</p>"
                     )
                 }
@@ -138,11 +153,12 @@ $(document).ready(function() {
               }
             },
             {
-                // footer
+                // Footer: Do search as usual
                 source: function(q, cb) {
                     return cb([{'value': q, 'url': '/_search/?q=' + q}]);
                 },
                 templates: {
+                    header: Handlebars.compile('<div class="autocomplete_divider"></div>'),
                     suggestion: Handlebars.compile(
                         "<p>" +
                         gettext("Search all of LocalWiki") +

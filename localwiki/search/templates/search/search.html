@@ -31,6 +31,7 @@
             {% endif %}
             </div>
         {% endif %}
+        
         <div id="results_list">
         {% for result in page.object_list %}
             {% ifequal result.model_name "page" %}
@@ -61,6 +62,14 @@
                 {% endif %}
             </div>
         {% endif %}
+
+        <div id="other_regions">
+            {% url 'global_search' as global_search%}
+            {% blocktrans %}
+            Want to <a href="{{ global_search }}?q={{ query }}">search all of LocalWiki for "{{ query }}"</a>?
+            {% endblocktrans %}
+        </div>
+
     {% else %}
         {# Show some example queries to run, maybe query syntax, something else? #}
         <div id="create_page_dialog">

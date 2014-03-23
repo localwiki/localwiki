@@ -799,6 +799,12 @@ textarea, input, select {
 }
 #map .simple_pagination a {
   margin-right: 0.5em;
+  font-size: 90%;
+  padding-top: 12px;
+  padding-bottom: 13px;
+  padding-right: 0.8em;
+  font-weight: normal;
+  margin-right: 0.5em;
 }
 
 /* Map widget, when it's part of page content */
@@ -1624,6 +1630,22 @@ input:focus {
     right: 8em;
 }
 
+#search_results #other_regions {
+    background: #E8ECEF url(../img/header-bg.png) top left repeat;
+    padding: 1em;
+    border-bottom: 1px solid #DAE1E5;
+    border-left: 1px solid #DAE1E5;
+    border-right: 1px solid #DAE1E5;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    margin-bottom: 0.8em;
+    margin-top: 1em;
+}
+.with_map #search_results #other_regions {
+    margin-right: 480px;
+}
+
 #search_results .region_result {
     background-color: #E8ECEF;
     padding: 0.8em 0.5em 0.5em 1em;
@@ -1654,6 +1676,9 @@ input:focus {
 @media screen and (max-width: 700px) {
     .with_map #search_results #results_list {
         margin-top: 1em;
+        margin-right: 0;
+    }
+    .with_map #search_results #other_regions {
         margin-right: 0;
     }
 }
