@@ -219,5 +219,9 @@ def suggest_tags(request):
     else:
         results = Tag.objects.filter(
             name__istartswith=term).exclude(pagetagset=None)
+
+    # Set a sane limit
+    results = results[:20]
+
     results = [t.name for t in results]
     return HttpResponse(json.dumps(results))

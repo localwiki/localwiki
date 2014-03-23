@@ -523,5 +523,8 @@ def suggest(request, *args, **kwargs):
     else:
         results = SearchQuerySet().models(Page).autocomplete(name_auto=term)
 
+    # Set a sane limit
+    results = results[:20]
+
     results = [{'value': p.name, 'region': p.object.region.slug, 'url': p.object.get_absolute_url()} for p in results]
     return HttpResponse(json.dumps(results))

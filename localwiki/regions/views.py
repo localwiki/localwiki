@@ -248,5 +248,8 @@ def suggest(request, *args, **kwargs):
     if not term:
         return HttpResponse('')
     results = SearchQuerySet().models(Region).filter(name_auto=term).filter_or(slug_auto=term)
+    # Set a sane limit
+    results = results[:20]
+
     results = [{'value': p.full_name, 'url': p.object.get_absolute_url(), 'slug': p.object.slug} for p in results]
     return HttpResponse(json.dumps(results))
