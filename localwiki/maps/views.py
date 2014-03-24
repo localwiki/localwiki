@@ -6,13 +6,16 @@ from operator import attrgetter
 from django.conf import settings
 from django.views.generic import DetailView, ListView
 from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
 from django.http import HttpResponseNotFound
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from django.db import IntegrityError
 from django.views.generic.list import BaseListView
 from olwidget.widgets import InfoMap as OLInfoMap
 from django.contrib.gis.geos.polygon import Polygon
 from django.contrib.gis.geos import Point
+from django.utils.translation import ugettext as _
 from django.contrib.gis.measure import D
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
@@ -310,6 +313,56 @@ class MapUpdateView(PermissionRequiredMixin, CreateObjectMixin, RegionMixin, Upd
     def get_success_url(self):
         return reverse('maps:show',
             args=[self.object.region.slug, self.object.page.pretty_slug])
+
+
+class MapCreateWithoutPageView(MapUpdateView):
+    def _get_or_create_page(self):
+        pagename = self.request.GET.get('pagename')
+        region = self.get_region()
+        has_page = Page.objects.filter(slug=slugify(pagename), region=region)
+        if has_page:
+            page = has_page[0]
+        else:
+            content = _('<p>What do you know about %s?</p>') % pagename
+            page = Page(slug=slugify(pagename), name=pagename, content=content, region=region)
+        return page
+
+    def get_object(self):
+        page = self._get_or_create_page()
+        region = self.get_region()
+        if MapData.objects.filter(page=page, region=region).exists():
+            map_url = reverse('maps:show', args=[self.kwargs.get('region'), slugify(pagename)])
+            raise IntegrityError(_('<a href="%s">Map for page %s</a> already exists.' % (map_url, pagename)))
+        return MapData(page=page, region=region)
+
+    def form_valid(self, form):
+        page = self._get_or_create_page()
+        page.save(comment=form.get_save_comment())
+        self.object.page = page
+        return super(MapCreateWithoutPageView, self).form_valid(form)
+
+    def success_msg(self):
+        return (
+            _('Map saved! You should probably go <a href="%s">edit the page that was created</a>, too.') %
+            reverse('pages:edit', args=[self.kwargs.get('region'), self.object.page.name])
+        )
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(MapCreateWithoutPageView, self).get_context_data(*args, **kwargs)
+        # TODO: make this less hacky
+        context['form'].fields['geom'].widget.options.update({'permalink': True})
+        return context
+
+    def get_map(self):
+        map_objects = self.get_map_objects()
+        options = map_options_for_region(self.get_region())
+        options.update({
+            'dynamic': self.dynamic,
+            'zoomToDataExtent': self.zoom_to_data,
+            'permalink': self.permalink,
+            'cluster': True
+        })
+        return InfoMap(map_objects, options=options)
 
 
 class MapDeleteView(PermissionRequiredMixin, MapDetailView, DeleteView):

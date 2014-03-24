@@ -16,6 +16,9 @@
         $("#results_pane").height($('.mapwidget').height());
     }
     $(window).resize(size_map);
+    $(document).ready(function() {
+        SaplingMap.add_map_button();
+    });
 </script>
 {% endblock %}
 
@@ -38,6 +41,12 @@
 {% endblock %}
 
 {% block content %}
+    <div id="add_map_button"><a href="#" class="little button"><span class="text">{% trans "Add a new map" %}</span></a></div>
+    <form method="GET" action="{% url 'maps:edit-without-page' region=region.slug %}" id="new_map_form">
+    <input type="text" name="pagename" id="pagename" placeholder="{% trans "What's here? (Name of page)" %}"/>
+    <input type="hidden" name="show_templates" value="1" />
+    <input type="submit" value="{% trans 'Add a new map' %}" class="little">
+    </form>
     <div id="results_pane"></div>
     {{ map }}
 {% endblock %}

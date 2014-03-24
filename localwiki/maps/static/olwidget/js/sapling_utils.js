@@ -79,6 +79,25 @@ SaplingMap = {
         this.disable_scroll_zoom(map);
     },
 
+    add_map_button: function() {
+        $('#add_map_button').click(function(e) {
+            e.preventDefault();
+            $(this).hide()
+            $('#new_map_form').show();
+            $('#new_map_form #pagename').focus();
+        });
+        $('#new_map_form').submit(function(e) {
+            console.log('sdfkjfhs');
+            e.preventDefault();
+            var hash = window.location.hash;
+            hash = hash.replace('#', '');
+            var action = $('#new_map_form').attr('action');
+            console.log(action + '#' + hash);
+            $('#new_map_form').attr('action', action + '#' + hash);
+            this.submit();
+        });
+    },
+
     setup_link_hover_activation: function(map) {
         var layer = map.vectorLayers[0];
         var url_to_features = {};

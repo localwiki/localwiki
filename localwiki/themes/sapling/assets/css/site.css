@@ -807,6 +807,34 @@ textarea, input, select {
   margin-right: 0.5em;
 }
 
+#new_map_form {
+    display: none;
+    position: absolute;
+    z-index: 500;
+    margin-left: 90px;
+    margin-top: 30px;
+}
+
+/* Hide this but allow Enter-to-submit */
+#new_map_form input[type="submit"] {
+    position: absolute;
+    z-index: -1000;
+    left: -1000px;
+}
+#add_map_button {
+    position: absolute;
+    z-index: 500;
+    margin-left: 90px;
+    margin-top: 30px;
+}
+#add_map_button .button {
+    font-weight: normal;
+}
+#add_map_button .button .text {
+    background: url(../img/map-icon-small.png) 0px 66% no-repeat;
+    padding-left: 20px;
+}
+
 /* Map widget, when it's part of page content */
 #page #map {
     margin: 0.5em;
