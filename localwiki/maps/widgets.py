@@ -48,8 +48,5 @@ def map_options_for_region(region):
         'default_zoom': region.regionsettings.region_zoom_level,
     }
     layers = copy(getattr(settings, 'OLWIDGET_DEFAULT_OPTIONS')['layers'])
-    if region.regionsettings.default_language == 'ja':
-        # Japan needs OSM Mapnik for now - faster OSM updates
-        layers[0] = 'osm.mapnik'
     opts['layers'] = layers
     return opts

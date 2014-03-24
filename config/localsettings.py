@@ -18,9 +18,6 @@ DATABASES = {
     }
 }
 
-# Get an API key at http://cloudmade.com/start.
-CLOUDMADE_API_KEY = 'XXX'
-
 # For testing, you can start the python debugging smtp server like so:
 # sudo python -m smtpd -n -c DebuggingServer localhost:25
 EMAIL_HOST = 'localhost'
@@ -34,10 +31,11 @@ DEFAULT_FROM_EMAIL = 'dontreply@{{ public_hostname }}'
 #######################################################################
 
 OLWIDGET_CUSTOM_LAYER_TYPES = {
-    'cachedcloudmade': """OpenLayers.Layer.CachedCloudMade('CachedCloudMade',
-            ['//map-a.localwiki.org/tile/ca694687020d468283a545db191bcb81/35165/256/',
-             '//map-b.localwiki.org/tile/ca694687020d468283a545db191bcb81/35165/256/',
-             '//map-c.localwiki.org/tile/ca694687020d468283a545db191bcb81/35165/256/'])""",
+    'mblw': """OpenLayers.Layer.XYZ('MB LW',
+        ["http://a.tiles.mapbox.com/v3/philipn.hjmo8m80/${z}/${x}/${y}.png"], {
+            sphericalMercator: true,
+            wrapDateLine: true,
+    })""",
 }
 
 DAISYDIFF_URL = 'http://localhost:8080/daisydiff/diff'

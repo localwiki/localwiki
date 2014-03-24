@@ -356,7 +356,7 @@ OLWIDGET_DEFAULT_OPTIONS = {
     'default_zoom': 3,
     'zoom_to_data_extent_min': 16,
 
-    'layers': ['cachedcloudmade', 've.aerial'],
+    'layers': ['mblw', 've.aerial'],
     'map_options': {
         'controls': ['Navigation', 'PanZoom', 'KeyboardDefaults'],
         'theme': '/static/openlayers/theme/sapling/style.css',
