@@ -331,8 +331,7 @@ class MapCreateWithoutPageView(MapUpdateView):
         page = self._get_or_create_page()
         region = self.get_region()
         if MapData.objects.filter(page=page, region=region).exists():
-            map_url = reverse('maps:show', args=[self.kwargs.get('region'), slugify(pagename)])
-            raise IntegrityError(_('<a href="%s">Map for page %s</a> already exists.' % (map_url, pagename)))
+            return MapData.objects.get(page=page, region=region)
         return MapData(page=page, region=region)
 
     def form_valid(self, form):
