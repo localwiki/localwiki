@@ -105,12 +105,10 @@ SaplingMap = {
             $('#new_map_form #map_pagename').focus();
         });
         $('#new_map_form').submit(function(e) {
-            console.log('sdfkjfhs');
             e.preventDefault();
             var hash = window.location.hash;
             hash = hash.replace('#', '');
             var action = $('#new_map_form').attr('action');
-            console.log(action + '#' + hash);
             $('#new_map_form').attr('action', action + '#' + hash);
             this.submit();
         });
@@ -565,10 +563,10 @@ SaplingMap = {
             '<form id="map_search" class="search" action="." onSubmit="return false;" method="POST"><input type="text" id="address" name="address" placeholder="Find via address.."/></form>');
 
         var geoCodeURL = "http://nominatim.openstreetmap.org/search";
-        $('#address').typeahead([
-            {
-              name: 'address',
-              remote: {
+        var mapSearch = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
                 url: geoCodeURL,
                 replace: function(url, uriEncodedQuery) {
                     var q = decodeURIComponent(uriEncodedQuery);
@@ -580,12 +578,17 @@ SaplingMap = {
                     }
                     return (url + '?q=' + encodeURIComponent(q)) + '&format=json';
                 }
-              },
-              valueKey: 'display_name'
             }
-        ])
+        });
+        mapSearch.initialize();
+        $('#address').typeahead(null,
+            {
+              name: 'address',
+              source: mapSearch.ttAdapter(),
+              displayKey: 'display_name'
+            }
+        )
         .on('typeahead:selected', function(e, datum) {
-            console.log(datum.lon + ' ' + datum.lat);
             if (!datum.osm_type) {
                 // Isn't a way, relation or node - just a point I think?
                 var point = new OpenLayers.Geometry.Point(datum.lon, datum.lat);
@@ -603,7 +606,7 @@ SaplingMap = {
             $('.mapwidget').prepend('<div class="loading"></div>');
             $('.mapwidget .loading').height($('.mapwidget').height());
 
-            $.get('../_get_osm/', { 'display_name': datum.display_name, 'osm_id': datum.osm_id, 'osm_type': datum.osm_type }, function(data){
+            $.get('/' + region_slug + '/map/_get_osm/', { 'display_name': datum.display_name, 'osm_id': datum.osm_id, 'osm_type': datum.osm_type }, function(data){
                 var temp = new olwidget.InfoLayer([[data.geom, 'osm', 'osm']]);
                 temp.visibility = false;
                 map.addLayer(temp);
