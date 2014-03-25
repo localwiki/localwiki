@@ -817,6 +817,9 @@ textarea, input, select {
 #new_map_form .tt-dropdown-menu {
     min-width: 250px;
 }
+#new_map_form.with_results, #add_map_button.with_results {
+    margin-left: 25em;
+}
 
 /* Hide this but allow Enter-to-submit */
 #new_map_form input[type="submit"] {

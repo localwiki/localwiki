@@ -190,6 +190,8 @@ SaplingMap = {
               var feature = evt.feature;
               var featureBounds = feature.geometry.bounds;
               $('#results_pane').css('display', 'block');
+              $('#add_map_button').addClass('with_results');
+              $('#new_map_form').addClass('with_results');
               $('.mapwidget').css('float', 'left');
               size_map();
               map.updateSize();
