@@ -12,7 +12,7 @@ def filtered_tags(region_slug, list, keywords):
     filtered = []
     for word in keywords:
         for tag in unused:
-            if word in tag:
+            if word.lower() in tag.lower():
                 filtered.append(tag)
                 unused.remove(tag)
                 break
