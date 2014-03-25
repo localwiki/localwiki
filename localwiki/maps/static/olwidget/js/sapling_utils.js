@@ -101,8 +101,8 @@ SaplingMap = {
             e.preventDefault();
             $(this).hide()
             $('#new_map_form').show();
-            $('#new_map_form #map_pagename').focus();
             SaplingMap._setup_pagename_autocomplete();
+            $('#new_map_form #map_pagename').focus();
         });
         $('#new_map_form').submit(function(e) {
             console.log('sdfkjfhs');
