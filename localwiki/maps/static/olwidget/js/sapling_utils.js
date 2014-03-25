@@ -79,12 +79,30 @@ SaplingMap = {
         this.disable_scroll_zoom(map);
     },
 
+    _setup_pagename_autocomplete: function () {
+        var pages_remote_url = '/_api/pages/suggest?term=%QUERY&region_id=' + region_id;
+        var autoPages = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace('value'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: pages_remote_url
+        });
+        autoPages.initialize();
+
+        $('#map_pagename').typeahead(null,
+            {
+              name: 'map_page_name',
+              source: autoPages.ttAdapter(),
+            }
+        );
+    },
+
     add_map_button: function() {
         $('#add_map_button').click(function(e) {
             e.preventDefault();
             $(this).hide()
             $('#new_map_form').show();
-            $('#new_map_form #pagename').focus();
+            $('#new_map_form #map_pagename').focus();
+            SaplingMap._setup_pagename_autocomplete();
         });
         $('#new_map_form').submit(function(e) {
             console.log('sdfkjfhs');

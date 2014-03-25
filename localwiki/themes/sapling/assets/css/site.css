@@ -814,6 +814,9 @@ textarea, input, select {
     margin-left: 90px;
     margin-top: 30px;
 }
+#new_map_form .tt-dropdown-menu {
+    min-width: 250px;
+}
 
 /* Hide this but allow Enter-to-submit */
 #new_map_form input[type="submit"] {
@@ -1711,7 +1714,7 @@ input:focus {
     }
 }
 
-.search .tt-dropdown-menu {
+.tt-dropdown-menu {
     margin-top: 0em;
     background-color: white;
     min-width: 230px;
@@ -1721,12 +1724,12 @@ input:focus {
     -webkit-border-radius: 3px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2)
 }
-.search .twitter-typeahead {
+.twitter-typeahead {
     float: left;
     height: 100%;
 }
 @media screen and (max-width: 500px) {
-    .search .twitter-typeahead {
+    .twitter-typeahead {
         width: 100%;
     }
 }
