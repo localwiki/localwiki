@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView as DjangoTemplateView
 from django.views.generic import ListView
+from django.http import Http404
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.http import HttpResponseForbidden, HttpResponse
 from django.contrib import messages
@@ -27,12 +28,14 @@ class RegionMixin(object):
         """
         Returns the Region associated with this view.
         """
-        return Region.objects.get(
+        r = Region.objects.get(
             slug=slugify(self.kwargs.get('region')))
+        if not r.is_active:
+            raise Http404(_("Region '%s' was deleted." % r.slug))
 
     def get_queryset(self):
         qs = super(RegionMixin, self).get_queryset()
-        return qs.filter(region=self.get_region())
+        return qs.filter(region=self.get_region(), is_active=True)
 
     def get_context_data(self, *args, **kwargs):
         context = super(RegionMixin, self).get_context_data(*args, **kwargs)
@@ -72,7 +75,7 @@ class RegionListView(ListView):
     zoom_to_data = True
 
     def get_queryset(self):
-        return Region.objects.all().exclude(slug=settings.MAIN_REGION).order_by('full_name')
+        return Region.objects.filter(is_active=True).exclude(slug=settings.MAIN_REGION).order_by('full_name')
 
     def get_context_data(self, *args, **kwargs):
         from maps.widgets import InfoMap
