@@ -32,6 +32,7 @@ class RegionMixin(object):
             slug=slugify(self.kwargs.get('region')))
         if not r.is_active:
             raise Http404(_("Region '%s' was deleted." % r.slug))
+        return r
 
     def get_queryset(self):
         qs = super(RegionMixin, self).get_queryset()
