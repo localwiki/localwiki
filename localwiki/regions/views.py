@@ -36,7 +36,7 @@ class RegionMixin(object):
 
     def get_queryset(self):
         qs = super(RegionMixin, self).get_queryset()
-        return qs.filter(region=self.get_region(), is_active=True)
+        return qs.filter(region=self.get_region(), region__is_active=True)
 
     def get_context_data(self, *args, **kwargs):
         context = super(RegionMixin, self).get_context_data(*args, **kwargs)
