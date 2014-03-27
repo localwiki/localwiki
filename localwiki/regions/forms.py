@@ -36,6 +36,7 @@ class RegionForm(MediaMixin, MapModelForm):
 
     class Meta:
         model = Region
+        exclude = ('is_active',)
 
     def clean_geom(self):
         data = self.cleaned_data['geom']
