@@ -7,6 +7,8 @@ from django.db import models
 from django.conf import settings
 from django.contrib.sites.models import Site
 
+from follow.utils import register as register_follow
+
 
 #######################################################################
 #
@@ -62,6 +64,8 @@ class UserProfile(models.Model):
     def gravatar_email(self):
         return self._gravatar_email or self.user.email
 
+# Register User with `follow` app.
+register_follow(User)
 
 # For registration calls
 import signals

@@ -158,6 +158,7 @@ install_requires = [
     'django-cors-headers==0.12',
     'django-gravatar2==1.1.3',
     'django-endless-pagination==2.0',
+    'django-follow==0.6.1',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None

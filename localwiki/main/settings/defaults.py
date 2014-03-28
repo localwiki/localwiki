@@ -280,6 +280,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'django_gravatar',
     'endless_pagination',
+    'follow',
 
     # Our apps
     'versionutils.versioning',

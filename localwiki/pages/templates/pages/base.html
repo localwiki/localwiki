@@ -1,9 +1,9 @@
 {% extends "site/base.html" %}
 
 {% load url from future %}
-
 {% load i18n %}
 {% load static from staticfiles %}
+{% load follow_tags %}
 
 {% block head_extra %}{% if page %}<link rel="alternate" href="{% url 'pages:changes-feed' slug=page.pretty_slug region=page.region.slug %}" type="application/rss+xml" title="{% trans "Recent changes on this Page" %}"/>{% endif %}{% endblock %}
   
@@ -30,6 +30,14 @@
         <li><a href="{% url 'pages:history' slug=page.pretty_slug region=page.region.slug %}" class="button">{% trans "Info" %}</a></li>
     {% endif %}
   </ul>
+{% endblock %}
+
+{% block header_bar_inner %}
+{{ block.super }}
+
+{% if request.user.is_authenticated and page.exists %}
+  {% follow_form page %}
+{% endif %}
 {% endblock %}
 
 {% block attributions %}

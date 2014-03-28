@@ -24,7 +24,7 @@ project (http://readthedocs.org), which is MIT licensed:
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
     OTHER DEALINGS IN THE SOFTWARE.
 
-Some Icons (map marker, trash can icons) Copyright © Yusuke Kamiyamane. All
+Some Icons (map marker, trash can, star icons) Copyright © Yusuke Kamiyamane. All
 rights reserved. Licensed under a Creative Commons Attribution 3.0 license.
 
 pages/img/external_link.png from Trac Project (http://trac.edgewall.org/),

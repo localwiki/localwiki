@@ -32,6 +32,9 @@ urlpatterns = patterns('',
     # Users / registration URLs
     (r'^(?i)Users/', include('users.urls')),
 
+    # Follow-related URLs
+    (r'^_follow/', include('follow.urls')),
+
     # Region routing URLs
     (r'^', include(regions.site.urls)),
     

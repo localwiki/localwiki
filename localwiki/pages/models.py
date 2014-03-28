@@ -14,6 +14,7 @@ from django.utils.translation import ugettext_lazy
 
 from django_randomfilenamestorage.storage import (
     RandomFilenameFileSystemStorage)
+from follow.utils import register as register_follow
 
 from versionutils import diff
 from versionutils import versioning
@@ -339,6 +340,8 @@ def url_to_name(value):
     return re.sub('_', ' ', value).strip()
 url_to_name = stringfilter(url_to_name)
 
+# Register Page with `follow` app.
+register_follow(Page)
 
 # For registration calls
 import signals

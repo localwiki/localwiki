@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import stringfilter
 from django.contrib.gis.db import models
 
+from follow.utils import register as register_follow
+
 
 class Region(models.Model):
     full_name = models.CharField(max_length=255,
@@ -104,6 +106,8 @@ def slugify(value):
     return value.lower()
 slugify = stringfilter(slugify)
 
+# Register Region with `follow` app.
+register_follow(Region)
 
 # For registration calls
 import signals
