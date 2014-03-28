@@ -2,14 +2,17 @@
 {% load i18n %}
 
 {% if request.user.is_authenticated %}
+<script type="text/javascript">
+    var follow_url = '{% follow_url object %}';
+</script>
 <div id="follow_item">
 <form action="{% follow_url object %}" method="post">
 	{% csrf_token %}
 	{% if request.user|is_following:object %}
-        <div class="unfollow little button" onClick="$('#follow_item form').submit()" title="{% blocktrans %}Stop following this {{ object_type }}{% endblocktrans %}"><span class="text"></span></div>
+        <div class="unfollow little button" title="{% blocktrans %}Stop following this {{ object_type }}{% endblocktrans %}"><span class="text"></span></div>
 		<input type="submit" value="Unfollow" name="Test" />
 	{% else %}
-        <div class="follow little button" onClick="$('#follow_item form').submit()" title="{% blocktrans %}Start following this {{ object_type }}{% endblocktrans %}"><span class="text"></span></div>
+        <div class="follow little button" title="{% blocktrans %}Start following this {{ object_type }}{% endblocktrans %}"><span class="text"></span></div>
 		<input type="submit" value="Follow" />
 	{% endif %}
 </form>

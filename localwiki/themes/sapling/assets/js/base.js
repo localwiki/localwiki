@@ -183,6 +183,48 @@ $(document).ready(function() {
     });
 });
 
+/* Follow button */
+$(document).ready(function () {
+  if ($('#follow_item form')) {
+        var followData = $('#follow_item form').serializeArray();
+        var unfollow = function() {
+            $.post(
+                follow_url,
+                followData
+        
+            ).done(function() {
+                var item = $('#follow_item .unfollow');
+                item.addClass('follow'); 
+                item.removeClass('unfollow'); 
+                item.unbind();
+                item.click(follow);
+            })
+        };
+        var follow = function() {
+            $.post(
+                follow_url,
+                followData
+            ).done(function() {
+                var item = $('#follow_item .follow');
+                item.addClass('unfollow'); 
+                item.removeClass('follow'); 
+                item.unbind();
+                item.click(unfollow);
+            });
+        };
+
+        $('#follow_item .unfollow').click(function () {
+            $(this).unbind();
+            unfollow();
+        });
+        $('#follow_item .follow').click(function () {
+            $(this).unbind();
+            follow();
+        });
+    }
+});
+
+
 function getCookie(key) {
     var result;
     // adapted from the jQuery Cookie plugin

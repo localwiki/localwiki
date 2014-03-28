@@ -1628,7 +1628,7 @@ input:focus {
 
 #follow_item {
     float: right;
-    margin-top: -2.3em;
+    margin-top: 0.25em;
 }
 
 /* Hide */

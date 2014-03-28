@@ -13,12 +13,12 @@
 {% endblock %}
 
 {% block header_bar_inner %}
-  {{ block.super }}
-  
   {% if request.user.is_authenticated %}
     {% trans "region" as object_type %}
     {% follow_form region %}
   {% endif %}
+
+  {{ block.super }}
 {% endblock %}
 
 {% block main_wrapper %}
