@@ -53,6 +53,31 @@
             <div class="stat_number">{{ num_pages_edited }} <div class="type">pages edited</div></div>
             <div class="stat_number">{{ num_maps_edited }} <div class="type">maps edited</div></div>
         </div>
+        
+        <div class="objects_followed">
+            {% if num_pages_followed %}
+            <div class="pages_followed">
+            {% blocktrans %}{{ num_pages_followed }} pages starred{% endblocktrans %}
+            </div>
+            {% endif %}
+            {% if num_users_followed %}
+            <div class="users_followed">
+            {% blocktrans %}{{ num_users_followed }} users starred{% endblocktrans %}
+            </div>
+            {% endif %}
+        </div>
+
+        {% if regions_followed %}
+          <div class="regions_followed">
+            <h3>{% trans "Regions followed" %}</h3>
+            <ul>
+              {% for follow in regions_followed %}
+                  <li><a href="{{ follow.target.get_absolute_url }}">{{ follow.target.slug }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
         {% if request.user == user_for_page %}
         <div class="edit_settings"><a href="{% url 'user-settings' %}" class="little button">Edit settings</a></div>
         {% endif %}

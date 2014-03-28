@@ -1579,6 +1579,13 @@ input:focus {
     margin: 0 3em 3em 1em;
     width: 250px;
 }
+
+#user_page_info a {
+    text-decoration: none;
+}
+#user_page_info h3 {
+    color: #444444;
+}
 #user_page_info .profile_picture img {
 }
 #user_page_info .profile_table {
@@ -1609,6 +1616,45 @@ input:focus {
 }
 #user_page_info .edit_settings {
     margin-top: 1em;
+}
+
+#user_page_info .objects_followed {
+    margin-top: 1em;
+}
+#user_page_info .pages_followed {
+    background-image: url(../img/document.png);
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    padding-left: 25px;
+}
+
+#user_page_info .users_followed {
+    background-image: url(../img/user-silhouette.png);
+    background-repeat: no-repeat;
+    background-position: 0 50%;
+    padding-left: 25px;
+}
+
+#user_page_info .regions_followed {
+    margin-top: 0.8em;
+}
+#user_page_info .regions_followed ul {
+    list-style-type: none;
+    display: block;
+    margin-bottom: 0;
+}
+#user_page_info .regions_followed li {
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    margin-right: 0.5em;
+    line-height: 2.3;
+    font-size: 80%;
+}
+#user_page_info .regions_followed li a {
+    text-decoration: none;
+    background-color: #efefef;
+    padding: 0.3em 0.8em 0.3em 0.8em;
 }
 
 @media screen and (max-width: 500px) {

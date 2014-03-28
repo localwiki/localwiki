@@ -13,6 +13,7 @@ from django.db.models import Count
 from django.contrib.auth.models import User
 
 from guardian.shortcuts import get_users_with_perms, assign_perm, remove_perm
+from follow.models import Follow
 
 from regions.models import Region
 from regions import get_main_region
@@ -74,12 +75,22 @@ class UserPageView(TemplateView):
         # Total 'maps touched'
         num_maps_edited = MapData.versions.filter(version_info__user=user).values('page__slug').distinct().count()
 
+        # Regions followed
+        regions_followed = Follow.objects.filter(user=user).exclude(target_region=None)
+
+        # Users, pages followed
+        num_pages_followed = Follow.objects.filter(user=user).exclude(target_page=None).count()
+        num_users_followed = Follow.objects.filter(user=user).exclude(target_user=None).count()
+
         context['user_for_page'] = user
         context['pretty_personal_url'] = pretty_url(user.userprofile.personal_url) if user.userprofile.personal_url else None
         context['page'] = self.get_user_page(user)
         context['num_contributions'] = humanize_int(num_contributions)
         context['num_pages_edited'] = humanize_int(num_pages_edited)
         context['num_maps_edited'] = humanize_int(num_maps_edited)
+        context['regions_followed'] = regions_followed
+        context['num_pages_followed'] = num_pages_followed
+        context['num_users_followed'] = num_users_followed
 
         return context
 
