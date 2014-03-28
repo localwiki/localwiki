@@ -5,6 +5,7 @@
 {% load pages_tags %}
 {% load tags_tags %}
 {% load gravatar %}
+{% load follow_tags %}
 
 {% block title %}{% if not page.is_front_page %}{{ page.name }} - {% endif %}{{ block.super }}{% endblock %}
 {% block header_title %}<a href="#">{% if user_for_page.name %}{{ user_for_page.name }}{% else %}{{ user_for_page.username }}{% endif %}</a>{% endblock %}
@@ -13,6 +14,15 @@
     <div id="object_subtitle" class="prominent">
     {{ user_for_page.username }}
     </div>
+{% endblock %}
+
+{% block header_bar_inner %}
+  {{ block.super }}
+  
+  {% if request.user.is_authenticated %}
+    {% trans "user" as object_type %}
+    {% follow_form user_for_page %}
+  {% endif %}
 {% endblock %}
 
 {% block content_wrapper %}

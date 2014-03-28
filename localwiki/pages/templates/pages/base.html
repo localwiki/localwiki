@@ -33,12 +33,12 @@
 {% endblock %}
 
 {% block header_bar_inner %}
-{{ block.super }}
-
-{% if request.user.is_authenticated and page.exists %}
-  {% trans "page" as object_type %}
-  {% follow_form page %}
-{% endif %}
+  {{ block.super }}
+  
+  {% if request.user.is_authenticated and page.exists %}
+    {% trans "page" as object_type %}
+    {% follow_form page %}
+  {% endif %}
 {% endblock %}
 
 {% block attributions %}
