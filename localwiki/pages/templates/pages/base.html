@@ -33,7 +33,7 @@
 {% endblock %}
 
 {% block header_bar_inner %}
-  {% if page.slug != 'front page' and request.user.is_authenticated and page.exists %}
+  {% if page.slug != 'front page' and request.user.is_authenticated and page.exists and object_type != 'user' %}
     {% trans "page" as object_type %}
     {% follow_form page %}
   {% endif %}
