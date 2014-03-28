@@ -36,6 +36,7 @@
 {{ block.super }}
 
 {% if request.user.is_authenticated and page.exists %}
+  {% trans "page" as object_type %}
   {% follow_form page %}
 {% endif %}
 {% endblock %}
