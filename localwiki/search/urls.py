@@ -100,7 +100,7 @@ class InRegionSearchForm(DefaultSearchForm):
         # we do __in because we want partial matches, not just exact ones.
         # And by default, Haystack only searches the `document` field, so
         # we need this to activate the boosts.
-        return sqs.filter_and(region_id=self.region.id).filter_or(name__in=keywords).filter_or(tags__in=keywords)
+        return sqs.filter_or(name__in=keywords).filter_or(tags__in=keywords).filter_and(region_id=self.region.id)
 
 
 urlpatterns = patterns('',
