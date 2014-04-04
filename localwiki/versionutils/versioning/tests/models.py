@@ -335,6 +335,28 @@ class M28OneToOneNonVersioned(models.Model):
 
 versioning.register(M28OneToOneNonVersioned)
 
+
+class M29(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.ForeignKey(NonVersionedModel, related_name='j')
+
+versioning.register(M29)
+
+
+class M30(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.OneToOneField(NonVersionedModel, related_name='k')
+
+versioning.register(M30)
+
+
+class M31(models.Model):
+    a = models.CharField(max_length=200)
+    b = models.ManyToManyField(NonVersionedModel, related_name='l')
+
+versioning.register(M31)
+
+
 TEST_MODELS = [
     M1, M2, M3BigInteger, M4Date, M5Decimal, M6Email, M7Numbers,
     M8Time, M9URL, M10File, M11Image, M12ForeignKey, M13ForeignKeySelf,
@@ -348,4 +370,5 @@ TEST_MODELS = [
     MUniqueAndFK, MUniqueAndFK2,
     NonVersionedModel, M27FKToNonVersioned,
     M28OneToOneNonVersioned,
+    M29, M30, M31,
 ]
