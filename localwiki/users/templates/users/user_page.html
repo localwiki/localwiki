@@ -31,10 +31,10 @@
         <div class="profile_picture"><img src="{% gravatar_url user_for_page.userprofile.gravatar_email 500 %}" class="gravatar" width="250" height="250" /></div>
         <div class="profile_table">
             {% if user_for_page.userprofile.show_email %}
-            <div><a href="mailto:{{ user_for_page.email }}">{{ user_for_page.email }}</a></div>
+            <div><a href="mailto:{{ user_for_page.email }}" rel="nofollow">{{ user_for_page.email }}</a></div>
             {% endif %}
             {% if user_for_page.userprofile.personal_url %}
-            <div><a href="{{ user_for_page.userprofile.personal_url }}">{{ pretty_personal_url }}</a></div>
+            <div><a href="{{ user_for_page.userprofile.personal_url }}" rel="nofollow">{{ pretty_personal_url }}</a></div>
             {% endif %}
             <div>{% blocktrans with date_joined=user_for_page.date_joined|date:"M j, Y" %}Joined on {{ date_joined }}{% endblocktrans %}</div>
         </div>
