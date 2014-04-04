@@ -273,6 +273,7 @@ class ChangesTracker(object):
                 # Don't set auto_now=True historical models' fields.
                 field.auto_now = False
 
+            dont_create_reverse_relation = False
             is_fk = isinstance(field, models.ForeignKey)
             is_m2m = isinstance(field, models.ManyToManyField)
             if isinstance(field, models.fields.related.RelatedField):
@@ -316,16 +317,26 @@ class ChangesTracker(object):
                     if hasattr(field, 'attname'):
                         hist_field.attname = field.attname
                     field = hist_field
+                else:
+                    # If the related model isn't versioned and we have a set
+                    # related_name, then we need to avoid creating the related
+                    # set with the same name.  In this case, let's just not
+                    # create a reverse related set.
+                    if field.rel.related_name:
+                        dont_create_reverse_relation = True
 
+                # When this isn't an FK (which includes OneToOne) or M2M
+                # then this is something a bit more strange.  In
+                # this case, let's make the related name end with
+                # '+' which causes the related descriptor to not be
+                # added.  We'll also use our own unique name here to
+                # avoid collisions, which were seen with
+                # django-taggit (it uses a forced related_name on
+                # all models).
                 if not is_fk and not is_m2m:
-                    # When this isn't an FK (which includes OneToOne) or M2M
-                    # then this is something a bit more strange.  In
-                    # this case, let's make the related name end with
-                    # '+' which causes the related descriptor to not be
-                    # added.  We'll also use our own unique name here to
-                    # avoid collisions, which were seen with
-                    # django-taggit (it uses a forced related_name on
-                    # all models).
+                    dont_create_reverse_relation = True
+
+                if dont_create_reverse_relation:
                     field.rel.related_name = '%s_hist_%s+' % (
                         model.__name__.lower(),
                         model._meta.app_label.lower()

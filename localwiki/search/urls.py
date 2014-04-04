@@ -93,7 +93,14 @@ class SearchForm(DefaultSearchForm):
 class InRegionSearchForm(DefaultSearchForm):
     def search(self):
         sqs = super(InRegionSearchForm, self).search()
-        return sqs.filter_and(region_id=self.region.id)
+        cleaned_data = getattr(self, 'cleaned_data', {})
+        keywords = cleaned_data.get('q', '').split()
+        if not keywords:
+            return sqs
+        # we do __in because we want partial matches, not just exact ones.
+        # And by default, Haystack only searches the `document` field, so
+        # we need this to activate the boosts.
+        return sqs.filter_or(name__in=keywords).filter_or(tags__in=keywords).filter_and(region_id=self.region.id)
 
 
 urlpatterns = patterns('',
