@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_delete
 
 from south.models import MigrationHistory
-from follow.models import Follow
 
 from models import UserProfile
 
@@ -22,18 +21,7 @@ def create_user_profile(sender, instance, created, raw, **kwargs):
             UserProfile.objects.create(user=instance)
 
 
-def follow_own_user_object(sender, instance, created, raw, **kwargs):
-    if raw:
-        # Don't create when importing via loaddata - they're already
-        # being imported.
-        return
-    if created:
-        f = Follow(user=instance, target_user=instance)
-        f.save()
-
-
 post_save.connect(create_user_profile, sender=User)
-post_save.connect(follow_own_user_object, sender=User)
 
 
 def delete_user_profile(sender, instance, **kwargs):

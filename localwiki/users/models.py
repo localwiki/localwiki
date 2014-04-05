@@ -7,8 +7,6 @@ from django.db import models
 from django.conf import settings
 from django.contrib.sites.models import Site
 
-from follow.utils import register as register_follow
-
 
 #######################################################################
 #
@@ -18,7 +16,6 @@ from follow.utils import register as register_follow
 #######################################################################
 
 User._meta.get_field_by_name('email')[0]._unique = True
-
 
 def name_to_first_last(self, name):
     """
@@ -64,8 +61,6 @@ class UserProfile(models.Model):
     def gravatar_email(self):
         return self._gravatar_email or self.user.email
 
-# Register User with `follow` app.
-register_follow(User)
 
 # For registration calls
 import signals

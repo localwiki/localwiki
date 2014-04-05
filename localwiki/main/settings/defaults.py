@@ -296,6 +296,7 @@ INSTALLED_APPS = (
     'search',
     'frontpage',
     'dashboard',
+    'stars',
     'main.api',
     'main',
     'utils',
