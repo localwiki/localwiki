@@ -220,6 +220,7 @@ MIDDLEWARE_CLASSES = (
     'redirects.middleware.RedirectFallbackMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
+    'block_ip.middleware.BlockIPMiddleware',
     'utils.middleware.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
 )
@@ -280,6 +281,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'django_gravatar',
     'endless_pagination',
+    'block_ip',
 
     # Our apps
     'versionutils.versioning',
