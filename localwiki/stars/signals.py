@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 from follow.models import Follow
 
-from versionutils.versioning.constants import TYPE_DELETED_CASCADE
+from versionutils.versioning.constants import TYPE_DELETED_CASCADE, TYPE_REVERTED
 from pages.models import Page
 
 
@@ -83,6 +83,9 @@ def re_add_users_following_before_delete(instance):
             # For versioning purposes, let's keep the same pk
             # we had before delete.
             f.id = follow.id
+            # We set TYPE_REVERTED here because it's slightly
+            # more accurate than the (default) TYPE_ADDED.
+            f._history_type = TYPE_REVERTED
             f.save()
 
 
