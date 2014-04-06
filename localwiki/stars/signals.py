@@ -57,14 +57,14 @@ def notify_user_page_owner(page, edit_type=None):
         notify_page_edited(user, page, notification_type=OWN_USER_PAGE)
 
 
-def users_following_before_cascade(past_follows):
-    users = set()
+def follows_before_cascade(past_follows):
+    follows = set()
     # The first set of revisions should all be deleted by cascade, so let's get just those. 
     for v in past_follows:
         if v.version_info.type != TYPE_DELETED_CASCADE:
             break
-        users.add(v.user) 
-    return users
+        follows.add(v) 
+    return follows
 
 
 def re_add_users_following_before_delete(instance):
@@ -78,8 +78,11 @@ def re_add_users_following_before_delete(instance):
         )
 
         # Now, re-follow.
-        for u in users_following_before_cascade(past_follows):
-            f = Follow(user=u, target_page=instance)
+        for follow in follows_before_cascade(past_follows):
+            f = Follow(user=follow.user, target_page=instance)
+            # For versioning purposes, let's keep the same pk
+            # we had before delete.
+            f.id = follow.id
             f.save()
 
 
@@ -112,11 +115,11 @@ def notify_followers_page_deleted(sender, instance, **kwargs):
     most_recent_page_id = instance.versions.most_recent().id 
     old_follows = Follow.versions.filter(target_page__id=most_recent_page_id)
 
-    for u in users_following_before_cascade(old_follows):
+    for follow in follows_before_cascade(old_follows):
         # Skip the notification if the editor is the follower
-        if u == instance.versions.most_recent().version_info.user:
+        if follow.user == instance.versions.most_recent().version_info.user:
             continue
-        notify_page_deleted(u, instance)
+        notify_page_deleted(follow.user, instance)
 
     if is_user_page(instance):
         notify_user_page_owner(instance, edit_type=PAGE_DELETED)
