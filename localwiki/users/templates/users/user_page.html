@@ -56,14 +56,18 @@
         
         <div class="objects_followed">
             {% if num_pages_followed %}
-            <div class="pages_followed">
-            {% blocktrans %}{{ num_pages_followed }} pages starred{% endblocktrans %}
-            </div>
+            <a href="{% url 'followed-pages' username=user_for_page.username %}">
+              <div class="pages_followed">
+              {% blocktrans %}{{ num_pages_followed }} pages starred{% endblocktrans %}
+              </div>
+            </a>
             {% endif %}
             {% if num_users_followed %}
+            <a href="{% url 'followed-users' username=user_for_page.username %}"">
             <div class="users_followed">
             {% blocktrans %}{{ num_users_followed }} users starred{% endblocktrans %}
             </div>
+            </a>
             {% endif %}
         </div>
 

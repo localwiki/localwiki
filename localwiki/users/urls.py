@@ -15,5 +15,5 @@ urlpatterns = patterns('',
         name='registration_disallowed'),
     url(r'^_settings/?$', UserSettingsView.as_view(), name="user-settings"),
     (r'', include('registration.auth_urls')),
-    (r'(?P<username>[^/]*)/*(?P<rest>.*)', UserPageView.as_view()),
+    url(r'(?P<username>[^/]*)/*(?P<rest>.*)', UserPageView.as_view(), name="user-page"),
 )

@@ -34,6 +34,7 @@ urlpatterns = patterns('',
 
     # Follow-related URLs
     (r'^_follow/', include('follow.urls')),
+    (r'^_stars/', include('stars.urls')),
 
     # Region routing URLs
     (r'^', include(regions.site.urls)),

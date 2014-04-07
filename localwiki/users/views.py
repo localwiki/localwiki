@@ -45,6 +45,42 @@ def pretty_url(url):
     return url
 
 
+def get_user_page(user, request):
+    """
+    Hacky heuristics for picking the underlying Page that holds the userpage content.
+
+    TODO: Make this all belong the a single administrative region, 'users', once we 
+          have a notifications framework in place.
+    """
+    from pages.models import Page, slugify
+
+    pagename = "Users/%s" % user.username
+    user_pages = Page.objects.filter(slug=slugify(pagename))
+    if user_pages:
+        # Just pick the first one
+        return user_pages[0]
+    else:
+        # Check to see if they've edited a region recently
+        edited_pages = Page.versions.filter(version_info__user=user)
+        referer = request.META.get('HTTP_REFERER')
+        if edited_pages:
+            region = edited_pages[0].region
+            return Page(name=pagename, region=region)
+        # Let's try and guess by the previous URL. Ugh!
+        if referer:
+            urlparts = urlparse(referer)
+            # Is this host us?
+            for host in settings.ALLOWED_HOSTS:
+                if urlparts.netloc.endswith(host):
+                    pathparts = parts.path.split('/')
+                    # Is the path in a region?
+                    if len(pathparts) > 1 and Region.objects.filter(slug=pathparts[1]).exists():
+                        return Page(name=pagename, region=Region.objects.get(slug=pathparts[1]))
+
+        # Put it in the main region for now :/
+        return Page(name=pagename, region=get_main_region())
+
+
 class UserPageView(TemplateView):
     template_name = 'users/user_page.html'
 
@@ -84,7 +120,7 @@ class UserPageView(TemplateView):
 
         context['user_for_page'] = user
         context['pretty_personal_url'] = pretty_url(user.userprofile.personal_url) if user.userprofile.personal_url else None
-        context['page'] = self.get_user_page(user)
+        context['page'] = get_user_page(user, self.request)
         context['num_contributions'] = humanize_int(num_contributions)
         context['num_pages_edited'] = humanize_int(num_pages_edited)
         context['num_maps_edited'] = humanize_int(num_maps_edited)
@@ -93,41 +129,6 @@ class UserPageView(TemplateView):
         context['num_users_followed'] = num_users_followed
 
         return context
-
-    def get_user_page(self, user):
-        """
-        Hacky heuristics for picking the underlying Page that holds the userpage content.
-
-        TODO: Make this all belong the a single administrative region, 'users', once we 
-              have a notifications framework in place.
-        """
-        from pages.models import Page, slugify
-
-        pagename = "Users/%s" % user.username
-        user_pages = Page.objects.filter(slug=slugify(pagename))
-        if user_pages:
-            # Just pick the first one
-            return user_pages[0]
-        else:
-            # Check to see if they've edited a region recently
-            edited_pages = Page.versions.filter(version_info__user=user)
-            referer = self.request.META.get('HTTP_REFERER')
-            if edited_pages:
-                region = edited_pages[0].region
-                return Page(name=pagename, region=region)
-            # Let's try and guess by the previous URL. Ugh!
-            if referer:
-                urlparts = urlparse(referer)
-                # Is this host us?
-                for host in settings.ALLOWED_HOSTS:
-                    if urlparts.netloc.endswith(host):
-                        pathparts = parts.path.split('/')
-                        # Is the path in a region?
-                        if len(pathparts) > 1 and Region.objects.filter(slug=pathparts[1]).exists():
-                            return Page(name=pagename, region=Region.objects.get(slug=pathparts[1]))
-
-            # Put it in the main region for now :/
-            return Page(name=pagename, region=get_main_region())
 
 
 class GlobalUserpageRedirectView(RedirectView):

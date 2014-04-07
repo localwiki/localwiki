@@ -185,41 +185,47 @@ $(document).ready(function() {
 
 /* Follow button */
 $(document).ready(function () {
-  if ($('#follow_item form')) {
-        var followData = $('#follow_item form').serializeArray();
-        var unfollow = function() {
-            $.post(
-                follow_url,
-                followData
-        
-            ).done(function() {
-                var item = $('#follow_item .unfollow');
-                item.addClass('follow'); 
-                item.removeClass('unfollow'); 
-                item.unbind();
-                item.click(follow);
-            })
-        };
-        var follow = function() {
-            $.post(
-                follow_url,
-                followData
-            ).done(function() {
-                var item = $('#follow_item .follow');
-                item.addClass('unfollow'); 
-                item.removeClass('follow'); 
-                item.unbind();
-                item.click(unfollow);
-            });
-        };
+  if ($('.follow_item form')) {
+        $('.follow_item').each(function() {
+            var follow_item = $(this);
+            var form = $(this).find('form')[0];
+            var follow_url = $(form).attr('action');
+            var followData = $(form).serializeArray();
+            var unfollow = function() {
+                $.post(
+                    follow_url,
+                    followData
+            
+                ).done(function() {
+                    var item = $(follow_item.find('.unfollow')[0]);
+                    item.addClass('follow'); 
+                    item.removeClass('unfollow'); 
+                    item.unbind();
+                    item.click(follow);
+                })
+            };
+            var follow = function() {
+                $.post(
+                    follow_url,
+                    followData
+                ).done(function() {
+                    var item = $(follow_item.find('.follow')[0]);
+                    item.addClass('unfollow'); 
+                    item.removeClass('follow'); 
+                    item.unbind();
+                    item.click(unfollow);
+                });
+            };
 
-        $('#follow_item .unfollow').click(function () {
-            $(this).unbind();
-            unfollow();
-        });
-        $('#follow_item .follow').click(function () {
-            $(this).unbind();
-            follow();
+            $($(this).find('.unfollow')[0]).click(function () {
+                $(this).unbind();
+                unfollow();
+            });
+            $($(this).find('.follow')[0]).click(function () {
+                $(this).unbind();
+                follow();
+            });
+
         });
     }
 });

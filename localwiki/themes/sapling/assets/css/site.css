@@ -1672,34 +1672,34 @@ input:focus {
 */
 
 
-#follow_item {
+.follow_item {
     float: right;
     margin-top: 0.25em;
 }
 
 /* Hide */
-#follow_item input[type="submit"] {
+.follow_item input[type="submit"] {
     position: absolute;
     z-index: -1000;
     left: -1000px;
 }
-#follow_item .follow .text {
+.follow_item .follow .text {
     background-image: url(../img/star-empty.png);
     width: 20px;
     height: 21px;
 }
-#follow_item:hover .follow .text {
+.follow_item:hover .follow .text {
     background-image: url(../img/star.png)!important;
 }
-#follow_item .unfollow .text {
+.follow_item .unfollow .text {
     background-image: url(../img/star.png);
     width: 20px;
     height: 21px;
 }
-#follow_item:hover .unfollow .text {
+.follow_item:hover .unfollow .text {
     background-image: url(../img/star-empty.png)!important;
 }
-#follow_item .follow .text, #follow_item .unfollow .text {
+.follow_item .follow .text, .follow_item .unfollow .text {
     font-size: 90%;
     padding: 0;
     background-repeat: no-repeat;
@@ -1707,12 +1707,12 @@ input:focus {
     display: block;
     font-weight: normal;
 }
-#follow_item:hover {
+.follow_item:hover {
     cursor: pointer; 
 }
 
 @media screen and (max-width: 500px) {
-    #follow_item {
+    .follow_item {
         display: none;
     }
 }
@@ -2248,4 +2248,24 @@ table.noborder, table.noborder td {
 }
 .noexternalimg a {
     background: none!important;
+}
+
+.divider_list {
+    list-style-type: none;
+}
+.divider_list li {
+    margin: 0;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #dddddd;
+    font-size: 115%;
+}
+.divider_list li:hover {
+    background-color: #FCFCE2;
+}
+.divider_list li:last-child {
+    border-bottom: none;
+}
+.divider_list .follow_item {
+    margin-top: -0.1em;
 }

@@ -2,10 +2,7 @@
 {% load i18n %}
 
 {% if request.user.is_authenticated %}
-<script type="text/javascript">
-    var follow_url = '{% follow_url object %}';
-</script>
-<div id="follow_item">
+<div class="follow_item">
 <form action="{% follow_url object %}" method="post">
 	{% csrf_token %}
 	{% if request.user|is_following:object %}
