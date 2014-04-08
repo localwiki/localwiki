@@ -35,7 +35,11 @@
 {% block header_bar_inner %}
   {% if page.slug != 'front page' and request.user.is_authenticated and page.exists and object_type != 'user' %}
     {% trans "page" as object_type %}
-    {% follow_form page %}
+    {% if page.versions %}
+        {% follow_form page %}
+    {% else %}
+        {% follow_form page.history__object %}
+    {% endif %}
   {% endif %}
 
   {{ block.super }}
