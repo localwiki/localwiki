@@ -14,6 +14,8 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
 
+from follow.utils import follow as do_follow
+
 from localwiki.utils.views import CreateObjectMixin, AuthenticationRequired
 
 from models import Region, RegionSettings, BannedFromRegion, slugify
@@ -154,6 +156,10 @@ class RegionCreateView(AuthenticationRequired, CreateView):
         # Add the creator as the initial region admin.
         if self.request.user.is_authenticated():
             region.regionsettings.admins.add(self.request.user)
+
+        # Set the creator as following the region
+        do_follow(self.request.user, region)
+
         return response
 
 
