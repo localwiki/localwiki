@@ -33,7 +33,7 @@ class FollowedUsersListView(ListView):
         username = self.kwargs.get('username')
         self.user = User.objects.get(username__iexact=username)
         qs = super(FollowedUsersListView, self).get_queryset()
-        return qs.exclude(target_user=None).filter(user=self.user)
+        return qs.exclude(target_user=None).exclude(target_user=self.user).filter(user=self.user)
 
     def get_context_data(self, **kwargs):
         context = super(FollowedUsersListView, self).get_context_data(**kwargs)
