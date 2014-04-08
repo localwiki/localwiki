@@ -1,4 +1,5 @@
 from django.db.models.signals import post_save, post_delete
+from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -41,6 +42,10 @@ def notify_page_edited(user, page, notification_type=None):
         username = page_hist.version_info.user_ip
         user_with_link = username
 
+    comment_text = page_hist.version_info.comment
+    if comment_text:
+        comment_text = ' ' + _('Their edit comment was "%s".' % comment_text)
+
     send_templated_mail(
         template_name=template_name,
         from_email=settings.DEFAULT_FROM_EMAIL,
@@ -49,6 +54,7 @@ def notify_page_edited(user, page, notification_type=None):
             'page': page,
             'pagename': page.name,
             'page_url': page.get_absolute_url(),
+            'comment_text': comment_text,
             'user_with_link': user_with_link,
             'region_name': page.region.full_name,
             'region_url': page.region.get_absolute_url(),
@@ -77,6 +83,10 @@ def notify_page_deleted(user, page, notification_type=None):
         username = page_hist.version_info.user_ip
         user_with_link = username
 
+    comment_text = page_hist.version_info.comment
+    if comment_text:
+        comment_text = ' ' + _('Their edit comment was "%s".' % comment_text)
+
     history_url = reverse('pages:history', kwargs={
         'slug': page.pretty_slug,
         'region': page.region.slug,
@@ -90,6 +100,7 @@ def notify_page_deleted(user, page, notification_type=None):
             'page': page,
             'pagename': page.name,
             'page_url': page.get_absolute_url(),
+            'comment_text': comment_text,
             'user_with_link': user_with_link,
             'region_name': page.region.full_name,
             'region_url': page.region.get_absolute_url(),

@@ -2,7 +2,7 @@
 
 {% block subject %}{% blocktrans with region=page.region.slug pagename=page.name %}LocalWiki [{{ region }}]: {{ pagename}}{% endblocktrans %}{% endblock %}
 
-{% block plain %}{% blocktrans %}{{ user }} edited "{{ pagename }}" on {{ base_uri }}{{ region_url }}.
+{% block plain %}{% blocktrans %}{{ user }} edited "{{ pagename }}" on {{ base_uri }}{{ region_url }}.{{ comment_text }}
 
 Go here to see the exact changes:
 
@@ -15,7 +15,7 @@ To disable this notification, un-star the page here: {{ base_uri }}{{ page_url }
 
 {% block html %}
 {% blocktrans %}
-<p>{{ user_with_link }} edited <a href="{{ page_url }}">{{ pagename }}</a> on <a href="{{ base_uri }}{{ region_url }}">LocalWiki {{ region_name }}</a>.</p>
+<p>{{ user_with_link }} edited <a href="{{ page_url }}">{{ pagename }}</a> on <a href="{{ base_uri }}{{ region_url }}">LocalWiki {{ region_name }}</a>.{{ comment_text }}</p>
 <p><a href="{{ base_uri }}{{ diff_url }}">Click here</a> to see what they changed.</p>
 <p>
 ---
