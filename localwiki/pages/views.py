@@ -329,7 +329,8 @@ class PageCompareView(RegionMixin, diff.views.CompareView):
     model = Page
 
     def get_object(self):
-        return Page(slug=self.kwargs['slug'], region=self.get_region())
+        ph = Page(slug=self.kwargs['slug'], region=self.get_region()).versions.most_recent()
+        return ph.version_info._object
 
     def get_context_data(self, **kwargs):
         context = super(PageCompareView, self).get_context_data(**kwargs)

@@ -213,6 +213,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'utils.middleware.SubdomainLanguageMiddleware',
     'regions.middleware.RedirectToLanguageSubdomainMiddleware',
+    'utils.middleware.RequestURIMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'honeypot.middleware.HoneypotMiddleware',
@@ -351,6 +352,7 @@ EMAIL_HOST = 'localhost'
 EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
+TEMPLATED_EMAIL_TEMPLATE_DIR = ''
 
 OLWIDGET_DEFAULT_OPTIONS = {
     'default_lat': 37,

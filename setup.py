@@ -159,6 +159,7 @@ install_requires = [
     'django-gravatar2==1.1.3',
     'django-endless-pagination==2.0',
     'django-follow==0.6.1',
+    'django-templated-email==0.4.9',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None

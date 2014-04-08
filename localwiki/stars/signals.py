@@ -1,8 +1,12 @@
 from django.db.models.signals import post_save, post_delete
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.conf import settings
 
 from follow.models import Follow
+from templated_email import send_templated_mail
 
+from utils import get_base_uri
 from versionutils.versioning.constants import TYPE_DELETED_CASCADE, TYPE_REVERTED
 from pages.models import Page
 
@@ -14,16 +18,88 @@ PAGE_DELETED = 1
 
 def notify_page_edited(user, page, notification_type=None):
     if notification_type == OWN_USER_PAGE:
-        print "<< notify %s that own page %s was edited >>" % (user, page)
+        template_name = 'stars/own_userpage_edited'
     else:
-        print "<< notify %s that %s was edited >>" % (user, page)
+        template_name = 'stars/page_edited'
+
+    page_hist = page.versions.most_recent()
+
+    diff_url = reverse('pages:compare-dates', kwargs={
+        'slug': page.pretty_slug,
+        'region': page.region.slug,
+        'date1': page_hist.version_info.date,
+    })
+    # In plaintext email, we want the period escaped
+    # because some clients don't include it in the URL.
+    diff_url_plaintext = diff_url.replace('.', '%2E')
+
+    if page_hist.version_info.user:
+        username = page_hist.version_info.user.username
+        user_url = page_hist.version_info.user.get_absolute_url()
+        user_with_link = '<a href="%s">%s</a>' % (user_url, username)
+    else:
+        username = page_hist.version_info.user_ip
+        user_with_link = username
+
+    send_templated_mail(
+        template_name=template_name,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        context={
+            'page': page,
+            'pagename': page.name,
+            'page_url': page.get_absolute_url(),
+            'user_with_link': user_with_link,
+            'region_name': page.region.full_name,
+            'region_url': page.region.get_absolute_url(),
+            'diff_url': diff_url,
+            'username': username,
+            'diff_url_plaintext': diff_url_plaintext,
+            'page_hist': page_hist,
+            'base_uri': get_base_uri(),
+        },
+    )
 
 
 def notify_page_deleted(user, page, notification_type=None):
     if notification_type == OWN_USER_PAGE:
-        print "<< notify %s that own page %s was deleted >>" % (user, page)
+        template_name = 'stars/own_userpage_deleted'
     else:
-        print "<< notify %s that %s was deleted >>" % (user, page)
+        template_name = 'stars/page_deleted'
+
+    page_hist = page.versions.most_recent()
+
+    if page_hist.version_info.user:
+        username = page_hist.version_info.user.username
+        user_url = page_hist.version_info.user.get_absolute_url()
+        user_with_link = '<a href="%s">%s</a>' % (user_url, username)
+    else:
+        username = page_hist.version_info.user_ip
+        user_with_link = username
+
+    history_url = reverse('pages:history', kwargs={
+        'slug': page.pretty_slug,
+        'region': page.region.slug,
+    })
+
+    send_templated_mail(
+        template_name=template_name,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[user.email],
+        context={
+            'page': page,
+            'pagename': page.name,
+            'page_url': page.get_absolute_url(),
+            'user_with_link': user_with_link,
+            'region_name': page.region.full_name,
+            'region_url': page.region.get_absolute_url(),
+            'history_url': history_url,
+            'username': username,
+            'page_hist': page_hist,
+            'base_uri': get_base_uri(),
+        },
+    )
+
 
 
 def follow_own_user_object(sender, instance, created, raw, **kwargs):
