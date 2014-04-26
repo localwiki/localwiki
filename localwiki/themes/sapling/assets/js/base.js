@@ -203,11 +203,11 @@ function set_django_tokens(form) {
     
     /* TODO: make this automatic, this is hardcoded to the django-honeypot settings */
     honeypot = form.ownerDocument.createElement('input');
-    honeypot.setAttribute('name', 'content2');
+    honeypot.setAttribute('name', 'main_content');
     honeypot.setAttribute('type', 'hidden');
     form.appendChild(honeypot);
     honeypot_js = form.ownerDocument.createElement('input');
-    honeypot_js.setAttribute('name', 'content2_js');
+    honeypot_js.setAttribute('name', 'main_content_js');
     honeypot_js.setAttribute('type', 'hidden');
     form.appendChild(honeypot_js);
 }

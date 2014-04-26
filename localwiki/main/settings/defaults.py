@@ -175,7 +175,7 @@ OLWIDGET_JS = '%solwidget/js/olwidget.js?tm=1317359250' % STATIC_URL
 CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js?tm=1317359250' % STATIC_URL
 
 # django-honeypot options
-HONEYPOT_FIELD_NAME = 'content2'
+HONEYPOT_FIELD_NAME = 'main_content'
 HONEYPOT_USE_JS_FIELD = True
 HONEYPOT_REDIRECT_URL = '/'
 
