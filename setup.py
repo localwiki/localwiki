@@ -143,7 +143,7 @@ install_requires = [
     'django-staticfiles==1.2.1',
     'django-registration==0.8.0',
     'django-olwidget==0.46-custom2',
-    'django-honeypot==0.4.0-custom1',
+    'django-honeypot==0.4.0-custom2',
     'django-qsstats-magic==0.7',
     'django-picklefield==0.3.0',
     'django-constance==0.6-custom1',
@@ -180,7 +180,7 @@ setup(
     install_requires=install_requires,
     dependency_links=[
         'https://github.com/philipn/olwidget/tarball/5c8eb75aaf0739b35fa06b0ba75f30bd32b89e77#egg=django-olwidget-0.46-custom2',
-        'https://github.com/philipn/django-honeypot/tarball/localwiki#egg=django-honeypot-0.4.0-custom1',
+        'https://github.com/philipn/django-honeypot/tarball/localwiki#egg=django-honeypot-0.4.0-custom2',
         'https://github.com/philipn/sorl-thumbnail/tarball/localwiki#egg=sorl-thumbnail-11.12-custom5',
         'https://github.com/philipn/django-south/tarball/localwiki_master#egg=South-0.8.1-custom2',
         'https://github.com/philipn/django-constance/tarball/localwiki#egg=django-constance-0.6-custom1',
