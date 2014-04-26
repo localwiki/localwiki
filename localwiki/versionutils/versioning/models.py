@@ -463,6 +463,12 @@ class ChangesTracker(object):
             if not is_versioned(model):
                 instance._track_changes = False
 
+        # If the `delete_older_versions` kwarg was provided to delete(), then
+        # delete all the versions of the object.
+        if getattr(instance, '_delete_older_versions', False):
+            for h in instance.versions.all():
+                h.delete()
+
     def post_delete(self, parent, instance, **kws):
         if not getattr(settings, 'VERSIONUTILS_VERSIONING_ENABLED', True):
             return
@@ -722,7 +728,8 @@ def delete_func(model_delete):
 
 
 def delete_with_arguments(model_delete, m, using=None,
-                          track_changes=True, **kws):
+                          track_changes=True, delete_older_versions=False,
+                          **kws):
     """
     A simple custom delete() method on models with changes tracked.
 
@@ -732,6 +739,7 @@ def delete_with_arguments(model_delete, m, using=None,
     """
     m._track_changes = track_changes
     m._save_with = kws
+    m._delete_older_versions = delete_older_versions
 
     if is_pk_recycle_a_problem(m):
         m._track_changes = False
