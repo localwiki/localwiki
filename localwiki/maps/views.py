@@ -22,9 +22,9 @@ from django.utils.html import escape
 
 from versionutils import diff
 from utils.views import (Custom404Mixin, CreateObjectMixin, JSONResponseMixin,
-    JSONView, PermissionRequiredMixin)
+    JSONView, PermissionRequiredMixin, RevertView)
 from versionutils.versioning.views import DeleteView, UpdateView
-from versionutils.versioning.views import RevertView, VersionsList
+from versionutils.versioning.views import VersionsList
 from pages.models import Page, slugify, name_to_url
 from pages.constants import page_base_path
 from regions.views import RegionMixin

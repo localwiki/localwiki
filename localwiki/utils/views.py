@@ -9,6 +9,8 @@ from django.template.context import RequestContext
 
 from . import take_n_from
 
+from versionutils.versioning.views import RevertView
+
 
 class ForbiddenException:
     pass
@@ -224,3 +226,7 @@ class MultipleTypesPaginatedView(TemplateView):
 
         return c
 
+
+class RevertView(RevertView):
+    def allow_admin_actions(self):
+        return self.request.user.is_staff
