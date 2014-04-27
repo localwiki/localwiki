@@ -12,7 +12,7 @@
     # Redirect www -> no-www
     RewriteEngine on
     RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-    RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+    RewriteRule ^(.*)$ http://%1$1 [R=301,L]
 
     # The media directory, which contains user-uploaded content, should be set
     # to force downloads. This is *extremely* important for security reasons.
