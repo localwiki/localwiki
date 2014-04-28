@@ -463,12 +463,6 @@ class ChangesTracker(object):
             if not is_versioned(model):
                 instance._track_changes = False
 
-        # If the `delete_older_versions` kwarg was provided to delete(), then
-        # delete all the versions of the object.
-        if getattr(instance, '_delete_older_versions', False):
-            for h in instance.versions.all():
-                h.delete()
-
     def post_delete(self, parent, instance, **kws):
         if not getattr(settings, 'VERSIONUTILS_VERSIONING_ENABLED', True):
             return
@@ -476,6 +470,7 @@ class ChangesTracker(object):
         if not isinstance(instance, parent):
             return
 
+        hist_instance = None
         parent_instance = get_parent_instance(instance, parent)
         if parent_instance:
             if is_versioned(parent_instance):
@@ -509,6 +504,16 @@ class ChangesTracker(object):
         if hasattr(instance, '_rel_objs_methods'):
             for model, method in instance._rel_objs_methods.iteritems():
                 models.signals.pre_delete.disconnect(method, model, weak=False)
+
+        # If the `delete_older_versions` kwarg was provided to delete(), then
+        # delete all the versions of the object.
+        if getattr(instance, '_delete_older_versions', False):
+            if hist_instance:
+                vs = instance.versions.filter(history_date__lt=hist_instance.version_info.date)
+            else:
+                vs = instance.versions.all()
+            for h in vs:
+                h.delete()
 
     def m2m_init(self, instance, hist_instance):
         """
