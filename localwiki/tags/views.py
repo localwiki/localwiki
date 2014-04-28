@@ -9,7 +9,7 @@ from django.db.models.aggregates import Count
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 
-from versionutils.versioning.views import VersionsList, RevertView, UpdateView
+from versionutils.versioning.views import VersionsList, UpdateView
 from versionutils.diff.views import CompareView
 from regions.models import Region
 from regions.views import RegionMixin
@@ -18,7 +18,7 @@ from forms import PageTagSetForm
 from pages.models import Page
 
 from utils.views import CreateObjectMixin, PermissionRequiredMixin,\
-    Custom404Mixin
+    Custom404Mixin, RevertView
 
 
 class PageNotFoundMixin(Custom404Mixin):

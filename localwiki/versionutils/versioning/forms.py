@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
+
 class CommentMixin(object):
     """
     ModelForm mixin that adds a comment field to the form.  When the
@@ -45,6 +46,8 @@ class DeleteForm(forms.Form):
     """
     comment = forms.CharField(max_length=150, required=False,
         label=_("Reason for deletion"))
+    delete_older = forms.BooleanField(required=False, label=_("Permanently remove older versions"))
+    dont_log = forms.BooleanField(required=False, label=_("Don't log this change"))
 
 
 class RevertForm(forms.Form):
@@ -55,3 +58,5 @@ class RevertForm(forms.Form):
     """
     comment = forms.CharField(max_length=150, required=False,
         label=_("Reason for revert"))
+    delete_newer = forms.BooleanField(required=False, label=_("Permanently remove newer versions"))
+    dont_log = forms.BooleanField(required=False, label=_("Don't log this change"))

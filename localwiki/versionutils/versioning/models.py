@@ -470,6 +470,7 @@ class ChangesTracker(object):
         if not isinstance(instance, parent):
             return
 
+        hist_instance = None
         parent_instance = get_parent_instance(instance, parent)
         if parent_instance:
             if is_versioned(parent_instance):
@@ -503,6 +504,16 @@ class ChangesTracker(object):
         if hasattr(instance, '_rel_objs_methods'):
             for model, method in instance._rel_objs_methods.iteritems():
                 models.signals.pre_delete.disconnect(method, model, weak=False)
+
+        # If the `delete_older_versions` kwarg was provided to delete(), then
+        # delete all the versions of the object.
+        if getattr(instance, '_delete_older_versions', False):
+            if hist_instance:
+                vs = instance.versions.filter(history_date__lt=hist_instance.version_info.date)
+            else:
+                vs = instance.versions.all()
+            for h in vs:
+                h.delete()
 
     def m2m_init(self, instance, hist_instance):
         """
@@ -722,7 +733,8 @@ def delete_func(model_delete):
 
 
 def delete_with_arguments(model_delete, m, using=None,
-                          track_changes=True, **kws):
+                          track_changes=True, delete_older_versions=False,
+                          **kws):
     """
     A simple custom delete() method on models with changes tracked.
 
@@ -732,6 +744,7 @@ def delete_with_arguments(model_delete, m, using=None,
     """
     m._track_changes = track_changes
     m._save_with = kws
+    m._delete_older_versions = delete_older_versions
 
     if is_pk_recycle_a_problem(m):
         m._track_changes = False

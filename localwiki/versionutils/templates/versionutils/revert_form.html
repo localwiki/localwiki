@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<form method="post" action="">{% csrf_token %}
+  {{ form.comment.errors }}
+  <ul>
+    <li>{{ form.comment.label_tag }}: {{ form.comment }}</li>
+    {% if allow_admin_actions %}
+      <li>{{ form.delete_newer.label_tag }}: {{ form.delete_newer }}</li>
+      <li>{{ form.dont_log.label_tag }}: {{ form.dont_log }}</li>
+    {% endif %}
+  </ul>
+  <input type="submit" value="{% trans "Revert" %}"/>
+</form>
