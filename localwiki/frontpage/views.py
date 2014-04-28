@@ -17,7 +17,7 @@ from maps.widgets import InfoMap, map_options_for_region
 from regions.views import RegionMixin, RegionAdminRequired, TemplateView
 from regions.models import Region
 
-from models import FrontPage
+from .models import FrontPage
 
 
 class FrontPageView(TemplateView):
@@ -25,7 +25,8 @@ class FrontPageView(TemplateView):
 
     def get(self, *args, **kwargs):
         # If there's no FrontPage defined, let's send the "Front Page" Page object.
-        if not FrontPage.objects.filter(region=self.get_region()).exists():
+        region = self.get_region()
+        if not FrontPage.objects.filter(region=region).exists() or region.regionsettings.is_meta_region:
             page_view = PageDetailView()
             page_view.kwargs = {'slug': 'Front Page', 'region': self.get_region().slug}
             page_view.request = self.request
