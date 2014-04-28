@@ -91,6 +91,9 @@ class DeleteView(DeleteView, FormMixin):
     """
     form_class = DeleteForm
 
+    def allow_admin_actions(self):
+        return False
+
     def success_msg(self):
         """
         Returns:
@@ -103,7 +106,14 @@ class DeleteView(DeleteView, FormMixin):
         form = self.get_form(self.get_form_class())
         if form.is_valid():
             self.object = self.get_object()
-            self.object.delete(comment=form.cleaned_data.get('comment'))
+            if self.allow_admin_actions():
+                delete_older_versions = form.cleaned_data.get('delete_older', False)
+                track_changes = not form.cleaned_data.get('dont_log', False)
+            self.object.delete(
+                comment=form.cleaned_data.get('comment'),
+                delete_older_versions=delete_older_versions,
+                track_changes=track_changes
+            )
             messages.add_message(self.request, messages.SUCCESS,
                                  self.success_msg())
         return HttpResponseRedirect(self.get_success_url())
@@ -111,6 +121,7 @@ class DeleteView(DeleteView, FormMixin):
     def get_context_data(self, **kwargs):
         context = super(DeleteView, self).get_context_data(**kwargs)
         context['form'] = self.get_form(self.get_form_class())
+        context['allow_admin_actions'] = self.allow_admin_actions()
         return context
 
 

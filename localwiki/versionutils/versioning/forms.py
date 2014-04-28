@@ -46,6 +46,8 @@ class DeleteForm(forms.Form):
     """
     comment = forms.CharField(max_length=150, required=False,
         label=_("Reason for deletion"))
+    delete_older = forms.BooleanField(required=False, label=_("Permanently remove older versions"))
+    dont_log = forms.BooleanField(required=False, label=_("Don't log this change"))
 
 
 class RevertForm(forms.Form):

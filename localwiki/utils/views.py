@@ -7,9 +7,9 @@ from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.template.context import RequestContext
 
-from . import take_n_from
+from versionutils.versioning.views import RevertView, DeleteView
 
-from versionutils.versioning.views import RevertView
+from . import take_n_from
 
 
 class ForbiddenException:
@@ -228,5 +228,10 @@ class MultipleTypesPaginatedView(TemplateView):
 
 
 class RevertView(RevertView):
+    def allow_admin_actions(self):
+        return self.request.user.is_staff
+
+
+class DeleteView(DeleteView):
     def allow_admin_actions(self):
         return self.request.user.is_staff

@@ -22,8 +22,8 @@ from django.utils.html import escape
 
 from versionutils import diff
 from utils.views import (Custom404Mixin, CreateObjectMixin, JSONResponseMixin,
-    JSONView, PermissionRequiredMixin, RevertView)
-from versionutils.versioning.views import DeleteView, UpdateView
+    JSONView, PermissionRequiredMixin, DeleteView, RevertView)
+from versionutils.versioning.views import UpdateView
 from versionutils.versioning.views import VersionsList
 from pages.models import Page, slugify, name_to_url
 from pages.constants import page_base_path

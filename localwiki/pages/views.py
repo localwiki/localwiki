@@ -20,10 +20,10 @@ from django.utils.translation import ugettext_lazy
 
 from ckeditor.views import ck_upload_result
 from versionutils import diff
-from versionutils.versioning.views import UpdateView, DeleteView
+from versionutils.versioning.views import UpdateView
 from versionutils.versioning.views import VersionsList
 from localwiki.utils.views import (Custom404Mixin, CreateObjectMixin,
-    PermissionRequiredMixin, RevertView)
+    PermissionRequiredMixin, DeleteView, RevertView)
 from regions.models import Region
 from regions.views import RegionMixin
 from maps.widgets import InfoMap
