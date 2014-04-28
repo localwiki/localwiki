@@ -63,8 +63,8 @@ LANGUAGES = [(lang[0], ugettext_lazy(lang[1])) for lang in settings.LANGUAGES]
 class RegionSettings(models.Model):
     region = models.OneToOneField(Region)
     # Can be null for meta regions, which may not have a geometry.
-    region_center = models.PointField(null=True)
-    region_zoom_level = models.IntegerField(null=True)
+    region_center = models.PointField(null=True, blank=True)
+    region_zoom_level = models.IntegerField(null=True, blank=True)
     admins = models.ManyToManyField(User, null=True)
     default_language = models.CharField(max_length=7, blank=True, null=True, choices=LANGUAGES)
     is_meta_region = models.BooleanField(default=False)
