@@ -76,7 +76,7 @@ class RegionListView(ListView):
     zoom_to_data = True
 
     def get_queryset(self):
-        return Region.objects.filter(is_active=True).exclude(slug=settings.MAIN_REGION).order_by('full_name')
+        return Region.objects.filter(is_active=True).exclude(regionsettings__is_meta_region=True).order_by('full_name')
 
     def get_context_data(self, *args, **kwargs):
         from maps.widgets import InfoMap
