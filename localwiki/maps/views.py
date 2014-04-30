@@ -1,6 +1,5 @@
 import copy
 from dateutil.parser import parse as dateparser
-from urlparse import urljoin
 from operator import attrgetter
 
 from django.conf import settings
@@ -25,8 +24,7 @@ from utils.views import (Custom404Mixin, CreateObjectMixin, JSONResponseMixin,
     JSONView, PermissionRequiredMixin, DeleteView, RevertView)
 from versionutils.versioning.views import UpdateView
 from versionutils.versioning.views import VersionsList
-from pages.models import Page, slugify, name_to_url
-from pages.constants import page_base_path
+from pages.models import Page, slugify, name_to_url, page_url
 from regions.views import RegionMixin
 from regions.models import Region
 from users.views import AddContributorsMixin
@@ -92,21 +90,11 @@ def filter_by_zoom(queryset, zoom):
     return queryset
 
 
-def _page_url(pagename, region):
-    """
-    Faster than reverse() for repeated page links.
-    TODO: put this somewhere else.
-    """
-    slug = name_to_url(pagename)
-    # Use page_base_path() to avoid reverse() overhead.
-    return urljoin(page_base_path(region), slug)
-    
-
 def popup_html(mapdata=None, pagename=None):
     if mapdata:
         pagename = mapdata.page.name
-    page_url = _page_url(pagename, mapdata.region)
-    return mark_safe('<a href="%s">%s</a>' % (page_url, pagename))
+    url = page_url(pagename, mapdata.region)
+    return mark_safe('<a href="%s">%s</a>' % (url, pagename))
 
 
 class MapGlobalView(RegionMixin, ListView):
@@ -237,7 +225,7 @@ class MapObjectsForBounds(JSONResponseMixin, RegionMixin, BaseListView):
         objs = self.object_list.values('geom', 'page__name')
         region = self.get_region()
         map_objects = [
-            (o['geom'].ewkt, o['page__name'], _page_url(o['page__name'], region))
+            (o['geom'].ewkt, o['page__name'], page_url(o['page__name'], region))
             for o in objs
         ]
         return map_objects
