@@ -42,7 +42,7 @@ class PageListView(RegionMixin, ListView):
 
     def get_queryset(self):
         qs = super(PageListView, self).get_queryset()
-        return qs.defer('content').order_by('name')
+        return qs.defer('content').select_related('region').order_by('name')
 
 
 class PageDetailView(Custom404Mixin, AddContributorsMixin, RegionMixin, DetailView):
