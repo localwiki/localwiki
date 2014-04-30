@@ -231,6 +231,7 @@ hr.selected {
     .includepage_right, .includepage_left {
         float: none;
         margin-left: 0;
+        width: auto!important;
     }
 }
 
