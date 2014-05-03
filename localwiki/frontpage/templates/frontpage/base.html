@@ -6,6 +6,7 @@
 {% load pages_tags %}
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
+<link rel="canonical" href="{{ region.get_absolute_url }}" /> 
 <link rel="stylesheet" href="{% static "css/frontpage.css" %}"/>
 <script src="{% static "js/jquery/jquery-ui-1.8.16.custom.min.js" %}"></script>
 <script src="{% static "js/coverphoto.js" %}"></script>
