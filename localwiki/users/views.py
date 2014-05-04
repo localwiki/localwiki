@@ -20,7 +20,7 @@ from regions.views import RegionMixin, RegionAdminRequired
 
 from .templatetags.user_tags import user_link
 from .models import UserProfile
-from .forms import UserSetForm, UserSettingsForm, DeactivateForm
+from .forms import UserSetForm, UserSettingsForm
 
 
 def humanize_int(n):
@@ -216,26 +216,6 @@ class UserSettingsView(UpdateView):
     def get_success_url(self):
         return self.request.user.get_absolute_url()
 
-
-class UserDeactivateView(UserSettingsView):
-    template_name = 'users/deactivate.html'
-    form_class = DeactivateForm 
-
-    def form_valid(self, form):
-        response = super(UserDeactivateView, self).form_valid(form)
-
-        userprofile = self.get_object()
-        userprofile.disabled = form.cleaned_data['disabled']
-        userprofile.save()
-
-        messages.add_message(self.request, messages.SUCCESS, _("Your account has been de-activated."))
-        return response
-
-    def get_initial(self):
-        return {}
-
-    def get_success_url(self):
-        return self.request.user.get_absolute_url()
 
 
 class AddContributorsMixin(object):

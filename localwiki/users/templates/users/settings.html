@@ -34,7 +34,4 @@
 
 <p><input type="submit" value="{% trans 'Save' %}" /></p>
 </form>
-
-{% url 'user-deactivate' as deactivate_url %}
-<p>{% blocktrans %}You can also <a href="{{ deactivate_url }}">deactivate your account</a>.{% endblocktrans %}</p>
 {% endblock %}
