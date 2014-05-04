@@ -159,6 +159,7 @@ install_requires = [
     'django-gravatar2==1.1.3',
     'django-endless-pagination==2.0',
     'django-block-ip==0.1.6',
+    'django-static-sitemaps==2.1.0-custom1',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
@@ -188,6 +189,7 @@ setup(
         'https://github.com/philipn/django-rest-framework-chain/tarball/django_rest_framework_filter#egg=djangorestframework-filter-0.2.1',
         'https://github.com/philipn/django-rest-framework-gis/tarball/localwiki#egg=djangorestframework-gis-0.1.0-custom2',
         'https://github.com/philipn/django-endless-pagination/tarball/zip_safe#egg=django-endless-pagination-2.0',
+        'https://github.com/philipn/django-static-sitemaps/tarball/localwiki#egg=django-static-sitemaps-2.1.0-custom1',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=localwiki.manage:main'],

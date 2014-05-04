@@ -261,6 +261,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.humanize',
+    'django.contrib.sitemaps',
     #'django.contrib.staticfiles',
 
     # Other third-party apps
@@ -282,6 +283,7 @@ INSTALLED_APPS = (
     'django_gravatar',
     'endless_pagination',
     'block_ip',
+    'static_sitemaps',
 
     # Our apps
     'versionutils.versioning',
@@ -344,6 +346,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r'^/api/.*$'
 
 ENDLESS_PAGINATION_PER_PAGE = 50
+
+STATICSITEMAPS_ROOT_SITEMAP = 'localwiki.main.sitemaps.sitemaps'
+STATICSITEMAPS_REFRESH_AFTER = 60
 
 # For testing, you can start the python debugging smtp server like so:
 # sudo python -m smtpd -n -c DebuggingServer localhost:25
