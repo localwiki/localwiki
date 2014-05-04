@@ -57,7 +57,6 @@ class UserProfile(models.Model):
     _gravatar_email = models.EmailField(verbose_name=_("Gravatar Email (Private)"), max_length=254, blank=True, null=True)
     show_email = models.BooleanField(verbose_name=_("Show email publicly (Helps with communication)"), default=False)
     personal_url = models.URLField(verbose_name=_("Personal website"), blank=True, null=True)
-    disabled = models.BooleanField(verbose_name=_("Disable account permanently"), default=False)
 
     @property
     def gravatar_email(self):
