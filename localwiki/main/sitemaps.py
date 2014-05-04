@@ -10,9 +10,10 @@ class PageSitemap(Sitemap):
         return Page.objects.defer('content').select_related('region')
 
     def lastmod(self, obj):
-        # Sketchy highly optimized query:
-        most_recent = obj.versions.only('history_date')[0]
-        return most_recent.history_date
+        if obj.versions.all().exists():
+            # Sketchy highly optimized query:
+            most_recent = obj.versions.only('history_date')[0]
+            return most_recent.history_date
 
 
 class RegionSitemap(Sitemap):
