@@ -7,13 +7,12 @@ from pages.models import Page
 
 class PageSitemap(Sitemap):
     def items(self):
-        return Page.objects.all()
+        return Page.objects.defer('content').select_related('region')
 
     def lastmod(self, obj):
-        if not obj.versions.all().count():
-            return
-        most_recent = obj.versions.most_recent()
-        return most_recent.version_info.date
+        # Sketchy highly optimized query:
+        most_recent = obj.versions.only('history_date')[0]
+        return most_recent.history_date
 
 
 class RegionSitemap(Sitemap):
