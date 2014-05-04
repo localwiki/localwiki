@@ -28,3 +28,9 @@ class UserSettingsForm(forms.ModelForm):
     name = forms.CharField(label=_("Your name"), required=False)
     email = forms.EmailField(label=_("Email address"))
     gravatar_email = forms.EmailField(label=_("Gravatar email (private)"))
+
+
+class DeactivateForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('disabled',)
