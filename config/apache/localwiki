@@ -24,7 +24,6 @@
 
     Alias /static/ {{ data_root }}/static/
     Alias /robots.txt {{ data_root }}/static/robots.txt
-    Alias /sitemap.xml {{ data_root }}/static/sitemap.xml
     Alias /favicon.ico {{ data_root }}/static/favicon.ico
 
     <Directory {{ data_root }}>
