@@ -349,6 +349,7 @@ ENDLESS_PAGINATION_PER_PAGE = 50
 
 STATICSITEMAPS_ROOT_SITEMAP = 'localwiki.main.sitemaps.sitemaps'
 STATICSITEMAPS_REFRESH_AFTER = 60 * 1
+STATICSITEMAPS_USE_GZIP = False
 
 # For testing, you can start the python debugging smtp server like so:
 # sudo python -m smtpd -n -c DebuggingServer localhost:25
