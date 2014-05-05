@@ -1,4 +1,5 @@
 {% load url from future %}
+{% load cache %}
 <style>
     ul.cloud {
         list-style: none;
@@ -14,9 +15,11 @@
         text-decoration: none;
     }
 </style>
+{% cache 3600 tag-cloud region %}
 <ul class="tag-list cloud">
 {% for tag in tag_list %}
   <li class="tag" style="font-size: {% if tag.num_pages > 20 %}30pt{% else %}{{ tag.num_pages|add:"9" }}pt{% endif %}"><a title="{{ tag.num_pages }} pages" href="{% url 'tags:tagged' slug=tag.slug region=tag.region.slug %}">{{ tag.name }}</a>
   </li>
 {% endfor %}
 </ul>
+{% endcache %}

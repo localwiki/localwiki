@@ -1,8 +1,11 @@
 {% load url from future %}
+{% load cache %}
 {% if tag_list %}
+  {% cache 3600 tag-list region %}
   <ul class="tag-list">
   {% for tag in tag_list %}
     <li class="tag"><a href="{% url 'tags:tagged' slug=tag.slug region=tag.region.slug %}" rel="tag">{{ tag.name }}</a></li>
   {% endfor %}
   </ul>
+  {% endcache %}
 {% endif %}
