@@ -18,6 +18,7 @@
 {% else %}
 {{ block.super }}
 {% endif %}
+<link rel="canonical" href="{{ page.get_absolute_url }}" /> 
 {% endblock %}
 
 {% block header_subtitle %}
