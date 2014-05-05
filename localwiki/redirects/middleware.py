@@ -38,7 +38,10 @@ class RedirectFallbackMiddleware(object):
 
         slug = slugify(re_match.group('slug'))
         region_slug = re_match.group('region')
-        region = Region.objects.get(slug=region_slug)
+        region = Region.objects.filter(slug=region_slug)
+        if not region:
+            return response
+        region = region[0]
 
         try:
             r = Redirect.objects.get(source=slug, region=region)
