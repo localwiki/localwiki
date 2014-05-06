@@ -684,7 +684,6 @@ textarea, input, select {
         border: none;
     }
     #nav li, #nav li a {
-        height: inherit;
         width: 100%;
         padding: 0;
         margin: 0;
@@ -692,7 +691,7 @@ textarea, input, select {
         font-size: 110%;
         background-color: #455868;
         color: #f4f4f4!important;
-	    display: block;
+	    display: table;
 	    text-align: center;
 	    text-decoration: none;
 	    line-height: 40px;
