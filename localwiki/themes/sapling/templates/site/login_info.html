@@ -13,7 +13,7 @@
     </span>
 {% else %}
     <span class="actions">
-        <a href="{% url 'django.contrib.auth.views.login' %}?next={{ request.path }}">{% trans "log in" %}</a> {% trans "or" %} <a href="{% url 'registration_register' %}?next={{ request.path }}">{% trans "create account" %}</a>
+        <a href="{% url 'login-main' %}?next={{ request.path }}" rel="nofollow">{% trans "log in" %}</a> {% trans "or" %} <a href="{% url 'registration_register' %}?next={{ request.path }}" rel="nofollow">{% trans "create account" %}</a>
     </span>
 {% endif %}
 

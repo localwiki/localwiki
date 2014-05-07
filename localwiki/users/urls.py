@@ -3,10 +3,11 @@ from django.views.generic import TemplateView
 
 from registration.views import register
 
-from .views import UserPageView, UserSettingsView, UserDeactivateView
+from .views import UserPageView, UserSettingsView, UserDeactivateView, LoginView
 
 
 urlpatterns = patterns('',
+    url(r'^_login/?$', LoginView.as_view(), name="login-main"),
     url(r'^_register/$', register,
         {'backend': 'users.registration_backend.SaplingBackend'},
         name='registration_register'),

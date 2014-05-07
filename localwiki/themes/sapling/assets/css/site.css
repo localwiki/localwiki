@@ -1617,6 +1617,9 @@ input:focus {
 #user_page_info .edit_settings {
     margin-top: 1em;
 }
+.user_page .messages {
+    margin-bottom: 1em;
+}
 
 @media screen and (max-width: 500px) {
     #user_page_info {

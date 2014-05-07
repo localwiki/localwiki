@@ -3,6 +3,7 @@ from urlparse import urlparse
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseForbidden
+from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
 from django.template.loader import render_to_string
 from django.views.generic.edit import UpdateView, FormView
@@ -12,6 +13,7 @@ from django.utils.translation import ugettext as _
 from django.db.models import Count
 from django.contrib.auth.models import User
 
+from class_based_auth_views.views import LoginView
 from guardian.shortcuts import get_users_with_perms, assign_perm, remove_perm
 
 from regions.models import Region
@@ -44,6 +46,16 @@ def pretty_url(url):
     return url
 
 
+class LoginView(LoginView):
+    def form_valid(self, form):
+        r = super(LoginView, self).form_valid(form)
+        profile = getattr(self.request.user, 'userprofile', None)
+        if profile and profile.disabled:
+            logout(self.request)
+            messages.add_message(self.request, messages.SUCCESS, _("Account is disabled."))
+        return r
+
+
 class UserPageView(TemplateView):
     template_name = 'users/user_page.html'
 
@@ -56,6 +68,7 @@ class UserPageView(TemplateView):
 
         username = self.kwargs.get('username')
         user = User.objects.get(username__iexact=username)
+        profile = getattr(user, 'userprofile', None)
         
         #########################
         # Calculate user stats
@@ -81,6 +94,9 @@ class UserPageView(TemplateView):
         context['num_pages_edited'] = humanize_int(num_pages_edited)
         context['num_maps_edited'] = humanize_int(num_maps_edited)
 
+        if profile and profile.disabled:
+            context['disabled'] = True
+            
         return context
 
     def get_user_page(self, user):
@@ -217,9 +233,15 @@ class UserSettingsView(UpdateView):
         return self.request.user.get_absolute_url()
 
 
-class UserDeactivateView(UserSettingsView):
+class UserDeactivateView(UpdateView):
     template_name = 'users/deactivate.html'
+    model = UserProfile
     form_class = DeactivateForm 
+
+    def get_object(self):
+        if not self.request.user.is_authenticated():
+            raise PermissionDenied(_("You must be logged in to change user settings."))
+        return UserProfile.objects.get(user=self.request.user)
 
     def form_valid(self, form):
         response = super(UserDeactivateView, self).form_valid(form)
@@ -235,7 +257,7 @@ class UserDeactivateView(UserSettingsView):
         return {}
 
     def get_success_url(self):
-        return self.request.user.get_absolute_url()
+        return '/'
 
 
 class AddContributorsMixin(object):
