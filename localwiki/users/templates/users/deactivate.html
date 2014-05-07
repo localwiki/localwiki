@@ -12,7 +12,7 @@
 <form method="post" action="" class="user_settings">{% csrf_token %}
 
 <p>{{ form.disabled.errors }}
-{{ form.disabled }} <label for="id_disabled">{% trans "Disable this account permanently." %}</label></p>
+{{ form.disabled }} {{ form.disabled.label_tag }}</p>
 
 <input style="display: inline-block;" type="submit" value="{% trans 'Save' %}" /><a href="{{ request.user.get_absolute_url }}" class="little button" style="display: inline-block; float: none;">{% trans 'Cancel' %}</a>
 </form>

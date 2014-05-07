@@ -14,7 +14,6 @@ from django.utils.translation import ugettext as _
 from django.db.models import Count
 from django.contrib.auth.models import User
 
-from class_based_auth_views.views import LoginView
 from guardian.shortcuts import get_users_with_perms, assign_perm, remove_perm
 
 from regions.models import Region
@@ -45,16 +44,6 @@ def pretty_url(url):
     elif url.startswith('https://'):
         url = url[8:]
     return url
-
-
-class LoginView(LoginView):
-    def form_valid(self, form):
-        r = super(LoginView, self).form_valid(form)
-        profile = getattr(self.request.user, 'userprofile', None)
-        if profile and profile.disabled:
-            logout(self.request)
-            messages.add_message(self.request, messages.SUCCESS, _("Account is disabled."))
-        return r
 
 
 class UserPageView(TemplateView):
@@ -96,9 +85,6 @@ class UserPageView(TemplateView):
         context['num_pages_edited'] = humanize_int(num_pages_edited)
         context['num_maps_edited'] = humanize_int(num_maps_edited)
 
-        if profile and profile.disabled:
-            context['disabled'] = True
-            
         return context
 
     def get_user_page(self, user):
@@ -235,28 +221,31 @@ class UserSettingsView(UpdateView):
         return self.request.user.get_absolute_url()
 
 
-class UserDeactivateView(UpdateView):
+class UserDeactivateView(FormView):
     template_name = 'users/deactivate.html'
-    model = UserProfile
     form_class = DeactivateForm 
 
-    def get_object(self):
+    def get_context_data(self, **kwargs):
         if not self.request.user.is_authenticated():
             raise PermissionDenied(_("You must be logged in to change user settings."))
-        return UserProfile.objects.get(user=self.request.user)
+        return super(UserDeactivateView, self).get_context_data(**kwargs)
+
+    def get_initial(self):
+        return {}
 
     def form_valid(self, form):
         response = super(UserDeactivateView, self).form_valid(form)
 
-        userprofile = self.get_object()
-        userprofile.disabled = form.cleaned_data['disabled']
-        userprofile.save()
+        if not self.request.user.is_authenticated():
+            raise PermissionDenied(_("You must be logged in to change user settings."))
 
+        self.request.user.is_active = not form.cleaned_data['disabled']
+        self.request.user.save()
+
+        logout(self.request)
         messages.add_message(self.request, messages.SUCCESS, _("Your account has been de-activated."))
-        return response
 
-    def get_initial(self):
-        return {}
+        return response
 
     def get_success_url(self):
         return '/'

@@ -30,7 +30,5 @@ class UserSettingsForm(forms.ModelForm):
     gravatar_email = forms.EmailField(label=_("Gravatar email (private)"))
 
 
-class DeactivateForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ('disabled',)
+class DeactivateForm(forms.Form):
+    disabled = forms.BooleanField(initial=False, label=_("Disable this account permanently"))

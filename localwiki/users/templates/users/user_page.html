@@ -26,7 +26,7 @@
       </em>
     {% endif %}
 
-    {% if disabled %}
+    {% if not user_for_page.is_active %}
       <ul class="messages">
         <li>{% trans "This user account is disabled." %}</li> 
       </ul>
@@ -36,7 +36,7 @@
       <div id="user_page_info" {% if not page.content %}style="float: left;"{% endif %}>
         <div class="profile_picture"><img src="{% gravatar_url user_for_page.userprofile.gravatar_email 500 %}" class="gravatar" width="250" height="250" /></div>
         <div class="profile_table">
-            {% if not disabled %}
+            {% if user_for_page.is_active %}
               {% if user_for_page.userprofile.show_email %}
               <div><a href="mailto:{{ user_for_page.email }}" rel="nofollow">{{ user_for_page.email }}</a></div>
               {% endif %}
@@ -57,7 +57,7 @@
       </div>
 
       {% with region=page.region %}
-        {% if not disabled %}
+        {% if user_for_page.is_active %}
           {% render_plugins page.content %}
         {% endif %}
       {% endwith %}
