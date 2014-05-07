@@ -15,7 +15,8 @@ class FollowedPagesListView(ListView):
         username = self.kwargs.get('username')
         self.user = User.objects.get(username__iexact=username)
         qs = super(FollowedPagesListView, self).get_queryset()
-        return qs.exclude(target_page=None).filter(user=self.user)
+        qs = qs.exclude(target_page=None).filter(user=self.user)
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super(FollowedPagesListView, self).get_context_data(**kwargs)

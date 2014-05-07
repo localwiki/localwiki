@@ -37,6 +37,7 @@ DATABASES = {
 SOUTH_MIGRATION_MODULES = {
     # HACK: South treats 'database' as the name of constance.backends.database
     'database': 'migrations.south.constance',
+    'follow': 'utils.external_migrations.follow',
 }
 
 GLOBAL_LICENSE_NOTE = _("""<p>Except where otherwise noted, this content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights</a>.</p>""")

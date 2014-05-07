@@ -116,7 +116,7 @@ class UserPageView(TemplateView):
 
         # Users, pages followed
         num_pages_followed = Follow.objects.filter(user=user).exclude(target_page=None).count()
-        num_users_followed = Follow.objects.filter(user=user).exclude(target_user=None).count() - 1
+        num_users_followed = Follow.objects.filter(user=user).exclude(target_user=None).exclude(target_user=user).count()
 
         context['user_for_page'] = user
         context['pretty_personal_url'] = pretty_url(user.userprofile.personal_url) if user.userprofile.personal_url else None
