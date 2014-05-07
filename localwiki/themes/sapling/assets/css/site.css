@@ -597,7 +597,8 @@ textarea, input, select {
         height: 100%;
         width: 100%;
         background-position: 10px 8px;
-        line-height: 22px;
+        font-size: 13px;
+        line-height: 14px;
     }
 }
 
