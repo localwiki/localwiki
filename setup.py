@@ -160,7 +160,6 @@ install_requires = [
     'django-endless-pagination==2.0',
     'django-block-ip==0.1.6',
     'django-static-sitemaps==2.1.0-custom1',
-    'django-class-based-auth-views==0.2',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
