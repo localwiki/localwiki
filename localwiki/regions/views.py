@@ -4,10 +4,11 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView as DjangoTemplateView
 from django.views.generic import ListView
-from django.http import Http404
+from django.http import Http404, HttpResponseNotFound
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.http import HttpResponseForbidden, HttpResponse
 from django.contrib import messages
+from django.shortcuts import get_object_or_404, render
 from django.contrib.gis.geos import GEOSGeometry, Polygon, MultiPolygon
 from django.template.loader import render_to_string
 from django.template.context import RequestContext
@@ -20,6 +21,14 @@ from models import Region, RegionSettings, BannedFromRegion, slugify
 from forms import RegionForm, RegionSettingsForm, AdminSetForm, BannedSetForm
 
 
+def region_404_response(request, slug):
+    region_add = reverse('regions:add')
+    msg = _('<p>Region "%s" not found. Would you like to <a href="%s" rel="nofollow">create it</a>?</p>' %
+        (slug, region_add))
+    html = render_to_string('404.html', {'message': msg}, RequestContext(request))
+    return HttpResponseNotFound(html)
+
+
 class RegionMixin(object):
     """
     Provides helpers to views that deal with Regions.
@@ -28,7 +37,7 @@ class RegionMixin(object):
         """
         Returns the Region associated with this view.
         """
-        r = Region.objects.get(
+        r = get_object_or_404(Region,
             slug=slugify(self.kwargs.get('region')))
         if not r.is_active:
             raise Http404(_("Region '%s' was deleted." % r.slug))

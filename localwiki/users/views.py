@@ -7,6 +7,7 @@ from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
 from django.template.loader import render_to_string
 from django.views.generic.edit import UpdateView, FormView
+from django.shortcuts import get_object_or_404
 from django.views.generic import RedirectView, TemplateView
 from django.contrib import messages
 from django.utils.translation import ugettext as _
@@ -68,6 +69,7 @@ class UserPageView(TemplateView):
 
         username = self.kwargs.get('username')
         user = User.objects.get(username__iexact=username)
+        user = get_object_or_404(User, username__iexact=username)
         profile = getattr(user, 'userprofile', None)
         
         #########################

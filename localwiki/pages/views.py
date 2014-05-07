@@ -25,7 +25,7 @@ from versionutils.versioning.views import VersionsList
 from localwiki.utils.views import (Custom404Mixin, CreateObjectMixin,
     PermissionRequiredMixin, DeleteView, RevertView)
 from regions.models import Region
-from regions.views import RegionMixin
+from regions.views import RegionMixin, region_404_response
 from maps.widgets import InfoMap
 from users.views import SetPermissionsView, AddContributorsMixin
 from users.decorators import permission_required
@@ -56,7 +56,10 @@ class PageDetailView(Custom404Mixin, AddContributorsMixin, RegionMixin, DetailVi
 
     def handler404(self, request, *args, **kwargs):
         name = url_to_name(kwargs['original_slug'])
-        region = Region.objects.get(slug=kwargs['region'])
+        region = Region.objects.filter(slug=kwargs['region'])
+        if not region:
+            return region_404_response(request, kwargs['region']) 
+        region = region[0]
         slug = kwargs['slug']
 
         page_templates = Page.objects.filter(

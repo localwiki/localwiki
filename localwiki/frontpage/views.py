@@ -14,13 +14,14 @@ from pages.models import Page
 from pages.views import PageDetailView
 from maps.models import MapData
 from maps.widgets import InfoMap, map_options_for_region
-from regions.views import RegionMixin, RegionAdminRequired, TemplateView
+from regions.views import RegionMixin, RegionAdminRequired, TemplateView, region_404_response
 from regions.models import Region
+from localwiki.utils.views import Custom404Mixin
 
 from .models import FrontPage
 
 
-class FrontPageView(TemplateView):
+class FrontPageView(Custom404Mixin, TemplateView):
     template_name = 'frontpage/base.html'
 
     def get(self, *args, **kwargs):
@@ -74,6 +75,9 @@ class FrontPageView(TemplateView):
         else:
             context['page'] = Page(name="Front Page", region=self.get_region())
         return context
+
+    def handler404(self, request, *args, **kwargs):
+        return region_404_response(request, kwargs.get('region'))
 
 
 class CoverUploadView(RegionMixin, RegionAdminRequired, View):

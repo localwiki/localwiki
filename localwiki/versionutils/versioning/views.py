@@ -141,13 +141,6 @@ class RevertView(DeleteView):
     template_name_suffix = '_confirm_revert'
     form_class = RevertForm
 
-    def __init__(self, *args, **kwargs):
-        base_init = super(RevertView, self).__init__(*args, **kwargs)
-        # We want object_confirm_revert, not object_hist_confirm_revert.
-        if not self.template_name_field:
-            self.template_name_field = self.context_object_name
-        return base_init
-
     def allow_admin_actions(self):
         return False
 

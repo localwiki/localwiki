@@ -1,5 +1,6 @@
 {% extends "tags/base.html" %}
 {% load i18n %}
+{% load cache %}
 
 {% block title %}{% trans "Tags" %} - {{ block.super }}{% endblock %}
 {% block header_title %}{% trans "All tags" %}{% endblock %}
@@ -19,13 +20,19 @@
         <li><a href="#tags_cloud">{% trans "As a cloud" %}</a></li>
         </ul>
         <div id="tags_by_name">
+        {% cache 3600 tag-list region %}
         {% include "tags/tag_list_snippet.html" %}
+        {% endcache %}
         </div>
         <div id="tags_by_num_pages">
+        {% cache 3600 tag-num-pages region %}
         {% include "tags/tag_list_by_num_pages.html" %}
+        {% endcache %}
         </div>
         <div id="tags_cloud">
+        {% cache 3600 tag-cloud region %}
         {% include "tags/tag_cloud.html" %}
+        {% endcache %}
         </div>
     </div>
     <style>

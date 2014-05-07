@@ -284,6 +284,10 @@ def setup_jetty():
     sudo("service jetty stop")
     sudo("service jetty start")
 
+def setup_memcached():
+    put("config/memcached/memcached.conf", "/etc/memcached.conf", use_sudo=True)
+    sudo("service memcached restart")
+
 def install_system_requirements():
     # Update package list
     sudo('apt-get update')
@@ -590,6 +594,7 @@ def provision():
     install_system_requirements()
     setup_mailserver()
     setup_postgres()
+    setup_memcached()
     setup_jetty()
     setup_repo()
     init_localwiki_install()
