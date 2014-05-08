@@ -287,6 +287,7 @@ INSTALLED_APPS = (
     'follow',
     'block_ip',
     'static_sitemaps',
+    'djcelery_email',
 
     # Our apps
     'versionutils.versioning',
@@ -362,6 +363,12 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
 TEMPLATED_EMAIL_TEMPLATE_DIR = ''
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+
+CELERY_EMAIL_TASK_CONFIG = {
+    'rate_limit' : '80/m',
+}
+
 
 OLWIDGET_DEFAULT_OPTIONS = {
     'default_lat': 37,
