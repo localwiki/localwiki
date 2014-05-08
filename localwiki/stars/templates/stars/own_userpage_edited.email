@@ -15,7 +15,7 @@ To disable this notification, un-star your user page here: {{ base_uri }}{{ page
 
 {% block html %}
 {% blocktrans %}
-<p>{{ user_with_link }} edited <a href="{{ page_url }}">your user page</a> on <a href="{{ base_uri }}">LocalWiki</a>.{{ comment_text }}</p>
+<p>{{ user_with_link }} edited <a href="{{ base_uri }}{{ page_url }}">your user page</a> on <a href="{{ base_uri }}">LocalWiki</a>.{{ comment_text }}</p>
 <p><a href="{{ base_uri }}{{ diff_url }}">Click here</a> to see what they changed.</p>
 <p>
 ---

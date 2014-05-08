@@ -2,7 +2,7 @@
 
 {% block subject %}{% blocktrans with region=page.region.slug pagename=page.name %}LocalWiki [{{ region }}]: {{ pagename}}{% endblocktrans %}{% endblock %}
 
-{% block plain %}{% blocktrans %}{{ user }} deleted "{{ pagename }}" on {{ base_uri }}{{ region_url }}.{{ comment_text }}
+{% block plain %}{% blocktrans %}{{ username }} deleted "{{ pagename }}" on {{ base_uri }}{{ region_url }}.{{ comment_text }}
 
 Go here to see the history of edits on the page:
 
@@ -12,7 +12,7 @@ Go here to see the history of edits on the page:
 
 {% block html %}
 {% blocktrans %}
-<p>{{ user_with_link }} deleted <a href="{{ page_url }}">{{ pagename }}</a> on <a href="{{ base_uri }}{{ region_url }}">LocalWiki {{ region_name }}</a>.{{ comment_text }}</p>
+<p>{{ user_with_link }} deleted <a href="{{ base_uri }}{{ page_url }}">{{ pagename }}</a> on <a href="{{ base_uri }}{{ region_url }}">LocalWiki {{ region_name }}</a>.{{ comment_text }}</p>
 <p><a href="{{ base_uri }}{{ history_url }}">Click here</a> to see the history of edits on the page.</p>
 <p>
 {% endblocktrans %}
