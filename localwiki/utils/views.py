@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 from django.template.context import RequestContext
 
+from versionutils.versioning.views import RevertView, DeleteView
+
 from . import take_n_from
 
 
@@ -224,3 +226,12 @@ class MultipleTypesPaginatedView(TemplateView):
 
         return c
 
+
+class RevertView(RevertView):
+    def allow_admin_actions(self):
+        return self.request.user.is_staff
+
+
+class DeleteView(DeleteView):
+    def allow_admin_actions(self):
+        return self.request.user.is_staff

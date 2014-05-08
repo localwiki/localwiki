@@ -1,4 +1,5 @@
 import threading
+import re
 
 from django.middleware.cache import (UpdateCacheMiddleware,
     FetchFromCacheMiddleware)
@@ -103,7 +104,13 @@ class UpdateCacheMiddleware(UpdateCacheMiddlewareNoEdit, UpdateCacheMiddlewareNo
 
 
 class FetchFromCacheMiddleware(FetchFromCacheMiddleware):
+    STRIP_RE = re.compile(r'\b(_[^=]+=.+?(?:; |$))')
+
     def process_request(self, request):
+        # Clear Google Analytics cookies
+        cookie = self.STRIP_RE.sub('', request.META.get('HTTP_COOKIE', ''))   
+        request.META['HTTP_COOKIE'] = cookie
+
         if request.user.is_authenticated() or request.session.get('has_POSTed'):
             return False  # Don't cache if they've posted or are authenticated
         return super(FetchFromCacheMiddleware, self).process_request(request)

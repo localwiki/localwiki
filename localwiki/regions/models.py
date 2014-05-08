@@ -42,7 +42,7 @@ class Region(models.Model):
         if not self.geom:
             return
         center = self.geom.centroid
-        rgs = Region.objects.exclude(geom__isnull=True).exclude(id=self.id).distance(center).order_by('distance')
+        rgs = Region.objects.exclude(geom__isnull=True).exclude(id=self.id).exclude(regionsettings__is_meta_region=True).exclude(is_active=False).distance(center).order_by('distance')
         # Return 6 nearest now. TODO: Rank by page count?
         return rgs[:6]
 
@@ -62,11 +62,12 @@ LANGUAGES = [(lang[0], ugettext_lazy(lang[1])) for lang in settings.LANGUAGES]
 
 class RegionSettings(models.Model):
     region = models.OneToOneField(Region)
-    # Can be null for the 'main' region, which may not have a geometry.
-    region_center = models.PointField(null=True)
-    region_zoom_level = models.IntegerField(null=True)
+    # Can be null for meta regions, which may not have a geometry.
+    region_center = models.PointField(null=True, blank=True)
+    region_zoom_level = models.IntegerField(null=True, blank=True)
     admins = models.ManyToManyField(User, null=True)
     default_language = models.CharField(max_length=7, blank=True, null=True, choices=LANGUAGES)
+    is_meta_region = models.BooleanField(default=False)
 
     def __unicode__(self):
         return 'settings: %s' % str(self.region)

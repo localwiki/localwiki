@@ -221,12 +221,18 @@ hr.selected {
     margin-bottom: 1em;
     margin-left: 1em;
 }
-
 .includepage_right {
     float: right;
     clear: right;
     margin-bottom: 1em;
     margin-left: 1em;
+}
+@media screen and (max-width: 700px) {
+    .includepage_right, .includepage_left {
+        float: none;
+        margin-left: 0;
+        width: auto!important;
+    }
 }
 
 .plugin.searchbox{

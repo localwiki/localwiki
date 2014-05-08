@@ -1,0 +1,17 @@
+{% extends "site/base.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Not found" %} - {{ block.super }}{% endblock %}
+
+{% block header_title %}{% trans "Not found" %}{% endblock %}
+
+{% block messages %}
+  <ul class="messages">
+    {% if message %}
+      <li>{{ message|safe }}</li>
+    {% else %}
+      <li>{% trans "Item not found" %}</li>
+    {% endif %}
+  </ul>
+{% endblock %}

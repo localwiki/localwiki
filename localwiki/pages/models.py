@@ -2,6 +2,7 @@ from urllib import quote
 from urllib import unquote_plus
 import mimetypes
 import re
+from urlparse import urljoin
 from copy import copy
 
 from django.contrib.gis.db import models
@@ -19,8 +20,9 @@ from versionutils import diff
 from versionutils import versioning
 from regions.models import Region
 
-import exceptions
-from fields import WikiHTMLField
+from . import exceptions
+from .fields import WikiHTMLField
+from .constants import page_base_path
 
 
 def validate_page_slug(slug):
@@ -44,10 +46,7 @@ class Page(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('pages:show', kwargs={
-            'slug': self.pretty_slug,
-            'region': self.region.slug
-        })
+        return page_url(self.name, self.region)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -338,6 +337,16 @@ def url_to_name(value):
     value = unquote_plus(value.encode('utf-8')).decode('utf-8')
     return re.sub('_', ' ', value).strip()
 url_to_name = stringfilter(url_to_name)
+
+
+def page_url(pagename, region):
+    """
+    Faster than reverse() for repeated page links.
+    TODO: put this somewhere else.
+    """
+    slug = name_to_url(pagename)
+    # Use page_base_path() to avoid reverse() overhead.
+    return urljoin(page_base_path(region), slug)
 
 
 # For registration calls

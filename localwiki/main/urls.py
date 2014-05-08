@@ -27,7 +27,7 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    (r'^/*$', MainPageView.as_view()),
+    url(r'^/*$', MainPageView.as_view(), name='main-page'),
 
     # Users / registration URLs
     (r'^(?i)Users/', include('users.urls')),
@@ -67,8 +67,13 @@ urlpatterns = patterns('',
     (r'^admin/subscribers/$', staff_member_required(SubscribedList.as_view())),
     (r'^admin/', include(admin.site.urls)),
 
+    # Search engine sitemap
+    # (Usually served via apache, but including here as well if using dev server)
+    url(r'^sitemap.xml', include('static_sitemaps.urls')),
+
     (r'^(?P<region>[^/]+?)/(((?i)Front[_ ]Page)/?)?', include('frontpage.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 # This should only happen if you're using the local dev server with
 # DEBUG=False.

@@ -176,7 +176,7 @@ OLWIDGET_JS = '%solwidget/js/olwidget.js?tm=1317359250' % STATIC_URL
 CLOUDMADE_API = '%solwidget/js/sapling_cloudmade.js?tm=1317359250' % STATIC_URL
 
 # django-honeypot options
-HONEYPOT_FIELD_NAME = 'content2'
+HONEYPOT_FIELD_NAME = 'main_content'
 HONEYPOT_USE_JS_FIELD = True
 HONEYPOT_REDIRECT_URL = '/'
 
@@ -222,6 +222,7 @@ MIDDLEWARE_CLASSES = (
     'redirects.middleware.RedirectFallbackMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
+    'block_ip.middleware.BlockIPMiddleware',
     'utils.middleware.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
 )
@@ -262,6 +263,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.humanize',
+    'django.contrib.sitemaps',
     #'django.contrib.staticfiles',
 
     # Other third-party apps
@@ -283,6 +285,8 @@ INSTALLED_APPS = (
     'django_gravatar',
     'endless_pagination',
     'follow',
+    'block_ip',
+    'static_sitemaps',
 
     # Our apps
     'versionutils.versioning',
@@ -346,6 +350,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r'^/api/.*$'
 
 ENDLESS_PAGINATION_PER_PAGE = 50
+
+STATICSITEMAPS_ROOT_SITEMAP = 'localwiki.main.sitemaps.sitemaps'
+STATICSITEMAPS_REFRESH_AFTER = 60 * 1
+STATICSITEMAPS_USE_GZIP = False
 
 # For testing, you can start the python debugging smtp server like so:
 # sudo python -m smtpd -n -c DebuggingServer localhost:25

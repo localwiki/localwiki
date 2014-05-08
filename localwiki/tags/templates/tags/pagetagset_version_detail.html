@@ -5,6 +5,10 @@
 {% load i18n %}
 {% load tags_tags %}
 
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
 {% block media %}
   {{ block.super }}
   {{ form.media }}

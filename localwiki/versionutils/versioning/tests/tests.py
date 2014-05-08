@@ -272,6 +272,66 @@ class ChangesTrackingTest(TestCase):
         m.a.delete()
         self.assertTrue(os.path.exists(path))
 
+    def test_delete_remove_older(self):
+        m = M16Unique(a="Whathi", b="dsfkjhf", c=684)
+        m.save()
+        m.b = "new text!"
+        m.save()
+        m.b = "new text!!"
+        m.save()
+
+        m.delete(delete_older_versions=True)
+
+        # One version, and it should be the 'deleted' type
+        self.assertEqual(m.versions.all().count(), 1)
+        self.assertEqual(m.versions.most_recent().version_info.type, TYPE_DELETED)
+
+        # Now with a non-unique-fields model:
+        m = M1(a="Whathi", b="dsfkjhf", c="skdfjh", d="dskfjccc")
+        m.save()
+        m.b = "new text!"
+        m.save()
+        m.b = "new text!!"
+        m.save()
+
+        pk = m.pk
+        m.delete(delete_older_versions=True)
+        # re-set pk to pull up old versions
+        m.pk = pk
+
+        # One version, and it should be the 'deleted' type
+        self.assertEqual(m.versions.all().count(), 1)
+        self.assertEqual(m.versions.most_recent().version_info.type, TYPE_DELETED)
+
+    def test_delete_remove_older_no_rc(self):
+        m = M16Unique(a="Whathi2", b="dsfkjhf2", c=685)
+        m.save()
+        m.b = "new text!"
+        m.save()
+        m.b = "new text!!"
+        m.save()
+
+        m.delete(delete_older_versions=True, track_changes=False)
+
+        # Zero versions
+        self.assertEqual(m.versions.all().count(), 0)
+
+        # Now with a non-unique-fields model:
+        m = M1(a="Whathi", b="dsfkjhf", c="skdfjh", d="dskfjccc")
+        m.save()
+        m.b = "new text!"
+        m.save()
+        m.b = "new text!!"
+        m.save()
+
+        pk = m.pk
+        m.delete(delete_older_versions=True, track_changes=False)
+        # re-set pk to pull up old versions
+        m.pk = pk
+
+        # One version, and it should be the 'deleted' type
+        self.assertEqual(m.versions.all().count(), 0)
+
     def test_version_numbering(self):
         m = M2(a="Newz!", b="B!", c=666)
         m.save()
@@ -363,6 +423,40 @@ class ChangesTrackingTest(TestCase):
                          [obj.c for obj in m_cur.versions.all()]
         )
 
+        # Now with a non-unique-fields model:
+        m = M1(a="Whathi2", b="dsfkjhf", c="skdfjh", d="dskfjccc")
+        m.save()
+
+        for i in range(1, 20):
+            m.c = str(i)
+            m.save()
+
+        # should be:
+        # c='19', '18', '17', .. , '1', '0'
+        m_old = m.versions.filter(c='4')[0]
+        m_old.revert_to(delete_newer_versions=True)
+
+        m_cur = M1.objects.filter(a="Whathi2", b="dsfkjhf")[0]
+        self.assertEqual(['4', '4', '3', '2', '1', '0'],
+                         [obj.c for obj in m_cur.versions.all()]
+        )
+
+        m_old = m_cur.versions.filter(c='1')[0]
+        m_old.revert_to(delete_newer_versions=True)
+
+        m_cur = M2.objects.filter(a="Whathi2", b="dsfkjhf")[0]
+        self.assertEqual(['1', '1', '0'],
+                         [obj.c for obj in m_cur.versions.all()]
+        )
+
+        m_old = m_cur.versions.filter(c='0')[0]
+        m_old.revert_to(delete_newer_versions=True)
+
+        m_cur = M2.objects.filter(a="Whathi2", b="dsfkjhf")[0]
+        self.assertEqual(['0', '0'],
+                         [obj.c for obj in m_cur.versions.all()]
+        )
+
     def test_trackchanges_off(self):
         m = M2(a="LOL", b="WHATTHE", c=10)
         m.save()
@@ -375,7 +469,7 @@ class ChangesTrackingTest(TestCase):
         mh.revert_to(track_changes=False)
         self.assertEqual(len(m.versions.all()), 1)
 
-    def test_revert_to_delete_newer_no_record(self):
+    def test_revert_to_delete_newer(self):
         m = M2(a="Sup", b="Dude", c=0)
         m.save()
 
@@ -385,7 +479,6 @@ class ChangesTrackingTest(TestCase):
 
         # should be:
         # c=19, 18, 17, .. 5, 4, 3, 2 1, 0
-        m.versions.track_changes = False
         m_old = m.versions.filter(c=4)[0]
         m_old.revert_to(delete_newer_versions=True)
 
@@ -407,6 +500,40 @@ class ChangesTrackingTest(TestCase):
 
         m_cur = M2.objects.filter(a="Sup", b="Dude")[0]
         self.assertEqual([0, 0],
+                         [obj.c for obj in m_cur.versions.all()]
+        )
+
+    def test_revert_to_delete_newer_no_record(self):
+        m = M2(a="Sup1", b="Dude1", c=0)
+        m.save()
+
+        for i in range(1, 20):
+            m.c = i
+            m.save()
+
+        # should be:
+        # c=19, 18, 17, .. 5, 4, 3, 2 1, 0
+        m_old = m.versions.filter(c=4)[0]
+        m_old.revert_to(delete_newer_versions=True, track_changes=False)
+
+        m_cur = M2.objects.filter(a="Sup1", b="Dude1")[0]
+        self.assertEqual([4, 3, 2, 1, 0],
+                         [obj.c for obj in m_cur.versions.all()]
+        )
+
+        m_old = m_cur.versions.filter(c=1)[0]
+        m_old.revert_to(delete_newer_versions=True, track_changes=False)
+
+        m_cur = M2.objects.filter(a="Sup1", b="Dude1")[0]
+        self.assertEqual([1, 0],
+                         [obj.c for obj in m_cur.versions.all()]
+        )
+
+        m_old = m_cur.versions.filter(c=0)[0]
+        m_old.revert_to(delete_newer_versions=True, track_changes=False)
+
+        m_cur = M2.objects.filter(a="Sup1", b="Dude1")[0]
+        self.assertEqual([0],
                          [obj.c for obj in m_cur.versions.all()]
         )
 

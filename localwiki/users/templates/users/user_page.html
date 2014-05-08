@@ -27,7 +27,7 @@
 
 {% block content_wrapper %}
 <div id="content_wrapper">
-  <div id="content">
+  <div id="content" class="user_page">
   {% block content %}
     {% if show_revision %}
       <em class="revision_details">
@@ -35,16 +35,24 @@
           ({{ date }} by {{ user_link }}){% endblocktrans %}
       </em>
     {% endif %}
+
+    {% if not user_for_page.is_active %}
+      <ul class="messages">
+        <li>{% trans "This user account is disabled." %}</li> 
+      </ul>
+    {% endif %}
     
     <div id="page">
       <div id="user_page_info" {% if not page.content %}style="float: left;"{% endif %}>
         <div class="profile_picture"><img src="{% gravatar_url user_for_page.userprofile.gravatar_email 500 %}" class="gravatar" width="250" height="250" /></div>
         <div class="profile_table">
-            {% if user_for_page.userprofile.show_email %}
-            <div><a href="mailto:{{ user_for_page.email }}">{{ user_for_page.email }}</a></div>
-            {% endif %}
-            {% if user_for_page.userprofile.personal_url %}
-            <div><a href="{{ user_for_page.userprofile.personal_url }}">{{ pretty_personal_url }}</a></div>
+            {% if user_for_page.is_active %}
+              {% if user_for_page.userprofile.show_email %}
+              <div><a href="mailto:{{ user_for_page.email }}" rel="nofollow">{{ user_for_page.email }}</a></div>
+              {% endif %}
+              {% if user_for_page.userprofile.personal_url %}
+              <div><a href="{{ user_for_page.userprofile.personal_url }}" rel="nofollow">{{ pretty_personal_url }}</a></div>
+              {% endif %}
             {% endif %}
             <div>{% blocktrans with date_joined=user_for_page.date_joined|date:"M j, Y" %}Joined on {{ date_joined }}{% endblocktrans %}</div>
         </div>
@@ -88,7 +96,9 @@
       </div>
 
       {% with region=page.region %}
-        {% render_plugins page.content %}
+        {% if user_for_page.is_active %}
+          {% render_plugins page.content %}
+        {% endif %}
       {% endwith %}
 
       <div style="clear:both;"></div>

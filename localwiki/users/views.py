@@ -3,9 +3,11 @@ from urlparse import urlparse
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseForbidden
+from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
 from django.template.loader import render_to_string
 from django.views.generic.edit import UpdateView, FormView
+from django.shortcuts import get_object_or_404
 from django.views.generic import RedirectView, TemplateView
 from django.contrib import messages
 from django.utils.translation import ugettext as _
@@ -21,7 +23,7 @@ from regions.views import RegionMixin, RegionAdminRequired
 
 from .templatetags.user_tags import user_link
 from .models import UserProfile
-from .forms import UserSetForm, UserSettingsForm
+from .forms import UserSetForm, UserSettingsForm, DeactivateForm
 
 
 def humanize_int(n):
@@ -93,6 +95,8 @@ class UserPageView(TemplateView):
 
         username = self.kwargs.get('username')
         user = User.objects.get(username__iexact=username)
+        user = get_object_or_404(User, username__iexact=username)
+        profile = getattr(user, 'userprofile', None)
         
         #########################
         # Calculate user stats
@@ -228,6 +232,35 @@ class UserSettingsView(UpdateView):
     def get_success_url(self):
         return self.request.user.get_absolute_url()
 
+
+class UserDeactivateView(FormView):
+    template_name = 'users/deactivate.html'
+    form_class = DeactivateForm 
+
+    def get_context_data(self, **kwargs):
+        if not self.request.user.is_authenticated():
+            raise PermissionDenied(_("You must be logged in to change user settings."))
+        return super(UserDeactivateView, self).get_context_data(**kwargs)
+
+    def get_initial(self):
+        return {}
+
+    def form_valid(self, form):
+        response = super(UserDeactivateView, self).form_valid(form)
+
+        if not self.request.user.is_authenticated():
+            raise PermissionDenied(_("You must be logged in to change user settings."))
+
+        self.request.user.is_active = not form.cleaned_data['disabled']
+        self.request.user.save()
+
+        logout(self.request)
+        messages.add_message(self.request, messages.SUCCESS, _("Your account has been de-activated."))
+
+        return response
+
+    def get_success_url(self):
+        return '/'
 
 
 class AddContributorsMixin(object):

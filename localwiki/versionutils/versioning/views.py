@@ -91,6 +91,9 @@ class DeleteView(DeleteView, FormMixin):
     """
     form_class = DeleteForm
 
+    def allow_admin_actions(self):
+        return False
+
     def success_msg(self):
         """
         Returns:
@@ -103,7 +106,14 @@ class DeleteView(DeleteView, FormMixin):
         form = self.get_form(self.get_form_class())
         if form.is_valid():
             self.object = self.get_object()
-            self.object.delete(comment=form.cleaned_data.get('comment'))
+            if self.allow_admin_actions():
+                delete_older_versions = form.cleaned_data.get('delete_older', False)
+                track_changes = not form.cleaned_data.get('dont_log', False)
+            self.object.delete(
+                comment=form.cleaned_data.get('comment'),
+                delete_older_versions=delete_older_versions,
+                track_changes=track_changes
+            )
             messages.add_message(self.request, messages.SUCCESS,
                                  self.success_msg())
         return HttpResponseRedirect(self.get_success_url())
@@ -111,6 +121,7 @@ class DeleteView(DeleteView, FormMixin):
     def get_context_data(self, **kwargs):
         context = super(DeleteView, self).get_context_data(**kwargs)
         context['form'] = self.get_form(self.get_form_class())
+        context['allow_admin_actions'] = self.allow_admin_actions()
         return context
 
 
@@ -130,12 +141,8 @@ class RevertView(DeleteView):
     template_name_suffix = '_confirm_revert'
     form_class = RevertForm
 
-    def __init__(self, *args, **kwargs):
-        base_init = super(RevertView, self).__init__(*args, **kwargs)
-        # We want object_confirm_revert, not object_hist_confirm_revert.
-        if not self.template_name_field:
-            self.template_name_field = self.context_object_name
-        return base_init
+    def allow_admin_actions(self):
+        return False
 
     def get_object(self):
         obj = super(RevertView, self).get_object()
@@ -149,13 +156,25 @@ class RevertView(DeleteView):
         form = self.get_form(self.get_form_class())
         if form.is_valid():
             self.object = self.get_object()
-            self.object.revert_to(comment=form.cleaned_data.get('comment'))
+            if self.allow_admin_actions():
+                delete_newer_versions = form.cleaned_data.get('delete_newer', False)
+                track_changes = not form.cleaned_data.get('dont_log', False)
+            self.object.revert_to(
+                comment=form.cleaned_data.get('comment'),
+                delete_newer_versions=delete_newer_versions,
+                track_changes=track_changes
+            )
             messages.add_message(self.request, messages.SUCCESS,
                 self.success_msg())
         return HttpResponseRedirect(self.get_success_url())
 
     def delete(self, *args, **kwargs):
         return self.revert(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(RevertView, self).get_context_data(*args, **kwargs)
+        context['allow_admin_actions'] = self.allow_admin_actions()
+        return context
 
     def get_template_names(self):
         """

@@ -291,11 +291,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
                         uploadForm.appendChild(csrf);
                         /* TODO: make this automatic, this is hardcoded to the django-honeypot settings */
                         honeypot = uploadForm.ownerDocument.createElement('input');
-                        honeypot.setAttribute('name', 'content2');
+                        honeypot.setAttribute('name', 'main_content');
                         honeypot.setAttribute('type', 'hidden');
                         uploadForm.appendChild(honeypot);
                         honeypot_js = uploadForm.ownerDocument.createElement('input');
-                        honeypot_js.setAttribute('name', 'content2_js');
+                        honeypot_js.setAttribute('name', 'main_content_js');
                         honeypot_js.setAttribute('type', 'hidden');
                         uploadForm.appendChild(honeypot_js);
                         // if there is a file to upload, do that now

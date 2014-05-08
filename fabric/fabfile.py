@@ -284,6 +284,10 @@ def setup_jetty():
     sudo("service jetty stop")
     sudo("service jetty start")
 
+def setup_memcached():
+    put("config/memcached/memcached.conf", "/etc/memcached.conf", use_sudo=True)
+    sudo("service memcached restart")
+
 def install_system_requirements():
     # Update package list
     sudo('apt-get update')
@@ -343,6 +347,11 @@ def update_django_settings():
     upload_template('config/localsettings.py',
         os.path.join(env.virtualenv, 'share', 'localwiki', 'conf'),
         context=get_context(env), use_jinja=True, use_sudo=True)
+
+def update_apache_settings():
+    upload_template('config/apache/localwiki', '/etc/apache2/sites-available/localwiki',
+        context=env, use_jinja=True, use_sudo=True)
+    sudo('service apache2 restart')
 
 def init_localwiki_install():
     init_postgres_db()
@@ -585,6 +594,7 @@ def provision():
     install_system_requirements()
     setup_mailserver()
     setup_postgres()
+    setup_memcached()
     setup_jetty()
     setup_repo()
     init_localwiki_install()
@@ -639,7 +649,8 @@ def update(local=False):
             #sudo("python setup.py install")
             sudo("localwiki-manage setup_all", user="www-data")
 
-def deploy(local=False):
+
+def deploy(local=False, update_configs=False):
     """
     Update the code (git pull) and restart / rebuild all needed services.
 
@@ -649,12 +660,18 @@ def deploy(local=False):
             doing local development via vagrant, where you don't want to
             pull down from git -- and instead want to run using your
             local changes.
+        update_configs: If True, update Apache, etc configuration files.
+             Default: False
     """
     if env.host_type == 'vagrant':
         # Annoying vagrant virtualbox permission issues
         sudo('chmod -R 770 %s' % env.virtualenv)
     update(local=local)
     setup_jetty()
+    if update_configs:
+        update_apache_settings()
+        # In case celery apps have changed:
+        sudo('service celery restart')
     touch_wsgi()
     sudo("service memcached restart", pty=False)
 

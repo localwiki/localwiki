@@ -1,9 +1,9 @@
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
-from versionutils.versioning.views import UpdateView, DeleteView
+from versionutils.versioning.views import UpdateView
 from versionutils import diff
-from utils.views import CreateObjectMixin, PermissionRequiredMixin
+from utils.views import CreateObjectMixin, PermissionRequiredMixin, DeleteView
 from pages.models import Page, slugify
 from regions.views import RegionMixin
 from regions.models import Region

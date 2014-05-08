@@ -598,6 +598,8 @@ textarea, input, select {
         height: 100%;
         width: 100%;
         background-position: 10px 8px;
+        font-size: 13px;
+        line-height: 14px;
     }
 }
 
@@ -685,7 +687,6 @@ textarea, input, select {
         border: none;
     }
     #nav li, #nav li a {
-        height: inherit;
         width: 100%;
         padding: 0;
         margin: 0;
@@ -693,7 +694,7 @@ textarea, input, select {
         font-size: 110%;
         background-color: #455868;
         color: #f4f4f4!important;
-	    display: block;
+	    display: table;
 	    text-align: center;
 	    text-decoration: none;
 	    line-height: 40px;
@@ -1597,25 +1598,36 @@ input:focus {
 }
 
 #user_page_info .stats_list {
-    padding: 0.2em 0.5em 0.7em 0.5em;
     border-bottom: 1px solid #dddddd;
+    padding-top: 0.3em;
+    padding-bottom: 0.8em;
+    text-align: center;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
 #user_page_info .stat_number {
-    font-size: 140%;
+    font-size: 170%;
     font-weight: bold;
-    display: inline-block;
-    width: 70px;
-    margin-right: 5px;
+    display: table-cell;
     text-align: center;
+    vertical-align: top;
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+    width: 33%;
 }
 #user_page_info .stat_number .type {
-    font-size: 60%;
+    margin-top: 0.1em;
+    font-size: 50%;
     font-weight: normal;
     color: #858585;
     line-height: 1.2;
 }
 #user_page_info .edit_settings {
     margin-top: 1em;
+}
+.user_page .messages {
+    margin-bottom: 1em;
 }
 
 #user_page_info .objects_followed {
