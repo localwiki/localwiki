@@ -2,6 +2,7 @@ from django.db.models.signals import post_save, post_delete
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.core.mail.utils import DNS_NAME
 from django.conf import settings
 
 from follow.models import Follow
@@ -15,6 +16,26 @@ from pages.models import Page
 # Notification types
 OWN_USER_PAGE = 0
 PAGE_DELETED = 1
+
+
+def get_headers(page):
+    """
+    Return a dictionary of the special email headers for this
+    `page`.  Supports email threading.
+    """
+    # Let's keep the reply-to ID the same even if the capitalization of the page
+    # is changed.
+    p = Page(
+        name=page.name.lower(),
+        region=page.region,
+        content=""
+    )
+    reply_to_id = "</page%s@%s>" % (p.get_absolute_url(), DNS_NAME)
+
+    return {
+        'In-Reply-To': reply_to_id,
+        'References': reply_to_id,
+    }
 
 
 def notify_page_edited(user, page, notification_type=None):
@@ -50,6 +71,7 @@ def notify_page_edited(user, page, notification_type=None):
         template_name=template_name,
         from_email=settings.DEFAULT_FROM_EMAIL,
         recipient_list=[user.email],
+        headers=get_headers(page),
         context={
             'page': page,
             'pagename': page.name,
@@ -96,6 +118,7 @@ def notify_page_deleted(user, page, notification_type=None):
         template_name=template_name,
         from_email=settings.DEFAULT_FROM_EMAIL,
         recipient_list=[user.email],
+        headers=get_headers(page),
         context={
             'page': page,
             'pagename': page.name,
