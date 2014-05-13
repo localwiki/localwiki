@@ -6,19 +6,19 @@ This is the main management script for provisioning and managing the LocalWiki s
 * Install vagrant >= 1.3.3
 * Make sure you're in the 'fabric' directory (where this fabfile.py lives), then:
 
-$ virtualenv env
-$ source env/bin/activate
-$ pip install -r requirements.txt
+    $ mkdir vagrant_localwiki
+    $ mv localwiki vagrant_localwiki  # Move repository inside
+    $ cd vagrant_localwiki
+    $ ln -s localwiki/vagrant/Vagrantfile .
+    $ virtualenv env
+    $ source env/bin/activate
+    $ pip install -r requirements.txt
 
 ==== For development ====
 
 This script will get you up and running with a development instance of the
 LocalWiki servers.  Set up the requirements (above), then::
 
-    $ mkdir vagrant_localwiki
-    $ mv localwiki vagrant_localwiki  # Move repository inside
-    $ cd vagrant_localwiki
-    $ ln -s localwiki/vagrant/Vagrantfile .
     $ vagrant up  # Create and run vagrant instance
     $ cd localwiki/fabric/
     $ fab vagrant setup_dev  # Provision and set up for vagrant:
