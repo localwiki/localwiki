@@ -12,10 +12,15 @@ class PageChanges(RecentChanges):
     classname = 'page'
 
     def queryset(self, start_at=None):
+        if self.region:
+            qs = Page.versions.filter(region=self.region)
+        else:
+            qs = Page.versions.all()
+
         if start_at:
-            return Page.versions.filter(region=self.region, version_info__date__gte=start_at
-                ).defer('content')
-        return Page.versions.filter(region=self.region).defer('content')
+            qs = qs.filter(version_info__date__gte=start_at)
+
+        return qs.defer('content')
 
     def page(self, obj):
         return obj
@@ -27,16 +32,20 @@ class PageFileChanges(RecentChanges):
     classname = 'file'
 
     def queryset(self, start_at=None):
-        if start_at:
-            return PageFile.versions.filter(region=self.region, version_info__date__gte=start_at)
+        if self.region:
+            qs = PageFile.versions.filter(region=self.region)
         else:
-            return PageFile.versions.filter(region=self.region)
+            qs = PageFile.versions.all()
+
+        if start_at:
+            qs = qs.filter(version_info__date__gte=start_at)
+        return qs
 
     def page(self, obj):
         try:
-            page = Page.objects.get(slug=obj.slug, region=self.region)
+            page = Page.objects.get(slug=obj.slug, region=obj.region)
         except Page.DoesNotExist:
-            page = Page(slug=obj.slug, region=self.region, name=obj.slug.capitalize())
+            page = Page(slug=obj.slug, region=obj.region, name=obj.slug.capitalize())
         return page
 
     def title(self, obj):
@@ -46,7 +55,7 @@ class PageFileChanges(RecentChanges):
     def diff_url(self, obj):
         return reverse('pages:file-compare-dates', kwargs={
             'slug': self.page(obj).pretty_slug,
-            'region': self.region.slug,
+            'region': obj.region.slug,
             'date1': obj.version_info.date,
             'file': obj.name,
         })
@@ -54,7 +63,7 @@ class PageFileChanges(RecentChanges):
     def as_of_url(self, obj):
         return reverse('pages:file-as_of_date', kwargs={
             'slug': self.page(obj).pretty_slug,
-            'region': self.region.slug,
+            'region': obj.region.slug,
             'date': obj.version_info.date,
             'file': obj.name,
         })

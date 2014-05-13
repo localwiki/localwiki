@@ -1,0 +1,63 @@
+{% load url from future %}
+{% load i18n %}
+{% load user_tags %}
+{% load changes_tags %}
+
+{% format_change_set changes as changes %}
+{% group_changes_by_slug changes as changes_by_slug %}
+
+{% for changes_on_item in changes_by_slug %}
+
+  {% for change in changes_on_item %}
+    {% if forloop.first %}
+      <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a>
+          {% blocktrans with version_date=change.version_info.date|timesince %}last modified {{ version_date }} ago{% endblocktrans %}</h3>
+      <ul>
+    {% endif %}
+
+    {% if change.version_info.type not in ignore_types %}
+      <li class="{{ change.classname }}">
+        {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
+        {% if change.version_info.type in added_types %}
+            <span class="changelabel added"><span>{% trans "new"%}</span></span>
+        {% else %}{% if change.version_info.type in deleted_types %}
+            <span class="changelabel deleted"><span>{% trans "deleted"%}</span></span>
+        {% else %}
+            <a class="changelabel updated" href="{{ change.diff_url }}"><span>{% trans "changes" %}</span></a></span>
+        {% endif %}{% endif %}
+
+        {% if change.version_info.type in reverted_types %}
+            <span class="revert">{% blocktrans with version_date_timesince=change.version_info.reverted_to_version.version_info.date|timesince %}Reverted to version from {{ version_date_timesince }} ago{% endblocktrans %}</span>
+        {% endif %}
+
+        <span class="type"></span>
+
+        {% if change.classname == 'redirect' %}
+            <span class="revert">{% blocktrans with url=change.destination.get_absolute_url destination=change.destination.name %}Redirected to <a href="{{ url }}">{{ destination }}</a>{% endblocktrans %}</span>
+        {% endif %}
+
+        {% if change.version_info.comment %}
+            <span class="comment">
+              {{ change.version_info.comment }}
+            </span>
+        {% endif %}
+
+        <span class="user">{% user_link change.version_info.user ip=change.version_info.user_ip %}</span>
+      </li>
+    {% endif %}
+
+    {% if forloop.last %}
+      </ul>
+    {% endif %}
+
+  {% endfor %}
+
+{% endfor %}
+
+{% if pagination_has_more_left %}
+    <div class="endless_container">
+        <a class="endless_more button" href="{{ pagination_next }}"
+            rel="nofollow">{% trans "More" %}</a>
+        <div class="endless_loading loading" style="display: none;"></div>
+    </div>
+{% endif %}

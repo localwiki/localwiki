@@ -13,9 +13,14 @@ class MapChanges(RecentChanges):
     classname = 'map'
 
     def queryset(self, start_at=None):
+        if self.region:
+            qs = MapData.versions.filter(region=self.region)
+        else:
+            qs = MapData.versions.all()
+
         if start_at:
-            return MapData.versions.filter(region=self.region, version_info__date__gte=start_at)
-        return MapData.versions.filter(region=self.region)
+            qs = qs.filter(version_info__date__gte=start_at)
+        return qs
 
     def title(self, obj):
         return _('Map for "%s"') % obj.page.name

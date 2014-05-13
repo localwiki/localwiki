@@ -9,6 +9,7 @@ class RecentChanges(object):
     Loosely modeled after the Django syndication feed framework.
     """
     classname = None
+    page_slug_attribute_name = None
 
     def __init__(self, region=None):
         self.region = region
@@ -35,6 +36,21 @@ class RecentChanges(object):
             The page object associated with obj.
         """
         return obj.page
+
+    def get_page_lookup_info(self):
+        if self.classname == 'page':
+            return 'slug'
+
+        if self.page_slug_attribute_name:
+            return self.page_slug_attribute_name
+
+        # Try and find attribute
+        m = self.queryset().model
+        if hasattr(m, 'page'):
+            return 'page__slug'
+        # Create instance of class to get attribute here
+        if hasattr(m(), 'slug'):
+            return 'slug'
 
     def title(self, obj):
         """
