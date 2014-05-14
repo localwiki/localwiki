@@ -87,18 +87,33 @@ class FollowedActivityFeed(MultipleTypesPaginatedView):
 
         for change_class in get_changes_classes():
             change_obj = change_class()
+            change_set = change_obj.queryset().none()
 
+            ###############################################
+            # First, let's get the followed pages' changes
+            ###############################################
             attr = change_obj.get_page_lookup_info()
             key = "%s__in" % attr
 
-            change_set = change_obj.queryset().none()
             for region, pages_followed_slugs in followed_by_region.iteritems():
                 change_obj.region = region
                 lookups = {
                     'region': region,
                     key: pages_followed_slugs,
                 }
+                # We use the queryset OR here so we avoid multiple queries.
                 change_set = change_set | change_obj.queryset().filter(**lookups)
+
+            ###############################################
+            # Now let's get the followed region's changes
+            ###############################################
+            regions_followed = Follow.objects.filter(user=self.request.user).\
+                exclude(target_region=None).\
+                select_related('target_region')
+
+            for follow in regions_followed:
+                change_obj.region = follow.target_region
+                change_set = change_set | change_obj.queryset().filter(region=follow.target_region)
 
             change_sets.append(change_set)
 
