@@ -10,7 +10,7 @@
 
   {% for change in changes_on_item %}
     {% if forloop.first %}
-      <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a>
+      <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a> (<a href="{{ change.page.region.get_absolute_url }}">{{ change.page.region.slug }}</a>)
           {% blocktrans with version_date=change.version_info.date|timesince %}last modified {{ version_date }} ago{% endblocktrans %}</h3>
       <ul>
     {% endif %}

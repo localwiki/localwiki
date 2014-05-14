@@ -5,12 +5,15 @@ from django.contrib.auth.models import User
 from django.core.mail.utils import DNS_NAME
 from django.conf import settings
 
+from actstream import action
 from follow.models import Follow
+from follow.signals import followed as followed_signal
 from templated_email import send_templated_mail
 
 from utils import get_base_uri
 from versionutils.versioning.constants import TYPE_DELETED_CASCADE, TYPE_REVERTED
 from pages.models import Page
+from regions.models import Region
 
 
 # Notification types
@@ -238,6 +241,20 @@ def notify_followers_page_deleted(sender, instance, **kwargs):
         notify_user_page_owner(instance, edit_type=PAGE_DELETED)
 
 
+def notify_follow_action(user, target, instance, **kwargs):
+    """
+    Notify this user's followers of certain follow actions taken by
+    this user.
+    """
+    if isinstance(target, User):
+        action.send(user, verb='followed user', action_object=target)
+    elif isinstance(target, Page):
+        action.send(user, verb='followed page', action_object=target)
+    elif isinstance(target, Region):
+        action.send(user, verb='followed region', action_object=target)
+
+
 post_save.connect(follow_own_user_object, sender=User)
 post_save.connect(notify_followers_page_edited, sender=Page)
 post_delete.connect(notify_followers_page_deleted, sender=Page)
+followed_signal.connect(notify_follow_action, sender=User, dispatch_uid='follow.user')

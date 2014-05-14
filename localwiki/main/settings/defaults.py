@@ -288,6 +288,7 @@ INSTALLED_APPS = (
     'block_ip',
     'static_sitemaps',
     'djcelery_email',
+    'actstream',
 
     # Our apps
     'versionutils.versioning',
@@ -369,6 +370,9 @@ CELERY_EMAIL_TASK_CONFIG = {
     'rate_limit' : '80/m',
 }
 
+ACTSTREAM_SETTINGS = {
+    'MODELS': ('auth.user', 'pages.page', 'regions.region'),
+}
 
 OLWIDGET_DEFAULT_OPTIONS = {
     'default_lat': 37,

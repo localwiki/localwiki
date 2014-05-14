@@ -163,6 +163,8 @@ install_requires = [
     'django-block-ip==0.1.6',
     'django-static-sitemaps==2.1.0-custom1',
     'django-celery-email==1.0.4-custom1',
+    'django-activity-stream==0.4.5beta1',
+    'django-jsonfield==0.9.12',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
