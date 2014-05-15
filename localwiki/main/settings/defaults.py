@@ -300,7 +300,7 @@ INSTALLED_APPS = (
     'redirects',
     'tags',
     'users',
-    'recentchanges',
+    'activity',
     'search',
     'frontpage',
     'dashboard',

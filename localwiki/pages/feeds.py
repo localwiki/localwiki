@@ -1,14 +1,14 @@
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
-import recentchanges
-from recentchanges import RecentChanges
-from recentchanges.feeds import ChangesOnItemFeed
+import activity
+from activity import ActivityForModel
+from activity.feeds import ChangesOnItemFeed
 
 from models import Page, PageFile, slugify
 
 
-class PageChanges(RecentChanges):
+class PageChanges(ActivityForModel):
     classname = 'page'
 
     def queryset(self, start_at=None):
@@ -25,10 +25,10 @@ class PageChanges(RecentChanges):
     def page(self, obj):
         return obj
 
-recentchanges.register(PageChanges)
+activity.register(PageChanges)
 
 
-class PageFileChanges(RecentChanges):
+class PageFileChanges(ActivityForModel):
     classname = 'file'
 
     def queryset(self, start_at=None):
@@ -69,11 +69,11 @@ class PageFileChanges(RecentChanges):
         })
 
 
-recentchanges.register(PageFileChanges)
+activity.register(PageFileChanges)
 
 
 class PageChangesFeed(ChangesOnItemFeed):
-    recentchanges_class = PageChanges
+    activity_class = PageChanges
 
     def get_object(self, request, region='', slug=''):
         self.setup_region(region)
@@ -85,7 +85,7 @@ class PageChangesFeed(ChangesOnItemFeed):
 
 
 class PageFileChangesFeed(ChangesOnItemFeed):
-    recentchanges_class = PageFileChanges
+    activity_class = PageFileChanges
 
     def get_object(self, request, region='', slug='', file=''):
         self.setup_region(region)

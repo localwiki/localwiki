@@ -1321,30 +1321,30 @@ input:focus {
 
 /*
 ====================================
- Recent Changes
+ Activity Feeds
 ====================================
 */
 
-#recentchanges ul {
+#activityfeed ul {
     list-style-type: none;
     margin-top: 1em;
 }
-#recentchanges h2 {
+#activityfeed h2 {
     font-size: 180%;
     margin-top: 0.7em;
     padding-bottom: 0.1em;
     border-bottom: 2px solid;
 }
-#recentchanges h3 {
+#activityfeed h3 {
     margin-top: 1em;
 }
-#recentchanges h3 a, #recentchanges h3 a:link {
+#activityfeed h3 a, #activityfeed h3 a:link {
     color: #444;
 }
-#recentchanges h3 a:hover {
+#activityfeed h3 a:hover {
     color: #111;
 }
-#recentchanges hr {
+#activityfeed hr {
     height: 5px;
     border: none;
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
@@ -1355,26 +1355,26 @@ input:focus {
     margin-left: -5em;
     margin-right: -8em;
 }
-#recentchanges #limit_to {
+#activityfeed #limit_to {
     float: right;
     margin-top: 0.1em;
     padding-bottom: 0.7em;
 }
-#recentchanges #limit_to span {
+#activityfeed #limit_to span {
     float: left;
 }
-#recentchanges #limit_to .pagination {
+#activityfeed #limit_to .pagination {
     margin-left: 0.4em;
     margin-right: 0.4em;
     margin-top: -0.6em;
 }
-#recentchanges li {
+#activityfeed li {
     list-style-type: none;
     margin-left: 0;
     padding-left: 30px;
     margin-bottom: 0.7em;
 }
-#recentchanges .changelabel {
+#activityfeed .changelabel {
     width: 5.2em;
     /* This is basically .little.button */
     text-align: center;
@@ -1391,7 +1391,7 @@ input:focus {
     margin-right: 1em;
     border: 1px solid #bfbfbf;
 }
-#recentchanges .changelabel.updated {
+#activityfeed .changelabel.updated {
     /* .updated is a button */
     color: #666;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
@@ -1409,26 +1409,26 @@ input:focus {
 
     text-decoration: none;
 }
-#recentchanges .changelabel.updated:hover
+#activityfeed .changelabel.updated:hover
 {
     background-color: #dcdcdc!important;
     border-color: #c8cbde;
     border-bottom-color: #a9a9a9;
 }
-#recentchanges .changelabel.updated:active {
+#activityfeed .changelabel.updated:active {
     box-shadow: none;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
 }
 
-#recentchanges .changelabel.added {
+#activityfeed .changelabel.added {
     background-color: #fdfab4;
     color: #6b6945;
     border-color: #e1e1e1;
     border: none;
     border-radius: 0px;
 }
-#recentchanges .changelabel.deleted {
+#activityfeed .changelabel.deleted {
     background-color: #f3d8d8;
     border-color: #dedede;
     color: #808080;
@@ -1438,85 +1438,85 @@ input:focus {
     border: none;
     border-radius: 0px;
 }
-#recentchanges .changelabel a {
+#activityfeed .changelabel a {
     text-decoration: none;
     color: #666;
 }
-#recentchanges .comment {
+#activityfeed .comment {
     padding-right: 0.5em;
 }
 
-#recentchanges .map .changelabel span {
+#activityfeed .map .changelabel span {
     background: url(../img/map-icon-small.png) 0px 66% no-repeat;
     padding-left: 20px;
 }
-#recentchanges .file .changelabel span {
+#activityfeed .file .changelabel span {
     background: url(../img/document-block-light.png) 2px 66% no-repeat;
     padding-left: 20px;
 }
-#recentchanges .redirect .changelabel span {
+#activityfeed .redirect .changelabel span {
     background: url(../img/arrow-turn-left.png) 2px 2px no-repeat;
     padding-left: 20px;
 }
 
-#recentchanges .tags .changelabel span {
+#activityfeed .tags .changelabel span {
     background: url(../img/tag-icon-small.png) 0 0 no-repeat;
     padding-left: 20px;
 }
 
 @media screen and (max-width: 700px) {
-    #recentchanges #limit_to {
+    #activityfeed #limit_to {
         float: none;
         height: 2em;
         margin: 0;
         font-size: 95%;
     }
-    #recentchanges h3 {
+    #activityfeed h3 {
         font-size: 110%;
         margin-top: 0.6em;
     }
-    #recentchanges li {
+    #activityfeed li {
         padding-left: 0;
         margin-left: 0;
     }
 }
 @media screen and (max-width: 500px) {
-    #recentchanges #limit_to {
+    #activityfeed #limit_to {
         clear: both;
         float: none;
         height: 5em;
         padding-bottom: 0;
     }
-    #recentchanges #limit_to span {
+    #activityfeed #limit_to span {
         display: block;
         float: left;
         margin-bottom: 0.5em;
     }
-    #recentchanges #limit_to .pagination {
+    #activityfeed #limit_to .pagination {
         padding: 0;
         margin: 0;
         clear: both;
         margin-right: 0.4em;
     }
-    #recentchanges .changelabel {
+    #activityfeed .changelabel {
         display: block;
         width: 100%;
         clear: both;
         margin-bottom: 0.5em;
         padding: 10px 0 11px 0;
     }
-    #recentchanges .changelabel.updated {
+    #activityfeed .changelabel.updated {
         /* Slightly different padding*/
         padding-top: 9px;
         padding-bottom: 10px;
     }
-    #recentchanges hr {
+    #activityfeed hr {
         margin-left: -1em;
         margin-right: -1.5em;
     }
 }
 
-#recentchanges .see_also {
+#activityfeed .see_also {
     border-top: 4px solid #dddddd;
     padding-top: 1em;
     margin-top: 6em;
@@ -1524,7 +1524,7 @@ input:focus {
     clear: both;
 }
 
-#recentchanges .endless_more {
+#activityfeed .endless_more {
     display: block;
     width: 100%;
     text-align: center;

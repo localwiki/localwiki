@@ -21,13 +21,13 @@ IGNORE_TYPES = [
 ]
 
 
-class RecentChangesView(RegionMixin, MultipleTypesPaginatedView):
+class RegionActivity(RegionMixin, MultipleTypesPaginatedView):
     context_object_name = 'changes'
 
     def get_template_names(self):
         if self.request.is_ajax():
-            return ['recentchanges/index_page.html']
-        return ['recentchanges/index.html']
+            return ['activity/index_page.html']
+        return ['activity/index.html']
 
     def get_object_lists(self):
         change_sets = []
@@ -49,9 +49,9 @@ class RecentChangesView(RegionMixin, MultipleTypesPaginatedView):
         return (lambda x: x.version_info.date)
 
     def get_context_data(self, *args, **kwargs):
-        c = super(RecentChangesView, self).get_context_data(*args, **kwargs)
+        c = super(RegionActivity, self).get_context_data(*args, **kwargs)
         c.update({
-            'rc_url': reverse('recentchanges',
+            'rc_url': reverse('region-activity',
                 kwargs={'region': self.get_region().slug}),
             'ignore_types': IGNORE_TYPES,
             'added_types': ADDED_TYPES,
@@ -61,13 +61,13 @@ class RecentChangesView(RegionMixin, MultipleTypesPaginatedView):
         return c
 
 
-class FollowedActivityFeed(MultipleTypesPaginatedView):
+class FollowedActivity(MultipleTypesPaginatedView):
     context_object_name = 'changes'
 
     def get_template_names(self):
         if self.request.is_ajax():
-            return ['recentchanges/followed_activity_page.html']
-        return ['recentchanges/followed_activity_index.html']
+            return ['activity/followed_activity_page.html']
+        return ['activity/followed_activity_index.html']
 
     def get_object_lists(self):
         change_sets = []
@@ -145,7 +145,7 @@ class FollowedActivityFeed(MultipleTypesPaginatedView):
         return (_f)
 
     def get_context_data(self, *args, **kwargs):
-        c = super(FollowedActivityFeed, self).get_context_data(*args, **kwargs)
+        c = super(FollowedActivity, self).get_context_data(*args, **kwargs)
         c.update({
             'ignore_types': IGNORE_TYPES,
             'added_types': ADDED_TYPES,

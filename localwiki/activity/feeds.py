@@ -3,13 +3,13 @@ import re
 from django.contrib.syndication.views import Feed
 from django.contrib.sites.models import get_current_site
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 
 from versionutils.versioning.constants import *
 
-from django.utils.translation import ugettext as _
-from utils import merge_changes
-from views import IGNORE_TYPES
-from recentchanges import get_changes_classes
+from .utils import merge_changes
+from .views import IGNORE_TYPES
+from . import get_changes_classes
 
 MAX_CHANGES = 500
 
@@ -18,9 +18,9 @@ region_routing_pattern = re.compile(
 )
 
 
-class RecentChangesFeed(Feed):
+class ActivityFeedSyndication(Feed):
     """
-    Recent Changes feed for the whole site.
+    Activity feed (syndication) for the whole region.
     """
     def __call__(self, request, *args, **kwargs):
         from regions.models import Region
@@ -29,7 +29,7 @@ class RecentChangesFeed(Feed):
             region_slug = re_match.group('region')
             self.region = Region.objects.get(slug=region_slug)
 
-        return super(RecentChangesFeed, self).__call__(request, *args, **kwargs)
+        return super(ActivityFeedSyndication, self).__call__(request, *args, **kwargs)
 
     def site(self):
         if not hasattr(self, '_current_site'):
@@ -37,13 +37,13 @@ class RecentChangesFeed(Feed):
         return self._current_site
 
     def title(self):
-        return _("Recent Changes on %s") % self.site().name
+        return _("Activity on %s") % self.site().name
 
     def link(self):
-        return reverse('recentchanges', kwargs={'region': self.region.slug})
+        return reverse('region-activity', kwargs={'region': self.region.slug})
 
     def description(self):
-        return _("Recent changes on %s") % self.site().name
+        return _("Activity on %s") % self.site().name
 
     def format_change_set(self, change_obj, change_set):
         formatted_changes = []
@@ -117,7 +117,7 @@ class RecentChangesFeed(Feed):
 
     def get_feed(self, obj, request):
         self.request = request
-        return super(RecentChangesFeed, self).get_feed(obj, request)
+        return super(ActivityFeedSyndication, self).get_feed(obj, request)
 
 
 class ChangesOnItemFeed(Feed):
@@ -126,8 +126,8 @@ class ChangesOnItemFeed(Feed):
 
     Subclass this -- you can't use it directly.  You need to:
 
-      1. Define recentchanges_class.  This should be set to the
-         RecentChanges class you've defined for the object.
+      1. Define activity_class.  This should be set to the
+         ActivityFeedSyndication class you've defined for the object.
       2. Define get_object().  The object returned should have attributes for:
          page, title, slug.
     """
@@ -154,7 +154,7 @@ class ChangesOnItemFeed(Feed):
         return _("Changes for %(title)s on %(site_name)s") % {'title': obj.title, 'site_name': self.site().name}
 
     def items(self, obj):
-        changes_obj = self.recentchanges_class()
+        changes_obj = self.activity_class()
         changes_obj.region = self.region
 
         objs = obj.versions.all()[:MAX_CHANGES]

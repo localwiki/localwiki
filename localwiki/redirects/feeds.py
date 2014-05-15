@@ -1,13 +1,13 @@
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 
-import recentchanges
-from recentchanges import RecentChanges
+import activity
+from activity import ActivityForModel
 
 from models import Redirect
 
 
-class RedirectChanges(RecentChanges):
+class RedirectChanges(ActivityForModel):
     classname = 'redirect'
     page_slug_attribute_name = 'source'
 
@@ -41,4 +41,4 @@ class RedirectChanges(RecentChanges):
         # Don't bother.  Just return the source URL.
         return reverse('pages:show', kwargs={'slug': obj.source, 'region': obj.region.slug})
 
-recentchanges.register(RedirectChanges)
+activity.register(RedirectChanges)

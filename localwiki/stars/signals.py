@@ -251,6 +251,9 @@ def notify_follow_action(user, target, instance, **kwargs):
             (TYPE_DELETED_CASCADE, TYPE_REVERTED_DELETED_CASCADE)):
         # Don't notify when this is a re-created follow via a
         # revert.
+        # XXX TODO: Revert the original Follow object so this follow
+        # action appears in the activity feed. For now, it won't show
+        # after the page has been deleted.
         return
 
     if isinstance(target, User):

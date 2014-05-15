@@ -3,10 +3,10 @@
 {% load i18n %}
 {% load user_tags %}
 
-{% block title %}{% trans "Recent Changes" %} - {{ block.super }}{% endblock %}
+{% block title %}{% trans "News Feed" %} - {{ block.super }}{% endblock %}
 
 {% block head_extra %}
-{% comment %}<link rel="alternate" href="{% url 'recentchanges-feed' region=region.slug %}" type="application/rss+xml" title="{% trans "Recent Changes" %}"/> {% endcomment %}
+{% comment %}<link rel="alternate" href="{% url 'activity-syndication' region=region.slug %}" type="application/rss+xml" title="{% trans "News Feed" %}"/> {% endcomment %}
 <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
 <script>$(document).ready(function() {
 $.endlessPaginate();
@@ -16,8 +16,8 @@ $.endlessPaginate();
 {% block header_title %}<a href="#">{% trans "News Feed" %}</a>{% endblock %}
 
 {% block content %}
-  <div id="recentchanges">
-    {% include "recentchanges/followed_activity_page.html" %}
+  <div id="activityfeed">
+    {% include "activity/followed_activity_page.html" %}
 
     <div class="see_also">
       <p>Something here</p>

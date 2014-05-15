@@ -4,7 +4,7 @@ from django.template.loader import render_to_string
 
 from actstream.models import Action
 
-from recentchanges import get_changes_classes
+from activity import get_changes_classes
 
 
 register = template.Library()

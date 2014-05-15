@@ -3,21 +3,21 @@
 {% load i18n %}
 {% load user_tags %}
 
-{% block title %}{% trans "Recent Changes" %} - {{ block.super }}{% endblock %}
+{% block title %}{% trans "Activity" %} - {{ block.super }}{% endblock %}
 
 {% block head_extra %}
-<link rel="alternate" href="{% url 'recentchanges-feed' region=region.slug %}" type="application/rss+xml" title="{% trans "Recent Changes" %}"/>
+<link rel="alternate" href="{% url 'activity-syndication' region=region.slug %}" type="application/rss+xml" title="{% trans "Activity" %}"/>
 <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
 <script>$(document).ready(function() {
 $.endlessPaginate();
 });</script>
 {% endblock %}
 
-{% block header_title %}<a href="{% url 'recentchanges' region=region.slug %}">{% trans "Recent Changes" %}</a>{% endblock %}
+{% block header_title %}<a href="{% url 'region-activity' region=region.slug %}">{% trans "Activity" %}</a>{% endblock %}
 
 {% block content %}
-  <div id="recentchanges">
-    {% include "recentchanges/index_page.html" %}
+  <div id="activityfeed">
+    {% include "activity/index_page.html" %}
 
     <div class="see_also">
       <p>{% url 'dashboard:main' region=region.slug as dashboard_main_url %}

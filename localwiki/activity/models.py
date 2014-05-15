@@ -1,10 +1,10 @@
 from django.core.urlresolvers import reverse
 
 
-class RecentChanges(object):
+class ActivityForModel(object):
     """
     Subclass this class and then register your subclass with
-    recentchanges.register() for your model to appear on Recent Changes.
+    activity.register() for your model to appear on the Activity pages.
 
     Loosely modeled after the Django syndication feed framework.
     """
@@ -30,7 +30,7 @@ class RecentChanges(object):
         """
         Args:
             obj: The historical instance, taken from your queryset(),
-                 that we are displaying on Recent Changes.
+                 that we are displaying on the Activity page.
 
         Returns:
             The page object associated with obj.
@@ -56,7 +56,7 @@ class RecentChanges(object):
         """
         Args:
             obj: The historical instance, taken from queryset(),
-                 that we are displaying on Recent Changes.
+                 that we are displaying on the Activity page.
 
         Returns:
             The title of this object.
@@ -67,7 +67,7 @@ class RecentChanges(object):
         """
         args:
             obj: the historical instance, taken from your queryset(),
-                 that we are displaying on recent changes.
+                 that we are displaying on the Activity page.
 
         returns:
             the diff url associated with obj.
@@ -82,7 +82,7 @@ class RecentChanges(object):
         """
         args:
             obj: the historical instance, taken from your queryset(),
-                 that we are displaying on recent changes.
+                 that we are displaying on the Activity page.
 
         returns:
             the url to display the version of the obj specified.

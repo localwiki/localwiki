@@ -1,12 +1,12 @@
 from django.core.urlresolvers import reverse
 
-import recentchanges
-from recentchanges import RecentChanges
+import activity
+from activity import ActivityForModel
 
 from models import PageTagSet
 
 
-class PageTagSetChanges(RecentChanges):
+class PageTagSetChanges(ActivityForModel):
     classname = 'tags'
 
     def queryset(self, start_at=None):
@@ -39,4 +39,4 @@ class PageTagSetChanges(RecentChanges):
             'date': obj.version_info.date,
         })
 
-recentchanges.register(PageTagSetChanges)
+activity.register(PageTagSetChanges)
