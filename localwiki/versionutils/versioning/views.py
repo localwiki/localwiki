@@ -159,6 +159,9 @@ class RevertView(DeleteView):
         form = self.get_form(self.get_form_class())
         if form.is_valid():
             self.object = self.get_object()
+
+            delete_newer_versions = False
+            track_changes = True
             if self.allow_admin_actions():
                 delete_newer_versions = form.cleaned_data.get('delete_newer', False)
                 track_changes = not form.cleaned_data.get('dont_log', False)
