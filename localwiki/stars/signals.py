@@ -11,7 +11,7 @@ from follow.signals import followed as followed_signal
 from templated_email import send_templated_mail
 
 from utils import get_base_uri
-from versionutils.versioning.constants import TYPE_DELETED_CASCADE, TYPE_REVERTED
+from versionutils.versioning.constants import TYPE_REVERTED, TYPE_DELETED_CASCADE, TYPE_REVERTED_DELETED_CASCADE
 from pages.models import Page
 from regions.models import Region
 
@@ -246,6 +246,13 @@ def notify_follow_action(user, target, instance, **kwargs):
     Notify this user's followers of certain follow actions taken by
     this user.
     """
+    if (instance.versions.all().exists() and
+        instance.versions.most_recent().version_info.type in
+            (TYPE_DELETED_CASCADE, TYPE_REVERTED_DELETED_CASCADE)):
+        # Don't notify when this is a re-created follow via a
+        # revert.
+        return
+
     if isinstance(target, User):
         action.send(user, verb='followed user', action_object=target)
     elif isinstance(target, Page):

@@ -37,7 +37,6 @@
           {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb region_name=change.action_object.slug region_url=change.action_object.get_absolute_url %}
             <span class="user">{{ actor_link }}</span> starred <a href="{{ region_url }}">{{ region_name }}</a> {{ timesince }} ago
           {% endblocktrans %}
-
         {% endif %}
         
       </h3>
