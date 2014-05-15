@@ -33,6 +33,11 @@
             <span class="user">{{ actor_link }}</span> starred <a href="{{ page_url }}">{{ page_name }}</a> on <a href="{{ region_url }}">{{ region_name }}</a> {{ timesince }} ago
           {% endblocktrans %}
 
+        {% elif change.verb == 'followed region' %}
+          {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb region_name=change.action_object.slug region_url=change.action_object.get_absolute_url %}
+            <span class="user">{{ actor_link }}</span> starred <a href="{{ region_url }}">{{ region_name }}</a> {{ timesince }} ago
+          {% endblocktrans %}
+
         {% endif %}
         
       </h3>
