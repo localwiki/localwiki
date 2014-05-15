@@ -6,6 +6,7 @@ from django.http import Http404
 from django.core.urlresolvers import reverse
 
 from follow.models import Follow
+from actstream.models import actor_stream, Action
 
 from versionutils.versioning.constants import *
 from regions.views import RegionMixin
@@ -117,6 +118,18 @@ class FollowedActivityFeed(MultipleTypesPaginatedView):
 
             change_sets.append(change_set)
 
+        ###############################################
+        # The action (actstream) for users we follow
+        ###############################################
+        action_set = Action.objects.none()
+        for follow in Follow.objects.filter(user=self.request.user).\
+            exclude(target_user=None).\
+            exclude(target_user=self.request.user).\
+            select_related('target_user'):
+
+            action_set = action_set | actor_stream(follow.target_user)
+        change_sets.append(action_set)
+
         return change_sets
 
     def get_pagination_merge_key(self):
@@ -125,7 +138,11 @@ class FollowedActivityFeed(MultipleTypesPaginatedView):
             A callable that, when called, returns the value to use for the merge +
             sort.  Default: the value inside the list itself.
         """
-        return (lambda x: x.version_info.date)
+        def _f(x):
+            if isinstance(x, Action):
+                return x.timestamp
+            return x.version_info.date
+        return (_f)
 
     def get_context_data(self, *args, **kwargs):
         c = super(FollowedActivityFeed, self).get_context_data(*args, **kwargs)

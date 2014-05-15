@@ -257,4 +257,4 @@ def notify_follow_action(user, target, instance, **kwargs):
 post_save.connect(follow_own_user_object, sender=User)
 post_save.connect(notify_followers_page_edited, sender=Page)
 post_delete.connect(notify_followers_page_deleted, sender=Page)
-followed_signal.connect(notify_follow_action, sender=User, dispatch_uid='follow.user')
+followed_signal.connect(notify_follow_action, dispatch_uid='follow.user')
