@@ -3,7 +3,9 @@
 {% load i18n %}
 {% load user_tags %}
 
-{% block title %}{% trans "News Feed" %} - {{ block.super }}{% endblock %}
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
 
 {% block head_extra %}
 {% comment %}<link rel="alternate" href="{% url 'activity-syndication' region=region.slug %}" type="application/rss+xml" title="{% trans "News Feed" %}"/> {% endcomment %}

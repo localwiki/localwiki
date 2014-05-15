@@ -14,10 +14,6 @@ urlpatterns = patterns('',
     url(r'^(?P<region>[^/]+?)/_activity/_feed/?$', ActivityFeedSyndication(),
         name='activity-syndication'),
 
-    # Changes and activity that the user follows
-    url(r'^_activity/?$', FollowedActivity.as_view(),
-        name='followed-activity'),
-
     ##################################################
     # Legacy URLs for "Recent Changes" URL name here.
     ##################################################

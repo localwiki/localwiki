@@ -3,7 +3,7 @@ import copy
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView as DjangoTemplateView
-from django.views.generic import ListView
+from django.views.generic import View, ListView
 from django.http import Http404, HttpResponseNotFound
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.http import HttpResponseForbidden, HttpResponse
@@ -19,8 +19,8 @@ from follow.utils import follow as do_follow
 
 from localwiki.utils.views import CreateObjectMixin, AuthenticationRequired
 
-from models import Region, RegionSettings, BannedFromRegion, slugify
-from forms import RegionForm, RegionSettingsForm, AdminSetForm, BannedSetForm
+from .models import Region, RegionSettings, BannedFromRegion, slugify
+from .forms import RegionForm, RegionSettingsForm, AdminSetForm, BannedSetForm
 
 
 def region_404_response(request, slug):
@@ -120,7 +120,18 @@ class RegionListView(ListView):
         return context
 
 
-class MainPageView(RegionListView):
+class MainPageView(View):
+    def get(self, request):
+        from activity.views import FollowedActivity
+
+        if request.user.is_authenticated():
+            view_func = FollowedActivity.as_view()
+        else:
+            view_func = SplashPageView.as_view()
+        return view_func(request)
+
+
+class SplashPageView(RegionListView):
     template_name = 'regions/main.html'
     zoom_to_data = False
 
