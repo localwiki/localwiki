@@ -1518,6 +1518,12 @@ input:focus {
     }
 }
 @media screen and (max-width: 500px) {
+    #activityfeed .item {
+        padding: 1em 0 1em 0;
+    }
+    #activityfeed .item:first-child {
+        padding-top: 0;
+    }
     #activityfeed #limit_to {
         clear: both;
         float: none;
