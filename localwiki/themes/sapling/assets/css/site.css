@@ -92,6 +92,10 @@ textarea, input, select {
     font-size: 15px;
 }
 
+.weak {
+    color: #9f9f9f;
+}
+
 /*
 ====================================
  Main area
@@ -1327,7 +1331,20 @@ input:focus {
 
 #activityfeed ul {
     list-style-type: none;
+    margin-bottom: 0;
     margin-top: 1em;
+}
+
+#activityfeed .item {
+    /*background-color: white;
+    border: 1px solid #dddddd;
+    */
+    padding: 2em;
+    border-top: 1px solid #dddddd;
+}
+#activityfeed .item:first-child {
+    padding-top: 1em;
+    border-top: none;
 }
 #activityfeed h2 {
     font-size: 180%;
@@ -1336,7 +1353,8 @@ input:focus {
     border-bottom: 2px solid;
 }
 #activityfeed h3 {
-    margin-top: 1em;
+    color: #8c8c8c;
+    margin-bottom: 0;
 }
 #activityfeed h3 a, #activityfeed h3 a:link {
     color: #444;
@@ -1462,6 +1480,25 @@ input:focus {
 #activityfeed .tags .changelabel span {
     background: url(../img/tag-icon-small.png) 0 0 no-repeat;
     padding-left: 20px;
+}
+
+#signup_new_explainer h3 {
+    font-size: 150%;
+}
+#signup_new_explainer li {
+    font-size: 110%;
+    border-top: 1px solid #dddddd;
+    margin: 0;
+    padding: 1em;
+}
+#signup_new_explainer li:first-child {
+    border-top: none;
+}
+#signup_new_explainer .follow_item {
+    display: inline-block;
+    float: none;
+    vertical-align: middle;
+    margin-top: -2px;
 }
 
 @media screen and (max-width: 700px) {

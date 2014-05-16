@@ -12,7 +12,7 @@
 
     {% if change.verb %}
       {% if forloop.first %}
-        <ul>
+        <div class="item">
       {% endif %}
       <h3>
         {% user_link_as change.actor as actor_link %}
@@ -20,22 +20,22 @@
         {% if change.verb == 'followed user' %}
           {% user_link_as change.action_object as user_followed_link %}
           {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb user_followed_link=user_followed_link|safe %}
-            <span class="user">{{ actor_link }}</span> started following {{ user_followed_link }} {{ timesince }} ago
+            <span class="user">{{ actor_link }}</span> started following {{ user_followed_link }} <span class="weak">{{ timesince }} ago</span>
           {% endblocktrans %}
 
         {% elif change.verb == 'created page' %}
           {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb page_url=change.action_object.get_absolute_url page_name=change.action_object.name region_name=change.action_object.region.slug region_url=change.action_object.region.get_absolute_url %}
-            <span class="user">{{ actor_link }}</span> created page <a href="{{ page_url }}">{{ page_name }}</a> on <a href="{{ region_url }}">{{ region_name }}</a> {{ timesince }} ago
+            <span class="user">{{ actor_link }}</span> created page <a href="{{ page_url }}">{{ page_name }}</a> on <a href="{{ region_url }}">{{ region_name }}</a> <span class="weak">{{ timesince }} ago</span>
           {% endblocktrans %}
 
         {% elif change.verb == 'followed page' %}
           {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb page_url=change.action_object.get_absolute_url page_name=change.action_object.name region_name=change.action_object.region.slug region_url=change.action_object.region.get_absolute_url %}
-            <span class="user">{{ actor_link }}</span> starred <a href="{{ page_url }}">{{ page_name }}</a> on <a href="{{ region_url }}">{{ region_name }}</a> {{ timesince }} ago
+            <span class="user">{{ actor_link }}</span> starred <a href="{{ page_url }}">{{ page_name }}</a> on <a href="{{ region_url }}">{{ region_name }}</a> <span class="weak">{{ timesince }} ago</span>
           {% endblocktrans %}
 
         {% elif change.verb == 'followed region' %}
           {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb region_name=change.action_object.slug region_url=change.action_object.get_absolute_url %}
-            <span class="user">{{ actor_link }}</span> starred <a href="{{ region_url }}">{{ region_name }}</a> {{ timesince }} ago
+            <span class="user">{{ actor_link }}</span> starred <a href="{{ region_url }}">{{ region_name }}</a> <span class="weak">{{ timesince }} ago</span>
           {% endblocktrans %}
         {% endif %}
         
@@ -43,8 +43,9 @@
 
     {% else %}
       {% if forloop.first %}
-        <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a> (<a href="{{ change.page.region.get_absolute_url }}">{{ change.page.region.slug }}</a>)
-            {% blocktrans with version_date=change.version_info.date|timesince %}last modified {{ version_date }} ago{% endblocktrans %}</h3>
+        <div class="item">
+        <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a> <span class="weak">(<a href="{{ change.page.region.get_absolute_url }}">{{ change.page.region.slug }}</a>)
+            {% blocktrans with version_date=change.version_info.date|timesince %}last modified {{ version_date }} ago{% endblocktrans %}</span></h3>
         <ul>
       {% endif %}
 
@@ -78,10 +79,13 @@
           <span class="user">{% user_link change.version_info.user ip=change.version_info.user_ip %}</span>
         </li>
       {% endif %}
+      {% if forloop.last %}
+        </ul>
+      {% endif %}
     {% endif %}
 
     {% if forloop.last %}
-      </ul>
+      </div>
     {% endif %}
 
   {% endfor %}

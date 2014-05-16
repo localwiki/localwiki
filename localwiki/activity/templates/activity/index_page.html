@@ -10,8 +10,9 @@
 
   {% for change in changes_on_item %}
     {% if forloop.first %}
+      <div class="item">
       <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a>
-          {% blocktrans with version_date=change.version_info.date|timesince %}last modified {{ version_date }} ago{% endblocktrans %}</h3>
+          <span class="weak">{% blocktrans with version_date=change.version_info.date|timesince %}last modified {{ version_date }} ago{% endblocktrans %}</span></h3>
       <ul>
     {% endif %}
 
@@ -48,6 +49,7 @@
 
     {% if forloop.last %}
       </ul>
+      </div>
     {% endif %}
 
   {% endfor %}
