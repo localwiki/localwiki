@@ -1267,6 +1267,12 @@ input:focus {
     padding: 0;
     margin-bottom: 1em;
 }
+.messages li > div {
+    margin-top: 0.5em;
+}
+.messages li > div:first-child {
+    margin-top: inherit;
+}
 
 #dialog {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.05);
@@ -1339,7 +1345,8 @@ input:focus {
     /*background-color: white;
     border: 1px solid #dddddd;
     */
-    padding: 2em;
+    padding-top: 2em;
+    padding-bottom: 2em;
     border-top: 1px solid #dddddd;
 }
 #activityfeed .item:first-child {
@@ -1516,14 +1523,14 @@ input:focus {
         padding-left: 0;
         margin-left: 0;
     }
-}
-@media screen and (max-width: 500px) {
     #activityfeed .item {
         padding: 1em 0 1em 0;
     }
     #activityfeed .item:first-child {
         padding-top: 0;
     }
+}
+@media screen and (max-width: 500px) {
     #activityfeed #limit_to {
         clear: both;
         float: none;
@@ -1764,6 +1771,22 @@ input:focus {
 }
 .follow_item:hover {
     cursor: pointer; 
+}
+
+/* We display "follow this page" inline inside of the messages dialog sometimes, e.g.
+ * after the page has been edited while logged in & not following yet. */
+.messages .follow_item {
+    display: inline-block;
+    float: none;
+    vertical-align: middle;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.messages .follow_item .text {
+    background-position: 0 50%;
+    padding-left: 24px;
+    width: auto;
+    height: auto;
 }
 
 @media screen and (max-width: 500px) {

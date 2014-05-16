@@ -6,10 +6,10 @@
 <form action="{% follow_url object %}" method="post">
 	{% csrf_token %}
 	{% if request.user|is_following:object %}
-        <div class="unfollow little button" title="{% blocktrans %}Stop following this {{ object_type }}{% endblocktrans %}"><span class="text"></span></div>
-		<input type="submit" value="Unfollow" name="Test" />
+        <div class="unfollow little button" title="{% blocktrans %}Stop following this {{ object_type }}{% endblocktrans %}"><span class="text">{{ unfollow_text }}</span></div>
+		<input type="submit" value="Unfollow" />
 	{% else %}
-        <div class="follow little button" title="{% blocktrans %}Start following this {{ object_type }}{% endblocktrans %}"><span class="text"></span></div>
+        <div class="follow little button" title="{% blocktrans %}Start following this {{ object_type }}{% endblocktrans %}"><span class="text">{{ follow_text }}</span></div>
 		<input type="submit" value="Follow" />
 	{% endif %}
 </form>
