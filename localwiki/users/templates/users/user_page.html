@@ -57,9 +57,9 @@
             <div>{% blocktrans with date_joined=user_for_page.date_joined|date:"M j, Y" %}Joined on {{ date_joined }}{% endblocktrans %}</div>
         </div>
         <div class="stats_list">
-            <div class="stat_number">{{ num_contributions }} <div class="type">total contributions</div></div>
-            <div class="stat_number">{{ num_pages_edited }} <div class="type">pages edited</div></div>
-            <div class="stat_number">{{ num_maps_edited }} <div class="type">maps edited</div></div>
+            <div class="stat_number"><a href="{% url 'user-activity' username=user_for_page.username %}">{{ num_contributions }} <div class="type">total contributions</div></a></div>
+            <div class="stat_number"><a href="{% url 'user-activity' username=user_for_page.username %}?type=page">{{ num_pages_edited }} <div class="type">pages edited</div></a></div>
+            <div class="stat_number"><a href="{% url 'user-activity' username=user_for_page.username %}?type=map">{{ num_maps_edited }} <div class="type">maps edited</div></a></div>
         </div>
         
         <div class="objects_followed">

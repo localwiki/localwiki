@@ -2,7 +2,7 @@ from django.conf.urls import *
 
 from localwiki.utils.views import NamedRedirectView
 
-from .views import RegionActivity, FollowedActivity
+from .views import RegionActivity, FollowedActivity, UserActivity
 from .feeds import ActivityFeedSyndication
 
 
@@ -13,6 +13,10 @@ urlpatterns = patterns('',
     # RSS/Atom feed of changes within a region
     url(r'^(?P<region>[^/]+?)/_activity/_feed/?$', ActivityFeedSyndication(),
         name='activity-syndication'),
+
+    # Changes made by a particular user 
+    url(r'^_activity/users/(?P<username>[^/]+?)/?$', UserActivity.as_view(),
+        name='user-activity'),
 
     ##################################################
     # Legacy URLs for "Recent Changes" URL name here.

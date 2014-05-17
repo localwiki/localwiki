@@ -3,6 +3,7 @@ from itertools import groupby
 from collections import defaultdict
 
 from django.http import Http404
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 from follow.models import Follow
@@ -147,6 +148,51 @@ class FollowedActivity(MultipleTypesPaginatedView):
     def get_context_data(self, *args, **kwargs):
         c = super(FollowedActivity, self).get_context_data(*args, **kwargs)
         c.update({
+            'ignore_types': IGNORE_TYPES,
+            'added_types': ADDED_TYPES,
+            'deleted_types': DELETED_TYPES,
+            'reverted_types': REVERTED_TYPES,
+        })
+        return c
+
+
+class UserActivity(MultipleTypesPaginatedView):
+    context_object_name = 'changes'
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ['activity/followed_activity_page.html']
+        return ['activity/user_activity_index.html']
+
+    def get_object_lists(self):
+        change_sets = []
+        username = self.kwargs.get('username')
+        obj_type = self.request.GET.get('type', None)
+
+        for change_class in get_changes_classes():
+            # Allow the change_class to be specified via the
+            # 'type' query argument
+            if obj_type:
+                if change_class.classname != obj_type:
+                    continue
+            change_obj = change_class()
+            change_set = change_obj.queryset().filter(version_info__user__username=username)
+            change_sets.append(change_set)
+
+        return change_sets
+
+    def get_pagination_merge_key(self):
+        """
+        Returns:
+            A callable that, when called, returns the value to use for the merge +
+            sort.  Default: the value inside the list itself.
+        """
+        return (lambda x: x.version_info.date)
+
+    def get_context_data(self, *args, **kwargs):
+        c = super(UserActivity, self).get_context_data(*args, **kwargs)
+        c.update({
+            'user_for_page': User.objects.get(username=self.kwargs.get('username')),
             'ignore_types': IGNORE_TYPES,
             'added_types': ADDED_TYPES,
             'deleted_types': DELETED_TYPES,
