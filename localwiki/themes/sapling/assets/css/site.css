@@ -1673,6 +1673,12 @@ input:focus {
     color: #858585;
     line-height: 1.2;
 }
+#user_page_info .stat_number a:link {
+    color: inherit;
+}
+#user_page_info .stat_number a:hover, #user_page_info .stat_number a:hover .type {
+    color: #4e58b5;
+}
 #user_page_info .edit_settings {
     margin-top: 1em;
 }

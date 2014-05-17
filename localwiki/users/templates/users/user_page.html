@@ -57,9 +57,33 @@
             <div>{% blocktrans with date_joined=user_for_page.date_joined|date:"M j, Y" %}Joined on {{ date_joined }}{% endblocktrans %}</div>
         </div>
         <div class="stats_list">
-            <div class="stat_number"><a href="{% url 'user-activity' username=user_for_page.username %}">{{ num_contributions }} <div class="type">total contributions</div></a></div>
-            <div class="stat_number"><a href="{% url 'user-activity' username=user_for_page.username %}?type=page">{{ num_pages_edited }} <div class="type">pages edited</div></a></div>
-            <div class="stat_number"><a href="{% url 'user-activity' username=user_for_page.username %}?type=map">{{ num_maps_edited }} <div class="type">maps edited</div></a></div>
+            <div class="stat_number">
+                {% if num_contributions %}
+                    <a href="{% url 'user-activity' username=user_for_page.username %}">
+                {% endif %}
+                {{ num_contributions }} <div class="type">{% trans "total contributions" %}</div>
+                {% if num_contributions %}
+                    </a>
+                {% endif %}
+            </div>
+            <div class="stat_number">
+                {% if num_pages_edited %}
+                    <a href="{% url 'user-activity' username=user_for_page.username %}?type=page">
+                {% endif %}
+                {{ num_pages_edited }} <div class="type">{% trans "pages edited" %}</div>
+                {% if num_pages_edited %}
+                    </a>
+                {% endif %}
+            </div>
+            <div class="stat_number">
+                {% if num_maps_edited %}
+                    <a href="{% url 'user-activity' username=user_for_page.username %}?type=map">
+                {% endif %}
+                {{ num_maps_edited }} <div class="type">{% trans "maps edited" %}</div>
+                {% if num_maps_edited %}
+                    </a>
+                {% endif %}
+            </div>
         </div>
         
         <div class="objects_followed">
