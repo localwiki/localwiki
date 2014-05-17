@@ -151,6 +151,12 @@ class RegionCreateView(AuthenticationRequired, CreateView):
         return forbidden_message
 
     def get_success_url(self):
+        msg = _(
+            "You've created a new LocalWiki region! "
+            "We've set you up as an admin for this region. "
+            "Learn more about <a href=\"http://localwiki.net/main/Local_Adminship_Hub\" target=\"_blank\">LocalWiki adminship here</a>."
+        )
+        messages.add_message(self.request, messages.SUCCESS, msg)
         return reverse('frontpage', kwargs={'region': self.object.slug})
 
     def get_form_kwargs(self):
