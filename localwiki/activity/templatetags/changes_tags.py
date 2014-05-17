@@ -26,7 +26,7 @@ def group_changes_by_slug(objs):
            ...
         ]
 
-        where each group of [ changes, ..] is grouped by slug.
+        where each group of [ changes, ..] is grouped by (region, slug).
         The list is ordered by the most recent edit in each
         [changes, ..] list.
     """
@@ -41,9 +41,9 @@ def group_changes_by_slug(objs):
             slug_dict[n_action] = [change]
             n_action += 1
         else:
-            changes_for_slug = slug_dict.get(change.slug, [])
+            changes_for_slug = slug_dict.get((change.region, change.slug), [])
             changes_for_slug.append(change)
-            slug_dict[change.slug] = changes_for_slug
+            slug_dict[(change.region, change.slug)] = changes_for_slug
 
     # Sort the slug_dict by the most recent edit date of each
     # slug's set of changes.
