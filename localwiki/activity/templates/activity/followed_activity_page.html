@@ -76,7 +76,14 @@
               </span>
           {% endif %}
 
-          <span class="user">{% user_link change.version_info.user ip=change.version_info.user_ip %}</span>
+          <span class="user">
+            {% user_link change.version_info.user ip=change.version_info.user_ip %}
+            {% if request.user.is_staff %}
+                {% blocktrans with user_ip=change.version_info.user_ip %}
+                via {{ user_ip }}
+                {% endblocktrans %}
+            {% endif %}
+          </span>
         </li>
       {% endif %}
       {% if forloop.last %}
