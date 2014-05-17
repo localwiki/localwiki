@@ -54,6 +54,9 @@
         {% if request.user == user_for_page %}
         <div class="edit_settings"><a href="{% url 'user-settings' %}" class="little button">Edit settings</a></div>
         {% endif %}
+        {% if request.user.is_staff %}
+        <div class="edit_settings"><a href="/admin/auth/user/{{ user_for_page.id }}/" class="little button">Administrate user</a></div>
+        {% endif %}
       </div>
 
       {% with region=page.region %}
