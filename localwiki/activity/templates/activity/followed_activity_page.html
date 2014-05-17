@@ -28,6 +28,11 @@
             <span class="user">{{ actor_link }}</span> created page <a href="{{ page_url }}">{{ page_name }}</a> on <a href="{{ region_url }}">{{ region_name }}</a> <span class="weak">{{ timesince }} ago</span>
           {% endblocktrans %}
 
+        {% elif change.verb == 'created region' %}
+          {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb region_name=change.action_object.slug region_url=change.action_object.get_absolute_url %}
+            <span class="user">{{ actor_link }}</span> created region <a href="{{ region_url }}">{{ region_name }}</a> <span class="weak">{{ timesince }} ago</span>
+          {% endblocktrans %}
+
         {% elif change.verb == 'followed page' %}
           {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb page_url=change.action_object.get_absolute_url page_name=change.action_object.name region_name=change.action_object.region.slug region_url=change.action_object.region.get_absolute_url %}
             <span class="user">{{ actor_link }}</span> starred <a href="{{ page_url }}">{{ page_name }}</a> on <a href="{{ region_url }}">{{ region_name }}</a> <span class="weak">{{ timesince }} ago</span>

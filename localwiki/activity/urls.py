@@ -2,7 +2,7 @@ from django.conf.urls import *
 
 from localwiki.utils.views import NamedRedirectView
 
-from .views import RegionActivity, FollowedActivity, UserActivity
+from .views import RegionActivity, FollowedActivity, UserActivity, AllActivity
 from .feeds import ActivityFeedSyndication
 
 
@@ -17,6 +17,10 @@ urlpatterns = patterns('',
     # Changes made by a particular user 
     url(r'^_activity/users/(?P<username>[^/]+?)/?$', UserActivity.as_view(),
         name='user-activity'),
+
+    # Changes for -all- of LocalWiki
+    url(r'^_activity/?$', AllActivity.as_view(),
+        name='all-activity'),
 
     ##################################################
     # Legacy URLs for "Recent Changes" URL name here.

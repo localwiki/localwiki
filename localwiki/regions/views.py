@@ -16,6 +16,7 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
 
 from follow.utils import follow as do_follow
+from actstream import action
 
 from localwiki.utils.views import CreateObjectMixin, AuthenticationRequired
 
@@ -185,6 +186,9 @@ class RegionCreateView(AuthenticationRequired, CreateView):
 
         # Set the creator as following the region
         do_follow(self.request.user, region)
+
+        # Notify followers that user created region
+        action.send(self.request.user, verb='created region', action_object=region)
 
         return response
 

@@ -199,3 +199,54 @@ class UserActivity(MultipleTypesPaginatedView):
             'reverted_types': REVERTED_TYPES,
         })
         return c
+
+
+class AllActivity(MultipleTypesPaginatedView):
+    context_object_name = 'changes'
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ['activity/followed_activity_page.html']
+        return ['activity/all_activity_index.html']
+
+    def get_object_lists(self):
+        change_sets = []
+
+        for change_class in get_changes_classes():
+            change_obj = change_class()
+            change_set = change_obj.queryset()
+            change_sets.append(change_set)
+
+        ####################################################
+        # The action (actstream) for all users, if selected
+        ####################################################
+        if self.request.GET.get('user_activity', None):
+            action_set = Action.objects.exclude(verb='created page')
+            # Remove redundant actions that are already shown in the
+            # historical lists (e.g. "Philip created a new page")
+            change_sets.append(action_set)
+
+        return change_sets
+
+    def get_pagination_merge_key(self):
+        """
+        Returns:
+            A callable that, when called, returns the value to use for the merge +
+            sort.  Default: the value inside the list itself.
+        """
+        def _f(x):
+            if isinstance(x, Action):
+                return x.timestamp
+            return x.version_info.date
+        return (_f)
+
+    def get_context_data(self, *args, **kwargs):
+        c = super(AllActivity, self).get_context_data(*args, **kwargs)
+        c.update({
+            'ignore_types': IGNORE_TYPES,
+            'added_types': ADDED_TYPES,
+            'deleted_types': DELETED_TYPES,
+            'reverted_types': REVERTED_TYPES,
+        })
+        return c
+

@@ -1,0 +1,41 @@
+{% extends "site/base.html" %}
+{% load url from future %}
+{% load i18n %}
+{% load user_tags %}
+
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
+{% block title %}{% blocktrans with username=user.username %}{{ username }} contribution history{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+{% block head_extra %}
+{% comment %}<link rel="alternate" href="{% url 'activity-syndication' region=region.slug %}" type="application/rss+xml" title="{% trans "News Feed" %}"/> {% endcomment %}
+<script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+<script>$(document).ready(function() {
+$.endlessPaginate();
+});</script>
+{% endblock %}
+
+{% block header_title %}
+  {% user_link_as user_for_page size=40 as user_link %}
+  {% if request.GET.type == 'page' %}
+    {% blocktrans with user_link=user_link|safe %}{{ user_link }} page contribution history{% endblocktrans %}
+  {% elif request.GET.type == 'map' %}
+    {% blocktrans with user_link=user_link|safe %}{{ user_link }} map contribution history{% endblocktrans %}
+  {% else %}
+    {% blocktrans with user_link=user_link|safe %}{{ user_link }} total contribution history{% endblocktrans %}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <div id="activityfeed">
+    {% include "activity/followed_activity_page.html" %}
+
+    <div class="see_also">
+      {% url 'frontpage' region='main' as guide_url %}
+      <p>{% blocktrans %}Need help? Want advice? Check out the <a href="{{ guide_url }}">LocalWiki guide</a>.{% endblocktrans %}</p>
+    </div>
+
+  </div>
+{% endblock %}
