@@ -105,6 +105,5 @@ def slugify(value):
     return value.lower()
 slugify = stringfilter(slugify)
 
-
 # For registration calls
 import signals

@@ -1,0 +1,26 @@
+{% load i18n %}
+
+{% block subject %}{% blocktrans %}Someone deleted your user page on LocalWiki{% endblocktrans %}{% endblock %}
+
+{% block plain %}{% blocktrans %}{{ username }} deleted your user page on {{ base_uri }}.{{ comment_text }}
+
+Go here to see the history of edits on the page:
+
+{{ base_uri }}{{ history_url }}
+
+---
+To disable this notification, un-star your user page here: {{ base_uri }}{{ page_url }}
+{% endblocktrans %}
+{% endblock %}
+
+{% block html %}
+{% blocktrans %}
+<p>{{ user_with_link }} deleted <a href="{{ base_uri }}{{ page_url }}">your user page</a> on <a href="{{ base_uri }}">LocalWiki</a>.{{ comment_text }}</p>
+<p><a href="{{ base_uri }}{{ history_url }}">Click here</a> to see the history of edits on the page.</p>
+<p>
+---
+<br/>
+To disable this notification, <a href="{{ base_uri }}{{ page_url }}">un-star your user page here</a>.</p>
+{% endblocktrans %}
+{% endblock %}
+

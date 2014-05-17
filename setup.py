@@ -158,8 +158,13 @@ install_requires = [
     'django-cors-headers==0.12',
     'django-gravatar2==1.1.3',
     'django-endless-pagination==2.0',
+    'django-follow==0.6.1',
+    'django-templated-email==0.4.9',
     'django-block-ip==0.1.6',
     'django-static-sitemaps==2.1.0-custom1',
+    'django-celery-email==1.0.4-custom1',
+    'django-activity-stream==0.4.5beta1',
+    'django-jsonfield==0.9.12',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
@@ -190,6 +195,7 @@ setup(
         'https://github.com/philipn/django-rest-framework-gis/tarball/localwiki#egg=djangorestframework-gis-0.1.0-custom2',
         'https://github.com/philipn/django-endless-pagination/tarball/zip_safe#egg=django-endless-pagination-2.0',
         'https://github.com/philipn/django-static-sitemaps/tarball/localwiki#egg=django-static-sitemaps-2.1.0-custom1',
+        'https://github.com/philipn/django-celery-email/tarball/localwiki#egg=django-celery-email-1.0.4-custom1',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=localwiki.manage:main'],

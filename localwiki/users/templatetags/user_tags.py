@@ -25,3 +25,7 @@ def user_link(user, size=20, region=None, show_username=True, ip=None):
     else:
         link = _("Unknown")
     return link
+
+@register.assignment_tag
+def user_link_as(user, **kwargs):
+    return user_link(user, **kwargs)

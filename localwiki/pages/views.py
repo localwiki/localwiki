@@ -4,6 +4,8 @@ import copy
 
 from django.conf import settings
 from django.views.generic.base import RedirectView
+from django.template import Template
+from django.template import RequestContext
 from django.views.generic import (DetailView, ListView,
     FormView)
 from django.http import (HttpResponseNotFound, HttpResponseRedirect,
@@ -17,6 +19,8 @@ from django.utils.html import escape
 from django.utils.http import urlquote
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
+
+from follow.models import Follow
 
 from ckeditor.views import ck_upload_result
 from versionutils import diff
@@ -129,10 +133,17 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin,
     def success_msg(self):
         # NOTE: This is eventually marked as safe when rendered in our
         # template.  So do *not* allow unescaped user input!
-        message = _('Thank you for your changes. '
+        #
+        # XXX TODO: Refactor this into something more general + show this
+        # message on other content types (maps, tags)
+        default_message = '<div>%s</div>' % _('Thank you for your changes. '
                    'Your attention to detail is appreciated.')
+        log_in_message = ''
+        map_create_link = ''
+        follow_message = ''
+
         if not self.request.user.is_authenticated():
-            message = (_('Changes saved! To use your name when editing, please '
+            default_message = '<div>%s</div>' % (_('Changes saved! To use your name when editing, please '
                 '<a href="%(login_url)s?next=%(current_path)s"><strong>log in</strong></a> or '
                 '<a href="%(register_url)s?next=%(current_path)s"><strong>create an account</strong></a>.')
                 % {'login_url': reverse('django.contrib.auth.views.login'),
@@ -140,7 +151,6 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin,
                    'register_url': reverse('registration_register')
                    }
                 )
-        map_create_link = ''
         if not hasattr(self.object, 'mapdata') and not is_user_page(self.object):
             slug = self.object.pretty_slug
             map_create_link = (_(
@@ -149,7 +159,21 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin,
                 'for this page?</p>') %
                 reverse('maps:edit', args=[self.object.region.slug, slug])
             )
-        return '<div>%s</div>%s' % (message, map_create_link)
+
+        if self.request.user.is_authenticated() and not map_create_link:
+            following = Follow.objects.filter(user=self.request.user, target_page=self.object).exists()
+            if not following:
+                t = Template("""
+{% load follow_tags %}
+{% follow_form page %}
+                """)
+                c = RequestContext(self.request, {
+                    'page': self.object,
+                    'follow_text': _("Follow this page"),
+                })
+                follow_message = '<div>%s</div>' % (_("%(follow_page_notice)s for updates!") % {'follow_page_notice': t.render(c)})
+
+        return '%s%s%s' % (default_message, map_create_link, follow_message)
 
     def get_success_url(self):
         return reverse('pages:show',
@@ -332,7 +356,8 @@ class PageCompareView(RegionMixin, diff.views.CompareView):
     model = Page
 
     def get_object(self):
-        return Page(slug=self.kwargs['slug'], region=self.get_region())
+        ph = Page(slug=self.kwargs['slug'], region=self.get_region()).versions.most_recent()
+        return ph.version_info._object
 
     def get_context_data(self, **kwargs):
         context = super(PageCompareView, self).get_context_data(**kwargs)

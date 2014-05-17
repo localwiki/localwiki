@@ -1,4 +1,5 @@
 import itertools
+import threading
 from collections import Counter, defaultdict
 
 from django.utils.functional import lazy
@@ -80,3 +81,8 @@ def take_n_from(lists_with_indexes, n, merge_key=None):
         indexes.append(start_at + n_from)
 
     return (items, indexes, has_more_left)
+
+
+def get_base_uri():
+    from .middleware import _threadlocal
+    return _threadlocal.base_uri

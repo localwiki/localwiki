@@ -2,10 +2,18 @@ from django import template
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
 
-from recentchanges import get_changes_classes
+from actstream.models import Action
+
+from activity import get_changes_classes
 
 
 register = template.Library()
+
+def _date_cmp(x):
+    if isinstance(x[0], Action):
+        return x[0].timestamp
+    return x[0].version_info.date
+
 
 @register.assignment_tag
 def group_changes_by_slug(objs):
@@ -23,17 +31,23 @@ def group_changes_by_slug(objs):
         [changes, ..] list.
     """
     slug_dict = {}
+    n_action = 0
     # group changes by slug.
     for change in objs:
-        changes_for_slug = slug_dict.get(change.slug, [])
-        changes_for_slug.append(change)
-        slug_dict[change.slug] = changes_for_slug
+        # For Actions, we don't have a slug and we display them
+        # differently. So let's index them by a unique, non-slug
+        # id (incremented integers)
+        if isinstance(change, Action):
+            slug_dict[n_action] = [change]
+            n_action += 1
+        else:
+            changes_for_slug = slug_dict.get(change.slug, [])
+            changes_for_slug.append(change)
+            slug_dict[change.slug] = changes_for_slug
 
     # Sort the slug_dict by the most recent edit date of each
     # slug's set of changes.
-    by_most_recent_edit = sorted(slug_dict.values(),
-        key=lambda x: x[0].version_info.date, reverse=True)
-
+    by_most_recent_edit = sorted(slug_dict.values(), key=(_date_cmp), reverse=True)
     return by_most_recent_edit
 
 
@@ -46,6 +60,11 @@ def format_change_set(changes, region=None):
         change_obj_for_model[change_obj.queryset().model] = change_obj
 
     for obj in changes:
+        # Skip Action instances - they're displayed differently than
+        # versioned changes.
+        if isinstance(obj, Action):
+            continue
+
         # Add on the extra formatting attributes we need for fancy
         # template rendering.
         if obj.__class__ not in change_obj_for_model:

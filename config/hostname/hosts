@@ -1,0 +1,3 @@
+# IPv4 and IPv6 localhost aliases
+127.0.0.1 {{ public_hostname }} localhost
+::1 {{ public_hostname }} localhost

@@ -575,6 +575,12 @@ def setup_celery():
     sudo('chmod 660 /var/log/celery.log')
     sudo('service celery start')
 
+def setup_hostname():
+    upload_template('config/hostname/hostname', '/etc/hostname',
+        context=get_context(env), use_jinja=True, use_sudo=True)
+    upload_template('config/hostname/hosts', '/etc/hosts',
+        context=get_context(env), use_jinja=True, use_sudo=True)
+
 def setup_mailserver():
     upload_template('config/postfix/main.cf', '/etc/postfix/main.cf',
         context=get_context(env), use_jinja=True, use_sudo=True)
@@ -593,6 +599,7 @@ def provision():
 
     add_ssh_keys()
     install_system_requirements()
+    setup_hostname()
     setup_mailserver()
     setup_postgres()
     setup_memcached()

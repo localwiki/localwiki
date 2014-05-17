@@ -32,6 +32,10 @@ urlpatterns = patterns('',
     # Users / registration URLs
     (r'^(?i)Users/', include('users.urls')),
 
+    # Follow-related URLs
+    (r'^_follow/', include('follow.urls')),
+    (r'^_stars/', include('stars.urls')),
+
     # Region routing URLs
     (r'^', include(regions.site.urls)),
     
@@ -48,7 +52,7 @@ urlpatterns = patterns('',
     (r'^(?P<region>[^/]+?)/tags/', include('tags.urls', 'tags', 'tags')),
     (r'^_redirect/', include(redirects.site.urls)),
     (r'^_search/', include('search.urls')),
-    (r'^', include('recentchanges.urls')),
+    (r'^', include('activity.urls')),
     # Region userpage -> global userpage redirect
     (r'^(?P<region>[^/]+?)/((?i)Users)/(?P<username>[^/]+?)$', GlobalUserpageRedirectView.as_view()),
 

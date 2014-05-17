@@ -1,6 +1,6 @@
 import re
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponsePermanentRedirect
 from django.conf import settings
 from django.utils.http import urlquote
 
@@ -61,4 +61,4 @@ class RedirectToLanguageSubdomainMiddleware(object):
             urlquote(request.path),
             (request.method == 'GET' and len(request.GET) > 0) and '?%s' % request.GET.urlencode() or ''
         )
-        return HttpResponseRedirect(uri)
+        return HttpResponsePermanentRedirect(uri)

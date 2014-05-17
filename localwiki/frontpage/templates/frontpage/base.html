@@ -4,12 +4,22 @@
 {% load static from staticfiles %}
 {% load i18n %}
 {% load pages_tags %}
+{% load follow_tags %}
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
 <link rel="canonical" href="{{ region.get_absolute_url }}" /> 
 <link rel="stylesheet" href="{% static "css/frontpage.css" %}"/>
 <script src="{% static "js/jquery/jquery-ui-1.8.16.custom.min.js" %}"></script>
 <script src="{% static "js/coverphoto.js" %}"></script>
+{% endblock %}
+
+{% block header_bar_inner %}
+  {% if request.user.is_authenticated %}
+    {% trans "region" as object_type %}
+    {% follow_form region %}
+  {% endif %}
+
+  {{ block.super }}
 {% endblock %}
 
 {% block main_wrapper %}

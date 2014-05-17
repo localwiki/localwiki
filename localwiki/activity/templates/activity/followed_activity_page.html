@@ -1,0 +1,101 @@
+{% load url from future %}
+{% load i18n %}
+{% load user_tags %}
+{% load changes_tags %}
+
+{% format_change_set changes as changes %}
+{% group_changes_by_slug changes as changes_by_slug %}
+
+{% for changes_on_item in changes_by_slug %}
+
+  {% for change in changes_on_item %}
+
+    {% if change.verb %}
+      {% if forloop.first %}
+        <div class="item">
+      {% endif %}
+      <h3>
+        {% user_link_as change.actor as actor_link %}
+
+        {% if change.verb == 'followed user' %}
+          {% user_link_as change.action_object as user_followed_link %}
+          {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb user_followed_link=user_followed_link|safe %}
+            <span class="user">{{ actor_link }}</span> started following {{ user_followed_link }} <span class="weak">{{ timesince }} ago</span>
+          {% endblocktrans %}
+
+        {% elif change.verb == 'created page' %}
+          {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb page_url=change.action_object.get_absolute_url page_name=change.action_object.name region_name=change.action_object.region.slug region_url=change.action_object.region.get_absolute_url %}
+            <span class="user">{{ actor_link }}</span> created page <a href="{{ page_url }}">{{ page_name }}</a> on <a href="{{ region_url }}">{{ region_name }}</a> <span class="weak">{{ timesince }} ago</span>
+          {% endblocktrans %}
+
+        {% elif change.verb == 'followed page' %}
+          {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb page_url=change.action_object.get_absolute_url page_name=change.action_object.name region_name=change.action_object.region.slug region_url=change.action_object.region.get_absolute_url %}
+            <span class="user">{{ actor_link }}</span> starred <a href="{{ page_url }}">{{ page_name }}</a> on <a href="{{ region_url }}">{{ region_name }}</a> <span class="weak">{{ timesince }} ago</span>
+          {% endblocktrans %}
+
+        {% elif change.verb == 'followed region' %}
+          {% blocktrans with timesince=change.timestamp|timesince actor_link=actor_link|safe verb=change.verb region_name=change.action_object.slug region_url=change.action_object.get_absolute_url %}
+            <span class="user">{{ actor_link }}</span> starred <a href="{{ region_url }}">{{ region_name }}</a> <span class="weak">{{ timesince }} ago</span>
+          {% endblocktrans %}
+        {% endif %}
+        
+      </h3>
+
+    {% else %}
+      {% if forloop.first %}
+        <div class="item">
+        <h3><a href="{{ change.page.get_absolute_url }}">{{ change.page.name }}</a> <span class="weak">(<a href="{{ change.page.region.get_absolute_url }}">{{ change.page.region.slug }}</a>)
+            {% blocktrans with version_date=change.version_info.date|timesince %}last modified {{ version_date }} ago{% endblocktrans %}</span></h3>
+        <ul>
+      {% endif %}
+
+      {% if change.version_info.type not in ignore_types %}
+        <li class="{{ change.classname }}">
+          {# The change type label. E.g. 'changes', 'added', 'deleted', etc. #}
+          {% if change.version_info.type in added_types %}
+              <span class="changelabel added"><span>{% trans "new"%}</span></span>
+          {% else %}{% if change.version_info.type in deleted_types %}
+              <span class="changelabel deleted"><span>{% trans "deleted"%}</span></span>
+          {% else %}
+              <a class="changelabel updated" href="{{ change.diff_url }}"><span>{% trans "changes" %}</span></a></span>
+          {% endif %}{% endif %}
+
+          {% if change.version_info.type in reverted_types %}
+              <span class="revert">{% blocktrans with version_date_timesince=change.version_info.reverted_to_version.version_info.date|timesince %}Reverted to version from {{ version_date_timesince }} ago{% endblocktrans %}</span>
+          {% endif %}
+
+          <span class="type"></span>
+
+          {% if change.classname == 'redirect' %}
+              <span class="revert">{% blocktrans with url=change.destination.get_absolute_url destination=change.destination.name %}Redirected to <a href="{{ url }}">{{ destination }}</a>{% endblocktrans %}</span>
+          {% endif %}
+
+          {% if change.version_info.comment %}
+              <span class="comment">
+                {{ change.version_info.comment }}
+              </span>
+          {% endif %}
+
+          <span class="user">{% user_link change.version_info.user ip=change.version_info.user_ip %}</span>
+        </li>
+      {% endif %}
+      {% if forloop.last %}
+        </ul>
+      {% endif %}
+    {% endif %}
+
+    {% if forloop.last %}
+      </div>
+    {% endif %}
+
+  {% endfor %}
+
+{% endfor %}
+
+{% if pagination_has_more_left %}
+    <div class="endless_container">
+        <a class="endless_more button" href="{{ pagination_next }}"
+            rel="nofollow">{% trans "More" %}</a>
+        <div class="endless_loading loading" style="display: none;"></div>
+    </div>
+{% endif %}

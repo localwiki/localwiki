@@ -5,6 +5,7 @@
 {% load pages_tags %}
 {% load tags_tags %}
 {% load gravatar %}
+{% load follow_tags %}
 
 {% block title %}{% if not page.is_front_page %}{{ page.name }} - {% endif %}{{ block.super }}{% endblock %}
 {% block header_title %}<a href="#">{% if user_for_page.name %}{{ user_for_page.name }}{% else %}{{ user_for_page.username }}{% endif %}</a>{% endblock %}
@@ -13,6 +14,15 @@
     <div id="object_subtitle" class="prominent">
     {{ user_for_page.username }}
     </div>
+{% endblock %}
+
+{% block header_bar_inner %}
+  {% if request.user.is_authenticated %}
+    {% trans "user" as object_type %}
+    {% follow_form user_for_page %}
+  {% endif %}
+
+  {{ block.super }}
 {% endblock %}
 
 {% block content_wrapper %}
@@ -51,6 +61,35 @@
             <div class="stat_number">{{ num_pages_edited }} <div class="type">pages edited</div></div>
             <div class="stat_number">{{ num_maps_edited }} <div class="type">maps edited</div></div>
         </div>
+        
+        <div class="objects_followed">
+            {% if num_pages_followed %}
+            <a href="{% url 'followed-pages' username=user_for_page.username %}">
+              <div class="pages_followed">
+              {% blocktrans %}{{ num_pages_followed }} pages starred{% endblocktrans %}
+              </div>
+            </a>
+            {% endif %}
+            {% if num_users_followed %}
+            <a href="{% url 'followed-users' username=user_for_page.username %}"">
+            <div class="users_followed">
+            {% blocktrans %}{{ num_users_followed }} users starred{% endblocktrans %}
+            </div>
+            </a>
+            {% endif %}
+        </div>
+
+        {% if regions_followed %}
+          <div class="regions_followed">
+            <h3>{% trans "Regions followed" %}</h3>
+            <ul>
+              {% for follow in regions_followed %}
+                  <li><a href="{{ follow.target.get_absolute_url }}">{{ follow.target.slug }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
         {% if request.user == user_for_page %}
         <div class="edit_settings"><a href="{% url 'user-settings' %}" class="little button">Edit settings</a></div>
         {% endif %}

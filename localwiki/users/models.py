@@ -17,7 +17,6 @@ from django.contrib.sites.models import Site
 
 User._meta.get_field_by_name('email')[0]._unique = True
 
-
 def name_to_first_last(self, name):
     """
     Takes 'name' and sets self.first_name, self.last_name.

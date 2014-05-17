@@ -16,5 +16,5 @@ urlpatterns = patterns('',
     url(r'^_settings/?$', UserSettingsView.as_view(), name="user-settings"),
     url(r'^_deactivate/?$', UserDeactivateView.as_view(), name="user-deactivate"),
     (r'', include('registration.auth_urls')),
-    (r'(?P<username>[^/]*)/*(?P<rest>.*)', UserPageView.as_view()),
+    url(r'(?P<username>[^/]*)/*(?P<rest>.*)', UserPageView.as_view(), name="user-page"),
 )

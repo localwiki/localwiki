@@ -1,4 +1,4 @@
-from models import RecentChanges
+from .models import ActivityForModel
 
 
 class Registry(object):
@@ -16,10 +16,10 @@ changes_registry = Registry()
 
 def register(changes_class):
     """
-    Register a RecentChanges subclass to appear on the Recent Changes page.
+    Register a ActivityForModel subclass to appear on the Activity page.
 
     Args:
-        changes_class: A subclass of RecentChanges.
+        changes_class: A subclass of ActivityForModel
     """
     changes_registry.register(changes_class)
 

@@ -1,0 +1,32 @@
+{% extends "site/base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+{% load follow_tags %}
+
+{% block title %}
+  {% blocktrans with username=user_for_page.username %}Pages {{ username }} follows{% endblocktrans %}
+{% endblock %}
+
+{% block header_title %}
+  {% url 'user-page' username=user_for_page.username rest='' as user_link %}
+  {% if user_for_page == request.user %}
+    {% blocktrans %}
+    Pages <a href="{{ user_link }}">you</a> follow:
+    {% endblocktrans %}
+  {% else %}
+    {% blocktrans with username=user_for_page.username %}
+        Pages <a href="{{ user_link }}">{{ username }}</a> follows:
+        {% endblocktrans %}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  
+
+  <ul class="divider_list">
+  {% for follow in follows %}
+    <li><strong><a href="{{ follow.target_page.get_absolute_url }}">{{ follow.target_page.name }}</a></strong> (<a href="{{ follow.target_page.region.get_absolute_url }}">{{ follow.target_page.region.slug }}</a>) {% follow_form follow.target_page %}</li>
+  {% endfor %}
+  </ul>
+{% endblock %}

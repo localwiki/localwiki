@@ -1,0 +1,42 @@
+{% extends "site/base.html" %}
+{% load url from future %}
+{% load i18n %}
+{% load user_tags %}
+
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
+{% block head_extra %}
+{% comment %}<link rel="alternate" href="{% url 'activity-syndication' region=region.slug %}" type="application/rss+xml" title="{% trans "News Feed" %}"/> {% endcomment %}
+<script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+<script>$(document).ready(function() {
+$.endlessPaginate();
+});</script>
+{% endblock %}
+
+{% block header_title %}<a href="#">{% trans "News Feed" %}</a>{% endblock %}
+
+{% block content %}
+  <div id="activityfeed">
+    {% if changes %}
+    {% include "activity/followed_activity_page.html" %}
+    {% else %}
+        <div id="signup_new_explainer">
+          <h3>{% trans "Welcome to LocalWiki! What's next?" %}</h3>
+          <ul>
+            <li><a href="{% url 'regions:list' %}">{% trans "Explore LocalWiki communities" %}</a></li>
+            <li>Follow pages, regions and people when you see <div class="follow_item"><div class="follow little button"><span class="text"></span></div></div> Then activity will show up here!</li>
+            <li><a href="{% url 'regions:add' %}">{% trans "Create a new LocalWiki region" %}</a></li>
+            <li><a href="http://twitter.com/localwiki" target="_blank">{% trans "Follow <strong>@localwiki</strong> on Twitter" %}</a></li>
+          </ul>
+        </div>
+    {% endif %}
+
+    <div class="see_also">
+      {% url 'frontpage' region='main' as guide_url %}
+      <p>{% blocktrans %}Need help? Want advice? Check out the <a href="{{ guide_url }}">LocalWiki guide</a>.{% endblocktrans %}</p>
+    </div>
+
+  </div>
+{% endblock %}

@@ -37,6 +37,7 @@ DATABASES = {
 SOUTH_MIGRATION_MODULES = {
     # HACK: South treats 'database' as the name of constance.backends.database
     'database': 'migrations.south.constance',
+    'follow': 'utils.external_migrations.follow',
 }
 
 GLOBAL_LICENSE_NOTE = _("""<p>Except where otherwise noted, this content is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a>. See <a href="/Copyrights">Copyrights</a>.</p>""")
@@ -213,6 +214,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'utils.middleware.SubdomainLanguageMiddleware',
     'regions.middleware.RedirectToLanguageSubdomainMiddleware',
+    'utils.middleware.RequestURIMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'honeypot.middleware.HoneypotMiddleware',
@@ -282,8 +284,11 @@ INSTALLED_APPS = (
     'corsheaders',
     'django_gravatar',
     'endless_pagination',
+    'follow',
     'block_ip',
     'static_sitemaps',
+    'djcelery_email',
+    'actstream',
 
     # Our apps
     'versionutils.versioning',
@@ -295,10 +300,11 @@ INSTALLED_APPS = (
     'redirects',
     'tags',
     'users',
-    'recentchanges',
+    'activity',
     'search',
     'frontpage',
     'dashboard',
+    'stars',
     'main.api',
     'main',
     'utils',
@@ -357,6 +363,16 @@ EMAIL_HOST = 'localhost'
 EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
+TEMPLATED_EMAIL_TEMPLATE_DIR = ''
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+
+CELERY_EMAIL_TASK_CONFIG = {
+    'rate_limit' : '80/m',
+}
+
+ACTSTREAM_SETTINGS = {
+    'MODELS': ('auth.user', 'pages.page', 'regions.region'),
+}
 
 OLWIDGET_DEFAULT_OPTIONS = {
     'default_lat': 37,

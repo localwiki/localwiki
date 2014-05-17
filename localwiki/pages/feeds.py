@@ -1,42 +1,51 @@
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
-import recentchanges
-from recentchanges import RecentChanges
-from recentchanges.feeds import ChangesOnItemFeed
+import activity
+from activity import ActivityForModel
+from activity.feeds import ChangesOnItemFeed
 
 from models import Page, PageFile, slugify
 
 
-class PageChanges(RecentChanges):
+class PageChanges(ActivityForModel):
     classname = 'page'
 
     def queryset(self, start_at=None):
+        if self.region:
+            qs = Page.versions.filter(region=self.region)
+        else:
+            qs = Page.versions.all()
+
         if start_at:
-            return Page.versions.filter(region=self.region, version_info__date__gte=start_at
-                ).defer('content')
-        return Page.versions.filter(region=self.region).defer('content')
+            qs = qs.filter(version_info__date__gte=start_at)
+
+        return qs.defer('content')
 
     def page(self, obj):
         return obj
 
-recentchanges.register(PageChanges)
+activity.register(PageChanges)
 
 
-class PageFileChanges(RecentChanges):
+class PageFileChanges(ActivityForModel):
     classname = 'file'
 
     def queryset(self, start_at=None):
-        if start_at:
-            return PageFile.versions.filter(region=self.region, version_info__date__gte=start_at)
+        if self.region:
+            qs = PageFile.versions.filter(region=self.region)
         else:
-            return PageFile.versions.filter(region=self.region)
+            qs = PageFile.versions.all()
+
+        if start_at:
+            qs = qs.filter(version_info__date__gte=start_at)
+        return qs
 
     def page(self, obj):
         try:
-            page = Page.objects.get(slug=obj.slug, region=self.region)
+            page = Page.objects.get(slug=obj.slug, region=obj.region)
         except Page.DoesNotExist:
-            page = Page(slug=obj.slug, region=self.region, name=obj.slug.capitalize())
+            page = Page(slug=obj.slug, region=obj.region, name=obj.slug.capitalize())
         return page
 
     def title(self, obj):
@@ -46,7 +55,7 @@ class PageFileChanges(RecentChanges):
     def diff_url(self, obj):
         return reverse('pages:file-compare-dates', kwargs={
             'slug': self.page(obj).pretty_slug,
-            'region': self.region.slug,
+            'region': obj.region.slug,
             'date1': obj.version_info.date,
             'file': obj.name,
         })
@@ -54,17 +63,17 @@ class PageFileChanges(RecentChanges):
     def as_of_url(self, obj):
         return reverse('pages:file-as_of_date', kwargs={
             'slug': self.page(obj).pretty_slug,
-            'region': self.region.slug,
+            'region': obj.region.slug,
             'date': obj.version_info.date,
             'file': obj.name,
         })
 
 
-recentchanges.register(PageFileChanges)
+activity.register(PageFileChanges)
 
 
 class PageChangesFeed(ChangesOnItemFeed):
-    recentchanges_class = PageChanges
+    activity_class = PageChanges
 
     def get_object(self, request, region='', slug=''):
         self.setup_region(region)
@@ -76,7 +85,7 @@ class PageChangesFeed(ChangesOnItemFeed):
 
 
 class PageFileChangesFeed(ChangesOnItemFeed):
-    recentchanges_class = PageFileChanges
+    activity_class = PageFileChanges
 
     def get_object(self, request, region='', slug='', file=''):
         self.setup_region(region)

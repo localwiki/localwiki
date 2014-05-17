@@ -1,26 +1,31 @@
 from django.utils.translation import ugettext as _
 from pages.models import Page, slugify
 
-import recentchanges
-from recentchanges import RecentChanges
-from recentchanges.feeds import ChangesOnItemFeed, MAX_CHANGES
-from recentchanges.feeds import skip_ignored_change_types
+import activity
+from activity import ActivityForModel
+from activity.feeds import ChangesOnItemFeed, MAX_CHANGES
+from activity.feeds import skip_ignored_change_types
 
 from models import MapData
 
 
-class MapChanges(RecentChanges):
+class MapChanges(ActivityForModel):
     classname = 'map'
 
     def queryset(self, start_at=None):
+        if self.region:
+            qs = MapData.versions.filter(region=self.region)
+        else:
+            qs = MapData.versions.all()
+
         if start_at:
-            return MapData.versions.filter(region=self.region, version_info__date__gte=start_at)
-        return MapData.versions.filter(region=self.region)
+            qs = qs.filter(version_info__date__gte=start_at)
+        return qs
 
     def title(self, obj):
         return _('Map for "%s"') % obj.page.name
 
-recentchanges.register(MapChanges)
+activity.register(MapChanges)
 
 
 class MapChangesFeed(ChangesOnItemFeed):

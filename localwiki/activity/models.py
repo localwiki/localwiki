@@ -1,14 +1,15 @@
 from django.core.urlresolvers import reverse
 
 
-class RecentChanges(object):
+class ActivityForModel(object):
     """
     Subclass this class and then register your subclass with
-    recentchanges.register() for your model to appear on Recent Changes.
+    activity.register() for your model to appear on the Activity pages.
 
     Loosely modeled after the Django syndication feed framework.
     """
     classname = None
+    page_slug_attribute_name = None
 
     def __init__(self, region=None):
         self.region = region
@@ -29,18 +30,33 @@ class RecentChanges(object):
         """
         Args:
             obj: The historical instance, taken from your queryset(),
-                 that we are displaying on Recent Changes.
+                 that we are displaying on the Activity page.
 
         Returns:
             The page object associated with obj.
         """
         return obj.page
 
+    def get_page_lookup_info(self):
+        if self.classname == 'page':
+            return 'slug'
+
+        if self.page_slug_attribute_name:
+            return self.page_slug_attribute_name
+
+        # Try and find attribute
+        m = self.queryset().model
+        if hasattr(m, 'page'):
+            return 'page__slug'
+        # Create instance of class to get attribute here
+        if hasattr(m(), 'slug'):
+            return 'slug'
+
     def title(self, obj):
         """
         Args:
             obj: The historical instance, taken from queryset(),
-                 that we are displaying on Recent Changes.
+                 that we are displaying on the Activity page.
 
         Returns:
             The title of this object.
@@ -51,7 +67,7 @@ class RecentChanges(object):
         """
         args:
             obj: the historical instance, taken from your queryset(),
-                 that we are displaying on recent changes.
+                 that we are displaying on the Activity page.
 
         returns:
             the diff url associated with obj.
@@ -66,7 +82,7 @@ class RecentChanges(object):
         """
         args:
             obj: the historical instance, taken from your queryset(),
-                 that we are displaying on recent changes.
+                 that we are displaying on the Activity page.
 
         returns:
             the url to display the version of the obj specified.
