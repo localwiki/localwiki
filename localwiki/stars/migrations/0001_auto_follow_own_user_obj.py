@@ -22,5 +22,8 @@ class Migration(DataMigration):
         
     }
 
+    depends_on = (
+        ("actstream", "0007_auto__add_field_follow_started"),
+    )
     complete_apps = ['stars']
     symmetrical = True

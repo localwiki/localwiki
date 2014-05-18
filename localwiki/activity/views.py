@@ -220,11 +220,11 @@ class AllActivity(MultipleTypesPaginatedView):
         ####################################################
         # The action (actstream) for all users, if selected
         ####################################################
-        if self.request.GET.get('user_activity', None):
-            action_set = Action.objects.exclude(verb='created page')
-            # Remove redundant actions that are already shown in the
-            # historical lists (e.g. "Philip created a new page")
-            change_sets.append(action_set)
+        #if self.request.GET.get('user_activity', None):
+        action_set = Action.objects.exclude(verb='created page')
+        # Remove redundant actions that are already shown in the
+        # historical lists (e.g. "Philip created a new page")
+        change_sets.append(action_set)
 
         return change_sets
 

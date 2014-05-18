@@ -36,6 +36,8 @@ $.endlessPaginate();
     <div class="see_also">
       {% url 'frontpage' region='main' as guide_url %}
       <p>{% blocktrans %}Need help? Want advice? Check out the <a href="{{ guide_url }}">LocalWiki guide</a>.{% endblocktrans %}</p>
+      {% url 'all-activity' as all_activity_url %}
+      <p>{% blocktrans %}Want to see <strong><a href="{{ all_activity_url }}">all activity across LocalWiki</a>?{% endblocktrans %}</p>
     </div>
 
   </div>
