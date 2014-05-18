@@ -142,3 +142,8 @@ class Migration(SchemaMigration):
     }
 
     complete_apps = ['follow']
+    depends_on = (
+        ("pages", "0001_initial"),
+        ("regions", "0001_initial"),
+        ("users", "0001_initial"),
+    )
