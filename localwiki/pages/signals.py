@@ -25,6 +25,9 @@ def _created_page_action(sender, instance, created, raw, **kws):
     """
     Notify this user's followers that the page was created (via activity stream).
     """
+    if raw:
+        return
+
     if not created:
         return
 

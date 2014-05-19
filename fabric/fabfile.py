@@ -576,10 +576,12 @@ def setup_celery():
     sudo('service celery start')
 
 def setup_hostname():
+    public_hostname = get_context(env)['public_hostname']
     upload_template('config/hostname/hostname', '/etc/hostname',
         context=get_context(env), use_jinja=True, use_sudo=True)
     upload_template('config/hostname/hosts', '/etc/hosts',
         context=get_context(env), use_jinja=True, use_sudo=True)
+    sudo('hostname %s' % public_hostname)
 
 def setup_mailserver():
     upload_template('config/postfix/main.cf', '/etc/postfix/main.cf',

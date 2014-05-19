@@ -1,7 +1,5 @@
 from django.db.models.signals import post_save
 
-from actstream import action
-
 from frontpage.models import FrontPage
 
 from .models import Region, RegionSettings
