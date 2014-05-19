@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 from follow.models import Follow
-from actstream.models import actor_stream, Action
 
 from versionutils.versioning.constants import *
 from regions.views import RegionMixin
@@ -71,6 +70,8 @@ class FollowedActivity(MultipleTypesPaginatedView):
         return ['activity/followed_activity_index.html']
 
     def get_object_lists(self):
+        from actstream.models import actor_stream, Action
+
         change_sets = []
 
         pages_followed = Follow.objects.filter(user=self.request.user).\
@@ -139,6 +140,7 @@ class FollowedActivity(MultipleTypesPaginatedView):
             A callable that, when called, returns the value to use for the merge +
             sort.  Default: the value inside the list itself.
         """
+        from actstream.models import Action
         def _f(x):
             if isinstance(x, Action):
                 return x.timestamp

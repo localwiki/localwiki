@@ -128,7 +128,6 @@ def find_packages_in(dirs):
 
 install_requires = [
     'setuptools',
-    'psycopg2==2.5.3',
     'django==1.5.4',
     'html5lib==0.95',
     'requests==2.0.0',

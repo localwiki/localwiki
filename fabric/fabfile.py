@@ -183,7 +183,7 @@ env.apache_settings = {
     'server_name': 'localwiki.net',
     'server_admin': 'contact@localwiki.org',
 }
-env.branch = 'hub'
+env.branch = 'hub_fix_travis'
 
 def production():
     # Use the global roledefs
@@ -212,6 +212,10 @@ def vagrant():
         result = local('vagrant ssh-config | grep IdentityFile', capture=True)
     env.key_filename = result.split()[1].strip('"')
 
+def test_server():
+    env.host_type = 'test_server'
+    setup_config_secrets()
+
 def ec2():
     env.host_type = 'ec2'
     env.user = 'ubuntu'
@@ -224,10 +228,6 @@ def ec2():
     env.ec2_security_group = config_secrets['ec2_security_group']
     env.ec2_key_name = config_secrets['ec2_key_name']
     env.key_filename = config_secrets['ec2_key_filename']
-
-def test_server():
-    env.host_type = 'test_server'
-    setup_config_secrets()
 
 def setup_dev():
     """
@@ -309,6 +309,7 @@ def install_system_requirements():
     system_python_pkg = [
         'python-dev',
         'python-setuptools',
+        'python-psycopg2',
         'python-lxml',
         'python-imaging',
         'python-pip',
@@ -357,11 +358,15 @@ def update_apache_settings():
 def init_localwiki_install():
     init_postgres_db()
 
-    # Update to latest virtualenv
+    # Update to latest virtualenv.
     sudo('pip install --upgrade virtualenv')
 
     # Create virtualenv
-    run('virtualenv --system-site-packages %s' % env.virtualenv)
+    if env.host_type == 'test_server':
+        # Annoying Travis issue. https://github.com/travis-ci/travis-ci/issues/2338
+        run('virtualenv -p /usr/bin/python2.7 --system-site-packages %s' % env.virtualenv)
+    else:
+        run('virtualenv --system-site-packages %s' % env.virtualenv)
 
     with virtualenv():
         with cd(env.src_root):
@@ -384,7 +389,7 @@ def init_localwiki_install():
 
 def setup_repo():
     sudo('mkdir -p %s' % env.localwiki_root)
-    sudo('chown -R %s.%s %s' % (env.user, env.user, env.localwiki_root))
+    sudo('chown -R %s:%s %s' % (env.user, env.user, env.localwiki_root))
     if not exists(env.src_root):
         run('git clone https://github.com/localwiki/localwiki.git %s' % env.src_root)
     switch_branch(env.branch)
@@ -577,11 +582,11 @@ def setup_celery():
 
 def setup_hostname():
     public_hostname = get_context(env)['public_hostname']
+    sudo('hostname %s' % public_hostname)
     upload_template('config/hostname/hostname', '/etc/hostname',
         context=get_context(env), use_jinja=True, use_sudo=True)
     upload_template('config/hostname/hosts', '/etc/hosts',
         context=get_context(env), use_jinja=True, use_sudo=True)
-    sudo('hostname %s' % public_hostname)
 
 def setup_mailserver():
     upload_template('config/postfix/main.cf', '/etc/postfix/main.cf',
