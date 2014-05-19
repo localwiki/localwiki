@@ -11,6 +11,8 @@ from follow.models import Follow
 class Migration(DataMigration):
 
     def forwards(self, orm):
+        print 'following own user'
+        import pdb;pdb.set_trace()
         for u in User.objects.all():
             if not Follow.objects.filter(user=u, target_user=u):
                 Follow(user=u, target_user=u).save()

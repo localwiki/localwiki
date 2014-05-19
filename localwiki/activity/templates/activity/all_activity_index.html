@@ -1,0 +1,30 @@
+{% extends "site/base.html" %}
+{% load url from future %}
+{% load i18n %}
+{% load user_tags %}
+
+{% block title %}{% trans "All activity on LocalWiki" %} - {{ block.super }}{% endblock %}
+
+{% block head_extra %}
+{% comment %}<link rel="alternate" href="{% url 'activity-syndication' region=region.slug %}" type="application/rss+xml" title="{% trans "News Feed" %}"/> {% endcomment %}
+<script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+<script>$(document).ready(function() {
+$.endlessPaginate();
+});</script>
+{% endblock %}
+
+{% block header_title %}
+  {% trans "All activity on LocalWiki" %}
+{% endblock %}
+
+{% block content %}
+  <div id="activityfeed">
+    {% include "activity/followed_activity_page.html" %}
+
+    <div class="see_also">
+      {% url 'frontpage' region='main' as guide_url %}
+      <p>{% blocktrans %}Need help? Want advice? Check out the <a href="{{ guide_url }}">LocalWiki guide</a>.{% endblocktrans %}</p>
+    </div>
+
+  </div>
+{% endblock %}

@@ -1,4 +1,4 @@
-DEBUG = False
+DEBUG = True
 
 #######################################################################
 # Config values you *must* change

@@ -1,5 +1,6 @@
 from django.db.models.signals import post_save, post_delete
 from django.utils.translation import ugettext as _
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.core.mail.utils import DNS_NAME
@@ -140,7 +141,7 @@ def notify_page_deleted(user, page, notification_type=None):
 
 
 def follow_own_user_object(sender, instance, created, raw, **kwargs):
-    if raw:
+    if raw or instance.id == settings.ANONYMOUS_USER_ID:
         # Don't create when importing via loaddata - they're already
         # being imported.
         return
