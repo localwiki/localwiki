@@ -311,7 +311,6 @@ def install_system_requirements():
         'python-setuptools',
         'python-lxml',
         'python-imaging',
-        'python-psycopg2',
         'python-pip',
     ]
     solr_pkg = ['solr-jetty', 'default-jre-headless']
