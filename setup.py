@@ -128,6 +128,7 @@ def find_packages_in(dirs):
 
 install_requires = [
     'setuptools',
+    'psycopg2==2.5.3',
     'django==1.5.4',
     'html5lib==0.95',
     'requests==2.0.0',
@@ -165,7 +166,6 @@ install_requires = [
     'django-celery-email==1.0.4-custom1',
     'django-activity-stream==0.4.5beta1',
     'django-jsonfield==0.9.12',
-    'psycopg2==2.5.3',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
