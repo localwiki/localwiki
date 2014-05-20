@@ -162,6 +162,11 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin,
 
         if self.request.user.is_authenticated() and not map_create_link:
             following = Follow.objects.filter(user=self.request.user, target_page=self.object).exists()
+            if is_user_page(self.object):
+                obj = User.objects.get(username__iexact=self.object.slug)
+            else:
+                obj = self.object
+
             # They're already auto-following their own user page
             own_user_page = slugify(self.object.name) == slugify('users/%s' % self.request.user.username)
             if not following and not own_user_page:
@@ -170,7 +175,7 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin,
 {% follow_form page %}
                 """)
                 c = RequestContext(self.request, {
-                    'page': self.object,
+                    'page': obj,
                     'follow_text': _("Follow this page"),
                 })
                 follow_message = '<div>%s</div>' % (_("%(follow_page_notice)s for updates!") % {'follow_page_notice': t.render(c)})
