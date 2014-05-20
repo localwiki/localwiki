@@ -71,6 +71,7 @@ class FollowedActivity(MultipleTypesPaginatedView):
 
     def get_object_lists(self):
         from actstream.models import actor_stream, Action
+        from pages.models import Page, slugify
 
         change_sets = []
 
@@ -131,6 +132,10 @@ class FollowedActivity(MultipleTypesPaginatedView):
 
             action_set = action_set | actor_stream(follow.target_user)
         change_sets.append(action_set)
+
+        # Special case: own user pages
+        # TODO: use users.views.get_user_page() here once we unify user pages
+        change_sets.append(Page.versions.filter(slug=slugify('users/%s' % self.request.user.username)))
 
         return change_sets
 

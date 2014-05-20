@@ -162,7 +162,9 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin,
 
         if self.request.user.is_authenticated() and not map_create_link:
             following = Follow.objects.filter(user=self.request.user, target_page=self.object).exists()
-            if not following:
+            # They're already auto-following their own user page
+            own_user_page = slugify(self.object.name) == slugify('users/%s' % self.request.user.username)
+            if not following and not own_user_page:
                 t = Template("""
 {% load follow_tags %}
 {% follow_form page %}
