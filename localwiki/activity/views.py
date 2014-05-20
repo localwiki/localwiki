@@ -212,6 +212,8 @@ class AllActivity(MultipleTypesPaginatedView):
         return ['activity/all_activity_index.html']
 
     def get_object_lists(self):
+        from actstream.models import Action
+
         change_sets = []
 
         for change_class in get_changes_classes():
@@ -236,6 +238,8 @@ class AllActivity(MultipleTypesPaginatedView):
             A callable that, when called, returns the value to use for the merge +
             sort.  Default: the value inside the list itself.
         """
+        from actstream.models import Action
+
         def _f(x):
             if isinstance(x, Action):
                 return x.timestamp
