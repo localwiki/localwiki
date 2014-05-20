@@ -163,7 +163,7 @@
 .frontpage #map .mapwidget {
     cursor: pointer;
 }
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 770px) {
     .frontpage #map {
         display: none;
     }
