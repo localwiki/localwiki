@@ -85,4 +85,4 @@ def take_n_from(lists_with_indexes, n, merge_key=None):
 
 def get_base_uri():
     from .middleware import _threadlocal
-    return _threadlocal.base_uri
+    return getattr(_threadlocal, 'base_uri', '')
