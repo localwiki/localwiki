@@ -263,6 +263,9 @@ def notify_follow_action(user, target, instance, **kwargs):
         return
 
     if isinstance(target, User):
+        if user == target:
+            # Don't alert that the user followed themselves.
+            return
         action.send(user, verb='followed user', action_object=target)
     elif isinstance(target, Page):
         action.send(user, verb='followed page', action_object=target)
