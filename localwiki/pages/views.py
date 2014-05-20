@@ -4,6 +4,7 @@ import copy
 
 from django.conf import settings
 from django.views.generic.base import RedirectView
+from django.contrib.auth.models import User
 from django.template import Template
 from django.template import RequestContext
 from django.views.generic import (DetailView, ListView,
