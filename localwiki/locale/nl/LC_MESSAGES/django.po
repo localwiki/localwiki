@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# nyampire <nyampire@gmail.com>, 2013-2014
+# MarcelNL <zeeforel70@yahoo.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: localwiki\n"
@@ -11,12 +11,12 @@ msgstr ""
 "POT-Creation-Date: 2014-05-20 02:04-0500\n"
 "PO-Revision-Date: 2014-05-20 07:27+0000\n"
 "Last-Translator: philipn <philip@localwiki.org>\n"
-"Language-Team: Japanese (http://www.transifex.com/projects/p/localwiki/language/ja/)\n"
+"Language-Team: Dutch (http://www.transifex.com/projects/p/localwiki/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: activity/feeds.py:40 activity/feeds.py:46
 #, python-format
@@ -26,22 +26,22 @@ msgstr ""
 #: activity/feeds.py:81 activity/feeds.py:177
 #, python-format
 msgid "to version %s"
-msgstr "バージョン %s へ"
+msgstr "naar versie %s"
 
 #: activity/feeds.py:88 activity/feeds.py:184
 #, python-format
 msgid " with comment \"%s\""
-msgstr "コメント \"%s\" 付き"
+msgstr "met reactie \"%s\""
 
 #: activity/feeds.py:89 activity/feeds.py:185
 #, python-format
 msgid "%(title)s was %(change_type)s by %(user)s%(comment)s."
-msgstr "%(title)s は %(change_type)s されました。作成者 %(user)s%(comment)s。"
+msgstr "%(title)s werd %(change_type)s door %(user)s%(comment)s."
 
 #: activity/feeds.py:148 activity/feeds.py:154
 #, python-format
 msgid "Changes for %(title)s on %(site_name)s"
-msgstr "%(site_name)s 上の %(title)s への変更 "
+msgstr "Veranderingen voor %(title)s op %(site_name)s"
 
 #: activity/templates/activity/all_activity_index.html:6
 #: activity/templates/activity/all_activity_index.html:18
@@ -129,34 +129,34 @@ msgstr ""
 #: activity/templates/activity/index_page.html:15
 #, python-format
 msgid "last modified %(version_date)s ago"
-msgstr "最終更新は %(version_date)s 前"
+msgstr "laatst gewijzigd %(version_date)s geleden"
 
 #: activity/templates/activity/followed_activity_page.html:61
 #: activity/templates/activity/index_page.html:23
 msgid "new"
-msgstr "新着"
+msgstr "nieuw"
 
 #: activity/templates/activity/followed_activity_page.html:63
 #: activity/templates/activity/index_page.html:25
 msgid "deleted"
-msgstr "削除済み"
+msgstr "verwijderd"
 
 #: activity/templates/activity/followed_activity_page.html:65
 #: activity/templates/activity/index_page.html:27
 msgid "changes"
-msgstr "変更"
+msgstr "veranderingen"
 
 #: activity/templates/activity/followed_activity_page.html:69
 #: activity/templates/activity/index_page.html:31
 #, python-format
 msgid "Reverted to version from %(version_date_timesince)s ago"
-msgstr "バージョンを %(version_date_timesince)s 前に戻しました"
+msgstr "Teruggedraaid naar versie van %(version_date_timesince)s geleden"
 
 #: activity/templates/activity/followed_activity_page.html:75
 #: activity/templates/activity/index_page.html:37
 #, python-format
 msgid "Redirected to <a href=\"%(url)s\">%(destination)s</a>"
-msgstr "<a href=\"%(url)s\">%(destination)s</a>へのリダイレクト"
+msgstr "Doorverwezen naar <a href=\"%(url)s\">%(destination)s</a>"
 
 #: activity/templates/activity/followed_activity_page.html:87
 #, python-format
@@ -184,7 +184,7 @@ msgstr ""
 msgid ""
 "For statistics about pages, maps, and more, check out the <a "
 "href=\"%(dashboard_main_url)s\">dashboard</a>"
-msgstr "ページやマップなどの統計は <a href=\"%(dashboard_main_url)s\">ダッシュボード</a>をチェックしてください"
+msgstr "Voor statistieken over pagina's, kaarten en meer, bekijk het <a href=\"%(dashboard_main_url)s\">dashboard</a>"
 
 #: activity/templates/activity/user_activity_index.html:10
 #, python-format
@@ -208,113 +208,113 @@ msgstr ""
 
 #: ckeditor/models.py:30
 msgid "This field contains invalid data."
-msgstr "この項目には不適切なデータが含まれています。"
+msgstr "Dit veld bevat ongeldige informatie."
 
 #: ckeditor/models.py:178
 msgid "XML text"
-msgstr "XML テキスト"
+msgstr "XML tekst"
 
 #: ckeditor/models.py:188
 msgid "XHTML text"
-msgstr "XHTML テキスト"
+msgstr "XHTML tekst"
 
 #: ckeditor/models.py:197
 msgid "HTML5 text"
-msgstr "HTML5 テキスト"
+msgstr "HTML5 tekst"
 
 #: ckeditor/models.py:229
 msgid "HTML5 fragment text"
-msgstr "HTML5 fragment テキスト"
+msgstr "HTML5 tekstfragment"
 
 #: ckeditor/views.py:14
 msgid "Unable to upload"
-msgstr "アップロードできません"
+msgstr "Kan niet uploaden"
 
 #: ckeditor/templates/ckeditor/upload_result.html:4
 msgid "Upload result"
-msgstr "アップロード結果"
+msgstr "Upload resultaat"
 
 #: dashboard/views.py:193 dashboard/views.py:206
 msgid "pages"
-msgstr "ページ"
+msgstr "pagina's"
 
 #: dashboard/views.py:194 dashboard/views.py:209
 msgid "maps"
-msgstr "マップ"
+msgstr "kaarten"
 
 #: dashboard/views.py:195 dashboard/views.py:212
 msgid "files"
-msgstr "ファイル"
+msgstr "bestanden"
 
 #: dashboard/views.py:197 dashboard/views.py:215
 msgid "redirects"
-msgstr "リダイレクト"
+msgstr "doorverwijzingen"
 
 #: dashboard/templates/dashboard/index.html:9
 msgid "Dashboard"
-msgstr "ダッシュボード"
+msgstr "Dashboard"
 
 #: dashboard/templates/dashboard/index.html:22
 msgid "Statistics loading.  This may take several minutes the first time."
-msgstr "統計をロード中。初回は数分掛かることがあります。"
+msgstr "De statistieken worden geladen. De kan de eerste keer een aantal minuten duren. "
 
 #: dashboard/templates/dashboard/index.html:27
 #: dashboard/templates/dashboard/render.html:4
 msgid "Pages"
-msgstr "ページ"
+msgstr "Pagina's"
 
 #: dashboard/templates/dashboard/index.html:28
 #: dashboard/templates/dashboard/render.html:5
 #: pages/templates/pages/cke_filebrowser.html:7
 #: pages/templates/pages/page_files.html:7
 msgid "Files"
-msgstr "ファイル"
+msgstr "Bestanden"
 
 #: dashboard/templates/dashboard/index.html:29
 #: dashboard/templates/dashboard/render.html:6
 msgid "Maps"
-msgstr "マップ"
+msgstr "Kaarten"
 
 #: dashboard/templates/dashboard/index.html:30
 #: dashboard/templates/dashboard/render.html:7
 msgid "Redirects"
-msgstr "リダイレクト"
+msgstr "Doorverwijzingen"
 
 #: dashboard/templates/dashboard/index.html:31
 #: dashboard/templates/dashboard/render.html:8
 msgid "Users"
-msgstr "ユーザ"
+msgstr "Gebruikers"
 
 #: dashboard/templates/dashboard/index.html:36
 #: dashboard/templates/dashboard/render.html:13
 msgid "Growth over time"
-msgstr "成長の経時比較"
+msgstr "Groei over de tijd"
 
 #: dashboard/templates/dashboard/index.html:38
 #: dashboard/templates/dashboard/index.html:48
 #: dashboard/templates/dashboard/index.html:58
 #: dashboard/templates/dashboard/index.html:68
 msgid "Generating graph..."
-msgstr "グラフを生成中..."
+msgstr "Grafiek wordt gemaakt..."
 
 #: dashboard/templates/dashboard/index.html:46
 #: dashboard/templates/dashboard/render.html:20
 msgid "Edits over time"
-msgstr "編集の経時比較"
+msgstr "Aantal wijzigingen de tijd"
 
 #: dashboard/templates/dashboard/index.html:56
 #: dashboard/templates/dashboard/render.html:27
 msgid "Page content growth over time"
-msgstr "ページコンテンツの経時比較"
+msgstr "Groei van inhoud van pagina's over de tijd"
 
 #: dashboard/templates/dashboard/index.html:66
 #: dashboard/templates/dashboard/render.html:34
 msgid "Users registered over time"
-msgstr "ユーザ登録数の経時比較"
+msgstr "Geregistreerde bezoekers gedurende de tijd"
 
 #: frontpage/views.py:135
 msgid "Cover photo updated!"
-msgstr "カバー写真が更新されました！"
+msgstr "Voorpaginafoto ververst!"
 
 #: frontpage/templates/frontpage/base.html:18
 #: pages/templates/pages/base.html:45
@@ -324,27 +324,27 @@ msgstr ""
 #: frontpage/templates/frontpage/base.html:30
 #, python-format
 msgid "Welcome to the %(region_name)s LocalWiki!"
-msgstr "%(region_name)s の LocalWiki へようこそ！"
+msgstr "Welkom bij de LocalWiki van %(region_name)s!"
 
 #: frontpage/templates/frontpage/base.html:31
 #, python-format
 msgid "A website about %(region_name)s that <em>anyone</em> can edit"
-msgstr "このサイトは %(region_name)s の情報が書かれています。編集は<em>だれでも</em>可能です。"
+msgstr "Een website over %(region_name)s die <em>iedereen </em> kan aanpassen"
 
 #: frontpage/templates/frontpage/base.html:33
 msgid ""
 "\n"
 "        I want to make a page about <span class=\"searchbox\"><input type=\"text\" name=\"q\" value=\"\"><input type=\"submit\" value=\"Search or create page\"></span>\n"
 "        "
-msgstr "\n         <span class=\"searchbox\"><input type=\"text\" name=\"q\" value=\"\"><input type=\"submit\" value=\"Search or create page\"></span>についてのページをつくりたい\n        "
+msgstr "\nik wil een pagina maken over <span class=\"searchbox\"><input type=\"text\" name=\"q\" value=\"\"><input type=\"submit\" value=\"Zoek of maak een pagina\"></span>"
 
 #: frontpage/templates/frontpage/base.html:50
 msgid "Change cover"
-msgstr "カバー写真の変更"
+msgstr "Verander voorkant"
 
 #: frontpage/templates/frontpage/base.html:52
 msgid "Save cover"
-msgstr "カバー写真の保存"
+msgstr "Sla voorkant op"
 
 #: frontpage/templates/frontpage/base.html:73
 #: pages/templates/pages/page_detail.html:42
@@ -353,14 +353,14 @@ msgstr "カバー写真の保存"
 msgid ""
 "Revision %(version_number)s\n"
 "          (%(date)s by %(user_link)s)"
-msgstr "リビジョン %(version_number)s\n          (%(date)s 作成者 %(user_link)s)"
+msgstr "Bewerking %(version_number)s\n(%(date)s door %(user_link)s)"
 
 #: frontpage/templates/frontpage/base.html:82
 #: maps/templates/maps/nearby_pages.html:45
 #: pages/templates/pages/page_detail.html:50
 #: tags/templates/tags/tagged_list_snippet.html:8
 msgid "View"
-msgstr "マップを閲覧"
+msgstr "Bekijk"
 
 #: frontpage/templates/frontpage/base.html:90
 msgid "Explore nearby regions"
@@ -368,21 +368,21 @@ msgstr ""
 
 #: links/templates/links/orphaned_pages.html:12
 msgid "Orphaned Pages"
-msgstr "リンクのないページ"
+msgstr "Weespagina's"
 
 #: links/templates/links/orphaned_pages.html:16
 #, python-format
 msgid ""
 "\n"
 "<h3>Pages that link to <a href=\"%(page_url)s\">%(page_name)s</a>:</h3>\n"
-msgstr "\n<h3>リンクしているページ <a href=\"%(page_url)s\">%(page_name)s</a>:</h3>\n"
+msgstr "\n<h3>Pagina's die linken naar <a href=\"%(page_url)s\">%(page_name)s</a>:</h3>\n"
 
 #: links/templates/links/orphaned_pages.html:25
 #, python-format
 msgid ""
 "\n"
 "<h3>Pages <a href=\"%(page_url)s\">%(page_name)s</a> links to:</h3>\n"
-msgstr "\n<h3>ページ <a href=\"%(page_url)s\">%(page_name)s</a> のリンク:</h3>\n"
+msgstr "\n\n<h3>Pagina's <a href=\"%(page_url)s\">%(page_name)s</a> linken naar:</h3>\n\n"
 
 #: main/settings/defaults.py:43
 msgid ""
@@ -390,7 +390,7 @@ msgid ""
 "rel=\"license\" "
 "href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons "
 "Attribution License</a>. See <a href=\"/Copyrights\">Copyrights</a>.</p>"
-msgstr "<p>特段の注釈が無い限り、このコンテンツは <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons Attribution License</a>の下にライセンスされます。 <a href=\"/Copyrights\">著作権</a>を参照。</p>"
+msgstr "<p>Tenzij anders vermeld, is deze tekst beschikbaar onder de licentie <a rel=\"license\" href=\"http://creativecommons.org/licenses/by/3.0/\">Creative Commons Naamsvermelding </a>. Zie <a href=\"/Copyrights\">Copyrights</a>.</p>"
 
 #: main/settings/defaults.py:45
 msgid ""
@@ -399,7 +399,7 @@ msgid ""
 "href=\"http://creativecommons.org/publicdomain/zero/1.0/\" "
 "target=\"_blank\">CC0 Public Domain license</a>, unless noted otherwise. See"
 " <a href=\"/Copyrights\" target=\"_blank\">Copyrights</a>.</p>"
-msgstr "<p>\"変更を保存\" をクリックすると、特段の記載がない限り、あなたの投稿は <a rel=\"license\" href=\"http://creativecommons.org/publicdomain/zero/1.0/\" target=\"_blank\">CC0 Public Domain license</a>として公開されます。 詳しくは <a href=\"/Copyrights\" target=\"_blank\">著作権</a> を参照ください。</p>"
+msgstr "<p>Door te klikken op \"Opslaan veranderingen\" ga je ermee akkoord dat je je bijdrage vrijgeeft onder de <a rel=\"license\" href=\"http://creativecommons.org/publicdomain/zero/1.0/\" target=\"_blank\">CC0 Publiek Domein licentie</a>, tenzij anders vermeld. Zie <a href=\"/Copyrights\" target=\"_blank\">Copyrights</a>.</p>"
 
 #: main/settings/defaults.py:47
 msgid ""
@@ -407,20 +407,20 @@ msgid ""
 "href=\"http://creativecommons.org/publicdomain/zero/1.0/\" "
 "target=\"_blank\">CC0 Public Domain license</a>, unless noted otherwise. See"
 " <a href=\"/Copyrights\" target=\"_blank\">Copyrights</a>."
-msgstr "特段の記載がない限り、私の投稿を <a rel=\"license\" href=\"http://creativecommons.org/publicdomain/zero/1.0/\" target=\"_blank\">CC0 Public Domain license</a> として公開することに同意します。詳しくは <a href=\"/Copyrights\" target=\"_blank\">著作権</a>を参照。"
+msgstr "Ik ben akkoord met de vrijgave van mijn bijdragen onder de <a rel=\"license\" href=\"http://creativecommons.org/publicdomain/zero/1.0/\" target=\"_blank\">CC0 Publiek Domein licentie</a>, tenzij anders vermeld. Zie <a href=\"/Copyrights\" target=\"_blank\">Copyrights</a>."
 
 #: main/settings/defaults.py:49
 msgid ""
 "I would like to receive occasional updates about this project via email."
-msgstr "このプロジェクトのアップデートを不定期にメールで受け取ります。"
+msgstr "Ik zou graag zo nu en dan via email updates krijgen over dit project."
 
 #: main/settings/defaults.py:68
 msgid "English"
-msgstr "英語"
+msgstr "Engels"
 
 #: main/settings/defaults.py:69
 msgid "Japanese"
-msgstr "日本語"
+msgstr "Japans"
 
 #: main/settings/defaults.py:70
 msgid "French"
@@ -428,27 +428,27 @@ msgstr ""
 
 #: main/settings/defaults.py:71
 msgid "Spanish"
-msgstr "Spanish"
+msgstr "Spaans"
 
 #: main/settings/defaults.py:72
 msgid "German"
-msgstr "German"
+msgstr "Duits"
 
 #: main/settings/defaults.py:73
 msgid "Ukrainian"
-msgstr ""
+msgstr "Oekraïens"
 
 #: maps/feeds.py:26 maps/feeds.py:45
 #, python-format
 msgid "Map for \"%s\""
-msgstr "\"%s\" 向けのマップ"
+msgstr "Kaart voor \"%s\""
 
 #: maps/fields.py:172
 #, python-format
 msgid ""
 "The '%(fieldname)s' attribute can only be accessed from %(ownername)s "
 "instances."
-msgstr "\"%(fieldname)s\" 属性は %(ownername)s インスタンスからのみアクセスできます。"
+msgstr "Toegang tot het '%(fieldname)s' attribuut kan alleen worden verkregen via %(ownername)s instances."
 
 #: maps/fields.py:217
 #, python-format
@@ -458,12 +458,12 @@ msgstr ""
 #: maps/validators.py:14
 #, python-format
 msgid "Map error: %s."
-msgstr "マップのエラー: %s。"
+msgstr "Kaart fout: %s."
 
 #: maps/views.py:314 pages/views.py:193
 #, python-format
 msgid "<p>What do you know about %s?</p>"
-msgstr "<p>%s について知っていることをぜひ教えてください</p>"
+msgstr "<p>Wat weet je over %s?</p>"
 
 #: maps/views.py:333
 #, python-format
@@ -474,21 +474,21 @@ msgstr ""
 
 #: maps/templates/maps/attribution.html:2
 msgid "Map data"
-msgstr "マップデータ"
+msgstr "Kaart informatie"
 
 #: maps/templates/maps/attribution.html:2
 msgid "Map tiles via"
-msgstr "マップタイル配信元"
+msgstr "Kaart tegels via"
 
 #: maps/templates/maps/base.html:8
 msgid "Recent changes on this Map"
-msgstr "このマップの最近の変更"
+msgstr "Recente wijzigingen op deze kaart"
 
 #: maps/templates/maps/base.html:17 maps/templates/maps/mapdata_list.html:25
 #: maps/templates/maps/mapdata_list.html:31
 #: themes/sapling/templates/site/nav.html:6
 msgid "Map"
-msgstr "マップ"
+msgstr "Kaart"
 
 #: maps/templates/maps/base.html:34 maps/templates/maps/mapdata_form.html:87
 #: maps/templates/maps/mapdata_versions.html:25
@@ -497,28 +497,28 @@ msgstr "マップ"
 #: pages/templates/pages/page_form.html:93
 #: pages/templates/pages/page_versions.html:28
 msgid "Edit"
-msgstr "編集"
+msgstr "Wijzig"
 
 #: maps/templates/maps/base.html:35 maps/templates/maps/mapdata_form.html:88
 #: maps/templates/maps/mapdata_versions.html:26
 #: pages/templates/pages/base.html:30 pages/templates/pages/page_form.html:94
 #: pages/templates/pages/page_versions.html:29
 msgid "Info"
-msgstr "情報"
+msgstr "informatie"
 
 #: maps/templates/maps/editor_actions.html:5
 msgid "Delete map"
-msgstr "マップを削除"
+msgstr "Verwijder kaart"
 
 #: maps/templates/maps/editor_actions.html:8
 #: pages/templates/pages/editor_actions.html:11
 #: pages/templates/pages/editor_actions.html:13
 msgid "Security"
-msgstr "セキュリティ"
+msgstr "Beveiliging"
 
 #: maps/templates/maps/mapdata_detail.html:24
 msgid "Map for"
-msgstr "Map for"
+msgstr "Kaart voor"
 
 #: maps/templates/maps/mapdata_detail.html:38
 #: maps/templates/maps/mapdata_diff.html:62
@@ -529,7 +529,7 @@ msgstr "Map for"
 #: tags/templates/tags/pagetagset_diff.html:45
 #: tags/templates/tags/pagetagset_version_detail.html:24
 msgid "Revision"
-msgstr "リビジョン"
+msgstr "Herziening"
 
 #: maps/templates/maps/mapdata_detail.html:39
 #: maps/templates/maps/mapdata_diff.html:63
@@ -543,7 +543,7 @@ msgstr "リビジョン"
 #: versionutils/templates/versionutils/history/form.html:35
 #: versionutils/templates/versionutils/history/form_page.html:19
 msgid "by"
-msgstr "作成者"
+msgstr "door"
 
 #: maps/templates/maps/mapdata_detail.html:54
 #: pages/templates/pages/page_detail.html:84
@@ -552,7 +552,7 @@ msgid ""
 "\n"
 "        Contributed by <span class=\"contributor_list\">%(contributors_html)s</span> and <a href=\"%(request_path)s/_history/\">%(contributors_number)s</a> others.\n"
 "        "
-msgstr ""
+msgstr "\nBijdragen van <span class=\"contributor_list\">%(contributors_html)s</span> en <a href=\"%(request_path)s/_history/\">%(contributors_number)s</a> anderen.\n        "
 
 #: maps/templates/maps/mapdata_detail.html:58
 #: pages/templates/pages/page_detail.html:88
@@ -561,41 +561,41 @@ msgid ""
 "\n"
 "        Contributed by <span class=\"contributor_list\">%(contributors_html)s</span>\n"
 "        "
-msgstr ""
+msgstr "\nBijdragen van <span class=\"contributor_list\">%(contributors_html)s</span>\n        "
 
 #: maps/templates/maps/mapdata_diff.html:52
 msgid "Differences for map on"
-msgstr "マップの差異"
+msgstr "Verschillen voor kaart over"
 
 #: maps/templates/maps/mapdata_diff.html:53
 #, python-format
 msgid "Differences for <a href=\"%(maps_global)s\">Map</a>"
-msgstr "<a href=\"%(maps_global)s\">マップ</a>への差異"
+msgstr "Verschillen voor <a href=\"%(maps_global)s\">Kaart</a>"
 
 #: maps/templates/maps/mapdata_diff.html:73
 #: pages/templates/pages/page_diff.html:60
 #: tags/templates/tags/pagetagset_diff.html:51
 msgid "Deletions are marked like this"
-msgstr "削除は次のようにマークされます"
+msgstr "Verwijderingen worden zo aangeduid"
 
 #: maps/templates/maps/mapdata_diff.html:76
 #: pages/templates/pages/page_diff.html:63
 #: tags/templates/tags/pagetagset_diff.html:54
 msgid "Additions are marked like this"
-msgstr "追加は次のようにマークされます"
+msgstr "Toevoegingen worden zo aangeduid"
 
 #: maps/templates/maps/mapdata_form.html:35
 msgid "Editing map for"
-msgstr "マップ編集"
+msgstr "Bewerkt kaart voor"
 
 #: maps/templates/maps/mapdata_form.html:65
 msgid "Please comment about this change:"
-msgstr "この変更にコメントしてください："
+msgstr "Reageer op deze verandering:"
 
 #: maps/templates/maps/mapdata_form.html:69
 #: pages/templates/pages/page_form.html:75
 msgid "Save changes"
-msgstr "変更を保存"
+msgstr "Opslaan veranderingen"
 
 #: maps/templates/maps/mapdata_form.html:70
 #: pages/templates/pages/page_detail.html:73
@@ -603,7 +603,7 @@ msgstr "変更を保存"
 #: users/templates/users/deactivate.html:17
 #: users/templates/users/user_page.html:148
 msgid "Cancel"
-msgstr "キャンセル"
+msgstr "Annuleer"
 
 #: maps/templates/maps/mapdata_list.html:44
 #: maps/templates/maps/mapdata_list.html:48
@@ -616,23 +616,23 @@ msgstr ""
 
 #: maps/templates/maps/mapdata_new.html:6
 msgid "Map for page not found"
-msgstr "ページ用マップが見つかりません"
+msgstr "Kaart voor pagina niet gevonden"
 
 #: maps/templates/maps/mapdata_new.html:7
 msgid "Map for page"
-msgstr "ページ用マップ"
+msgstr "Kaart voor pagina"
 
 #: maps/templates/maps/mapdata_new.html:7
 msgid "does not exist (yet!)"
-msgstr " ありません(まだ！)"
+msgstr "bestaat (nog!) niet"
 
 #: maps/templates/maps/mapdata_new.html:15
 msgid "Create this map"
-msgstr "このマップを作成"
+msgstr "Maak deze kaart"
 
 #: maps/templates/maps/mapdata_versions.html:16
 msgid "Previous versions of map for"
-msgstr "マップのひとつ前のバージョン"
+msgstr "Vorige versies van de kaart van"
 
 #: maps/templates/maps/nearby_pages.html:27
 #: maps/templates/maps/nearby_pages.html:28
@@ -646,26 +646,26 @@ msgstr ""
 #: pages/feeds.py:52 pages/feeds.py:96
 #, python-format
 msgid "File %(filename)s on page \"%(pagename)s\""
-msgstr "ページ \"%(pagename)s\" 上のファイル %(filename)s"
+msgstr "Bestand %(filename)s op pagina \"%(pagename)s\""
 
 #: pages/fields.py:81
 #, python-format
 msgid "Page %s does not exist!  Please enter a valid page name."
-msgstr "ページ %s が見つかりません！正しいページ名を入力してください。"
+msgstr "Pagina %s bestaat niet! Voer a.u.b. een geldige paginanaam in"
 
 #: pages/forms.py:15
 msgid ""
 "Warning: someone else saved this page before you.  Please resolve edit "
 "conflicts and save again."
-msgstr "警告： あなたの前に誰か別の人がこのページを保存しました。編集の競合を解決してから保存し直してください。"
+msgstr "Waarschuwing: iemand heeft deze pagina reeds opgeslagen. Los a.u.b. het bewerkingsgeschil op en sla dan opnieuw op. "
 
 #: pages/forms.py:46
 msgid "A page with this name already exists"
-msgstr "この名前のページは既に存在します"
+msgstr "Er bestaat al een pagina met deze naam"
 
 #: pages/forms.py:62
 msgid "The new file should be of the same type"
-msgstr "新しいファイルは同じ種別でなければなりません"
+msgstr "Het nieuwe bestand moet van hetzelfde type zijn"
 
 #: pages/models.py:30
 #, python-format
@@ -673,58 +673,58 @@ msgid ""
 "Provided slug is invalid. Slugs must be lowercase, contain no trailing or "
 "leading whitespace, and contain only alphanumber characters along with "
 "%(KEEP_CHARACTERS)s"
-msgstr ""
+msgstr "De ingegeven verkorte naam is ongeldig. Verkorte namen moeten geschreven worden in kleine letters, mogen geen voor- of achterlopende spaties bevatten en mogen alleen alphanumerieke karakters samen met %(KEEP_CHARACTERS)s"
 
 #: pages/models.py:58
 msgid "Page name is invalid."
-msgstr "ページの名前が正しくありません。"
+msgstr "Paginanaam is ongeldig."
 
 #: pages/models.py:131 pages/models.py:143
 #, python-format
 msgid "Renamed from \"%s\""
-msgstr "\"%s\" にリネームされました"
+msgstr "Hernoemd van \"%s\""
 
 #: pages/models.py:135
 #, python-format
 msgid "The page '%s' already exists!"
-msgstr "ページ '%s' は既に存在しています！"
+msgstr "Pagina '%s' bestaat al!"
 
 #: pages/models.py:171 pages/models.py:184 pages/models.py:203
 msgid "Parent page renamed"
-msgstr "親ページがリネームされました"
+msgstr "Parent pagina hernoemd"
 
 #: pages/models.py:219
 msgid "file"
-msgstr "ファイル"
+msgstr "bestand"
 
 #: pages/plugins.py:414
 msgid ""
 "The embedded URL is not on the list of approved providers.  Contact the site"
 " administrator to add it."
-msgstr "埋め込みURLは承認済み提供者一覧にありません。サイト管理者にレンr買うして追加してください。"
+msgstr "De ingevoegde URL staat niet op de lijst van goedgekeurde aanbieders. Neem contact op met de admin om hem toe te voegen. "
 
 #: pages/plugins.py:418
 msgid "Invalid embed code"
-msgstr "埋め込みコードが正しくありません"
+msgstr "Ongeldige invoegcode"
 
 #: pages/plugins.py:430 search/templates/search/base.html:17
 #: search/templates/search/base.html:64
 #: themes/sapling/templates/site/search_form.html:7
 #: themes/sapling/templates/site/search_form.html:12
 msgid "Search or create page"
-msgstr "検索するか新しいページを作成"
+msgstr "Zoek of maak pagina"
 
 #: pages/signals.py:16
 msgid "Redirect created"
-msgstr "リダイレクトが作成されました"
+msgstr "Doorverwijzing gemaakt"
 
 #: pages/signals.py:22
 msgid "Page created"
-msgstr "ページが作成されました"
+msgstr "Pagina gemaakt"
 
 #: pages/views.py:140
 msgid "Thank you for your changes. Your attention to detail is appreciated."
-msgstr "変更ありがとうございます。詳細を確認して頂ければ幸いです。"
+msgstr "Bedankt voor je bewerking. Je aandacht voor detail wordt gewaardeerd. "
 
 #: pages/views.py:147
 #, python-format
@@ -733,14 +733,14 @@ msgid ""
 "href=\"%(login_url)s?next=%(current_path)s\"><strong>log in</strong></a> or "
 "<a href=\"%(register_url)s?next=%(current_path)s\"><strong>create an "
 "account</strong></a>."
-msgstr "変更は保存されました！編集時にあなたの名前を使うには <a href=\"%(login_url)s?next=%(current_path)s\"><strong>ログイン</strong></a> するか、<a href=\"%(register_url)s?next=%(current_path)s\"><strong>アカウントを作成</strong></a>してください。"
+msgstr "Bewerking opgeslagen! <a href=\"%(login_url)s?next=%(current_path)s\"><strong>Log in</strong> a.u.b. </a> of <a href=\"%(register_url)s?next=%(current_path)s\"><strong>maak een account</strong></a> om je naam te gebruiken bij een bewerking. "
 
 #: pages/views.py:158
 #, python-format
 msgid ""
 "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span "
 "class=\"text\">Create a map</span></a> for this page?</p>"
-msgstr "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span \"class=\"text\">マップを作成</span></a> しますか？</p>"
+msgstr "<p class=\"create_map\"><a href=\"%s\" class=\"button little map\"><span class=\"text\">Een kaart maken</span></a> voor deze pagina?</p>"
 
 #: pages/views.py:181
 msgid "Follow this page"
@@ -753,53 +753,53 @@ msgstr ""
 
 #: pages/views.py:387
 msgid "You must provide a page name when creating a page."
-msgstr "ページを作成する際には、ページに名前を付ける必要があります。"
+msgstr "Je moet een paginanaam opgeven wanneer je een pagina maakt."
 
 #: pages/views.py:465
 msgid "A file with this name already exists"
-msgstr "この名前のファイルは既に存在しています"
+msgstr "Er bestaat al een bestand met deze naam"
 
 #. Translators: This is for the page rename form.
 #: pages/views.py:471
 msgid "New page name"
-msgstr "新規ページ名"
+msgstr "Nieuwe paginanaam"
 
 #: pages/views.py:472 versionutils/versioning/forms.py:18
 msgid "Comment"
-msgstr "コメント"
+msgstr "Reactie"
 
 #: pages/views.py:507
 #, python-format
 msgid "Page renamed to \"%s\""
-msgstr "ページは \"%s\" にリネームされました"
+msgstr "Pagina hernoemd tot \"%s\""
 
 #: pages/widgets.py:29
 msgid "Normal"
-msgstr "ノーマル"
+msgstr "Normaal"
 
 #: pages/widgets.py:30
 msgid "Heading 1"
-msgstr "見出し 1"
+msgstr "Kop 1"
 
 #: pages/widgets.py:31
 msgid "Heading 2"
-msgstr "見出し 2"
+msgstr "Kop 2"
 
 #: pages/widgets.py:32
 msgid "Heading 3"
-msgstr "見出し 3"
+msgstr "Kop 3"
 
 #: pages/widgets.py:33
 msgid "Formatted"
-msgstr "フォーマット済み"
+msgstr "Geformateerd"
 
 #: pages/widgets.py:34
 msgid "Typewriter"
-msgstr "タイプライター"
+msgstr "Schrijfmachine"
 
 #: pages/templates/pages/base.html:8
 msgid "Recent changes on this Page"
-msgstr "このページの最近の変更"
+msgstr "Recente veranderingen op deze Pagina"
 
 #: pages/templates/pages/base.html:37
 msgid "page"
@@ -807,39 +807,39 @@ msgstr ""
 
 #: pages/templates/pages/editor_actions.html:5
 msgid "Edit map"
-msgstr "マップを編集"
+msgstr "Bewerk kaart"
 
 #: pages/templates/pages/editor_actions.html:6
 msgid "Delete page"
-msgstr "ページを削除"
+msgstr "Verwijder pagina"
 
 #: pages/templates/pages/editor_actions.html:8
 msgid "Redirect"
-msgstr "リダイレクト"
+msgstr "Doorverwijzing"
 
 #: pages/templates/pages/page_detail.html:27
 msgid "Redirected from"
-msgstr "リダイレクト元"
+msgstr "Doorverwezen vanaf"
 
 #: pages/templates/pages/page_detail.html:67
 #: users/templates/users/user_page.html:142
 msgid "Edit tags"
-msgstr "タグを編集"
+msgstr "Bewerk tags"
 
 #: pages/templates/pages/page_detail.html:67
 #: users/templates/users/user_page.html:142
 msgid "Add tags"
-msgstr "タグを追加"
+msgstr "Voeg tags toe"
 
 #: pages/templates/pages/page_diff.html:22
 #, python-format
 msgid "Differences for %(name)s"
-msgstr "%(name)s の差異"
+msgstr "Verschillen voor %(name)s"
 
 #: pages/templates/pages/page_diff.html:23
 #, python-format
 msgid "Differences for <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
-msgstr "<a href=\"%(pretty_slug)s\">%(new_name)s</a> の差異"
+msgstr "Verschillen voor <a href=\"%(pretty_slug)s\">%(new_name)s</a>"
 
 #: pages/templates/pages/page_diff.html:34
 #, python-format
@@ -847,7 +847,7 @@ msgid ""
 "\n"
 "                        Revision %(version_number)s ( %(date)s by %(user_link)s)\n"
 "                    "
-msgstr "\n                        リビジョン %(version_number)s ( %(date)s 作成者 %(user_link)s)\n                    "
+msgstr "\nBewerking %(version_number)s ( %(date)s door %(user_link)s)\n                    "
 
 #: pages/templates/pages/page_diff.html:38
 #: pages/templates/pages/page_diff.html:51
@@ -856,7 +856,7 @@ msgid ""
 "\n"
 "                        , \"%(comment)s\"\n"
 "                        "
-msgstr "\n                        , \"%(comment)s\"\n                        "
+msgstr "\n, \"%(comment)s\"\n                        "
 
 #: pages/templates/pages/page_diff.html:47
 #, python-format
@@ -864,74 +864,74 @@ msgid ""
 "\n"
 "\t\t\t        Revision %(version_number)s (%(date)s by %(user_link)s)\n"
 "\t\t          "
-msgstr "\n\t\t\t        リビジョン %(version_number)s (%(date)s 作成者 %(user_link)s)\n\t\t          "
+msgstr "\n⇥⇥⇥ Bewerking %(version_number)s (%(date)s door %(user_link)s)\n⇥⇥\t\t          "
 
 #: pages/templates/pages/page_files.html:22
 msgid "Files attached to this page:"
-msgstr "このページの添付ファイル："
+msgstr "Bestanden aangehecht op deze pagina:"
 
 #: pages/templates/pages/page_files.html:37
 msgid "View page"
-msgstr "ページを閲覧"
+msgstr "Bekijk pagina"
 
 #: pages/templates/pages/page_form.html:7
 #, python-format
 msgid "Editing page \"%(name)s\" - %(super)s"
-msgstr "ページ \"%(name)s\" - %(super)s を編集中"
+msgstr "Pagina onder bewerking \"%(name)s\" - %(super)s"
 
 #: pages/templates/pages/page_form.html:71
 msgid "Please describe this change:"
-msgstr "編集内容についてのメモ:"
+msgstr "Beschrijf deze verandering:"
 
 #: pages/templates/pages/page_list.html:7
 #: pages/templates/pages/page_list.html:9
 #: themes/sapling/templates/site/nav.html:10
 msgid "All Pages"
-msgstr "全てのページ"
+msgstr "Alle pagina's"
 
 #: pages/templates/pages/page_new.html:7
 msgid "Page not found"
-msgstr "ページが見つかりません"
+msgstr "Pagina niet gevonden"
 
 #: pages/templates/pages/page_new.html:8
 #, python-format
 msgid "Page \"%(name)s\" does not exist (yet!)"
-msgstr "ページ \"%(name)s\" はありません(まだ！)"
+msgstr "Pagina \"%(name)s\" bestaat (nog!) niet"
 
 #: pages/templates/pages/page_new.html:17
 #: search/templates/search/search.html:16
 #: search/templates/search/search.html:79
 msgid "Create this page"
-msgstr "このページを作成"
+msgstr "Maak deze pagina"
 
 #: pages/templates/pages/page_new.html:21
 msgid "Or use one of these templates:"
-msgstr "または次のテンプレートを使う："
+msgstr "Of gebruik één van deze sjablonen:"
 
 #: pages/templates/pages/page_new.html:24
 #, python-format
 msgid "Create with %(name)s template"
-msgstr "%(name)s テンプレートで作成"
+msgstr "Maak met %(name)s sjabloon"
 
 #: pages/templates/pages/page_permissions.html:7
 #, python-format
 msgid "Permissions for page \"%(name)s\" - %(super)s"
-msgstr "ページ \"%(name)s\" のパーミッション - %(super)s"
+msgstr "Machtigingen voor pagina \"%(name)s\" - %(super)s"
 
 #: pages/templates/pages/page_permissions.html:15
 msgid "Who can change this page?"
-msgstr "ページは誰が編集できますか？"
+msgstr "Wie kan deze pagina wijzigen?"
 
 #: pages/templates/pages/page_permissions.html:17
 #: redirects/templates/redirects/redirect_permissions.html:17
 #: users/forms.py:10
 msgid "Everyone"
-msgstr "だれでも"
+msgstr "Iedereen"
 
 #: pages/templates/pages/page_permissions.html:18
 #: redirects/templates/redirects/redirect_permissions.html:18
 msgid "Only these users:"
-msgstr "以下のユーザのみ:"
+msgstr "Alleen deze gebruikers:"
 
 #: pages/templates/pages/page_permissions.html:24
 #: redirects/templates/redirects/redirect_permissions.html:24
@@ -942,34 +942,34 @@ msgstr "以下のユーザのみ:"
 #: users/templates/users/deactivate.html:17
 #: users/templates/users/settings.html:35
 msgid "Save"
-msgstr "保存"
+msgstr "Opslaan"
 
 #: pages/templates/pages/page_rename.html:14
 msgid "Submit"
-msgstr "送信"
+msgstr "Indienen"
 
 #: pages/templates/pages/page_versions.html:16
 #, python-format
 msgid "Previous versions of page \"%(name)s\" - %(super)s"
-msgstr "ページ \"%(name)s\" - %(super)s の以前のバージョン"
+msgstr "Vorige versies van pagina \"%(name)s\" - %(super)s"
 
 #: pages/templates/pages/page_versions.html:21
 msgid ""
 " Looking for <a href=\"../_files/\">files</a> or <a "
 "href=\"../_tags/_history/\">tags</a>?"
-msgstr "<a href=\"../_files/\">ファイル</a> や <a href=\"../_tags/_history/\">タグ</a>をお探しですか？"
+msgstr "Op zoek naar <a href=\"../_files/\">bestanden</a> of <a href=\"../_tags/_history/\">tags</a>?"
 
 #: pages/templates/pages/pagefile_diff.html:37
 #, python-format
 msgid "Differences for %(new_name)s on %(new_slug)s"
-msgstr "%(new_slug)s に関する %(new_name)s への差異 "
+msgstr "Verschillen voor %(new_name)s over %(new_slug)s"
 
 #: pages/templates/pages/pagefile_diff.html:38
 #, python-format
 msgid ""
 "Differences for %(new_name)s on <a "
 "href=\"%(url_pages_show)s\">%(new_attached_to_page)s</a>"
-msgstr "<a href=\"%(url_pages_show)s\">%(new_attached_to_page)s</a> に関する \"%(new_name)s\" への差異 "
+msgstr "Verschillen voor %(new_name)s over <a href=\"%(url_pages_show)s\">%(new_attached_to_page)s</a>"
 
 #: pages/templates/pages/pagefile_diff.html:47
 #, python-format
@@ -977,7 +977,7 @@ msgid ""
 "\n"
 "                      Revision %(version_number)s ( %(date)s by %(user_link)s)\n"
 "                  "
-msgstr "\n                      リビジョン %(version_number)s ( %(date)s 作成者 %(user_link)s)\n                  "
+msgstr "\nHerziening %(version_number)s ( %(date)s door %(user_link)s)\n                  "
 
 #: pages/templates/pages/pagefile_diff.html:51
 #: pages/templates/pages/pagefile_diff.html:64
@@ -986,7 +986,7 @@ msgid ""
 "\n"
 "                      , \"%(comment)s\"\n"
 "                      "
-msgstr "\n                      , \"%(comment)s\"\n                      "
+msgstr "\n, \"%(comment)s\"\n                      "
 
 #: pages/templates/pages/pagefile_diff.html:60
 #, python-format
@@ -994,143 +994,143 @@ msgid ""
 "\n"
 "\t\t          Revision %(version_number)s (%(date)s by %(user_link)s)\n"
 "\t\t        "
-msgstr "\n\t\t          リビジョン %(version_number)s (%(date)s 作成者 %(user_link)s)\n\t\t        "
+msgstr "\nHerziening %(version_number)s (%(date)s door %(user_link)s)\n\t\t        "
 
 #: pages/templates/pages/pagefile_diff.html:88
 msgid "File info"
-msgstr "ファイル情報"
+msgstr "Bestandsinformatie"
 
 #: pages/templates/pages/pagefile_info.html:7
 msgid "Recent changes for this file"
-msgstr "このファイルの最近の変更"
+msgstr "Recente bewerkingen voor dit bestand"
 
 #: pages/templates/pages/pagefile_info.html:14
 #, python-format
 msgid "Information about \"%(name)s\" on %(slug)s - %(super)s"
-msgstr "%(slug)s - %(super)s に関する \"%(name)s\" についての情報"
+msgstr "Informatie over \"%(name)s\" on %(slug)s - %(super)s"
 
 #: pages/templates/pages/pagefile_info.html:15
 #, python-format
 msgid ""
 "Information about \"%(name)s\" on <a "
 "href=\"%(pages_show_url)s\">%(attached_to_page)s</a>"
-msgstr "<a href=\"%(pages_show_url)s\">%(attached_to_page)s</a> に関する \"%(name)s\" についての情報 "
+msgstr "Informatie over \"%(name)s\" op <a href=\"%(pages_show_url)s\">%(attached_to_page)s</a>"
 
 #: pages/templates/pages/pagefile_info.html:39
 #, python-format
 msgid "Download %(name)s"
-msgstr "%(name)s をダウンロード"
+msgstr "Download %(name)s"
 
 #: pages/templates/pages/pagefile_info.html:44
 msgid "Upload a new version"
-msgstr "新しいバージョンをアップロード"
+msgstr "Upload een nieuwe versie"
 
 #: pages/templates/pages/pagefile_info.html:51
 msgid "Upload"
-msgstr "アップロード"
+msgstr "Upload"
 
 #: pages/templates/pages/pagefile_info.html:57
 #: tags/templates/tags/pagetagset_versions.html:31
 msgid "Previous versions:"
-msgstr "以前のバージョン："
+msgstr "Vorige versies:"
 
 #: pages/templatetags/pages_tags.py:113
 #, python-format
 msgid ""
 "Unable to include <a href=\"%(page_url)s\" "
 "class=\"missing_link\">%(page_name)s</a>"
-msgstr "<a href=\"%(page_url)s\" class=\"missing_link\">%(page_name)s</a> をインクルードできません"
+msgstr "<a href=\"%(page_url)s\" class=\"missing_link\">%(page_name)s</a> kan niet ingevoegd worden"
 
 #: pages/templatetags/pages_tags.py:121
 #, python-format
 msgid ""
 "Unable to include <a href=\"%(page_url)s\">%(page_name)s</a>: endless "
 "include loop."
-msgstr "<a href=\"%(page_url)s\">%(page_name)s</a> をインクルードできません： インクルードの無限ループ。"
+msgstr "Kan niet ingevoegd worden <a href=\"%(page_url)s\">%(page_name)s</a>: eindeloze invoeg herhaling."
 
 #: redirects/feeds.py:30
 #, python-format
 msgid "Redirect %(objsrc)s --> %(objdest)s"
-msgstr "リダイレクト %(objsrc)s --> %(objdest)s"
+msgstr "Doorverwijzing %(objsrc)s --> %(objdest)s"
 
 #: redirects/forms.py:17
 msgid "Destination"
-msgstr "リダイレクト先"
+msgstr "Bestemming"
 
 #: redirects/models.py:35
 msgid "You cannot redirect a page to itself"
-msgstr "ページを自分自身にはリダイレクトできません"
+msgstr "Je kan een pagina niet doorverwijzen naar zichzelf"
 
 #: redirects/views.py:51 redirects/views.py:117
 #: versionutils/versioning/views.py:67
 msgid "Thank you for your changes. "
-msgstr "変更ありがとうございます。"
+msgstr "Bedankt voor je veranderingen."
 
 #: redirects/views.py:52
 #, python-format
 msgid "This page now redirects to <a href=\"%(url)s\">%(obj)s</a>."
-msgstr "このページは<a href=\"%(url)s\">%(obj)s</a> にリダイレクトされました。"
+msgstr "Deze pagina verwijst nu door naar <a href=\"%(url)s\">%(obj)s</a>."
 
 #: redirects/views.py:118
 msgid "The redirect has been deleted"
-msgstr "リダイレクトは削除されました"
+msgstr "De doorverwijzing is verwijderd"
 
 #: redirects/templates/redirects/redirect_diff.html:34
 #: redirects/templates/redirects/redirect_diff.html:35
 #, python-format
 msgid "Differences for %(new.source)s redirect"
-msgstr "%(new.source)s リダイレクトへの差異"
+msgstr "Verschillen voor %(new.source)s doorverwijzing"
 
 #: redirects/templates/redirects/redirect_form.html:27
 msgid "Update redirect"
-msgstr "リダイレクトを更新"
+msgstr "Ververs doorverwijzing"
 
 #: redirects/templates/redirects/redirect_form.html:28
 msgid "Delete redirect"
-msgstr "リダイレクトを削除"
+msgstr "Verwijder doorverwijzing"
 
 #: redirects/templates/redirects/redirect_form.html:30
 msgid "Create redirect"
-msgstr "リダイレクトを作成"
+msgstr "Maak doorverwijzing"
 
 #: redirects/templates/redirects/redirect_permissions.html:7
 #, python-format
 msgid "Permissions for redirect \"%(name)s\" - %(super)s"
-msgstr "\"%(name)s\" のリダイレクト許可 \"%(name)s\" - %(super)s"
+msgstr "Machtigingen voor doorverwijzing \"%(name)s\" - %(super)s"
 
 #: redirects/templates/redirects/redirect_permissions.html:15
 msgid "Who can change this redirect?"
-msgstr "このリダイレクト設定を変更できるユーザ"
+msgstr "Wie mag deze doorverwijzing wijzigen?"
 
 #: regions/forms.py:33 regions/forms.py:52
 msgid "Default language"
-msgstr "既定の言語"
+msgstr "Default taal"
 
 #: regions/forms.py:35
 msgid "The language for the region"
-msgstr "この地域の言語"
+msgstr "De taal voor de regio"
 
 #: regions/forms.py:49
 msgid "Full name"
-msgstr "氏名"
+msgstr "Volledige naam"
 
 #: regions/forms.py:50 regions/models.py:17
 msgid "The full name of this region, e.g. 'San Francisco'"
-msgstr "地域の正式名称, 例: 'サンフランシスコ'"
+msgstr "De hele naam van deze regio, bijv. 'San Francisco'"
 
 #: regions/forms.py:71
 msgid "You cannot delete yourself as an admin"
-msgstr "自分自身のアカウントを削除することはできません"
+msgstr "Je kan jezelf niet verwijderen als admin"
 
 #: regions/models.py:19
 msgid ""
 "A very short name for this region that will appear in URLs, e.g. 'sf'. Keep "
 "it short and memorable!"
-msgstr "この地域の略称。URL部分で利用されます。短くてわかりやすい略称をつけてください 例: 'sf'"
+msgstr "Een hele korte naam voor deze regio, die zal verschijnen in URL's, bijv. 'sf'. Hou het kort en makkelijk te onthouden!"
 
 #: regions/models.py:37
 msgid "Region already has pages in it"
-msgstr "その地域のページが既に存在します"
+msgstr "Deze regio heeft al pagina's"
 
 #: regions/views.py:29
 #, python-format
@@ -1146,7 +1146,7 @@ msgstr ""
 
 #: regions/views.py:65 utils/views.py:87 utils/views.py:149
 msgid "Sorry, you are not allowed to perform this action."
-msgstr "申し訳ありません、あなたにはこの操作の権限がありません。"
+msgstr "Sorry, je mag deze actie niet uitvoeren. "
 
 #: regions/views.py:148
 msgid "login_url"
@@ -1162,15 +1162,15 @@ msgstr ""
 
 #: regions/views.py:223
 msgid "Settings updated!"
-msgstr "設定が更新されました！"
+msgstr "Instellingen ververst!"
 
 #: regions/views.py:248
 msgid "Region admins updated!"
-msgstr "地域の管理者が更新されました！"
+msgstr "Regio admins ververst!"
 
 #: regions/views.py:269
 msgid "Banned users updated."
-msgstr "禁止ユーザが更新されました"
+msgstr "Gebande gebruikers ververst."
 
 #. Translators: Please fix the links here to point to "Place," "Business",
 #. "Disambiguation", "Restaurant" as translated in your language.  But leave
@@ -1194,12 +1194,12 @@ msgid ""
 "    \t<li>\n"
 "    \t\t<a href=\"Templates%2FRestaurant\">Templates/Restaurant</a></li>\n"
 "    </ul>"
-msgstr "<p>\n    \tテンプレートは特殊なページで、なにかページを新規作成する場合のスタート地点となる情報を提示します。 &nbsp; テンプレートを使うことで、よく使われるトピックに同じような構成を使って編集を行えるようになります。 &nbsp; 新しくページを作成する際にそのテンプレートを選択するだけで、テンプレートを利用したページ作成が可能です。 &nbsp;</p>\n    <p>\n    \t以下は現在利用可能なテンプレートです。新しくテンプレートを追加するには、例えば <a href=\"Templates%2FBusiness\">Templates/Business</a> のように &quot;Templates/&quot; ではじまるページを新しく作成してください。 &nbsp; テンプレートを新しく作成した場合、以下のリストに追加を行うことで、そのページを探しやすくなります。</p>\n    <h3>\n    \t<span>テンプレート一覧</span></h3>\n    <ul>\n    \t<li>\n    \t\t<a href=\"Templates%2FPlace\">Templates/Place</a></li>\n    \t<li>\n    \t\t<a href=\"Templates%2FBusiness\">Templates/Business</a></li>\n    \t<li>\n    \t\t<a href=\"Templates%2FDisambiguation\">Templates/Disambiguation</a></li>\n    \t<li>\n    \t\t<a href=\"Templates%2FRestaurant\">Templates/Restaurant</a></li>\n    </ul>"
+msgstr "<p>\n    \tSjablonen zijn speciale pagina's die dienen als startpunt wanneer je een nieuwe pagina wilt aanmaken. &nbsp; Door een zelfde sjabloon te gebruiken voor gerelateerde onderwerpen, krijgen de desbetreffende pagina's een vergelijkbare structuur &nbsp;. Om een sjabloon te gebruiken, selecteer je hem als je een nieuwe pagina maakt. </p>\n    <p>\n    \tHieronder staat een lijst met beschikbare sjablonen. Als je een nieuw sjabloon wilt toevoegen, maak je een pagina waarvan de titel begint met &quot;Templates/&quot;, zoals <a href=\"Templates%2FBedrijf\">Templates/Bedrijf</a>. &nbsp;Wanneer je een nieuw sjabloon maakt, voeg hem dan toe aan deze lijst, zodat hij eenvoudiger te vinden is.</p>\n    <h3>\n    \t<span>Lijst van sjablonen</span></h3>\n    <ul>\n    \t<li>\n    \t\t<a href=\"Templates%2FPlaats\">Templates/Plaats</a></li>\n    \t<li>\n    \t\t<a href=\"Templates%2FBedrijf\">Templates/Bedrijf</a></li>\n    \t<li>\n    \t\t<a href=\"Templates%2FDoorverwijzing\">Templates/Doorverwijzing</a></li>\n    \t<li>\n    \t\t<a href=\"Templates%2FRestaurant\">Templates/Restaurant</a></li>\n    </ul>"
 
 #. Translators: This is for "Templates/Page" - a template page
 #: regions/initial_data/__init__.py:38
 msgid "Place"
-msgstr "場所"
+msgstr "Plaats"
 
 #: regions/initial_data/__init__.py:42
 msgid ""
@@ -1237,12 +1237,12 @@ msgid ""
 "    \tSection Title</h2>\n"
 "    <p>\n"
 "    \tText goes here.</p>"
-msgstr "<table>\n    \t<tbody>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ロケーション</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t住所</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>連絡先</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(555) 555 5555</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ウェブサイト</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tURLリンク先</td>\n    \t\t</tr>\n    \t</tbody>\n    </table>\n    <p>\n    \tThe <strong>Thing I&#39;m Talking About</strong> should have a blurb here with links to relevant things, like the <a href=\"Front%20Page\">Front Page</a>.</p>\n    <h2>\n    \t題名</h2>\n    <p>\n    \tここに本文を記述</p>"
+msgstr "<table>\n    \t<tbody>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Locatie</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\taddress</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Contact</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(555) 555 5555</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Website</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tVoeg hier een link toe</td>\n    \t\t</tr>\n    \t</tbody>\n    </table>\n    <p>\n    \tThe <strong>Thing I&#39;m Talking About</strong> should have a blurb here with links to relevant things, like the <a href=\"Front%20Page\">Front Page</a>.</p>\n    <h2>\n    \tSection Title</h2>\n    <p>\n    \tText goes here.</p>"
 
 #. Translators: This is for "Templates/Restaurant" - a template page
 #: regions/initial_data/__init__.py:80
 msgid "Restaurant"
-msgstr "レストラン"
+msgstr "Restaurant"
 
 #: regions/initial_data/__init__.py:84
 msgid ""
@@ -1326,12 +1326,12 @@ msgid ""
 "    </ul>\n"
 "    <p>\n"
 "    \t&nbsp;</p>"
-msgstr "<table>\n    \t<tbody>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ロケーション</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t住所を入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>営業時間</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(営業時間を入力)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>電話番号</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(415) 555-5555</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ウェブサイト</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tウェブサイトのURLを入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>設立</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(設立年月日, 例. YYYY-MM-DD)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>平均的な料金</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(&quot; 一般的な &quot; 料金を入力)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>支払い方法</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(現金、カード、プリペイド、など)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>車椅子</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(階段やお手洗いの有無、通路幅や手すりの状況など)</td>\n    \t\t</tr>\n    \t</tbody>\n    </table>\n    <p>\n    \t必要と思うことを &nbsp;<em>なんでも</em>&nbsp; ここに書き加えてください。米国の場合、電話番号や営業時間を &nbsp;<a href=\"http://local.google.com\">http://local.google.com</a>&nbsp; から調べるのが簡単です。もちろん、可能であれば直接問い合わせたり、チラシなどから調べるほうがよいでしょう。</p>\n    <p>\n    \tこのレストラン情報を、その地域の &nbsp;<a href=\"restaurants\">restaurants</a>&nbsp; ページに追加するのを忘れないようにしてください。</p>\n    <h3>\n    \t関連リンク</h3>\n    <ul>\n    \t<li>\n    \t\t<a href=\"Restaurants\">Restaurants</a></li>\n    </ul>\n    <p>\n    \t&nbsp;</p>"
+msgstr "<table>\n    \t<tbody>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Locatie</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tVul hier het adres in</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Openingstijden</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(Vul openingstijden in)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Telefoon</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t0180 - xxx xxx</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Website</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tVoeg een link toe</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Opgericht</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(Datum, bijv. JJJJ-MM-DD)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Prijsniveau</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(Prijzen voor voorgerechten etc.)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Betaalmethoden</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(Cash, check, credit cards, other?)</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Rolstoel toegankelijk</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(opmerkingen hierover)</td>\n    \t\t</tr>\n    \t</tbody>\n    </table>\n    <p>\n    \tThen, put&nbsp;<em>whatever</em>&nbsp;you want down here! Merk op dat je via &nbsp;<a href=\"http://local.google.com\">http://local.google.com</a>&nbsp;soms eenvoudig openngstijden en telefoonnummers kunt vinden. Nog beter, vraag het (telefonisch) zelf na bij het bedrijf.</p>\n    <p>\n    \tVergeet niet om dit restaurant toe te voegen aan de buurt&nbsp;<a href=\"restaurants\">restaurants</a>&nbsp;pagina.</p>\n    <h3>\n    \tGerelateerde links</h3>\n    <ul>\n    \t<li>\n    \t\t<a href=\"Restaurants\">Restaurants</a></li>\n    </ul>\n    <p>\n    \t&nbsp;</p>"
 
 #. Translators: This is for "Templates/Business" - a template page
 #: regions/initial_data/__init__.py:168
 msgid "Business"
-msgstr "ビジネス"
+msgstr "Bedrijf"
 
 #: regions/initial_data/__init__.py:172
 msgid ""
@@ -1422,12 +1422,12 @@ msgid ""
 "    </ul>\n"
 "    <p>\n"
 "    \t&nbsp;</p>"
-msgstr "\n    <table>\n    \t<tbody>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ロケーション</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t住所を入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>営業時間</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t営業時間を入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>電話番号</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(415) 555-5555</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>ウェブサイト</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tリンクURLを入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>メールアドレス</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tメールアドレスを入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>オーナー</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tオーナーや企業の名前を入力</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>設立年月日</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t日時形式, 例. YYYY-MM-DD</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>支払い方法</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t支払いで利用できる方法</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>車椅子アクセス情報</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t階段、お手洗い、手すり、通路幅など</td>\n    \t\t</tr>\n    \t</tbody>\n    </table>\n    <p>追加で残しておきたい情報を&nbsp;<em>なんでも</em>&nbsp;書いてください。米国では、開店時間や電話番号を調べるには&nbsp;<a href=\"http://local.google.com\">http://local.google.com</a>&nbsp;が役に立つでしょう。また、直接問い合わせを行ったり、調べたりするほうが推奨です。内容がわからない項目はそのままにしておいてもかまいませんし、項目ごと削除してしまっても構いません。もし可能ならば、現地で調べるか、先方へ問い合わせを行ってみましょう！</p>\n    <h3>\n    \t関連リンク</h3>\n    <ul>\n    \t<li>\n    \t\t<a href=\"Shopping\">Shopping</a></li>\n    </ul>\n    <p>\n    \t&nbsp;</p>"
+msgstr "\n    <table>\n    \t<tbody>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Locatie</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tVul hier het adres in</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Openingstijden</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tVul openingstijden in</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Telefoon</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t0180 - xxx xxx</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Website</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tVoeg een link toe</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>E-mail</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tEmail adres</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Eigenaar(s)</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tNamen van eigenaars</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Opgericht</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tDatum, bijv. JJJJ-MM-DD</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Betaalmethoden</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\tNoem hier de betaalmethoden</td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n    \t\t\t\t<strong>Rolstoel toegankelijkheid</strong></td>\n    \t\t</tr>\n    \t\t<tr>\n    \t\t\t<td>\n    \t\t\t\t(opmerkingen hierover)</td>\n    \t\t</tr>\n    \t</tbody>\n    </table>\n    <p>\n    \tThen, put&nbsp;<em>whatever</em>&nbsp;you want down here! Merk op dat je via &nbsp;<a href=\"http://local.google.com\">http://local.google.com</a>&nbsp;eenvoudig openngstijden en telefoonnummers kunt vinden. Nog beter, vraag het (telefonisch) zelf na bij het bedrijf. Verwijder de velden die je niet nodig hebt.</p>\n    <h3>\n    \tRelated Links</h3>\n    <ul>\n    \t<li>\n    \t\t<a href=\"Winkels\">Winkels</a></li>\n    </ul>\n    <p>\n    \t&nbsp;</p>"
 
 #. Translators: This is for "Templates/Disambiguation" - a template page
 #: regions/initial_data/__init__.py:263
 msgid "Disambiguation"
-msgstr "あいまいさの排除"
+msgstr "Ondubbelzinnig maken"
 
 #: regions/initial_data/__init__.py:267
 msgid ""
@@ -1443,7 +1443,7 @@ msgid ""
 "    \t&nbsp;</p>\n"
 "    <p>\n"
 "    \tThis is a&nbsp;<em>disambiguation</em> page&nbsp;&mdash; a navigational aid which lists other pages that might otherwise share the same title. If an page link referred you here, you might want to go back and fix it to point directly to the intended page.</p>"
-msgstr "<p>\n    \tこの単語は複数の意味を持っています。お探しの情報は、以下の項目のどちらでしょうか:</p>\n    <ul>\n    \t<li>\n    \t\t<a href=\"ItemOne\">項目1</a>&nbsp;- 項目1の簡単なサマリ</li>\n    \t<li>\n    \t\t<a href=\"ItemTwo\">項目2</a>&nbsp;- 項目2の簡単なサマリ</li>\n    </ul>\n    <p>\n    \t&nbsp;</p>\n    <p>\n    \tこれは &nbsp;<em>あいまいさ排除</em>のためのページ&nbsp;&mdash; です。同じ題名をもつ複数のページが存在する場合に、それらのページを適切に案内するために作成されています。もしあなたが別のページを作成し、そのページからのリンクがこのページを示している場合、あなたのページを編集しなおし、より正しい情報を示すリンク先へ文章を修正することをお薦めします。</p>"
+msgstr "<p>\n    \tDit heeft meerdere betekenissen. Je zoekt waarschijnlijk informatie over één van de volgende items:</p>\n    <ul>\n    \t<li>\n    \t\t<a href=\"ItemOne\">ItemOne</a>&nbsp;- A brief summary of ItemOne</li>\n    \t<li>\n    \t\t<a href=\"ItemTwo\">ItemTwo</a>&nbsp;- A brief summary of ItemTwo</li>\n    </ul>\n    <p>\n    \t&nbsp;</p>\n    <p>\n    \tDit is een &nbsp;<em>doorverwijs </em> pagina&nbsp;&mdash; een hulpmiddel waarop andere pagina's genoemd worden die anders een zelfde titel zouden hebben. Als je hier kwam via een link op een bepaalde pagina, dan kun je beter teruggaan en die link aanpassen en laten verwijzen naar de pagina met de betekenis die bedoeld werd.</p>"
 
 #: regions/initial_data/__init__.py:285
 #, python-format
@@ -1461,7 +1461,7 @@ msgstr ""
 #: regions/templates/regions/banned_update.html:6
 #: regions/templates/regions/settings.html:6
 msgid "LocalWiki - Settings"
-msgstr "LocalWiki - 設定"
+msgstr "LocalWiki - Instellingen"
 
 #: regions/templates/regions/admins_update.html:10
 #: regions/templates/regions/banned_update.html:10
@@ -1470,12 +1470,12 @@ msgid ""
 "\n"
 "        <a href=\"%(region_settings)s\">Settings</a> for <a href=\"%(url)s\">%(region_slug)s</a>\n"
 "    "
-msgstr "\n        <a href=\"%(url)s\">%(region_slug)s</a> の <a href=\"%(region_settings)s\">設定</a>\n    "
+msgstr "\n        <a href=\"%(region_settings)s\">Instellingen</a> for <a href=\"%(url)s\">%(region_slug)s</a>\n    "
 
 #: regions/templates/regions/banned_update.html:20
 #: regions/templates/regions/settings.html:54
 msgid "Banned users"
-msgstr "禁止ユーザ"
+msgstr "Gebande gebruikers"
 
 #: regions/templates/regions/main.html:6 regions/templates/regions/main.html:8
 #: regions/templates/regions/region_form.html:6
@@ -1486,7 +1486,7 @@ msgstr "LocalWiki"
 #: regions/templates/regions/main.html:41
 #: regions/templates/regions/region_list.html:17
 msgid "Add region"
-msgstr "地域の追加"
+msgstr "Voeg regio toe"
 
 #: regions/templates/regions/main.html:26
 #, python-format
@@ -1498,12 +1498,12 @@ msgid ""
 "\n"
 "    <p>Finally, check out the <strong><a href=\"%(guide_url)s\">LocalWiki Guide</a></strong> for more information about the project and help using the site.</p>\n"
 "    "
-msgstr "\n    <p><a href=\"http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/\" target=\"_blank\">新バージョンのLocalWiki</a> の <strong>非常に初期の<strong> プレビューへようこそ。私たちは、さまざまな地域で暮らす人々がお互いに地域の情報を簡単に交換できるようになる方法を模索しています。これまでのプロジェクトは以下から参照できますが、その多くはまだ開発の初期段階です！</p>\n\n    <p>新しくLocalwikiをたちあげるあなたを歓迎します！ セットアップはとても簡単で、数分で終わります。画面に表示されている \"Add a Region\" ボタンをクリックするだけです。</p>\n\n    <p>それから <strong><a href=\"%(guide_url)s\">LocalWiki Guide</a></strong>には、このサイトの使い方やプロジェクト自体のより詳しい情報が記載されています。作業が終わったらチェックしてみてください。</p>\n    "
+msgstr "\n<p>Welkom op deze <strong>ongelofelijk</strong> vroege preview van de <a href=\"http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/\" target=\"_blank\">nieuwe versie van LocalWiki</a>. We experimenteren met nieuwe wegen om het mensen gemakkelijk te maken om lokale kennis over hun leefomgeving te delen. Kijk eens naar de bestaande projecten hieronder, maar houdt er rekening mee dat deze nog steeds erg in ontwikkeling zijn!</p>\n\n<p>Als je hier gekomen bent om een nieuwe LocalWiki te maken, welkom! Het kost slechts enkele minuten om er één op te starten. Je hoeft slechts te klikken op \"Voeg een regio toe\" knop onderaan het scherm.</p>\n\n<p>Tot slot, kijk eens naar de <strong><a href=\"%(guide_url)s\">LocalWiki Gids</a></strong> voor meer informatie over het project en voor hulp met het gebruik van de site.</p>\n    "
 
 #: regions/templates/regions/main.html:34
 #: regions/templates/regions/region_list.html:8
 msgid "Regions"
-msgstr "地域"
+msgstr "Regio's"
 
 #: regions/templates/regions/region_form.html:8
 msgid "Add a new LocalWiki region"
@@ -1511,17 +1511,17 @@ msgstr ""
 
 #: regions/templates/regions/region_form.html:47
 msgid "Draw the rough area the region will cover"
-msgstr "その地域がカバーするおおまかな範囲"
+msgstr "Teken ruwweg het gebied dat de regio zal omvatten"
 
 #: regions/templates/regions/region_form.html:48
 #: regions/templates/regions/settings.html:69
 msgid ""
 "Pick an area roughly the size of a city. Don't worry about being exact!"
-msgstr "街の範囲を表現してください。細かい部分にこだわらなくても大丈夫です！"
+msgstr "Kies een gebied ruwweg zo groot als een stad. Je hoeft niet heel precies te zijn!"
 
 #: regions/templates/regions/region_list.html:6
 msgid "Regions - LocalWiki"
-msgstr "地域 - LocalWiki"
+msgstr "Regio's - LocalWiki"
 
 #: regions/templates/regions/settings.html:9
 #, python-format
@@ -1529,52 +1529,52 @@ msgid ""
 "\n"
 "        Settings for <a href=\"%(url)s\">%(region_slug)s</a>\n"
 "    "
-msgstr "\n        設定 <a href=\"%(url)s\">%(region_slug)s</a>\n    "
+msgstr "\nInstellingen voor <a href=\"%(url)s\">%(region_slug)s</a>\n    "
 
 #: regions/templates/regions/settings.html:45
 msgid "Admins"
-msgstr "管理者"
+msgstr "Admins"
 
 #: regions/templates/regions/settings.html:57
 msgid "Nobody is banned. Hooray!"
-msgstr "禁止ユーザはいないよ！イェイ！"
+msgstr "Niemand is geband. Hoera!"
 
 #: regions/templates/regions/settings.html:68
 msgid "The rough area the region covers"
-msgstr "この地域の大まかな範囲"
+msgstr "Het gebied dat de regio zal omvatten"
 
 #: search/templates/search/base.html:14 search/templates/search/base.html:61
 msgid "Search results for"
-msgstr "検索結果"
+msgstr "Zoekresultaten voor"
 
 #: search/templates/search/base.html:19 search/templates/search/base.html:66
 #: search/templates/search/search.html:86
 msgid "Search"
-msgstr "検索"
+msgstr "Zoek"
 
 #: search/templates/search/global_search.html:18
 #: search/templates/search/global_search.html:57
 #: search/templates/search/search.html:25
 #: search/templates/search/search.html:58
 msgid "Previous"
-msgstr "前"
+msgstr "Vorige"
 
 #: search/templates/search/global_search.html:21
 #: search/templates/search/global_search.html:60
 #: search/templates/search/search.html:28
 #: search/templates/search/search.html:61
 msgid "Next"
-msgstr "次"
+msgstr "Volgende"
 
 #: search/templates/search/global_search.html:50
 #: search/templates/search/search.html:51
 msgid "No results found."
-msgstr "結果はありません。"
+msgstr "Geen resultaten gevonden."
 
 #: search/templates/search/search.html:15
 #, python-format
 msgid "No page with the exact title \"%(query)s\" exists."
-msgstr "\"%(query)s\" と全く同じタイトルのページはありません。"
+msgstr "Er is nog geen pagina met deze exacte titel \"%(query)s\". "
 
 #: search/templates/search/search.html:68
 #, python-format
@@ -1586,11 +1586,11 @@ msgstr ""
 
 #: search/templates/search/search.html:76
 msgid "Create a new page:"
-msgstr "新しいページを作成："
+msgstr "Maak een nieuwe pagina: "
 
 #: search/templates/search/search.html:83
 msgid "Search for pages:"
-msgstr "ページを検索："
+msgstr "Zoek naar pagina's: "
 
 #: stars/signals.py:72 stars/signals.py:114
 #, python-format
@@ -1643,65 +1643,69 @@ msgstr ""
 #, python-format
 msgid "removed %(name)s %(deleted)s."
 msgid_plural "removed %(name)s %(deleted)s."
-msgstr[0] "削除 %(name)s %(deleted)s."
+msgstr[0] "verwijderd %(name)s %(deleted)s."
+msgstr[1] "verwijderd %(name)s %(deleted)s."
 
 #: tags/forms.py:107
 #, python-format
 msgid "removed %(count)i %(name)s."
 msgid_plural "removed %(count)i %(name)s."
-msgstr[0] "削除 %(count)i %(name)s."
+msgstr[0] "verwijderd %(count)i %(name)s."
+msgstr[1] "verwijderd %(count)i %(name)s."
 
 #: tags/forms.py:118
 #, python-format
 msgid "added %(name)s %(added)s."
 msgid_plural "added %(name)s %(added)s."
-msgstr[0] "追加 %(name)s %(added)s."
+msgstr[0] "toegevoegd %(name)s %(added)s."
+msgstr[1] "toegevoegd %(name)s %(added)s."
 
 #: tags/forms.py:127
 #, python-format
 msgid "added %(count)i %(name)s."
 msgid_plural "added %(count)i %(name)s."
-msgstr[0] "追加 %(count)i %(name)s."
+msgstr[0] "toegevoegd %(count)i %(name)s."
+msgstr[1] "toegevoegd %(count)i %(name)s."
 
 #: tags/forms.py:136
 msgid "no changes made"
-msgstr "変更はありません"
+msgstr "geen veranderingen gemaakt"
 
 #: tags/forms.py:137 tags/forms.py:140
 msgid " and "
-msgstr "かつ"
+msgstr "en"
 
 #: tags/models.py:35
 msgid "Tag"
-msgstr "タグ"
+msgstr "Tag"
 
 #: tags/models.py:36 tags/templates/tags/pagetagset_list.html:7
 #: tags/templates/tags/pagetagset_list.html:8
 #: tags/templates/tags/tag_list.html:5
 msgid "Tags"
-msgstr "タグ"
+msgstr "Tags"
 
 #: tags/templates/tags/pagetagset_diff.html:31
 #: tags/templates/tags/pagetagset_diff.html:32
 #, python-format
 msgid "Differences for tag versions for %(new_name)s"
-msgstr "%(new_name)s へのタグバージョンの差異"
+msgstr "Verschillen voor tag versies voor %(new_name)s"
 
 #: tags/templates/tags/pagetagset_diff.html:64
 msgid "Tags history"
-msgstr "タグ履歴"
+msgstr "Tag historie"
 
 #: tags/templates/tags/pagetagset_form.html:16
 #: tags/templates/tags/pagetagset_form.html:17
 #: tags/templates/tags/pagetagset_version_detail.html:19
 #: tags/templates/tags/pagetagset_versions.html:17
 msgid "Tags for"
-msgstr "用のタグ"
+msgstr "Tags voor"
 
 #: tags/templates/tags/pagetagset_version_detail.html:18
 #: tags/templates/tags/pagetagset_versions.html:16
 msgid "Tags for "
-msgstr "用のタグ"
+msgstr "Tags voor"
 
 #: tags/templates/tags/pagetagset_versions.html:25
 #, python-format
@@ -1709,32 +1713,32 @@ msgid ""
 "\n"
 "        This page has no tags.  <a href=\"%(page_url)s\">Add some!</a>\n"
 "    "
-msgstr "\nこのページにはタグがありません。<a href=\"%(page_url)s\">追加する！</a>\n    "
+msgstr "\nDeze pagina heeft geen tags.  <a href=\"%(page_url)s\">Voeg ze toe!</a>\n    "
 
 #: tags/templates/tags/tag_list.html:6
 msgid "All tags"
-msgstr "全てのタグ"
+msgstr "Alle tags"
 
 #: tags/templates/tags/tag_list.html:18
 msgid "Alphabetical"
-msgstr "アルファベット順"
+msgstr "Alphabetisch"
 
 #: tags/templates/tags/tag_list.html:19
 msgid "Most popular"
-msgstr "人気順"
+msgstr "Meest populair"
 
 #: tags/templates/tags/tag_list.html:20
 msgid "As a cloud"
-msgstr "クラウド表示"
+msgstr "Als een wolk"
 
 #: tags/templates/tags/tag_list.html:65
 msgid "There are no tags. Add some!"
-msgstr "タグがありません。追加してください！"
+msgstr "Er zijn geen tags. Voeg ze toe!"
 
 #: tags/templates/tags/tagged_list_snippet.html:19
 #, python-format
 msgid "There are no pages with the tag \"%(tag_name)s\"."
-msgstr "\"%(tag_name)s\" タグの付いたページはありません。"
+msgstr "Er zijn geen pagina's met de tag \"%(tag_name)s\"."
 
 #: templates/follow/form.html:9
 #, python-format
@@ -1748,34 +1752,34 @@ msgstr ""
 
 #: templates/registration/login.html:5
 msgid "Log in"
-msgstr "ログイン"
+msgstr "Inloggen"
 
 #: templates/registration/login.html:9
 msgid "Your username and password didn't match. Please try again."
-msgstr "ユーザ名とパスワードが一致しません。再入力してください。"
+msgstr "Je gebruikersnaam en wachtwoord zijn onjuist. Probeer het nog eens. "
 
 #: templates/registration/login.html:10 templates/registration/login.html:22
 msgid "Forgot your password?"
-msgstr "パスワードを忘れた？"
+msgstr "Wachtwoord vergeten?"
 
 #: templates/registration/login.html:18
 #: templates/registration/registration_form.html:34
 msgid "login"
-msgstr "ログイン"
+msgstr "inlog"
 
 #: templates/registration/password_reset_complete.html:5
 #: templates/registration/password_reset_complete.html:6
 #: templates/registration/password_reset_complete.html:9
 msgid "Password reset complete"
-msgstr "パスワードリセットが完了しました"
+msgstr "Wachtwoord reset voltooid"
 
 #: templates/registration/password_reset_complete.html:11
 msgid "Your password has been set.  You may go ahead and log in now."
-msgstr "あなたのパスワードがセットされました。先に進んでログインしてください。"
+msgstr "Je wachtwoord is vastgelegd. Je kunt nu inloggen. "
 
 #: templates/registration/password_reset_complete.html:13
 msgid "Sign in"
-msgstr "サインイン"
+msgstr "Aanmelden"
 
 #: templates/registration/password_reset_confirm.html:4
 #: templates/registration/password_reset_confirm.html:6
@@ -1783,93 +1787,93 @@ msgstr "サインイン"
 #: templates/registration/password_reset_form.html:5
 #: templates/registration/password_reset_form.html:8
 msgid "Password reset"
-msgstr "パスワードリセット"
+msgstr "Wachtwoord reset"
 
 #: templates/registration/password_reset_confirm.html:11
 msgid "Enter new password"
-msgstr "新しいパスワードを入力"
+msgstr "Voor een nieuw wachtwoord in"
 
 #: templates/registration/password_reset_confirm.html:13
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
-msgstr "入力確認のため、新しいパスワードを２回入力してください。"
+msgstr "Voer je nieuwe wachtwoord twee maal in, zodat we kunnen verifiëren of je het goed ingevoerd hebt. "
 
 #: templates/registration/password_reset_confirm.html:17
 msgid "New password:"
-msgstr "新しいパスワード："
+msgstr "Nieuw wachtwoord:"
 
 #: templates/registration/password_reset_confirm.html:19
 msgid "Confirm password:"
-msgstr "パスワード確認入力："
+msgstr "Bevestig wachtwoord:"
 
 #: templates/registration/password_reset_confirm.html:20
 msgid "Change my password"
-msgstr "パスワードを変更"
+msgstr "Verander mijn wachtwoord"
 
 #: templates/registration/password_reset_confirm.html:24
 msgid "Password reset unsuccessful"
-msgstr "パスワードリセットに失敗しました"
+msgstr "Wachtwoord reset niet gelukt"
 
 #: templates/registration/password_reset_confirm.html:26
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
-msgstr "パスワードリセットのリンクが正しくありません。既に使用されている可能性があります。新しいパスワードリセットをリクエストしてください。"
+msgstr "De wachtwoord reset link was ongeldig, mogelijk omdat hij al gebruikt  is. Vraag a.u.b. opnieuw een wachtwoord reset aan."
 
 #: templates/registration/password_reset_done.html:4
 #: templates/registration/password_reset_done.html:5
 #: templates/registration/password_reset_done.html:8
 msgid "Password reset successful"
-msgstr "パスワードリセットに成功しました"
+msgstr "Wachtwoord reset gelukt"
 
 #: templates/registration/password_reset_done.html:10
 msgid ""
 "We've e-mailed you instructions for setting your password to the e-mail "
 "address you submitted. You should be receiving it shortly."
-msgstr "登録済みのメールアドレス宛にパスワードの設定手順を送信しました。しばらくしたら届くでしょう。"
+msgstr "We hebben je een e-mail met instructies voor het vastleggen van je wachtwoord gestuurd naar het e-mailadres wat je hebt ingevoerd. Je zou het spoedig moeten ontvangen. "
 
 #: templates/registration/password_reset_email.html:2
 #, python-format
 msgid ""
 "You're receiving this e-mail because you requested a password reset for your"
 " user account at %(site_name)s."
-msgstr "あなたがこのメールを受け取ったのは %(site_name)s であなたのユーザアカウントのパスワードリセット要求があったためです。"
+msgstr "Je ontvangt deze e-mail omdat je een wachtwoord reset hebt gevraagd voor je gebruikers account op %(site_name)s."
 
 #: templates/registration/password_reset_email.html:4
 msgid "Please go to the following page and choose a new password:"
-msgstr "次のページで新しいパスワードを選んでください："
+msgstr "Ga a.u.b. naar de volgende pagina en kies een nieuw wachtwoord:"
 
 #: templates/registration/password_reset_email.html:8
 msgid "Your username, in case you've forgotten:"
-msgstr "あなたのユーザ名、忘れた場合は："
+msgstr "Je gebruikersnaam, voor het geval je hem was vergeten:"
 
 #: templates/registration/password_reset_email.html:10
 msgid "Thanks for using our site!"
-msgstr "当サイトのご利用、ありがとうございます！"
+msgstr "Bedankt voor het gebruiken van onze site!"
 
 #: templates/registration/password_reset_email.html:12
 #, python-format
 msgid "The %(site_name)s team"
-msgstr "%(site_name)s チーム"
+msgstr "Het %(site_name)s team"
 
 #: templates/registration/password_reset_form.html:10
 msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll e-mail "
 "instructions for setting a new one."
-msgstr "パスワードを忘れてしまいましたか？下記にメールアドレスを入力すると新しいパスワードの設定手順をメールでお送りします。"
+msgstr "Wachtwoord vergeten? Vul hieronder je e-mail adres in en dan we sturen je een e-mail met instructies over hoe je een nieuw wachtwoord aanmaakt. "
 
 #: templates/registration/password_reset_form.html:14
 msgid "E-mail address:"
-msgstr "メールアドレス："
+msgstr "E-mail adres"
 
 #: templates/registration/password_reset_form.html:14
 msgid "Reset my password"
-msgstr "パスワードをリセット"
+msgstr "Reset mijn wachtwoord"
 
 #: templates/registration/registration_form.html:5
 msgid "Create account"
-msgstr "アカウントを作成"
+msgstr "Maak account"
 
 #: themes/sapling/templates/404.html:5 themes/sapling/templates/404.html:7
 msgid "Not found"
@@ -1896,38 +1900,38 @@ msgid ""
 "open as we build, but there's not much to see here yet.<br/>Feel free to "
 "share with your friends, but not too widely &mdash; we are a long way away "
 "from launching!"
-msgstr "これは<a href=\"http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/\" target=\"_blank\">新バージョンのLocalWiki</a> の <strong>非常に初期の<strong> プレビュー画面です。構築はこれまでもオープンに行われてきましたが、その多くの機能はまだ実装されていません。<br/>この情報はあなたの友人に広めてもよいものですが、あまりに広く喧伝するのは避けてください &mdash; 実際に公開するまで、これからもまだまだやるべきことがたくさん残っているのですから！"
+msgstr "Dit is een <strong>ongelofelijk</strong> vroege preview van de <a href=\"http://localwiki.org/blog/2013/jul/25/big-news-future-localwiki/\" target=\"_blank\">nieuwe versie van LocalWiki</a>.  We maken alles openbaar wat we bouwen, maar er is hier momenteel nog niet veel te zien.<br/>Voel je vrij het te delen met je vrienden, maar niet te breed &mdash; we zijn nog ver verwijderd van de lancering!"
 
 #: themes/sapling/templates/site/base.html:176
 msgid ""
 "\n"
 "      LocalWiki is a grassroots effort to collect, share and open the world’s local knowledge.  We are a 501(c)3 non-profit organization. <a href=\"http://localwiki.org/about/\" target=\"_blank\">Learn more</a>.</p>\n"
 "      "
-msgstr "\n      LocalWikiは草の根の活動で、世界各地の地元情報を集めています。私たちは501(c)3認定非営利法人です。 <a href=\"http://localwiki.org/about/\" target=\"_blank\">詳細はこちら</a>。</p>\n      "
+msgstr "\nLocalWiki is een initiatief om wereldwijd locale kennis te verzamelen, delen en openbaren. LocalWiki is een Amerikaanse zogenaamde 501(c)3 non-profit organizatie. <a href=\"http://localwiki.org/about/\" target=\"_blank\">Meer over LocalWiki</a>.</p>\n      "
 
 #: themes/sapling/templates/site/login_info.html:8
 msgid "Welcome"
-msgstr "ようこそ"
+msgstr "Welkom"
 
 #: themes/sapling/templates/site/login_info.html:11
 msgid "settings"
-msgstr ""
+msgstr "instellingen"
 
 #: themes/sapling/templates/site/login_info.html:12
 msgid "log out"
-msgstr "ログアウト"
+msgstr "Log uit"
 
 #: themes/sapling/templates/site/login_info.html:16
 msgid "log in"
-msgstr "ログイン"
+msgstr "log in"
 
 #: themes/sapling/templates/site/login_info.html:16
 msgid "or"
-msgstr "または"
+msgstr "of"
 
 #: themes/sapling/templates/site/login_info.html:16
 msgid "create account"
-msgstr "アカウントを作成"
+msgstr "maak account"
 
 #: themes/sapling/templates/site/nav.html:7
 msgid "Near You"
@@ -1935,27 +1939,27 @@ msgstr ""
 
 #: themes/sapling/templates/site/nav.html:12
 msgid "Settings"
-msgstr "設定"
+msgstr "Instellingen"
 
 #: themes/sapling/templates/site/nav.html:18
 msgid "Guide"
-msgstr "ガイド"
+msgstr "Gids"
 
 #: themes/sapling/templates/site/nav.html:19
 msgid "Help"
-msgstr "ヘルプ"
+msgstr "Help"
 
 #: themes/sapling/templates/site/nav.html:20
 msgid "Communities"
-msgstr "コミュニティ"
+msgstr "Communities"
 
 #: themes/sapling/templates/site/nav.html:21
 msgid "API"
-msgstr ""
+msgstr "API"
 
 #: themes/sapling/templates/site/nav.html:22
 msgid "About"
-msgstr "概要"
+msgstr "Over"
 
 #: themes/sapling/templates/site/search_form.html:6
 #, python-format
@@ -1968,43 +1972,43 @@ msgstr ""
 
 #: users/__init__.py:7
 msgid "You are now logged out."
-msgstr "ログアウトしました。"
+msgstr "Je bent nu uitgelogd. "
 
 #: users/admin.py:16
 msgid "Personal info"
-msgstr "自分の情報"
+msgstr "Persoonlijke informatie"
 
 #: users/admin.py:17
 msgid "Permissions"
-msgstr "許可"
+msgstr "Machtigingen"
 
 #: users/admin.py:19
 msgid "Important dates"
-msgstr "重要な日付"
+msgstr "Belangrijke data"
 
 #: users/auth.py:34
 msgid "algorithm"
-msgstr "アルゴリズム"
+msgstr "algoritme"
 
 #: users/auth.py:35
 msgid "hash"
-msgstr "ハッシュ"
+msgstr "hash"
 
 #: users/forms.py:11
 msgid "Only these users"
-msgstr "以下のユーザのみ"
+msgstr "Alleen deze gebruikers"
 
 #: users/forms.py:28 users/registration_backend/forms.py:44
 msgid "Your name"
-msgstr "あなたの名前"
+msgstr "Je naam"
 
 #: users/forms.py:29
 msgid "Email address"
-msgstr ""
+msgstr "E-mail adres"
 
 #: users/forms.py:30
 msgid "Gravatar email (private)"
-msgstr ""
+msgstr "Gravatar e-mail (privé)"
 
 #: users/forms.py:34
 msgid "Disable this account permanently"
@@ -2012,27 +2016,27 @@ msgstr ""
 
 #: users/models.py:56
 msgid "Gravatar Email (Private)"
-msgstr ""
+msgstr "Gravatar E-mail (Privé)"
 
 #: users/models.py:57
 msgid "Show email publicly (Helps with communication)"
-msgstr ""
+msgstr "Toon e-mail adres in openbaar (is handig voor communicatie)"
 
 #: users/models.py:58
 msgid "Personal website"
-msgstr ""
+msgstr "Persoonlijke site"
 
 #: users/views.py:196
 msgid "Permissions updated!"
-msgstr "パーミッション更新完了！"
+msgstr "Machtigingen ververst!"
 
 #: users/views.py:207 users/views.py:242 users/views.py:252
 msgid "You must be logged in to change user settings."
-msgstr ""
+msgstr "Je dient ingelogd te zijn om gebruikersinstellingen te wijzigen.  "
 
 #: users/views.py:221
 msgid "User settings updated!"
-msgstr ""
+msgstr "Gebruikersinstellingen ververst!"
 
 #: users/views.py:258
 msgid "Your account has been de-activated."
@@ -2040,42 +2044,42 @@ msgstr ""
 
 #: users/registration_backend/__init__.py:61
 msgid "You are signed up and logged in!"
-msgstr "サインアップしてログインしました！"
+msgstr "Je bent aangemeld en ingelogd!"
 
 #: users/registration_backend/__init__.py:63
 #, python-format
 msgid "Tell us who you are by <a href=\"%s\">creating a page for yourself!</a>"
-msgstr "<a href=\"%s\">自分のページを作って</a>あなたのことを教えてください！"
+msgstr "Vertel ons wij je bent door <a href=\"%s\">een pagina over jezelf te maken!</a>"
 
 #: users/registration_backend/forms.py:33
 msgid "Username"
-msgstr "ユーザ名"
+msgstr "Gebruikersnaam"
 
 #: users/registration_backend/forms.py:35
 msgid "This value may contain only letters (a-z), numbers, +, - and ."
-msgstr "この値は文字 (a-z), 数字, +, - y だけが許可されています。"
+msgstr "Deze veld mag alleen letters (a-z), getallen, +, - en . bevatten"
 
 #: users/registration_backend/forms.py:40
 msgid "E-mail"
-msgstr "メールアドレス"
+msgstr "E-mail"
 
 #: users/registration_backend/forms.py:43
 msgid "Password"
-msgstr "パスワード"
+msgstr "Wachtwoord"
 
 #: users/registration_backend/forms.py:49
 msgid "You must agree to the terms to register"
-msgstr "登録するには規約に同意する必要があります"
+msgstr "Je moet instemmen met de voorwaarden om te kunnen registreren"
 
 #: users/registration_backend/forms.py:64
 msgid "A user with that username already exists."
-msgstr "このユーザ名のユーザは既に存在します。"
+msgstr "Er bestaat al een gebruiker met deze naam."
 
 #: users/registration_backend/forms.py:73
 msgid ""
 "This email address is already in use. Please supply a different email "
 "address."
-msgstr "メールアドレスは既に使用されています。別のメールアドレスをお使いください。"
+msgstr "Dit e-mailadres wordt al gebruikt. Geef a.u.b. een ander e-mailadres."
 
 #: users/templates/users/deactivate.html:9
 msgid "Deactivate account"
@@ -2083,11 +2087,11 @@ msgstr ""
 
 #: users/templates/users/settings.html:10
 msgid "User settings"
-msgstr ""
+msgstr "Gebruikersinstellingen"
 
 #: users/templates/users/settings.html:33
 msgid "Change your user icon at Gravatar.com"
-msgstr ""
+msgstr "Verander je gebruikers-icon op Gravatar.com"
 
 #: users/templates/users/settings.html:39
 #, python-format
@@ -2096,11 +2100,11 @@ msgstr ""
 
 #: users/templates/users/subscribed_list.html:4
 msgid "List of subscribers"
-msgstr "購読者の一覧"
+msgstr "Lijst van abonnees"
 
 #: users/templates/users/subscribed_list.html:8
 msgid "Subscriber emails:"
-msgstr "購読者のメールアドレス："
+msgstr "E-mails van abonnees:"
 
 #: users/templates/users/user_page.html:21
 msgid "user"
@@ -2113,7 +2117,7 @@ msgstr ""
 #: users/templates/users/user_page.html:57
 #, python-format
 msgid "Joined on %(date_joined)s"
-msgstr ""
+msgstr "Aangemeld op %(date_joined)s"
 
 #: users/templates/users/user_page.html:64
 msgid "total contributions"
@@ -2143,115 +2147,115 @@ msgstr ""
 
 #: users/templatetags/user_tags.py:26
 msgid "Unknown"
-msgstr ""
+msgstr "Onbekend"
 
 #: utils/views.py:88
 msgid ""
 "Anonymous users may not perform this action. Please <a "
 "href=\"/Users/login/\">log in</a>."
-msgstr "匿名ユーザはこの操作を実行できません。<a href=\"/Users/login/\">ログイン</a>してください。"
+msgstr "Anonieme gebruikers mogen deze actie niet uitvoeren. <a href=\"/Users/login/\">Log in</a> a.u.b."
 
 #: utils/templates/utils/history/form.html:18
 msgid "revert"
-msgstr "戻す"
+msgstr "draai terug"
 
 #: versionutils/diff/diffutils.py:103 versionutils/diff/diffutils.py:206
 #: versionutils/diff/diffutils.py:294 versionutils/diff/diffutils.py:314
 #: versionutils/diff/diffutils.py:377 versionutils/diff/diffutils.py:391
 #: versionutils/diff/diffutils.py:494
 msgid "No differences found"
-msgstr "差異はありません"
+msgstr "Geen verschillen gevonden."
 
 #: versionutils/diff/diffutils.py:529 versionutils/diff/diffutils.py:539
 #: versionutils/diff/diffutils.py:552 versionutils/diff/diffutils.py:562
 msgid "Stayed the same"
-msgstr "同じのまま"
+msgstr "Gelijk gebleven"
 
 #: versionutils/diff/diffutils.py:532 versionutils/diff/diffutils.py:544
 msgid "Removed"
-msgstr "削除済み"
+msgstr "Verwijderd"
 
 #: versionutils/diff/diffutils.py:555 versionutils/diff/diffutils.py:567
 #: versionutils/versioning/constants.py:14
 msgid "Added"
-msgstr "追加済み"
+msgstr "Toegevoegd"
 
 #: versionutils/diff/templates/diff/file_diff.html:8
 msgid "Download deleted version"
-msgstr "削除されたバージョンをダウンロード"
+msgstr "Download verwijderde versie"
 
 #: versionutils/diff/templates/diff/file_diff.html:9
 msgid "Download added version"
-msgstr "追加されたバージョンをダウンロード"
+msgstr "Download toegevoegde versie"
 
 #: versionutils/merging/forms.py:53
 msgid ""
 "Warning: someone else made changes before you.  Please review the changes "
 "and save again."
-msgstr "警告： あなたの前に別の人が変更しました。変更をレビューして保存し直してください。"
+msgstr "Waarschuwing: iemand anders heeft reeds wijzigingen aangebracht. Bekijk a.u.b. die wijzigingen en sla opnieuw op. "
 
 #: versionutils/merging/forms.py:55
 msgid ""
 "Someone else made changes before you but yourchanges were successfully "
 "merged."
-msgstr "あなたの前に別の人が変更しましたが、あなたの変更は正しくマージされました。"
+msgstr "Iemand anders voor jou heeft reeds wijzigingen gemaakt, maar je wijzigingen zijn succesvol samengevoegd. "
 
 #: versionutils/templates/versionutils/delete_form.html:11
 msgid "Delete"
-msgstr "削除"
+msgstr "Verwijder"
 
 #: versionutils/templates/versionutils/revert_form.html:12
 msgid "Revert"
-msgstr "元に戻す"
+msgstr "Draai terug"
 
 #: versionutils/templates/versionutils/history/form.html:8
 #: versionutils/templates/versionutils/history/form.html:15
 msgid "Compare"
-msgstr "比較"
+msgstr "Vergelijken"
 
 #: versionutils/templates/versionutils/history/form.html:47
 msgid "There is no revision history."
-msgstr "リビジョン履歴はありません。"
+msgstr "Er is geen geschiedenis van wijzigingen. "
 
 #: versionutils/templates/versionutils/history/media.html:47
 msgid "Please select two versions to compare"
-msgstr "2つのバージョンを選んで比較してください"
+msgstr "Selecteer twee versies om te vergelijken"
 
 #: versionutils/versioning/constants.py:15
 msgid "Updated"
-msgstr "更新済み"
+msgstr "Ververst"
 
 #: versionutils/versioning/constants.py:16
 msgid "Deleted"
-msgstr "削除済み"
+msgstr "Verwijderd"
 
 #: versionutils/versioning/constants.py:17
 msgid "Deleted via cascade"
-msgstr "cascade からの削除"
+msgstr "Verwijderd via \"waterval\""
 
 #: versionutils/versioning/constants.py:18
 msgid "Reverted"
-msgstr "戻し"
+msgstr "Teruggedraaid"
 
 #: versionutils/versioning/constants.py:19
 msgid "Reverted/Added"
-msgstr "戻し/追加"
+msgstr "Teruggedraaid/Toegevoegd"
 
 #: versionutils/versioning/constants.py:20
 msgid "Reverted/Deleted"
-msgstr "戻し/削除"
+msgstr "Teruggedraaid/Verwijderd"
 
 #: versionutils/versioning/constants.py:21
 msgid "Reverted/Deleted via cascade"
-msgstr "戻し/cascadaからの削除"
+msgstr "Teruggedraaid/Verwijderd via \"waterval\" "
 
 #: versionutils/versioning/constants.py:22
 msgid "Reverted via cascade"
-msgstr "cascadaからの戻し"
+msgstr "Teruggedraaid via \"waterval\" "
 
 #: versionutils/versioning/forms.py:48
 msgid "Reason for deletion"
-msgstr "削除理由"
+msgstr "Reden voor verwijdering"
 
 #: versionutils/versioning/forms.py:49
 msgid "Permanently remove older versions"
@@ -2263,7 +2267,7 @@ msgstr ""
 
 #: versionutils/versioning/forms.py:60
 msgid "Reason for revert"
-msgstr "戻しの理由"
+msgstr "Reden voor terugdraaien"
 
 #: versionutils/versioning/forms.py:61
 msgid "Permanently remove newer versions"
@@ -2271,13 +2275,13 @@ msgstr ""
 
 #: versionutils/versioning/views.py:68
 msgid "Your attention to detail is appreciated."
-msgstr "詳細を確認頂ければ幸いです。"
+msgstr "Je aandacht voor detail wordt gewaardeerd. "
 
 #: versionutils/versioning/views.py:103
 msgid "Successfully deleted!"
-msgstr "削除しました！"
+msgstr "Met succes verwijderd!"
 
 #: versionutils/versioning/views.py:156
 #, python-format
 msgid "Reverted to version %s."
-msgstr "バージョン %s に戻しました。"
+msgstr "Teruggedraaid naar versie %s."

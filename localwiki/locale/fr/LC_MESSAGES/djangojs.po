@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-25 23:19-0600\n"
-"PO-Revision-Date: 2013-12-08 00:24+0000\n"
-"Last-Translator: GuillaumeTell <guillaume@ophane.net>\n"
+"POT-Creation-Date: 2014-05-20 02:07-0500\n"
+"PO-Revision-Date: 2014-05-20 07:28+0000\n"
+"Last-Translator: philipn <philip@localwiki.org>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/localwiki/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,25 +17,25 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: maps/static/olwidget/js/sapling_utils.js:168
+#: maps/static/olwidget/js/sapling_utils.js:205
 msgid " for "
 msgstr "pour"
 
-#: maps/static/olwidget/js/sapling_utils.js:213
+#: maps/static/olwidget/js/sapling_utils.js:250
 msgid ""
 "You've made changes but haven't saved.  Are you sure you want to leave this "
 "page?"
 msgstr "Vous avez effectué des changmenet sans sauvegarder. Êtes-vous certain de vouloirquitter cette page ?"
 
-#: maps/static/olwidget/js/sapling_utils.js:324
+#: maps/static/olwidget/js/sapling_utils.js:361
 msgid "Things on this map:"
 msgstr "Informations sur cette carte:"
 
-#: maps/static/olwidget/js/sapling_utils.js:340
+#: maps/static/olwidget/js/sapling_utils.js:377
 msgid "Things inside "
 msgstr "Informations à l\\'intérrieur"
 
-#: maps/static/olwidget/js/sapling_utils.js:354
+#: maps/static/olwidget/js/sapling_utils.js:391
 msgid "Things near "
 msgstr "Informations proches"
 
@@ -126,7 +126,7 @@ msgstr "SVP entrez un tag"
 msgid "Show title"
 msgstr "Montrer le titre"
 
-#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:212
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:213
 #, c-format
 msgid "List of pages tagged \"%s\""
 msgstr "Liste des pages avec le tag \"%s\""
@@ -231,6 +231,14 @@ msgstr "classe CSS"
 #: pages/static/js/ckeditor/_source/plugins/wikiplugins/plugin.js:24
 msgid "Insert Object"
 msgstr "Insérer un objet"
+
+#: themes/sapling/assets/js/base.js:113
+msgid "Search for \"{{ value }}\""
+msgstr ""
+
+#: themes/sapling/assets/js/base.js:127 themes/sapling/assets/js/base.js:164
+msgid "Search all of LocalWiki"
+msgstr ""
 
 #: versionutils/diff/static/js/diff/htmldiff.js:24
 msgid "Previous"

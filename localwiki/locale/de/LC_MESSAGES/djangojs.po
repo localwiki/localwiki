@@ -4,14 +4,16 @@
 # 
 # Translators:
 # Daniel Kastl, 2013
+# Daniel Kastl, 2013
+# hng <signin@henningschumann.org>, 2013
 # hng <signin@henningschumann.org>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 19:48-0600\n"
-"PO-Revision-Date: 2013-11-29 16:38+0000\n"
-"Last-Translator: Daniel Kastl\n"
+"POT-Creation-Date: 2014-05-20 02:07-0500\n"
+"PO-Revision-Date: 2014-05-20 07:28+0000\n"
+"Last-Translator: philipn <philip@localwiki.org>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/localwiki/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,25 +21,25 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: maps/static/olwidget/js/sapling_utils.js:167
+#: maps/static/olwidget/js/sapling_utils.js:205
 msgid " for "
 msgstr "für"
 
-#: maps/static/olwidget/js/sapling_utils.js:212
+#: maps/static/olwidget/js/sapling_utils.js:250
 msgid ""
 "You've made changes but haven't saved.  Are you sure you want to leave this "
 "page?"
 msgstr "Du hast Änderungen gemacht, die nicht gespeichert wurden. Bist du sicher, dass du diese Seite verlassen möchtest?"
 
-#: maps/static/olwidget/js/sapling_utils.js:323
+#: maps/static/olwidget/js/sapling_utils.js:361
 msgid "Things on this map:"
 msgstr "Dinge auf dieser Karte:"
 
-#: maps/static/olwidget/js/sapling_utils.js:339
+#: maps/static/olwidget/js/sapling_utils.js:377
 msgid "Things inside "
 msgstr "Dinge innerhalb von"
 
-#: maps/static/olwidget/js/sapling_utils.js:353
+#: maps/static/olwidget/js/sapling_utils.js:391
 msgid "Things near "
 msgstr "Dinge in der Nähe von"
 
@@ -128,7 +130,7 @@ msgstr "Bitte gebe ein Tag ein"
 msgid "Show title"
 msgstr "Titel anzeigen"
 
-#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:212
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:213
 #, c-format
 msgid "List of pages tagged \"%s\""
 msgstr "Liste von Seiten mit Tag \"%s\""
@@ -233,6 +235,14 @@ msgstr "CSS-Klassen"
 #: pages/static/js/ckeditor/_source/plugins/wikiplugins/plugin.js:24
 msgid "Insert Object"
 msgstr "Objekt einfügen"
+
+#: themes/sapling/assets/js/base.js:113
+msgid "Search for \"{{ value }}\""
+msgstr ""
+
+#: themes/sapling/assets/js/base.js:127 themes/sapling/assets/js/base.js:164
+msgid "Search all of LocalWiki"
+msgstr ""
 
 #: versionutils/diff/static/js/diff/htmldiff.js:24
 msgid "Previous"

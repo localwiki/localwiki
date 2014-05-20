@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-23 05:41-0500\n"
+"POT-Creation-Date: 2014-05-20 02:07-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,25 +18,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: maps/static/olwidget/js/sapling_utils.js:168
+#: maps/static/olwidget/js/sapling_utils.js:205
 msgid " for "
 msgstr ""
 
-#: maps/static/olwidget/js/sapling_utils.js:213
+#: maps/static/olwidget/js/sapling_utils.js:250
 msgid ""
 "You've made changes but haven't saved.  Are you sure you want to leave this "
 "page?"
 msgstr ""
 
-#: maps/static/olwidget/js/sapling_utils.js:324
+#: maps/static/olwidget/js/sapling_utils.js:361
 msgid "Things on this map:"
 msgstr ""
 
-#: maps/static/olwidget/js/sapling_utils.js:340
+#: maps/static/olwidget/js/sapling_utils.js:377
 msgid "Things inside "
 msgstr ""
 
-#: maps/static/olwidget/js/sapling_utils.js:354
+#: maps/static/olwidget/js/sapling_utils.js:391
 msgid "Things near "
 msgstr ""
 
@@ -233,11 +233,11 @@ msgstr ""
 msgid "Insert Object"
 msgstr ""
 
-#: themes/sapling/assets/js/base.js:112
+#: themes/sapling/assets/js/base.js:113
 msgid "Search for \"{{ value }}\""
 msgstr ""
 
-#: themes/sapling/assets/js/base.js:148
+#: themes/sapling/assets/js/base.js:127 themes/sapling/assets/js/base.js:164
 msgid "Search all of LocalWiki"
 msgstr ""
 

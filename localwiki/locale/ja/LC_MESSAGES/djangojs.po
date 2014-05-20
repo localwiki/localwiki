@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: localwiki\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-27 19:48-0600\n"
-"PO-Revision-Date: 2013-11-28 02:08+0000\n"
+"POT-Creation-Date: 2014-05-20 02:07-0500\n"
+"PO-Revision-Date: 2014-05-20 07:28+0000\n"
 "Last-Translator: philipn <philip@localwiki.org>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/localwiki/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -17,25 +17,25 @@ msgstr ""
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: maps/static/olwidget/js/sapling_utils.js:167
+#: maps/static/olwidget/js/sapling_utils.js:205
 msgid " for "
 msgstr "for"
 
-#: maps/static/olwidget/js/sapling_utils.js:212
+#: maps/static/olwidget/js/sapling_utils.js:250
 msgid ""
 "You've made changes but haven't saved.  Are you sure you want to leave this "
 "page?"
 msgstr "変更が保存されていませんが、このままこのページを離れますか？"
 
-#: maps/static/olwidget/js/sapling_utils.js:323
+#: maps/static/olwidget/js/sapling_utils.js:361
 msgid "Things on this map:"
 msgstr "このマップに関連するもの："
 
-#: maps/static/olwidget/js/sapling_utils.js:339
+#: maps/static/olwidget/js/sapling_utils.js:377
 msgid "Things inside "
 msgstr "内部のもの"
 
-#: maps/static/olwidget/js/sapling_utils.js:353
+#: maps/static/olwidget/js/sapling_utils.js:391
 msgid "Things near "
 msgstr "近くのもの"
 
@@ -126,7 +126,7 @@ msgstr "タグを入力してください"
 msgid "Show title"
 msgstr "タイトルを表示"
 
-#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:212
+#: pages/static/js/ckeditor/_source/plugins/includetag/dialogs/includetag.js:213
 #, c-format
 msgid "List of pages tagged \"%s\""
 msgstr "\"%s\" タグの付いたページ"
@@ -231,6 +231,14 @@ msgstr "CSS クラス"
 #: pages/static/js/ckeditor/_source/plugins/wikiplugins/plugin.js:24
 msgid "Insert Object"
 msgstr "オブジェクトを挿入"
+
+#: themes/sapling/assets/js/base.js:113
+msgid "Search for \"{{ value }}\""
+msgstr ""
+
+#: themes/sapling/assets/js/base.js:127 themes/sapling/assets/js/base.js:164
+msgid "Search all of LocalWiki"
+msgstr ""
 
 #: versionutils/diff/static/js/diff/htmldiff.js:24
 msgid "Previous"
