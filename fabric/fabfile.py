@@ -53,6 +53,15 @@ Then visit the production server, http://127.0.0.1:8081, on your
 local machine.  The 'deploy:local' flag tells us to use your local
 code rather than a fresh git checkout.
 
+==== Testing ====
+
+To run tests:
+
+    $ fab vagrant run_tests
+
+Alternatively, you can just have travis-ci run the tests for you on commit
+on a branch.
+
 ==== Internationalization note ====
 
 Different languages are placed on subdomains, so if you're testing out
@@ -88,6 +97,7 @@ from contextlib import contextmanager as _contextmanager
 from fabric.api import *
 from fabric.contrib.files import upload_template, exists
 from fabric.network import disconnect_all
+from fabric.api import settings
 import boto.ec2
 from ilogue import fexpect
 
@@ -625,7 +635,7 @@ def run_tests():
     # XXX TODO: Fix this, somehow.  django-nose + pre-created test db?
     sudo("""psql -d postgres -c "ALTER ROLE localwiki SUPERUSER" """, user='postgres')
     with virtualenv():
-        sudo('localwiki-manage test regions pages maps tags versioning diff ckeditor redirects users', user='www-data')
+        sudo('localwiki-manage test regions pages maps tags versioning diff ckeditor redirects users api utils', user='www-data')
     sudo("""psql -d postgres -c "ALTER ROLE localwiki NOSUPERUSER" """, user='postgres')
 
 def branch(name):
@@ -693,3 +703,38 @@ def deploy(local=False, update_configs=False):
 def fix_locale():
     sudo('update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8')
     disconnect_all()
+
+def setup_transifex():
+    with virtualenv():
+        sudo('apt-get install gettext')
+        run('pip install transifex-client')
+
+        with cd(os.path.join(env.src_root, 'localwiki')):
+            run('tx init')
+            run("tx set --execute --auto-local -r localwiki.djangopo -s en -f locale/en/LC_MESSAGES/django.po 'locale/<lang>/LC_MESSAGES/django.po'")
+            run("tx set --execute --auto-local -r localwiki.djangojs -s en -f locale/en/LC_MESSAGES/djangojs.po 'locale/<lang>/LC_MESSAGES/djangojs.po'")
+
+def pull_translations():
+    with settings(warn_only=True):
+        with virtualenv():
+            r = run('which tx')
+            if not r.return_code == 0:
+                setup_transifex()
+
+            with cd(os.path.join(env.src_root, 'localwiki')):
+                with virtualenv():
+                    run('tx pull -a')
+                    run('localwiki-manage compilemessages')
+
+def push_translations():
+    with settings(warn_only=True):
+        with virtualenv():
+            r = run('which tx')
+            if not r.return_code == 0:
+                setup_transifex()
+
+            with cd(os.path.join(env.src_root, 'localwiki')):
+                with virtualenv():
+                    run('localwiki-manage makemessages -l en')
+                    run('localwiki-manage makemessages -d djangojs -l en')
+                    run('tx push -s -t')
