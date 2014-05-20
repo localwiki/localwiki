@@ -17,12 +17,14 @@
 {% endblock %}
 
 {% block header_bar_inner %}
-  {% if request.user.is_authenticated %}
-    {% trans "user" as object_type %}
-    {% follow_form user_for_page %}
-  {% endif %}
+  {% with "user" as object_type_untrans %}
+    {% if request.user.is_authenticated %}
+      {% trans "user" as object_type %}
+      {% follow_form user_for_page %}
+    {% endif %}
 
-  {{ block.super }}
+    {{ block.super }}
+  {% endwith %}
 {% endblock %}
 
 {% block content_wrapper %}

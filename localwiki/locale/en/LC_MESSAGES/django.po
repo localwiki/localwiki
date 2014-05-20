@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-20 03:17-0500\n"
+"POT-Creation-Date: 2014-05-20 14:26-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1054,14 +1054,14 @@ msgstr ""
 msgid "Previous versions:"
 msgstr ""
 
-#: pages/templatetags/pages_tags.py:113
+#: pages/templatetags/cards_tags.py:113 pages/templatetags/pages_tags.py:113
 #, python-format
 msgid ""
 "Unable to include <a href=\"%(page_url)s\" class=\"missing_link\">"
 "%(page_name)s</a>"
 msgstr ""
 
-#: pages/templatetags/pages_tags.py:121
+#: pages/templatetags/cards_tags.py:121 pages/templatetags/pages_tags.py:121
 #, python-format
 msgid ""
 "Unable to include <a href=\"%(page_url)s\">%(page_name)s</a>: endless "
@@ -1168,8 +1168,12 @@ msgstr ""
 msgid "Sorry, you are not allowed to perform this action."
 msgstr ""
 
-#: regions/views.py:148
-msgid "login_url"
+#: regions/views.py:146
+#, python-format
+msgid ""
+"To create a region you must first <strong><a href=\"%(login_url)s?next="
+"%(current_path)s\">log in</a></strong> or <strong><a href=\"%(register_url)s?"
+"next=%(current_path)s\">create an account</a></strong>."
 msgstr ""
 
 #: regions/views.py:156
