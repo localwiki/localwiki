@@ -183,7 +183,7 @@ env.apache_settings = {
     'server_name': 'localwiki.net',
     'server_admin': 'contact@localwiki.org',
 }
-env.branch = 'hub_fix_travis'
+env.branch = 'hub'
 
 def production():
     # Use the global roledefs

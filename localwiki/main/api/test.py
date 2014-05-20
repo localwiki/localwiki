@@ -11,7 +11,7 @@ class APITestCase(test.APITestCase):
         call_command('reset_permissions', verbosity=0)
 
     def setUp(self):
-        super(APITestCase, self).setUp()
-
         settings.IN_API_TEST = True
+
+        super(APITestCase, self).setUp()
         self.setup_auth_and_perms()
