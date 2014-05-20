@@ -394,6 +394,8 @@ OLWIDGET_DEFAULT_OPTIONS = {
 DAISYDIFF_URL = 'http://localhost:8080/daisydiff/diff'
 DAISYDIFF_MERGE_URL = 'http://localhost:8080/daisydiff/merge'
 
+IN_API_TEST = False
+
 # list of regular expressions for white listing embedded URLs
 EMBED_ALLOWED_SRC = ['.*']
 

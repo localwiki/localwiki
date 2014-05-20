@@ -1,5 +1,6 @@
 from django.db.models.signals import pre_save, post_save
 from django.utils.translation import ugettext as _
+from django.conf import settings
 
 from actstream import action
 
@@ -29,6 +30,12 @@ def _created_page_action(sender, instance, created, raw, **kws):
         return
 
     if not created:
+        return
+
+    if settings.IN_API_TEST:
+        # XXX TODO Due to some horrible, difficult to figure out bug in
+        # how force_authenticate() works in the API tests,
+        # we have to skip signals here :/
         return
 
     user_edited = instance.versions.most_recent().version_info.user
