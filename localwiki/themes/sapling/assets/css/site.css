@@ -1682,6 +1682,9 @@ input:focus {
 #user_page_info .edit_settings {
     margin-top: 1em;
 }
+#user_page_info .edit_settings a {
+    margin-right: 1em;
+}
 .user_page .messages {
     margin-bottom: 1em;
 }
