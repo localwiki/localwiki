@@ -70,6 +70,7 @@ LANGUAGES = (
     ('fr', _('French')),
     ('es', _('Spanish')),
     ('de', _('German')),
+    ('nl', _('Dutch')),
     ('uk', _('Ukrainian')),
 )
 
