@@ -234,6 +234,11 @@ def notify_followers_page_deleted(sender, instance, **kwargs):
     # so we have to use a historical lookup here.  We can't use the
     # pre_delete signal here because then we don't have access to who the
     # most recent page editor, edit type, etc are.
+
+    if not instance.versions.all().count():
+        # Page was deleted by a global admin, so let's not notify
+        return
+
     most_recent_page_id = instance.versions.most_recent().id 
     old_follows = Follow.versions.filter(target_page__id=most_recent_page_id)
 
