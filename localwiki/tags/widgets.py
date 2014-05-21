@@ -9,7 +9,7 @@ from utils.static_helpers import static_url
 
 class TagEdit(forms.TextInput):
     def autocomplete_url(self):
-        return ('/_api/tags/suggest/?region_id=%s' % self.region.id)
+        return ('/_api/tags/suggest/')
 
     def render(self, name, value, attrs=None):
         input = super(TagEdit, self).render(name, value, attrs)

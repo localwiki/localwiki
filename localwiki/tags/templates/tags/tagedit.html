@@ -1,7 +1,7 @@
 <script>
     $(function(){
        $('input#{{ id }}').tagedit({
-           autocompleteURL: '{{ autocomplete_url }}'
+           autocompleteURL: '{{ autocomplete_url }}' + '?region_id=' + region_id
        }) 
     });
 </script>
