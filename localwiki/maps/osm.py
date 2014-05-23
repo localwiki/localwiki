@@ -57,7 +57,7 @@ def get_osm_xml(osm_id, osm_type, display_name, region):
         'w': w,
     }
     r = requests.post(OSM_OVERPASS_API, data=recursive_find_with_bbox)
-    return r.text
+    return r.text.encode('utf-8')
 
 def xml_to_geom(layer, osm_xml):
     os.environ['OSM_USE_CUSTOM_INDEXING'] = 'NO'

@@ -165,6 +165,7 @@ install_requires = [
     'django-celery-email==1.0.4-custom1',
     'django-activity-stream==0.4.5beta1',
     'django-jsonfield==0.9.12',
+    'raven==4.2.1',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None

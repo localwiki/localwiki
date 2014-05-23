@@ -290,6 +290,7 @@ INSTALLED_APPS = (
     'static_sitemaps',
     'djcelery_email',
     'actstream',
+    'raven.contrib.django.raven_compat',
 
     # Our apps
     'versionutils.versioning',

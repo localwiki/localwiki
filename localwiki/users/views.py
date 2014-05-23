@@ -94,7 +94,6 @@ class UserPageView(TemplateView):
         context = super(UserPageView, self).get_context_data(**kwargs)
 
         username = self.kwargs.get('username')
-        user = User.objects.get(username__iexact=username)
         user = get_object_or_404(User, username__iexact=username)
         profile = getattr(user, 'userprofile', None)
         

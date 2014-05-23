@@ -69,7 +69,8 @@ class Page(models.Model):
         return self.name.lower() == 'front page'
 
     def is_template_page(self):
-        return self.name.lower().startswith('templates/')
+        return (self.name.lower().startswith('templates/') or
+                self.name.lower() == 'templates')
 
     def pretty_slug(self):
         if not self.name:

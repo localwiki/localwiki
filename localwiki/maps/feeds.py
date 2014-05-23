@@ -40,7 +40,7 @@ class MapChangesFeed(ChangesOnItemFeed):
         page.pk = latest_page.id
         page.name = latest_page.name
 
-        obj = MapData(page=page, region=self.regin)
+        obj = MapData(page=page, region=self.region)
         obj.page = page
         obj.title = _('Map for "%s"') % obj.page.name
         obj.slug = page.slug

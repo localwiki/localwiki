@@ -29,5 +29,5 @@ urlpatterns = patterns('',
     # Redirect 'Recent_Changes'
     url(r'^(?P<region>[^/]+?)/(?i)Recent_Changes/*$', NamedRedirectView.as_view(name="region-activity", permanent=True)),
     # Redirect RSS/Atom feed of changes within a region
-    url(r'^(?P<region>[^/]+?)/(?i)Recent_Changes/_feed/*$', NamedRedirectView.as_view(url="activity-syndication", permanent=True)),
+    url(r'^(?P<region>[^/]+?)/(?i)Recent_Changes/_feed/*$', NamedRedirectView.as_view(name="activity-syndication", permanent=True)),
 )
