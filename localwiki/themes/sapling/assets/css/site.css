@@ -1974,6 +1974,66 @@ input:focus {
 
 /*
 ====================================
+ Page "cards" and list views
+====================================
+*/
+
+.card {
+  background-color: white;
+  padding: 0;
+  display: inline-block;
+  margin-right: 1em;
+  margin-top: 1em;
+  border: 1px solid #d8d8d8;
+  box-shadow: 2px 2px 5px #cdcdcd;
+  text-align: center;
+}
+.card:hover {
+  box-shadow: 2px 2px 5px #9a9a9a;
+}
+.card a {
+  text-decoration: none;
+  color: #5c5c5c;
+}
+.card img {
+  display: block;
+}
+.card .info {
+  overflow: hidden;
+  border-top: 1px solid #DFDFDF;
+  width: 200px;
+}
+.card .info .title {
+  font-size: 80%;
+  display: block;
+  padding: 0.4em 1em 0.4em 1em;
+}
+.card .placeholder {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  background-color: #efefef;
+  display: block;
+}
+.card .placeholder .text {
+  font-size: 80%;
+  text-align: left;
+  padding: 2em;
+  color: #a9a9a9;
+}
+.card .map {
+}
+.card .mapwidget {
+  width: 200px!important;
+  height: 200px!important;
+}
+.card .mapwidget:hover {
+  cursor: pointer;
+}
+
+
+/*
+====================================
  Editor
 ====================================
 */
