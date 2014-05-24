@@ -2224,7 +2224,6 @@ form #content_footer {
     padding-right: 0;
     height: 2.5em;
     background-image: url(../img/loading_spinner.gif);
-    background-color: rgba(255, 255, 255, 0.5)!important;
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
 }
