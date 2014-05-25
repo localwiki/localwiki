@@ -303,6 +303,7 @@ INSTALLED_APPS = (
     'tags',
     'users',
     'activity',
+    'page_scores',
     'search',
     'frontpage',
     'dashboard',
