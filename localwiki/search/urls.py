@@ -103,8 +103,19 @@ class InRegionSearchForm(DefaultSearchForm):
         return sqs.filter_or(name__in=keywords).filter_or(tags__in=keywords).filter_and(region_id=self.region.id)
 
 
+def search_view_factory(view_class=SearchView, *args, **kwargs):
+    def search_view(request, **kwargs2):
+        return view_class(*args, **kwargs)(request, **kwargs2)
+    return search_view
+
+
 urlpatterns = patterns('',
-    url(r'^(?P<region>[^/]+?)/$', CreatePageSearchView(form_class=InRegionSearchForm),
-        name='haystack_search'),
-    url(r'^$', GlobalSearchView(form_class=SearchForm), name='global_search'),
+    url(r'^(?P<region>[^/]+?)/$', search_view_factory(
+            view_class=CreatePageSearchView,
+            form_class=InRegionSearchForm
+        ), name='haystack_search'),
+    url(r'^$', search_view_factory(
+            view_class=GlobalSearchView,
+            form_class=SearchForm
+        ), name='global_search'),
 )
