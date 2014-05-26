@@ -27,7 +27,7 @@
     {% include "explore/page.html" %}
 
     <div class="see_also">
-      <div class="pagination">
+      <div class="option_toggle">
         <a href="{% url 'explore' region=region.slug %}">{% trans "Default" %}</a>
         <a class="current" href="#">{% trans "Alphabetical" %}</a>
         <a href="{% url 'explore-as-list' region=region.slug %}">{% trans "List" %}</a>

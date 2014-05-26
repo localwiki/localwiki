@@ -1972,9 +1972,15 @@ input:focus {
 .pagination a:first-child { border-left: 1px solid #bfbfbf; }
 .pagination .current, .pagination .current:hover { color: #444; background: url("../img/gradient-light.png") repeat-x scroll left bottom #d9d9d9; }
 
-#explore .see_also .pagination {
-    margin-bottom: 1em;
-}
+/* Like pagination: option_toggle */
+.option_toggle { float: left; background: #e6e6e6; padding: 8px; border-radius: 5px; -moz-border-radius: 5px; webkit-border-radius: 5px; }
+.option_toggle a, .option_toggle span { background: #fff; display: block; color: #444; text-decoration: none; float: left; padding: 0.3em 0.5em; border: 1px solid #bfbfbf; border-left: none; }
+.option_toggle a.disabled, .option_toggle span.disabled,
+.option_toggle a.disabled:hover, .option_toggle span.disabled:hover { color: #999; background: #fff; }
+.option_toggle a:hover { background: url("../img/gradient-light.png") repeat-x scroll left bottom #f6f6f6; }
+.option_toggle .next { border-right: 1px solid #bfbfbf; }
+.option_toggle a:first-child { border-left: 1px solid #bfbfbf; }
+.option_toggle .current, .option_toggle .current:hover { color: #444; background: url("../img/gradient-light.png") repeat-x scroll left bottom #d9d9d9; }
 
 /*
 ====================================
@@ -2007,11 +2013,14 @@ input:focus {
   overflow: hidden;
   border-top: 1px solid #DFDFDF;
   width: 200px;
+  height: 2.4em;
+  display: table;
 }
 .card .info .title {
   font-size: 80%;
-  display: block;
-  padding: 0.4em 1em 0.4em 1em;
+  display: table-cell;
+  vertical-align: middle;
+  padding: 0 1em 0 1em;
   font-weight: bold;
 }
 .card .placeholder {
@@ -2028,6 +2037,9 @@ input:focus {
   color: #a9a9a9;
 }
 .card .map {
+  width: 200px;
+  height: 200px;
+  display: table;
 }
 .card .mapwidget {
   width: 200px!important;
@@ -2035,6 +2047,20 @@ input:focus {
 }
 .card .mapwidget:hover {
   cursor: pointer;
+}
+
+/*
+====================================
+ Explore page
+====================================
+*/
+
+#explore .see_also .option_toggle {
+  margin-bottom: 1em;
+}
+
+#explore {
+  text-align: center;
 }
 
 
