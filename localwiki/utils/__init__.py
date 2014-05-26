@@ -26,7 +26,7 @@ def take_n_from(lists_with_indexes, n, merge_key=None):
         n: Number of items to take from lists_with_indexes.
 
         merge_key: Key to use for comparison while doing the list merge.
-            Defaults to the usual python comparison.
+            Defaults to no comparison / sort (leave in place).
 
     Returns:
         A tuple, (items, indexes, has_more_left), where `items` is the n elements,
@@ -39,7 +39,7 @@ def take_n_from(lists_with_indexes, n, merge_key=None):
         def _merge_f(x):
             item, index = x
             if not merge_key:
-                return item
+                return None
             return merge_key(item)
         return sorted(itertools.chain(*objs_lists), key=_merge_f, reverse=True)
 

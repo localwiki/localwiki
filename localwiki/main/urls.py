@@ -53,6 +53,7 @@ urlpatterns = patterns('',
     (r'^_redirect/', include(redirects.site.urls)),
     (r'^_search/', include('search.urls')),
     (r'^', include('activity.urls')),
+    (r'^', include('explore.urls')),
     # Region userpage -> global userpage redirect
     (r'^(?P<region>[^/]+?)/((?i)Users)/(?P<username>[^/]+?)$', GlobalUserpageRedirectView.as_view()),
 

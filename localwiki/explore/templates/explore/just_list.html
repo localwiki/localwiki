@@ -1,0 +1,30 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+{% load cache %}
+
+{% block title %}{% blocktrans with region_name=region.full_name %}Explore {{ region_name }}{% endblocktrans %}{% endblock %}
+
+{% block header_title %}{% trans "Explore - All Pages" %}{% endblock %}
+
+{% block content %}
+  {% cache 600 page_list region %}
+  <div id="explore">
+    <ul>
+    {% for page in pages %}
+      <li><a href="{{ page.get_absolute_url }}">{{ page.name }}</a></li>
+    {% endfor %}
+    </ul>
+
+    <div class="see_also">
+      <div class="pagination">
+        <a href="{% url 'explore' region=region.slug %}">{% trans "Default" %}</a>
+        <a href="{% url 'explore-alphabetical' region=region.slug %}">{% trans "Alphabetical" %}</a>
+        <a class="current" href="#">{% trans "List" %}</a>
+      </div>
+    </div>
+
+  </div>
+  {% endcache %}
+{% endblock %}

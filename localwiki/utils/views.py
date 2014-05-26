@@ -187,7 +187,7 @@ class MultipleTypesPaginatedView(TemplateView):
         """
         Returns:
             A callable that, when called, returns the value to use for the merge +
-            sort.  Default: the value inside the list itself.
+            sort.  Default: no further sorting (stay in place).
         """
         return None
 

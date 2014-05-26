@@ -7,9 +7,7 @@ from django.utils.translation import ugettext as _
 from django.db import models
 from django.db.models.signals import post_save
 
-from maps.models import MapData
 from pages.models import Page
-from pages.plugins import _files_url, file_url_to_name
 
 
 class PageScore(models.Model):
@@ -23,11 +21,20 @@ class PageScore(models.Model):
     def __unicode__(self):
         return _("Page score %s: %s") % (self.page, self.score)
 
+
 def is_internal(url):
     return (not urlparse.urlparse(url).netloc)
 
 @task
-def _calculate_page_score(page):
+def _calculate_page_score(page_id):
+    from maps.models import MapData
+    from pages.plugins import _files_url
+
+    page = Page.objects.filter(id=page_id)
+    if page.exists():
+        page = page[0]
+    else:
+        return
     score = 0
     num_images = 0
     link_num = 0
@@ -69,12 +76,14 @@ def _calculate_page_score(page):
     score_obj.save()
 
 def _handle_page_score(sender, instance, created, raw, **kws):
+    from maps.models import MapData
+
     if raw:
         return
     if sender == Page:
-        _calculate_page_score.delay(instance)
+        _calculate_page_score.delay(instance.id)
     elif sender == MapData:
-        _calculate_page_score.delay(instance.page)
+        _calculate_page_score.delay(instance.page.id)
 
 
 post_save.connect(_handle_page_score)

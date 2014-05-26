@@ -54,4 +54,5 @@ pre_save.connect(_delete_page, sender=Redirect)
 # delete the Redirect.
 pre_save.connect(_delete_redirect, sender=Page)
 
-post_save.connect(_created_page_action, sender=Page)
+if not settings.DISABLE_FOLLOW_SIGNALS:
+    post_save.connect(_created_page_action, sender=Page)

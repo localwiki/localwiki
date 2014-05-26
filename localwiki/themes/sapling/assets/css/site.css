@@ -1566,7 +1566,7 @@ input:focus {
     }
 }
 
-#activityfeed .see_also {
+.see_also {
     border-top: 4px solid #dddddd;
     padding-top: 1em;
     margin-top: 6em;
@@ -1574,7 +1574,7 @@ input:focus {
     clear: both;
 }
 
-#activityfeed .endless_more {
+.endless_more {
     display: block;
     width: 100%;
     text-align: center;
@@ -1972,6 +1972,10 @@ input:focus {
 .pagination a:first-child { border-left: 1px solid #bfbfbf; }
 .pagination .current, .pagination .current:hover { color: #444; background: url("../img/gradient-light.png") repeat-x scroll left bottom #d9d9d9; }
 
+#explore .see_also .pagination {
+    margin-bottom: 1em;
+}
+
 /*
 ====================================
  Page "cards" and list views
@@ -1989,7 +1993,8 @@ input:focus {
   text-align: center;
 }
 .card:hover {
-  box-shadow: 2px 2px 5px #9a9a9a;
+  box-shadow: 2px 2px 5px #818181;
+  opacity: 0.8;
 }
 .card a {
   text-decoration: none;
@@ -2007,6 +2012,7 @@ input:focus {
   font-size: 80%;
   display: block;
   padding: 0.4em 1em 0.4em 1em;
+  font-weight: bold;
 }
 .card .placeholder {
   width: 200px;
