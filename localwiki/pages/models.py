@@ -3,6 +3,7 @@ from urllib import unquote_plus
 import mimetypes
 import re
 from urlparse import urljoin
+from lxml.html import fragments_fromstring
 from copy import copy
 
 from django.contrib.gis.db import models
@@ -204,6 +205,29 @@ class Page(models.Model):
                 obj.save(comment=_("Parent page renamed"))
 
         return new_p
+
+    def get_highlight_image(self):
+        """
+        Return either a good `PageFile` or None if the page
+        doesn't contain any images (inside the content).
+        """
+        from .plugins import _files_url, file_url_to_name
+
+        if not PageFile.objects.filter(slug=self.slug, region=self.region).exists():
+            return None
+
+        # Parse the page HTML and look for the first local image
+        for e in fragments_fromstring(self.content):
+            for i in e.iter('img'):
+                src = i.attrib.get('src', '')
+                if src.startswith(_files_url):
+                    _file = PageFile.objects.filter(
+                        slug__exact=self.slug,
+                        name__exact=file_url_to_name(src),
+                        region=self.region
+                    )
+                    if _file:
+                        return _file[0]
 
 
 class PageDiff(diff.BaseModelDiff):

@@ -1566,7 +1566,7 @@ input:focus {
     }
 }
 
-#activityfeed .see_also {
+.see_also {
     border-top: 4px solid #dddddd;
     padding-top: 1em;
     margin-top: 6em;
@@ -1574,7 +1574,7 @@ input:focus {
     clear: both;
 }
 
-#activityfeed .endless_more {
+.endless_more {
     display: block;
     width: 100%;
     text-align: center;
@@ -1971,6 +1971,100 @@ input:focus {
 .pagination .next { border-right: 1px solid #bfbfbf; }
 .pagination a:first-child { border-left: 1px solid #bfbfbf; }
 .pagination .current, .pagination .current:hover { color: #444; background: url("../img/gradient-light.png") repeat-x scroll left bottom #d9d9d9; }
+
+/* Like pagination: option_toggle */
+.option_toggle { float: left; background: #e6e6e6; padding: 8px; border-radius: 5px; -moz-border-radius: 5px; webkit-border-radius: 5px; }
+.option_toggle a, .option_toggle span { background: #fff; display: block; color: #444; text-decoration: none; float: left; padding: 0.3em 0.5em; border: 1px solid #bfbfbf; border-left: none; }
+.option_toggle a.disabled, .option_toggle span.disabled,
+.option_toggle a.disabled:hover, .option_toggle span.disabled:hover { color: #999; background: #fff; }
+.option_toggle a:hover { background: url("../img/gradient-light.png") repeat-x scroll left bottom #f6f6f6; }
+.option_toggle .next { border-right: 1px solid #bfbfbf; }
+.option_toggle a:first-child { border-left: 1px solid #bfbfbf; }
+.option_toggle .current, .option_toggle .current:hover { color: #444; background: url("../img/gradient-light.png") repeat-x scroll left bottom #d9d9d9; }
+
+/*
+====================================
+ Page "cards" and list views
+====================================
+*/
+
+.card {
+  background-color: white;
+  padding: 0;
+  display: inline-block;
+  margin-right: 1em;
+  margin-top: 1em;
+  border: 1px solid #d8d8d8;
+  box-shadow: 2px 2px 5px #cdcdcd;
+  text-align: center;
+}
+.card:hover {
+  box-shadow: 2px 2px 5px #818181;
+  opacity: 0.8;
+}
+.card a {
+  text-decoration: none;
+  color: #5c5c5c;
+}
+.card img {
+  display: block;
+}
+.card .info {
+  overflow: hidden;
+  border-top: 1px solid #DFDFDF;
+  width: 200px;
+  height: 2.4em;
+  display: block;
+}
+.card .info .title {
+  font-size: 80%;
+  display: block;
+  padding: 0.5em 1em 0.5em 1em;
+  font-weight: bold;
+}
+.card .placeholder {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  background-color: #efefef;
+  display: table;
+}
+.card .placeholder .text {
+  font-size: 80%;
+  text-align: left;
+  padding: 2em;
+  color: #a9a9a9;
+}
+.card .map {
+  width: 200px;
+  height: 200px;
+  display: table;
+}
+.card .mapwidget {
+  width: 200px!important;
+  height: 200px!important;
+}
+.card .mapwidget:hover {
+  cursor: pointer;
+}
+
+/*
+====================================
+ Explore page
+====================================
+*/
+
+#explore .see_also .option_toggle {
+  margin-bottom: 1em;
+}
+#explore .see_also {
+  border-top: none;
+}
+
+#explore .cards {
+  text-align: center;
+}
+
 
 /*
 ====================================

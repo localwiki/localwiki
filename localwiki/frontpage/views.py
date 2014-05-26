@@ -63,13 +63,29 @@ class FrontPageView(Custom404Mixin, TemplateView):
         else:
             return InfoMap(self.get_map_objects(), options=olwidget_options)
 
+    def get_pages_for_cards(self):
+        qs = Page.objects.filter(region=self.get_region())
+
+        # Exclude meta stuff
+        qs = qs.exclude(slug__startswith='templates/')
+        qs = qs.exclude(slug='templates')
+        qs = qs.exclude(slug='front page')
+
+        # Exclude ones with empty scores
+        qs = qs.exclude(score=None)
+
+        qs = qs.defer('content').select_related('region').order_by('-score__score', '?')
+
+        # Just grab 5 items
+        return qs[:5]
+
     def get_context_data(self, *args, **kwargs):
         context = super(FrontPageView, self).get_context_data() 
 
         context['frontpage'] = FrontPage.objects.get(region=self.get_region())
         context['map'] = self.get_map()
         context['cover_map'] = self.get_map(cover=True)
-        context['random_pages'] = Page.objects.filter(region=self.get_region()).order_by('?')[:30]
+        context['pages_for_cards'] = self.get_pages_for_cards()
         if Page.objects.filter(name="Front Page", region=self.get_region()).exists():
             context['page'] = Page.objects.get(name="Front Page", region=self.get_region())
         else:

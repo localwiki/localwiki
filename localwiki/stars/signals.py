@@ -277,8 +277,8 @@ def notify_follow_action(user, target, instance, **kwargs):
     elif isinstance(target, Region):
         action.send(user, verb='followed region', action_object=target)
 
-
-post_save.connect(follow_own_user_object, sender=User)
-post_save.connect(notify_followers_page_edited, sender=Page)
-post_delete.connect(notify_followers_page_deleted, sender=Page)
-followed_signal.connect(notify_follow_action, dispatch_uid='follow.user')
+if not settings.DISABLE_FOLLOW_SIGNALS:
+    post_save.connect(follow_own_user_object, sender=User)
+    post_save.connect(notify_followers_page_edited, sender=Page)
+    post_delete.connect(notify_followers_page_deleted, sender=Page)
+    followed_signal.connect(notify_follow_action, dispatch_uid='follow.user')

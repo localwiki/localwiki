@@ -303,10 +303,12 @@ INSTALLED_APPS = (
     'tags',
     'users',
     'activity',
+    'page_scores',
     'search',
     'frontpage',
     'dashboard',
     'stars',
+    'explore',
     'main.api',
     'main',
     'utils',
@@ -375,6 +377,7 @@ CELERY_EMAIL_TASK_CONFIG = {
 ACTSTREAM_SETTINGS = {
     'MODELS': ('auth.user', 'pages.page', 'regions.region'),
 }
+DISABLE_FOLLOW_SIGNALS = False
 
 OLWIDGET_DEFAULT_OPTIONS = {
     'default_lat': 37,

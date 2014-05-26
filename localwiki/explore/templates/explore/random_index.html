@@ -1,0 +1,39 @@
+{% extends "pages/base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+{% load cache %}
+
+{% block title %}{% blocktrans with region_name=region.full_name %}Explore {{ region_name }}{% endblocktrans %} - {{ block.super }}{% endblock %}
+
+{% block header_title %}{% blocktrans with region_name=region.full_name region_url=region.get_absolute_url %}Explore <a href="{{ region_url }}">{{ region_name }}</a>{% endblocktrans %}{% endblock %}
+
+{% block head_extra %}
+  <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+  <script>$(document).ready(function() {
+  $.endlessPaginate();
+  });</script>
+  {% if pagination_has_more_left %}
+  <link rel="next" href="{{ pagination_next }}&amp;s={{ random_seed }}">
+  {% endif %}
+
+{% endblock %}
+
+{% block media %}{{block.super}}{{ map_media }}{% endblock %}
+
+{% block content %}
+  <div id="explore">
+    <div class="cards">
+      {% include "explore/page.html" %}
+    </div>
+
+    <div class="see_also">
+      <div class="option_toggle">
+        <a class="current" href="#">{% trans "Default" %}</a>
+        <a href="{% url 'explore-alphabetical' region=region.slug %}">{% trans "Alphabetical" %}</a>
+        <a href="{% url 'explore-as-list' region=region.slug %}">{% trans "List" %}</a>
+      </div>
+    </div>
+
+  </div>
+{% endblock %}

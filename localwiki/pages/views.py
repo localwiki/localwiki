@@ -41,15 +41,6 @@ from .utils import is_user_page
 from .exceptions import PageExistsError
 
 
-class PageListView(RegionMixin, ListView):
-    model = Page
-    context_object_name = 'page_list'
-
-    def get_queryset(self):
-        qs = super(PageListView, self).get_queryset()
-        return qs.defer('content').select_related('region').order_by('name')
-
-
 class PageDetailView(Custom404Mixin, AddContributorsMixin, RegionMixin, DetailView):
     model = Page
     context_object_name = 'page'

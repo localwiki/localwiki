@@ -1,15 +1,17 @@
 from django.conf.urls import *
 from django.views.generic import ListView
 
-from views import *
-from feeds import PageChangesFeed, PageFileChangesFeed
-import models
+from localwiki.utils.views import NamedRedirectView
 from localwiki.utils.constants import DATETIME_REGEXP
-from models import Page
-from views import PageFilebrowserView
+
 from tags.views import PageTagSetUpdateView, PageTagSetVersions,\
     PageTagSetVersionDetailView, PageTagSetCompareView, PageTagSetRevertView
 
+from .views import *
+from .feeds import PageChangesFeed, PageFileChangesFeed
+from . import models
+from .models import Page
+from .views import PageFilebrowserView
 
 
 def slugify(func):
@@ -129,15 +131,10 @@ urlpatterns = patterns('',
     url(r'^(?P<region>[^/]+?)/(?P<slug>.+)/_permissions$', slugify(PagePermissionsView.as_view()),
         name='permissions'),
 
-    ##########################################################
-    # Basic page URLs.
-    ##########################################################
-    #url(r'^(?P<region>[^/]+?)/*$', slugify(PageDetailView.as_view()),
-    #    kwargs={'slug': 'Front Page'}, name='frontpage'),
-    url(r'^(?P<region>[^/]+?)/(?i)All_Pages/*$', PageListView.as_view(),
-        name='index'),
+
     # Random page
     url(r'^tools/(?i)Random_Page/*$', PageRandomView.as_view(), name='random'),
+
     # Catch-all and route to a page.
     url(r'^(?P<region>[^/]+?)/(?P<slug>.+?)/*$', slugify(PageDetailView.as_view()),
         name='show'),

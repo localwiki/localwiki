@@ -187,7 +187,7 @@ class MultipleTypesPaginatedView(TemplateView):
         """
         Returns:
             A callable that, when called, returns the value to use for the merge +
-            sort.  Default: the value inside the list itself.
+            sort.  Default: no further sorting (stay in place).
         """
         return None
 
@@ -218,6 +218,7 @@ class MultipleTypesPaginatedView(TemplateView):
 
         c[self.context_object_name] = self.get_pagination_objects()
         c['pagination_has_more_left'] = self.has_more_left
+        c['pagination_next'] = ''
         if self.has_more_left:
             qitems = []
             for pagelabel, index in self.current_indexes.items():
