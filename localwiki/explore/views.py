@@ -50,6 +50,7 @@ class RandomExploreList(BaseExploreList):
 
     def get_context_data(self, *args, **kwargs):
         context = super(RandomExploreList, self).get_context_data(*args, **kwargs)
+        context['page_type'] = 'random'
         context['random_seed'] = self.random_seed
         return context
 
@@ -66,6 +67,11 @@ class AlphabeticalExploreList(BaseExploreList):
 
         qs = qs.defer('content').select_related('region').order_by('name')
         return [qs]
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(AlphabeticalExploreList, self).get_context_data(*args, **kwargs)
+        context['page_type'] = 'alphabetical'
+        return context
 
 
 class ExploreJustList(RegionMixin, ListView):

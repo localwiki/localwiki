@@ -2028,7 +2028,7 @@ input:focus {
   height: 200px;
   overflow: hidden;
   background-color: #efefef;
-  display: block;
+  display: table;
 }
 .card .placeholder .text {
   font-size: 80%;
@@ -2058,8 +2058,11 @@ input:focus {
 #explore .see_also .option_toggle {
   margin-bottom: 1em;
 }
+#explore .see_also {
+  border-top: none;
+}
 
-#explore {
+#explore .cards {
   text-align: center;
 }
 

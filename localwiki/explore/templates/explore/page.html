@@ -1,34 +1,39 @@
 {% load cards_tags %}
 {% load thumbnail %}
 {% load i18n %}
+{% load cache %}
 
-{% for page in pages %}
+{% cache 600 explore_page page_type pagination_next %}
 
-  {% page_card page as card %}
-
-  <div class="card">
-    <a href="{{ page.get_absolute_url }}">
-      {% if card.file %}
-        {% thumbnail card.file.file "200x200" crop="center" as im %}
-  	    <img src="{{ im.url }}"/>
-        {% endthumbnail %}
-      {% elif card.map %}
-          <div class="map">{{ card.map }}</div>
-      {% else %}
-          <div class="placeholder"><div class="text">
-              {{ page.content|striptags|truncatewords:18 }}
-          </div></div>
-      {% endif %}
-      <div class="info"><span class="title">{{ page.name }}</span></div>
-    </a>
-  </div>
-
-{% endfor %}
-
-{% if pagination_has_more_left %}
-    <div class="endless_container">
-        <a class="endless_more button" href="{{ pagination_next }}{% if random_seed %}&amp;s={{ random_seed }}{% endif %}"
-            rel="">{% trans "More" %}</a>
-        <div class="endless_loading loading" style="display: none;"></div>
+  {% for page in pages %}
+  
+    {% page_card page as card %}
+  
+    <div class="card">
+      <a href="{{ page.get_absolute_url }}">
+        {% if card.file %}
+          {% thumbnail card.file.file "200x200" crop="center" as im %}
+    	    <img src="{{ im.url }}"/>
+          {% endthumbnail %}
+        {% elif card.map %}
+            <div class="map">{{ card.map }}</div>
+        {% else %}
+            <div class="placeholder"><div class="text">
+                {{ page.content|striptags|truncatewords:18 }}
+            </div></div>
+        {% endif %}
+        <div class="info"><span class="title">{{ page.name }}</span></div>
+      </a>
     </div>
-{% endif %}
+  
+  {% endfor %}
+  
+  {% if pagination_has_more_left %}
+      <div class="endless_container">
+          <a class="endless_more button" href="{{ pagination_next }}{% if random_seed %}&amp;s={{ random_seed }}{% endif %}"
+              rel="">{% trans "More" %}</a>
+          <div class="endless_loading loading" style="display: none;"></div>
+      </div>
+  {% endif %}
+
+{% endcache %}

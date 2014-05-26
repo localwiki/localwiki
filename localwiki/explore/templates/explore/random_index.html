@@ -22,9 +22,10 @@
 {% block media %}{{block.super}}{{ map_media }}{% endblock %}
 
 {% block content %}
-  {# {% cache 600 page_list region %} #}
   <div id="explore">
-    {% include "explore/page.html" %}
+    <div class="cards">
+      {% include "explore/page.html" %}
+    </div>
 
     <div class="see_also">
       <div class="option_toggle">
@@ -35,5 +36,4 @@
     </div>
 
   </div>
-  {# {% endcache %} #}
 {% endblock %}
