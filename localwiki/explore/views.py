@@ -39,6 +39,9 @@ class RandomExploreList(BaseExploreList):
         obj_lists = super(RandomExploreList, self).get_object_lists()
         qs = obj_lists[0]
 
+        # Exclude those with empty scores
+        qs = qs.exclude(score=None)
+
         # We're paginating a random sort, so let's make sure it's
         # deterministic here to avoid duplicate results.
         self.random_seed = float(self.request.GET.get('s', random.random()))

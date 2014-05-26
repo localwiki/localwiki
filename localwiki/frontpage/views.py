@@ -71,6 +71,9 @@ class FrontPageView(Custom404Mixin, TemplateView):
         qs = qs.exclude(slug='templates')
         qs = qs.exclude(slug='front page')
 
+        # Exclude ones with empty scores
+        qs = qs.exclude(score=None)
+
         qs = qs.defer('content').select_related('region').order_by('-score__score', '?')
 
         # Just grab 5 items
