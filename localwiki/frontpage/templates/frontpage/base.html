@@ -3,7 +3,9 @@
 {% load url from future %}
 {% load static from staticfiles %}
 {% load i18n %}
+{% load thumbnail %}
 {% load pages_tags %}
+{% load cards_tags %}
 {% load follow_tags %}
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
@@ -84,6 +86,42 @@ and submit using #cover_form.
         {% endif %}
 
         {% render_plugins page.content %}
+        <div id="interesting_pages">
+            <h2>{% trans "Some interesting pages" %}</h2>
+            {% if pages_for_cards %}
+                <div class="cards">
+                {% for page in pages_for_cards %}
+                
+                  {% page_card page as card %}
+                
+                  <div class="card">
+                    <a href="{{ page.get_absolute_url }}">
+                      {% if card.file %}
+                        {% thumbnail card.file.file "200x200" crop="center" as im %}
+                  	    <img src="{{ im.url }}"/>
+                        {% endthumbnail %}
+                      {% elif card.map %}
+                          <div class="map">{{ card.map }}</div>
+                      {% else %}
+                          <div class="placeholder"><div class="text">
+                              {{ page.content|striptags|truncatewords:18 }}
+                          </div></div>
+                      {% endif %}
+                      <div class="info"><span class="title">{{ page.name }}</span></div>
+                    </a>
+                  </div>
+                {% endfor %}
+                </div>
+                <div class="explore_more">
+                  <a class="button" href="{% url 'explore' region=region.slug %}">{% trans "Explore more pages" %}</a>
+                </div>
+            {% else %}
+            <div class="no_pages">
+              <p>{% trans "There are no pages yet.  Add some!" %}</p>
+              <p><a class="button" href="{% url 'haystack_search' region=region.slug %}">{% trans "Add a new page" %}</a></p>
+            </div>
+            {% endif %}
+         </div>
 
         {% if region.get_nearby_regions %}
         <div class="nearby_regions">

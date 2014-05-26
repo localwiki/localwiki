@@ -6,7 +6,7 @@
 
 {% block title %}{% blocktrans with region_name=region.full_name %}Explore {{ region_name }}{% endblocktrans %} - {{ block.super }}{% endblock %}
 
-{% block header_title %}{% blocktrans with region_name=region.full_name %}Explore {{ region_name }}{% endblocktrans %}{% endblock %}
+{% block header_title %}{% blocktrans with region_name=region.full_name region_url=region.get_absolute_url %}Explore <a href="{{ region_url }}">{{ region_name }}</a>{% endblocktrans %}{% endblock %}
 
 {% block head_extra %}
   <script src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>

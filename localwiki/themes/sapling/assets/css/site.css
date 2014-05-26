@@ -2014,13 +2014,12 @@ input:focus {
   border-top: 1px solid #DFDFDF;
   width: 200px;
   height: 2.4em;
-  display: table;
+  display: block;
 }
 .card .info .title {
   font-size: 80%;
-  display: table-cell;
-  vertical-align: middle;
-  padding: 0 1em 0 1em;
+  display: block;
+  padding: 0.5em 1em 0.5em 1em;
   font-weight: bold;
 }
 .card .placeholder {

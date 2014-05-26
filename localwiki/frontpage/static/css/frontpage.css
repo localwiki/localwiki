@@ -190,3 +190,56 @@
 .frontpage h1, .frontpage h2, .frontpage h3, .frontpage h4, .frontpage h5 {
     clear: left!important;
 }
+
+.frontpage #interesting_pages {
+    clear: both;
+    margin-bottom: 1em;
+}
+.frontpage .cards {
+    text-align: center;
+    min-height: 274px;
+}
+#interesting_pages .no_pages a {
+    float: none;
+    display: inline-block;
+    background-image: url(/static/theme/img/edit_icon.png);
+
+    font-weight: normal;
+    padding-left: 28px;
+    font-size: 90%;
+    background-repeat: no-repeat;
+    background-position: 9px 50%;
+}
+.frontpage #interesting_pages .explore_more {
+    padding-top: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+#interesting_pages .explore_more a {
+    float: none;
+    width: auto;
+    display: inline-block;
+    margin-top: 0;
+}
+
+/* Some kinda specific tweaks to make cards flow correctly */
+
+@media screen and (max-width: 1314px) {
+    .frontpage .cards {
+        max-height: 274px;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 880px) {
+    .frontpage .cards {
+        max-height: 540px;
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 473px) {
+    .frontpage .cards {
+        max-height: 800px;
+        overflow: hidden;
+    }
+}

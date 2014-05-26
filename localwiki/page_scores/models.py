@@ -1,4 +1,4 @@
-from celery.task import task
+from celery import shared_task
 from lxml.html import fragments_fromstring
 import urllib
 import urlparse
@@ -25,7 +25,7 @@ class PageScore(models.Model):
 def is_internal(url):
     return (not urlparse.urlparse(url).netloc)
 
-@task
+@shared_task(ignore_result=True)
 def _calculate_page_score(page_id):
     from maps.models import MapData
     from pages.plugins import _files_url
