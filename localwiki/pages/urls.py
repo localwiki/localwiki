@@ -1,18 +1,15 @@
 from django.conf.urls import *
 from django.views.generic import ListView
 
-from localwiki.utils.views import NamedRedirectView
 from localwiki.utils.constants import DATETIME_REGEXP
-
-from tags.views import PageTagSetUpdateView, PageTagSetVersions,\
-    PageTagSetVersionDetailView, PageTagSetCompareView, PageTagSetRevertView
 
 from .views import *
 from .feeds import PageChangesFeed, PageFileChangesFeed
-from . import models
 from .models import Page
-from .views import PageFilebrowserView
+from .models import slugify as page_slugify
 
+from tags.views import PageTagSetUpdateView, PageTagSetVersions,\
+    PageTagSetVersionDetailView, PageTagSetCompareView, PageTagSetRevertView
 
 def slugify(func):
     """
@@ -21,7 +18,7 @@ def slugify(func):
     def wrapped(*args, **kwargs):
         if 'slug' in kwargs:
             kwargs['original_slug'] = kwargs['slug']
-            kwargs['slug'] = models.slugify(kwargs['slug'])
+            kwargs['slug'] = page_slugify(kwargs['slug'])
         return func(*args, **kwargs)
     return wrapped
 
@@ -131,6 +128,9 @@ urlpatterns = patterns('',
     url(r'^(?P<region>[^/]+?)/(?P<slug>.+)/_permissions$', slugify(PagePermissionsView.as_view()),
         name='permissions'),
 
+    ##########################################################
+    # Basic page URLs.
+    ##########################################################
 
     # Random page
     url(r'^tools/(?i)Random_Page/*$', PageRandomView.as_view(), name='random'),
