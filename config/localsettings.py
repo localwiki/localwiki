@@ -61,8 +61,13 @@ HAYSTACK_CONNECTIONS = {
 BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
-LOCAL_INSTALLED_APPS = (
-)
+if '{{ sentry_secret_url }}':
+    LOCAL_INSTALLED_APPS = (
+        'raven.contrib.django.raven_compat',
+    )
+else:
+    LOCAL_INSTALLED_APPS = (
+    )
 
 POSTGIS_VERSION = (2, 0, 3)
 
