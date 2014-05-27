@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load cache %}
 
-{% cache 600 explore_page page_type pagination_next %}
+{% cache 600 explore_page region.slug page_type pagination_next %}
 
   {% for page in pages %}
   
