@@ -28,7 +28,6 @@ olwidget_options['map_options'] = map_opts
 olwidget_options['map_div_class'] = 'mapwidget'
 
 
-CARD_TIMEOUT = 60 * 60 * 5
 @register.assignment_tag
 def page_card(page):
     from maps.widgets import map_options_for_region
@@ -49,7 +48,7 @@ def page_card(page):
             options=olwidget_options)
 
     card = {'file': _file, 'map': _map}
-    cache.set('card:%s' % page.id, card, CARD_TIMEOUT)
+    cache.set('card:%s' % page.id, card, None)
     return card
 
 def _clear_card(sender, instance, *args, **kwargs):
