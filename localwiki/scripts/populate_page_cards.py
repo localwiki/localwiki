@@ -6,9 +6,10 @@ from pages.models import Page
 def run(*args, **kwargs):
     print "Populating page card thumbnails & memcached..."
 
-    for p in Page.objects.all():
+    for p in Page.objects.all().defer('content'):
         print p
-        t = Template("""{% load thumbnail %}
+        try:
+            t = Template("""{% load thumbnail %}
 {% load cards_tags %}
 
 {% page_card page as card %}
@@ -19,4 +20,6 @@ def run(*args, **kwargs):
   {% endthumbnail %}
 {% endif %}
 """)
-        t.render(Context({'page': p}))
+            t.render(Context({'page': p}))
+        except:
+            print "ERROR on", p
