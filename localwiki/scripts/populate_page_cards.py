@@ -1,14 +1,25 @@
 from django.template import Context, Template
 from django.utils.encoding import smart_str
 
-from pages.models import Page
+from pages.models import Page, PageFile
 
 
 def run(*args, **kwargs):
     print "Populating page card thumbnails & memcached..."
 
-    for p in Page.objects.all().defer('content'):
-        print smart_str(p)
+    counted = set()
+    for p in PageFile.objects.all().select_related('region'):
+        if (p.slug, p.region) in counted:
+            continue
+        counted.add((p.slug, p.region))
+
+    for (slug, region) in counted:
+        p = Page.objects.filter(slug=slug, region=region)
+        if not p:
+            continue
+        p = p[0]
+
+        print "Generating for %s" % smart_str(p)
         try:
             t = Template("""{% load thumbnail %}
 {% load cards_tags %}

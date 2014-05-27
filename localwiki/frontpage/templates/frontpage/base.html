@@ -87,6 +87,7 @@ and submit using #cover_form.
         {% endif %}
 
         {% render_plugins page.content %}
+        {% comment %}
         <div id="interesting_pages">
             <h2>{% trans "Some interesting pages" %}</h2>
             {% cache 300 int_frnt_pg region.slug %}
@@ -125,6 +126,7 @@ and submit using #cover_form.
               {% endif %}
             {% endcache %}
          </div>
+         {% endcomment %}
 
         {% if region.get_nearby_regions %}
         <div class="nearby_regions">
