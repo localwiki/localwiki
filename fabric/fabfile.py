@@ -329,7 +329,13 @@ def install_system_requirements():
     postgres_pkg = ['gdal-bin', 'proj', 'postgresql-9.1-postgis-2.0', 'postgresql-server-dev-all']
     memcached_pkg = ['memcached']
     varnish_pkg = ['varnish']
-    redis_pkg = ['redis-server']
+
+    if not env.host_type == 'test_server':
+        # Travis won't start the redis server correctly
+        # if it's installed like this. So we skip it
+        # and use their default.
+        redis_pkg = ['redis-server']
+
     mailserver_pkg = ['postfix']
     packages = (
         base_system_pkg + 
