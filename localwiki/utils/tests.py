@@ -17,7 +17,7 @@ class TakeNFromTests(TestCase):
 
         all_sorted = sorted(self.pages + self.maps + self.files, reverse=True)
 
-        items, indexes, more_left = take_n_from(ls, 3)
+        items, indexes, more_left = take_n_from(ls, 3, merge_key=(lambda x: x))
         self.assertEqual(items, all_sorted[:3])
         self.assertEqual(indexes, [2, 1, 0])
 
@@ -27,7 +27,7 @@ class TakeNFromTests(TestCase):
         all_sorted = sorted(self.pages + self.maps + self.files, reverse=True)
 
         for i in range(0, len(all_sorted)):
-            items, indexes, more_left = take_n_from(ls, i)
+            items, indexes, more_left = take_n_from(ls, i, merge_key=(lambda x: x))
             self.assertEqual(items, all_sorted[:i])
 
     def test_take_more_than_left(self):
@@ -35,5 +35,5 @@ class TakeNFromTests(TestCase):
 
         all_sorted = sorted(self.pages + self.maps + self.files, reverse=True)
 
-        items, indexes, more_left = take_n_from(ls, len(all_sorted) + 1)
+        items, indexes, more_left = take_n_from(ls, len(all_sorted) + 1, merge_key=(lambda x: x))
         self.assertEqual(len(items), len(all_sorted))
