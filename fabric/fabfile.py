@@ -330,10 +330,12 @@ def install_system_requirements():
     memcached_pkg = ['memcached']
     varnish_pkg = ['varnish']
 
-    if not env.host_type == 'test_server':
+    if env.host_type == 'test_server':
         # Travis won't start the redis server correctly
         # if it's installed like this. So we skip it
         # and use their default.
+        redis_pkg = []
+    else:
         redis_pkg = ['redis-server']
 
     mailserver_pkg = ['postfix']
