@@ -202,7 +202,7 @@
 #interesting_pages .no_pages a {
     float: none;
     display: inline-block;
-    background-image: url(/static/theme/img/edit_icon.png);
+    background-image: url(../theme/img/edit_icon.png);
 
     font-weight: normal;
     padding-left: 28px;
