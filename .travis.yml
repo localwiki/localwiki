@@ -3,6 +3,8 @@ python:
     - "2.7"
 virtualenv:
   system_site_packages: true
+services:
+  - redis-server
 before_install:
     - sudo apt-add-repository -y --remove ppa:ubuntugis/ubuntugis-stable
     - sudo rm /etc/apt/sources.list.d/pgdg-source.list
