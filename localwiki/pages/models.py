@@ -218,6 +218,8 @@ class Page(models.Model):
 
         # Parse the page HTML and look for the first local image
         for e in fragments_fromstring(self.content):
+            if isinstance(e, basestring):
+                continue
             for i in e.iter('img'):
                 src = i.attrib.get('src', '')
                 if src.startswith(_files_url):
