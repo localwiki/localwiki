@@ -703,6 +703,7 @@ def deploy(local=False, update_configs=False):
     setup_jetty()
     if update_configs:
         update_apache_settings()
+        setup_memcached()
         # In case celery apps have changed:
         sudo('service celery restart')
     touch_wsgi()
