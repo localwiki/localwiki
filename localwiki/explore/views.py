@@ -48,7 +48,7 @@ class RandomExploreList(BaseExploreList):
         cursor = connection.cursor()
         cursor.execute("SELECT setseed(%s);" % self.random_seed)
 
-        qs = qs.defer('content').select_related('region').order_by('-score__score', '?')
+        qs = qs.select_related('region').order_by('-score__score', '?')
         return [qs]
 
     def get_context_data(self, *args, **kwargs):
@@ -68,7 +68,7 @@ class AlphabeticalExploreList(BaseExploreList):
         obj_lists = super(AlphabeticalExploreList, self).get_object_lists()
         qs = obj_lists[0]
 
-        qs = qs.defer('content').select_related('region').order_by('name')
+        qs = qs.select_related('region').order_by('name')
         return [qs]
 
     def get_context_data(self, *args, **kwargs):
