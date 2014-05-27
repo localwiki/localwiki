@@ -45,6 +45,8 @@ def _calculate_page_score(page_id):
 
     # Parse the page HTML and look for good stuff
     for e in fragments_fromstring(page.content):
+        if isinstance(e, basestring):
+            continue
         for i in e.iter('img'):
             src = i.attrib.get('src', '')
             if src.startswith(_files_url):
