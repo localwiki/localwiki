@@ -12,7 +12,7 @@ class Migration(DataMigration):
         from pages.models import Page
 
         for p in Page.objects.all():
-            _calculate_page_score(p)
+            _calculate_page_score(p.id)
 
     models = {
         u'actstream.action': {
