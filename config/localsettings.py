@@ -82,6 +82,10 @@ CACHES = {
         'KEY_PREFIX': '',
 	    'LOCATION': '127.0.0.1:11211',
         'TIMEOUT': 60,
+    },
+    'long-living': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'django_db_cache_table',
     }
 }
 

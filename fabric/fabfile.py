@@ -615,6 +615,10 @@ def setup_mailserver():
         context=get_context(env), use_jinja=True, use_sudo=True)
     sudo('service postfix restart')
 
+def setup_db_based_cache():
+    with virtualenv():
+        sudo('localwiki-manage createcachetable django_db_cache_table', user='www-data')
+
 def provision():
     if env.host_type == 'vagrant':
         fix_locale()
@@ -631,6 +635,7 @@ def provision():
     setup_jetty()
     setup_repo()
     init_localwiki_install()
+    setup_db_based_cache()
     setup_permissions() 
     setup_celery()
     setup_apache()
