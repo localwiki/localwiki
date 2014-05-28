@@ -1,31 +1,11 @@
 {% load cards_tags %}
-{% load thumbnail %}
 {% load i18n %}
 {% load cache %}
 
 {% cache 600 explore_page region.slug page_type pagination_next %}
 
   {% for page in pages %}
-  
-    {% page_card page as card %}
-  
-    <div class="card">
-      <a href="{{ page.get_absolute_url }}">
-        {% if card.file %}
-          {% thumbnail card.file.file "200x200" crop="center" as im %}
-    	    <img src="{{ im.url }}"/>
-          {% endthumbnail %}
-        {% elif card.map %}
-            <div class="map">{{ card.map }}</div>
-        {% else %}
-            <div class="placeholder"><div class="text">
-                {{ page.content|striptags|truncatewords:18 }}
-            </div></div>
-        {% endif %}
-        <div class="info"><span class="title">{{ page.name }}</span></div>
-      </a>
-    </div>
-  
+    {% page_card page %}
   {% endfor %}
   
   {% if pagination_has_more_left %}

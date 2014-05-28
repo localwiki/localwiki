@@ -5,7 +5,7 @@ from pages.models import Page, PageFile
 
 
 def run(*args, **kwargs):
-    print "Populating page card thumbnails & memcached..."
+    print "Populating page cards (cache)..."
 
     counted = set()
     for p in PageFile.objects.all().select_related('region'):
@@ -19,18 +19,11 @@ def run(*args, **kwargs):
             continue
         p = p[0]
 
-        print "Generating for %s" % smart_str(p)
+        print "Generating card for %s" % smart_str(p)
         try:
             t = Template("""{% load thumbnail %}
 {% load cards_tags %}
-
-{% page_card page as card %}
-  
-{% if card.file %}
-  {% thumbnail card.file.file "200x200" crop="center" as im %}
-    <img src="{{ im.url }}"/>
-  {% endthumbnail %}
-{% endif %}
+{% page_card page %}
 """)
             t.render(Context({'page': p}))
         except:

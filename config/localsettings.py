@@ -86,6 +86,10 @@ CACHES = {
     'long-living': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
         'LOCATION': 'django_db_cache_table',
+        'OPTIONS': {
+            'MAX_ENTRIES': 500000,  # A nice big number. ~2GB of in-DB space used.
+            'CULL_FREQUENCY': 30,
+        }
     }
 }
 

@@ -1,8 +1,9 @@
 import copy
 
 from django import template
-from django.core.cache import cache 
+from django.core.cache import get_cache
 from django.conf import settings
+from django.template.loader import render_to_string
 from django.db.models.signals import post_save
 
 from pages.models import Page
@@ -28,9 +29,10 @@ olwidget_options['map_options'] = map_opts
 olwidget_options['map_div_class'] = 'mapwidget'
 
 
-@register.assignment_tag
+@register.simple_tag
 def page_card(page):
     from maps.widgets import map_options_for_region
+    cache = get_cache('long-living')
 
     card = cache.get('card:%s' % page.id)
     if card:
@@ -47,11 +49,16 @@ def page_card(page):
         _map = InfoMap([(page.mapdata.geom, '')],
             options=olwidget_options)
 
-    card = {'file': _file, 'map': _map}
+    card = render_to_string('pages/card.html', {
+        'page': page,
+        'file': _file,
+        'map': _map,
+    })
     cache.set('card:%s' % page.id, card, None)
     return card
 
 def _clear_card(sender, instance, *args, **kwargs):
+    cache = get_cache('long-living')
     cache.delete('card:%s' % instance.id)
 
 post_save.connect(_clear_card, sender=Page)

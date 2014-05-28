@@ -1,0 +1,18 @@
+{% load thumbnail %}
+
+<div class="card">
+  <a href="{{ page.get_absolute_url }}">
+    {% if file %}
+      {% thumbnail file.file "200x200" crop="center" as im %}
+	    <img src="{{ im.url }}"/>
+      {% endthumbnail %}
+    {% elif map %}
+        <div class="map">{{ map }}</div>
+    {% else %}
+        <div class="placeholder"><div class="text">
+            {{ page.content|striptags|truncatewords:18 }}
+        </div></div>
+    {% endif %}
+    <div class="info"><span class="title">{{ page.name }}</span></div>
+  </a>
+</div>
