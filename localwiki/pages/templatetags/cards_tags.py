@@ -46,15 +46,17 @@ def page_card(page):
     # Otherwise, try and get a map
     if not _file and hasattr(page, 'mapdata'):
         olwidget_options.update(map_options_for_region(page.region))
-        _map = InfoMap([(page.mapdata.geom, '')],
-            options=olwidget_options)
+        _map = InfoMap(
+            [(page.mapdata.geom, '')],
+            options=olwidget_options
+        ).render(None, None, {'id': page.id})
 
     card = render_to_string('pages/card.html', {
         'page': page,
         'file': _file,
         'map': _map,
     })
-    cache.set('card:%s' % page.id, card, None)
+    cache.set('card:%s' % page.id, card)
     return card
 
 def _clear_card(sender, instance, *args, **kwargs):
