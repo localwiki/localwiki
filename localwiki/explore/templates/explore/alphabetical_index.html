@@ -19,7 +19,7 @@
 
 {% endblock %}
 
-{% block media %}{{block.super}}{{ map_media }}{% endblock %}
+{% block media %}{{block.super}}{{ map_media }}<script type="text/javascript">SaplingMap.show_links_on_hover = false;</script>{% endblock %}
 
 {% block content %}
   {# {% cache 600 page_list region %} #}

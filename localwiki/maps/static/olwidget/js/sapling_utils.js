@@ -1,6 +1,7 @@
 SaplingMap = {
 
     is_dirty: false,
+    show_links_on_hover: true,
 
     init_openlayers: function() {
         OpenLayers.Control.Navigation.prototype.dragPanOptions = {enableKinetic: true};
@@ -75,7 +76,9 @@ SaplingMap = {
             map.addControl(new OpenLayers.Control.Permalink({anchor: true}));
         }
 
-        this.setup_link_hover_activation(map);
+        if (this.show_links_on_hover) {
+            this.setup_link_hover_activation(map);
+        }
         this.disable_scroll_zoom(map);
     },
 
