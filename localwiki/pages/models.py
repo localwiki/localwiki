@@ -17,8 +17,8 @@ from django.utils.translation import ugettext_lazy
 from django_randomfilenamestorage.storage import (
     RandomFilenameFileSystemStorage)
 
-from versionutils import diff
-from versionutils import versioning
+from versionutils import diff, versioning
+from versionutils.versioning.utils import is_versioned
 from regions.models import Region
 
 from . import exceptions
@@ -170,7 +170,10 @@ class Page(models.Model):
                     obj.pk = None  # Reset the primary key before saving.
                     try:
                         getattr(new_p, attname).add(obj)
-                        obj.save(comment=_("Parent page renamed"))
+                        if is_versioned(obj):
+                            obj.save(comment=_("Parent page renamed"))
+                        else:
+                            obj.save()
                         # Restore any m2m fields now that we have a new pk
                         for name, value in obj._m2m_values.items():
                             setattr(obj, name, value)
@@ -183,7 +186,10 @@ class Page(models.Model):
                 # This is an easy way to set obj to point to new_p.
                 setattr(new_p, attname, rel_obj)
                 rel_obj.pk = None  # Reset the primary key before saving.
-                rel_obj.save(comment=_("Parent page renamed"))
+                if is_versioned(rel_obj):
+                    rel_obj.save(comment=_("Parent page renamed"))
+                else:
+                    rel_obj.save()
                 # Restore any m2m fields now that we have a new pk
                 for name, value in rel_obj._m2m_values.items():
                     setattr(rel_obj, name, value)
