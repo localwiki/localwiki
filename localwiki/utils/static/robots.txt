@@ -9,3 +9,6 @@ Disallow: /*/_feed$
 
 User-agent: *
 Disallow: /*/_feed/
+
+User-agent: *
+Disallow: /*/Talk
