@@ -2027,7 +2027,7 @@ input:focus {
   height: 200px;
   overflow: hidden;
   background-color: #efefef;
-  display: table;
+  display: block;
 }
 .card .placeholder .text {
   font-size: 80%;

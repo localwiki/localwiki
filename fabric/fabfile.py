@@ -752,3 +752,7 @@ def push_translations():
                     run('localwiki-manage makemessages -l en')
                     run('localwiki-manage makemessages -d djangojs -l en')
                     run('tx push -s -t')
+
+def populate_page_cards():
+    with virtualenv():
+        sudo('localwiki-manage populate_page_cards', user='www-data')
