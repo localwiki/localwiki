@@ -53,7 +53,6 @@ def _calculate_page_score(page_id):
         if isinstance(e, basestring):
             continue
         for i in e.iter('img'):
-            print 'found img'
             src = i.attrib.get('src', '')
             if src.startswith(_files_url):
                 num_images += 1
