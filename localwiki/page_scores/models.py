@@ -57,9 +57,9 @@ def _calculate_page_score(page_id):
             if src.startswith(_files_url):
                 num_images += 1
         for i in e.iter('a'):
-            src = smart_str(i.attrib.get('href', ''), errors='ignore')
+            src = i.attrib.get('href', '')
             if is_internal(src) and not is_plugin(i):
-                slug = slugify(urllib.unquote(src))
+                slug = slugify(smart_str(urllib.unquote(src), errors='ignore'))
                 # Only count links to pages that exist
                 if Page.objects.filter(slug=slug, region=page.region).exists():
                     link_num += 1
