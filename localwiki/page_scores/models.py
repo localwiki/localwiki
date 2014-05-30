@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 from django.db import models
 from django.db.models.signals import post_save
 
-from pages.models import Page
+from pages.models import Page, slugify
 
 
 class PageScore(models.Model):
@@ -24,6 +24,10 @@ class PageScore(models.Model):
 
 def is_internal(url):
     return (not urlparse.urlparse(url).netloc)
+
+def is_plugin(elem):
+    classes = elem.attrib.get('class', '')
+    return ('plugin' in classes.split())
 
 @shared_task(ignore_result=True)
 def _calculate_page_score(page_id):
@@ -48,15 +52,16 @@ def _calculate_page_score(page_id):
         if isinstance(e, basestring):
             continue
         for i in e.iter('img'):
+            print 'found img'
             src = i.attrib.get('src', '')
             if src.startswith(_files_url):
                 num_images += 1
         for i in e.iter('a'):
-            src = i.attrib.get('src', '')
-            if is_internal(src):
-                name = urllib.unquote(src)
+            src = i.attrib.get('href', '')
+            if is_internal(src) and not is_plugin(i):
+                slug = slugify(urllib.unquote(src))
                 # Only count links to pages that exist
-                if Page(name=name, region=page.region).exists():
+                if Page.objects.filter(slug=slug, region=page.region).exists():
                     link_num += 1
 
     # One point for each image, up to three points
@@ -68,7 +73,7 @@ def _calculate_page_score(page_id):
         score += 1
     if link_num >= 3:
         score += 1
-   
+
     score_obj = PageScore.objects.filter(page=page)
     if not score_obj.exists():
         score_obj = PageScore(page=page)
