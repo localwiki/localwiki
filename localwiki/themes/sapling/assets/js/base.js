@@ -1,3 +1,7 @@
+$(window).load(function() {
+    window.loaded = true;
+});
+
 /* Show login/logout in #nav when screen is small. */
 function add_login_info_actions() {
     $('#login_info .actions a').each(function() {

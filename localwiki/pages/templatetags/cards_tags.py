@@ -49,7 +49,7 @@ def page_card(page):
         _map = InfoMap(
             [(page.mapdata.geom, '')],
             options=olwidget_options
-        ).render(None, None, {'id': page.id})
+        ).render(None, None, {'id': 'map_page_id_%s' % page.id})
 
     card = render_to_string('pages/card.html', {
         'page': page,

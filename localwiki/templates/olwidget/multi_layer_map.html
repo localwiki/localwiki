@@ -9,12 +9,19 @@
 
     {{ setup_custom_layer_types|safe }}
 
-    $(window).load(function() {
-        var map = new olwidget.Map("{{ id }}", [
-                {{ layer_js|join:"," }}
-            ], 
-            {{ map_opts|safe }}
-        );
-        SaplingMap.setup_map(map);
-    });
+    var create_map = function() {
+            var map = new olwidget.Map("{{ id }}", [
+                    {{ layer_js|join:"," }}
+                ], 
+                {{ map_opts|safe }}
+            );
+            SaplingMap.setup_map(map);
+   }
+
+    if (!window.loaded) {
+        $(window).load(create_map);
+    }
+    else {
+        create_map();
+    }
 </script>
