@@ -4,6 +4,7 @@ import urllib
 import urlparse
 
 from django.utils.translation import ugettext as _
+from django.utils import smart_str
 from django.db import models
 from django.db.models.signals import post_save
 
