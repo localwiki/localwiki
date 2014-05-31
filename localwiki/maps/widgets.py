@@ -43,7 +43,7 @@ class InfoMap(MediaMixin, widgets.InfoMap):
 def map_options_for_region(region):
     region_center = region.regionsettings.region_center
     if not region_center:
-        return opts
+        return {}
     opts = {
         'default_lon': region_center.x,
         'default_lat': region_center.y,
