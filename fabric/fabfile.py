@@ -371,6 +371,8 @@ def update_django_settings():
 def update_apache_settings():
     upload_template('config/apache/localwiki', '/etc/apache2/sites-available/localwiki',
         context=env, use_jinja=True, use_sudo=True)
+    upload_template('config/apache/apache2.conf', '/etc/apache2/apache2.conf',
+        context=env, use_jinja=True, use_sudo=True)
     sudo('service apache2 restart')
 
 def init_localwiki_install():
