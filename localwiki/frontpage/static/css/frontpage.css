@@ -197,7 +197,6 @@
 }
 .frontpage .cards {
     text-align: center;
-    min-height: 274px;
 }
 #interesting_pages .no_pages a {
     float: none;
@@ -211,7 +210,7 @@
     background-position: 9px 50%;
 }
 .frontpage #interesting_pages .explore_more {
-    padding-top: 0.5em;
+    padding-top: 1em;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
@@ -226,20 +225,16 @@
 /* Some kinda specific tweaks to make cards flow correctly */
 
 @media screen and (max-width: 1314px) {
-    .frontpage .cards {
-        max-height: 274px;
-        overflow: hidden;
+    .frontpage .cards .card:nth-child(n+5) {
+        display: none;
     }
 }
 @media screen and (max-width: 880px) {
     .frontpage .cards {
-        max-height: 540px;
-        overflow: hidden;
     }
 }
 @media screen and (max-width: 473px) {
-    .frontpage .cards {
-        max-height: 800px;
-        overflow: hidden;
+    .frontpage .cards .card:nth-child(n+4) {
+        display: none;
     }
 }
