@@ -447,6 +447,16 @@ def get_ssl_info():
     env.ssl_cert = crt
     env.ssl_intermediate = intermediate
 
+def setup_apache_monitoring():
+    sudo('mkdir -p /root/cron/')
+    upload_template('config/root/cron/monitor_and_restart_apache.py', '/root/cron/monitor_and_restart_apache.py',
+        context=get_context(env), use_jinja=True, use_sudo=True)
+    sudo('chmod +x /root/cron/monitor_and_restart_apache.py')
+    upload_template('config/cron.d/monitoring', '/etc/cron.d/monitoring',
+        context=get_context(env), use_jinja=True, use_sudo=True)
+    sudo('chown root:root /etc/cron.d/monitoring')
+    sudo('chmod 644 /etc/cron.d/monitoring')
+
 def setup_apache():
     with settings(hide('warnings', 'stdout', 'stderr')):
         # Enable mod_wsgi, mod_headers, mod_rewrite
@@ -480,6 +490,8 @@ def setup_apache():
 
         # Restart apache
         sudo('service apache2 restart')
+
+        setup_apache_monitoring()
 
 def setup_permissions():
     # Add the user we run commands with to the apache user group

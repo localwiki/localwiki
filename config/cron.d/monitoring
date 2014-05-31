@@ -1,0 +1,2 @@
+* * * * * root /root/cron/monitor_and_restart_apache.py {{ public_hostname }} >> /root/cron/logfile 2>&1
+
