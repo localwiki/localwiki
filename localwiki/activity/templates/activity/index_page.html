@@ -24,7 +24,7 @@
         {% else %}{% if change.version_info.type in deleted_types %}
             <span class="changelabel deleted"><span>{% trans "deleted"%}</span></span>
         {% else %}
-            <a class="changelabel updated" href="{{ change.diff_url }}"><span>{% trans "changes" %}</span></a></span>
+            <a class="changelabel updated" rel="nofollow" href="{{ change.diff_url }}"><span>{% trans "changes" %}</span></a></span>
         {% endif %}{% endif %}
 
         {% if change.version_info.type in reverted_types %}
