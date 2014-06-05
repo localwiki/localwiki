@@ -11,6 +11,9 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import stringfilter
 from django.contrib.gis.db import models
 
+from django_randomfilenamestorage.storage import (
+    RandomFilenameFileSystemStorage)
+
 
 class Region(models.Model):
     full_name = models.CharField(max_length=255,
@@ -62,11 +65,15 @@ LANGUAGES = [(lang[0], ugettext_lazy(lang[1])) for lang in settings.LANGUAGES]
 
 class RegionSettings(models.Model):
     region = models.OneToOneField(Region)
+
     # Can be null for meta regions, which may not have a geometry.
     region_center = models.PointField(null=True, blank=True)
     region_zoom_level = models.IntegerField(null=True, blank=True)
+
     admins = models.ManyToManyField(User, null=True)
     default_language = models.CharField(max_length=7, blank=True, null=True, choices=LANGUAGES)
+    logo = models.ImageField("logo", upload_to="regions/logos/",
+        storage=RandomFilenameFileSystemStorage(), null=True)
     is_meta_region = models.BooleanField(default=False)
 
     def __unicode__(self):

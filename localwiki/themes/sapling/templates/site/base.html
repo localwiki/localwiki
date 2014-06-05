@@ -96,7 +96,8 @@
         <div class="site_search search">{% include "site/search_form.html" %}</div>
         <div id="login_info">{% include "site/login_info.html" %}</div>
       </div>
-      <div id="region_header" {% if not region %}class="not_in_region" {% endif %}>
+      <div id="region_header"
+        {% if not region %}class="not_in_region"{% else %}{% if region.regionsettings.logo %}class="with_logo"{% endif %}{% endif %}>
         {% if region %}<div id="region_title">{% include "site/region_title.html" %}</div>{% endif %}
           <div id="nav">
             <a href="#" id="pull"></a>

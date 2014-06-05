@@ -297,8 +297,18 @@ textarea, input, select {
     width: 130px;
 }
 
+#region_header #new_page_area {
+  float: right;
+}
+
+#region_header.with_logo #new_page_area > div {
+  height: 56px;
+  display: table-cell;
+  vertical-align: middle; 
+}
+
 #region_header #new_page_button {
-    float: right;
+    float: none;
     display: inline-block;
     margin-right: 2em;
     background-image: url(../img/edit_icon.png);
@@ -311,6 +321,7 @@ textarea, input, select {
     padding-right: 0.8em;
     font-weight: normal;
 }
+
 #region_header #new_page_form {
     display: none;
     float: right;
@@ -348,8 +359,8 @@ textarea, input, select {
     color: #111;
 }
 #region_title img {
-    margin-top: -0.4em;
-    padding-bottom: 1.6em; /* make sure there's room for #nav */
+    border: 1px solid red;
+    height: 56px;
     display: block; /* region_title contains either an h1 (block) or an img,
                        so let's make this more consistent */
 }
@@ -371,6 +382,12 @@ textarea, input, select {
         font-size: 75%;
         border-right: none;
         padding-right: 0;
+    }
+    #region_header.with_logo #new_page_area > div {
+        height: 37px;
+    }
+    #region_title img {
+        height: 37px;
     }
     #region_header #new_page_button {
         font-size: 70%;

@@ -1,7 +1,15 @@
 {% load url from future %}
+{% load thumbnail %}
+
 {% block region_title %}
 {% if region %}
-  <h1><a href="{% url 'frontpage' region=region.slug %}">{{ region.full_name }}</a></h1>
+  {% if region.regionsettings.logo %}
+    {% thumbnail region.regionsettings.logo "x56" as im %}
+      <a href="{% url 'frontpage' region=region.slug %}"><img src="{{ im.url }}" srcset="{{ im.url|resolution:"2x" }} 2x, {{ im.url|resolution:"1.5x" }} 1.5x" alt="{{ region.full_name }}"/></a>
+    {% endthumbnail %}
+  {% else %}
+    <h1><a href="{% url 'frontpage' region=region.slug %}">{{ region.full_name }}</a></h1>
+  {% endif %}
 {% else %}
 {% endif %}
 {% endblock %}

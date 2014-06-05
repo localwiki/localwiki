@@ -1,8 +1,12 @@
 {% load i18n %}
 
-<a href="#" class="little button" id="new_page_button">{% trans "Add a new page" %}</a>
-<form method="GET" action="{% url 'pages:create' region=region.slug %}" id="new_page_form">
-<input type="text" name="pagename" id="pagename" placeholder="{% trans 'Name of page' %}"/>
-<input type="hidden" name="show_templates" value="1" />
-<input type="submit" value="{% trans 'Add a new page' %}" class="little">
-</form>
+<div id="new_page_area">
+  <div>
+    <a href="#" class="little button" id="new_page_button">{% trans "Add a new page" %}</a>
+    <form method="GET" action="{% url 'pages:create' region=region.slug %}" id="new_page_form">
+    <input type="text" name="pagename" id="pagename" placeholder="{% trans 'Name of page' %}"/>
+    <input type="hidden" name="show_templates" value="1" />
+    <input type="submit" value="{% trans 'Add a new page' %}" class="little">
+    </form>
+  </div>
+</div>
