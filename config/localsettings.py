@@ -5,9 +5,10 @@ DEBUG = False
 #######################################################################
 
 ALLOWED_HOSTS = ['.{{ public_hostname }}', '127.0.0.1', '.localhost']
+XSESSION_DOMAINS = [{% for hostname in xsession_domains %}'{{ hostname }}', {% endfor %}]
 
 SESSION_COOKIE_DOMAIN = '.{{ public_hostname }}'
-if SESSION_COOKIE_DOMAIN == '.localhost':
+if SESSION_COOKIE_DOMAIN.endswith('.localhost'):
     SESSION_COOKIE_DOMAIN = None
 
 DATABASES = {

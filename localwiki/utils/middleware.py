@@ -1,8 +1,12 @@
 import threading
+import time
 import re
 
-from django.middleware.cache import (UpdateCacheMiddleware,
-    FetchFromCacheMiddleware)
+from django.middleware.cache import UpdateCacheMiddleware
+from django.utils.cache import patch_vary_headers
+from django.utils.http import cookie_date
+from django.middleware.cache import FetchFromCacheMiddleware as DefaultFetchFromCacheMiddleware
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.core.exceptions import MiddlewareNotUsed
 from django.conf import settings
 from django.utils.importlib import import_module
@@ -76,6 +80,14 @@ class UpdateCacheMiddlewareNoHeaders(UpdateCacheMiddleware):
         return response
 
 
+# XXX TODO: Hacky. Kill this when on Varnish, as it's not needed. We will
+# simply Vary on the Host header with Varnish and disable the cache middleware.
+class UpdateCacheMiddlewareHostHeader(UpdateCacheMiddleware):
+    def process_response(self, request, response):
+        self.key_prefix = settings.CACHE_MIDDLEWARE_KEY_PREFIX + request.META['HTTP_HOST']
+        return super(UpdateCacheMiddlewareHostHeader, self).process_response(request, response)
+
+
 class UpdateCacheMiddlewareNoEdit(UpdateCacheMiddleware):
     """
     Just like UpdateCacheMiddleware but don't cache anything from anyone
@@ -99,11 +111,11 @@ class UpdateCacheMiddlewareNoEdit(UpdateCacheMiddleware):
         return True
 
 
-class UpdateCacheMiddleware(UpdateCacheMiddlewareNoEdit, UpdateCacheMiddlewareNoHeaders):
+class UpdateCacheMiddleware(UpdateCacheMiddlewareHostHeader, UpdateCacheMiddlewareNoEdit, UpdateCacheMiddlewareNoHeaders):
     pass
 
 
-class FetchFromCacheMiddleware(FetchFromCacheMiddleware):
+class FetchFromCacheMiddleware(DefaultFetchFromCacheMiddleware):
     STRIP_RE = re.compile(r'\b(_[^=]+=.+?(?:; |$))')
 
     def process_request(self, request):
@@ -113,6 +125,10 @@ class FetchFromCacheMiddleware(FetchFromCacheMiddleware):
 
         if request.user.is_authenticated() or request.session.get('has_POSTed'):
             return False  # Don't cache if they've posted or are authenticated
+
+        # XXX HACK: remove once we're on Varnish.
+        self.key_prefix = settings.CACHE_MIDDLEWARE_KEY_PREFIX + request.META['HTTP_HOST']
+
         return super(FetchFromCacheMiddleware, self).process_request(request)
 
 
@@ -139,6 +155,50 @@ class SubdomainLanguageMiddleware(object):
             lang = settings.LANGUAGE_CODE
         translation.activate(lang)
         request.LANGUAGE_CODE = lang
+
+
+class SessionMiddleware(SessionMiddleware):
+    """
+    A variant of SessionMiddleware that plays nicely with
+    non-canonical LocalWiki (rare) custom domain names.
+    """
+    def process_response(self, request, response):
+        session_cookie_domain = settings.SESSION_COOKIE_DOMAIN
+        hostname = request.META['HTTP_HOST'].split(':')[0]
+        if session_cookie_domain:
+            if not hostname.startswith(session_cookie_domain.lstrip('.')):
+                # Set to empty to allow the cookie to be set. This means
+                # subdomains aren't allowed here.
+                session_cookie_domain = ''
+
+        # Copied from SessionMiddleware (can't subclass due to hard-coded settings)
+        try:
+            accessed = request.session.accessed
+            modified = request.session.modified
+        except AttributeError:
+            pass
+        else:
+            if accessed:
+                patch_vary_headers(response, ('Cookie',))
+            if modified or settings.SESSION_SAVE_EVERY_REQUEST:
+                if request.session.get_expire_at_browser_close():
+                    max_age = None
+                    expires = None
+                else:
+                    max_age = request.session.get_expiry_age()
+                    expires_time = time.time() + max_age
+                    expires = cookie_date(expires_time)
+                # Save the session data and refresh the client cookie.
+                # Skip session save for 500 responses, refs #3881.
+                if response.status_code != 500:
+                    request.session.save()
+                    response.set_cookie(settings.SESSION_COOKIE_NAME,
+                            request.session.session_key, max_age=max_age,
+                            expires=expires, domain=session_cookie_domain,
+                            path=settings.SESSION_COOKIE_PATH,
+                            secure=settings.SESSION_COOKIE_SECURE or None,
+                            httponly=settings.SESSION_COOKIE_HTTPONLY or None)
+        return response
 
 
 # NOTE: Thread-local is usually a bad idea.  However, in this case

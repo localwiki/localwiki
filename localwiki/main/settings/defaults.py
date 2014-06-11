@@ -211,7 +211,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     'utils.middleware.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'utils.middleware.SessionMiddleware',
+    'django_xsession.middleware.XSessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'utils.middleware.SubdomainLanguageMiddleware',
     'regions.middleware.RedirectToLanguageSubdomainMiddleware',
@@ -227,6 +228,8 @@ MIDDLEWARE_CLASSES = (
     'utils.middleware.FetchFromCacheMiddleware',
     'utils.middleware.TrackPOSTMiddleware',
 )
+
+XSESSION_FILENAME = '_utils/xsession_loader.js'
 
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
@@ -290,6 +293,7 @@ INSTALLED_APPS = (
     'static_sitemaps',
     'djcelery_email',
     'actstream',
+    'django_xsession',
 
     # Our apps
     'versionutils.versioning',

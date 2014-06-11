@@ -1,6 +1,8 @@
 {% load static from staticfiles %}
 {% load i18n %}
 {% load cache %}
+{% load django_xsession %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,6 +47,7 @@
     <script type="text/javascript" src="{% static "theme/js/handlebars.min.js" %}"></script>
     <script type="text/javascript" src="{% static "theme/js/typeahead.min.js" %}"></script>
     <script type="text/javascript" src="{% static "theme/js/base.js" %}"></script>
+    {% xsession_loader %}
 
     <link rel="stylesheet" href="{% static "theme/css/font_face.css" %}">
     <link rel="stylesheet" href="{% static "theme/css/reset.css" %}">

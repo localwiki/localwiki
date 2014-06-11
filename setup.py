@@ -166,6 +166,7 @@ install_requires = [
     'django-activity-stream==0.4.5beta1',
     'django-jsonfield==0.9.12',
     'raven==4.2.1',
+    'django-xsession==0.1',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
@@ -197,6 +198,7 @@ setup(
         'https://github.com/philipn/django-endless-pagination/tarball/zip_safe#egg=django-endless-pagination-2.0',
         'https://github.com/philipn/django-static-sitemaps/tarball/localwiki#egg=django-static-sitemaps-2.1.0-custom1',
         'https://github.com/philipn/django-celery-email/tarball/localwiki#egg=django-celery-email-1.0.4-custom1',
+        'https://github.com/philipn/django-xsession/tarball/master#egg=django-xsession-0.1',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=localwiki.manage:main'],
