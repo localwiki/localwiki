@@ -10,7 +10,7 @@ from django.template import RequestContext
 from django.views.generic import (DetailView, ListView,
     FormView)
 from django.http import (HttpResponseNotFound, HttpResponseRedirect,
-                         HttpResponseBadRequest, HttpResponse)
+                         HttpResponseBadRequest, HttpResponse, Http404)
 from django import forms
 from django.core.urlresolvers import reverse
 from django.contrib import messages
@@ -52,10 +52,10 @@ class PageDetailView(Custom404Mixin, AddContributorsMixin, RegionMixin, DetailVi
 
     def handler404(self, request, *args, **kwargs):
         name = url_to_name(kwargs['original_slug'])
-        region = Region.objects.filter(slug=kwargs['region'])
-        if not region:
+        try:
+            region = self.get_region(request=request, kwargs=kwargs)
+        except Http404:
             return region_404_response(request, kwargs['region']) 
-        region = region[0]
         slug = kwargs['slug']
 
         page_templates = Page.objects.filter(

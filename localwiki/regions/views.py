@@ -36,12 +36,21 @@ class RegionMixin(object):
     """
     Provides helpers to views that deal with Regions.
     """
-    def get_region(self):
+    def get_region(self, request=None, kwargs=None):
         """
         Returns the Region associated with this view.
         """
-        r = get_object_or_404(Region,
-            slug=slugify(self.kwargs.get('region')))
+        if kwargs is None:
+            kwargs = self.kwargs
+        if request is None:
+            request = self.request
+
+        if kwargs.get('region'):
+            region_slug = kwargs.get('region')
+            r = get_object_or_404(Region, slug=slugify(region_slug))
+        else:
+            rs = get_object_or_404(RegionSettings, domain=request.META['HTTP_HOST'])
+            r = rs.region
         if not r.is_active:
             raise Http404(_("Region '%s' was deleted." % r.slug))
         return r

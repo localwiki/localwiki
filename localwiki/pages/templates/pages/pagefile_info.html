@@ -1,7 +1,5 @@
 {% extends "pages/base.html" %}
 
-{% load url from future %}
-
 {% load i18n %}
 
 {% block head_extra %}{{ block.super }}<link rel="alternate" href="{% url 'pages:file-changes-feed' slug=file.slug file=file.name region=file.region.slug %}" type="application/rss+xml" title="{% trans "Recent changes for this file" %}"/>{% endblock %}

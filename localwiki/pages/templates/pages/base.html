@@ -1,12 +1,13 @@
 {% extends "site/base.html" %}
 
-{% load url from future %}
 {% load i18n %}
 {% load static from staticfiles %}
 {% load follow_tags %}
 
+{% comment %}
 {% block head_extra %}{% if page %}<link rel="alternate" href="{% url 'pages:changes-feed' slug=page.pretty_slug region=page.region.slug %}" type="application/rss+xml" title="{% trans "Recent changes on this Page" %}"/>{% endif %}{% endblock %}
-  
+{% endcomment %} 
+
 {% block media %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static "theme/pages/css/pages.css" %}">

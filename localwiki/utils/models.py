@@ -14,3 +14,7 @@ def populate_with_signal(cls):
 if not hasattr(AppCache, '_populate_orig'):
     AppCache._populate_orig = AppCache._populate
     AppCache._populate = populate_with_signal
+
+
+from django.template import add_to_builtins
+add_to_builtins('utils.templatetags.smart_url')

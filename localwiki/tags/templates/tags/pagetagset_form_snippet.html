@@ -1,4 +1,4 @@
-{% load url from future %}
+
 {% load i18n %}
 
 <form action="{% url 'pages:tags' slug=form.instance.page.pretty_slug region=form.instance.region.slug %}" method="POST">

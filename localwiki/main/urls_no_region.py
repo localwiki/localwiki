@@ -72,7 +72,8 @@ urlpatterns = patterns('',
     # (Usually served via apache, but including here as well if using dev server)
     url(r'^sitemap.xml', include('static_sitemaps.urls')),
 
-    (r'^(?P<region>[^/]+?)/(((?i)Front[_ ]Page)/?)?', include('frontpage.urls')),
+    # XXX
+    #(r'^(?P<region>[^/]+?)/(((?i)Front[_ ]Page)/?)?', include('frontpage.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
@@ -88,5 +89,5 @@ if not settings.DEBUG:
 
 # Fall back to pages.
 urlpatterns += patterns('',
-    (r'^(?P<region>[^/]+?)/', include(pages.site.urls)),
+    (r'^', include(pages.site.urls)),
 )

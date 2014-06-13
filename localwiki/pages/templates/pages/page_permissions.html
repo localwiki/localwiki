@@ -1,7 +1,5 @@
 {% extends "pages/base.html" %}
 
-{% load url from future %}
-
 {% load i18n %}
 
 {% block title %}{% blocktrans with name=form.instance.name super=block.super %}Permissions for page "{{ name }}" - {{ super }}{% endblocktrans %}{% endblock %}

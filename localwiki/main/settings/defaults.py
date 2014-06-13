@@ -209,6 +209,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django_hosts.middleware.HostsMiddleware',
     'utils.middleware.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'utils.middleware.SessionMiddleware',
@@ -249,6 +250,8 @@ CACHES = {
 }
 
 ROOT_URLCONF = 'main.urls'
+ROOT_HOSTCONF = 'main.hosts'
+DEFAULT_HOST = 'hub'
 
 TEMPLATE_DIRS = (
     os.path.join(DATA_ROOT, 'templates'),
@@ -293,6 +296,7 @@ INSTALLED_APPS = (
     'static_sitemaps',
     'djcelery_email',
     'actstream',
+    'django_hosts',
     'django_xsession',
 
     # Our apps
@@ -419,3 +423,5 @@ CONSTANCE_CONFIG = {
     'GOOGLE_ANALYTICS_SUBDOMAINS': ('', 'Subdomain value to pass to GA _setDomainName'),
     'GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS': ('', 'Truthy/Falsey value to trigger GA _setAllowLinker'),
 }
+
+TEMPLATE_STRING_IF_INVALID = "%s"
