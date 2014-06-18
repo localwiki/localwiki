@@ -8,19 +8,15 @@ from .feeds import ActivityFeedSyndication
 
 urlpatterns = patterns('',
     # Changes within a region
-    url(r'^(?P<region>[^/]+?)/_activity/?$', RegionActivity.as_view(),
-        name='region-activity'),
+    url(r'^(?P<region>[^/]+?)/_activity/?$', RegionActivity.as_view(), name='region-activity'),
     # RSS/Atom feed of changes within a region
-    url(r'^(?P<region>[^/]+?)/_activity/_feed/?$', ActivityFeedSyndication(),
-        name='activity-syndication'),
+    url(r'^(?P<region>[^/]+?)/_activity/_feed/?$', ActivityFeedSyndication(), name='activity-syndication'),
 
     # Changes made by a particular user 
-    url(r'^_activity/users/(?P<username>[^/]+?)/?$', UserActivity.as_view(),
-        name='user-activity'),
+    url(r'^_activity/users/(?P<username>[^/]+?)/?$', UserActivity.as_view(), name='user-activity'),
 
     # Changes for -all- of LocalWiki
-    url(r'^_activity/?$', AllActivity.as_view(),
-        name='all-activity'),
+    url(r'^_activity/?$', AllActivity.as_view(), name='all-activity'),
 
     ##################################################
     # Legacy URLs for "Recent Changes" URL name here.

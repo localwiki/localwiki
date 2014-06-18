@@ -3,13 +3,14 @@ from django.template.loader_tags import BaseIncludeNode
 from django.template import Template
 from django.utils.translation import ugettext as _
 from django.conf import settings
+from django.utils.text import unescape_string_literal
+
+from localwiki.utils.urlresolvers import reverse
 
 from pages.plugins import html_to_template_text, SearchBoxNode
 from pages.plugins import LinkNode, EmbedCodeNode
 from pages import models
-from django.utils.text import unescape_string_literal
 from pages.models import Page, slugify
-from django.core.urlresolvers import reverse
 
 register = template.Library()
 
@@ -106,7 +107,7 @@ class IncludePageNode(IncludeContentNode):
             slug = self.page.pretty_slug
         else:
             slug = name_to_url(self.name)
-        return reverse('pages:show', args=[self.region.slug, slug])
+        return reverse('pages:show', kwargs={'region': self.region.slug, 'slug': slug})
 
     def get_content(self, context):
         if not self.page:

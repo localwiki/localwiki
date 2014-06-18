@@ -57,6 +57,7 @@ class TaggedList(RegionMixin, ListView):
         # tags list page
         from maps.views import MapForTag
         map_view = MapForTag()
+        map_view.request = self.request
         map_view.kwargs = dict(tag=self.tag.slug, region=self.get_region().slug)
         map_view.object_list = map_view.get_queryset()
         return map_view.get_map_objects()

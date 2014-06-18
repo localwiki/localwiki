@@ -59,14 +59,21 @@ class BaseFieldDiff(object):
     __metaclass__ = forms.MediaDefiningClass
     template = None
 
-    def __init__(self, field1, field2):
+    def __init__(self, field1, field2, context=None):
         """
         Args:
             field1: The first value you want to diff.
             field2: The second value you want to diff, against field1.
+
+        Keyword args:
+            context: Optional context for HTML and string rendering.
         """
         self.field1 = field1
         self.field2 = field2
+        
+        if context is None:
+            context = {}
+        self.context = context
 
     def get_diff(self):
         """
@@ -88,15 +95,18 @@ class BaseFieldDiff(object):
         """
         return self.get_diff()
 
-    def as_html(self):
+    def as_html(self, context=None):
         """
         Returns:
             A string of the diff between field1 and field2.  These are normally
             one row of an HTML table, with two cells in a side-by-side diff.
         """
+        context = self.context if context is None else context
+
         diff = self.as_dict()
+        context.update(diff)
         if self.template:
-            return render_to_string(self.template, diff)
+            return render_to_string(self.template, context)
 
         if diff is None:
             return ('<tr><td colspan="2">(%s)</td></tr>' 
@@ -147,7 +157,7 @@ class BaseModelDiff(object):
     fields = None
     excludes = ()
 
-    def __init__(self, model1, model2, model_class=None):
+    def __init__(self, model1, model2, model_class=None, context=None):
         """
         Args:
             model1: The first model instance you want to diff.
@@ -164,6 +174,10 @@ class BaseModelDiff(object):
             self.model_class = self.model1.__class__
         self._diff = None
 
+        if context is None:
+            context = {}
+        self.context = context
+
     def as_dict(self):
         """
         Returns:
@@ -178,7 +192,7 @@ class BaseModelDiff(object):
             diffs = None
         return diffs
 
-    def as_html(self):
+    def as_html(self, context=None):
         """
         Renders the diffs between the model instances as an HTML table. Only
         those fields that are different will be rendered as rows in the
@@ -194,12 +208,15 @@ class BaseModelDiff(object):
             display_order = self.fields
         else:
             display_order = diffs.keys()
+
+        context = self.context if context is None else context
+
         for name in display_order:
             if not isinstance(name, basestring):
                 name = name[0]
             if diffs[name].get_diff():
                 diff_str.append('<tr><td colspan="2">%s</td></tr>' % (name, ))
-                diff_str.append('%s' % (diffs[name], ))
+                diff_str.append('%s' % (diffs[name].as_html(context=context), ))
         if diff_str:
             return '\n'.join(diff_str)
         return ('<tr><td colspan="2">%s</td></tr>'
@@ -245,9 +262,9 @@ class BaseModelDiff(object):
                 else:
                     base_class = obj1.__class__
                 diff[field_name] = diff_class(obj1, obj2,
-                    model_class=base_class)
+                    model_class=base_class, context=self.context)
             else:
-                diff[field_name] = diff_class(obj1, obj2)
+                diff[field_name] = diff_class(obj1, obj2, context=self.context)
 
         self._diff = diff
         return diff
@@ -287,12 +304,16 @@ class TextFieldDiff(BaseFieldDiff):
     """
     template = 'diff/text_diff.html'
 
-    def as_html(self):
+    def as_html(self, context=None):
         d = self.get_diff()
+
+        context = self.context if context is None else context
+        context.update({'diff': d})
+
         if d is None:
             return ('<tr><td colspan="2">(%s)</td></tr>' 
                      % _('No differences found'))
-        return render_to_string(self.template, {'diff': d})
+        return render_to_string(self.template, context)
 
     def get_diff(self):
         return get_diff_operations_clean(self.field1, self.field2)
@@ -307,7 +328,7 @@ class HtmlFieldDiff(BaseFieldDiff):
     """
     DAISYDIFF_URL = getattr(settings, 'DAISYDIFF_URL', 'http://localhost:8080')
 
-    def as_html(self):
+    def as_html(self, context=None):
         d = self.get_diff()
         if d is None:
             return ('<tr><td colspan="2">(%s)</td></tr>'
@@ -316,7 +337,7 @@ class HtmlFieldDiff(BaseFieldDiff):
             return daisydiff.daisydiff(d['deleted'], d['inserted'],
                                        self.DAISYDIFF_URL)
         except:
-            return TextFieldDiff(d['deleted'], d['inserted']).as_html()
+            return TextFieldDiff(d['deleted'], d['inserted']).as_html(context=context)
 
     def get_diff(self):
         if self.field1 == self.field2:
@@ -370,12 +391,15 @@ class FileFieldDiff(BaseFieldDiff):
         }
         return diff
 
-    def as_html(self):
+    def as_html(self, context=None):
         d = self.get_diff()
+        context = self.context if context is None else context
+        context.update({'diff': d})
+
         if d is None:
             return ('<tr><td colspan="2">(%s)</td></tr>'
                     % _('No differences found'))
-        return render_to_string(self.template, {'diff': d})
+        return render_to_string(self.template, context)
 
 
 class ImageFieldDiff(FileFieldDiff):
@@ -384,12 +408,15 @@ class ImageFieldDiff(FileFieldDiff):
     """
     template = 'diff/image_diff.html'
 
-    def as_html(self):
+    def as_html(self, context=None):
         d = self.get_diff()
+        context = self.context if context is None else context
+        context.update({'diff': d})
+
         if d is None:
             return ('<tr><td colspan="2">(%s)</td></tr>'
                     % _('No differences found'))
-        return render_to_string(self.template, {'diff': d})
+        return render_to_string(self.template, context)
 
 
 class GeometryFieldDiff(BaseFieldDiff):
@@ -469,7 +496,7 @@ class GeometryFieldDiff(BaseFieldDiff):
 
         return {'same': same, 'deleted': deleted, 'inserted': inserted}
 
-    def as_html(self):
+    def as_html(self, context=None):
         from django.contrib.gis.geos import Polygon, MultiPolygon
         from django.contrib.gis.geos import GeometryCollection
         from olwidget.widgets import InfoMap
@@ -482,6 +509,8 @@ class GeometryFieldDiff(BaseFieldDiff):
                 else:
                     l.append(p)
             return MultiPolygon(l, srid=field.srid)
+
+        context = self.context if context is None else context
 
         POLY_TYPES = [Polygon, MultiPolygon]
         olwidget_options = None
@@ -571,9 +600,9 @@ class GeometryFieldDiff(BaseFieldDiff):
             ),
         ], options=olwidget_options)
 
-        return render_to_string(self.template, {
-            'deleted': deleted, 'inserted': inserted
-        })
+        context.update({'deleted': deleted, 'inserted': inserted})
+
+        return render_to_string(self.template, context)
 
     def _media(self):
         from olwidget.widgets import InfoMap
@@ -692,7 +721,7 @@ def register(model_or_field, diff_util):
     registry.register(model_or_field, diff_util)
 
 
-def diff(object1, object2):
+def diff(object1, object2, context=None):
     """
     Compares two objects (such as model instances) and returns an object that
     can be used to render the differences between the two objects.
@@ -738,13 +767,16 @@ def diff(object1, object2):
         DiffUtilNotFound: If there's no registered or inferred diff for
         the objects.
     """
+    if context is None:
+        context = {}
+
     if is_historical_instance(object1):
         base_class = object1.version_info._object.__class__
     else:
         base_class = object1.__class__
 
     diff_util = registry.get_diff_util(base_class)
-    return diff_util(object1, object2, model_class=base_class)
+    return diff_util(object1, object2, model_class=base_class, context=context)
 
 
 # Built-in diff utils provided for some of the Django field types.

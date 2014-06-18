@@ -50,18 +50,18 @@ from urlparse import urlparse
 from copy import copy
 
 from django.template import Node
-from django.core.urlresolvers import reverse
 from django.utils.text import unescape_entities
 from django.utils.translation import  ugettext as _
 from django.conf import settings
 
 from ckeditor.models import parse_style, sanitize_html_fragment
 from redirects.models import Redirect
+from localwiki.utils.urlresolvers import reverse
 
-from fields import WikiHTMLField
-from models import Page, name_to_url, url_to_name, PageFile
-from models import slugify
-from exceptions import IFrameSrcNotApproved
+from .fields import WikiHTMLField
+from .models import Page, name_to_url, url_to_name, PageFile
+from .models import slugify
+from .exceptions import IFrameSrcNotApproved
 
 
 def sanitize_intermediate(html):
@@ -240,8 +240,7 @@ def handle_image(elem, context=None):
     else:
         elem.attrib['src'] = file.file.url
     info_url = reverse('pages:file-info',
-                       args=[page.region.slug, page.pretty_slug,
-                             file.name])
+        kwargs={'region': page.region.slug, 'slug': page.pretty_slug, 'file': file.name})
     link = etree.Element('a')
     link.attrib['href'] = info_url
     elem.addprevious(link)
@@ -331,7 +330,11 @@ class LinkNode(Node):
                 if url.startswith('_files/'):
                     filename = file_url_to_name(url)
                     url = reverse('pages:file-info',
-                            args=[region.slug, page.pretty_slug, filename])
+                            kwargs={
+                                'region': region.slug,
+                                'slug': page.pretty_slug,
+                                'file': filename}
+                    )
                     try:
                         file = PageFile.objects.get(
                             slug__exact=page.slug, region=region, name__exact=filename)
@@ -344,14 +347,14 @@ class LinkNode(Node):
                 else:
                     try:
                         page = Page.objects.get(slug__exact=slugify(url), region=region)
-                        url = reverse('pages:show', args=[region.slug, page.pretty_slug])
+                        url = reverse('pages:show', kwargs={'region': region.slug, 'slug': page.pretty_slug})
                     except Page.DoesNotExist:
                         # Check if Redirect exists.
                         if not Redirect.objects.filter(source=slugify(url), region=region):
                             cls = ' class="missing_link"'
                         # Convert to proper URL: My%20page -> My_page
                         url = name_to_url(url_to_name(url))
-                        url = reverse('pages:show', args=[region.slug, url])
+                        url = reverse('pages:show', kwargs={'region': region.slug, 'slug': url})
             return '<a href="%s"%s>%s</a>' % (url, cls,
                                               self.nodelist.render(context))
         except:

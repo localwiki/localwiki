@@ -31,6 +31,7 @@
             var region_id = {{ region.id }};
             var region_slug = '{{ region.slug }}';
             var region_name = '{{ region.full_name }}';
+            var home_hostname = '{{ MAIN_HOSTNAME }}';
             {% if is_region_admin %}
             var region_is_admin = true;
             {% else %}

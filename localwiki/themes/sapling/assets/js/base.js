@@ -109,7 +109,12 @@ $(document).ready(function() {
             {
                 // Footer: search within this region
                 source: function(q, cb) {
-                    return cb([{'value': q, 'url': '/_search/' + region_slug + '/?q=' + q}]);
+                    if (window.location.host == home_hostname) {
+                        var search_url = '/_rsearch/' + region_slug + '/?q=' + q;
+                    } else {
+                        var search_url = '/_rsearch/' + '?q=' + q;
+                    }
+                    return cb([{'value': q, 'url': search_url }]);
                 },
                 templates: {
                     header: Handlebars.compile('<div class="autocomplete_divider"></div>'),
@@ -122,7 +127,7 @@ $(document).ready(function() {
             {
                 // Footer: search all of LocalWiki
                 source: function(q, cb) {
-                    return cb([{'value': q, 'url': '/_search/?q=' + q}]);
+                    return cb([{'value': q, 'url': '//' + home_hostname + '/_search/?q=' + q}]);
                 },
                 templates: {
                     header: Handlebars.compile('<div class="autocomplete_divider"></div>'),

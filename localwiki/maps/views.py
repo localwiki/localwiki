@@ -7,7 +7,6 @@ from django.views.generic import DetailView, ListView
 from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from django.http import HttpResponseNotFound
-from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.db import IntegrityError
 from django.views.generic.list import BaseListView
@@ -22,10 +21,11 @@ from django.utils.html import escape
 from versionutils import diff
 from utils.views import (Custom404Mixin, CreateObjectMixin, JSONResponseMixin,
     JSONView, PermissionRequiredMixin, DeleteView, RevertView)
+from utils.urlresolvers import reverse
 from versionutils.versioning.views import UpdateView
 from versionutils.versioning.views import VersionsList
 from pages.models import Page, slugify, name_to_url, page_url
-from regions.views import RegionMixin
+from regions.views import RegionMixin, region_404_response
 from regions.models import Region
 from users.views import AddContributorsMixin
 
@@ -40,12 +40,16 @@ class MapDetailView(Custom404Mixin, AddContributorsMixin, RegionMixin, DetailVie
 
     def handler404(self, request, *args, **kwargs):
         page_slug = kwargs.get('slug')
-        region_slug = kwargs.get('region')
-        region = Region.objects.get(slug=region_slug)
+        try:
+            region = self.get_region(request=request, kwargs=kwargs)
+        except Http404:
+            return region_404_response(request, kwargs['region']) 
+
         try:
             page = Page.objects.get(slug=slugify(page_slug), region=region)
         except Page.DoesNotExist:
             page = Page(slug=slugify(page_slug), region=region)
+
         mapdata = MapData(page=page, region=region)
         return HttpResponseNotFound(
             render(request, 'maps/mapdata_new.html',
@@ -182,12 +186,12 @@ class MapForTag(MapGlobalView):
         return MapData.objects.filter(page__in=pages).order_by('-length')
 
     def get_map_title(self):
+        region = self.get_region()
         d = {
-            'map_url': reverse('maps:global', args=[self.kwargs['region']]),
-            'tag_url': reverse('tags:list', args=[self.kwargs['region']]),
+            'map_url': reverse('maps:global', kwargs={'region' : region.slug}),
+            'tag_url': reverse('tags:list', kwargs={'region': region.slug}),
             'page_tag_url': reverse('tags:tagged',
-                kwargs={'slug': self.tag.slug,
-                        'region': self.kwargs['region']}),
+                kwargs={'slug': self.tag.slug, 'region': region.slug}),
             'tag_name': escape(self.tag.name)
         }
         return (
@@ -300,7 +304,7 @@ class MapUpdateView(PermissionRequiredMixin, CreateObjectMixin, RegionMixin, Upd
 
     def get_success_url(self):
         return reverse('maps:show',
-            args=[self.object.region.slug, self.object.page.pretty_slug])
+            kwargs={'region': self.object.region.slug, 'slug': self.object.page.pretty_slug})
 
 
 class MapCreateWithoutPageView(MapUpdateView):
@@ -331,7 +335,7 @@ class MapCreateWithoutPageView(MapUpdateView):
     def success_msg(self):
         return (
             _('Map saved! You should probably go <a href="%s">edit the page that was created</a>, too.') %
-            reverse('pages:edit', args=[self.kwargs.get('region'), self.object.page.name])
+            reverse('pages:edit', kwargs={'region': self.get_region().slug, 'slug': self.object.page.name})
         )
 
     def get_context_data(self, *args, **kwargs):
@@ -361,7 +365,7 @@ class MapDeleteView(PermissionRequiredMixin, MapDetailView, DeleteView):
     def get_success_url(self):
         # Redirect back to the map.
         return reverse('maps:show',
-            args=[self.kwargs.get('region'), self.kwargs.get('slug')])
+            kwargs={'region': self.get_region().slug, 'slug': self.kwargs.get('slug')})
 
     def get_protected_object(self):
         return self.object.page
@@ -377,7 +381,7 @@ class MapRevertView(MapVersionDetailView, RevertView):
     def get_success_url(self):
         # Redirect back to the map.
         return reverse('maps:show',
-            args=[self.kwargs.get('region'), self.kwargs.get('slug')])
+            kwargs={'region': self.get_region().slug, 'slug': self.kwargs.get('slug')})
 
     def get_context_data(self, **kwargs):
         context = super(DetailView, self).get_context_data(**kwargs)

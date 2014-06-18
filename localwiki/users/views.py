@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 from guardian.shortcuts import get_users_with_perms, assign_perm, remove_perm
 from follow.models import Follow
 
+from versionutils.versioning.utils import is_versioned
 from regions.models import Region
 from regions import get_main_region
 from regions.views import RegionMixin, RegionAdminRequired
@@ -270,6 +271,9 @@ class AddContributorsMixin(object):
     def get_context_data(self, **kwargs):
         context = super(AddContributorsMixin, self).get_context_data(**kwargs)
         obj = self.get_object()
+
+        if not is_versioned(obj):
+            return context
 
         users_by_edit_count = obj.versions.exclude(history_user__isnull=True).order_by('history_user').values('history_user').annotate(nedits=Count('history_user')).order_by('-nedits')
         top_3 = users_by_edit_count[:3]

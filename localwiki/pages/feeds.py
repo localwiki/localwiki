@@ -1,9 +1,9 @@
-from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
 import activity
 from activity import ActivityForModel
 from activity.feeds import ChangesOnItemFeed
+from localwiki.utils.urlresolvers import reverse
 
 from models import Page, PageFile, slugify
 

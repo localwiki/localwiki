@@ -29,12 +29,14 @@ olwidget_options['map_options'] = map_opts
 olwidget_options['map_div_class'] = 'mapwidget'
 
 
-@register.simple_tag
-def page_card(page):
+@register.simple_tag(takes_context=True)
+def page_card(context, page):
     from maps.widgets import map_options_for_region
     cache = get_cache('long-living')
+    request = context['request']
+    host = request.META['HTTP_HOST']
 
-    card = cache.get('card:%s' % page.id)
+    card = cache.get('card:%s,%s' % (page.id, host))
     if card:
         return card
 
@@ -56,7 +58,7 @@ def page_card(page):
         'file': _file,
         'map': _map,
     })
-    cache.set('card:%s' % page.id, card)
+    cache.set('card:%s,%s' % (page.id, host), card)
     return card
 
 def _clear_card(sender, instance, *args, **kwargs):

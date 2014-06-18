@@ -1,3 +1,5 @@
+from copy import copy
+
 from django import template
 from django.template.loader import render_to_string
 
@@ -12,14 +14,14 @@ from tags.views import TaggedList
 register = template.Library()
 
 
-@register.simple_tag
-def page_tags(page):
+@register.simple_tag(takes_context=True)
+def page_tags(context, page):
     try:
         tag_list = page.pagetagset.tags.all()
     except PageTagSet.DoesNotExist:
         tag_list = []
-    return render_to_string('tags/tag_list_snippet.html',
-                            {'tag_list': tag_list})
+    context['tag_list'] = tag_list
+    return render_to_string('tags/tag_list_snippet.html', context)
 
 
 @register.simple_tag(takes_context=True)
@@ -62,6 +64,9 @@ class IncludeTagNode(IncludeContentNode):
 
         view = TaggedList()
         view.kwargs = dict(slug=self.name, region=region.slug)
+        view.request = context['request']
         view.object_list = view.get_queryset()
-        data = view.get_context_data(object_list=view.object_list)
-        return render_to_string('tags/tagged_list_snippet.html', data)
+
+        context = copy(context)
+        context.update(view.get_context_data(object_list=view.object_list))
+        return render_to_string('tags/tagged_list_snippet.html', context)

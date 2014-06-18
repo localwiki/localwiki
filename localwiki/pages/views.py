@@ -12,7 +12,6 @@ from django.views.generic import (DetailView, ListView,
 from django.http import (HttpResponseNotFound, HttpResponseRedirect,
                          HttpResponseBadRequest, HttpResponse, Http404)
 from django import forms
-from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, render
@@ -29,6 +28,7 @@ from versionutils.versioning.views import UpdateView
 from versionutils.versioning.views import VersionsList
 from localwiki.utils.views import (Custom404Mixin, CreateObjectMixin,
     PermissionRequiredMixin, DeleteView, RevertView)
+from localwiki.utils.urlresolvers import reverse
 from regions.models import Region
 from regions.views import RegionMixin, region_404_response
 from maps.widgets import InfoMap
@@ -149,7 +149,7 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin,
                 '<p class="create_map"><a href="%s" class="button little map">'
                 '<span class="text">Create a map</span></a> '
                 'for this page?</p>') %
-                reverse('maps:edit', args=[self.object.region.slug, slug])
+                reverse('maps:edit', kwargs={'region': self.object.region.slug, 'slug': slug})
             )
 
         if self.request.user.is_authenticated() and not map_create_link:
@@ -176,8 +176,9 @@ class PageUpdateView(PermissionRequiredMixin, CreateObjectMixin,
         return '%s%s%s' % (default_message, map_create_link, follow_message)
 
     def get_success_url(self):
+        region = self.get_region()
         return reverse('pages:show',
-            args=[self.kwargs['region'], self.object.pretty_slug])
+            kwargs={'region': region.slug, 'slug': self.object.pretty_slug})
 
     def create_object(self):
         pagename = clean_name(self.kwargs['original_slug'])
@@ -201,8 +202,9 @@ class PageDeleteView(PermissionRequiredMixin, RegionMixin, DeleteView):
 
     def get_success_url(self):
         # Redirect back to the page.
+        region = self.get_region()
         return reverse('pages:show',
-            args=[self.kwargs.get('region'), self.kwargs.get('original_slug')])
+            kwargs={'region': region.slug, 'slug': self.kwargs.get('original_slug')})
 
 
 class PageRevertView(PermissionRequiredMixin, RegionMixin, RevertView):
@@ -215,9 +217,10 @@ class PageRevertView(PermissionRequiredMixin, RegionMixin, RevertView):
         return page.versions.as_of(version=int(self.kwargs['version']))
 
     def get_success_url(self):
+        region = self.get_region()
         # Redirect back to the page.
         return reverse('pages:show',
-            args=[self.kwargs.get('region'), self.kwargs.get('original_slug')])
+            kwargs={'region': region.slug, 'slug': self.kwargs.get('original_slug')})
 
 
 class PageVersionsList(RegionMixin, VersionsList):
@@ -320,10 +323,13 @@ class PageFileRevertView(PermissionRequiredMixin, RegionMixin, RevertView):
         return Page.objects.get(slug=self.object.slug, region=self.get_region())
 
     def get_success_url(self):
+        region = self.get_region()
         # Redirect back to the file info page.
-        return reverse('pages:file-info', args=[self.kwargs['region'],
-                                                self.kwargs['slug'],
-                                                self.kwargs['file']])
+        return reverse('pages:file-info', kwargs={
+            'region': region.slug,
+             'slug': self.kwargs['slug'],
+             'file': self.kwargs['file']
+        })
 
 
 class PageFileInfo(RegionMixin, VersionsList):
@@ -386,9 +392,9 @@ class PageCreateView(RegionMixin, RedirectView):
             if self.request.GET.get('show_templates'):
                 # Show them the 'empty page' page, which displays the list of
                 # templates to create a page with.
-                return reverse('pages:show', args=[self.kwargs['region'], pagename])
+                return reverse('pages:show', kwargs={'region': region.slug, 'slug': pagename})
             else:
-                return reverse('pages:edit', args=[self.kwargs['region'], pagename])
+                return reverse('pages:edit', kwargs={'region': region.slug, 'slug': pagename})
 
 
 def _find_available_filename(filename, slug, region):
@@ -443,7 +449,7 @@ def upload(request, **kwargs):
             return HttpResponseBadRequest(error)
         return HttpResponseRedirect(
             reverse('pages:file-info',
-                    args=[kwargs['region'], slug, kwargs['file']]))
+                    kwargs=[kwargs['region'], slug, kwargs['file']]))
 
     # uploaded from ckeditor
     filename = _find_available_filename(uploaded.name, slug, region)
@@ -469,17 +475,18 @@ class PageRenameView(PermissionRequiredMixin, RegionMixin, FormView):
     permission = 'pages.change_page'
 
     def form_valid(self, form):
+        region = self.get_region()
         try:
             p = Page.objects.get(
                 slug=slugify(self.kwargs['slug']),
-                region=self.get_region()
+                region=region
             )
             self.new_pagename = form.cleaned_data['pagename']
             p.rename_to(self.new_pagename)
         except PageExistsError, s:
             messages.add_message(self.request, messages.SUCCESS, s)
             return HttpResponseRedirect(
-                reverse('pages:show', args=[p.region.slug, p.slug]))
+                reverse('pages:show', kwargs={'region': region.slug, 'slug': p.slug}))
 
         return HttpResponseRedirect(self.get_success_url())
 
@@ -498,11 +505,12 @@ class PageRenameView(PermissionRequiredMixin, RegionMixin, FormView):
         return ('<div>' + _('Page renamed to "%s"') + '</div>') % escape(self.new_pagename)
 
     def get_success_url(self):
+        region = self.get_region()
         messages.add_message(self.request, messages.SUCCESS,
             self.success_msg())
         # Redirect back to the page.
         return reverse('pages:show',
-            args=[self.kwargs['region'], self.new_pagename])
+            kwargs={'region': region.slug, 'slug': self.new_pagename})
 
 
 class PagePermissionsView(SetPermissionsView):

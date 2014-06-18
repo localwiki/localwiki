@@ -4,10 +4,10 @@ from django.db import models
 from django.db.utils import IntegrityError
 from django.template.defaultfilters import stringfilter
 from django.utils.html import strip_tags
-from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from regions.models import Region
+from localwiki.utils.urlresolvers import reverse
 from versionutils import versioning, diff
 
 
@@ -27,7 +27,7 @@ class Tag(models.Model):
         super(Tag, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('tags:tagged', args=[self.region.slug, self.slug])
+        return reverse('tags:tagged', kwargs={'region': self.region.slug, 'slug':self.slug})
 
     class Meta:
         unique_together = ('slug', 'region')

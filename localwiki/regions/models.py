@@ -72,6 +72,9 @@ class RegionSettings(models.Model):
 
     admins = models.ManyToManyField(User, null=True)
     default_language = models.CharField(max_length=7, blank=True, null=True, choices=LANGUAGES)
+
+    # Admin-only options
+    domain = models.CharField(max_length=200, null=True)
     logo = models.ImageField("logo", upload_to="regions/logos/",
         storage=RandomFilenameFileSystemStorage(), null=True)
     is_meta_region = models.BooleanField(default=False)

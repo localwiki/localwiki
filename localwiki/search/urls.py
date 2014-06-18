@@ -11,6 +11,7 @@ from haystack.forms import SearchForm as DefaultSearchForm
 from pages.models import Page, slugify
 from maps.models import MapData
 from maps.widgets import InfoMap, map_options_for_region
+from regions.views import RegionMixin
 
 
 class WithMapSearchView(SearchView):
@@ -50,10 +51,10 @@ class GlobalSearchView(WithMapSearchView):
     template = 'search/global_search.html'
 
 
-class CreatePageSearchView(WithMapSearchView):
+class CreatePageSearchView(WithMapSearchView, RegionMixin):
     def __call__(self, request, region=''):
         from regions.models import Region
-        self.region = Region.objects.get(slug=region)
+        self.region = self.get_region(request=request, kwargs={'region': region})
         return super(CreatePageSearchView, self).__call__(request)
 
     def build_form(self, *args, **kwargs):
@@ -109,12 +110,15 @@ def search_view_factory(view_class=SearchView, *args, **kwargs):
     return search_view
 
 
-urlpatterns = patterns('',
-    url(r'^(?P<region>[^/]+?)/$', search_view_factory(
+urlpatterns_no_region = patterns('',
+    url(r'^_rsearch/(?P<region>[^/]+)?/?$', search_view_factory(
             view_class=CreatePageSearchView,
             form_class=InRegionSearchForm
         ), name='haystack_search'),
-    url(r'^$', search_view_factory(
+)
+
+urlpatterns = urlpatterns_no_region + patterns('',
+    url(r'^_search/$', search_view_factory(
             view_class=GlobalSearchView,
             form_class=SearchForm
         ), name='global_search'),

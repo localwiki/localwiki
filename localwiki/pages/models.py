@@ -7,7 +7,6 @@ from lxml.html import fragments_fromstring
 from copy import copy
 
 from django.contrib.gis.db import models
-from django.core.urlresolvers import reverse
 from django.template.defaultfilters import stringfilter
 from django.core.exceptions import ValidationError
 from django.utils.safestring import mark_safe
@@ -19,6 +18,7 @@ from django_randomfilenamestorage.storage import (
 
 from versionutils import diff, versioning
 from versionutils.versioning.utils import is_versioned
+from localwiki.utils.urlresolvers import reverse
 from regions.models import Region
 
 from . import exceptions

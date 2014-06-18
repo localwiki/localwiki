@@ -1,7 +1,6 @@
 import copy
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView as DjangoTemplateView
 from django.views.generic import View, ListView
 from django.http import Http404, HttpResponseNotFound
@@ -19,6 +18,7 @@ from follow.utils import follow as do_follow
 from actstream import action
 
 from localwiki.utils.views import CreateObjectMixin, AuthenticationRequired
+from localwiki.utils.urlresolvers import reverse
 
 from .models import Region, RegionSettings, BannedFromRegion, slugify
 from .forms import RegionForm, RegionSettingsForm, AdminSetForm, BannedSetForm

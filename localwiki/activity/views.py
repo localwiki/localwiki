@@ -4,12 +4,12 @@ from collections import defaultdict
 
 from django.http import Http404
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
 
 from follow.models import Follow
 
 from versionutils.versioning.constants import *
 from regions.views import RegionMixin
+from localwiki.utils.urlresolvers import reverse
 from localwiki.utils.views import MultipleTypesPaginatedView
 
 from . import get_changes_classes

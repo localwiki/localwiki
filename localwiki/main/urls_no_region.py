@@ -27,8 +27,6 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    url(r'^/*$', MainPageView.as_view(), name='main-page'),
-
     # Users / registration URLs
     (r'^(?i)Users/', include('users.urls')),
 
@@ -39,41 +37,30 @@ urlpatterns = patterns('',
     # Region routing URLs
     (r'^', include(regions.site.urls)),
     
-    # API URLs
-    url(r'^api/{0,1}$', RedirectView.as_view(url='/api/v4/', permanent=False)),
-    url(r'^api/v4/', include(router.urls)),
-
     # Internal API URLs
     (r'^_api/', include('main.api.internal_urls')),
 
-    (r'^(?P<region>[^/]+?)/map$', NamedRedirectView.as_view(name='maps:global')),
-    (r'^(?P<region>[^/]+?)/map/', include(maps.site.urls)),
-    (r'^(?P<region>[^/]+?)/tags$', NamedRedirectView.as_view(name='tags:list')),
-    (r'^(?P<region>[^/]+?)/tags/', include('tags.urls', 'tags', 'tags')),
+    (r'^map$', NamedRedirectView.as_view(name='maps:global')),
+    (r'^map/', include(maps.site.urls)),
+    (r'^tags$', NamedRedirectView.as_view(name='tags:list')),
+    (r'^tags/', include('tags.urls', 'tags', 'tags')),
     (r'^_redirect/', include(redirects.site.urls)),
-    (r'^_search/', include('search.urls')),
-    (r'^', include('activity.urls')),
+    (r'^', include('search.urls_no_region')),
+    (r'^', include('activity.urls_no_region')),
     (r'^', include('explore.urls')),
+
     # Region userpage -> global userpage redirect
-    (r'^(?P<region>[^/]+?)/((?i)Users)/(?P<username>[^/]+?)$', GlobalUserpageRedirectView.as_view()),
+    (r'^((?i)Users)/(?P<username>[^/]+?)$', GlobalUserpageRedirectView.as_view()),
 
     # Historical URL for dashboard:
-    (r'^(?P<region>[^/]+?)/tools/dashboard/?$', NamedRedirectView.as_view(name='dashboard:main')),
+    (r'^tools/dashboard/?$', NamedRedirectView.as_view(name='dashboard:main')),
     (r'^_tools/dashboard/', include(dashboard.site.urls)),
 
     # JS i18n support.
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog'),
 
-    (r'^admin$', RedirectView.as_view(url='/admin/')),
-    (r'^admin/subscribers/$', staff_member_required(SubscribedList.as_view())),
-    (r'^admin/', include(admin.site.urls)),
+    (r'^(((?i)Front[_ ]Page)/?)?', include('frontpage.urls')),
 
-    # Search engine sitemap
-    # (Usually served via apache, but including here as well if using dev server)
-    url(r'^sitemap.xml', include('static_sitemaps.urls')),
-
-    # XXX
-    #(r'^(?P<region>[^/]+?)/(((?i)Front[_ ]Page)/?)?', include('frontpage.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

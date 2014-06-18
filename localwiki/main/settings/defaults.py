@@ -194,6 +194,7 @@ TEMPLATE_LOADERS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     "utils.context_processors.sites.current_site",
     "utils.context_processors.settings.license_agreements",
+    "utils.context_processors.settings.hostnames",
 
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
@@ -423,5 +424,3 @@ CONSTANCE_CONFIG = {
     'GOOGLE_ANALYTICS_SUBDOMAINS': ('', 'Subdomain value to pass to GA _setDomainName'),
     'GOOGLE_ANALYTICS_MULTIPLE_TOPLEVEL_DOMAINS': ('', 'Truthy/Falsey value to trigger GA _setAllowLinker'),
 }
-
-TEMPLATE_STRING_IF_INVALID = "%s"

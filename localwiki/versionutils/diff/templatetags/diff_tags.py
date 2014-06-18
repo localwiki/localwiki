@@ -12,7 +12,8 @@ class DiffNode(template.Node):
         
     def render(self, context):
         vars = [o.resolve(context) for o in self.objects]
-        context[self.context_var] = diff(*vars)
+        d = diff(*vars, context=context)
+        context[self.context_var] = d
         return ''
     
 @register.tag(name='diff')

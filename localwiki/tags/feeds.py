@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from localwiki.utils.urlresolvers import reverse
 
 import activity
 from activity import ActivityForModel

@@ -11,6 +11,8 @@ SESSION_COOKIE_DOMAIN = '.{{ public_hostname }}'
 if SESSION_COOKIE_DOMAIN.endswith('.localhost'):
     SESSION_COOKIE_DOMAIN = None
 
+MAIN_HOSTNAME = '{{ public_hostname }}'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
