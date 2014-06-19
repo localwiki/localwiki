@@ -23,7 +23,7 @@ class Redirect(models.Model):
         return "%s ---> %s" % (self.source, self.destination)
 
     def get_absolute_url(self):
-        return reverse('pages:show', args=[self.region.slug, self.source])
+        return reverse('pages:show', kwargs={'region': self.region.slug, 'slug': self.source})
 
 
 versioning.register(Redirect)

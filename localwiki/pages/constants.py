@@ -1,4 +1,4 @@
-from localwiki.utils.urlresolvers import reverse
+from localwiki.utils.urlresolvers import reverse, get_urlconf
 
 
 def page_base_path(region):

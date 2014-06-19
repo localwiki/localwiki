@@ -1,6 +1,7 @@
 import re
 
 from django.http import HttpResponseRedirect
+from django.conf import settings
 
 from pages.models import slugify
 from regions.models import Region
@@ -16,8 +17,11 @@ def _force_show_page(response):
     return 'show' in response.GET
 
 
-page_routing_pattern = re.compile(
+page_routing_pattern_region = re.compile(
     '^/(?P<region>[^/]+?)/(?P<slug>.+)/*'
+)
+page_routing_pattern_no_region = re.compile(
+    '^/(?P<slug>.+)/*'
 )
 
 class RedirectFallbackMiddleware(object):
@@ -25,6 +29,12 @@ class RedirectFallbackMiddleware(object):
         if response.status_code != 404:
             # No need to check for a redirect for non-404 responses.
             return response
+
+        if request.META['HTTP_HOST'] == settings.MAIN_HOSTNAME:
+            page_routing_pattern = page_routing_pattern_region
+        else:
+            page_routing_pattern = page_routing_pattern_no_region
+
         if _is_redirect(request) or _force_show_page(request):
             # Don't double-redirect and allow the page to be
             # force-displayed.
@@ -37,8 +47,13 @@ class RedirectFallbackMiddleware(object):
             return response
 
         slug = slugify(re_match.group('slug'))
-        region_slug = re_match.group('region')
-        region = Region.objects.filter(slug=region_slug)
+
+        if request.META['HTTP_HOST'] == settings.MAIN_HOSTNAME:
+            region_slug = re_match.group('region')
+            region = Region.objects.filter(slug=region_slug)
+        else:
+            region = Region.objects.filter(regionsettings__domain=request.META['HTTP_HOST'])
+
         if not region:
             return response
         region = region[0]
