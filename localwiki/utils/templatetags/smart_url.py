@@ -83,7 +83,7 @@ class CustomURLConfURLNode(URLNode):
                         try:
                             host = settings.DEFAULT_HOST
                             host_args, host_kwargs = (), {}
-                            return HostURLNode(host, self.view_name, host_args, host_kwargs, args, kwargs, self.asvar).render(context)
+                            return HostURLNode(host, self.view_name, host_args, host_kwargs, self.args, self.original_kwargs, self.asvar).render(context)
                         except:
                             pass
 

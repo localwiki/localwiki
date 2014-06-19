@@ -7,7 +7,7 @@ from django.views.generic.base import RedirectView
 from django.contrib.auth.models import User
 from django.template import Template
 from django.template import RequestContext
-from django.views.generic import (DetailView, ListView,
+from django.views.generic import (View, DetailView, ListView,
     FormView)
 from django.http import (HttpResponseNotFound, HttpResponseRedirect,
                          HttpResponseBadRequest, HttpResponse, Http404)
@@ -33,7 +33,6 @@ from regions.models import Region
 from regions.views import RegionMixin, region_404_response
 from maps.widgets import InfoMap
 from users.views import SetPermissionsView, AddContributorsMixin
-from users.decorators import permission_required
 
 from .models import slugify, clean_name, Page, PageFile, url_to_name
 from .forms import PageForm, PageFileForm
@@ -410,57 +409,68 @@ def _find_available_filename(filename, slug, region):
     return filename
 
 
-@permission_required('pages.change_page',
-    (Page, 'slug', 'slug', 'region__slug', 'region'))
-def upload(request, **kwargs):
-    # For GET, just return blank response. See issue #327.
-    if request.method != 'POST':
+class UploadView(PermissionRequiredMixin, RegionMixin, View):
+    http_method_names = ['get', 'post']
+    permission = 'pages.change_page'
+
+    def get(self, request, *args, **kwargs):
+        # For GET, just return blank response. See issue #327.
         return HttpResponse('')
-    error = None
-    file_form = PageFileForm(request.POST, request.FILES)
 
-    slug = kwargs['slug']
-    region = Region.objects.get(slug=kwargs['region'])
+    def post(self, request, *args, **kwargs):
+        slug = kwargs['slug']
+        region = self.get_region()
 
-    uploaded = request.FILES['file']
-    if 'file' in kwargs:
-        # Replace existing file if exists
+        error = None
+        file_form = PageFileForm(request.POST, request.FILES)
+
+        uploaded = request.FILES['file']
+        if 'file' in kwargs:
+            # Replace existing file if exists
+            try:
+                file = PageFile.objects.get(
+                    slug__exact=slug,
+                    name__exact=kwargs['file'],
+                    region=region
+                )
+                file.file = uploaded
+            except PageFile.DoesNotExist:
+                file = PageFile(
+                    file=uploaded,
+                    name=uploaded.name,
+                    slug=slug,
+                    region=region
+                )
+            file_form.instance = file
+            if not file_form.is_valid():
+                error = file_form.errors.values()[0]
+            else:
+                file_form.save()
+
+            if error is not None:
+                return HttpResponseBadRequest(error)
+            return HttpResponseRedirect(
+                reverse('pages:file-info',
+                        kwargs={'region': region.slug, 'slug': slug, 'file': kwargs['file']}))
+
+        # uploaded from ckeditor
+        filename = _find_available_filename(uploaded.name, slug, region)
+        relative_url = '_files/' + urlquote(filename)
         try:
-            file = PageFile.objects.get(
-                slug__exact=slug,
-                name__exact=kwargs['file'],
-                region=region
-            )
-            file.file = uploaded
-        except PageFile.DoesNotExist:
-            file = PageFile(
-                file=uploaded,
-                name=uploaded.name,
-                slug=slug,
-                region=region
-            )
-        file_form.instance = file
-        if not file_form.is_valid():
-            error = file_form.errors.values()[0]
-        else:
-            file_form.save()
+            file = PageFile(file=uploaded, name=filename, slug=slug, region=region)
+            file.save()
+            return ck_upload_result(request, url=relative_url)
+        except IntegrityError:
+            error = _('A file with this name already exists')
+        return ck_upload_result(request, url=relative_url, message=error)
 
-        if error is not None:
-            return HttpResponseBadRequest(error)
-        return HttpResponseRedirect(
-            reverse('pages:file-info',
-                    kwargs=[kwargs['region'], slug, kwargs['file']]))
+    def get_protected_object(self):
+        slug = slugify(self.kwargs['slug'])
+        region = self.get_region()
 
-    # uploaded from ckeditor
-    filename = _find_available_filename(uploaded.name, slug, region)
-    relative_url = '_files/' + urlquote(filename)
-    try:
-        file = PageFile(file=uploaded, name=filename, slug=slug, region=region)
-        file.save()
-        return ck_upload_result(request, url=relative_url)
-    except IntegrityError:
-        error = _('A file with this name already exists')
-    return ck_upload_result(request, url=relative_url, message=error)
+        if Page.objects.filter(slug=slug, region=region).exists():
+            return Page.objects.get(slug=slug, region=region)
+        return Page(slug=slug, region=region)
 
 
 class RenameForm(forms.Form):
