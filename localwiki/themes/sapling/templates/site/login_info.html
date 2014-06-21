@@ -8,11 +8,11 @@
     </span>
     <span class="actions">
         <a href="{% url 'user-settings' %}">{% trans "settings" %}</a>
-        <a href="{% url 'django.contrib.auth.views.logout' %}?next={{ request.path }}">{% trans "log out" %}</a>
+        <a href="{% url 'auth_logout' %}?next={{ request.path }}">{% trans "log out" %}</a>
     </span>
 {% else %}
     <span class="actions">
-        <a href="{% url 'django.contrib.auth.views.login' %}?next={{ request.path }}" rel="nofollow">{% trans "log in" %}</a> {% trans "or" %} <a href="{% url 'registration_register' %}?next={{ request.path }}" rel="nofollow">{% trans "create account" %}</a>
+        <a href="{% url 'auth_login' %}?next=//{{ request.get_host }}{{ request.path }}" rel="nofollow">{% trans "log in" %}</a> {% trans "or" %} <a href="{% url 'registration_register' %}?next={{ request.get_host }}{{ request.path }}" rel="nofollow">{% trans "create account" %}</a>
     </span>
 {% endif %}
 

@@ -1,18 +1,33 @@
-from urlparse import urlparse
+try:
+    from urllib import parse as urllib_parse
+except ImportError:     # Python 2
+    import urllib as urllib_parse
+    import urlparse
+    urllib_parse.urlparse = urlparse.urlparse
 
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
 from django.template.loader import render_to_string
+from django.template import RequestContext
+from django.template.response import TemplateResponse
 from django.views.generic.edit import UpdateView, FormView
 from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect, resolve_url, render_to_response
 from django.views.generic import RedirectView, TemplateView
 from django.contrib import messages
+from django.contrib.auth import REDIRECT_FIELD_NAME, login as auth_login, logout as auth_logout, get_user_model
 from django.utils.translation import ugettext as _
 from django.db.models import Count
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.views.decorators.debug import sensitive_post_parameters
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.sites.models import get_current_site
+from django.conf import settings
 
 from guardian.shortcuts import get_users_with_perms, assign_perm, remove_perm
 from follow.models import Follow
@@ -304,3 +319,108 @@ def suggest_users(request, region=None):
         username__istartswith=term)
     results = [t.username for t in results]
     return HttpResponse(json.dumps(results))
+
+
+def is_safe_url(url):
+    """
+    Return ``True`` if the url is a safe redirection (i.e. it doesn't point to
+    a non-allowed hostname and uses a safe scheme).
+
+    Always returns ``False`` on an empty url.
+    """
+    # XXX TODO something like this should probably be integrated into Django.
+    # Report a bug for contrib.auth.views.is_safe_url.
+    if not url:
+        return False
+    url_info = urllib_parse.urlparse(url)
+    return (not url_info.netloc or url_info.netloc in settings.XSESSION_DOMAINS) and \
+        (not url_info.scheme or url_info.scheme in ['http', 'https'])
+
+
+@sensitive_post_parameters()
+@csrf_protect
+@never_cache
+def login(request, template_name='registration/login.html',
+          redirect_field_name=REDIRECT_FIELD_NAME,
+          authentication_form=AuthenticationForm,
+          current_app=None, extra_context=None):
+    """
+    Displays the login form and handles the login action.
+
+    A copy/paste of django.contrib.auth.views.login, except with
+    a different is_safe_url() check.
+    """
+    # XXX TODO: Replace this function with something that's
+    # more flexible - class based auth?
+
+    redirect_to = request.REQUEST.get(redirect_field_name, '')
+
+    if request.method == "POST":
+        form = authentication_form(data=request.POST)
+        if form.is_valid():
+
+            # Ensure the user-originating redirection url is safe.
+            if not is_safe_url(redirect_to):
+                redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
+
+            # Okay, security check complete. Log the user in.
+            auth_login(request, form.get_user())
+
+            if request.session.test_cookie_worked():
+                request.session.delete_test_cookie()
+
+            return HttpResponseRedirect(redirect_to)
+    else:
+        form = authentication_form(request)
+
+    request.session.set_test_cookie()
+
+    current_site = get_current_site(request)
+
+    context = {
+        'form': form,
+        redirect_field_name: redirect_to,
+        'site': current_site,
+        'site_name': current_site.name,
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+    return TemplateResponse(request, template_name, context,
+                            current_app=current_app)
+
+
+def logout(request, next_page=None,
+           template_name='registration/logged_out.html',
+           redirect_field_name=REDIRECT_FIELD_NAME,
+           current_app=None, extra_context=None):
+    """
+    Logs out the user and displays 'You are logged out' message.
+
+    A copy/paste of django.contrib.auth.views.logout, except with
+    a different is_safe_url() check.
+    """
+    # XXX TODO: Replace this function with something that's
+    # more flexible - class based auth?
+
+    auth_logout(request)
+
+    if redirect_field_name in request.REQUEST:
+        next_page = request.REQUEST[redirect_field_name]
+        # Security check -- don't allow redirection to a different host.
+        if not is_safe_url(next_page):
+            next_page = request.path
+
+    if next_page:
+        # Redirect to this page until the session has been cleared.
+        return HttpResponseRedirect(next_page)
+
+    current_site = get_current_site(request)
+    context = {
+        'site': current_site,
+        'site_name': current_site.name,
+        'title': _('Logged out')
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+    return TemplateResponse(request, template_name, context,
+        current_app=current_app)

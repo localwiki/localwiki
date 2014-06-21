@@ -10,7 +10,7 @@
 <p><a href="{% url 'django.contrib.auth.views.password_reset' %}">{% trans "Forgot your password?" %}</a></p>
 {% endif %}
 
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}" id="login_form">
+<form method="post" action="{% url 'auth_login' %}" id="login_form">
 {% csrf_token %}
 
 {{ form.as_p }}
