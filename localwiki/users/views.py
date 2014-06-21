@@ -36,6 +36,7 @@ from versionutils.versioning.utils import is_versioned
 from regions.models import Region
 from regions import get_main_region
 from regions.views import RegionMixin, RegionAdminRequired
+from localwiki.utils.urlresolvers import reverse
 
 from .templatetags.user_tags import user_link
 from .models import UserProfile
@@ -155,7 +156,7 @@ class GlobalUserpageRedirectView(RedirectView):
 
     def get_redirect_url(self, **kwargs):
         username = kwargs.get('username')
-        return '/Users/%s' % username
+        return reverse('user-page', kwargs={'username': username, 'rest': ''})
 
 
 class SetPermissionsView(RegionAdminRequired, RegionMixin, FormView):

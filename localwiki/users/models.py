@@ -7,6 +7,8 @@ from django.db import models
 from django.conf import settings
 from django.contrib.sites.models import Site
 
+from localwiki.utils.urlresolvers import reverse
+
 
 #######################################################################
 #
@@ -42,7 +44,7 @@ def first_last_to_name(self):
 
 
 def get_absolute_url(self):
-    return "/Users/%s" % urllib.quote(smart_str(self.username))
+    return reverse('user-page', kwargs={'username': smart_str(self.username), 'rest': ''})
 
 
 User.name = property(first_last_to_name, name_to_first_last)
