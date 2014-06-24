@@ -88,7 +88,7 @@ and submit using #cover_form.
         {% render_plugins page.content %}
         <div id="interesting_pages">
             <h2>{% trans "Some interesting pages" %}</h2>
-            {% cache 300 int_frnt_pg region.slug %}
+            {% cache 300 int_frnt_pg request.META.HTTP_HOST region.slug %}
               {% if pages_for_cards %}
                   <div class="cards">
                   {% for page in pages_for_cards %}

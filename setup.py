@@ -167,7 +167,7 @@ install_requires = [
     'django-jsonfield==0.9.12',
     'raven==4.2.1',
     'django-xsession==0.1',
-    'django-hosts==0.6-custom2',
+    'django-hosts==0.6-custom4',
 ]
 if int(os.getenv('DISABLE_INSTALL_REQUIRES', '0')):
     install_requires = None
@@ -200,7 +200,7 @@ setup(
         'https://github.com/philipn/django-static-sitemaps/tarball/localwiki#egg=django-static-sitemaps-2.1.0-custom1',
         'https://github.com/philipn/django-celery-email/tarball/localwiki#egg=django-celery-email-1.0.4-custom1',
         'https://github.com/philipn/django-xsession/tarball/master#egg=django-xsession-0.1',
-        'https://github.com/philipn/django-hosts/tarball/localwiki#egg=django-hosts-0.6-custom2',
+        'https://github.com/philipn/django-hosts/tarball/localwiki#egg=django-hosts-0.6-custom4',
     ],
     entry_points={
         'console_scripts': ['localwiki-manage=localwiki.manage:main'],
