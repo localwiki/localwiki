@@ -3,6 +3,7 @@
 {% load cache %}
 {% load hosts %}
 {% load django_xsession %}
+{% load canonical_urls %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,6 +21,9 @@
 
   {% block search_robots %}
   <meta name="robots" content="index,follow">
+  {% endblock %}
+  {% block canonical_url %}
+    {% render_canonical_url %}
   {% endblock %}
 
   {% block media %}

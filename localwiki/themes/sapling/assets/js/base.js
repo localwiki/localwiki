@@ -110,7 +110,7 @@ $(document).ready(function() {
                 // Footer: search within this region
                 source: function(q, cb) {
                     if (window.location.host == home_hostname) {
-                        var search_url = '/_rsearch/' + region_slug + '/?q=' + q;
+                        var search_url = '/_rsearch/' + region_slug + '?q=' + q;
                     } else {
                         var search_url = '/_rsearch/' + '?q=' + q;
                     }

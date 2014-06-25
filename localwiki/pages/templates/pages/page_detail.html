@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load pages_tags %}
+{% load canonical_urls %}
 {% load tags_tags %}
 
 {% block media %}{{block.super}}{% if map %}{{ map.media }}{% endif %}
@@ -16,7 +17,10 @@
 {% else %}
 {{ block.super }}
 {% endif %}
-<link rel="canonical" href="{{ page.get_absolute_url }}" /> 
+{% endblock %}
+
+{% block canonical_url %}
+  {% render_canonical_url page %}
 {% endblock %}
 
 {% block header_subtitle %}
