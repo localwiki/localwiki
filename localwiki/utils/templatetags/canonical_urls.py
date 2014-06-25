@@ -16,6 +16,8 @@ def render_canonical_url(context, obj=None):
     # A non-request view of some sort
     if not 'request' in context:
         return ''
+    if not 'region' in context:
+        return ''
 
     request = context['request']
     region = context['region']

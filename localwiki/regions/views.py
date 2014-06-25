@@ -154,7 +154,7 @@ class RegionCreateView(AuthenticationRequired, CreateView):
         forbidden_message = _(
             'To create a region you must first <strong><a href="%(login_url)s?next=%(current_path)s">log in</a></strong> or '
             '<strong><a href="%(register_url)s?next=%(current_path)s">create an account</a></strong>.') % {
-                'login_url': reverse('django.contrib.auth.views.login'),
+                'login_url': reverse('auth_login'),
                  'current_path': reverse('regions:add'),
                  'register_url': reverse('registration_register'),
         }
