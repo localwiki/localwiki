@@ -84,7 +84,7 @@ class UpdateCacheMiddlewareNoHeaders(UpdateCacheMiddleware):
 # simply Vary on the Host header with Varnish and disable the cache middleware.
 class UpdateCacheMiddlewareHostHeader(UpdateCacheMiddleware):
     def process_response(self, request, response):
-        self.key_prefix = settings.CACHE_MIDDLEWARE_KEY_PREFIX + request.META['HTTP_HOST']
+        self.key_prefix = settings.CACHE_MIDDLEWARE_KEY_PREFIX + request.META.get('HTTP_HOST', '')
         return super(UpdateCacheMiddlewareHostHeader, self).process_response(request, response)
 
 
@@ -127,7 +127,7 @@ class FetchFromCacheMiddleware(DefaultFetchFromCacheMiddleware):
             return False  # Don't cache if they've posted or are authenticated
 
         # XXX HACK: remove once we're on Varnish.
-        self.key_prefix = settings.CACHE_MIDDLEWARE_KEY_PREFIX + request.META['HTTP_HOST']
+        self.key_prefix = settings.CACHE_MIDDLEWARE_KEY_PREFIX + request.META.get('HTTP_HOST', '')
 
         return super(FetchFromCacheMiddleware, self).process_request(request)
 
@@ -164,7 +164,7 @@ class SessionMiddleware(SessionMiddleware):
     """
     def process_response(self, request, response):
         session_cookie_domain = settings.SESSION_COOKIE_DOMAIN
-        hostname = request.META['HTTP_HOST'].split(':')[0]
+        hostname = request.META.get('HTTP_HOST', '').split(':')[0]
         if session_cookie_domain:
             if not hostname.startswith(session_cookie_domain.lstrip('.')):
                 # Set to empty to allow the cookie to be set. This means

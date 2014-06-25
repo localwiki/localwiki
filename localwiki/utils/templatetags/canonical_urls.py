@@ -13,6 +13,10 @@ def render_canonical_url(context, obj=None):
     Returns the canonical URL associated with either the current
     request path or the provided object.
     """
+    # A non-request view of some sort
+    if not 'request' in context:
+        return ''
+
     request = context['request']
     region = context['region']
 

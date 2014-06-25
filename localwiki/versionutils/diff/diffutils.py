@@ -104,7 +104,8 @@ class BaseFieldDiff(object):
         context = self.context if context is None else context
 
         diff = self.as_dict()
-        context.update(diff)
+        if diff is not None:
+            context.update(diff)
         if self.template:
             return render_to_string(self.template, context)
 

@@ -168,6 +168,9 @@ class SmartURLNode(Node):
         return HostURLNode(host, self.view_name, host_args, host_kwargs, self.view_args, self.view_kwargs, self.asvar).render(context)
 
     def render(self, context):
+        if not 'request' in context:
+            return self.render_url_tag(context)
+
         request = context['request']
 
         cur_hostname = request.META['HTTP_HOST']
