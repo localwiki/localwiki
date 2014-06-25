@@ -190,6 +190,8 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.eggs.Loader',
 #     'django.template.loaders.eggs.load_template_source',
 )
+if not DEBUG:
+    TEMPLATE_LOADERS = (('django.template.loaders.cached.Loader', TEMPLATE_LOADERS))
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     "utils.context_processors.sites.current_site",
