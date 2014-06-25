@@ -178,6 +178,16 @@ class RegionCreateView(AuthenticationRequired, CreateView):
             kwargs['data']['slug'] = slugify(kwargs['data']['slug'])
         return kwargs
 
+    def form_invalid(self, form):
+        geom = form.data.get('geom', None)
+        if form.errors.get('geom'):
+            form.errors['geom'][0] = _('There was a problem with the map area you drew. Please re-draw it and try again.')
+            # Reset the geom so we don't get rendering issues.
+            form.data['geom'] = ''
+        response = super(RegionCreateView, self).form_invalid(form)
+        return response
+
+
     def form_valid(self, form):
         response = super(RegionCreateView, self).form_valid(form)
         region = self.object

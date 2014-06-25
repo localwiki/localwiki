@@ -561,6 +561,22 @@ SaplingMap = {
         }
     },
 
+    _convert_to_coordinate: function(s) {
+        var coords = null;
+        if (s.split(',').length == 2) {
+            var coords = s.split(',');
+        }
+        else if (s.split(' ').length == 2) {
+            var coords = s.split(' ');
+        }
+        if (!coords) {
+            return;
+        }
+        if (!(isNaN(parseFloat(coords[0]))) && (!isNaN(parseFloat(coords[1])))) {
+            return [parseFloat(coords[0]), parseFloat(coords[1])];
+        }
+    },
+
     _setup_map_search: function(map, layer) {
         $('.mapwidget').prepend(
             '<form id="map_search" class="search" action="." onSubmit="return false;" method="POST"><input type="text" id="address" name="address" placeholder="Find via address.."/></form>');
@@ -589,6 +605,22 @@ SaplingMap = {
               name: 'address',
               source: mapSearch.ttAdapter(),
               displayKey: 'display_name'
+            },
+            {
+              // Footer: see if they typed a lat, lon pair instead of an address.
+              source: function(q, cb) {
+                var coords = SaplingMap._convert_to_coordinate(q);
+                if (coords) {
+                  return cb([{'value': q, 'lat': coords[0], 'lon': coords[1]}]);
+                }
+              },
+              templates: {
+                header: Handlebars.compile('<div class="autocomplete_divider"></div>'),
+                suggestion: Handlebars.compile("<p>" +
+                    gettext('Add marker for lat, lon "{{ value }}"') +
+                    "</p>"
+                )
+              }
             }
         )
         .on('typeahead:selected', function(e, datum) {
