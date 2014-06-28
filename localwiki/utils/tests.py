@@ -9,6 +9,8 @@ from django.test.client import RequestFactory
 from django.test.utils import override_settings
 from django.contrib.auth.models import User
 
+from users.models import UserProfile
+
 from . import take_n_from
 
 
@@ -69,16 +71,28 @@ class CanonicalURLTests(TestCase):
         self.sf.save()
         self.sf.regionsettings.domain = 'fakename.org'
         self.sf.regionsettings.save()
-       
-        # Create a page in the SF region
-        p = Page(name='Parks', content='<p>Hi</p>', region=self.sf)
-        p.save()
 
         self.user = User.objects.create_user(
             username='testuser', email='testuser@example.org', password='fakepassword')
+        self.user.save()
+       
+        # Create a page in the SF region
+        p = Page(name='Parks', content='<p>Hi</p>', region=self.sf)
+        p.save(user=self.user)
 
     @contextmanager
     def mock_hosts_middleware(self, request):
+        # This is certainly rather annoying, but needed because
+        # we have to reload everything as we're changing settings
+        # dynamically.
+        import django_hosts
+        reload(django_hosts)
+        import main.hosts
+        reload(main.hosts)
+        import django_hosts.reverse
+        reload(django_hosts.reverse)
+        import django_hosts.middleware
+        reload(django_hosts.middleware)
         from django_hosts.middleware import BaseHostsMiddleware
 
         current_urlconf = get_urlconf()
