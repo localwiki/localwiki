@@ -2,8 +2,17 @@ from django.conf import settings
 
 from django_hosts import patterns, host
 
+def fix_s(s):
+    return s.replace('.', '\.')
 
-host_patterns = patterns('',
-    host(r'dev2\.localhost:8082', 'main.urls_no_region', name='no-region'),
-    host(r'dev\.localhost:8082', settings.ROOT_URLCONF, name='hub'),
-)
+if settings.CUSTOM_HOSTNAMES:
+    domains = '|'.join(['(%s)' % d for d in settings.CUSTOM_HOSTNAMES])
+
+    host_patterns = patterns('',
+        host(domains, 'main.urls_no_region', name='no-region'),
+        host(fix_s(settings.MAIN_HOSTNAME), settings.ROOT_URLCONF, name='hub'),
+    )
+else:
+    host_patterns = patterns('',
+        host(fix_s(settings.MAIN_HOSTNAME), settings.ROOT_URLCONF, name='hub'),
+    )

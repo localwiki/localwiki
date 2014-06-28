@@ -109,17 +109,20 @@ def search_view_factory(view_class=SearchView, *args, **kwargs):
         return view_class(*args, **kwargs)(request, **kwargs2)
     return search_view
 
+haystack_search = search_view_factory(
+    view_class=CreatePageSearchView,
+    form_class=InRegionSearchForm
+) 
+
+global_search = search_view_factory(
+    view_class=GlobalSearchView,
+    form_class=SearchForm
+)
 
 urlpatterns_no_region = patterns('',
-    url(r'^_rsearch/(?P<region>[^/]+)?/?$', search_view_factory(
-            view_class=CreatePageSearchView,
-            form_class=InRegionSearchForm
-        ), name='haystack_search'),
+    url(r'^_rsearch/(?P<region>[^/]+)?/?$', haystack_search , name='haystack_search'),
 )
 
 urlpatterns = urlpatterns_no_region + patterns('',
-    url(r'^_search/$', search_view_factory(
-            view_class=GlobalSearchView,
-            form_class=SearchForm
-        ), name='global_search'),
+    url(r'^_search/$', global_search, name='global_search'),
 )

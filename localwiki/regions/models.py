@@ -76,7 +76,7 @@ class RegionSettings(models.Model):
     # Admin-only options
     domain = models.CharField(max_length=200, null=True)
     logo = models.ImageField("logo", upload_to="regions/logos/",
-        storage=RandomFilenameFileSystemStorage(), null=True)
+        storage=RandomFilenameFileSystemStorage(), null=True, blank=True)
     is_meta_region = models.BooleanField(default=False)
 
     def __unicode__(self):

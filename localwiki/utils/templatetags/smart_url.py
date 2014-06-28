@@ -71,31 +71,23 @@ class CustomURLConfURLNode(URLNode):
         try:
             url = reverse(view_name, args=args, kwargs=kwargs, current_app=context.current_app, urlconf=self.urlconf)
         except NoReverseMatch as e:
-            if settings.SETTINGS_MODULE:
-                project_name = settings.SETTINGS_MODULE.split('.')[0]
-                try:
-                    url = reverse(project_name + '.' + view_name,
-                              args=args, kwargs=kwargs,
-                              current_app=context.current_app)
-                except NoReverseMatch:
-                    if self.urlconf != settings.ROOT_URLCONF:
-                        # Re-try to match on the base urlconf instead, and render as an absolute URL.
-                        try:
-                            host = settings.DEFAULT_HOST
-                            host_args, host_kwargs = (), {}
-                            return HostURLNode(host, self.view_name, host_args, host_kwargs, self.args, self.original_kwargs, self.asvar).render(context)
-                        except:
-                            pass
+            try:
+                url = reverse(view_name, args=args, kwargs=kwargs, current_app=context.current_app)
+            except NoReverseMatch:
+                if self.urlconf != settings.ROOT_URLCONF:
+                    # Re-try to match on the base urlconf instead, and render as an absolute URL.
+                    try:
+                        host = settings.DEFAULT_HOST
+                        host_args, host_kwargs = (), {}
+                        return HostURLNode(host, self.view_name, host_args, host_kwargs, self.args, self.original_kwargs, self.asvar).render(context)
+                    except:
+                        pass
 
-                    if self.asvar is None:
-                        # Re-raise the original exception, not the one with
-                        # the path relative to the project. This makes a
-                        # better error message.
-                        raise e
-            else:
                 if self.asvar is None:
+                    # Re-raise the original exception, not the one with
+                    # the path relative to the project. This makes a
+                    # better error message.
                     raise e
-
         if self.asvar:
             context[self.asvar] = url
             return ''

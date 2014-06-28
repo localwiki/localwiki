@@ -2,16 +2,17 @@ DEBUG = False
 
 #######################################################################
 # Config values you *must* change
-#######################################################################
+######################################################################
 
-ALLOWED_HOSTS = ['.{{ public_hostname }}', '127.0.0.1', '.localhost']
-XSESSION_DOMAINS = [{% for hostname in xsession_domains %}'{{ hostname }}', {% endfor %}]
+ALLOWED_HOSTS = ['.{{ public_hostname }}', {% for hostname in custom_domains %}'{{ hostname }}', {% endfor %} '127.0.0.1', '.localhost']
 
 SESSION_COOKIE_DOMAIN = '.{{ public_hostname }}'
 if SESSION_COOKIE_DOMAIN.endswith('.localhost'):
     SESSION_COOKIE_DOMAIN = None
 
 MAIN_HOSTNAME = '{{ public_hostname }}'
+CUSTOM_HOSTNAMES = [{% for hostname in custom_domains %}'{{ hostname }}', {% endfor %}]
+XSESSION_DOMAINS = [{% for hostname in xsession_domains %}'{{ hostname }}', {% endfor %}'{{ public_hostname }}']
 
 DATABASES = {
     'default': {
