@@ -1,6 +1,9 @@
+from contextlib import contextmanager
+
 from lxml.html import document_fromstring
 
 from django.conf import settings
+from django.core.urlresolvers import set_urlconf, get_urlconf
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
@@ -74,6 +77,21 @@ class CanonicalURLTests(TestCase):
         self.user = User.objects.create_user(
             username='testuser', email='testuser@example.org', password='fakepassword')
 
+    @contextmanager
+    def mock_hosts_middleware(self, request):
+        from django_hosts.middleware import BaseHostsMiddleware
+
+        current_urlconf = get_urlconf()
+        middleware = BaseHostsMiddleware()
+        host, kwargs = middleware.get_host(request.get_host())
+        request.urlconf = host.urlconf
+        request.host = host
+        set_urlconf(host.urlconf)
+
+        yield
+
+        set_urlconf(current_urlconf)
+
     @override_settings(CUSTOM_HOSTNAMES=['fakename.org'])
     def test_canonical_front_page(self):
         from frontpage.views import FrontPageView
@@ -87,15 +105,13 @@ class CanonicalURLTests(TestCase):
         request.user = self.user
         request.META['HTTP_HOST'] = self.sf.regionsettings.domain
 
-        middleware = HostsMiddlewareRequest()
-        middleware.process_request(request)
+        with self.mock_hosts_middleware(request):
+            view = FrontPageView.as_view()
+            response = view(request)
 
-        view = FrontPageView.as_view()
-        response = view(request)
-
-        canonical_url = '//%s/sf/' % settings.MAIN_HOSTNAME
-        response.render()
-        self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+            canonical_url = '//%s/sf/' % settings.MAIN_HOSTNAME
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
 
         #####################################################
         # The /Front_Page page in a custom domain region.
@@ -105,15 +121,13 @@ class CanonicalURLTests(TestCase):
         request.user = self.user
         request.META['HTTP_HOST'] = self.sf.regionsettings.domain
 
-        middleware = HostsMiddlewareRequest()
-        middleware.process_request(request)
+        with self.mock_hosts_middleware(request):
+            view = FrontPageView.as_view()
+            response = view(request)
 
-        view = FrontPageView.as_view()
-        response = view(request)
-
-        canonical_url = '//%s/sf/' % settings.MAIN_HOSTNAME
-        response.render()
-        self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+            canonical_url = '//%s/sf/' % settings.MAIN_HOSTNAME
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
 
         #####################################################
         # The /Front_Page page on the main host inside region
@@ -123,15 +137,13 @@ class CanonicalURLTests(TestCase):
         request.user = self.user
         request.META['HTTP_HOST'] = settings.MAIN_HOSTNAME
 
-        middleware = HostsMiddlewareRequest()
-        middleware.process_request(request)
+        with self.mock_hosts_middleware(request):
+            view = FrontPageView.as_view()
+            response = view(request, region='sf')
 
-        view = FrontPageView.as_view()
-        response = view(request, region='sf')
-
-        canonical_url = '/sf/'
-        response.render()
-        self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+            canonical_url = '/sf/'
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
 
         #####################################################
         # The /FRONT_pAgE (changed capitalization)
@@ -141,15 +153,13 @@ class CanonicalURLTests(TestCase):
         request.user = self.user
         request.META['HTTP_HOST'] = settings.MAIN_HOSTNAME
 
-        middleware = HostsMiddlewareRequest()
-        middleware.process_request(request)
+        with self.mock_hosts_middleware(request):
+            view = FrontPageView.as_view()
+            response = view(request, region='sf')
 
-        view = FrontPageView.as_view()
-        response = view(request, region='sf')
-
-        canonical_url = '/sf/'
-        response.render()
-        self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+            canonical_url = '/sf/'
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
 
 
     @override_settings(CUSTOM_HOSTNAMES=['fakename.org'])
@@ -166,15 +176,13 @@ class CanonicalURLTests(TestCase):
         request.user = self.user
         request.META['HTTP_HOST'] = self.sf.regionsettings.domain
 
-        middleware = HostsMiddlewareRequest()
-        middleware.process_request(request)
+        with self.mock_hosts_middleware(request):
+            view = slugify(PageDetailView.as_view())
+            response = view(request, slug='Parks')
 
-        view = slugify(PageDetailView.as_view())
-        response = view(request, slug='Parks')
-
-        canonical_url = '//%s/sf/Parks' % settings.MAIN_HOSTNAME
-        response.render()
-        self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+            canonical_url = '//%s/sf/Parks' % settings.MAIN_HOSTNAME
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
 
         #####################################################
         # Now let's try it with an alternative capitalization
@@ -184,15 +192,13 @@ class CanonicalURLTests(TestCase):
         request.user = self.user
         request.META['HTTP_HOST'] = self.sf.regionsettings.domain
 
-        middleware = HostsMiddlewareRequest()
-        middleware.process_request(request)
+        with self.mock_hosts_middleware(request):
+            view = slugify(PageDetailView.as_view())
+            response = view(request, slug='PArkS')
 
-        view = slugify(PageDetailView.as_view())
-        response = view(request, slug='PArkS')
-
-        canonical_url = '//%s/sf/Parks' % settings.MAIN_HOSTNAME
-        response.render()
-        self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+            canonical_url = '//%s/sf/Parks' % settings.MAIN_HOSTNAME
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
 
         #####################################################
         # Regular page viewing directly on the main host
@@ -202,15 +208,13 @@ class CanonicalURLTests(TestCase):
         request.user = self.user
         request.META['HTTP_HOST'] = self.sf.regionsettings.domain
 
-        middleware = HostsMiddlewareRequest()
-        middleware.process_request(request)
+        with self.mock_hosts_middleware(request):
+            view = slugify(PageDetailView.as_view())
+            response = view(request, slug='Parks', region='sf')
 
-        view = slugify(PageDetailView.as_view())
-        response = view(request, slug='Parks', region='sf')
-
-        response.render()
-        # Directly on the canonical url, so it shouldn't be rendered
-        self.assertFalse(self.has_canonical_url(response.content, ''))
+            response.render()
+            # Directly on the canonical url, so it shouldn't be rendered
+            self.assertFalse(self.has_canonical_url(response.content, ''))
 
         #####################################################
         # Capitalization variant viewed on the main host
@@ -220,15 +224,13 @@ class CanonicalURLTests(TestCase):
         request.user = self.user
         request.META['HTTP_HOST'] = self.sf.regionsettings.domain
 
-        middleware = HostsMiddlewareRequest()
-        middleware.process_request(request)
+        with self.mock_hosts_middleware(request):
+            view = slugify(PageDetailView.as_view())
+            response = view(request, slug='PArks', region='sf')
 
-        view = slugify(PageDetailView.as_view())
-        response = view(request, slug='PArks', region='sf')
-
-        canonical_url = '/sf/Parks'
-        response.render()
-        self.assertFalse(self.has_canonical_url(response.content, canonical_url))
+            canonical_url = '/sf/Parks'
+            response.render()
+            self.assertFalse(self.has_canonical_url(response.content, canonical_url))
 
     @override_settings(CUSTOM_HOSTNAMES=['fakename.org'])
     def test_canonical_search(self):
@@ -243,14 +245,12 @@ class CanonicalURLTests(TestCase):
         request.user = self.user
         request.META['HTTP_HOST'] = self.sf.regionsettings.domain
 
-        middleware = HostsMiddlewareRequest()
-        middleware.process_request(request)
+        with self.mock_hosts_middleware(request):
+            view = haystack_search
+            response = view(request)
 
-        view = haystack_search
-        response = view(request)
-
-        canonical_url = '//%s/_rsearch/sf?q=parks' % settings.MAIN_HOSTNAME
-        self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+            canonical_url = '//%s/_rsearch/sf?q=parks' % settings.MAIN_HOSTNAME
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
 
         #####################################################
         # Search page on main domain
@@ -260,12 +260,30 @@ class CanonicalURLTests(TestCase):
         request.user = self.user
         request.META['HTTP_HOST'] = settings.MAIN_HOSTNAME
 
-        middleware = HostsMiddlewareRequest()
-        middleware.process_request(request)
+        with self.mock_hosts_middleware(request):
+            view = haystack_search
+            response = view(request, region='sf')
 
-        view = haystack_search
-        response = view(request, region='sf')
+            canonical_url = ''
+            # On host, so no canonical url
+            self.assertFalse(self.has_canonical_url(response.content, canonical_url))
 
-        canonical_url = ''
-        # On host, so no canonical url
-        self.assertFalse(self.has_canonical_url(response.content, canonical_url))
+    @override_settings(CUSTOM_HOSTNAMES=['fakename.org'])
+    def test_canonical_activity(self):
+        from activity.views import RegionActivity
+
+        #####################################################
+        # Activity page on custom domain
+        #####################################################
+
+        request = self.factory.get('/_activity')
+        request.user = self.user
+        request.META['HTTP_HOST'] = self.sf.regionsettings.domain
+
+        with self.mock_hosts_middleware(request):
+            view = RegionActivity.as_view()
+            response = view(request)
+
+            canonical_url = '//%s/sf/_activity' % settings.MAIN_HOSTNAME
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
