@@ -1,3 +1,5 @@
+import urllib
+
 from django.template import Library
 from django.conf import settings
 from django.core.urlresolvers import set_urlconf, get_urlconf, reverse, resolve
@@ -25,7 +27,7 @@ def render_canonical_url(context, obj=None):
     if obj:
         if request.host.name == settings.DEFAULT_HOST:
             url = obj.get_absolute_url()
-            if url == request.path:
+            if urllib.unquote(url) == request.path:
                 # Don't bother rendering a canonical URL tag.
                 return ''
             else:
