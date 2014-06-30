@@ -63,6 +63,7 @@ class CanonicalURLTests(TestCase):
     def setUp(self):
         from regions.models import Region
         from pages.models import Page
+        from tags.models import Tag, PageTagSet
 
         self.factory = RequestFactory()
 
@@ -79,6 +80,16 @@ class CanonicalURLTests(TestCase):
         # Create a page in the SF region
         p = Page(name='Parks', content='<p>Hi</p>', region=self.sf)
         p.save(user=self.user)
+        p.content += "!"
+        p.save(user=self.user)
+
+        # Add a tag to the page
+        t = Tag(name='park', slug='park', region=self.sf)
+        t.save(user=self.user)
+        pts = PageTagSet(region=self.sf, page=p)
+        pts.save(user=self.user)
+        pts.tags.add(t)
+        pts.save(user=self.user)
 
     @contextmanager
     def mock_hosts_middleware(self, request):
@@ -301,3 +312,209 @@ class CanonicalURLTests(TestCase):
             canonical_url = '//%s/sf/_activity' % settings.MAIN_HOSTNAME
             response.render()
             self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+
+        #####################################################
+        # Activity page on normal region
+        #####################################################
+
+        request = self.factory.get('/sf/_activity')
+        request.user = self.user
+        request.META['HTTP_HOST'] = settings.MAIN_HOSTNAME
+
+        with self.mock_hosts_middleware(request):
+            view = RegionActivity.as_view()
+            response = view(request, region='sf')
+
+            canonical_url = ''
+            response.render()
+            # No canonical URL emitted
+            self.assertFalse(self.has_canonical_url(response.content, canonical_url))
+
+    @override_settings(CUSTOM_HOSTNAMES=['fakename.org'])
+    def test_canonical_map(self):
+        from maps.views import MapGlobalView
+
+        #####################################################
+        # Main map on custom domain
+        #####################################################
+
+        request = self.factory.get('/map/')
+        request.user = self.user
+        request.META['HTTP_HOST'] = self.sf.regionsettings.domain
+
+        with self.mock_hosts_middleware(request):
+            view = MapGlobalView.as_view()
+            response = view(request)
+
+            canonical_url = '//%s/sf/map/' % settings.MAIN_HOSTNAME
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+
+        #####################################################
+        # Main map on normal region
+        #####################################################
+
+        request = self.factory.get('/sf/map/')
+        request.user = self.user
+        request.META['HTTP_HOST'] = settings.MAIN_HOSTNAME
+
+        with self.mock_hosts_middleware(request):
+            view = MapGlobalView.as_view()
+            response = view(request, region='sf')
+
+            canonical_url = ''
+            response.render()
+            # No canonical URL emitted
+            self.assertFalse(self.has_canonical_url(response.content, canonical_url))
+
+
+    @override_settings(CUSTOM_HOSTNAMES=['fakename.org'])
+    def test_canonical_tags(self):
+        from tags.views import TaggedList
+
+        #####################################################
+        # List of tagged pages on custom domain
+        #####################################################
+
+        request = self.factory.get('/tags/park')
+        request.user = self.user
+        request.META['HTTP_HOST'] = self.sf.regionsettings.domain
+
+        with self.mock_hosts_middleware(request):
+            view = TaggedList.as_view()
+            response = view(request, slug='park')
+
+            canonical_url = '//%s/sf/tags/park' % settings.MAIN_HOSTNAME
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+
+        #####################################################
+        # Main map on normal region
+        #####################################################
+
+        request = self.factory.get('/sf/tags/park')
+        request.user = self.user
+        request.META['HTTP_HOST'] = settings.MAIN_HOSTNAME
+
+        with self.mock_hosts_middleware(request):
+            view = TaggedList.as_view()
+            response = view(request, slug='park', region='sf')
+
+            canonical_url = ''
+            response.render()
+            # No canonical URL emitted
+            self.assertFalse(self.has_canonical_url(response.content, canonical_url))
+
+
+    @override_settings(CUSTOM_HOSTNAMES=['fakename.org'])
+    def test_canonical_map_for_tags(self):
+        from maps.views import MapForTag
+
+        #####################################################
+        # Map of tagged pages on custom domain
+        #####################################################
+
+        request = self.factory.get('/map/tags/park')
+        request.user = self.user
+        request.META['HTTP_HOST'] = self.sf.regionsettings.domain
+
+        with self.mock_hosts_middleware(request):
+            view = MapForTag.as_view()
+            response = view(request, tag='park')
+
+            canonical_url = '//%s/sf/map/tags/park' % settings.MAIN_HOSTNAME
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+
+        #####################################################
+        # Main map on normal region
+        #####################################################
+
+        request = self.factory.get('/sf/map/tags/park')
+        request.user = self.user
+        request.META['HTTP_HOST'] = settings.MAIN_HOSTNAME
+
+        with self.mock_hosts_middleware(request):
+            view = MapForTag.as_view()
+            response = view(request, tag='park', region='sf')
+
+            canonical_url = ''
+            response.render()
+            # No canonical URL emitted
+            self.assertFalse(self.has_canonical_url(response.content, canonical_url))
+
+    @override_settings(CUSTOM_HOSTNAMES=['fakename.org'])
+    def test_canonical_page_info(self):
+        from pages.urls import slugify
+        from pages.views import PageVersionsList
+
+        #####################################################
+        # Page info on custom domain
+        #####################################################
+
+        request = self.factory.get('/Parks/_history/')
+        request.user = self.user
+        request.META['HTTP_HOST'] = self.sf.regionsettings.domain
+
+        with self.mock_hosts_middleware(request):
+            view = slugify(PageVersionsList.as_view())
+            response = view(request, slug='Parks')
+
+            canonical_url = '//%s/sf/Parks/_history/' % settings.MAIN_HOSTNAME
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+
+        #####################################################
+        # Main map on normal region
+        #####################################################
+
+        request = self.factory.get('/sf/Parks/_history/')
+        request.user = self.user
+        request.META['HTTP_HOST'] = settings.MAIN_HOSTNAME
+
+        with self.mock_hosts_middleware(request):
+            view = slugify(PageVersionsList.as_view())
+            response = view(request, slug='Parks', region='sf')
+
+            canonical_url = ''
+            response.render()
+            # No canonical URL emitted
+            self.assertFalse(self.has_canonical_url(response.content, canonical_url))
+
+    @override_settings(CUSTOM_HOSTNAMES=['fakename.org'])
+    def test_canonical_page_diff(self):
+        from pages.urls import slugify
+        from pages.views import PageCompareView
+
+        #####################################################
+        # Page diff on custom domain
+        #####################################################
+
+        request = self.factory.get('/Parks/_history/2...1')
+        request.user = self.user
+        request.META['HTTP_HOST'] = self.sf.regionsettings.domain
+
+        with self.mock_hosts_middleware(request):
+            view = slugify(PageCompareView.as_view())
+            response = view(request, slug='Parks', version1='2', version2='1')
+
+            canonical_url = '//%s/sf/Parks/_history/2...1' % settings.MAIN_HOSTNAME
+            response.render()
+            self.assertTrue(self.has_canonical_url(response.content, canonical_url))
+
+        #####################################################
+        # Page diff on a normal region
+        #####################################################
+
+        request = self.factory.get('/sf/Parks/_history/2...1')
+        request.user = self.user
+        request.META['HTTP_HOST'] = settings.MAIN_HOSTNAME
+
+        with self.mock_hosts_middleware(request):
+            view = slugify(PageCompareView.as_view())
+            response = view(request, slug='Parks', region='sf', version1='2', version2='1')
+
+            canonical_url = ''
+            response.render()
+            # No canonical URL emitted
+            self.assertFalse(self.has_canonical_url(response.content, canonical_url))
