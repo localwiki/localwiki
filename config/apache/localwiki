@@ -7,6 +7,7 @@
 
     ServerName {{ apache_settings.server_name }}
     ServerAlias {{ apache_settings.server_name }} www.{{ apache_settings.server_name }}
+    ServerAlias *.{{ apache_settings.server_name }}
     ServerAdmin {{ apache_settings.server_admin }}
 
     # Redirect www -> no-www
