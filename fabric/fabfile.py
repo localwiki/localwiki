@@ -12,7 +12,7 @@ This is the main management script for provisioning and managing the LocalWiki s
     $ ln -s localwiki/vagrant/Vagrantfile .
     $ virtualenv env
     $ source env/bin/activate
-    $ pip install -r requirements.txt
+    $ pip install -r localwiki/fabric/requirements.txt
 
 ==== For development ====
 
