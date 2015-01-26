@@ -1,5 +1,6 @@
-========================
-LocalWiki
+.. image:: https://localwiki.org/static/theme/img/logo.png
+    :target: https://localwiki.org
+
 ========================
 
 LocalWiki is a grassroots effort to collect, share and open the world's local knowledge.
