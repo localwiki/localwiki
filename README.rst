@@ -15,3 +15,9 @@ To report an issue, a bug, a feature, a dream, a poem, a plan, or a whim, please
 
 `the issue tracker! <https://github.com/localwiki/localwiki/issues>`_
 ===========================================================================
+
+
+How does this work?
+~~~~~~~~~~~~~~~~~~~
+
+You can report, dream, scheme anything here!  LocalWiki volunteers will move your issue to other repositories if necessary.  In particular, feature requests and proposals that haven't yet had a chance for community input are left here, as well as UI discussion and debate.  This repository is also used for all of our other planning.
