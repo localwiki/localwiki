@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+  <display-name>Example</display-name>
+
+  <!-- Declare the existence of a servlet. -->
+  <servlet>
+    <servlet-name>DiffServlet</servlet-name>
+    <servlet-class>org.outerj.daisy.diff.DiffServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>MergeServlet</servlet-name>
+    <servlet-class>org.outerj.daisy.diff.MergeServlet</servlet-class>
+  </servlet>
+
+  <!-- Map URLs to that servlet. -->
+  <servlet-mapping>
+    <servlet-name>DiffServlet</servlet-name>
+    <url-pattern>/diff</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MergeServlet</servlet-name>
+    <url-pattern>/merge</url-pattern>
+  </servlet-mapping>
+</web-app>

@@ -1,0 +1,83 @@
+[
+    {
+        "pk": null, 
+        "model": "pages.page", 
+        "fields": {
+            "content": "<table>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Location</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tPlease fill in address</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Hours</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tPlease fill in hours</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Phone</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(415) 555-5555</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Website</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tAdd link here</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>E-mail</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tEmail address</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Owner(s)</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tNames of owners/proprietors here</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Established</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tDate, i.e. YYYY-MM-DD</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Payment Method</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tType of payment</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Wheelchair accessibility</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tstairs, bathrooms, handrails, aisle width?</td>\n\t\t</tr>\n\t</tbody>\n</table>\n<p>\n\tThen, put\u00a0<em>whatever</em>\u00a0you want down here! Note that\u00a0<a href=\"http://local.google.com\">http://local.google.com</a>\u00a0is sometimes a good and easy place to find times/phone. Better yet, look them up in the phone book, and ask them. Remove the fields you don't fill out \u2014 or even better, look up or call them for the missing information!</p>\n<h3>\n\tRelated Links</h3>\n<ul>\n\t<li>\n\t\t<a href=\"Shopping\">Shopping</a></li>\n</ul>\n<p>\n\t\u00a0</p>\n", 
+            "name": "Templates/Business", 
+            "slug": "templates/business"
+        }
+    }, 
+    {
+        "pk": null, 
+        "model": "pages.page", 
+        "fields": {
+            "content": "<table>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Location</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\taddress</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Contact</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(555) 555 5555</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Website</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tAdd link here</td>\n\t\t</tr>\n\t</tbody>\n</table>\n<p>\n\tThe <strong>Thing I'm Talking About</strong> should have a blurb here with links to relevant things, like the <a href=\"Front%20Page\">Front Page</a>.</p>\n<h2>\n\tSection Title</h2>\n<p>\n\tText goes here.</p>\n",
+            "name": "Templates/Place", 
+            "slug": "templates/place"
+        }
+    },
+    {
+        "pk": null, 
+        "model": "pages.page", 
+        "fields": {
+            "content": "<p>\n\tWrite anything you&#39;d like about yourself here!</p>\n<h2>\n\tContact info</h2>\n<ul>\n\t<li>\n\t\tTwitter</li>\n\t<li>\n\t\tFacebook</li>\n\t<li>\n\t\tEmail</li>\n</ul>",
+            "name": "Templates/User", 
+            "slug": "templates/user"
+        }
+    },
+    {
+        "pk": null, 
+        "model": "pages.page", 
+        "fields": {
+            "content": "<table>\n\t<tbody>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Location</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tPlease fill in address</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Hours</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(Please fill in hours)</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Phone</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(415) 555-5555</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Website</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\tAdd link here</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Established</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(Date, i.e. YYYY-MM-DD)</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Price range</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(Prices for \"average\" entrees)</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Payment Methods</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(Cash, check, credit cards, other?)</td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td style=\"background-color: rgb(232, 236, 239);\">\n\t\t\t\t<strong>Wheelchair accessibility</strong></td>\n\t\t</tr>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t(notes on stairs, bathroom access, handrails, aisle width)</td>\n\t\t</tr>\n\t</tbody>\n</table>\n<p>\n\tThen, put\u00a0<em>whatever</em>\u00a0you want down here! Note that\u00a0<a href=\"http://local.google.com\">http://local.google.com</a>\u00a0is sometimes a good and easy place to find times/phone. Better yet, look them up in the phone book, and ask them.</p>\n<p>\n\tRemember to add this restaurant to the neighborhood\u00a0<a href=\"restaurants\">restaurants</a>\u00a0page.</p>\n<h3>\n\tRelated Links</h3>\n<ul>\n\t<li>\n\t\t<a href=\"Restaurants\">Restaurants</a></li>\n</ul>\n<p>\n\t\u00a0</p>\n", 
+            "name": "Templates/Restaurant", 
+            "slug": "templates/restaurant"
+        }
+    }, 
+    {
+        "pk": null, 
+        "model": "pages.page", 
+        "fields": {
+            "content": "<p>\n\tDocumentation for administrators is distributed with the localwiki software in and can be found at:</p>\n<p class=\"indent1\">\n\t<tt>[<strong>localwiki_root</strong>]/docs/html/index.html</tt></p>\n<p>\n\tThe latest documentation is also available online at\u00a0<a href=\"http://localwiki.org/static/docs/html/index.html\">http://localwiki.org/static/docs/html/index.html</a></p>\n", 
+            "name": "Admin documentation", 
+            "slug": "admin documentation"
+        }
+    }, 
+    {
+        "pk": null, 
+        "model": "pages.page", 
+        "fields": {
+            "content": "<p>\n\tThis has multiple meanings. You are probably looking for information on one of the following:</p>\n<ul>\n\t<li>\n\t\t<a href=\"ItemOne\">ItemOne</a>\u00a0- A brief summary of ItemOne</li>\n\t<li>\n\t\t<a href=\"ItemTwo\">ItemTwo</a>\u00a0- A brief summary of ItemTwo</li>\n</ul>\n<p>\n\t\u00a0</p>\n<p>\n\tThis is a\u00a0<em>disambiguation</em> page\u00a0\u2014 a navigational aid which lists other pages that might otherwise share the same title. If an article link referred you here, you might want to go back and fix it to point directly to the intended page.</p>\n<p>\n\t\u00a0</p>\n", 
+            "name": "Templates/Disambiguation", 
+            "slug": "templates/disambiguation"
+        }
+    }, 
+    {
+        "pk": null, 
+        "model": "pages.page", 
+        "fields": {
+            "content": "<p>\n\tWelcome to your brand new localwiki! \u00a0There are currently just a handful of pages in it, to get you started. \u00a0Here are a few useful pages:</p>\n<ul>\n\t<li>\n\t\t\u200b<a href=\"Help\">Help</a></li>\n\t<li>\n\t\t<a href=\"Admin%20documentation\">Admin documentation</a></li>\n\t<li>\n\t\t\u200b<a href=\"Templates\">Templates</a></li>\n</ul>\n<p>\n\tClick on\u00a0<strong>All Pages</strong>\u00a0at the top to see what else is there now.</p>\n<p>\n\tYou can edit this and any other page by clicking the <strong>Edit</strong> button.</p>\n<p>\n\tTo create a new page, type a page name into the search box and press\u00a0<strong>Search or create page</strong>.</p>\n", 
+            "name": "Front Page", 
+            "slug": "front page"
+        }
+    }, 
+    {
+        "pk": null, 
+        "model": "pages.page", 
+        "fields": {
+            "content": "<h2>\n\tEditing pages</h2>\n<p>\n\tThis website is editable by anyone. To change something on an existing page, press the <strong>Edit</strong> button. A toolbar will appear, just like in a word processor, and you can start typing inside the page. Using the toolbar, you can create links, headings, insert images, and more. Don't be afraid to explore. When you are done, click <strong>Save changes</strong> at the bottom of the page.</p>\n<h2>\n\tCreating a new page</h2>\n<p>\n\tTo create a new page, type a new name in the search box at the top and press\u00a0<strong>Search or create page</strong>. If a page with this exact name doesn't already exist, you'll be prompted to create a new page.</p>\n<h2>\n\tMore help</h2>\n<p>\n\tWe've covered only the bare minimum here, to get you started. For more help, visit\u00a0<a href=\"http://guide.localwiki.org\">http://guide.localwiki.org</a></p>\n<p>\n\tIf you still find yourself stuck, <a href=\"mailto:help@localwiki.org\">email us</a>.</p>\n", 
+            "name": "Help", 
+            "slug": "help"
+        }
+    }, 
+    {
+        "pk": null, 
+        "model": "pages.page", 
+        "fields": {
+            "content": "<p>\n\tTemplates are special pages that serve as a starting point when creating a new page. \u00a0Using a common template for related topics gives those pages a common structure. \u00a0To use one of the templates, simply select the template when creating a new page. \u00a0</p>\n<p>\n\tBelow is a list of the available templates. To add a new template, create a page whose title starts with \"Templates/\", as in <a href=\"Templates%2FBusiness\">Templates/Business</a>. \u00a0When you create a new template, add it to this list so it's easier to find.</p>\n<h3>\n\t<span>List of templates</span></h3>\n<ul>\n\t<li>\n\t\t<a href=\"Templates%2FBusiness\">Templates/Business</a></li>\n\t<li>\n\t\t<a href=\"Templates%2FDisambiguation\">Templates/Disambiguation</a></li>\n\t<li>\n\t\t<a href=\"Templates%2FRestaurant\">Templates/Restaurant</a></li>\n</ul>\n", 
+            "name": "Templates", 
+            "slug": "templates"
+        }
+    }
+]

@@ -1,0 +1,419 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Customizing your localwiki’s appearance &mdash; LocalWiki 0.4.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.4.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LocalWiki 0.4.2 documentation" href="index.html" />
+    <link rel="next" title="Advanced topics" href="advanced.html" />
+    <link rel="prev" title="Contributing" href="contribute.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced topics"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="contribute.html" title="Contributing"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="customizing-your-localwiki-s-appearance">
+<h1>Customizing your localwiki&#8217;s appearance<a class="headerlink" href="#customizing-your-localwiki-s-appearance" title="Permalink to this headline">¶</a></h1>
+<p>It&#8217;s possible to completely customize the appearance and some of the
+behavior of the LocalWiki software without having to dig into the
+underlying code.  You can do this by customizing the site&#8217;s CSS, the
+site&#8217;s templates, and by creating entirely new themes.</p>
+<p>We&#8217;re hoping to make the process of altering templates and CSS a bit
+less technical at some point.  For now you&#8217;ll need to be comfortable
+with moving things around on a server, editing files and have some
+knowledge of CSS and HTML.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you&#8217;re a developer and have been playing around, make sure
+you have set <tt class="docutils literal"><span class="pre">DEBUG</span></tt> to <tt class="docutils literal"><span class="pre">False</span></tt> in <tt class="docutils literal"><span class="pre">localsettings.py</span></tt>,
+otherwise you won&#8217;t see static media show up when using
+<tt class="docutils literal"><span class="pre">localwiki-manage</span> <span class="pre">runsever</span></tt>.</p>
+</div>
+<div class="section" id="template-files">
+<h2>Template files<a class="headerlink" href="#template-files" title="Permalink to this headline">¶</a></h2>
+<p>The LocalWiki software has the concept of a <em>template</em>.  A template is
+a text file on the server running the LocalWiki software, and it&#8217;s used to
+generate pages throughout the site.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These <em>template files</em> are very different from &#8220;Template pages&#8221; on
+the wiki. Template pages on the wiki are for creating new pages more
+easily. <em>Template files</em> on the server are used by the LocalWiki software to
+generate the site itself.</p>
+</div>
+<p>These templates are simply
+<a class="reference external" href="https://docs.djangoproject.com/en/dev/topics/templates/">Django templates</a>
+and support the full range of capabilities of the Django templating
+language.  Check out the <a class="reference external" href="https://docs.djangoproject.com/en/dev/topics/templates/">Django template documentation</a>
+for everything that&#8217;s possible with the templates.  You don&#8217;t need to read the
+template documentation to make simple customizations, though.</p>
+<p>The global template directory is <tt class="docutils literal"><span class="pre">/usr/share/localwiki/templates</span></tt>, or
+<tt class="docutils literal"><span class="pre">env/share/localwiki/templates</span></tt> (for manual installations).</p>
+</div>
+<div class="section" id="themes">
+<h2>Themes<a class="headerlink" href="#themes" title="Permalink to this headline">¶</a></h2>
+<p>A <em>theme</em> is a collection of templates and static assets that together control
+the look of the entire site.</p>
+<p>Each theme is simply a directory containing:</p>
+<ul class="simple">
+<li>A directory with templates (<tt class="docutils literal"><span class="pre">templates/</span></tt>)</li>
+<li>A directory with static assets (<tt class="docutils literal"><span class="pre">assets/</span></tt>) like CSS and images.</li>
+</ul>
+<p>The global themes directory is <tt class="docutils literal"><span class="pre">/usr/share/localwiki/themes</span></tt>, or
+<tt class="docutils literal"><span class="pre">env/share/localwiki/themes</span></tt> (for manual installations).  <em>NOTE</em>: If
+you are running localwiki-0.2-beta-12 you may have to create this
+directory by hand.</p>
+</div>
+<div class="section" id="tutorial">
+<h2>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h2>
+<p>The theme system is best explained through a few simple examples.</p>
+<div class="section" id="example-1-adding-a-logo">
+<span id="example1"></span><h3>Example 1: Adding a logo<a class="headerlink" href="#example-1-adding-a-logo" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s add a logo to our site.  Because this is just a simple change,
+making an new theme is overkill.</p>
+<p>First, let&#8217;s find the built-in templates.  Type:</p>
+<div class="highlight-python"><pre>localwiki-manage shell</pre>
+</div>
+<p>then once you&#8217;re in the localwiki shell, copy and paste this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sapling</span><span class="p">;</span> <span class="k">print</span> <span class="n">sapling</span><span class="o">.</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="nb">exit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This will print out where the localwiki code itself lives on your
+system.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It&#8217;s not a good idea to modify the files in the code directory
+directly, as they&#8217;re likely to be replaced when you upgrade.  If you
+want to customize the code you should do a <a class="reference internal" href="install.html#dev-install"><em>development install</em></a>.</p>
+</div>
+<p>Copy the path printed out and <tt class="docutils literal"><span class="pre">cd</span></tt> there.  You&#8217;ll see there&#8217;s a
+<tt class="docutils literal"><span class="pre">themes</span></tt> directory in that directory.  Inside the <tt class="docutils literal"><span class="pre">themes</span></tt> directory
+is a directory for the default built-in theme, <tt class="docutils literal"><span class="pre">sapling</span></tt>.</p>
+<p>As explained earlier, the <tt class="docutils literal"><span class="pre">sapling</span></tt> theme directory has an <tt class="docutils literal"><span class="pre">assets</span></tt>
+and a <tt class="docutils literal"><span class="pre">templates</span></tt> directory inside of it:</p>
+<div class="highlight-python"><pre>$ ls sapling
+assets  LICENSE.txt  README  templates</pre>
+</div>
+<p>If we go inside the templates directory, we&#8217;ll see a <tt class="docutils literal"><span class="pre">site</span></tt> directory
+containing some template files:</p>
+<div class="highlight-python"><pre>$ cd templates
+$ ls
+site
+$ cd site
+$ ls
+base.html  login_info.html  nav.html  search_form.html  site_title.html</pre>
+</div>
+<p>Taking a look at the template files, the <tt class="docutils literal"><span class="pre">site_title.html</span></tt> file is
+what we want to customize to add our own logo.  Let&#8217;s copy that template
+over to our global templates directory and then customize it.</p>
+<p>First, let&#8217;s make a <tt class="docutils literal"><span class="pre">site</span></tt> directory inside our global template
+directory (explained above).</p>
+<p>The global template directory is <tt class="docutils literal"><span class="pre">/usr/share/localwiki/templates</span></tt>, or
+<tt class="docutils literal"><span class="pre">env/share/localwiki/templates</span></tt> (for manual installs):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mkdir</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">localwiki</span><span class="o">/</span><span class="n">templates</span><span class="o">/</span><span class="n">site</span>
+</pre></div>
+</div>
+<p>then copy the file over:</p>
+<div class="highlight-python"><pre>cp site_title.html /usr/share/localwiki/templates/site</pre>
+</div>
+<p>Now we simply open up the copy of the template we made,
+<tt class="docutils literal"><span class="pre">/usr/share/localwiki/templates/site/site_title.html</span></tt>.  It looks like
+this:</p>
+<div class="highlight-python"><pre>{% block site_title %}
+{% if current_site %}
+  &lt;h1&gt;&lt;a href="{% url pages:frontpage %}"&gt;{{ current_site.name }}&lt;/a&gt;&lt;/h1&gt;
+{% endif %}
+{% endblock %}</pre>
+</div>
+<p>Let&#8217;s change it to look like this:</p>
+<div class="highlight-python"><pre>{% block site_title %}
+{% if current_site %}
+  &lt;a href="{% url pages:frontpage %}"&gt;&lt;img src="{{ STATIC_URL }}/img/logo.png?v=1" alt="{{ current_site.name }}"/&gt;&lt;/a&gt;
+{% endif %}
+{% endblock %}</pre>
+</div>
+<p>Now we need to go design a pretty logo, name it <tt class="docutils literal"><span class="pre">logo.png</span></tt> and move it
+into the static directory, located at <tt class="docutils literal"><span class="pre">/usr/share/localwiki/static</span></tt> or
+<tt class="docutils literal"><span class="pre">env/share/localwiki/static</span></tt> (for manual installations).</p>
+<p>Once we&#8217;ve done all this we&#8217;ll need to restart the webserver.  You can
+usually do this by running the command:</p>
+<div class="highlight-python"><pre>sudo /etc/init.d/apache2 restart</pre>
+</div>
+<p>And you&#8217;ll have a shiny new logo on your site!</p>
+</div>
+<div class="section" id="example-2-adding-a-custom-css-file-on-every-page">
+<h3>Example 2: Adding a custom CSS file on every page<a class="headerlink" href="#example-2-adding-a-custom-css-file-on-every-page" title="Permalink to this headline">¶</a></h3>
+<p>If you look at <a class="reference external" href="https://dentonwiki.org">https://dentonwiki.org</a>, you&#8217;ll see they&#8217;ve got a cool &#8220;I want to
+create a page about _______&#8221; banner on their front page:</p>
+<div class="figure">
+<img alt="_images/css_table_dentonwiki.jpg" src="_images/css_table_dentonwiki.jpg" />
+</div>
+<p>The DentonWiki achieves this by creating a table and then giving it a
+custom CSS class.  If you click on &#8220;View source&#8221; on
+<a class="reference external" href="https://dentonwiki.org">https://dentonwiki.org</a>, you&#8217;ll see:</p>
+<div class="highlight-python"><pre>&lt;table class="welcome"&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style="text-align: right;"&gt;
+        &lt;h1&gt;
+        Welcome to &lt;a href="DentonWiki"&gt;Denton Wiki&lt;/a&gt;!&lt;/h1&gt;
+        &lt;h3&gt;
+        A website about Denton that &lt;em&gt;anyone&lt;/em&gt; can edit&lt;/h3&gt;
+        &lt;br /&gt;
+        &lt;br /&gt;
+        &lt;br /&gt;
+        &lt;br /&gt;
+        &lt;br /&gt;
+        &lt;br /&gt;
+        &lt;br /&gt;
+        &lt;h1&gt;
+            I want to make a page about &lt;input class="plugin searchbox" type="text" value="" /&gt;&lt;/h1&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</pre>
+</div>
+<p>You can easily add a custom CSS class to a table by right-clicking on it
+while editing and going to Table properties -&gt; Advanced settings -&gt; CSS classes.</p>
+<p>But in order to make a custom CSS class work, we&#8217;ll need to make a new
+CSS file and reference it from the page&#8217;s HTML.  Here&#8217;s how we do this:</p>
+<p>1. We make a new file, in our case named <tt class="docutils literal"><span class="pre">denton.css</span></tt>, inside of the
+global static directory.  In our case, this is
+<tt class="docutils literal"><span class="pre">/usr/share/localwiki/static/css/denton.css</span></tt> (or
+<tt class="docutils literal"><span class="pre">env/share/localwiki/static/css</span></tt> for manual installations).</p>
+<p>2. Inside <tt class="docutils literal"><span class="pre">denton.css</span></tt> we place the following contents, which
+customize the appearance of tables with the class <tt class="docutils literal"><span class="pre">welcome</span></tt>:</p>
+<div class="highlight-python"><pre>#page .welcome td {
+    display: block;
+    max-width: 1360px;
+    height: 280px;
+    background-image: url(/front_page/_files/welcome.jpg);
+    background-position: 66% 0%;
+    background-repeat: no-repeat;
+    padding: 2em;
+    border: 3px solid #b5b5b5;
+}
+#page .welcome {
+    width: 100%;
+    border: none;
+}
+#page .welcome a {
+    text-decoration: none;
+}
+#page .welcome a:hover {
+    text-decoration: underline;
+}
+#page .welcome h1, #page .welcome h2, #page .welcome h3, #page .welcome h4 {
+    background-image: url(/static/img/80_trans_white_bg.png);
+    background-repeat: repeat;
+    width: auto;
+    float: right;
+    padding: 0 0.25em 0 0.25em;
+}
+#page .welcome h1 {
+    padding: 0.1em 0.25em 0.1em 0.25em;
+}
+#page .welcome h3 {
+    padding: 0.2em 0.3em 0.25em 0.3em;
+    margin-top: -1em;
+}
+#page .welcome .searchbox * {
+    vertical-align: middle;
+}
+#page .welcome .searchbox input {
+    margin-top: 0.4em;
+}</pre>
+</div>
+<p>3. The CSS file references two images &#8211; <tt class="docutils literal"><span class="pre">/static/img/80_trans_white_bg.png</span></tt> and
+<tt class="docutils literal"><span class="pre">/front_page/_files/welcome.jpg</span></tt>.   The <tt class="docutils literal"><span class="pre">welcome.jpg</span></tt> image can be
+added simply by uploading a file named <tt class="docutils literal"><span class="pre">welcome.jpg</span></tt> to the Front
+Page.  You&#8217;ll want to copy
+<a class="reference external" href="https://dentonwiki.org/static/img/80_trans_white_bg.png">80_trans_white_bg.png</a>
+to <tt class="docutils literal"><span class="pre">/usr/share/localwiki/static/img</span></tt> (or
+<tt class="docutils literal"><span class="pre">env/share/locawiki/static/img</span></tt> for manual installations)</p>
+<p>4. Now we want to reference this new <tt class="docutils literal"><span class="pre">denton.css</span></tt> file from the HTML
+of all the pages.  Let&#8217;s go back into the localwiki code directory,
+referenced in the beginning of <a class="reference internal" href="#example1"><em>Example 1</em></a> and copy over <tt class="docutils literal"><span class="pre">sites/base.html</span></tt>
+to our global templates directory:</p>
+<div class="highlight-python"><pre>$ cd /path/to/localwiki/code/directory
+$ cd themes/sapling/templates/site
+$ ls
+base.html  login_info.html  nav.html  search_form.html  site_title.html
+$ cp base.html /usr/share/localwiki/templates/site/</pre>
+</div>
+<p>and then open up the new
+<tt class="docutils literal"><span class="pre">/usr/share/localwiki/templates/site/base.html</span></tt>
+file.  We&#8217;ll change this portion of the file:</p>
+<div class="highlight-python"><pre>{% block media %}
+&lt;link rel="stylesheet" href="{% static "theme/css/reset.css" %}"&gt;
+&lt;link rel="stylesheet" href="{% static "theme/css/site.css" %}"&gt;
+{% endblock %}</pre>
+</div>
+<p>to look like this:</p>
+<div class="highlight-python"><pre>{% block media %}
+&lt;link rel="stylesheet" href="{% static "theme/css/reset.css" %}"&gt;
+&lt;link rel="stylesheet" href="{% static "theme/css/site.css" %}"&gt;
+&lt;link rel="stylesheet" href="{{ STATIC_URL }}css/denton.css?v=1"&gt;
+{% endblock %}</pre>
+</div>
+<p>Then we simply restart the webserver:</p>
+<div class="highlight-python"><pre>sudo /etc/init.d/apache2 restart</pre>
+</div>
+<p>and we&#8217;ll have the <tt class="docutils literal"><span class="pre">denton.css</span></tt> file referenced on all our pages!</p>
+</div>
+</div>
+<div class="section" id="creating-an-entirely-new-theme">
+<h2>Creating an entirely new theme<a class="headerlink" href="#creating-an-entirely-new-theme" title="Permalink to this headline">¶</a></h2>
+<p>After a certain amount of customization it may make sense to create an
+entirely new theme.  Here&#8217;s how you&#8217;d go about doing this:</p>
+<p>1. Go into the localwiki code directory, referenced in the beginning of
+Example 1, and copy the <tt class="docutils literal"><span class="pre">sapling</span></tt> theme directory to your global
+<tt class="docutils literal"><span class="pre">themes</span></tt> directory:</p>
+<div class="highlight-python"><pre>$ cd /path/to/localwiki/code/directory
+$ cd themes/
+$ cp -r sapling /usr/share/localwiki/themes/nameofyourtheme</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In localwiki-0.12-beta-12 there wasn&#8217;t a <tt class="docutils literal"><span class="pre">themes</span></tt> directory
+in share/localwiki.  Create it if it&#8217;s missing.</p>
+</div>
+<p>Then edit the <tt class="docutils literal"><span class="pre">/usr/share/localwiki/conf/localsettings.py</span></tt> file and change the
+<tt class="docutils literal"><span class="pre">SITE_THEME</span></tt> value from <tt class="docutils literal"><span class="pre">sapling</span></tt> to <tt class="docutils literal"><span class="pre">nameofyourtheme</span></tt>.</p>
+<p>Then simply run:</p>
+<div class="highlight-python"><pre>localwiki-manage collectstatic</pre>
+</div>
+<p>and restart the webserver:</p>
+<div class="highlight-python"><pre>/etc/init.d/apache2 restart</pre>
+</div>
+<p>and the site will be using your new theme.</p>
+<p>As you develop your theme you&#8217;ll need to restart the
+webserver whenever you change the <tt class="docutils literal"><span class="pre">templates/</span></tt> and run
+<tt class="docutils literal"><span class="pre">localwiki-manage</span> <span class="pre">collectstatic</span></tt> whenever you change the <tt class="docutils literal"><span class="pre">assets/</span></tt>.</p>
+</div>
+<div class="section" id="referring-to-static-assets-in-templates">
+<h2>Referring to static assets in templates<a class="headerlink" href="#referring-to-static-assets-in-templates" title="Permalink to this headline">¶</a></h2>
+<p>Your theme templates can refer to static assets like this:</p>
+<div class="highlight-python"><pre>&lt;img src="{{STATIC_URL}}theme/img/mybutton.png"/&gt;</pre>
+</div>
+<p>That will pull up the file that lives at themes/yourtheme/img/mybutton.png.</p>
+</div>
+<div class="section" id="overriding-built-in-templates">
+<h2>Overriding built-in templates<a class="headerlink" href="#overriding-built-in-templates" title="Permalink to this headline">¶</a></h2>
+<p>More detail on this soon.  You&#8217;ll probably be able to figure this out if
+you dig around.  But, as an example, to override <tt class="docutils literal"><span class="pre">pages/base.html</span></tt>, you
+simply define <tt class="docutils literal"><span class="pre">themes/nameofyourtheme/templates/pages/base.html</span></tt></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Customizing your localwiki&#8217;s appearance</a><ul>
+<li><a class="reference internal" href="#template-files">Template files</a></li>
+<li><a class="reference internal" href="#themes">Themes</a></li>
+<li><a class="reference internal" href="#tutorial">Tutorial</a><ul>
+<li><a class="reference internal" href="#example-1-adding-a-logo">Example 1: Adding a logo</a></li>
+<li><a class="reference internal" href="#example-2-adding-a-custom-css-file-on-every-page">Example 2: Adding a custom CSS file on every page</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-an-entirely-new-theme">Creating an entirely new theme</a></li>
+<li><a class="reference internal" href="#referring-to-static-assets-in-templates">Referring to static assets in templates</a></li>
+<li><a class="reference internal" href="#overriding-built-in-templates">Overriding built-in templates</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="contribute.html"
+                        title="previous chapter">Contributing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="advanced.html"
+                        title="next chapter">Advanced topics</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/customizing.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="advanced.html" title="Advanced topics"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="contribute.html" title="Contributing"
+             >previous</a> |</li>
+        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, LocalWiki team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

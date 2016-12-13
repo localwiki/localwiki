@@ -1,0 +1,47 @@
+  1. Discuss large changes on the mailing list or trac before coding.
+  2. Python code style should follow PEP8 standards whenever possible
+     (http://www.python.org/dev/peps/pep-0008/).
+  3. Write tests!  Tons of great information here:
+     http://docs.djangoproject.com/en/dev/topics/testing/
+  4. For non-trivial contributions, agree to the contributor agreement:
+     http://localwiki.org/cla
+
+Email issue a GitHub pull request, email patches to philip@localwiki.org, or
+post them to the LocalWiki development mailing list.
+
+Please also see our ticketing system at:
+
+  https://github.com/localwiki/localwiki/issues
+
+Picking out some tickets to work on is a great way to get started on the 
+project!
+
+Come talk to us in the #localwiki IRC channel on freenode.net!  Because the
+project is just getting started, things are moving rather quickly.  IRC is a
+great way to quickly chat about functionality and plans!
+
+== Simple git workflow ==
+
+If using GitHub:
+
+   1. Fork on GitHub (click Fork button)
+   2. Clone to computer ($ git clone git@github.com:you/localwiki.git )
+   3. Set up remote upstream
+      ($ git remote add upstream git://github.com/localwiki/localwiki.git)
+   4. Create a branch for new issue ($ git checkout -b 100-new-feature)
+   5. Develop on issue branch.
+      [Time passes, the main LocalWiki repository accumulates new commits]
+   6. Commit changes to issue branch
+      ($ git add . ; git commit -m 'commit message')
+   7. Fetch upstream ($ git fetch upstream)
+   8. Update local master ($ git checkout master; git pull upstream master)
+   9. Repeat steps 5-8 till dev is complete
+  10. Rebase issue branch ($ git checkout 100-new-feature; git rebase master)
+  11. Push branch to GitHub ($ git push origin 100-new-feature)
+  12. Issue pull request (Click Pull Request button)
+
+If not using GitHub:
+
+  Follow the same basic pattern (develop on branch until done), then rebase to
+  remote master when you're done.  Send your patch using git format-patch to
+  philip@localwiki.org or provide a remote git URL to pull from.

@@ -1,0 +1,28 @@
+{% load thumbnail %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>{% trans "Files" %}</title>
+</head>
+<body>
+  <div>
+  <ul class="file_list">
+  {% for file in file_list %}
+    {% if thumbnail %}
+      {% thumbnail file.file "32x32" as im %}
+        <li>
+          <a class="no_icon" href="_files/{{ file.name|urlencode }}"><img src="{{ im.url }}" style="border: none; vertical-align: middle; padding: 2px;">{{ file.name }}</a>
+        </li>
+      {% endthumbnail %}
+    {% else %}
+      <li>
+        <a class="file_{{ file.rough_type }}" href="_files/{{ file.name|urlencode }}">{{ file.name }}</a>
+      </li>
+    {% endif %}
+  {% endfor %}
+  </ul>
+  </div>
+</body>
+</html>

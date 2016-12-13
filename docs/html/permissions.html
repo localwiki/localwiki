@@ -1,0 +1,273 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Permissions &mdash; LocalWiki 0.4.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.4.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LocalWiki 0.4.2 documentation" href="index.html" />
+    <link rel="next" title="Subscriber list" href="subscribers.html" />
+    <link rel="prev" title="Settings" href="settings.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="subscribers.html" title="Subscriber list"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="settings.html" title="Settings"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="permissions">
+<h1>Permissions<a class="headerlink" href="#permissions" title="Permalink to this headline">¶</a></h1>
+<p>LocalWiki uses a pretty flexible system of permissions that allows the
+administrator to say who is allowed to add, change, and delete different
+objects (pages, maps, files, etc.).  It also lets the administrator ban users
+who are malicious.</p>
+<p>There are two levels of permissions: by type of object (i.e., page, map, etc.)
+and by specific object (i.e., &#8220;Front Page&#8221;).  This allows you to set the
+default permissions for all objects and still adjust them for certain objects
+that should be more protected (or more open).</p>
+<div class="section" id="users-and-groups">
+<h2>Users and groups<a class="headerlink" href="#users-and-groups" title="Permalink to this headline">¶</a></h2>
+<p>Users can belong to one or more Group, and new groups can be added any time.
+You can grant permissions to each group, and the users in that group will
+inherit those permissions.  This makes role-based permissions possible,
+allowing you, for example, to create a group called &#8220;Trusted Users&#8221; and give
+this group additional permissions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is good practice to grant permissions to groups instead of individual
+users because it&#8217;s more manageable (there are lots of users and few groups)
+and maintainable (users come and go, and it&#8217;s much easier to add and remove
+them from groups as needed).</p>
+</div>
+<p>If you followed the installation instructions, you should have the following
+groups out of the box:</p>
+<div class="figure">
+<img alt="_images/admin_groups.png" src="_images/admin_groups.png" />
+</div>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">Anonymous</span></tt></dt>
+<dd>This group contains <tt class="docutils literal"><span class="pre">AnonymousUser</span></tt>, which is used to set permissions for
+people who are not logged in.</dd>
+<dt><tt class="docutils literal"><span class="pre">Authenticated</span></tt></dt>
+<dd>This group contains every user except <tt class="docutils literal"><span class="pre">AnonymousUser</span></tt>.  New users are
+automatically added to this group.  It&#8217;s a catch-all group to make it easy
+to set the default settings for everyone who&#8217;s logged in.</dd>
+<dt><tt class="docutils literal"><span class="pre">Banned</span></tt></dt>
+<dd>Users added to this group will be denied all permissions, regardless of
+what permissions are set for this group or what other groups they belong
+to.</dd>
+</dl>
+</div>
+<div class="section" id="banning-a-user">
+<h2>Banning a user<a class="headerlink" href="#banning-a-user" title="Permalink to this headline">¶</a></h2>
+<p>To ban a user, simply add the user to the <tt class="docutils literal"><span class="pre">Banned</span></tt> group.  You do not need
+to remove the user from other groups.  Any user in the <tt class="docutils literal"><span class="pre">Banned</span></tt> group will
+not have any permissions.</p>
+<p>First, find the user in the admin interface, using the search box:</p>
+<div class="figure">
+<img alt="_images/admin_user_search.png" src="_images/admin_user_search.png" />
+</div>
+<p>Click on the username, and scroll down &#8220;Groups&#8221; section. Hold down
+&#8220;Control&#8221; (&#8220;Command&#8221; on a Mac) while selecting <tt class="docutils literal"><span class="pre">Banned</span></tt> group, and press
+&#8220;Save&#8221;.</p>
+<div class="figure">
+<img alt="_images/admin_ban_user.png" src="_images/admin_ban_user.png" />
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">While it&#8217;s possible in the admin interface to delete a user, this is
+<strong>NOT</strong> recommended as it will also delete every change the user has made.
+If you need to disable a user&#8217;s account, it&#8217;s best to just unmark the
+&#8220;active&#8221; checkbox for that user.</p>
+</div>
+</div>
+<div class="section" id="setting-permissions-for-specific-objects">
+<h2>Setting permissions for specific objects<a class="headerlink" href="#setting-permissions-for-specific-objects" title="Permalink to this headline">¶</a></h2>
+<p>If you view a Page in the admin interface and then click &#8220;Object permissions&#8221;
+you can then enter a group name and select which permissions the given group
+should have for that specific Page.  Only those groups you choose will be able
+to add, edit, and delete the Page.</p>
+<p>Say, for example, you want to lock down a page so that only logged-in users
+can edit it.  First, find the page in the admin interface and click on
+&#8220;Object permissions&#8221; in the top right.</p>
+<div class="figure">
+<img alt="_images/admin_page_permissions1.png" src="_images/admin_page_permissions1.png" />
+</div>
+<p>Then in the Groups section enter &#8220;Authenticated&#8221; and click &#8220;Manage group&#8221;.</p>
+<div class="figure">
+<img alt="_images/admin_page_permissions2.png" src="_images/admin_page_permissions2.png" />
+</div>
+<p>Click the &#8220;Choose all&#8221; button and press &#8220;Save&#8221;.</p>
+<div class="figure">
+<img alt="_images/admin_page_permissions3.png" src="_images/admin_page_permissions3.png" />
+</div>
+<p>Now, only those users who have logged in will be able to edit this page.</p>
+<p>To clear out per-object permissions and go back to the defaults, on the
+&#8220;Object permissions&#8221; screen click &#8220;edit&#8221; next to each group and clear out all
+permissions.  When there are no groups or users shown on the &#8220;Object
+permissions&#8221; screen, the application will look at the default permissions for
+that object type.</p>
+</div>
+<div class="section" id="setting-default-permissions">
+<h2>Setting default permissions<a class="headerlink" href="#setting-default-permissions" title="Permalink to this headline">¶</a></h2>
+<p>When per-object permissions are not set for an object, the permissions backend
+looks at what permissions the user has (either directly or through the groups
+to which the user belongs) for that type of object.</p>
+<p>If needed, you can set these permissions through the admin interface.  Edit
+each group and select which default permissions the group should have.</p>
+<p>Editing all of your group permissions by hand can be a lot to manage, so we
+provide a setting you can modify in <tt class="docutils literal"><span class="pre">settings.py</span></tt> and a command to apply
+them.  At the time of writing this, the setting looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">USERS_DEFAULT_PERMISSIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;auth.group&#39;</span><span class="p">:</span>
+                             <span class="p">[{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">USERS_DEFAULT_GROUP</span><span class="p">,</span>
+                               <span class="s">&#39;permissions&#39;</span><span class="p">:</span>
+                                 <span class="p">[[</span><span class="s">&#39;add_mapdata&#39;</span><span class="p">,</span> <span class="s">&#39;maps&#39;</span><span class="p">,</span> <span class="s">&#39;mapdata&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;change_mapdata&#39;</span><span class="p">,</span> <span class="s">&#39;maps&#39;</span><span class="p">,</span> <span class="s">&#39;mapdata&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;delete_mapdata&#39;</span><span class="p">,</span> <span class="s">&#39;maps&#39;</span><span class="p">,</span> <span class="s">&#39;mapdata&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;add_page&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;page&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;change_page&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;page&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;delete_page&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;page&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;add_pagefile&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;pagefile&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;change_pagefile&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;pagefile&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;delete_pagefile&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;pagefile&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;add_redirect&#39;</span><span class="p">,</span> <span class="s">&#39;redirects&#39;</span><span class="p">,</span> <span class="s">&#39;redirect&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;change_redirect&#39;</span><span class="p">,</span> <span class="s">&#39;redirects&#39;</span><span class="p">,</span> <span class="s">&#39;redirect&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;delete_redirect&#39;</span><span class="p">,</span> <span class="s">&#39;redirects&#39;</span><span class="p">,</span> <span class="s">&#39;redirect&#39;</span><span class="p">],</span>
+                                 <span class="p">]</span>
+                              <span class="p">},</span>
+                              <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">USERS_ANONYMOUS_GROUP</span><span class="p">,</span>
+                               <span class="s">&#39;permissions&#39;</span><span class="p">:</span>
+                                 <span class="p">[[</span><span class="s">&#39;add_mapdata&#39;</span><span class="p">,</span> <span class="s">&#39;maps&#39;</span><span class="p">,</span> <span class="s">&#39;mapdata&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;change_mapdata&#39;</span><span class="p">,</span> <span class="s">&#39;maps&#39;</span><span class="p">,</span> <span class="s">&#39;mapdata&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;delete_mapdata&#39;</span><span class="p">,</span> <span class="s">&#39;maps&#39;</span><span class="p">,</span> <span class="s">&#39;mapdata&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;add_page&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;page&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;change_page&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;page&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;delete_page&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;page&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;add_pagefile&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;pagefile&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;change_pagefile&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;pagefile&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;delete_pagefile&#39;</span><span class="p">,</span> <span class="s">&#39;pages&#39;</span><span class="p">,</span> <span class="s">&#39;pagefile&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;add_redirect&#39;</span><span class="p">,</span> <span class="s">&#39;redirects&#39;</span><span class="p">,</span> <span class="s">&#39;redirect&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;change_redirect&#39;</span><span class="p">,</span> <span class="s">&#39;redirects&#39;</span><span class="p">,</span> <span class="s">&#39;redirect&#39;</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="s">&#39;delete_redirect&#39;</span><span class="p">,</span> <span class="s">&#39;redirects&#39;</span><span class="p">,</span> <span class="s">&#39;redirect&#39;</span><span class="p">],</span>
+                                 <span class="p">]</span>
+                              <span class="p">},</span>
+                             <span class="p">]</span>
+                            <span class="p">}</span>
+</pre></div>
+</div>
+<p>You can edit this setting by adding or removing permissions for certain groups
+or adding your own groups.  To apply these permissions (and overwrite the
+previously set defaults), run the following command:</p>
+<div class="highlight-python"><pre>localwiki-manage reset_permissions</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Regardless of everything said in this section, administrators and superusers
+are always granted all permissions, no matter what groups they are in or
+even whether they are in the <tt class="docutils literal"><span class="pre">Banned</span></tt> group.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Permissions</a><ul>
+<li><a class="reference internal" href="#users-and-groups">Users and groups</a></li>
+<li><a class="reference internal" href="#banning-a-user">Banning a user</a></li>
+<li><a class="reference internal" href="#setting-permissions-for-specific-objects">Setting permissions for specific objects</a></li>
+<li><a class="reference internal" href="#setting-default-permissions">Setting default permissions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="settings.html"
+                        title="previous chapter">Settings</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="subscribers.html"
+                        title="next chapter">Subscriber list</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/permissions.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="subscribers.html" title="Subscriber list"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="settings.html" title="Settings"
+             >previous</a> |</li>
+        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, LocalWiki team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

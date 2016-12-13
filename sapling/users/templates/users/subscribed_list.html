@@ -1,0 +1,15 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "List of subscribers" %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <h1>{% trans "Subscriber emails:" %}</h1>
+  <ul>
+  {% for profile in object_list %}
+    <li>{{ profile.user.email }}</li>
+  {% endfor %}
+  </ul>
+</div>
+{% endblock %}

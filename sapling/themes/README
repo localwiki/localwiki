@@ -1,0 +1,24 @@
+For now, a theme is simply a directory containing:
+
+    A directory with Django templates ('templates')
+    A directory with static assets ('assets') 
+
+Themes live in this directory, themes/.
+
+After changing themes around you'll want to make sure to set your SITE_THEME setting and run:
+
+python manage.py collectstatic
+
+Otherwise the files won't be served unless you're using the development server.
+
+== Referring to static assets ==
+
+Your theme templates can refer to static assets like this!--
+
+<img src="{{STATIC_URL}}theme/img/mybutton.png"/>
+
+That will pull up the file that lives at themes/yourtheme/img/mybutton.png.
+
+== Over-riding built-in templates ==
+
+To over-ride pages/base.html, you simply define themes/themename/templates/pages/base.html. 

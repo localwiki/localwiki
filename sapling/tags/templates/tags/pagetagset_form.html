@@ -1,0 +1,20 @@
+{% extends "tags/base.html" %}
+{% load i18n %}
+
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
+{% block media %}
+  {{ block.super }}
+  {{ form.media }}
+{% endblock %}
+
+{% block title %}{% trans "Tags for" %} {{ pagetagset.page.name }} - {{ block.super }}{% endblock %}
+{% block header_title %}{% trans "Tags for" %} <a href="{% url pages:show slug=pagetagset.page.pretty_slug %}">{{ pagetagset.page.name }}</a>{% endblock %}
+
+{% block content %}
+    <div id="object_tags">
+    {% include "tags/pagetagset_form_snippet.html" %}
+    </div>
+{% endblock %}

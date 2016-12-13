@@ -1,0 +1,65 @@
+.stats {
+    text-align: center;
+    width: 80%;
+    min-width: 40em;
+    display: none;
+}
+.stats td {
+    padding-left: 3.2em;
+    padding-right: 4.2em;
+}
+.stat_number {
+    font-size: 180%;
+    font-weight: bold;
+    margin-right: 0.4em;
+    padding: 0.6em;
+    display: inline-block;
+    text-align: center;
+}
+.stat_number .type {
+    font-size: 70%;
+    font-weight: normal;
+    margin-top: 0.25em;
+    color: #858585;
+}
+
+.stat_detail {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    display: table;
+    width: 100%;
+}
+.stat_detail .graph {
+    margin-top: 1.6em;
+    height: 400px;
+    width: 100%;
+}
+.graph table {
+}
+.graph .legend table td {
+    padding: 0 0.5em 0 0.5em;
+    vertical-align: middle;
+    border: none;
+}
+.graph .legend table tr {
+    display: block;
+}
+.graph .legend table tbody {
+    padding-top: 0.4em;
+    padding-bottom: 0.4em;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    display: block;
+}
+.graph .legend table {
+    border: 1px solid #b8b8b8;
+}
+
+.loading {
+    background-image: url(../../theme/img/loading_spinner.gif);
+	background-repeat: no-repeat;
+	background-position: 20px 0;
+
+    padding-top: 20px;
+    font-style: italic;
+}

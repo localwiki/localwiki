@@ -1,0 +1,25 @@
+== Admin integration ==
+Look at how other projects customize the admin interface.
+
+Two sides to this:
+  1. Logging all info for actions taken via admin
+  2. Viewing all changes for tracked models in the admin,
+    reverting, diffing,etc.
+
+We currently do 1 but not yet 2.
+
+Look at django 1.1 change history thing in admin - a "History" button appears when viewing a model
+      - called the django admin log
+      - http://127.0.0.1:8000/admin/pagecms/page/11/history/
+      - we should probably just over-ride this / hook into this on trackchanges models
+
+== Explain why people should use this == 
+
+"Why not django-reversion or django-versions?"
+
+Both of these apps serialize models into blobs.  We believe that having the full power of the Django ORM available is the best way to do this.  For lots of reasons:  you have the full power of the orm, migrations are easier and it's possible to do the sort of things we want to do - sorting, displaying, limiting of revisions.
+
+"Why not django-revisions?"
+
+blah blah.  Explain.  Look at that other guy's explaination and expand on it.
+

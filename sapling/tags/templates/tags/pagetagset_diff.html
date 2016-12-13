@@ -1,0 +1,63 @@
+{% extends "tags/base.html" %}
+{% load i18n %}
+{% load diff_tags %}
+{% load tags_tags %}
+
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
+{% block media %}
+  {{ block.super }}
+  <style>
+    del {
+      background: #FDC6C6;
+      text-decoration: none;
+    }
+    ins {
+      background: #b4ff78;
+      text-decoration: none;
+    }
+    td.revision_details {
+      font-style: italic;
+    }
+  </style>
+  {% page_tags_form_media %}
+{% endblock %}
+
+{% block title %}{% blocktrans with new_name=new.page.name %}Differences for tag versions for {{ new_name }}{% endblocktrans %}{% endblock %}
+{% block header_title %}{% blocktrans with new_name=new.page.name %}Differences for tag versions for {{ new_name }}{% endblocktrans %}{% endblock %}
+
+{% block content %}
+  <table width="100%">
+    <thead>
+        <tr>
+            <td class="revision_details">
+                {% if old %}
+                  {% trans "Revision" %} {{ old.version_info.version_number }}
+                  ({{ old.version_info.date }} {% trans "by" %} {{ old.version_info.user_link|safe }})
+                {% endif %}
+            </td>
+            <td class="revision_details">
+                {% trans "Revision" %} {{ new.version_info.version_number }}
+                ({{ new.version_info.date }} {% trans "by" %} {{ new.version_info.user_link|safe }})
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <del>{% trans "Deletions are marked like this" %}</del>
+            </td>
+            <td>
+                <ins>{% trans "Additions are marked like this" %}</ins>
+            </td>
+        </tr>
+    </thead>
+    {% diff old new as pagetagset_diff %}
+    <tbody valign="top">
+        {{ pagetagset_diff.tags }}
+    </tbody>
+  </table>
+  <p>
+      <a href="{% url pages:tags-history slug=pagetagset.page.slug %}">{% trans "Tags history" %}</a>
+  </p>
+{% endblock %}

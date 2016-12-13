@@ -1,0 +1,46 @@
+{% load i18n %}
+{% if versions_list %}
+<form method="GET" action="compare" name="compare_form" id="compare_form">
+<table>
+  <thead>
+    <tr>
+      <td colspan="100%">
+        <input type="submit" value="{% trans 'Compare' %}">
+      </td>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <td colspan="100%">
+        <input type="submit" value="{% trans 'Compare' %}">
+      </td>
+    </tr>
+  </tfoot>
+  <tbody>
+{% for version in versions_list %}
+{% with version.version_info as version_info %}
+  <tr>
+    <td>
+      <label for="id_version_{{ forloop.revcounter }}">
+      <span class="version_checkbox">
+        {% if version_info.type_verbose == 'Deleted' or version_info.type == 'Reverted/Deleted' or version_info.type == 'Reverted/Deleted via cascade' %}
+        &nbsp;
+        {% else %}
+        <input type="checkbox" name="version" value="{{ forloop.revcounter }}" id="id_version_{{ forloop.revcounter }}"/>
+      {% endif %}
+      </span>
+      {# We assume a standard url format here. #}
+      <a href="{{ forloop.revcounter }}" class="date">{{ version_info.date }}</a>
+      {% with version_info.type_verbose as type %}{% trans type %}{% endwith %} {% trans "by" %} {{ version_info.user_link|safe }}
+      {% block version_info_extras %}{% endblock %}
+      </label>
+    </td>
+  </tr>
+{% endwith %}
+{% endfor %}
+  </tbody>
+</table>
+</form>
+{% else %}
+{% trans "There is no revision history." %}
+{% endif %}

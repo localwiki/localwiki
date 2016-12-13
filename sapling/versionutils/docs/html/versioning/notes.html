@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Notes &mdash; django-versionutils 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="django-versionutils 0.1 documentation" href="../index.html" />
+    <link rel="up" title="versionutils.versioning" href="index.html" />
+    <link rel="next" title="Extending" href="extend.html" />
+    <link rel="prev" title="Reference" href="reference.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="extend.html" title="Extending"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="reference.html" title="Reference"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">django-versionutils 0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U"><tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="notes">
+<h1>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="migrations-syncdb">
+<h2>Migrations / syncdb<a class="headerlink" href="#migrations-syncdb" title="Permalink to this headline">¶</a></h2>
+<p>Each versioned model has a corresponding <tt class="docutils literal"><span class="pre">*_hist</span></tt> table.  So when you change the schema of models you have versioned you&#8217;ll need to execute similar SQL / migrations on the history tables as your model tables.</p>
+<p>For instance:</p>
+<p>Model <tt class="docutils literal"><span class="pre">Member</span></tt> is stored in my <tt class="docutils literal"><span class="pre">members_member</span></tt> table.  I&#8217;d normally run
+(postgres, adjust accordingly)
+<tt class="docutils literal"><span class="pre">ALTER</span> <span class="pre">TABLE</span> <span class="pre">members_member</span> <span class="pre">ADD</span> <span class="pre">COLUMN</span> <span class="pre">newcolumn</span> <span class="pre">varchar(10);</span></tt>
+Because the members object is set to be versioned, I&#8217;ll also want to run
+<tt class="docutils literal"><span class="pre">ALTER</span> <span class="pre">TABLE</span> <span class="pre">members_member_hist</span> <span class="pre">ADD</span> <span class="pre">COLUMN</span> <span class="pre">newcolumn</span> <span class="pre">varchar(10);</span></tt></p>
+<p>I haven&#8217;t used any of the automated Django schema migration utilities, but I assume they will either 1) work automatically, as they will detect the schema change or 2) need a bit of direction to do whatever they do to the base model to the versioned model as well.</p>
+<p>Because there&#8217;s no magic here &#8211; there&#8217;s really a separate <tt class="docutils literal"><span class="pre">_hist</span></tt> table for each of your model&#8217;s tables with all the same fields, migrations should be straightforward.</p>
+</div>
+<div class="section" id="bulk-queryset-update-admin-bulk-actions">
+<h2>Bulk QuerySet update() / Admin bulk actions<a class="headerlink" href="#bulk-queryset-update-admin-bulk-actions" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">versioning</span></tt> app works fine with <tt class="docutils literal"><span class="pre">QuerySet.delete()</span></tt> and the admin&#8217;s bulk deleting.  However, at the moment there&#8217;s no way to have it work with <tt class="docutils literal"><span class="pre">QuerySet.update()</span></tt>.  We recommend not using <tt class="docutils literal"><span class="pre">QuerySet.update()</span></tt> on models you want to perserve versioning information on.</p>
+<p>Working around this is braindead-easy!  See <a class="reference external" href="http://code.trac.localwiki.org/ticket/33">http://code.trac.localwiki.org/ticket/33</a> for a workaround.  Issuing a <tt class="docutils literal"><span class="pre">QuerySet.update()</span></tt> won&#8217;t break anything &#8211; it just won&#8217;t save a new version of the model in the history.</p>
+<p>For more information, see Django ticket #12184 (<a class="reference external" href="http://code.djangoproject.com/ticket/12184">http://code.djangoproject.com/ticket/12184</a>), #10754 (<a class="reference external" href="http://code.djangoproject.com/ticket/10754">http://code.djangoproject.com/ticket/10754</a>) and our ticket #33 (<a class="reference external" href="http://code.trac.localwiki.org/ticket/33">http://code.trac.localwiki.org/ticket/33</a>).  Weigh in!</p>
+</div>
+<div class="section" id="smart-lookups">
+<h2>Smart lookups<a class="headerlink" href="#smart-lookups" title="Permalink to this headline">¶</a></h2>
+<p>We try do our best to be smart about unique fields! For instance, if you delete and then recreate a model (so it has a new integer primary key), we&#8217;ll still pull up the correct history of the model based on its unique fields, if possible.</p>
+<p>However, if you rename a unique field on a model you&#8217;ll notice that it will clear out the history of the model unless there was a model with that same field in the past (in which case you&#8217;ll see that model&#8217;s history). If you&#8217;d like to rename all the historical versions&#8217; unique fields you&#8217;ll want to do that by hand, kinda like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;New name!&quot;</span>
+<span class="go"># &#39;name&#39; is a unique field</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">p_h</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">p_h</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;New name!&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">p_h</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">track_changes</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="sqlite-bug">
+<h2>SQLite bug<a class="headerlink" href="#sqlite-bug" title="Permalink to this headline">¶</a></h2>
+<p>Running SQLite?  If you delete a model that contains no unique fields
+we&#8217;ll zero out all its history.  This is to prevent corruption.</p>
+<p><a class="reference external" href="http://code.djangoproject.com/ticket/10164">http://code.djangoproject.com/ticket/10164</a> is the reason we have to do
+this.</p>
+<p>Workaround: Don&#8217;t use SQLite in production, or if you do just know that when you
+delete models that don&#8217;t have unique fields it may be &#8220;for good.&#8221;</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Notes</a><ul>
+<li><a class="reference internal" href="#migrations-syncdb">Migrations / syncdb</a></li>
+<li><a class="reference internal" href="#bulk-queryset-update-admin-bulk-actions">Bulk QuerySet update() / Admin bulk actions</a></li>
+<li><a class="reference internal" href="#smart-lookups">Smart lookups</a></li>
+<li><a class="reference internal" href="#sqlite-bug">SQLite bug</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="reference.html"
+                        title="previous chapter">Reference</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="extend.html"
+                        title="next chapter">Extending</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/versioning/notes.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="extend.html" title="Extending"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="reference.html" title="Reference"
+             >previous</a> |</li>
+        <li><a href="../index.html">django-versionutils 0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" ><tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">versionutils.versioning</span></tt></a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Philip Neustrom.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

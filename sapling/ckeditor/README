@@ -1,0 +1,10 @@
+A ckeditor django app we've created.  Does nice things like checks for allowed XHTML
+elements and optionally renders buttons based on pre-defined allowed elements.
+
+This editor whitelists allowed elements/attributes to combat XSS attacks.
+The included test suite can test against a known list of XSS attacks.
+
+===========================
+There's nothing LocalWiki-specific in this ckeditor at the moment.  When that
+does happen we'll try and spin off a separate ckeditor app and have our own
+'editor' app that uses the spinned-off ckeditor app.

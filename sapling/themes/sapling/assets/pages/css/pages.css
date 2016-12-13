@@ -1,0 +1,274 @@
+.missing_link {
+    text-decoration: none;
+    border-bottom: 1px dashed;
+}
+
+/* File icons */
+.no_icon {
+   background: inherit !important;
+   padding-left: inherit !important;
+}
+
+.file_unknown, a[href^='_files/'] {
+    background-image: url(../img/file_icons/document-block.png);
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_pdf, a[href$='.pdf'], a[href$='.PDF'] {
+    background: url(../img/file_icons/document-pdf.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_audio, a[href$='.mp3'], a[href$='.MP3'], a[href$='.wav'], a[href$='.WAV'],
+a[href$='.aif'], a[href$='.AIF'], a[href$='.aiff'], a[href$='.AIFF'],
+a[href$='.au'], a[href$='.AU'], a[href$='.mid'], a[href$='.MID'] {
+    background: url(../img/file_icons/document-music.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_video, a[href$='.mp4'], a[href$='.MP4'], a[href$='.mov'], a[href$='.MOV'],
+a[href$='.flv'], a[href$='.FLV'], a[href$='.avi'], a[href$='.AVI'],
+a[href$='.wmv'], a[href$='.WMV'] {
+    background: url(../img/file_icons/document-film.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+
+.file_image, a[href$='.jpg'], a[href$='.JPG'], a[href$='.jpeg'],
+a[href$='.JPEG'], a[href$='.png'], a[href$='.PNG'], a[href$='.gif'],
+a[href$='.GIF'] {
+    background: url(../img/file_icons/document-image.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_html, a[href$='.htm'], a[href$='.HTM'], a[href$='.html'],
+a[href$='.HTML'] {
+    background: url(../img/file_icons/document-globe.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_word, a[href$='.doc'], a[href$='.DOC'], a[href$='.docx'],
+a[href$='.DOCX'] {
+    background: url(../img/file_icons/document-word.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_excel, a[href$='.xls'], a[href$='.XLS'] {
+    background: url(../img/file_icons/document-excel.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_powerpoint, a[href$='.ppt'], a[href$='.PPT'] {
+    background: url(../img/file_icons/document-powerpoint.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+.file_text, a[href$='.txt'], a[href$='.TXT'] {
+    background: url(../img/file_icons/document-text.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+/* Images */
+.image_frame {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 0.5em
+    margin-bottom: 0.3em;
+    margin-right: 4px;
+    line-height: 1;
+    width: auto;
+}
+.image_frame img {
+    display: block; 
+}
+.image_frame > a {
+    line-height: 0;
+    display: block;
+}
+.image_frame_border, .image_frame_border img {
+    border: 1px solid #cccccc;
+}
+.image_frame_border {
+    padding: 2px;
+}
+.image_left {
+    float: left;
+    clear: left;
+    margin-right: 1.1em;
+    margin-bottom: 0.3em;
+}
+.image_right {
+    float: right;
+    clear: right;
+    margin-left: 1.1em;
+    margin-bottom: 0.3em;
+}
+.image_caption {
+    line-height: 1;
+    display: block;
+    text-align: center;
+    font-size: 80%;
+    margin-top: 0.3em;
+    margin-bottom: 0.4em;
+}
+.image_caption a {
+    display: inline;
+}
+
+/* External links */
+a[href^='http:'], a[href^='https:'] {
+    background: url(../img/external_link.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+a[href^='http://www.facebook.com/'], a[href^='https://www.facebook.com/'] {
+    background: url(../img/facebook_link.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+a[href^='http://twitter.com/'], a[href^='https://twitter.com/'] {
+    background: url(../img/twitter_link.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+/* Mailto links */
+a[href^='mailto:'] {
+    background: url(../img/email_link.png) no-repeat;
+    background-position: left center;
+    padding-left: 16px;
+}
+
+/* Behavior we want to be specific to page / editor content */
+#content #page h1, .page_editor h1,
+#content #page h2, .page_editor h2,
+#content #page h3, .page_editor h3,
+#content #page h4, .page_editor h4,
+#content #page h5, .page_editor h5,
+#content #page h6, .page_editor h6 {
+    clear: both;
+}
+
+/* Making it easier to select a horizontal rule */
+hr {
+    height: 3px;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top-width: 2px;
+    border-top-style: groove;
+}
+hr:hover {
+    cursor: default;
+}
+
+hr.selected {
+    border-color: #318DFD;
+    background-color: #318DFD;
+    color: #318DFD;
+}
+
+/* Page plugins */
+.plugin {
+    display: block;
+    background-color: #E5F0FB;
+    border: 1px dashed #318DFD;
+    padding: 10px;
+    resize: none;
+}
+
+.includepage_left {
+    float: left;
+}
+
+.includepage_right {
+    float: right;
+}
+
+.plugin.searchbox{
+    display: inline;
+}
+
+.searchbox input {
+    display: inline;
+}
+
+.searchbox input[type="text"], .plugin.searchbox{
+    padding: 0;
+    height: 30px;
+    width: 180px;
+    font-size: 15px;
+    line-height: 30px;
+    background: #ffffff url(../../img/magnifying_glass.png) no-repeat 10px 10px;
+    padding-left: 30px;
+    margin-right: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+td, th {
+    min-width: 10px;
+}
+
+/*
+====================================
+ Autocomplete
+====================================
+*/
+
+.ui-autocomplete {
+    position: absolute;
+    cursor: default;
+    z-index: 10011!important;
+}
+.ui-menu {
+	list-style:none;
+	padding: 0;
+	margin: 0;
+	display:block;
+	float: left;
+    background-color: #fff;
+    border: 1px solid #BFBFBF;
+    -webkit-border-bottom-right-radius: 2px;
+    -webkit-border-bottom-left-radius: 2px;
+    -moz-border-radius-bottomright: 2px;
+    -moz-border-radius-bottomleft: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+/* bump up autocomplete box a bit. setting margin here actually works */
+.ui-menu .ui-menu-item:first-child {
+    margin-top: -1px!important;
+}
+.ui-menu .ui-menu-item {
+	margin: 0;
+	zoom: 1;
+	float: left;
+	clear: left;
+	width: 100%;
+    background-color: #fff;
+}
+.ui-menu .ui-menu-item a {
+	text-decoration:none;
+	display:block;
+	padding:.2em .4em;
+	line-height:1.5;
+	zoom:1;
+    color: inherit;
+}
+.ui-menu .ui-menu-item a.ui-state-hover,
+.ui-menu .ui-menu-item a.ui-state-active {
+	font-weight: normal;
+    background-color: #e1e1e1;
+}

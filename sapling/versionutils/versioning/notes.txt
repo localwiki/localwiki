@@ -1,0 +1,26 @@
+= Uniteresting developer notes =
+
+== Real-time editing ==
+If we wanted to support something like real time editing with logging of all
+the incremental edits, we could form a "bundle" of these real-time edits
+that exists between concrete saves.  We could create a new model to store
+real-time only data and attach it to each concrete save.
+
+== FileFields ==
+  * Right now we simply block delete() on FileFields.  Django's default behavior
+    is to never override a file -- it simply renames it whatever_2.txt. This
+    will work for us, for now.
+
+      * This will work for our (localwiki) purposes because we'll probably
+        have a separate model for the actual file and we can have a long
+        name attribute on it to mask the lame_name_45.jpg from the end user.
+
+  * MAYBE: We may want to create a custom storage system that does other nice
+    things like creates magic nested directories to hold files to avoid
+    having 400,000 files in a single directory.  So when we deal with
+    this we can look at doing fancy things.
+
+    But with modern filesystems (e.g. ext4) the number of files per
+    directory -- as long as they're accessed directly -- may not be a concern.
+
+    So our dumb approach will probably work!
