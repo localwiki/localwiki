@@ -1,0 +1,17 @@
+{% load i18n %}
+{% load url from future %}
+<div>
+{% if request.user.is_authenticated %}
+    <span class="welcome">
+        {% trans "Welcome" %}, <a href="{{ request.user.get_absolute_url }}">{{ request.user }}!</a>
+    </span>
+    <span class="actions">
+        <a href="{% url 'django.contrib.auth.views.logout' %}?next={{ request.path }}">{% trans "log out" %}</a>
+    </span>
+{% else %}
+    <span class="actions">
+        <a href="{% url 'django.contrib.auth.views.login' %}?next={{ request.path }}">{% trans "log in" %}</a> {% trans "or" %} <a href="{% url 'registration_register' %}?next={{ request.path }}">{% trans "create account" %}</a>
+    </span>
+{% endif %}
+
+</div>

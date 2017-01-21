@@ -1,0 +1,1 @@
+See https://github.com/philipn/sapling-build-utils for info on how to build a sapling specific compressed OpenLayers.js

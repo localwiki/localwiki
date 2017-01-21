@@ -1,0 +1,26 @@
+{% spaceless %}
+  <tr>
+  <td><div id="object_tags">
+    <ul class="tag-list">
+    {% for tag in equal %}
+      <li class="tag"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
+    {% endfor %}
+    {% for tag in deleted %}
+      <li class="tag del"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
+    {% endfor %}
+    </ul>
+    </div>
+  </td>
+  <td><div id="object_tags">
+    <ul class="tag-list">
+    {% for tag in equal %}
+      <li class="tag"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</a></li>
+    {% endfor %}
+    {% for tag in added %}
+      <li class="tag ins"><a href="{% url tags:tagged slug=tag.slug %}">{{ tag.name }}</li>
+    {% endfor %}
+    </ul>
+    </div>
+  </td>
+  </tr>
+{% endspaceless %}

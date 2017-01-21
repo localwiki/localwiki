@@ -1,0 +1,5 @@
+include CONTRIBUTING
+include COPYING
+include INSTALL
+include README
+recursive-include docs *

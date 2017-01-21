@@ -1,0 +1,74 @@
+tr.htmldiff td {
+  width: 50%;
+}
+del, .del {
+  background: #FDC6C6;
+  text-decoration: none;
+}
+ins, .ins {
+  background: #b4ff78;
+  text-decoration: none;
+}
+del img {
+  border: 0.5em #FDC6C6 solid;
+}
+.image_frame_border ins img, ins img {
+  border: 0.5em #b4ff78 solid;
+}
+.image_frame_border del img, del img {
+  border: 0.5em #FDC6C6 solid;
+}
+
+
+/* Used in diff.js to reset back to the .image_frame_border status */
+.force_image_frame_border {
+  border: 1px solid #cccccc!important;
+}
+.image_frame.ins, .image_frame.del {
+  padding: 0.5em;
+}
+
+/* "Review changes" toolbar and tooltips */
+
+.diff-toolbar {
+  overflow: hidden;
+  width: 100%;
+  height: 36px;
+  position: fixed;
+  padding: 0.8em;
+  background: #EEEEEE;
+  text-align: center;
+  margin-top: -36px;
+  top: 0;
+  left: 0;
+}
+.diff-toolbar input[type="button"] {
+  display: inline;
+  margin-left: .5em;
+}
+span.diff-toolbar-text {
+  margin-right: .5em;
+}
+span.close-button {
+  margin: .5em;
+  font-size: 1.5em;
+  vertical-align: top;
+}
+div.review-changes {
+  text-align: center;
+}
+.diff-highlight {
+  background: #FFFFA3;
+}
+.review-changes .button {
+  float: none;
+  display: inline-block;
+}
+
+td.revision_details {
+  font-style: italic;
+}
+
+.test {
+  border: 2px solid red!important;
+}

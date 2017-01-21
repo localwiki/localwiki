@@ -1,0 +1,27 @@
+{% extends "tags/base.html" %}
+{% load i18n %}
+{% load tags_tags %}
+
+{% block media %}
+  {{ block.super }}
+  {% page_tags_form_media %}
+{% endblock %}
+
+{% block title %}{% trans "Tags for " %} {{ page.name }} - {{ block.super }}{% endblock %}
+{% block header_title %}{% trans "Tags for" %} <a href="{% url pages:show slug=page.slug %}">{{ page.name }}</a>{% endblock %}
+
+{% block content %}
+  <div id="object_tags">
+  {% if page.pagetagset.tags.exists %}
+    {% page_tags page %}
+  {% else %}
+    {% url pages:tags slug=page.slug as page_url %}
+    {% blocktrans %}
+        This page has no tags.  <a href="{{ page_url }}">Add some!</a>
+    {% endblocktrans %}
+  {% endif %}
+  </div>
+  <br/>
+  <h3>{% trans "Previous versions:" %}</h3>
+  {% include "utils/history/form.html" %}
+{% endblock %}

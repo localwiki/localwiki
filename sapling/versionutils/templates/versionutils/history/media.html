@@ -1,0 +1,62 @@
+{% load static from staticfiles %}
+{% load i18n %}
+<style type="text/css">
+    .version_highlight {
+        background: #FFFFBE;
+    }
+    thead {
+        padding-top: 100em;
+        margin-bottom: 1em;
+    }
+    .version_checkbox {
+        float: left;
+        margin-right: 0.5em;
+        width: 1.5em;
+        text-align: center;
+    }
+</style>
+<script type="text/javascript" src="{% static "js/jquery/jquery-1.7.min.js" %}"></script>
+<script type="text/javascript">
+  function highlight(){
+      var selected = $('input:checked[name="version"]').length;
+      if(selected > 2)
+      {
+          $('input[name="version"]').removeAttr('checked').parents('tr').removeClass('version_highlight');;
+          $(this).attr('checked', 'checked').parents('tr').addClass('version_highlight');
+          return;
+      }
+      var seen = 0;
+      $('input[name="version"]').each(function (){
+         if($(this).attr('checked')){
+             $(this).parents('tr').addClass('version_highlight');
+             seen++;
+         } else {
+             if(seen > 0 && seen < selected)
+                $(this).parents('tr').addClass('version_highlight');
+             else $(this).parents('tr').removeClass('version_highlight');
+         }
+      });
+  }
+  function compare() {
+      var versions = [];
+      $('input:checked[name="version"]').each(function(){
+          versions.push($(this).val());
+      });
+      if(!versions.length)
+      {
+        alert('{% trans "Please select two versions to compare" %}');
+        return false;
+      }
+      var newer = versions[0];
+      var older = newer > 1 ? newer - 1 : 1;
+      if(versions.length > 1)
+        older = versions[1]
+      window.location.href="" + older + "..." + newer;
+      return false;
+  }
+  $(function (){
+      highlight();
+      $('input[name="version"]').click(highlight);
+      $('form[name="compare_form"]').submit(compare);
+  })
+</script>

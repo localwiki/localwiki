@@ -1,0 +1,10 @@
+{% load i18n %}
+{% block nav %}
+<ul id="nav">
+    <li><a href="{% url pages:show slug='Front_Page' %}">{% trans "Front Page" %}</a></li>
+    <li><a href="{% url pages:show slug='People' %}">{% trans "People" %}</a></li>
+    <li><a href="{% url maps:global %}">{% trans "Map" %}</a></li>
+    <li><a href="{% url recentchanges %}">{% trans "Recent Changes" %}</a></li>
+    <li><a href="{% url pages:index %}">{% trans "All Pages" %}</a></li>
+</ul>
+{% endblock %}

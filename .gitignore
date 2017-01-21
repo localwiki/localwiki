@@ -1,0 +1,11 @@
+*.pyc
+*.swp
+*.swa
+*.swo
+*.pyo
+*~
+/build/
+/dist/
+/env/
+/localwiki.egg-info/
+

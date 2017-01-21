@@ -1,0 +1,166 @@
+@import url('olwidget.css'); /* import base CSS */
+
+.mapwidget {
+  width: 100%;
+  margin: 0 !important;
+  display: block;
+}
+
+#results_pane {
+	padding: 0em 1em;
+	overflow-y: auto;
+	float: left;
+	width: 400px;
+	display: none;
+}
+
+.olMap {
+   font-family: Verdana, sans-serif!important;
+}
+
+.olControlAttribution {
+   color: #6f6f6f;
+   font-size: 0.7em!important;
+   width: 100%;
+   right: 0!important;
+   text-align: right;
+   padding-right: 0.5em;
+   padding-bottom: 0.3em;
+}
+.olControlAttribution a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Hide Data overlay description */
+.dataLbl {
+    display: none;
+}
+
+.dataLayersDiv {
+   margin-top: 0.5em;
+   margin-bottom: 0.5em;
+}
+.dataLayersDiv .labelSpan {
+    display: none;
+}
+.dataLayersDiv br {
+    display: none;
+}
+.dataLayersDiv:after {
+    content: "Show overlay";
+    margin-left: 0.2em;
+}
+
+.olControlLayerSwitcher * {
+    background-color: black!important;
+}
+.olControlLayerSwitcher .layersDiv {
+    border-left: 2px solid black;
+    font-size: 1.2em;
+}
+
+/* Our editing toolbar instead of olwidget default */
+.olControlEditingToolbar .olControlModifyFeatureItemInactive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -48px 0px;
+}
+.olControlEditingToolbar .olControlModifyFeatureItemActive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -24px 0px;
+}
+.olControlEditingToolbar .olControlClearFeaturesItemInactive,
+.olControlEditingToolbar .olControlClearFeaturesItemActive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -0px 0px;
+}
+.olControlEditingToolbar .olControlUndoItemActive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -72px 0px;
+}
+.olControlEditingToolbar .olControlUndoItemInactive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -96px 0px;
+}
+.olControlEditingToolbar .olControlRedoItemActive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -120px 0px;
+}
+.olControlEditingToolbar .olControlRedoItemInactive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -144px 0px;
+}
+.olControlEditingToolbar .olwidgetDeleteVertexItemActive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -168px 0px;
+}
+.olControlEditingToolbar .olwidgetDeleteVertexItemInactive {
+    background: url("../img/sapling_extra_edit_icons.png") no-repeat scroll -192px 0px;
+}
+
+/* Hide the "Editing map" message */
+.olwidgetEditableLayerSwitcher .maxmin {
+    display: none;
+}
+
+/* We hide the modify feature button because that's our 'default'
+   mode */
+.olControlEditingToolbar .olControlModifyFeatureItemActive,
+.olControlEditingToolbar .olControlModifyFeatureItemInactive {
+    display: none;
+}
+
+/* We hide the undo and redo buttons, as we make them available via
+   Ctrl-Z, Ctrl-Y/Shift-Ctrl-Z */
+.olControlEditingToolbar .olControlUndoItemInactive,
+.olControlEditingToolbar .olControlUndoItemActive,
+.olControlEditingToolbar .olControlRedoItemInactive,
+.olControlEditingToolbar .olControlRedoItemActive {
+    display: none;
+}
+
+.olControlEditingToolbar {
+    background: url("../img/1px_trans.png") repeat;
+    padding-bottom: 4px;
+    padding-left: 5px;
+    padding-right: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    margin-top: 12px;
+    margin-right: 8px;
+}
+
+.olwidgetEditableLayerSwitcher .container {
+    background: none!important;
+    display: table-cell;
+    width: auto;
+}
+.olwidgetEditableLayerSwitcher.olControlNoSelect {
+    display: table;
+}
+
+/* Make a white, no-borders popup box */
+.olwidgetPopupContent {
+    background: none!important;
+    border: none!important;
+    font-family: Verdana, sans-serif;
+    font-size: 11px;
+    margin-top: 3px;
+}
+.olwidgetPopupPage {
+    padding: 9px 40px 8px 10px;
+}
+
+/* Switch to our icons for the popup */
+.olwidgetPopupCloseBox {
+    right: 6px;
+    top: 6px;
+    background: #fff url("../img/sapling_popup_icons.png") no-repeat scroll -80px 0px;
+    padding-top: 16px;
+    width: 16px;
+    height: 0px;
+    overflow: hidden;
+}
+.olwidgetPopupCloseBox:hover {
+    background-position: -64px 0px;
+}
+.olwidgetPopupStemTL, .olwidgetPopupStemTR {
+    background: url("../img/sapling_popup_icons.png") no-repeat scroll -124px 0px;
+}
+.olwidgetPopupStemBL, .olwidgetPopupStemBR {
+    background: url("../img/sapling_popup_icons.png") no-repeat scroll -96px 0px;
+    top: 5px!important;
+}

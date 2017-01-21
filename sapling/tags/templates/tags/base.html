@@ -1,0 +1,11 @@
+{% extends "site/base.html" %}
+
+{% block body %}
+<body>
+   <div class="tagpage">
+   {% block everything_wrapper %}
+        {{ block.super }}
+   {% endblock %}
+   </div>
+</body>
+{% endblock %}

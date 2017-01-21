@@ -1,0 +1,227 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-20 03:28-0800\n"
+"PO-Revision-Date: 2012-02-23 18:16\n"
+"Last-Translator: Anonymous User <anonymous@user.tld>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Translated-Using: django-rosetta 0.6.5\n"
+
+#: pages/static/js/ckeditor/_source/plugins/embed/plugin.js:14
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:17
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:18
+msgid "Embed media"
+msgstr "Mediendatei einbetten"
+
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:24
+msgid "Paste the embed code below:"
+msgstr "Untenstehenden Einbettungs-Code einsetzen:"
+
+#: pages/static/js/ckeditor/_source/plugins/embed/dialogs/embed.js:29
+msgid "Please enter the embed code"
+msgstr "Bitte Einbettungs-Code eingeben"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/plugin.js:14
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:11
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:17
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:18
+msgid "Include Page"
+msgstr "Seite einfügen"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:24
+msgid "Page name"
+msgstr "Seitenname"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:45
+msgid "Please enter a page name"
+msgstr "Bitte einen Seitennamen eingeben"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:64
+msgid "Show page title"
+msgstr "Seitentitel anzeigen"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:84
+msgid "Width"
+msgstr "Breite"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:110
+msgid "pixels"
+msgstr "Pixel"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:111
+msgid "percent"
+msgstr "Prozent"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:126
+msgid "Align"
+msgstr "Ausrichten"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:206
+#, c-format
+msgid "Include page %s"
+msgstr "Seite %s einfügen"
+
+#: pages/static/js/ckeditor/_source/plugins/includepage/dialogs/includepage.js:229
+msgid "Include page %(page)s"
+msgstr "Seite %(page)s einfügen"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/plugin.js:34
+msgid "Attach file"
+msgstr "Datei anhängen"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:93
+msgid "Uploading your file..."
+msgstr "Datei wird hochgeladen..."
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:110
+msgid "Loading files..."
+msgstr "Dateien werden geladen..."
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:111
+msgid "No files attached to this page"
+msgstr "Keine Dateien an diese Seite angehängt"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:114
+msgid "Loading images..."
+msgstr "Bilder werden geladen..."
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:115
+msgid "No images attached to this page"
+msgstr "Keine Bilder an diese Seite angehängt"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:170
+msgid "Attach File"
+msgstr "Datei anhängen"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:170
+msgid "Insert Image"
+msgstr "Bild einfügen"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:228
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:232
+msgid "Choose a file from your computer"
+msgstr "Datei von Deinem Computer wählen"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:314
+msgid "Select a file"
+msgstr "Datei auswählen"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:314
+msgid "Select an image"
+msgstr "Bild auswählen"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:322
+msgid "or <a href=\"#\">use a file from the web</a>"
+msgstr "oder <a href=\"#\">benutze eine Datei aus dem Web</a>"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:322
+msgid "or <a href=\"#\">use an image from the web</a>"
+msgstr "oder <a href=\"#\">benutze ein  Bild aus dem Web</a>"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:333
+msgid "File URL"
+msgstr "Datei-URL"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:333
+msgid "Image URL"
+msgstr "Bild-URL"
+
+#: pages/static/js/ckeditor/_source/plugins/insertimage/dialogs/insertimage.js:371
+msgid "No file selected"
+msgstr "Keine Datei ausgewählt"
+
+#: pages/static/js/ckeditor/_source/plugins/pagelink/dialogs/pageanchor.js:60
+msgid "Anchor name"
+msgstr "Ankername"
+
+#: pages/static/js/ckeditor/_source/plugins/pagelink/dialogs/pagelink.js:139
+msgid "Page name or URL"
+msgstr "Seitenname oder URL"
+
+#: pages/static/js/ckeditor/_source/plugins/searchbox/plugin.js:14
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:10
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:16
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:17
+msgid "Search Box"
+msgstr "Suchfeld"
+
+#: pages/static/js/ckeditor/_source/plugins/searchbox/dialogs/searchbox.js:23
+msgid "Search query"
+msgstr "Suchanfrage"
+
+#: pages/static/js/ckeditor/_source/plugins/simpleimage/plugin.js:83
+msgid "Add a caption"
+msgstr "Bildlegende hinzufügen"
+
+#: pages/static/js/ckeditor/_source/plugins/simpletable/dialogs/simpletable.js:469
+msgid "Advanced settings..."
+msgstr "Erweiterte Einstellungen..."
+
+#: pages/static/js/ckeditor/_source/plugins/simpletable/dialogs/simpletable.js:478
+msgid "CSS classes"
+msgstr "CSS-Klassen"
+
+#: pages/static/js/ckeditor/_source/plugins/wikiplugins/plugin.js:23
+#: pages/static/js/ckeditor/_source/plugins/wikiplugins/plugin.js:24
+msgid "Insert Object"
+msgstr "Objekt einfügen"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:24
+#, fuzzy
+msgid "Previous"
+msgstr "Vorherige"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:26
+#, fuzzy
+msgid "Next"
+msgstr "Nächste"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:54
+msgid "Review changes"
+msgstr "Änderungen kontrollieren"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:59
+msgid "You can use the &larr; and &rarr; keys, too."
+msgstr "Du kannst auch die tasten &larr; and &rarr; verwenden."
+
+#: versionutils/diff/static/js/diff/htmldiff.js:69
+msgid "Content was deleted"
+msgstr "Inhalt wurde gelöscht"
+
+#: versionutils/diff/static/js/diff/htmldiff.js:70
+msgid "Content was added"
+msgstr "Inhalt wurde hinzugefügt"
+
+#: maps/static/olwidget/js/sapling_utils.js:82
+msgid " for "
+msgstr "für"
+
+#: maps/static/olwidget/js/sapling_utils.js:102
+msgid ""
+"You've made changes but haven't saved.  Are you sure you want to leave this "
+"page?"
+msgstr ""
+"Du hast Änderungen gemacht, die nicht gespeichert wurden. Bist Du sicher, "
+"dass Du diese Seite verlassen möchtest?"
+
+#: maps/static/olwidget/js/sapling_utils.js:145
+msgid "Things on this map:"
+msgstr "Dinge auf dieser Karte:"
+
+#: maps/static/olwidget/js/sapling_utils.js:157
+msgid "Things inside "
+msgstr "Dinge innerhalb von"
+
+#: maps/static/olwidget/js/sapling_utils.js:167
+msgid "Things near "
+msgstr "Dinge in der Nàhe von"
