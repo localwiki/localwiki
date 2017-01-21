@@ -1,0 +1,48 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, LocalWiki team
+# This file is distributed under the same license as the LocalWiki package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LocalWiki 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-12 10:53\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/index.rst:2
+# 780ae84cb4ca47d295854a34ecf480bb
+msgid "LocalWiki Documentation"
+msgstr ""
+
+#: ../source/index.rst:5
+# 663f745b899a4d679f4d73c1e1a5ae65
+msgid "Contents:"
+msgstr ""
+
+#: ../source/index.rst:22
+# 5f22934830d54c7f90477d12f6912056
+msgid "Indices and tables"
+msgstr ""
+
+#: ../source/index.rst:24
+# 690d77c94b5d4f0d99e393c970eb5432
+msgid ":ref:`genindex`"
+msgstr ""
+
+#: ../source/index.rst:25
+# abe9ac3f43934f2e9f08d1fceda793da
+msgid ":ref:`modindex`"
+msgstr ""
+
+#: ../source/index.rst:26
+# 335797b35265416fa89abf3ed57e5ff1
+msgid ":ref:`search`"
+msgstr ""
+

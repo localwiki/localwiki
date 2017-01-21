@@ -1,0 +1,29 @@
+Internal development-related notes:
+
+On history_info._object and history_info._object_rel_populated:
+
+01:40 < philipn> for now i am creating history_info._object as before -- it has pointers to related, non-historical objects
+01:40 < philipn> then i make a history_info._object_rel_populated which doesn't have pointers - it has instances which are set
+01:40 < philipn> we still want that _object for like save() and stuff
+01:41 < philipn> but so for callable lookups we use _object_rel_populated to do the call
+01:41 < MikeIvanov> hmm ok i am not sure i am grokking it
+01:41 < philipn> yeah it's pretty complicated :(
+01:42 < MikeIvanov> but that's ok
+01:42 < philipn> _object is
+01:42 < MikeIvanov> is this weird python stuff?
+01:42 < philipn> = MapData(page_id=4, geom=stuff)
+01:42 < MikeIvanov> or just straightforward and tedious stuff
+01:42 < MikeIvanov> ok
+01:43 < philipn> _object_rel_populated = _object with _object.page = Page(<values here>)
+01:43 < MikeIvanov> oh gotcha
+01:43 < philipn> for _object.page django will do a lookup for Page.objects.get(id=4)
+01:44 < philipn> for _object_rel_populated it will just return that object
+01:44 < MikeIvanov> yeah i figured you were doing the second one
+01:44 < MikeIvanov> is the first ever better?
+01:44 < philipn> yeah i can turn it on to just do the second and see if it breaks things
+01:44 < philipn> i think we need it fo rsaving
+01:44 < philipn> because you need the pk
+01:44 < MikeIvanov> i mean can the second be like a lazy object kinda thing
+01:45 < philipn> there's also that, the lookup cost or whatever
+01:46 < MikeIvanov> yeah, might be a rabbit hole
+01:46 < MikeIvanov> good idea to have the two ways

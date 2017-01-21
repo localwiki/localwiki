@@ -1,0 +1,20 @@
+{% load static from staticfiles %}
+
+<div id="{{ id }}"></div>
+{{ layer_html|join:"" }}
+
+<script type="text/javascript">
+    SaplingMap.init_openlayers();
+    OpenLayers.ImgPath = '{% static "img/openlayers/themes/dark/" %}';
+
+    {{ setup_custom_layer_types|safe }}
+
+    $(window).load(function() {
+        var map = new olwidget.Map("{{ id }}", [
+                {{ layer_js|join:"," }}
+            ], 
+            {{ map_opts|safe }}
+        );
+        SaplingMap.setup_map(map);
+    });
+</script>

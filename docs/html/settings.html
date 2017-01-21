@@ -1,0 +1,185 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Settings &mdash; LocalWiki 0.4.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.4.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LocalWiki 0.4.2 documentation" href="index.html" />
+    <link rel="next" title="Permissions" href="permissions.html" />
+    <link rel="prev" title="Web server configuration" href="configure.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="permissions.html" title="Permissions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="configure.html" title="Web server configuration"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="settings">
+<h1>Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="administration-interface">
+<h2>Administration interface<a class="headerlink" href="#administration-interface" title="Permalink to this headline">¶</a></h2>
+<p>LocalWiki comes with a web-based admin interface.  If LocalWiki is running on
+your machine, it can be found at <tt class="docutils literal"><span class="pre">http://localhost/admin/</span></tt>.  Otherwise,
+you can find the admin interface at <tt class="docutils literal"><span class="pre">http://&lt;your</span> <span class="pre">server's</span> <span class="pre">address&gt;/admin/</span></tt></p>
+<div class="figure">
+<img alt="_images/admin_login.png" src="_images/admin_login.png" />
+</div>
+<p>At the prompt, enter your superuser login and password.  If you don&#8217;t
+have a superuser login and password, you can create one by running
+<tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">localwiki-manage</span> <span class="pre">createsuperuser</span></tt>.</p>
+<p>When you login, you will see all of the object types that you can modify on the
+left, and a list of recent actions done by administrators on the right(if any).</p>
+<div class="figure">
+<img alt="_images/admin_home.png" src="_images/admin_home.png" />
+</div>
+</div>
+<div class="section" id="domain-name-and-site-name">
+<h2>Domain name and site name<a class="headerlink" href="#domain-name-and-site-name" title="Permalink to this headline">¶</a></h2>
+<p>In the admin interface, go to &#8220;Sites&#8221;, click on the site you want to modify,
+enter the domain name and display name and press &#8220;Save&#8221;.</p>
+<div class="figure">
+<img alt="_images/admin_site.png" src="_images/admin_site.png" />
+</div>
+</div>
+<div class="section" id="setting-the-default-map-location">
+<h2>Setting the default map location<a class="headerlink" href="#setting-the-default-map-location" title="Permalink to this headline">¶</a></h2>
+<p>You&#8217;ll need to edit your <tt class="docutils literal"><span class="pre">localsettings.py</span></tt> file and set the default
+map location.  See the <tt class="docutils literal"><span class="pre">localsettings.py</span></tt> section below.</p>
+</div>
+<div class="section" id="localsettings-py">
+<h2><tt class="docutils literal"><span class="pre">localsettings.py</span></tt><a class="headerlink" href="#localsettings-py" title="Permalink to this headline">¶</a></h2>
+<p>Settings particular to your installation go in this file, found at
+<tt class="docutils literal"><span class="pre">/usr/share/localwiki/conf/localsettings.py</span></tt> on your system. Here are some
+things you may need or wish to modify:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">OLWIDGET_DEFAULT_OPTIONS</span></tt></dt>
+<dd><p class="first">Defaults for all map widgets, including default location, theme, navigation
+controls, colors, etc.</p>
+<p class="last">You will want to set the the <strong>default map location</strong> on your localwiki.
+Simply change <tt class="docutils literal"><span class="pre">default_lat</span></tt> and <tt class="docutils literal"><span class="pre">default_lon</span></tt>.  Use this tool to look it
+up: <a class="reference external" href="http://www.getlatlon.com/">http://www.getlatlon.com/</a></p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">CLOUDMADE_API_KEY</span></tt></dt>
+<dd>Your developer API key from <a class="reference external" href="http://developers.cloudmade.com/">Cloudmade</a></dd>
+<dt><tt class="docutils literal"><span class="pre">SITE_THEME</span></tt></dt>
+<dd>The name of the directory under <tt class="docutils literal"><span class="pre">themes</span></tt> to look for the theme templates
+and static files.  We&#8217;ll have more detail on creating a theme soon.</dd>
+<dt><tt class="docutils literal"><span class="pre">EMBED_ALLOWED_URLS</span></tt></dt>
+<dd>This is a list of regular expressions used to restrict what kinds of
+content users can embed.  If an embedded URL does not pass any of the
+regular expressions in this list, it will not be shown.</dd>
+<dt><tt class="docutils literal"><span class="pre">LANGUAGE_CODE</span></tt></dt>
+<dd>LocalWiki is fully localized and is currently translated into a
+number of languages.  To change your instance&#8217;s language, set this
+to one of: <tt class="docutils literal"><span class="pre">en-us</span></tt> (for English), <tt class="docutils literal"><span class="pre">ja</span></tt> (Japanese),
+<tt class="docutils literal"><span class="pre">it_IT</span></tt> (Italian), <tt class="docutils literal"><span class="pre">pt_PT</span></tt> (Portuguese), <tt class="docutils literal"><span class="pre">ru_RU</span></tt> (Russian),
+<tt class="docutils literal"><span class="pre">de_CH</span></tt> (German, CH), <tt class="docutils literal"><span class="pre">es_AR</span></tt> (Spanish, Argentina), <tt class="docutils literal"><span class="pre">da_DK</span></tt> (Danish).</dd>
+</dl>
+<p>After changing settings you&#8217;ll need to restart Apache.  On most systems
+you can do this by running <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">/etc/init.d/apache2</span> <span class="pre">restart</span></tt>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Settings</a><ul>
+<li><a class="reference internal" href="#administration-interface">Administration interface</a></li>
+<li><a class="reference internal" href="#domain-name-and-site-name">Domain name and site name</a></li>
+<li><a class="reference internal" href="#setting-the-default-map-location">Setting the default map location</a></li>
+<li><a class="reference internal" href="#localsettings-py"><tt class="docutils literal"><span class="pre">localsettings.py</span></tt></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="configure.html"
+                        title="previous chapter">Web server configuration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="permissions.html"
+                        title="next chapter">Permissions</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/settings.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="permissions.html" title="Permissions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="configure.html" title="Web server configuration"
+             >previous</a> |</li>
+        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, LocalWiki team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

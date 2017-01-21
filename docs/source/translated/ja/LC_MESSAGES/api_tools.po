@@ -1,0 +1,43 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2012, LocalWiki team
+# This file is distributed under the same license as the LocalWiki package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LocalWiki 0.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-12 10:53\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../source/api_tools.rst:3
+# b613520ad8f24c1083d428305974e30b
+msgid "API Tools"
+msgstr ""
+
+#: ../source/api_tools.rst:5
+# 1bb1061669d14503a423294b115dcbee
+msgid "It should be easy to interact with the API using any standard HTTP library."
+msgstr ""
+
+#: ../source/api_tools.rst:8
+# e69c2d2e148b4088ac63809185524ece
+msgid "We'll give some specific interaction examples here."
+msgstr ""
+
+#: ../source/api_tools.rst:12
+# 618dc06930e640908021460d88ecc27e
+msgid "Python"
+msgstr ""
+
+#: ../source/api_tools.rst:14
+# ecdc2a1fcd514ebc8fa65929effa6794
+msgid "If you're using Python, we recommend you check out the small and simple `slumber <https://github.com/dstufft/slumber/>`_ library, which makes it really easy to work with RESTful APIs like the LocalWiki API. Here's some examples using slumber with the LocalWiki API::"
+msgstr ""
+

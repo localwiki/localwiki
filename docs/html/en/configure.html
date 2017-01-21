@@ -1,0 +1,200 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Web server configuration &mdash; LocalWiki 0.4.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.4.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LocalWiki 0.4.2 documentation" href="index.html" />
+    <link rel="next" title="Settings" href="settings.html" />
+    <link rel="prev" title="Installing" href="install.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="settings.html" title="Settings"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installing"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="web-server-configuration">
+<h1>Web server configuration<a class="headerlink" href="#web-server-configuration" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="normal-installation">
+<h2>Normal installation<a class="headerlink" href="#normal-installation" title="Permalink to this headline">¶</a></h2>
+<p>If you installed the LocalWiki software using the Ubuntu package then an
+Apache site should be automatically up and running.  Its configuration file
+can found in <tt class="docutils literal"><span class="pre">/etc/apache2/sites-enabled/example.com</span></tt>.  You&#8217;ll want to
+open that file and change the server name, etc.</p>
+<p>Please see the <a class="reference external" href="http://httpd.apache.org/docs/">official Apache documentation</a>
+for all possible configuration values.</p>
+</div>
+<div class="section" id="development-server">
+<h2>Development server<a class="headerlink" href="#development-server" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re doing development or testing, you can run <tt class="docutils literal"><span class="pre">localwiki-manage</span> <span class="pre">runserver</span></tt>
+to start the built-in webserver.  Don&#8217;t use this in production.</p>
+</div>
+<div class="section" id="manual-installations">
+<h2>Manual installations<a class="headerlink" href="#manual-installations" title="Permalink to this headline">¶</a></h2>
+<p>If you installed LocalWiki manually then you&#8217;ll need to copy the
+wsgi template file and edit it:</p>
+<div class="highlight-python"><pre>mkdir deploy
+cp install_config/localwiki_virtualenv.wsgi.template deploy/localwiki.wsgi</pre>
+</div>
+<p>Then open up <tt class="docutils literal"><span class="pre">localwiki.wsgi</span></tt> and set <tt class="docutils literal"><span class="pre">VIRTUAL_ENV_PATH</span></tt> to the absolute
+path to the virtualenv you installed LocalWiki in.</p>
+<p>Then you&#8217;ll need to create an Apache configuration file.  Here&#8217;s a
+sample:</p>
+<div class="highlight-python"><pre># LocalWiki Apache config file
+# After modifying and saving, you may need to run these commands:
+#     $ sudo a2ensite example.com
+#     $ sudo /etc/init.d/apache2 reload
+
+&lt;VirtualHost *:80&gt;
+
+    ServerName www.example.com
+    ServerAlias example.com
+    ServerAdmin webmaster@example.com
+
+    # The media directory, which contains user-uploaded content, should be set
+    # to force downloads. This is *extremely* important for security reasons.
+    # Note: The /media/ directory must be writable by the www-data user
+    Alias /media/ /usr/share/localwiki/media/
+    &lt;Location /media/&gt;
+        Header set Content-Disposition attachment
+    &lt;/Location&gt;
+
+    Alias /static/ /usr/share/localwiki/static/
+    Alias /robots.txt /usr/share/localwiki/static/robots.txt
+    Alias /favicon.ico /usr/share/localwiki/static/favicon.ico
+
+    &lt;Directory /usr/share/localwiki/&gt;
+        Options -Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        Allow from all
+    &lt;/Directory&gt;
+
+    WSGIDaemonProcess example.com processes=2 threads=15 display-name=%{GROUP}
+    WSGIProcessGroup example.com
+    # For API Authorization header support
+    WSGIPassAuthorization On
+
+    WSGIScriptAlias / /usr/share/localwiki/deploy/localwiki.wsgi
+
+&lt;/VirtualHost&gt;
+</pre>
+</div>
+<p>You&#8217;ll need to set some of these values:</p>
+<p><tt class="docutils literal"><span class="pre">ServerAdmin</span></tt>, <tt class="docutils literal"><span class="pre">ServerName</span></tt>, and <tt class="docutils literal"><span class="pre">ServerAlias</span></tt> should be
+self-explanatory.  Read the Apache docs for more info.</p>
+<p><tt class="docutils literal"><span class="pre">WSGIScriptAlias</span> <span class="pre">/</span> <span class="pre">/path/to/your/deploy/localwiki.wsgi</span></tt> &#8211; you&#8217;ll need to
+change <tt class="docutils literal"><span class="pre">/path/to/your/deploy/</span></tt> to be the path to where the <tt class="docutils literal"><span class="pre">localwiki.wsgi</span></tt>
+file lives.</p>
+<p>In all of the <tt class="docutils literal"><span class="pre">Alias</span> <span class="pre">...</span></tt> lines you&#8217;ll need to change
+<tt class="docutils literal"><span class="pre">/path/to/your/env</span></tt> to be the absolute path to the virtualenv where
+you installed LocalWiki.</p>
+<p>After you make you&#8217;re changes you&#8217;ll need to restart Apache.
+Please see the <a class="reference external" href="http://httpd.apache.org/docs/">official Apache documentation</a>
+for more on all this.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Web server configuration</a><ul>
+<li><a class="reference internal" href="#normal-installation">Normal installation</a></li>
+<li><a class="reference internal" href="#development-server">Development server</a></li>
+<li><a class="reference internal" href="#manual-installations">Manual installations</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Installing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="settings.html"
+                        title="next chapter">Settings</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/configure.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="settings.html" title="Settings"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="install.html" title="Installing"
+             >previous</a> |</li>
+        <li><a href="index.html">LocalWiki 0.4.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, LocalWiki team.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

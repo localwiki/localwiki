@@ -1,0 +1,48 @@
+These are the administrative docs for localwiki. An online version of the latest version of these docs can be found at http://readthedocs.org/docs/localwiki/en/latest/
+
+html/  contains html versions of the docs.
+
+
+Want to help with documentation?
+================================
+
+source/ contains .rst files that turn into html. If you want to contribute to the docs, just edit the .rst files in this directory.  You'll want to make sure you have Sphinx (pip install Sphinx) installed, and then simply run:
+
+   $ make html
+
+to generate the HTML docs.
+
+For more information on the Sphix documentation system, see http://sphinx.pocoo.org/.
+
+
+Translating the documentation (i18n)
+====================================
+
+*Important*. You will need to install Sphinx >= v1.1 for this to work.
+
+
+Making a new translation
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Create a new directory with your language identifier inside of source/translated/.  For example, for `es` (Spanish) we do:
+
+   $ mkdir -p source/translated/es/LC_MESSAGES
+
+While inside of source/, run `make gettext lang=<language identifer>`.  For example, for `es` (Spanish) we do:
+
+   $ make gettext lang=es
+
+This will create a set of .po files inside of inside of our souce/translated/es/LC_MESSAGES.
+
+Editing a translation
+~~~~~~~~~~~~~~~~~~~~~
+
+Now edit the .po files, adding your translations.  After you've edited the .po files you'll want to compile them into .mo files:
+
+   $ make msgfmt lang=es
+
+To make the html docs, simply run `make html` with the lang argument:
+
+   $ make html lang=es
+
+When you're done, commit the associated source/translated/<language identifer>/ directory and send an associated pull request or patch.

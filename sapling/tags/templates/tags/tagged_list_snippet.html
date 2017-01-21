@@ -1,0 +1,18 @@
+{% load i18n %}
+
+{% if map %}
+  {{ map.media }}
+  <div id="map">
+    {{ map }}
+    <div class="info"><a href="{% url maps:tagged tag=tag.slug %}">{% trans "View map" %}</a></div>
+  </div>
+{% endif %}
+{% if pagetagset_list %}
+  <ul>
+  {% for pagetags in pagetagset_list %}
+    <li><a href="{% url pages:show slug=pagetags.page.pretty_slug %}">{{ pagetags.page.name }}</a></li>
+  {% endfor %}
+  </ul>
+{% else %}
+  {% blocktrans %}There are no pages with the tag "{{ tag_name }}".{% endblocktrans %}
+{% endif %}

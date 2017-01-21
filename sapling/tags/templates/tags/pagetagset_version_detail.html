@@ -1,0 +1,26 @@
+{% extends "tags/base.html" %}
+{% load i18n %}
+{% load tags_tags %}
+
+{% block media %}
+  {{ block.super }}
+  {{ form.media }}
+  {% page_tags_form_media %}
+{% endblock %}
+
+{% block title %}{% trans "Tags for " %} {{ pagetagset.page.name }} - {{ block.super }}{% endblock %}
+{% block header_title %}{% trans "Tags for" %} <a href="{% url pages:show slug=pagetagset.page.pretty_slug %}">{{ pagetagset.page.name }}</a>{% endblock %}
+
+{% block content %}
+    {% if show_revision %}
+      <em class="revision_details">
+          {% trans "Revision" %} {{ pagetagset.version_info.version_number }}
+          ({{ pagetagset.version_info.date }} {% trans "by" %} {{ pagetagset.version_info.user_link|safe }})
+      </em>
+    {% endif %}
+    <div id="object_tags">
+    {% with pagetagset.tags.all as tag_list %}
+      {% include "tags/tag_list_snippet.html" %}
+    {% endwith %}
+    </div>
+{% endblock %}

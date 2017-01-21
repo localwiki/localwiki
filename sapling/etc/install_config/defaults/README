@@ -1,0 +1,3 @@
+This is the site-specific data directory *template*.  We copy the 'localwiki'
+directory to sys.prefix during a new installation, and all user/site-specific
+data (uploads, site-specific settings) lives there.

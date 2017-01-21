@@ -1,0 +1,115 @@
+{% extends "site/base.html" %}
+{% load i18n %}
+{% load highlight %}
+{% load url from future %}
+{% load tags_tags %}
+{% load search_tags %}
+{% load static from staticfiles %}
+
+{% block title %}
+   {% if query %}
+      {% trans "Search results for" %} "{{ query }}" - {{ block.super }}
+   {% else %}
+      {% trans "Search or create page" %}
+   {% endif %}
+{% endblock %}
+
+{% block media %}
+   {{ block.super }}
+   {% page_tags_form_media %}
+   {% if map %}
+       {{ map.media }}
+       <script type="text/javascript" src="{% static "js/jquery/jquery-scrolltofixed-min.js" %}"></script>
+       <script type="text/javascript">
+       $(document).ready(function() {
+           $('#map').scrollToFixed({
+              limit: (
+                $('#search_results').height() - $('#search_results h3').height() - $('#create_page_dialog').height() - $('#search_results .simple_pagination').height())
+});
+       });
+       </script>
+   {% endif %}
+{% endblock %}
+
+{% block header_title %}
+   {% if query %}
+     {% trans "Search results for" %} "{{ query }}"
+   {% else %}
+     {% trans "Search or create a new page" %}
+   {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div id="search_results">
+    {% if query %}
+        {% if not page_exists_for_query %}
+          <div id="create_page_dialog">
+			  {% blocktrans %}No page with the exact title "{{ query }}" exists.{% endblocktrans %}
+              <div><a href="{% url 'pages:show' slug=query_slug %}" class="button">{% trans "Create this page" %}</a></div>
+          </div>
+        {% endif %}
+        {% if map %}
+          <div id="map">
+            {{ map }}
+            {% if page.has_previous or page.has_next %}
+            <div class="simple_pagination">
+                {% if page.has_previous %}
+                <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}" class="tiny button">&laquo; {% trans "Previous" %}</a>
+                {% endif %}
+                {% if page.has_next %}
+                <a href="?q={{ query }}&amp;page={{ page.next_page_number }}" class="tiny button">{% trans "Next" %} &raquo;</a>
+                {% endif %}
+            </div>
+            {% endif %}
+            </div>
+        {% endif %}
+        <div id="results_list"{% if map %}class="with_map"{% endif %}>
+        {% for result in page.object_list %}
+            {% ifequal result.model_name "page" %}
+            <h3>
+                <a href="{{ result.object.get_absolute_url }}">{{ result.name }}</a>
+            </h3>
+            <div id="object_tags">
+                {% filtered_tags result.tags keywords %}
+            </div>
+            <p>
+                {% with result.text as content %}
+                   {% highlight content with query %}
+                {% endwith %}
+            </p>
+            {% endifequal %}
+        {% empty %}
+            <p>{% trans "No results found." %}</p>
+        {% endfor %}
+        </div>
+
+        {% if page.has_previous or page.has_next %}
+            <div class="simple_pagination">
+                {% if page.has_previous %}
+                <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}" class="button">&laquo; {% trans "Previous" %}</a>
+                {% endif %}
+                {% if page.has_next %}
+                <a href="?q={{ query }}&amp;page={{ page.next_page_number }}" class="button">{% trans "Next" %} &raquo;</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        {# Show some example queries to run, maybe query syntax, something else? #}
+        <div id="create_page_dialog">
+            <h3>{% trans "Create a new page:" %}</h3>
+            <form method="GET" action="{% url 'pages:create' %}">
+              <input type="text" name="pagename" id="id_pagename" />
+              <input type="submit" value="{% trans 'Create this page' %}">
+            </form>
+        </div>
+        <div class="site_search">
+          <h3>{% trans "Search for pages:" %}</h3>
+          <form method="GET" action="{% url 'haystack_search' %}">
+            <input type="text" name="q" value="{% if query and form.q.value %}{{ form.q.value }}{% endif %}" id="id_q" />
+            <input type="submit" value="{% trans 'Search' %}">
+          </form>
+        </div>
+
+    {% endif %}
+    </div>
+{% endblock %}

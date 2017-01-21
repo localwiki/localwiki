@@ -1,0 +1,15 @@
+{% spaceless %}
+{% load thumbnail %}
+<tr>
+<td>
+	{% thumbnail diff.deleted.name "300x300" upscale=False as im %} 
+		<a href="{{ diff.deleted.url }}" class="no_icon"><img src="{{ im.url }}"/></a>
+	{% endthumbnail %}
+</td>
+<td>
+	{% thumbnail diff.inserted.name "300x300" upscale=False as im %} 
+		<a href=" {{ diff.inserted.url }}" class="no_icon"><img src="{{ im.url }}"/></a>
+	{% endthumbnail %}
+</td>
+</tr>
+{% endspaceless %}

@@ -1,0 +1,62 @@
+{% extends "tags/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Tags" %} - {{ block.super }}{% endblock %}
+{% block header_title %}{% trans "All tags" %}{% endblock %}
+
+{% block media %}
+  {{ block.super }}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-1.7.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/jquery-ui-1.8.16.custom.min.js"></script>
+{% endblock %}
+
+{% block content %}
+  {% if tag_list %}
+    <div id="tabs">
+        <ul style="display: none;">
+        <li><a href="#tags_by_name">{% trans "Alphabetical" %}</a></li>
+        <li><a href="#tags_by_num_pages">{% trans "Most popular" %}</a></li>
+        <li><a href="#tags_cloud">{% trans "As a cloud" %}</a></li>
+        </ul>
+        <div id="tags_by_name">
+        {% include "tags/tag_list_snippet.html" %}
+        </div>
+        <div id="tags_by_num_pages">
+        {% include "tags/tag_list_by_num_pages.html" %}
+        </div>
+        <div id="tags_cloud">
+        {% include "tags/tag_cloud.html" %}
+        </div>
+    </div>
+    <style>
+        .ui-tabs-nav {
+            list-style: none;
+            margin: 0 0 1.5em 0;
+        }
+        .ui-tabs-nav li {
+            margin: 0;
+            margin-right: 4em;
+            display: inline;
+        }
+        .ui-tabs-selected a:link, .ui-tabs-selected a:hover,
+        .ui-tabs-selected a:visited {
+            cursor: default;
+            text-decoration: none;
+            color: #444;
+        }
+        .ui-tabs-hide {
+            display: none;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function() {
+            $( "#tabs > ul" ).show();
+            $( "#tabs" ).tabs();
+        });
+    </script>
+  {% else %}
+    {% trans "There are no tags. Add some!" %}
+  {% endif %}
+{% endblock %}
+
+

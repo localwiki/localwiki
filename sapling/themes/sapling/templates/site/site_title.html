@@ -1,0 +1,5 @@
+{% block site_title %}
+{% if current_site %}
+  <h1><a href="{% url pages:frontpage %}">{{ current_site.name }}</a></h1>
+{% endif %}
+{% endblock %}

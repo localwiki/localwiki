@@ -1,0 +1,17 @@
+{% extends "site/base.html" %}
+
+{% block title %}Server error{% endblock %}
+
+{% block everything_wrapper %}
+  <div id="header">
+    <div id="header_bar">
+      <h1 id="object_title">Server error</h1>
+    </div>
+  </div>
+  <div id="main">
+    <ul class="messages">
+      <li>Looks like something went wrong and we're unable to display the page you requested.</li>
+      <li>Please try again in a few minutes.</li>
+    </ul>
+  </div>
+{% endblock %}

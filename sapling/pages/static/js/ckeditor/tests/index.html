@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+      "http://www.w3.org/TR/html4/loose.dtd">  
+<html>  
+  <head>  
+    <link rel="stylesheet" href="qunit.css" type="text/css"/>  
+    <script src="http://code.jquery.com/jquery-latest.js"> </script>  
+    <script type="text/javascript" src="qunit.js"></script>
+    <script type="text/javascript" src="../ckeditor_source.js"></script>
+    <script type="text/javascript" src="../_source/plugins/domcleanup/test.js"></script>
+    <script type="text/javascript">
+function runAllTests(editor) {
+    domcleanupTests(editor);
+}
+    </script>
+  </head>  
+  <body>  
+<textarea id="id_content" rows="10" cols="40" name="content"></textarea><script type="text/javascript"> 
+<!--
+CKEDITOR.replace('id_content', {"filebrowserInsertimageUploadUrl": "upload", "extraPlugins": "insertimage,simpleimage,domcleanup", "toolbar": [["Source", "Bold", "Italic", "Underline"], ["Link", "Unlink"], ["InsertImage"], ["Copy", "Paste", "Undo", "Redo"]], "plugins": "about,basicstyles,clipboard,contextmenu,elementspath,enterkey,entities,filebrowser,font,format,horizontalrule,htmldataprocessor,image,indent,keystrokes,link,list,pastetext,removeformat,save,showblocks,stylescombo,table,tabletools,specialchar,tab,toolbar,undo,wysiwygarea,wsc,sourcearea,qunit"});
+-->
+</script>
+    <h1 id="qunit-header">QUnit results</h1>  
+    <h2 id="qunit-banner"></h2>  
+    <h2 id="qunit-userAgent"></h2>  
+    <ol id="qunit-tests">  
+    </ol>  
+  </body>  
+</html>  

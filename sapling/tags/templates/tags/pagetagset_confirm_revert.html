@@ -1,0 +1,20 @@
+{% extends "tags/pagetagset_version_detail.html" %}
+{% load i18n %}
+
+{% block search_robots %}
+<meta name="robots" content="noindex,nofollow">
+{% endblock %}
+
+{% block dialog %}
+<div id="dialog">
+ <form method="post" action="">{% csrf_token %}
+    <ul>
+      {{ form.as_ul }}
+    </ul>
+    <input type="submit" value="{% trans 'Revert' %}"/>
+ </form>
+</div>
+{% endblock %}
+
+{% block extras %}
+{% endblock %}
